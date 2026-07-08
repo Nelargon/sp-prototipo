@@ -37,6 +37,7 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 @keyframes spStepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes spSlideR{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 @keyframes spSlideL{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes testiFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){[data-hero-content] *{animation:none !important}}
 input[type=range].sldr{-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;outline:none}
@@ -71,3 +72,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
 .search-inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
 .sim-mobile-progress{display:none}
+.num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
+.cotizar-fab{opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.22,1,.36,1),background .2s}
+.cotizar-fab.show{opacity:1;transform:none;pointer-events:auto}
+.cotizar-fab:hover{background:#002A52 !important}
