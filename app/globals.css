@@ -1,23 +1,17 @@
 /* ==========================================================================
    Salud Protegida — Planes v6 (Página viva)
    Ported verbatim from the Claude Design export's <style> block.
-   Font URLs point at /fonts/ (public/), and hover/focus utility classes at the
-   bottom replace the prototype's style-hover / style-focus attributes.
+   Gilroy is loaded via next/font/local (see app/fonts.js) and exposed as
+   the --font-gilroy CSS variable; hover/focus utility classes at the bottom
+   replace the prototype's style-hover / style-focus attributes.
    ========================================================================== */
-
-@font-face{font-family:'Gilroy';src:url('/fonts/Gilroy-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Gilroy';src:url('/fonts/Gilroy-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'Gilroy';src:url('/fonts/Gilroy-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
-@font-face{font-family:'Gilroy';src:url('/fonts/Gilroy-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:'Gilroy';src:url('/fonts/Gilroy-ExtraBold.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
-/* Solo se cargan los 5 pesos que la página realmente usa (400/500/600/700/800). */
 
 html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
 body{margin:0;background:#fff}
 *{box-sizing:border-box}
 button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;color:inherit}
-.disp{font-family:'Gilroy','Segoe UI',sans-serif;font-weight:800}
-.body{font-family:'Gilroy','Aptos','Segoe UI',system-ui,sans-serif;font-weight:400}
+.disp{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800}
+.body{font-family:var(--font-gilroy),'Aptos','Segoe UI',system-ui,sans-serif;font-weight:400}
 .rv{transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1.05s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
 .rvon .rv{opacity:0;transform:translateY(18px)}
 .rvon .rv.in{opacity:1;transform:none}
