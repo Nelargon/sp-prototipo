@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salud Protegida · Planes — Mockup conceptual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#003B71; --navy-700:#002A52; --turq:#00BCB4; --turq-700:#00827B;
+  --amber:#F5A623; --amber-700:#D98A0F; --ink:#3D3D3D; --muted:#6B6B6B;
+  --line:#E8E8E8; --bg:#FBFAF8; --surface:#FFFFFF;
+  --navy-tint:#E6EDF4; --turq-tint:#E6F7F6; --sage-tint:#EEF5F0;
+  --display:'Gilroy','Poppins',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.display{font-family:var(--display);color:var(--navy);line-height:1.18;letter-spacing:-.01em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+section{padding:88px 0}
+.eyebrow{font-family:var(--body);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--turq-700)}
+.lead{font-size:19px;color:var(--muted);max-width:640px;line-height:1.6}
+.btn{display:inline-block;font-family:var(--body);font-weight:600;font-size:16px;padding:15px 28px;border-radius:10px;text-decoration:none;cursor:pointer;border:2px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--amber);color:var(--navy);box-shadow:0 6px 18px rgba(245,166,35,.32)}
+.btn-primary:hover{background:var(--amber-700)}
+.btn-ghost{background:transparent;color:var(--navy);border-color:var(--navy)}
+.btn-ghost.on-dark{color:#fff;border-color:rgba(255,255,255,.55)}
+.btn-ghost.on-dark:hover{background:rgba(255,255,255,.1)}
+.center{text-align:center;margin:0 auto}
+
+/* concept banner */
+.concept{background:var(--navy-700);color:#fff;font-family:var(--body);font-size:13px;text-align:center;padding:9px 16px}
+.concept b{color:var(--amber)}
+
+/* hero */
+.hero{background:linear-gradient(160deg,#003B71 0%,#002A52 100%);color:#fff;padding:96px 0 0}
+.hero h1{color:#fff;font-size:clamp(34px,5vw,56px);font-weight:800;max-width:780px}
+.hero h1 .nope{color:var(--turq);font-weight:700}
+.hero .lead{color:#cfe0f0;margin-top:22px;font-size:clamp(17px,2.2vw,21px);max-width:600px}
+.hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.proof{margin-top:54px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-wrap:wrap;gap:14px 48px;padding:26px 0 40px}
+.proof div{display:flex;align-items:center;gap:11px;color:#dce8f4;font-size:15px}
+.proof .dot{width:9px;height:9px;border-radius:50%;background:var(--turq);flex:none}
+.hero-photo{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.3);border-radius:14px;padding:22px;margin:0 0 -56px;display:flex;gap:16px;align-items:flex-start;transform:translateY(40px)}
+.photo-tag{font-family:var(--body);font-weight:700;font-size:11px;letter-spacing:.1em;color:var(--turq);border:1px solid var(--turq);border-radius:6px;padding:3px 8px;flex:none}
+.photo-brief{font-size:13.5px;line-height:1.55;color:#bcd0e6;font-style:italic}
+
+/* photo placeholder (light sections) */
+.photo{background:var(--navy-tint);border:1px dashed #9fb8d4;border-radius:14px;padding:20px;display:flex;gap:15px;align-items:flex-start;min-height:150px}
+.photo .photo-tag{color:var(--turq-700);border-color:var(--turq-700)}
+.photo .photo-brief{color:#5e7188}
+
+/* selector */
+.selector{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.chip{font-family:var(--body);font-weight:600;font-size:16px;color:var(--navy);background:#fff;border:2px solid var(--line);border-radius:12px;padding:18px 24px;cursor:pointer;transition:all .15s ease;display:flex;align-items:center;gap:12px}
+.chip:hover{border-color:var(--turq);background:var(--turq-tint)}
+.chip.active{border-color:var(--turq-700);background:var(--turq-tint);box-shadow:0 0 0 3px rgba(0,188,180,.18)}
+.chip .ic{font-size:20px}
+
+/* plan cards */
+.plans-note{font-size:13px;color:var(--muted);margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:#fff7ea;border:1px solid #f3dcae;padding:7px 14px;border-radius:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px;align-items:start}
+.plan{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 26px;position:relative;transition:box-shadow .2s ease}
+.plan:hover{box-shadow:0 14px 40px rgba(0,59,113,.1)}
+.plan.feat{border:2px solid var(--turq-700);box-shadow:0 14px 44px rgba(0,59,113,.13)}
+.ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--turq-700);color:#fff;font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.05em;padding:6px 16px;border-radius:20px;white-space:nowrap}
+.plan h3{font-size:23px;font-weight:700}
+.plan .price{font-family:var(--display);font-weight:800;color:var(--navy);font-size:30px;margin-top:10px}
+.plan .price span{font-family:var(--body);font-weight:500;font-size:14px;color:var(--muted)}
+.plan .ideal{font-size:14.5px;color:var(--turq-700);font-weight:600;margin:8px 0 20px;min-height:42px}
+.feats{list-style:none;margin:0 0 24px}
+.feats li{display:flex;gap:11px;align-items:flex-start;padding:8px 0;font-size:14.5px;border-bottom:1px solid #f1f1f1}
+.feats li:last-child{border-bottom:none}
+.mk{flex:none;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:1px}
+.yes{background:var(--turq-tint);color:var(--turq-700)}
+.no{background:#f4f4f4;color:#b3b3b3}
+.feats li.off{color:#a0a0a0}
+.feats .det{color:var(--muted);font-size:12.5px;display:block}
+.plan .btn{width:100%;text-align:center}
+.plan .btn-quiet{background:#fff;color:var(--navy);border-color:var(--navy)}
+.plan.feat .btn-quiet{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* generic two-col */
+.two{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+
+/* network band */
+.net{background:var(--navy);color:#fff}
+.net h2{color:#fff;font-size:clamp(26px,3.4vw,34px)}
+.net .lead{color:#cfe0f0}
+.net .btn-ghost{color:#fff;border-color:rgba(255,255,255,.6)}
+.net .panel{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:28px}
+.fakefield{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.fakefield .inp{flex:1;min-width:200px;background:rgba(255,255,255,.95);border-radius:10px;padding:14px 16px;color:#8a8a8a;font-size:15px}
+
+/* diferenciales */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px}
+.dcard{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.dcard .photo{border:none;border-radius:0;border-bottom:1px dashed #9fb8d4;background:var(--turq-tint);min-height:130px}
+.dcard .body{padding:24px}
+.dcard h3{font-size:19px;font-weight:700;margin-bottom:8px}
+.dcard p{font-size:15px;color:var(--ink)}
+
+/* perfiles */
+.perfiles{background:var(--sage-tint)}
+.prow{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+.pcard{background:#fff;border:1px solid #dfe9e2;border-radius:16px;padding:26px 22px}
+.pcard .ic{font-size:26px}
+.pcard h4{font-size:16.5px;font-weight:700;margin:12px 0 6px}
+.pcard p{font-size:13.5px;color:var(--muted);min-height:60px}
+.pcard .rec{display:block;margin-top:14px;font-size:13px;font-weight:600;color:var(--turq-700)}
+.pcard .rec b{color:var(--navy)}
+
+/* beneficios comunes */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 28px;margin-top:38px}
+.bitem{display:flex;gap:14px;align-items:flex-start;padding:6px 0}
+.bic{flex:none;width:40px;height:40px;border-radius:11px;background:var(--turq-tint);color:var(--turq-700);display:flex;align-items:center;justify-content:center;font-size:19px}
+.bitem h4{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:2px}
+.bitem p{font-size:14px;color:var(--muted)}
+
+/* testimonios */
+.testi{background:var(--navy-tint)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}
+.tcard{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 18px rgba(0,59,113,.05)}
+.tcard .quote{font-size:16.5px;color:var(--navy);line-height:1.55;font-weight:500}
+.tcard .who{display:flex;align-items:center;gap:13px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.tcard .av{width:44px;height:44px;border-radius:50%;background:var(--navy-tint);border:1px dashed #9fb8d4;flex:none}
+.tcard .nm{font-size:14px;font-weight:600;color:var(--navy)}
+.tcard .rl{font-size:12.5px;color:var(--muted)}
+.tnote{font-size:12.5px;color:var(--muted);margin-top:24px;text-align:center;font-style:italic}
+
+/* faq */
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq summary{padding:20px 24px;font-family:var(--display);font-weight:600;font-size:17px;color:var(--navy);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:24px;color:var(--turq-700);font-weight:400;flex:none}
+.faq details[open] summary::after{content:"\2013"}
+.faq .ans{padding:0 24px 22px;font-size:15.5px;color:var(--ink);max-width:760px}
+
+/* cta final */
+.final{background:linear-gradient(160deg,#00BCB4 0%,#00827B 100%);color:#fff;text-align:center}
+.final h2{color:#fff;font-size:clamp(28px,3.8vw,40px)}
+.final p{color:#e3fbf9;font-size:18px;max-width:560px;margin:16px auto 0}
+.final .hero-cta{justify-content:center}
+.final .btn-ghost{color:#fff;border-color:rgba(255,255,255,.7)}
+
+/* footer */
+.foot{background:var(--navy-700);color:#9fb8d4;padding:40px 0;font-size:13px;text-align:center}
+
+@media(max-width:880px){
+  section{padding:60px 0}
+  .grid3,.cards3,.prow,.bgrid,.tgrid{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr;gap:28px}
+  .prow{grid-template-columns:1fr 1fr}
+  .hero-photo{margin-bottom:-40px}
+}
+@media(max-width:520px){.prow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="concept">Mockup conceptual · El <b>copy es definitivo</b>; los datos de planes (nombres, precios, coberturas) son <b>ilustrativos</b> y se reemplazan con la matriz de verdad.</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--turq)">Planes de salud · Salud Protegida</span>
+    <h1>Entendé tu plan <span class="nope">—y lo que no cubre—</span> antes de elegirlo.</h1>
+    <p class="lead">Comparás cada opción con todo a la vista, en palabras claras, y elegís sabiendo exactamente qué estás contratando. Sin sorpresas para después.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#planes">Ver y comparar planes</a>
+      <a class="btn btn-ghost on-dark" href="#contacto">Hablar con un asesor</a>
+    </div>
+    <div class="proof">
+      <div><span class="dot"></span>Más de 20 años cuidando familias, desde 2002</div>
+      <div><span class="dot"></span>Lister, el centro médico de Salud Protegida</div>
+      <div><span class="dot"></span>Miles de familias protegidas en todo el país</div>
+    </div>
+    <div class="hero-photo">
+      <span class="photo-tag">FOTO</span>
+      <span class="photo-brief">Familia paraguaya real en un momento cotidiano y cálido (en casa, desayunando, en el patio). Luz natural, miradas a cámara. Transmite tranquilidad y cercanía, no enfermedad. Nada de stock clínico internacional.</span>
+    </div>
+  </div>
+</header>
+
+<!-- SELECTOR -->
+<section class="selector" id="selector">
+  <div class="wrap">
+    <span class="eyebrow">Empecemos por vos</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin-top:10px">¿Para quién estás buscando cobertura?</h2>
+    <p class="lead" style="margin-top:12px">Elegí tu situación y te mostramos primero lo que más se ajusta. Igual podés ver todo.</p>
+    <div class="chips">
+      <div class="chip active"><span class="ic">🙂</span>Para mí</div>
+      <div class="chip"><span class="ic">💑</span>Para mi pareja y yo</div>
+      <div class="chip"><span class="ic">👨‍👩‍👧</span>Para mi familia con hijos</div>
+      <div class="chip"><span class="ic">👵</span>Para mis padres</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVA -->
+<section id="planes">
+  <div class="wrap">
+    <span class="eyebrow">Comparativa</span>
+    <h2 style="font-size:clamp(26px,3.6vw,36px);margin-top:10px">Tres planes. Mirá qué incluye cada uno.</h2>
+    <p class="lead" style="margin-top:12px">Lo que ves acá es lo que cubre tu plan. Marcamos también lo que no incluye o lo que tiene tiempo de espera, para que decidas con todo claro.</p>
+    <div class="plans-note">⚠ Nombres, precios y coberturas ilustrativos — pendientes de la matriz de verdad</div>
+
+    <div class="grid3">
+      <!-- Esencial -->
+      <div class="plan">
+        <h3>Esencial</h3>
+        <div class="price">Gs. 195.000<span> / mes</span></div>
+        <div class="ideal">Ideal si es tu primer plan propio y querés lo importante bien cubierto.</div>
+        <ul class="feats">
+          <li><span class="mk yes">✓</span>Consultas médicas</li>
+          <li><span class="mk yes">✓</span>Lister, copagos preferenciales</li>
+          <li><span class="mk yes">✓</span>Urgencias y emergencias</li>
+          <li><span class="mk yes">✓</span><span>Internación<span class="det">habitación compartida</span></span></li>
+          <li><span class="mk yes">✓</span>Estudios y laboratorio base</li>
+          <li><span class="mk yes">✓</span><span>Especialistas<span class="det">con derivación</span></span></li>
+          <li class="off"><span class="mk no">–</span><span>Odontología<span class="det">no incluida</span></span></li>
+          <li class="off"><span class="mk no">–</span><span>Maternidad<span class="det">con tiempo de espera</span></span></li>
+        </ul>
+        <a class="btn btn-quiet" href="#contacto">Cotizar este plan</a>
+      </div>
+
+      <!-- Familia (featured) -->
+      <div class="plan feat">
+        <span class="ribbon">El más elegido</span>
+        <h3>Familia</h3>
+        <div class="price">Gs. 310.000<span> / mes</span></div>
+        <div class="ideal">Ideal para parejas y familias chicas que quieren cubrir lo de hoy y lo que viene.</div>
+        <ul class="feats">
+          <li><span class="mk yes">✓</span>Todo lo de Esencial</li>
+          <li><span class="mk yes">✓</span><span>Internación<span class="det">habitación privada</span></span></li>
+          <li><span class="mk yes">✓</span>Estudios y laboratorio ampliados</li>
+          <li><span class="mk yes">✓</span><span>Especialistas<span class="det">acceso directo</span></span></li>
+          <li><span class="mk yes">✓</span>Odontología incluida</li>
+          <li><span class="mk yes">✓</span>Maternidad</li>
+          <li><span class="mk yes">✓</span><span>Medicamentos<span class="det">cobertura parcial</span></span></li>
+        </ul>
+        <a class="btn btn-quiet" href="#contacto">Cotizar este plan</a>
+      </div>
+
+      <!-- Integral -->
+      <div class="plan">
+        <h3>Integral</h3>
+        <div class="price">Gs. 465.000<span> / mes</span></div>
+        <div class="ideal">Ideal para familias con hijos o para quien quiere la cobertura más amplia.</div>
+        <ul class="feats">
+          <li><span class="mk yes">✓</span>Todo lo de Familia</li>
+          <li><span class="mk yes">✓</span>Alta complejidad</li>
+          <li><span class="mk yes">✓</span>Especialistas sin límite de red</li>
+          <li><span class="mk yes">✓</span>Odontología ampliada</li>
+          <li><span class="mk yes">✓</span>Medicamentos ampliados</li>
+          <li><span class="mk yes">✓</span>Maternidad completa</li>
+          <li><span class="mk yes">✓</span>Cobertura en todo el país</li>
+        </ul>
+        <a class="btn btn-quiet" href="#contacto">Cotizar este plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RED -->
+<section class="net" id="red">
+  <div class="wrap two">
+    <div>
+      <span class="eyebrow" style="color:var(--turq)">Antes de decidir</span>
+      <h2 style="margin-top:10px">Fijate si tu médico ya está en la red.</h2>
+      <p class="lead">Cambiar de plan no debería significar cambiar de médico de confianza. Decinos a tu médico o sanatorio de siempre y un asesor te confirma si está cubierto, sin vueltas.</p>
+    </div>
+    <div class="panel">
+      <strong style="font-size:16px;color:#fff">Consultá tu cobertura</strong>
+      <div class="fakefield">
+        <div class="inp">Tu médico o sanatorio…</div>
+        <a class="btn btn-primary" href="#contacto" style="white-space:nowrap">Consultar</a>
+      </div>
+      <p style="font-size:13px;color:#bcd0e6;margin-top:14px;font-style:italic">Hoy se resuelve con un asesor. El buscador en vivo llega más adelante.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIALES -->
+<section id="porque">
+  <div class="wrap">
+    <span class="eyebrow">Por qué con nosotros</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin-top:10px">Tres cosas concretas que vas a notar.</h2>
+    <div class="cards3">
+      <div class="dcard">
+        <div class="photo"><span class="photo-tag">FOTO</span><span class="photo-brief">Interior o fachada real de Lister. Espacio luminoso, cálido, profesional pero humano.</span></div>
+        <div class="body">
+          <h3>Lister, el centro médico de Salud Protegida</h3>
+          <p>Tus consultas, controles y estudios programados en un solo lugar, coordinados por nosotros y con copagos más accesibles según tu plan.</p>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="photo"><span class="photo-tag">FOTO</span><span class="photo-brief">Médico de la red atendiendo, mirada cálida. Real, no stock.</span></div>
+        <div class="body">
+          <h3>Una red que ya conocés</h3>
+          <p>Sanatorios, laboratorios y especialistas con los que trabajamos hace años. En muchos casos, tu médico de siempre puede seguir siéndolo.</p>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="photo"><span class="photo-tag">FOTO</span><span class="photo-brief">Asesora real de SP en su puesto, sonriendo, atendiendo. Nada de call-center de stock.</span></div>
+        <div class="body">
+          <h3>Te atienden personas</h3>
+          <p>Cuando llamás, del otro lado hay alguien que revisa tu caso y te dice el siguiente paso, en claro. Sin menús eternos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFILES -->
+<section class="perfiles" id="perfiles">
+  <div class="wrap">
+    <span class="eyebrow">Si seguís dudando</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin-top:10px">Te decimos cuál elegiríamos para vos.</h2>
+    <div class="prow">
+      <div class="pcard">
+        <span class="ic">🙂</span>
+        <h4>Es tu primer plan propio</h4>
+        <p>Querés lo esencial bien cubierto, sin pagar de más.</p>
+        <span class="rec">Te recomendamos <b>Esencial</b></span>
+      </div>
+      <div class="pcard">
+        <span class="ic">💑</span>
+        <h4>Son pareja, pensando a futuro</h4>
+        <p>Cubrís lo de hoy y quedás listos para lo que viene.</p>
+        <span class="rec">Te recomendamos <b>Familia</b></span>
+      </div>
+      <div class="pcard">
+        <span class="ic">👨‍👩‍👧</span>
+        <h4>Tenés hijos</h4>
+        <p>Necesitás pediatría, urgencias y respaldo para todos.</p>
+        <span class="rec">Te recomendamos <b>Integral</b></span>
+      </div>
+      <div class="pcard">
+        <span class="ic">👵</span>
+        <h4>Cuidás a tus padres</h4>
+        <p>Buscás cobertura amplia y atención cercana.</p>
+        <span class="rec">Te recomendamos <b>Integral</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS COMUNES -->
+<section id="incluido">
+  <div class="wrap">
+    <span class="eyebrow">Siempre incluido</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin-top:10px">Elijas el plan que elijas, esto va incluido.</h2>
+    <div class="bgrid">
+      <div class="bitem"><div class="bic">🏥</div><div><h4>Acceso a Lister</h4><p>Consultas, controles y estudios programados.</p></div></div>
+      <div class="bitem"><div class="bic">🚑</div><div><h4>Urgencias y emergencias</h4><p>Cuando lo urgente no puede esperar.</p></div></div>
+      <div class="bitem"><div class="bic">📱</div><div><h4>App y portal</h4><p>Tus trámites desde el celular.</p></div></div>
+      <div class="bitem"><div class="bic">💬</div><div><h4>Personas que responden</h4><p>Te atiende alguien que revisa tu caso.</p></div></div>
+      <div class="bitem"><div class="bic">📝</div><div><h4>Autorizaciones simples</h4><p>Sin trámites de más para usar tu plan.</p></div></div>
+      <div class="bitem"><div class="bic">🤝</div><div><h4>Acompañamiento real</h4><p>Te explicamos cada paso, sin tecnicismos.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testi" id="testimonios">
+  <div class="wrap">
+    <span class="eyebrow">Lo que dicen</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin-top:10px">Quienes ya están con nosotros.</h2>
+    <div class="tgrid">
+      <div class="tcard">
+        <p class="quote">"Cuando llamo, me resuelven. No me pasean de un lado a otro."</p>
+        <div class="who"><div class="av"></div><div><div class="nm">[Nombre real]</div><div class="rl">Socia hace [X] años</div></div></div>
+      </div>
+      <div class="tcard">
+        <p class="quote">"Tener Lister cerca me cambió la rutina: llevo a los chicos al control y salimos el mismo día."</p>
+        <div class="who"><div class="av"></div><div><div class="nm">[Nombre real]</div><div class="rl">Mamá de dos</div></div></div>
+      </div>
+      <div class="tcard">
+        <p class="quote">"Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro."</p>
+        <div class="who"><div class="av"></div><div><div class="nm">[Nombre real]</div><div class="rl">Socio hace [X] años</div></div></div>
+      </div>
+    </div>
+    <p class="tnote">Testimonios de ejemplo (tono y formato). Se reemplazan por testimonios reales, verificados y con consentimiento — nunca inventados.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:860px">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2 style="font-size:clamp(26px,3.4vw,34px);margin:10px 0 32px">Lo que solés querer saber antes de firmar.</h2>
+    <div class="faq">
+      <details open><summary>¿Puedo seguir con mi médico actual?</summary><div class="ans">En muchos casos sí. Antes de que decidas, un asesor te confirma si tu médico o sanatorio de confianza está en nuestra red, para que no te lleves sorpresas.</div></details>
+      <details><summary>¿Qué hago en una urgencia?</summary><div class="ans">En una urgencia, andá directo a la guardia de emergencias del sanatorio. Lister es para tus consultas, controles y estudios programados, no para urgencias.</div></details>
+      <details><summary>¿Hay período de carencia?</summary><div class="ans">Sí. Algunos servicios tienen un tiempo de espera antes de poder usarse. Te decimos exactamente cuáles y por cuánto tiempo, claro y por escrito, antes de que firmes.</div></details>
+      <details><summary>¿Qué incluye Lister exactamente?</summary><div class="ans">Consultas, controles y estudios programados, con copagos más accesibles según tu plan. Es donde hacés tu seguimiento de salud del día a día.</div></details>
+      <details><summary>Vengo de otro plan, ¿cómo me cambio?</summary><div class="ans">Te acompañamos en el cambio paso a paso. Tené en cuenta que tu cobertura con nosotros arranca según las condiciones de tu nuevo plan.</div></details>
+      <details><summary>¿Puedo sumar a mi familia?</summary><div class="ans">Sí. Podés incluir a tu pareja, hijos y otros familiares. Te ayudamos a armar la cobertura que mejor se adapte a todos.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final" id="contacto">
+  <div class="wrap">
+    <h2>¿Lo vemos juntos?</h2>
+    <p>Cotizá en línea o hablá con un asesor que te ayude a decidir con calma. Cotizar no te compromete a nada.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#">Cotizar mi plan</a>
+      <a class="btn btn-ghost" href="#">Hablar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">Salud Protegida · Medicina Prepaga · Asunción, Paraguay — Mockup conceptual, no es la web publicada.</div>
+</footer>
+
+<script>
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

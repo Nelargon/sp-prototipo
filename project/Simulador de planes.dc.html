@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail" data-bg-color="#003B71">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#003B71"/>
+    <rect x="430" y="250" width="340" height="300" rx="40" fill="#00BCB4"/>
+    <text x="600" y="455" font-family="Arial, sans-serif" font-size="170" font-weight="800" fill="#ffffff" text-anchor="middle">SP</text>
+  </svg>
+</template>
+<helmet>
+<style>
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:600;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:800;font-display:swap}
+@font-face{font-family:'Inter';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff2') format('woff2'),local('Inter');font-weight:400;font-display:swap}
+@font-face{font-family:'Inter';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-500-normal.woff2') format('woff2'),local('Inter Medium');font-weight:500;font-display:swap}
+@font-face{font-family:'Inter';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-600-normal.woff2') format('woff2'),local('Inter SemiBold');font-weight:600;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff2') format('woff2'),local('Inter');font-weight:300;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff2') format('woff2'),local('Inter');font-weight:400;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-500-normal.woff2') format('woff2'),local('Inter Medium');font-weight:500;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-600-normal.woff2') format('woff2'),local('Inter SemiBold');font-weight:600;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'BrandSP';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:800;font-display:swap}
+html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{margin:0}
+*{box-sizing:border-box}
+button{font-family:inherit}
+input{font-family:inherit}
+a{text-decoration:none}
+@keyframes spStepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes spGlow{0%{box-shadow:0 1px 3px rgba(0,0,0,0.06)}35%{box-shadow:0 0 0 4px rgba(0,188,180,0.22),0 10px 34px rgba(0,188,180,0.20)}100%{box-shadow:0 1px 3px rgba(0,0,0,0.06)}}
+@keyframes spRing{to{stroke-dashoffset:0}}
+@keyframes spCheckIn{0%{opacity:0;transform:scale(.4)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@media(max-width:680px){
+  .sim-card{flex-direction:column !important}
+  .sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}
+  .sim-side-h{display:none !important}
+  .sim-steps{display:none !important}
+  .sim-trust{margin-top:0 !important}
+  .sim-body{padding:24px 20px !important;min-height:0 !important}
+}
+</style>
+</helmet>
+
+<div style="{{ shellStyle }}">
+  <div data-screen-label="Simulador de planes SP" class="sim-card" style="width:760px;max-width:100%;display:flex;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 24px 60px rgba(0,59,113,0.10);border:0.5px solid #E8E8E8">
+
+    <!-- ===== SIDEBAR (de 1b) ===== -->
+    <div class="sim-side" style="width:250px;flex:none;background:#003B71;color:#fff;padding:30px 26px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:26px"><span style="width:30px;height:30px;border-radius:9px;background:#fff;color:#003B71;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">SP</span><span style="font-size:14px;font-weight:800">Salud Protegida</span></div>
+      <div class="sim-side-h" style="font-size:20px;font-weight:800;line-height:1.2;margin-bottom:26px;letter-spacing:-0.01em">Tu plan,<br>a tu medida</div>
+      <div class="sim-steps" style="display:flex;flex-direction:column;gap:16px;flex:1">
+        <sc-for list="{{ stepsList }}" as="st" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:11px">
+            <span style="{{ st.dot }}"><sc-if value="{{ st.isDone }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if><sc-if value="{{ st.showNum }}">{{ st.num }}</sc-if></span>
+            <span style="{{ st.label }}">{{ st.name }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div class="sim-trust" style="font-size:12px;color:#B3C7DB;display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sin datos sensibles · menos de 1 minuto</div>
+    </div>
+
+    <!-- ===== CONTENIDO (conversacional, de 1a) ===== -->
+    <div class="sim-body" style="flex:1;min-width:0;background:#fff;padding:34px 34px;min-height:560px;display:flex;flex-direction:column;justify-content:center">
+
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <div style="width:54px;height:54px;border-radius:16px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:18px"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+          <h3 style="font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px">Encontremos tu plan ideal</h3>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 24px">Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
+          <button onClick="{{ start }}" style="height:52px;padding:0 28px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background 160ms" style-hover="background:#009690">Empecemos <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isWho }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px" style-hover="color:#009690">← Volver</button>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px">Tu grupo</div>
+          <h3 style="font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px">¿Para quién es el plan?</h3>
+          <p style="font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg><span>{{ whyWho }}</span></p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ whoOpts }}" as="opt" hint-placeholder-count="4">
+              <button onClick="{{ opt.onClick }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)" style-hover="border-color:#00BCB4;background:#E6F7F6;color:#003B71"><span style="display:flex;flex-direction:column;gap:3px"><span>{{ opt.label }}</span><sc-if value="{{ opt.hasNote }}"><span style="font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35">{{ opt.note }}</span></sc-if></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18 6-6-6-6"/></svg></button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isEdades }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px" style-hover="color:#009690">← Volver</button>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px">Las edades</div>
+          <h3 style="font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px">¿Qué edades tienen?</h3>
+          <p style="font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 18px;display:flex;align-items:flex-start;gap:7px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg><span>{{ whyEdades }}</span></p>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ people }}" as="person" hint-placeholder-count="2">
+              <div style="margin-bottom:14px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px"><span style="font-size:13px;font-weight:600;color:#1D1D1B">{{ person.role }}</span><span style="font-size:15px;font-weight:800;color:#003B71">{{ person.ageTxt }}<span style="font-size:11px;color:#6B6B6B;font-weight:500"> años</span></span></div>
+                <input type="range" min="{{ person.min }}" max="{{ person.max }}" value="{{ person.age }}" onChange="{{ person.setAge }}" style="width:100%;accent-color:#00BCB4;height:5px;cursor:pointer">
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ isFamilia }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:14px;border-top:1px solid #F0F0F0">
+              <span style="font-size:14px;font-weight:700;color:#003B71">Hijos a sumar</span>
+              <div style="display:flex;align-items:center;gap:14px">
+                <button onClick="{{ removeKid }}" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #E8E8E8;background:#fff;color:#003B71;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1" style-hover="border-color:#00BCB4">−</button>
+                <span style="font-size:17px;font-weight:800;color:#003B71;min-width:18px;text-align:center">{{ kidCount }}</span>
+                <button onClick="{{ addKid }}" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #E8E8E8;background:#fff;color:#003B71;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1" style-hover="border-color:#00BCB4">+</button>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isPadres }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:14px;border-top:1px solid #F0F0F0">
+              <span style="font-size:14px;font-weight:700;color:#003B71">Personas a cubrir</span>
+              <div style="display:flex;align-items:center;gap:14px">
+                <button onClick="{{ removeAdult }}" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #E8E8E8;background:#fff;color:#003B71;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1" style-hover="border-color:#00BCB4">−</button>
+                <span style="font-size:17px;font-weight:800;color:#003B71;min-width:18px;text-align:center">{{ adultCount }}</span>
+                <button onClick="{{ addAdult }}" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #E8E8E8;background:#fff;color:#003B71;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1" style-hover="border-color:#00BCB4">+</button>
+              </div>
+            </div>
+          </sc-if>
+          <button onClick="{{ toNivel }}" style="width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:background 160ms" style-hover="background:#009690">Continuar</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isNivel }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px" style-hover="color:#009690">← Volver</button>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px">Cobertura</div>
+          <h3 style="font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px">¿Qué nivel de cobertura buscás?</h3>
+          <p style="font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg><span>{{ whyNivel }}</span></p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ nivelOpts }}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{ opt.onClick }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)" style-hover="border-color:#00BCB4;background:#E6F7F6;color:#003B71"><span style="display:flex;flex-direction:column;gap:3px"><span>{{ opt.label }}</span><sc-if value="{{ opt.hasNote }}"><span style="font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35">{{ opt.note }}</span></sc-if></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18 6-6-6-6"/></svg></button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isGeo }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px" style-hover="color:#009690">← Volver</button>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px">Zona</div>
+          <h3 style="font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px">¿Hasta dónde querés cobertura?</h3>
+          <p style="font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg><span>{{ whyGeo }}</span></p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ geoOpts }}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{ opt.onClick }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)" style-hover="border-color:#00BCB4;background:#E6F7F6;color:#003B71"><span style="display:flex;flex-direction:column;gap:3px"><span>{{ opt.label }}</span><span style="font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35">{{ opt.note }}</span></span><span style="display:flex;align-items:center;gap:10px;flex:none"><span style="font-size:14px;font-weight:800;color:#00BCB4;letter-spacing:0.06em">{{ opt.tier }}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAddons }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px" style-hover="color:#009690">← Volver</button>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px">Coberturas adicionales</div>
+          <h3 style="font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px">¿Querés personalizar tu cobertura?</h3>
+          <p style="font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg><span>{{ whyAddons }}</span></p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ addonsList }}" as="ad" hint-placeholder-count="6">
+              <button onClick="{{ ad.toggle }}" style="{{ ad.rowStyle }}"><span style="display:flex;align-items:center;gap:12px;min-width:0"><span style="{{ ad.boxStyle }}"><sc-if value="{{ ad.selected }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if></span><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:15px;font-weight:600;color:#1D1D1B">{{ ad.label }}</span><span style="font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35">{{ ad.note }}</span></span></span><span style="font-size:12.5px;font-weight:800;color:#009690;white-space:nowrap;flex:none">{{ ad.priceLabel }}</span></button>
+            </sc-for>
+          </div>
+          <button onClick="{{ toResult }}" style="width:100%;height:50px;margin-top:18px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms" style-hover="background:#009690">{{ continueLabel }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isResult }}">
+        <div style="animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px">
+            <div style="position:relative;width:44px;height:44px;flex:none">
+              <svg width="44" height="44" viewBox="0 0 44 44" style="display:block"><circle cx="22" cy="22" r="19" fill="none" stroke="#E6F7F6" stroke-width="4"></circle><circle cx="22" cy="22" r="19" fill="none" stroke="#00BCB4" stroke-width="4" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)" style="animation:spRing 0.95s cubic-bezier(0.22,1,0.36,1) 0.1s forwards"></circle></svg>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#00BCB4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);animation:spCheckIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.72s both"><path d="M20 6 9 17l-5-5"></path></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690">Encontramos tu match</div>
+              <div style="font-size:14px;color:#6B6B6B">Según lo que nos contaste</div>
+            </div>
+          </div>
+          <sc-if value="{{ showPlanCard }}">
+            <div style="border-radius:16px;overflow:hidden;border:0.5px solid #E8E8E8;animation:spGlow 1.3s cubic-bezier(0.22,1,0.36,1) 0.15s both">
+              <div style="{{ headerStyle }}">
+                <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85">Plan recomendado</div>
+                <div style="font-size:24px;font-weight:800;line-height:1.1;margin-top:2px">{{ resName }}</div>
+                <div style="font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Cobertura {{ resGeo }}</div>
+              </div>
+              <div style="padding:18px 20px;background:#fff">
+                <sc-if value="{{ showPriceInCard }}">
+                  <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-size:31px;font-weight:800;color:#003B71;letter-spacing:-0.01em;line-height:1">{{ resPrice }}</span><span style="font-size:14px;color:#6B6B6B;font-weight:500">/ mes estimado</span></div>
+                  <div style="font-size:12px;color:#6B6B6B;margin:6px 0 14px">{{ resGroup }} · titular de {{ titularAge }}. El precio final lo confirma un asesor.</div>
+                </sc-if>
+                <p style="font-size:14px;color:#3D3D3D;line-height:1.6;margin:0">{{ resWhy }}</p>
+                <sc-if value="{{ hasAddons }}"><div style="font-size:13px;color:#003B71;font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg><span>Sumás: {{ resAddonsText }}</span></div></sc-if>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ showPriceOnly }}">
+            <div style="text-align:center;padding:6px 0 4px">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B6B;margin-bottom:4px">Tu estimado mensual</div>
+              <div style="font-size:44px;font-weight:800;color:#003B71;letter-spacing:-0.02em;line-height:1">{{ resPrice }}</div>
+              <div style="font-size:13px;color:#6B6B6B;margin-top:8px">por mes, {{ resGroup }} · titular de {{ titularAge }} · Cobertura {{ resGeo }}</div>
+              <div style="font-size:12px;color:#9aa0a6;margin-top:4px">Estimado. El precio final lo confirma un asesor.</div>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:18px">
+            <sc-if value="{{ formOpen }}">
+              <div style="background:#F7FBFB;border:1px solid #d9efed;border-radius:14px;padding:18px 18px 16px">
+                <div style="font-size:15px;font-weight:800;color:#003B71;margin-bottom:3px">¿A dónde te enviamos tu cotización?</div>
+                <div style="font-size:12px;color:#6B6B6B;margin-bottom:14px">{{ whyContacto }}</div>
+                <div style="display:flex;gap:10px;margin-bottom:10px">
+                  <input type="text" value="{{ nombre }}" onChange="{{ setNombre }}" placeholder="Nombre y apellido" required="required" style="flex:1;min-width:0;height:46px;border:1.5px solid #E8E8E8;border-radius:8px;padding:0 14px;font-size:15px;color:#1D1D1B;background:#fff;outline:none" style-focus="border-color:#00BCB4;box-shadow:0 0 0 3px rgba(0,188,180,0.18)">
+                  <input type="tel" value="{{ tel }}" onChange="{{ setTel }}" placeholder="WhatsApp" required="required" style="flex:1;min-width:0;height:46px;border:1.5px solid #E8E8E8;border-radius:8px;padding:0 14px;font-size:15px;color:#1D1D1B;background:#fff;outline:none" style-focus="border-color:#00BCB4;box-shadow:0 0 0 3px rgba(0,188,180,0.18)">
+                </div>
+                <input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="Email" required="required" style="width:100%;height:46px;border:1.5px solid #E8E8E8;border-radius:8px;padding:0 14px;font-size:15px;color:#1D1D1B;background:#fff;outline:none;margin-bottom:10px" style-focus="border-color:#00BCB4;box-shadow:0 0 0 3px rgba(0,188,180,0.18)">
+                <sc-if value="{{ hasErr }}"><div style="font-size:12px;color:#F44336;margin-bottom:10px">{{ err }}</div></sc-if>
+                <button onClick="{{ submit }}" style="width:100%;height:48px;border:none;border-radius:12px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms" style-hover="background:#009690">Enviarme mi cotización</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ sentOpen }}">
+              <div style="background:#E6F7F6;border:1px solid #bfe4e1;border-radius:14px;padding:24px;text-align:center">
+                <div style="width:46px;height:46px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+                <div style="font-size:17px;font-weight:800;color:#003B71;margin-top:12px">¡Listo, {{ nombre }}!</div>
+                <div style="font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5">Te enviamos tu cotización y un asesor te contacta para confirmarla.</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ showWa }}">
+              <a href="https://wa.me/595981123456" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#009690;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px" style-hover="background:#E6F7F6"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z"/></svg>Prefiero escribir por WhatsApp</a>
+            </sc-if>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+              <a href="#planes" style="font-size:13px;color:#6B6B6B;font-weight:600" style-hover="color:#009690">Ver el detalle de los planes →</a>
+              <button onClick="{{ restart }}" style="background:none;border:none;color:#9aa0a6;font-size:13px;font-weight:600;cursor:pointer" style-hover="color:#6B6B6B">↺ Empezar de nuevo</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;chrome&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;embed&quot;],&quot;default&quot;:&quot;full&quot;,&quot;tsType&quot;:&quot;'full'|'embed'&quot;,&quot;section&quot;:&quot;Montaje&quot;},&quot;resultado&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Plan + precio&quot;,&quot;Solo plan&quot;,&quot;Solo precio&quot;],&quot;default&quot;:&quot;Plan + precio&quot;,&quot;tsType&quot;:&quot;'Plan + precio'|'Solo plan'|'Solo precio'&quot;,&quot;section&quot;:&quot;Resultado&quot;},&quot;cierre&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Formulario + WhatsApp&quot;,&quot;Solo formulario&quot;,&quot;Solo WhatsApp&quot;],&quot;default&quot;:&quot;Formulario + WhatsApp&quot;,&quot;tsType&quot;:&quot;'Formulario + WhatsApp'|'Solo formulario'|'Solo WhatsApp'&quot;,&quot;section&quot;:&quot;Cierre&quot;}}">
+class Component extends DCLogic {
+  state = { step:0, who:null, nivel:null, geo:null, addons:[], people:[], nombre:'', tel:'', email:'', sent:false, err:'' };
+
+  patch(p) { this.setState(s => Object.assign({}, s, p)); }
+  fmt(n) { return '\u20B2 ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.step < 6 && this.state.step >= 6) {
+      const target = this.engine(this.state).price;
+      const t0 = performance.now(), dur = 1150;
+      if (this._raf) cancelAnimationFrame(this._raf);
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        this.setState({ priceAnim: Math.round(target * eased) });
+        if (p < 1) this._raf = requestAnimationFrame(tick);
+        else this.setState({ priceAnim: null });
+      };
+      this.setState({ priceAnim: 0 });
+      this._raf = requestAnimationFrame(tick);
+    }
+  }
+  componentWillUnmount() { if (this._raf) cancelAnimationFrame(this._raf); }
+  ageTxt(a) { return a >= 85 ? '85+' : String(a); }
+
+  peopleFor(who) {
+    if (who === 'mi') return [{ role:'Vos', age:32, kind:'adult' }];
+    if (who === 'pareja') return [{ role:'Vos', age:34, kind:'adult' }, { role:'Tu pareja', age:34, kind:'adult' }];
+    if (who === 'familia') return [{ role:'Vos', age:37, kind:'adult' }, { role:'Tu pareja', age:37, kind:'adult' }, { role:'Hijo/a 1', age:9, kind:'kid' }];
+    if (who === 'padres') return [{ role:'Adulto mayor', age:68, kind:'adult' }];
+    return [{ role:'Vos', age:34, kind:'adult' }];
+  }
+
+  pickWho(k) { this.patch({ who:k, people:this.peopleFor(k), step:2 }); }
+  setPersonAge(i, v) { this.setState(s => ({ people: s.people.map((p, idx) => idx === i ? Object.assign({}, p, { age:+v }) : p) })); }
+  addKid() { this.setState(s => { const ppl = s.people.slice(); const kc = ppl.filter(p => p.kind === 'kid').length; if (kc >= 6) return {}; ppl.push({ role:'Hijo/a ' + (kc + 1), age:6, kind:'kid' }); return { people: ppl }; }); }
+  removeKid() { this.setState(s => { const ppl = s.people.slice(); if (ppl.filter(p => p.kind === 'kid').length <= 1) return {}; for (let i = ppl.length - 1; i >= 0; i--) { if (ppl[i].kind === 'kid') { ppl.splice(i, 1); break; } } return { people: ppl }; }); }
+  addAdult() { this.setState(s => { const ppl = s.people.slice(); if (ppl.length >= 2) return {}; ppl.push({ role:'Otra persona', age:70, kind:'adult' }); return { people: ppl }; }); }
+  removeAdult() { this.setState(s => { const ppl = s.people.slice(); if (ppl.length <= 1) return {}; ppl.pop(); return { people: ppl }; }); }
+  toggleAddon(k) { this.setState(s => { const cur = s.addons || []; return { addons: cur.includes(k) ? cur.filter(x => x !== k) : cur.concat([k]) }; }); }
+  back() { this.setState(s => ({ step: Math.max(0, s.step - 1) })); }
+
+  engine(d) {
+    const P = {
+      esencial:   { name:'SP Esencial', color:'#00BCB4', base:290000, why:'Cobertura básica clara, accesible y sin sorpresas. Para empezar a cuidarte bien, sin pagar de más.' },
+      integral:   { name:'SP Integral', color:'#5B7A8C', base:540000, why:'Protección familiar clara y completa, para lo de todos los días y para lo inesperado.' },
+      premium:    { name:'SP Premium', color:'#B8860B', base:920000, why:'Más cobertura, mayor red y prioridad de atención. Para quien no quiere pensar en límites.' },
+      senior:     { name:'SP Senior', color:'#003B71', base:680000, why:'Cuidado continuo con acceso real, pensado para adultos de 65 años o más.' },
+      seniorplus: { name:'SP Senior Plus', color:'#003B71', base:980000, why:'El nivel más completo de SP Senior: cobertura amplia y prioridad, con respaldo total para mayores.' },
+    };
+    let best;
+    if (d.who === 'padres') best = (d.nivel === 'amplia') ? 'seniorplus' : 'senior';
+    else best = ({ esencial:'esencial', equilibrio:'integral', amplia:'premium' })[d.nivel] || 'integral';
+    const f = a => a < 30 ? 1 : a < 40 ? 1.12 : a < 50 ? 1.28 : a < 60 ? 1.55 : a < 70 ? 1.95 : 2.35;
+    const base = P[best].base;
+    const ppl = (d.people && d.people.length) ? d.people : [{ age:35, kind:'adult' }];
+    let t = 0, ai = 0;
+    ppl.forEach(p => { if (p.kind === 'kid') t += base * (p.age < 6 ? 0.28 : p.age < 13 ? 0.34 : 0.42); else { t += base * f(p.age) * (ai === 0 ? 1 : 0.9); ai++; } });
+    const G = { central:1, interior:1.15, nacional:1.32 };
+    t *= (G[d.geo] || 1.15);
+    const AP = { emocional:75000, mujer:120000, odonto:90000, viajero:45000, complejos:110000, chequeo:55000 };
+    (d.addons || []).forEach(k => { t += AP[k] || 0; });
+    const GL = { central:'Central', interior:'Interior', nacional:'Nacional' };
+    return { key:best, name:P[best].name, color:P[best].color, why:P[best].why, geoLabel:GL[d.geo] || '', price:Math.round(t / 10000) * 10000 };
+  }
+
+  groupLabel(d) {
+    const ppl = d.people || [];
+    const ad = ppl.filter(p => p.kind !== 'kid').length;
+    const ki = ppl.filter(p => p.kind === 'kid').length;
+    if (d.who === 'mi') return 'para vos';
+    if (d.who === 'pareja') return 'para tu pareja y vos';
+    if (d.who === 'familia') return 'para ' + ad + ' adultos + ' + ki + ' ' + (ki === 1 ? 'hijo' : 'hijos');
+    if (d.who === 'padres') return ad > 1 ? 'para dos adultos mayores' : 'para un adulto mayor';
+    return 'según tus respuestas';
+  }
+  titularAge(d) { const a = (d.people || []).find(p => p.kind !== 'kid'); return a ? this.ageTxt(a.age) : '\u2014'; }
+
+  submit() {
+    const d = this.state;
+    if (!d.nombre.trim() || !d.tel.trim() || !/.+@.+\..+/.test(d.email)) { this.patch({ err:'Completá tu nombre, teléfono y un email válido.' }); return; }
+    this.patch({ sent:true, err:'' });
+  }
+
+  flags() {
+    const r = this.props.resultado || 'Plan + precio';
+    const c = this.props.cierre || 'Formulario + WhatsApp';
+    return { showPlan:r !== 'Solo precio', showPrice:r !== 'Solo plan', priceOnly:r === 'Solo precio', showForm:c !== 'Solo WhatsApp', showWa:c !== 'Solo formulario' };
+  }
+
+  opts() {
+    return {
+      who: [
+        { k:'mi', label:'Para mí', note:'' },
+        { k:'pareja', label:'Para mi pareja y yo', note:'' },
+        { k:'familia', label:'Para mi familia, con hijos', note:'' },
+        { k:'padres', label:'Para mis padres o un adulto mayor', note:'Es un plan aparte (SP Senior), para personas de 65 años o más.' },
+      ],
+      nivel: [
+        { k:'esencial', label:'Lo esencial, para estar cubierto en lo importante', note:'Consultas, urgencias y estudios básicos. Para quien está sano y quiere pagar lo justo.' },
+        { k:'equilibrio', label:'Un equilibrio entre precio y cobertura', note:'Red ampliada, especialistas y estudios sin tanto copago. El que elige la mayoría.' },
+        { k:'amplia', label:'La cobertura más amplia posible', note:'Internación amplia, mayor red y prioridad. Cobertura sin techo.' },
+      ],
+      geo: [
+        { k:'central', label:'Central', tier:'$', note:'Asunción y Gran Asunción. La opción más accesible.' },
+        { k:'interior', label:'Interior', tier:'$$', note:'Tu ciudad del interior, con respaldo en Central.' },
+        { k:'nacional', label:'Nacional', tier:'$$$', note:'Te atendés en cualquier punto del país, donde estés.' },
+      ],
+      addons: [
+        { k:'emocional', label:'Bienestar emocional y nutrición', price:75000, note:'Psicología, nutrición y manejo del estrés, con acompañamiento real.' },
+        { k:'mujer', label:'Salud femenina y maternidad', price:120000, note:'Controles, estudios y maternidad, con carencias y topes claros desde el inicio.' },
+        { k:'odonto', label:'Odontología y ortodoncia', price:90000, note:'Limpiezas, tratamientos y ortodoncia, para grandes y chicos.' },
+        { k:'viajero', label:'Cobertura viajero', price:45000, note:'Te cubrimos también cuando viajás, dentro y fuera del país.' },
+        { k:'complejos', label:'Mayor respaldo ante tratamientos complejos', price:110000, note:'Más respaldo para internaciones y tratamientos de mayor complejidad.' },
+        { k:'chequeo', label:'Chequeo preventivo anual', price:55000, note:'Una vez al año: laboratorio básico, consulta clínica y orientación en Lister.' },
+      ],
+    };
+  }
+
+  why() {
+    return {
+      who: 'Así armamos un plan a la medida de quienes querés cuidar.',
+      edades: 'La edad es lo que más influye en el precio. Con este dato te damos un número real, no un estimado al voleo.',
+      nivel: 'No todos necesitan lo mismo. Te mostramos el plan que mejor equilibra lo que te importa y lo que querés pagar.',
+      geo: 'Definí hasta dónde te cubrimos. A mayor alcance, mayor precio — pagás por la zona que de verdad usás.',
+      addons: 'Sumá solo lo que tiene sentido para vos. Te mostramos el costo exacto antes de contratar.',
+      contacto: 'Te mostramos tu precio ahora. Te pedimos estos datos para que un asesor lo confirme y te acompañe, sin compromiso.',
+    };
+  }
+
+  renderVals() {
+    const d = this.state, F = this.flags(), O = this.opts(), WHY = this.why();
+    const r = d.step >= 6 ? this.engine(d) : null;
+    const embed = this.props.chrome === 'embed';
+    const shellStyle = embed
+      ? 'display:flex;justify-content:center;padding:0;font-family:inherit;color:#3D3D3D'
+      : "min-height:100vh;background:#EFEEEA;display:flex;align-items:center;justify-content:center;padding:40px 20px;font-family:'BrandSP','Inter','Segoe UI',system-ui,sans-serif;color:#3D3D3D";
+    const checkNames = ['¿Para quién?', 'Las edades', 'Cobertura', 'Zona', 'Adicionales'];
+    const stepsList = checkNames.map((n, i) => {
+      const stepOf = i + 1, done = d.step > stepOf || d.step >= 6, active = d.step === stepOf;
+      return {
+        name: n, num: String(i + 1), isDone: done, showNum: !done,
+        dot: 'flex:none;width:25px;height:25px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:#00BCB4;color:#fff;' : active ? 'background:#fff;color:#003B71;box-shadow:inset 0 0 0 2px #00BCB4;' : 'background:rgba(255,255,255,0.12);color:#7fa6cc;'),
+        label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:rgba(179,199,219,0.6);font-weight:500;'),
+      };
+    });
+    const people = (d.people || []).map((p, i) => ({ role:p.role, age:p.age, ageTxt:this.ageTxt(p.age), min:p.kind === 'kid' ? 0 : 18, max:p.kind === 'kid' ? 25 : 85, setAge:e => this.setPersonAge(i, e.target.value) }));
+    return {
+      isIntro: d.step === 0, isWho: d.step === 1, isEdades: d.step === 2, isNivel: d.step === 3, isGeo: d.step === 4, isAddons: d.step === 5, isResult: d.step >= 6,
+      shellStyle, stepsList,
+      whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
+      whoOpts: O.who.map(o => ({ label:o.label, note:o.note, hasNote:!!o.note, onClick:() => this.pickWho(o.k) })),
+      nivelOpts: O.nivel.map(o => ({ label:o.label, note:o.note, hasNote:!!o.note, onClick:() => this.patch({ nivel:o.k, step:4 }) })),
+      geoOpts: O.geo.map(o => ({ label:o.label, note:o.note, tier:o.tier, onClick:() => this.patch({ geo:o.k, step:5 }) })),
+      addonsList: O.addons.map(o => ({ key:o.k, label:o.label, note:o.note, priceLabel:'+ ' + this.fmt(o.price) + ' /mes', selected:(d.addons || []).includes(o.k), boxStyle:'width:22px;height:22px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;transition:all 150ms;' + ((d.addons || []).includes(o.k) ? 'background:#00BCB4;border:1.5px solid #00BCB4;' : 'background:#fff;border:1.5px solid #cdd5d3;'), rowStyle:'display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:12px;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1);' + ((d.addons || []).includes(o.k) ? 'border:1.5px solid #00BCB4;background:#F2FBFA;' : 'border:1.5px solid #E8E8E8;background:#fff;'), toggle:() => this.toggleAddon(o.k) })),
+      addonsCount: (d.addons || []).length,
+      continueLabel: (d.addons || []).length === 0 ? 'Continuar sin coberturas adicionales' : 'Ver mi cotización',
+      toResult: () => this.patch({ step:6 }),
+      people, isFamilia: d.who === 'familia', isPadres: d.who === 'padres',
+      kidCount: (d.people || []).filter(p => p.kind === 'kid').length,
+      adultCount: (d.people || []).filter(p => p.kind !== 'kid').length,
+      addKid: () => this.addKid(), removeKid: () => this.removeKid(), addAdult: () => this.addAdult(), removeAdult: () => this.removeAdult(),
+      toNivel: () => this.patch({ step:3 }),
+      back: () => this.back(), start: () => this.patch({ step:1 }),
+      restart: () => this.patch({ step:0, who:null, nivel:null, geo:null, addons:[], people:[], sent:false, err:'', nombre:'', tel:'', email:'' }),
+      showPlanCard: F.showPlan, showPriceOnly: F.priceOnly, showPriceInCard: F.showPrice,
+      resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? this.fmt(d.priceAnim != null ? d.priceAnim : r.price) : '', resGroup: r ? this.groupLabel(d) : '', titularAge: r ? this.titularAge(d) : '', resGeo: r ? r.geoLabel : '',
+      resAddonsText: r ? O.addons.filter(o => (d.addons || []).includes(o.k)).map(o => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
+      headerStyle: 'padding:16px 20px;color:#fff;background:' + (r ? r.color : '#003B71'),
+      formOpen: F.showForm && !d.sent, sentOpen: F.showForm && d.sent, showWa: F.showWa,
+      nombre: d.nombre, tel: d.tel, email: d.email, err: d.err, hasErr: !!d.err,
+      setNombre: e => this.patch({ nombre:e.target.value }), setTel: e => this.patch({ tel:e.target.value }), setEmail: e => this.patch({ email:e.target.value }),
+      submit: () => this.submit(),
+    };
+  }
+}
+</script>
+</body>
+</html>

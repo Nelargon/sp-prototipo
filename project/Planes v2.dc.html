@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#003B71">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#003B71"/>
+    <rect x="360" y="250" width="480" height="150" rx="0" fill="#00BCB4"/>
+    <text x="600" y="345" font-family="Arial, sans-serif" font-size="120" font-weight="800" fill="#ffffff" text-anchor="middle">SP</text>
+    <rect x="430" y="440" width="340" height="20" rx="0" fill="#80DDD8"/>
+    <rect x="490" y="490" width="220" height="14" rx="0" fill="#4f7da6"/>
+  </svg>
+</template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<style>
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-Light.otf') format('opentype');font-weight:600;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('fonts/Gilroy-ExtraBold.otf') format('opentype');font-weight:800;font-display:swap}
+html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
+body{margin:0}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+summary{list-style:none;cursor:pointer;outline:none}
+summary::-webkit-details-marker{display:none}
+.sp-faq[open] .faq-chev{transform:rotate(180deg)}
+.sp-faq[open] summary .faq-q{color:#003B71}
+@keyframes spfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sp-cmp-m{display:none}
+@media(max-width:920px){.sp-cmp-d{display:none !important}.sp-cmp-m{display:block !important}}
+</style>
+</helmet>
+<div data-screen-label="Planes" style="font-family:'Gilroy','Aptos','Segoe UI',system-ui,sans-serif;color:#3D3D3D;background:#fff;font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:0.5px solid #E8E8E8">
+    <a href="#top" style="display:flex;align-items:center"><img src="assets/isologo-04.png" alt="Salud Protegida" style="height:38px;display:block"></a>
+    <div style="display:flex;gap:30px;align-items:center">
+      <a href="#" style="font-size:14px;color:#3D3D3D">Inicio</a>
+      <a href="#planes" style="font-size:14px;color:#009690;font-weight:700">Planes</a>
+      <a href="#" style="font-size:14px;color:#3D3D3D">Lister</a>
+      <a href="#" style="font-size:14px;color:#3D3D3D">Guía del asegurado</a>
+      <a href="#" style="font-size:14px;color:#3D3D3D">Blog</a>
+      <a href="#" style="font-size:14px;color:#3D3D3D">Contacto</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button style="height:38px;padding:0 16px;border-radius:0;font-size:13px;font-family:inherit;background:transparent;color:#6B6B6B;border:1px solid #E8E8E8;cursor:pointer">Mi cuenta</button>
+      <button style="height:38px;padding:0 18px;border-radius:0;font-size:13px;font-family:inherit;background:#00BCB4;color:#fff;border:none;cursor:pointer;font-weight:700" style-hover="background:#009690">Cotizá tu plan</button>
+    </div>
+  </nav>
+
+  <span id="top"></span>
+
+  <!-- ============ HERO VARIANT CONTROL ============ -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 40px;background:#F5F5F5;border-bottom:0.5px solid #E8E8E8;flex-wrap:wrap">
+    <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B6B">Variante del Hero</span>
+    <button onClick="{{ setSplit }}" style="{{ tabSplit }}">Dividido</button>
+    <button onClick="{{ setPhoto }}" style="{{ tabPhoto }}">Foto completa</button>
+    <button onClick="{{ setCentered }}" style="{{ tabCentered }}">Editorial</button>
+  </div>
+
+  <!-- ============ HERO — Bloque 1 ============ -->
+  <!-- Variant A: split navy -->
+  <sc-if value="{{ isSplit }}" hint-placeholder-val="{{ true }}">
+  <section style="background:#003B71;color:#fff;padding:84px 40px 96px">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:18px">Planes · medicina prepaga</div>
+        <h1 style="font-size:44px;font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin:0 0 20px">Elegí tu plan sin perderte en la letra chica.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#B3C7DB;max-width:500px;margin:0 0 32px">Comparás, entendés cada cobertura y elegís tranquilo. Y si querés, te acompañamos a decidir.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#planes" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;font-weight:700;display:inline-flex;align-items:center;background:#00BCB4;color:#fff" style-hover="background:#009690">Ver y comparar planes</a>
+          <a href="#asesor" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;display:inline-flex;align-items:center;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.55)" style-hover="border-color:#fff;background:rgba(255,255,255,0.06)">Hablar con un asesor</a>
+        </div>
+      </div>
+      <div style="height:380px;border-radius:0;background:#002A52;border:1px dashed rgba(128,221,216,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;gap:10px">
+        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#80DDD8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5a2 2 0 0 0-3 0L5 21"/></svg>
+        <div style="font-size:13px;color:#80DDD8;font-weight:700">Foto: familia paraguaya real</div>
+        <div style="font-size:12px;color:#B3C7DB;max-width:280px;line-height:1.5">Un momento cotidiano y cálido —desayuno, parque, en casa—. Luz natural, gente como vos. Transmite tranquilidad, no enfermedad.</div>
+        <div style="font-size:11px;color:#5a7da3;margin-top:4px">placeholder · el equipo lo reemplaza</div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- Variant B: full-bleed photo -->
+  <sc-if value="{{ isPhoto }}">
+  <section style="position:relative;min-height:480px;background:linear-gradient(115deg,#003B71 0%,#004f8f 55%,#0a6aa8 100%);overflow:hidden;display:flex;align-items:flex-end">
+    <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:28px 36px">
+      <div style="text-align:right;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:10px">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5a2 2 0 0 0-3 0L5 21"/></svg>
+        <div style="font-size:12px;line-height:1.4"><span style="font-weight:700">Foto full-bleed: familia paraguaya, luz natural</span><br><span style="font-size:11px;opacity:0.8">placeholder · el equipo lo reemplaza</span></div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,30,58,0.86) 0%,rgba(0,30,58,0.55) 45%,rgba(0,30,58,0) 75%)"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;width:100%;padding:64px 40px 60px;color:#fff">
+      <div style="max-width:560px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px">Planes · medicina prepaga</div>
+        <h1 style="font-size:46px;font-weight:700;line-height:1.08;letter-spacing:-0.02em;margin:0 0 18px">Elegí tu plan sin perderte en la letra chica.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#dce6f1;max-width:480px;margin:0 0 30px">Comparás, entendés cada cobertura y elegís tranquilo. Y si querés, te acompañamos a decidir.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#planes" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;font-weight:700;display:inline-flex;align-items:center;background:#00BCB4;color:#fff" style-hover="background:#009690">Ver y comparar planes</a>
+          <a href="#asesor" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;display:inline-flex;align-items:center;background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.55)" style-hover="border-color:#fff;background:rgba(255,255,255,0.2)">Hablar con un asesor</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- Variant C: editorial centered on wash -->
+  <sc-if value="{{ isCentered }}">
+  <section style="background:#E6F7F6;padding:80px 40px 0">
+    <div style="max-width:780px;margin:0 auto;text-align:center">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:18px">Planes · medicina prepaga</div>
+      <h1 style="font-size:46px;font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin:0 0 20px;color:#003B71">Elegí tu plan sin perderte en la letra chica.</h1>
+      <p style="font-size:19px;line-height:1.6;color:#3D3D3D;max-width:600px;margin:0 auto 30px">Comparás, entendés cada cobertura y elegís tranquilo. Y si querés, te acompañamos a decidir.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <a href="#planes" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;font-weight:700;display:inline-flex;align-items:center;background:#00BCB4;color:#fff" style-hover="background:#009690">Ver y comparar planes</a>
+        <a href="#asesor" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;display:inline-flex;align-items:center;background:#fff;color:#009690;border:1.5px solid #00BCB4" style-hover="background:#fff">Hablar con un asesor</a>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:48px auto 0;height:240px;border-radius:0;background:#d3edeb;border:1px dashed #80DDD8;border-bottom:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#009690" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5a2 2 0 0 0-3 0L5 21"/></svg>
+      <div style="font-size:13px;color:#009690;font-weight:700">Foto panorámica: familia paraguaya, luz natural</div>
+      <div style="font-size:11px;color:#4a8c88">placeholder · el equipo lo reemplaza</div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ============ Bloque 2 — Por qué elegirnos ============ -->
+  <section style="padding:88px 40px;background:#fff">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;max-width:640px;margin:0 auto 52px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Por qué elegirnos</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0">Antes de mirar el precio, mirá esto.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="width:48px;height:48px;border-radius:0;background:#E6F7F6;display:flex;align-items:center;justify-content:center;color:#009690;margin-bottom:18px">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M12 9h.01M12 13h.01M12 17h.01M9 9h.01M15 9h.01"/></svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:700;color:#003B71;margin:0 0 8px">Centro médico propio</h3>
+          <p style="font-size:15px;line-height:1.6;color:#3D3D3D;margin:0">Tenemos nuestro propio centro médico. En Lister atendés tus consultas, tus controles y tus estudios en un solo lugar, con la agenda y la atención que coordinamos nosotros.</p>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="width:48px;height:48px;border-radius:0;background:#E6F7F6;display:flex;align-items:center;justify-content:center;color:#009690;margin-bottom:18px">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M8 11l8-4M8 13l8 4"/></svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:700;color:#003B71;margin:0 0 8px">Una red que ya conocés</h3>
+          <p style="font-size:15px;line-height:1.6;color:#3D3D3D;margin:0">Sanatorios, laboratorios y especialistas con los que trabajamos hace años. Y antes de contratar, podés chequear si tu médico está en la red.</p>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="width:48px;height:48px;border-radius:0;background:#E6F7F6;display:flex;align-items:center;justify-content:center;color:#009690;margin-bottom:18px">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.3-1.4 2.5-3 2.5-5A4.5 4.5 0 0 0 12 6 4.5 4.5 0 0 0 2.5 9c0 4.5 6 8.5 9.5 11 1.6-1.1 4-2.9 5.8-4.8"/></svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:700;color:#003B71;margin:0 0 8px">Atención cercana</h3>
+          <p style="font-size:15px;line-height:1.6;color:#3D3D3D;margin:0">Personas, no formularios. Cuando llamás, te atiende alguien que conoce tu plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Recomendador de planes ============ -->
+  <section style="padding:88px 40px;background:#003B71">
+    <div style="max-width:880px;margin:0 auto">
+      <div style="text-align:center;margin:0 auto 36px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:12px">Recomendador de planes</div>
+        <h2 style="font-size:32px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.01em;margin:0 0 12px">¿No sabés cuál elegir? Respondé 4 preguntas.</h2>
+        <p style="font-size:16px;color:#B3C7DB;line-height:1.6;margin:0 auto;max-width:560px">Te recomendamos el plan que va con tu momento —aunque sea el más simple—. Sin vender de más.</p>
+      </div>
+
+      <div style="background:#002A52;border:1px solid rgba(128,221,216,0.25);padding:40px">
+
+        <!-- Intro -->
+        <sc-if value="{{ quizIntro }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;padding:16px 0">
+            <div style="color:#80DDD8;margin-bottom:18px;display:flex;justify-content:center">
+              <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 14.5 12 9l2.5 5.5"/><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z"/><path d="M12 17h.01"/></svg>
+            </div>
+            <p style="font-size:17px;color:#dce6f1;max-width:440px;margin:0 auto 26px;line-height:1.6">Tardás menos de un minuto y no pedimos ningún dato. Solo querés saber qué plan te queda mejor.</p>
+            <button onClick="{{ startQuiz }}" style="height:50px;padding:0 32px;border:none;background:#00BCB4;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer" style-hover="background:#00a79f">Empezar →</button>
+          </div>
+        </sc-if>
+
+        <!-- Pregunta -->
+        <sc-if value="{{ quizActive }}">
+          <div>
+            <div style="font-size:12px;color:#80DDD8;font-weight:700;letter-spacing:0.06em;margin-bottom:14px">{{ quizProgress }}</div>
+            <h3 style="font-size:24px;font-weight:700;color:#fff;line-height:1.3;margin:0 0 24px">{{ quizQuestion }}</h3>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ quizOptions }}" as="opt" hint-placeholder-count="4">
+                <button onClick="{{ opt.onClick }}" style="text-align:left;padding:18px 22px;background:#003B71;border:1px solid rgba(128,221,216,0.3);color:#fff;font-family:inherit;font-size:16px;cursor:pointer;transition:all 140ms cubic-bezier(0.22,1,0.36,1)" style-hover="background:#00BCB4;border-color:#00BCB4">{{ opt.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- Resultado -->
+        <sc-if value="{{ quizDone }}">
+          <div style="text-align:center">
+            <div style="font-size:13px;color:#80DDD8;font-weight:700;margin-bottom:18px">Según lo que nos contaste, te recomendamos:</div>
+            <div style="background:#fff;max-width:460px;margin:0 auto;text-align:left">
+              <div style="background:{{ resultColor }};padding:22px 26px">
+                <div style="font-size:11px;color:rgba(255,255,255,0.85);letter-spacing:0.06em;font-weight:700">PLAN RECOMENDADO</div>
+                <div style="font-size:26px;font-weight:800;color:#fff;line-height:1.1;margin-top:2px">{{ resultName }}</div>
+              </div>
+              <div style="padding:26px">
+                <p style="font-size:15px;color:#3D3D3D;line-height:1.65;margin:0 0 12px">{{ resultWhy }}</p>
+                <div style="font-size:13px;color:#6B6B6B;margin-bottom:22px">{{ resultPrice }}</div>
+                <a href="#planes" style="display:block;text-align:center;height:48px;line-height:48px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;margin-bottom:10px" style-hover="background:#009690">Ver en la comparativa</a>
+                <a href="#asesor" style="display:block;text-align:center;height:48px;line-height:48px;background:#fff;color:#009690;border:1.5px solid #00BCB4;font-size:15px;font-weight:700" style-hover="background:#E6F7F6">Cotizar con un asesor</a>
+              </div>
+            </div>
+            <button onClick="{{ restartQuiz }}" style="margin-top:22px;background:transparent;border:none;color:#80DDD8;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer">↺ Volver a empezar</button>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 3 — Comparativa ============ -->
+  <section id="planes" style="padding:24px 40px 88px;background:#F5F5F5">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;max-width:680px;margin:0 auto 40px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Comparar planes</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 14px">Mirá qué incluye cada plan y elegí el que va con tu momento.</h2>
+        <p style="font-size:16px;color:#6B6B6B;line-height:1.6;margin:0">Plan Esential para empezar, y la Gama Privilege en tres niveles. Sin permanencia mínima: cambiás cuando tu realidad cambia.</p>
+      </div>
+
+      <div class="sp-cmp-d" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <div style="min-width:920px;background:#fff;border:0.5px solid #E8E8E8;border-radius:0;box-shadow:0 1px 3px rgba(0,0,0,0.06);overflow:hidden;display:grid;grid-template-columns:200px 1fr 1fr 1fr 1fr">
+
+        <!-- HEADER ROW -->
+        <div style="padding:20px 18px;display:flex;align-items:flex-end;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B6B;border-bottom:1px solid #E8E8E8">Cobertura</div>
+
+        <!-- Esential header -->
+        <div style="border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;flex-direction:column">
+          <div style="aspect-ratio:2636/1496;background:#00BCB4;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:2px">
+            <span style="font-size:13px;font-weight:400;letter-spacing:0.32em;opacity:0.9">PLAN</span>
+            <span style="font-size:30px;font-weight:800;letter-spacing:0.01em;line-height:1">ESENTIAL</span>
+          </div>
+          <div style="padding:18px 16px;text-align:center">
+            <div style="font-size:12px;color:#6B6B6B">desde</div>
+            <div style="font-size:24px;font-weight:800;color:#003B71;letter-spacing:-0.01em">₲ 290.000</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-bottom:12px">/ mes · titular</div>
+            <div style="font-size:13px;color:#3D3D3D;line-height:1.5;min-height:54px">Ideal si estás empezando a cuidarte por tu cuenta.</div>
+            <button style="margin-top:12px;width:100%;height:42px;border-radius:0;font-family:inherit;font-size:13px;font-weight:700;background:#fff;color:#009690;border:1.5px solid #00BCB4;cursor:pointer" style-hover="background:#E6F7F6">Cotizar este plan</button>
+          </div>
+        </div>
+
+        <!-- Privilege Bronze header -->
+        <div style="border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;flex-direction:column">
+          <div style="aspect-ratio:2636/1496;overflow:hidden"><img src="assets/plan-privilege-bronze.png" alt="Plan Privilege Bronze" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:18px 16px;text-align:center">
+            <div style="font-size:12px;color:#6B6B6B">desde</div>
+            <div style="font-size:24px;font-weight:800;color:#003B71;letter-spacing:-0.01em">₲ 420.000</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-bottom:12px">/ mes · titular</div>
+            <div style="font-size:13px;color:#3D3D3D;line-height:1.5;min-height:54px">Ideal para parejas y familias chicas.</div>
+            <button style="margin-top:12px;width:100%;height:42px;border-radius:0;font-family:inherit;font-size:13px;font-weight:700;background:#fff;color:#009690;border:1.5px solid #00BCB4;cursor:pointer" style-hover="background:#E6F7F6">Cotizar este plan</button>
+          </div>
+        </div>
+
+        <!-- Privilege Silver header (Más elegido) -->
+        <div style="border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;flex-direction:column;background:#E6F7F6;position:relative;box-shadow:inset 0 0 0 1.5px #00BCB4">
+          <div style="aspect-ratio:2636/1496;overflow:hidden"><img src="assets/plan-privilege-silver.png" alt="Plan Privilege Silver" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:14px 16px 18px;text-align:center">
+            <div style="display:inline-block;background:#F5A623;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:0;letter-spacing:0.04em;margin-bottom:10px;white-space:nowrap">Más elegido</div>
+            <div style="font-size:12px;color:#6B6B6B">desde</div>
+            <div style="font-size:24px;font-weight:800;color:#003B71;letter-spacing:-0.01em">₲ 640.000</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-bottom:12px">/ mes · titular</div>
+            <div style="font-size:13px;color:#3D3D3D;line-height:1.5;min-height:54px">Ideal para familias con hijos.</div>
+            <button style="margin-top:12px;width:100%;height:42px;border-radius:0;font-family:inherit;font-size:13px;font-weight:700;background:#00BCB4;color:#fff;border:none;cursor:pointer" style-hover="background:#009690">Cotizar este plan</button>
+          </div>
+        </div>
+
+        <!-- Privilege Gold header -->
+        <div style="border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;flex-direction:column">
+          <div style="aspect-ratio:2636/1496;overflow:hidden"><img src="assets/plan-privilege-gold.png" alt="Plan Privilege Gold" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:18px 16px;text-align:center">
+            <div style="font-size:12px;color:#6B6B6B">desde</div>
+            <div style="font-size:24px;font-weight:800;color:#003B71;letter-spacing:-0.01em">₲ 980.000</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-bottom:12px">/ mes · titular</div>
+            <div style="font-size:13px;color:#3D3D3D;line-height:1.5;min-height:54px">Para quien quiere cobertura amplia, sin techo.</div>
+            <button style="margin-top:12px;width:100%;height:42px;border-radius:0;font-family:inherit;font-size:13px;font-weight:700;background:#fff;color:#009690;border:1.5px solid #00BCB4;cursor:pointer" style-hover="background:#E6F7F6">Cotizar este plan</button>
+          </div>
+        </div>
+
+        <!-- ROW 1 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Consultas en Lister</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700;background:#E6F7F6">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+
+        <!-- ROW 2 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Red de prestadores</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Red base</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Ampliada</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D;background:#E6F7F6">Completa</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Completa + premium</div>
+
+        <!-- ROW 3 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Urgencias 24 h</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700;background:#E6F7F6">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+
+        <!-- ROW 4 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Internación</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Sala común</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Sala común</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D;background:#E6F7F6">Privada</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Suite privada</div>
+
+        <!-- ROW 5 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Estudios y laboratorio</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Básicos</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700;background:#E6F7F6">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Alta complejidad</div>
+
+        <!-- ROW 6 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Especialistas</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">Con copago</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700;background:#E6F7F6">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+
+        <!-- ROW 7 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;border-bottom:1px solid #E8E8E8;display:flex;align-items:center">Odontología</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#B0B0B0">—</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#B0B0B0">—</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700;background:#E6F7F6">✓</div>
+        <div style="padding:15px;border-bottom:1px solid #E8E8E8;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#00BCB4;font-weight:700">✓</div>
+
+        <!-- ROW 8 -->
+        <div style="padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;display:flex;align-items:center">Medicamentos</div>
+        <div style="padding:15px;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;color:#B0B0B0">—</div>
+        <div style="padding:15px;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">20% off</div>
+        <div style="padding:15px;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D;background:#E6F7F6">40% off</div>
+        <div style="padding:15px;border-left:1px solid #E8E8E8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#3D3D3D">60% off</div>
+
+      </div>
+      </div>
+
+      <!-- MOBILE: comparar 2 planes -->
+      <div class="sp-cmp-m">
+        <div style="background:#fff;border:0.5px solid #E8E8E8;padding:20px 18px 18px">
+          <div style="font-size:15px;font-weight:700;color:#003B71;margin-bottom:4px">Compará 2 planes</div>
+          <p style="font-size:13px;color:#6B6B6B;margin:0 0 16px;line-height:1.5">Elegí dos planes y abrí cada categoría para ver qué cambia.</p>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px">Plan A</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+            <sc-for list="{{ aChips }}" as="chip" hint-placeholder-count="4">
+              <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px">Plan B</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ bChips }}" as="chip" hint-placeholder-count="4">
+              <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;border:0.5px solid #E8E8E8;border-top:none">
+          <div style="padding:18px 14px;text-align:center;border-right:1px solid #E8E8E8;background:#E6F7F6">
+            <div style="font-size:15px;font-weight:800;color:#003B71;line-height:1.2;min-height:36px;display:flex;align-items:center;justify-content:center">{{ aName }}</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-top:8px">desde</div>
+            <div style="font-size:19px;font-weight:800;color:#003B71">{{ aPrice }}</div>
+          </div>
+          <div style="padding:18px 14px;text-align:center;background:#E6F7F6">
+            <div style="font-size:15px;font-weight:800;color:#003B71;line-height:1.2;min-height:36px;display:flex;align-items:center;justify-content:center">{{ bName }}</div>
+            <div style="font-size:11px;color:#6B6B6B;margin-top:8px">desde</div>
+            <div style="font-size:19px;font-weight:800;color:#003B71">{{ bPrice }}</div>
+          </div>
+        </div>
+
+        <div style="border:0.5px solid #E8E8E8;border-top:none;background:#fff">
+          <sc-for list="{{ cmpRows }}" as="row" hint-placeholder-count="8">
+            <details class="sp-faq" style="border-top:1px solid #E8E8E8">
+              <summary style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 16px;font-size:14px;font-weight:700;color:#1D1D1B">
+                <span class="faq-q">{{ row.cat }}</span>
+                <span class="faq-chev" style="display:inline-flex;color:#009690;flex:none;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </summary>
+              <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #F0F0F0">
+                <div style="padding:14px 12px;border-right:1px solid #F0F0F0;text-align:center"><span style="{{ row.aStyle }}">{{ row.aText }}</span></div>
+                <div style="padding:14px 12px;text-align:center"><span style="{{ row.bStyle }}">{{ row.bText }}</span></div>
+              </div>
+            </details>
+          </sc-for>
+        </div>
+
+        <a href="#asesor" style="display:flex;align-items:center;justify-content:center;height:48px;margin-top:16px;font-size:15px;font-weight:700;background:#00BCB4;color:#fff" style-hover="background:#009690">Cotizar el plan que elegí</a>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;margin-top:20px;padding:20px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <div><div style="font-size:13px;font-weight:700;color:#003B71;margin-bottom:4px">¿Qué es la carencia?</div><div style="font-size:13px;color:#6B6B6B;line-height:1.55">El tiempo de espera desde que entrás hasta que podés usar ciertas coberturas.</div></div>
+        <div><div style="font-size:13px;font-weight:700;color:#003B71;margin-bottom:4px">¿Qué es el copago?</div><div style="font-size:13px;color:#6B6B6B;line-height:1.55">Un monto fijo y conocido que ponés al usar algunas prestaciones. Sin sorpresas.</div></div>
+        <div><div style="font-size:13px;font-weight:700;color:#003B71;margin-bottom:4px">¿Qué es la red?</div><div style="font-size:13px;color:#6B6B6B;line-height:1.55">Los sanatorios, laboratorios y médicos donde usás tu plan. Buscá el tuyo abajo.</div></div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#6B6B6B;margin:16px auto 0;max-width:640px">Precios y coberturas de ejemplo, a confirmar con Suscripciones antes de publicar.</p>
+    </div>
+  </section>
+
+  <!-- ============ Plan Vital band ============ -->
+  <section style="padding:0 40px 88px;background:#F5F5F5;margin-top:-40px">
+    <div style="max-width:1200px;margin:0 auto;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:0;padding:36px 40px;display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center">
+      <div style="background:#fff;border-radius:0;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)"><img src="assets/plan-vital.png" alt="Plan Vital" style="height:54px;display:block"></div>
+      <div>
+        <h3 style="font-size:22px;font-weight:700;color:#003B71;margin:0 0 6px">¿Sos jubilado o cuidás a tus padres?</h3>
+        <p style="font-size:15px;color:#3D3D3D;line-height:1.6;margin:0;max-width:560px">Plan Vital está pensado para adultos mayores: cobertura amplia, controles frecuentes y atención cercana, con la red de Lister cerca tuyo.</p>
+      </div>
+      <a href="#asesor" style="height:46px;padding:0 24px;border-radius:0;font-size:14px;font-weight:700;display:inline-flex;align-items:center;background:#003B71;color:#fff;white-space:nowrap" style-hover="background:#002A52">Conocer Plan Vital</a>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 4 — ¿Cuál es para vos? ============ -->
+  <section style="padding:88px 40px;background:#fff">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;max-width:640px;margin:0 auto 52px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Recomendación por perfil</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0">¿No sabés cuál elegir? Te lo hacemos fácil.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column" style-hover="box-shadow:0 4px 16px rgba(0,0,0,0.08)">
+          <div style="height:150px;background:#E6F7F6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#4a8c88;border-bottom:0.5px solid #E8E8E8">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg>
+            <span style="font-size:11px">foto: joven</span>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;flex:1">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:6px">Si sos…</div>
+            <h3 style="font-size:17px;font-weight:700;color:#003B71;margin:0 0 8px">Joven y es tu primer plan propio</h3>
+            <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0 0 16px;flex:1">Buscás lo esencial bien cubierto, sin pagar de más.</p>
+            <div style="font-size:14px;color:#6B6B6B;margin-bottom:14px">Te recomendamos <strong style="color:#003B71">Plan Esential</strong></div>
+            <a href="#planes" style="font-size:13px;font-weight:700;color:#009690;display:inline-flex;align-items:center;gap:6px">Ver este plan →</a>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column" style-hover="box-shadow:0 4px 16px rgba(0,0,0,0.08)">
+          <div style="height:150px;background:#E6F7F6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#4a8c88;border-bottom:0.5px solid #E8E8E8">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3.2"/><circle cx="16" cy="8" r="3.2"/><path d="M2 20c0-3.3 2.7-5 6-5M22 20c0-3.3-2.7-5-6-5"/></svg>
+            <span style="font-size:11px">foto: pareja</span>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;flex:1">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:6px">Si sos…</div>
+            <h3 style="font-size:17px;font-weight:700;color:#003B71;margin:0 0 8px">Pareja, planificando a futuro</h3>
+            <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0 0 16px;flex:1">Querés cubrir lo de hoy y estar listos para lo que viene.</p>
+            <div style="font-size:14px;color:#6B6B6B;margin-bottom:14px">Te recomendamos <strong style="color:#003B71">Privilege Bronze</strong></div>
+            <a href="#planes" style="font-size:13px;font-weight:700;color:#009690;display:inline-flex;align-items:center;gap:6px">Ver este plan →</a>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column" style-hover="box-shadow:0 4px 16px rgba(0,0,0,0.08)">
+          <div style="height:150px;background:#E6F7F6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#4a8c88;border-bottom:0.5px solid #E8E8E8">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.6"/><circle cx="17" cy="8" r="2.6"/><circle cx="12" cy="15" r="2.2"/><path d="M3 19c0-2.5 1.8-4 4-4M21 19c0-2.5-1.8-4-4-4M8 22c0-2 1.6-3 4-3s4 1 4 3"/></svg>
+            <span style="font-size:11px">foto: familia</span>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;flex:1">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:6px">Si sos…</div>
+            <h3 style="font-size:17px;font-weight:700;color:#003B71;margin:0 0 8px">Familia con hijos</h3>
+            <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0 0 16px;flex:1">Necesitás pediatría, urgencias y respaldo para toda la familia.</p>
+            <div style="font-size:14px;color:#6B6B6B;margin-bottom:14px">Te recomendamos <strong style="color:#003B71">Privilege Silver</strong></div>
+            <a href="#planes" style="font-size:13px;font-weight:700;color:#009690;display:inline-flex;align-items:center;gap:6px">Ver este plan →</a>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;flex-direction:column" style-hover="box-shadow:0 4px 16px rgba(0,0,0,0.08)">
+          <div style="height:150px;background:#E6F7F6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#4a8c88;border-bottom:0.5px solid #E8E8E8">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.4"/><path d="M5 21c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/><path d="M16 4.5a3 3 0 0 1 0 5"/></svg>
+            <span style="font-size:11px">foto: adulto mayor</span>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;flex:1">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:6px">Si sos…</div>
+            <h3 style="font-size:17px;font-weight:700;color:#003B71;margin:0 0 8px">Cuidás a tus padres</h3>
+            <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0 0 16px;flex:1">Buscás cobertura amplia y atención cercana para ellos.</p>
+            <div style="font-size:14px;color:#6B6B6B;margin-bottom:14px">Te recomendamos <strong style="color:#003B71">Plan Vital</strong></div>
+            <a href="#planes" style="font-size:13px;font-weight:700;color:#009690;display:inline-flex;align-items:center;gap:6px">Ver este plan →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 5 — ¿Está tu médico en la red? ============ -->
+  <section style="padding:0 40px 88px;background:#fff">
+    <div style="max-width:1200px;margin:0 auto;background:#003B71;border-radius:0;padding:48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center">
+      <div>
+        <h2 style="font-size:26px;font-weight:700;color:#fff;line-height:1.25;margin:0 0 10px">Antes de decidir, fijate si tu médico o sanatorio está en la red.</h2>
+        <p style="font-size:16px;color:#B3C7DB;line-height:1.6;margin:0;max-width:560px">Cambiar de plan no debería significar cambiar de médico de confianza. Chequealo en un minuto.</p>
+      </div>
+      <div style="display:flex;background:#fff;border-radius:0;padding:6px;align-items:center;min-width:360px;box-shadow:0 4px 16px rgba(0,0,0,0.12)">
+        <span style="display:flex;align-items:center;padding:0 12px;color:#6B6B6B"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <input type="text" placeholder="Buscá tu médico, sanatorio o laboratorio" style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:#3D3D3D;background:transparent;padding:10px 4px">
+        <button style="height:44px;padding:0 22px;border-radius:0;font-family:inherit;font-size:14px;font-weight:700;background:#00BCB4;color:#fff;border:none;cursor:pointer;white-space:nowrap" style-hover="background:#009690">Buscar en la red</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 6 — Lo que todos incluyen ============ -->
+  <section style="padding:88px 40px;background:#E6F7F6">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;max-width:640px;margin:0 auto 52px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Incluido en todos los planes</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0">Elijas el plan que elijas, esto va incluido.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+        <div style="background:#fff;border-radius:0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="color:#009690;margin-bottom:14px"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M12 9h.01M9 9h.01M15 9h.01M12 13h.01"/></svg></div>
+          <h3 style="font-size:16px;font-weight:700;color:#003B71;margin:0 0 6px">Acceso a Lister</h3>
+          <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0">Nuestro centro médico propio, para consultas, controles y estudios.</p>
+        </div>
+        <div style="background:#fff;border-radius:0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="color:#009690;margin-bottom:14px"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+          <h3 style="font-size:16px;font-weight:700;color:#003B71;margin:0 0 6px">App y portal</h3>
+          <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0">Credencial digital y tus gestiones, desde el celular.</p>
+        </div>
+        <div style="background:#fff;border-radius:0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="color:#009690;margin-bottom:14px"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 3-5.5 6-5.5s6 2 6 5.5"/><path d="M16 5.5a3 3 0 0 1 0 5M21 20c0-2.4-1.3-4-3.2-4.7"/></svg></div>
+          <h3 style="font-size:16px;font-weight:700;color:#003B71;margin:0 0 6px">Atención de personas reales</h3>
+          <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0">Cuando llamás, te atiende alguien que conoce tu plan.</p>
+        </div>
+        <div style="background:#fff;border-radius:0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div style="color:#009690;margin-bottom:14px"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="m9 14 2 2 4-4"/></svg></div>
+          <h3 style="font-size:16px;font-weight:700;color:#003B71;margin:0 0 6px">Órdenes y autorizaciones</h3>
+          <p style="font-size:14px;color:#3D3D3D;line-height:1.55;margin:0">Sin trámites eternos: las resolvemos y te avisamos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 7 — Testimoniales ============ -->
+  <section style="padding:88px 40px;background:#fff">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;max-width:640px;margin:0 auto 52px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Lo que dicen nuestros socios</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0">Voces reales de gente como vos.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <p style="font-size:16px;color:#1D1D1B;line-height:1.6;margin:0 0 20px">“Lo que más valoro es que cuando llamo, me resuelven. No me pasean de un lado a otro.”</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:44px;height:44px;border-radius:0;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></div>
+            <div><div style="font-size:14px;font-weight:700;color:#003B71">[Nombre]</div><div style="font-size:12px;color:#6B6B6B">socia hace [X] años</div></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <p style="font-size:16px;color:#1D1D1B;line-height:1.6;margin:0 0 20px">“Tener Lister cerca me cambió la rutina. Llevo a los chicos al control y salimos en el día.”</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:44px;height:44px;border-radius:0;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></div>
+            <div><div style="font-size:14px;font-weight:700;color:#003B71">[Nombre]</div><div style="font-size:12px;color:#6B6B6B">mamá de dos</div></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <p style="font-size:16px;color:#1D1D1B;line-height:1.6;margin:0 0 20px">“Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro.”</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:44px;height:44px;border-radius:0;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></div>
+            <div><div style="font-size:14px;font-weight:700;color:#003B71">[Nombre]</div><div style="font-size:12px;color:#6B6B6B">socio</div></div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#6B6B6B;margin:24px auto 0;max-width:600px">Ejemplos de tono y formato. Antes de publicar se reemplazan por testimoniales reales, con consentimiento y foto.</p>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 8 — FAQ ============ -->
+  <section style="padding:88px 40px;background:#F5F5F5">
+    <div style="max-width:820px;margin:0 auto">
+      <div style="text-align:center;margin:0 auto 44px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#009690;margin-bottom:12px">Preguntas frecuentes</div>
+        <h2 style="font-size:32px;font-weight:700;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0">Las dudas que frenan, resueltas.</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <details class="sp-faq" open style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Puedo mantener a mi médico actual?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">Depende de si tu médico está en nuestra red. Por eso, antes de contratar podés buscarlo en el buscador de red de arriba o consultarlo con un asesor. Si está, lo seguís viendo con tu plan.</p>
+        </details>
+        <details class="sp-faq" style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Qué pasa si tengo una urgencia?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">Las urgencias se atienden en la emergencia hospitalaria de la red, las 24 horas. Lister es para consultas, controles y estudios programados —no para urgencias.</p>
+        </details>
+        <details class="sp-faq" style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Hay período de carencia?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">Sí, algunas coberturas tienen un tiempo de espera desde que entrás hasta que podés usarlas. Las consultas y las urgencias están disponibles desde el primer día; algunos estudios programados y prestaciones de mayor complejidad tienen una carencia, que te dejamos por escrito antes de firmar. Nunca te enterás después.</p>
+        </details>
+        <details class="sp-faq" style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Qué incluye Lister y qué no?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">En Lister hacés consultas, controles y estudios programados, con agenda coordinada por nosotros. Lo urgente va siempre a la emergencia hospitalaria de la red, no a Lister.</p>
+        </details>
+        <details class="sp-faq" style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Cómo me cambio desde otro plan?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">Te acompaña un asesor en cada paso: revisamos tu plan actual, vemos qué cubre el nuevo y coordinamos la fecha de inicio para que no quedes sin cobertura ni un día. Eso sí, somos claros desde el arranque: no prometemos reconocer la antigüedad de tu plan anterior, y te explicamos qué condiciones aplican antes de que decidas.</p>
+        </details>
+        <details class="sp-faq" style="background:#fff;border:0.5px solid #E8E8E8;border-radius:0;padding:4px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:16px;font-weight:700;color:#1D1D1B"><span class="faq-q">¿Puedo sumar a mi familia?</span><span class="faq-chev" style="display:inline-flex;color:#009690;transition:transform 200ms cubic-bezier(0.22,1,0.36,1)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+          <p style="font-size:15px;color:#3D3D3D;line-height:1.7;margin:0 0 18px">Sí. Podés sumar a tu pareja, a tus hijos y a otros familiares directos. Cada integrante suma un valor al grupo familiar, que te calculamos antes de contratar para que sepas exactamente cuánto vas a pagar. Sin letra chica.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bloque 9 — Cierre CTA ============ -->
+  <section id="asesor" style="padding:0 40px 88px;background:#F5F5F5">
+    <div style="max-width:1200px;margin:0 auto;background:#00BCB4;border-radius:0;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:30px;font-weight:700;color:#fff;line-height:1.2;margin:0 0 8px">¿Listo para elegir tranquilo?</h2>
+        <p style="font-size:16px;color:rgba(255,255,255,0.9);line-height:1.6;margin:0;max-width:560px">Cotizá en línea o hablá con un asesor que te ayude a decidir. Sin compromiso.</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#planes" style="height:48px;padding:0 26px;border-radius:0;font-size:15px;font-weight:700;display:inline-flex;align-items:center;background:#fff;color:#009690" style-hover="background:#f0fbfa">Cotizar mi plan</a>
+        <a href="#" style="height:48px;padding:0 24px;border-radius:0;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px;background:#003B71;color:#fff" style-hover="background:#002A52"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z"/></svg>Hablar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#002A52;color:#fff;padding:64px 40px 32px">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <img src="assets/logo-sp-white.png" alt="Salud Protegida" style="height:54px;margin-bottom:16px">
+        <p style="font-size:13px;color:#B3C7DB;line-height:1.6;max-width:280px;margin:0">Odontomedica S.A. — Medicina prepaga en Paraguay desde 2002. Asunción, Paraguay.</p>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 14px">Planes</h4>
+        <a href="#planes" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Plan Esential</a>
+        <a href="#planes" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Privilege Bronze</a>
+        <a href="#planes" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Privilege Silver</a>
+        <a href="#planes" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Privilege Gold</a>
+        <a href="#planes" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Plan Vital</a>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 14px">Afiliados</h4>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Ingresar al portal</a>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Credencial digital</a>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Autorizaciones</a>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Red de prestadores</a>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 14px">Contacto</h4>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">WhatsApp 0981-123-456</a>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">0800-11-4000</a>
+        <a href="#" style="display:block;font-size:14px;color:#B3C7DB;padding:4px 0">Av. Mcal. López — Asunción</a>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:44px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#B3C7DB">
+      <span>© 2026 Odontomedica S.A. · Todos los derechos reservados.</span>
+      <span>Superintendencia de Salud · Reg. XXXXX</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { hero: 'photo', step: 0, answers: [] };
+  pick(scoreObj) {
+    this.setState(s => ({ answers: [...s.answers, scoreObj], step: s.step + 1 }));
+  }
+  tab(active) {
+    return `padding:7px 16px;border-radius:0;font-size:13px;font-family:inherit;font-weight:${active ? 700 : 400};cursor:pointer;border:1px solid ${active ? '#003B71' : '#E8E8E8'};background:${active ? '#003B71' : '#fff'};color:${active ? '#fff' : '#6B6B6B'};transition:all 160ms cubic-bezier(0.22,1,0.36,1)`;
+  }
+  renderVals() {
+    const h = this.state.hero;
+    const plans = [
+      { short: 'Esential', name: 'Plan Esential', price: '₲ 290.000' },
+      { short: 'Bronze', name: 'Privilege Bronze', price: '₲ 420.000' },
+      { short: 'Silver', name: 'Privilege Silver', price: '₲ 640.000' },
+      { short: 'Gold', name: 'Privilege Gold', price: '₲ 980.000' },
+    ];
+    const feats = [
+      { cat: 'Consultas en Lister', v: ['check', 'check', 'check', 'check'] },
+      { cat: 'Red de prestadores', v: ['Red base', 'Ampliada', 'Completa', 'Completa + premium'] },
+      { cat: 'Urgencias 24 h', v: ['check', 'check', 'check', 'check'] },
+      { cat: 'Internación', v: ['Sala común', 'Sala común', 'Privada', 'Suite privada'] },
+      { cat: 'Estudios y laboratorio', v: ['Básicos', 'check', 'check', 'Alta complejidad'] },
+      { cat: 'Especialistas', v: ['Con copago', 'check', 'check', 'check'] },
+      { cat: 'Odontología', v: ['dash', 'dash', 'check', 'check'] },
+      { cat: 'Medicamentos', v: ['dash', '20% off', '40% off', '60% off'] },
+    ];
+    const a = this.state.cmpA ?? 0;
+    const b = this.state.cmpB ?? 2;
+    const chip = (active) => `padding:9px 16px;border-radius:0;font-family:inherit;font-size:13px;cursor:pointer;transition:all 160ms cubic-bezier(0.22,1,0.36,1);border:1px solid ${active ? '#003B71' : '#E8E8E8'};background:${active ? '#003B71' : '#fff'};color:${active ? '#fff' : '#6B6B6B'};font-weight:${active ? 700 : 400}`;
+    const cell = (val) => {
+      if (val === 'check') return { t: 'Incluido', s: 'font-size:13px;font-weight:700;color:#009690' };
+      if (val === 'dash') return { t: 'No incluido', s: 'font-size:13px;font-weight:400;color:#9aa0a6' };
+      return { t: val, s: 'font-size:13px;font-weight:400;color:#3D3D3D' };
+    };
+    const aChips = plans.map((p, i) => ({ label: p.short, style: chip(i === a), onClick: () => this.setState({ cmpA: i }) }));
+    const bChips = plans.map((p, i) => ({ label: p.short, style: chip(i === b), onClick: () => this.setState({ cmpB: i }) }));
+    const cmpRows = feats.map(f => { const A = cell(f.v[a]); const B = cell(f.v[b]); return { cat: f.cat, aText: A.t, aStyle: A.s, bText: B.t, bStyle: B.s }; });
+
+    // ---- Recomendador de planes ----
+    const PLANS = {
+      esential: { name: 'Plan Esential', color: '#00BCB4', price: 'Desde ₲ 290.000 / mes · titular',
+        why: 'Es el plan más simple, y para tu momento alcanza: cubrís lo esencial bien, sin pagar por cosas que hoy no vas a usar. Cuando tu vida cambie, cambiás de plan.' },
+      bronze: { name: 'Privilege Bronze', color: '#9C6B3D', price: 'Desde ₲ 420.000 / mes · titular',
+        why: 'Suma red ampliada y especialistas sin copago. Un buen punto de equilibrio para una pareja que empieza a planificar a futuro.' },
+      silver: { name: 'Privilege Silver', color: '#7C8B96', price: 'Desde ₲ 640.000 / mes · titular',
+        why: 'Cobertura completa, internación privada y odontología. El más elegido por familias con hijos, porque cubre lo de todos los días y lo inesperado.' },
+      gold: { name: 'Privilege Gold', color: '#B8860B', price: 'Desde ₲ 980.000 / mes · titular',
+        why: 'Cobertura amplia sin techo: alta complejidad, suite privada y los mejores descuentos en medicamentos. Para quien no quiere pensar en límites.' },
+      vital: { name: 'Plan Vital', color: '#003B71', price: 'Plan a medida — lo cotizás con un asesor',
+        why: 'Pensado para adultos mayores: controles frecuentes, cobertura amplia y atención cercana, con la red de Lister cerca. Lo armamos según la necesidad real de la persona.' },
+    };
+    const QS = [
+      { q: '¿Para quién buscás el plan?', opts: [
+        { t: 'Para mí — es mi primer plan propio', s: { esential: 2, bronze: 1 } },
+        { t: 'Para mi pareja y yo', s: { bronze: 2, silver: 1 } },
+        { t: 'Para mi familia, con hijos', s: { silver: 2, gold: 1 } },
+        { t: 'Para mis padres o un adulto mayor', s: { vital: 3 } },
+      ] },
+      { q: '¿Qué es lo más importante para vos?', opts: [
+        { t: 'Pagar lo justo por lo esencial', s: { esential: 2, bronze: 1 } },
+        { t: 'Un equilibrio entre precio y cobertura', s: { silver: 2, bronze: 1 } },
+        { t: 'Cobertura amplia, sin techo', s: { gold: 3, silver: 1 } },
+        { t: 'Atención cercana para alguien mayor', s: { vital: 3 } },
+      ] },
+      { q: '¿Vas seguido al especialista o te hacés estudios?', opts: [
+        { t: 'Casi nunca, solo lo básico', s: { esential: 2 } },
+        { t: 'De vez en cuando', s: { bronze: 1, silver: 1 } },
+        { t: 'Seguido, me gusta controlarme', s: { silver: 1, gold: 2 } },
+      ] },
+      { q: '¿Te importa la odontología y los medicamentos?', opts: [
+        { t: 'No es prioridad para mí', s: { esential: 1, bronze: 1 } },
+        { t: 'Estaría bueno tenerlos', s: { silver: 2 } },
+        { t: 'Sí, son clave para mí', s: { gold: 2, silver: 1 } },
+      ] },
+    ];
+    const step = this.state.step;
+    const answers = this.state.answers;
+    const curQ = (step >= 1 && step <= QS.length) ? QS[step - 1] : null;
+    let result = null;
+    if (step > QS.length) {
+      const score = { esential: 0, bronze: 0, silver: 0, gold: 0, vital: 0 };
+      answers.forEach(ans => Object.entries(ans).forEach(([k, v]) => { score[k] += v; }));
+      const order = ['vital', 'gold', 'silver', 'bronze', 'esential'];
+      let best = 'silver', bestv = -1;
+      order.forEach(k => { if (score[k] > bestv) { bestv = score[k]; best = k; } });
+      result = PLANS[best];
+    }
+
+    return {
+      aChips, bChips, cmpRows,
+      quizIntro: step === 0,
+      quizActive: curQ != null,
+      quizDone: step > QS.length,
+      quizQuestion: curQ ? curQ.q : '',
+      quizProgress: curQ ? `Pregunta ${step} de ${QS.length}` : '',
+      quizOptions: curQ ? curQ.opts.map(o => ({ label: o.t, onClick: () => this.pick(o.s) })) : [],
+      startQuiz: () => this.setState({ step: 1, answers: [] }),
+      restartQuiz: () => this.setState({ step: 0, answers: [] }),
+      resultName: result ? result.name : '',
+      resultWhy: result ? result.why : '',
+      resultPrice: result ? result.price : '',
+      resultColor: result ? result.color : '#003B71',
+      aName: plans[a].name, aPrice: plans[a].price,
+      bName: plans[b].name, bPrice: plans[b].price,
+      isSplit: h === 'split',
+      isPhoto: h === 'photo',
+      isCentered: h === 'centered',
+      setSplit: () => this.setState({ hero: 'split' }),
+      setPhoto: () => this.setState({ hero: 'photo' }),
+      setCentered: () => this.setState({ hero: 'centered' }),
+      tabSplit: this.tab(h === 'split'),
+      tabPhoto: this.tab(h === 'photo'),
+      tabCentered: this.tab(h === 'centered'),
+    };
+  }
+}
+</script>
+</body>
+</html>
