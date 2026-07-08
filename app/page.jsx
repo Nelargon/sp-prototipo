@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, createElement } from 'react';
+import { BP } from './basePath';
 
 /* WhatsApp number is an intentional placeholder in the design export — flagged
    in the chats as "set your real number here". Kept verbatim; replace with the
@@ -536,8 +537,8 @@ export default function Page() {
       {/* NAV */}
       <nav data-nav style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
         <div className="nav-logo" style={css('position:relative;display:flex;align-items:center')}>
-          <img src="/assets/logo-sp-white-crop.png" alt="Salud Protegida" className="nlogo-w" style={css('height:36px;display:block;transition:opacity .3s')} />
-          <img src="/assets/isologo-04-crop.png" alt="" className="nlogo-c" style={css('height:36px;position:absolute;left:0;top:0;transition:opacity .3s')} />
+          <img src={`${BP}/assets/logo-sp-white-crop.png`} alt="Salud Protegida" className="nlogo-w" style={css('height:36px;display:block;transition:opacity .3s')} />
+          <img src={`${BP}/assets/isologo-04-crop.png`} alt="" className="nlogo-c" style={css('height:36px;position:absolute;left:0;top:0;transition:opacity .3s')} />
         </div>
         <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
           <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Cartilla viva</a>
@@ -563,7 +564,7 @@ export default function Page() {
 
       {/* HERO */}
       <section data-hero style={css('position:relative;height:100vh;min-height:640px;overflow:hidden;background:#002A52;display:flex;align-items:center')}>
-        <div data-hero-bg style={css("position:absolute;top:-5%;right:0;bottom:-5%;width:56%;background:url('/assets/hero.webp') center 25%/cover no-repeat;-webkit-mask:linear-gradient(90deg,transparent 0%,#000 34%);mask:linear-gradient(90deg,transparent 0%,#000 34%);will-change:transform")}></div>
+        <div data-hero-bg style={css("position:absolute;top:-5%;right:0;bottom:-5%;width:56%;background:url('" + BP + "/assets/hero.webp') center 25%/cover no-repeat;-webkit-mask:linear-gradient(90deg,transparent 0%,#000 34%);mask:linear-gradient(90deg,transparent 0%,#000 34%);will-change:transform")}></div>
         <div style={css('position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,25,48,0.5) 0%,rgba(0,25,48,0.3) 45%,rgba(0,25,48,0) 72%,rgba(0,25,48,0.15) 100%)')}></div>
         <div style={css('position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,rgba(0,25,48,0) 0%,rgba(0,25,48,0.55) 100%)')}></div>
         <div data-hero-content style={css('position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 40px;color:#fff')}>
@@ -589,9 +590,9 @@ export default function Page() {
           <div style={css('position:absolute;inset:0;pointer-events:none;background:radial-gradient(85% 65% at 50% 50%,transparent 40%,rgba(0,16,32,.45) 100%)')}></div>
           <div data-mani-glow style={css('position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.16) 0%,rgba(0,188,180,0) 62%);pointer-events:none')}></div>
           <div className="mani-media" style={css('position:absolute;inset:0;overflow:hidden;z-index:0')}>
-            <figure className="mframe" style={css('margin:0')}><img src="/assets/manifiesto/frase-1.webp" alt="" /></figure>
-            <figure className="mframe" style={css('margin:0')}><img src="/assets/manifiesto/frase-4.webp" alt="" loading="lazy" decoding="async" /></figure>
-            <figure className="mframe" style={css('margin:0')}><img src="/assets/manifiesto/frase-7.webp" alt="" loading="lazy" decoding="async" /></figure>
+            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-1.webp`} alt="" /></figure>
+            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-4.webp`} alt="" loading="lazy" decoding="async" /></figure>
+            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-7.webp`} alt="" loading="lazy" decoding="async" /></figure>
           </div>
           <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,22,44,0.6) 0%,rgba(0,22,44,0.52) 55%,rgba(0,22,44,0.75) 100%),radial-gradient(90% 70% at 50% 50%,transparent 42%,rgba(0,14,28,0.4) 100%)')}></div>
           <div className="mani-grid" style={css('position:relative;z-index:2;width:100%;height:100%;max-width:1060px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:center')}>
@@ -992,7 +993,7 @@ export default function Page() {
       <footer style={css('background:#002A52;color:#fff;padding:56px 40px 30px')}>
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
-            <img src="/assets/logo-sp-white-crop.png" alt="Salud Protegida" style={css('height:38px;display:block;margin-bottom:14px')} />
+            <img src={`${BP}/assets/logo-sp-white-crop.png`} alt="Salud Protegida" style={css('height:38px;display:block;margin-bottom:14px')} />
             <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +23 años · Asunción, Paraguay</div>
           </div>
           <div>

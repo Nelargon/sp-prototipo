@@ -10,9 +10,20 @@ all interactivity.
 ```bash
 npm install
 npm run dev      # dev server at http://localhost:3000
-# or
-npm run build && npm run start
 ```
+
+## Deploying
+
+The app is configured as a **static export** (`output: 'export'` in `next.config.mjs`), so
+`npm run build` writes a fully static site to `out/`.
+
+It auto-deploys to **GitHub Pages** on every push to `main` via
+`.github/workflows/deploy.yml`, served at `https://<user>.github.io/sp-prototipo/`. The
+`NEXT_PUBLIC_BASE_PATH=/sp-prototipo` build env makes every asset resolve under that subpath;
+locally the base path is empty so assets resolve at the root.
+
+> One-time setup in the GitHub repo: **Settings → Pages → Build and deployment → Source:
+> "GitHub Actions"**.
 
 ## What's on the page
 
