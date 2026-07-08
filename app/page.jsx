@@ -64,7 +64,10 @@ export default function Page() {
   const [showCalc, setShowCalc] = useState(false);
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
+  const [simDir, setSimDir] = useState(1);
   const savedSimRef = useRef(null);
+  const livePrevRef = useRef(0);
+  const liveRafRef = useRef(null);
 
   // ===== pure data / helpers =====
   const fmt = (n) =>
@@ -121,7 +124,7 @@ export default function Page() {
     if (who === 'padres') return [{ role: 'Adulto mayor', age: 68, kind: 'adult' }];
     return [{ role: 'Vos', age: 34, kind: 'adult' }];
   };
-  const pickWho = (k) => simPatch({ who: k, people: peopleFor(k), step: 2 });
+  const pickWho = (k) => { setSimDir(1); simPatch({ who: k, people: peopleFor(k), step: 2 }); };
   const setPersonAge = (i, val) =>
     setState((s) => ({ sim: Object.assign({}, s.sim, { people: s.sim.people.map((p, idx) => (idx === i ? Object.assign({}, p, { age: +val }) : p)) }) }));
   const addKid = () =>
@@ -159,7 +162,8 @@ export default function Page() {
       const next = cur.includes(k) ? cur.filter((x) => x !== k) : cur.concat([k]);
       return { sim: Object.assign({}, s.sim, { addons: next }) };
     });
-  const simBack = () => setState((s) => ({ sim: Object.assign({}, s.sim, { step: Math.max(0, s.sim.step - 1) }) }));
+  const simBack = () => { setSimDir(-1); setState((s) => ({ sim: Object.assign({}, s.sim, { step: Math.max(0, s.sim.step - 1) }) })); };
+  const simGo = (patch, dir = 1) => { setSimDir(dir); simPatch(patch); };
 
   const engine = (d) => {
     const base = plans();
@@ -350,6 +354,30 @@ export default function Page() {
   }, [state.sim.step]);
 
   useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); }, []);
+
+  // Persistent live estimate in the sidebar — count-up whenever the config changes.
+  useEffect(() => {
+    const dd = state.sim;
+    const ready = !!(dd.who && dd.nivel && (dd.people || []).length) && dd.step >= 3 && dd.step < 6;
+    if (!ready) { livePrevRef.current = 0; return; }
+    const target = engine(Object.assign({}, dd, { geo: dd.geo || 'central' })).price;
+    const from = livePrevRef.current || target;
+    livePrevRef.current = target;
+    if (from === target) { const el = document.querySelector('[data-live-price]'); if (el) el.textContent = fmt(target); return; }
+    if (liveRafRef.current) cancelAnimationFrame(liveRafRef.current);
+    const t0 = performance.now(), dur = 520;
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const el = document.querySelector('[data-live-price]');
+      if (el) el.textContent = fmt(Math.round(from + (target - from) * eased));
+      if (p < 1) liveRafRef.current = requestAnimationFrame(tick);
+    };
+    liveRafRef.current = requestAnimationFrame(tick);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.sim]);
+
+  useEffect(() => () => { if (liveRafRef.current) cancelAnimationFrame(liveRafRef.current); }, []);
 
   // ===== scroll / manifiesto / reveals (was componentDidMount) =====
   useEffect(() => {
@@ -566,21 +594,42 @@ export default function Page() {
     { n: '4', title: 'Activás tu credencial', body: 'Empezás a usar Lister y el resto de la red desde el día uno.' },
   ];
 
-  // simulador
+  // simulador — "configurador": ¿Para quién? → Cobertura → Zona → Edades → Adicionales → resultado
   const d = state.sim, O = opts(), WHY = why();
   const r = d.step >= 6 ? engine(d) : null;
-  const checkNames = ['¿Para quién?', 'Las edades', 'Cobertura', 'Zona', 'Adicionales'];
+  const isPadres = d.who === 'padres';
+
+  const planShortOf = (who, nivel) => {
+    if (!nivel) return '';
+    if (who === 'padres') return nivel === 'amplia' ? 'Senior Plus' : 'Senior';
+    return { esencial: 'Esencial', equilibrio: 'Integral', amplia: 'Premium' }[nivel] || '';
+  };
+
+  // Current configuration → plan colour + live estimate (geo defaults to central until chosen).
+  const curReady = !!(d.who && d.nivel && (d.people || []).length);
+  const cur = curReady ? engine(Object.assign({}, d, { geo: d.geo || 'central' })) : null;
+  const planColor = cur ? cur.color : '#003B71';
+  const liveTotalNum = cur ? cur.price : 0;
+  const livePanelReady = curReady && d.step >= 3 && d.step < 6;
+
+  const checkNames = ['¿Para quién?', 'Cobertura', 'Zona', 'Las edades', 'Adicionales'];
+  const stepValueList = [
+    ({ mi: 'Vos', pareja: 'Pareja', familia: 'Familia', padres: 'Adulto mayor' })[d.who] || '',
+    planShortOf(d.who, d.nivel),
+    ({ central: 'Central', interior: 'Interior', nacional: 'Nacional' })[d.geo] || '',
+    (d.people || []).length ? titularAge(d) + ' años' : '',
+    (d.addons || []).length ? ((d.addons || []).length + ((d.addons || []).length === 1 ? ' extra' : ' extras')) : (d.step > 5 ? 'Sin extras' : ''),
+  ];
   const stepsList = checkNames.map((n, i) => {
     const stepOf = i + 1, done = d.step > stepOf || d.step >= 6, active = d.step === stepOf;
     return {
-      name: n, num: String(i + 1), isDone: done, showNum: !done,
+      name: n, num: String(i + 1), isDone: done, showNum: !done, value: done ? stepValueList[i] : '',
       dot: 'flex:none;width:25px;height:25px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:#00BCB4;color:#fff;' : active ? 'background:#fff;color:#003B71;box-shadow:inset 0 0 0 2px #00BCB4;' : 'background:rgba(255,255,255,0.12);color:#7fa6cc;'),
       label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:rgba(179,199,219,0.6);font-weight:500;'),
     };
   });
   const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : 18, max: pp.kind === 'kid' ? 25 : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
 
-  const isPadres = d.who === 'padres';
   // For 65+ the two "cobertura" choices are really SP Senior vs SP Senior Plus.
   const nivelData = isPadres
     ? [
@@ -589,11 +638,11 @@ export default function Page() {
       ]
     : O.nivel;
 
-  // Live estimate for the add-ons step — same engine, so it always matches the result.
-  const liveReady = !!(d.who && d.nivel && d.geo && (d.people || []).length);
-  const liveBase = liveReady ? engine(Object.assign({}, d, { addons: [] })).price : 0;
-  const liveTotal = liveReady ? engine(d).price : 0;
-  const liveAddonsAmount = liveTotal - liveBase;
+  // Live estimate for the add-ons step (geo is set by then).
+  const liveBaseNum = curReady ? engine(Object.assign({}, d, { addons: [], geo: d.geo || 'central' })).price : 0;
+  const liveAddonsAmount = liveTotalNum - liveBaseNum;
+  // Geo base (for the per-zone price impact on the Zona step).
+  const geoBaseNum = curReady ? engine(Object.assign({}, d, { geo: 'central' })).price : 0;
 
   // Result breakdown, built from the engine's rounded parts so it sums to the total.
   const resBreakdown = r ? (() => {
@@ -603,28 +652,34 @@ export default function Page() {
     return items;
   })() : [];
 
-  const stepEnc = { 1: 'Empecemos por lo básico.', 2: 'La edad es lo que más pesa — ya casi.', 3: 'Buenísimo, vamos por la mitad.', 4: 'Falta poco.', 5: 'Último paso antes de tu precio.' }[d.step] || '';
+  const stepEnc = { 1: 'Empecemos por lo básico.', 2: 'Esto define tu precio base.', 3: 'Elegí hasta dónde te cubrimos.', 4: 'Ahora afinamos según las edades.', 5: 'Último paso antes de tu precio.' }[d.step] || '';
+  const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
 
   const sim = {
-    isIntro: d.step === 0, isWho: d.step === 1, isEdades: d.step === 2, isNivel: d.step === 3, isGeo: d.step === 4, isAddons: d.step === 5, isResult: d.step >= 6,
+    isIntro: d.step === 0, isWho: d.step === 1, isNivel: d.step === 2, isGeo: d.step === 3, isEdades: d.step === 4, isAddons: d.step === 5, isResult: d.step >= 6,
+    stepAnim: simAnim,
     stepsList,
+    planColor, livePanelReady, liveTotalNum, liveTotalFmt: fmt(liveTotalNum),
+    planShort: planShortOf(d.who, d.nivel),
+    gaugeShow: !!d.nivel && !isPadres, gaugeLevel: ({ esencial: 1, equilibrio: 2, amplia: 3 })[d.nivel] || 0,
+    progressBarColor: livePanelReady ? planColor : '#00BCB4',
     whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: isPadres ? 'SP Senior tiene dos niveles. Elegí según cuánta cobertura y prioridad buscás para ellos.' : WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
     nivelEyebrow: isPadres ? 'Nivel Senior' : 'Cobertura',
     nivelTitle: isPadres ? '¿Qué nivel para el adulto mayor?' : '¿Qué nivel de cobertura buscás?',
     whoOpts: O.who.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, onClick: () => pickWho(o.k) })),
-    nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, onClick: () => simPatch({ nivel: o.k, step: 4 }) })),
-    geoOpts: O.geo.map((o) => ({ label: o.label, note: o.note, tier: o.tier, onClick: () => simPatch({ geo: o.k, step: 5 }) })),
+    nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, from: 'desde ' + fmt(engine(Object.assign({}, d, { nivel: o.k, geo: d.geo || 'central' })).price), onClick: () => simGo({ nivel: o.k, step: 3 }) })),
+    geoOpts: O.geo.map((o) => { const delta = geoBaseNum ? engine(Object.assign({}, d, { geo: o.k })).price - geoBaseNum : 0; return { label: o.label, note: o.note, tier: o.tier, impact: delta <= 0 ? 'Incluida' : '+ ' + fmt(delta), onClick: () => simGo({ geo: o.k, step: 4 }) }; }),
     addonsList: O.addons.map((o) => ({ key: o.k, label: o.label, note: o.note, priceLabel: '+ ' + fmt(o.price) + ' /mes', selected: (d.addons || []).includes(o.k), boxStyle: 'width:22px;height:22px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;transition:all 150ms;' + ((d.addons || []).includes(o.k) ? 'background:#00BCB4;border:1.5px solid #00BCB4;' : 'background:#fff;border:1.5px solid #cdd5d3;'), rowStyle: 'display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:12px;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1);' + ((d.addons || []).includes(o.k) ? 'border:1.5px solid #00BCB4;background:#F2FBFA;' : 'border:1.5px solid #E8E8E8;background:#fff;'), toggle: () => toggleAddon(o.k) })),
-    liveReady, liveTotal: fmt(liveTotal), liveAddonsAmount, liveAddons: fmt(liveAddonsAmount),
+    liveReady: livePanelReady, liveTotal: fmt(liveTotalNum), liveAddonsAmount, liveAddons: fmt(liveAddonsAmount),
     continueLabel: (d.addons || []).length === 0 ? 'Continuar sin coberturas adicionales' : 'Ver mi cotización',
-    toResult: () => simPatch({ step: 6 }),
+    toResult: () => simGo({ step: 6 }),
     people: peopleVals, isFamilia: d.who === 'familia', isPadres,
     kidCount: (d.people || []).filter((pp) => pp.kind === 'kid').length,
     adultCount: (d.people || []).filter((pp) => pp.kind !== 'kid').length,
     addKid, removeKid, addAdult, removeAdult,
-    toNivel: () => simPatch({ step: 3 }),
-    back: simBack, start: () => simPatch({ step: 1 }),
-    restart: () => simPatch({ step: 0, who: null, nivel: null, geo: null, addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }),
+    toAddons: () => simGo({ step: 5 }),
+    back: simBack, start: () => simGo({ step: 1 }),
+    restart: () => { setSimDir(-1); simPatch({ step: 0, who: null, nivel: null, geo: null, addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '', resGeo: r ? r.geoLabel : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resTotal: r ? fmt(r.price) : '',
@@ -904,12 +959,26 @@ export default function Page() {
 
               <div className="sim-side" style={css('width:250px;flex:none;background:#003B71;color:#fff;padding:30px 26px;display:flex;flex-direction:column')}>
                 <div style={css('display:flex;align-items:center;gap:10px;margin-bottom:26px')}><span style={css('width:30px;height:30px;border-radius:9px;background:#fff;color:#003B71;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800')}>SP</span><span style={css('font-size:14px;font-weight:800')}>Salud Protegida</span></div>
-                <div className="sim-side-h" style={css('font-size:20px;font-weight:800;line-height:1.2;margin-bottom:26px;letter-spacing:-0.01em')}>Tu plan,<br />a tu medida</div>
-                <div className="sim-steps" style={css('display:flex;flex-direction:column;gap:16px;flex:1')}>
+                {v.sim.livePanelReady ? (
+                  <div className="sim-live-panel" style={css('margin-bottom:24px')}>
+                    <div style={css('font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:6px')}>Tu estimado</div>
+                    <div style={css('display:flex;align-items:baseline;gap:6px')}><span data-live-price style={css('font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1')}>{v.sim.liveTotalFmt}</span><span style={css('font-size:12px;color:#B3C7DB')}>/mes</span></div>
+                    <div style={css('display:inline-flex;align-items:center;margin-top:12px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;transition:background .3s;background:' + v.sim.planColor)}>{v.sim.planShort}</div>
+                    {v.sim.gaugeShow && (
+                      <div style={css('display:flex;gap:5px;margin-top:14px')}>
+                        {[1, 2, 3].map((n) => <div key={n} style={css('flex:1;height:6px;border-radius:999px;transition:background .3s;background:' + (n <= v.sim.gaugeLevel ? v.sim.planColor : 'rgba(255,255,255,0.15)'))}></div>)}
+                      </div>
+                    )}
+                    <div style={css('font-size:11px;color:#7fa6cc;margin-top:9px;line-height:1.4')}>Se ajusta a medida que configurás.</div>
+                  </div>
+                ) : (
+                  <div className="sim-side-h" style={css('font-size:20px;font-weight:800;line-height:1.2;margin-bottom:26px;letter-spacing:-0.01em')}>Tu plan,<br />a tu medida</div>
+                )}
+                <div className="sim-steps" style={css('display:flex;flex-direction:column;gap:14px;flex:1')}>
                   {v.sim.stepsList.map((st, i) => (
                     <div key={i} style={css('display:flex;align-items:center;gap:11px')}>
                       <span style={css(st.dot)}>{st.isDone && <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}{st.showNum && st.num}</span>
-                      <span style={css(st.label)}>{st.name}</span>
+                      <span style={css('display:flex;flex-direction:column;min-width:0')}><span style={css(st.label)}>{st.name}</span>{st.value && <span style={css('font-size:11.5px;color:#80DDD8;font-weight:700;line-height:1.2;margin-top:1px')}>{st.value}</span>}</span>
                     </div>
                   ))}
                 </div>
@@ -922,13 +991,15 @@ export default function Page() {
                   <div className="sim-mobile-progress" style={css('margin:0 0 20px')}>
                     <div style={css('display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px')}>
                       <span style={css('font-size:12px;font-weight:800;color:#003B71;white-space:nowrap')}>Paso {v.sim.stepNum} de {v.sim.totalSteps}</span>
-                      <span style={css('font-size:12px;color:#009690;text-align:right')}>{v.sim.enc}</span>
+                      {v.sim.livePanelReady
+                        ? <span style={css('text-align:right;white-space:nowrap')}><span style={css('font-size:11px;color:#6B6B6B')}>Estimado </span><span style={css('font-size:14px;font-weight:800;color:#003B71')}>{v.sim.liveTotalFmt}</span></span>
+                        : <span style={css('font-size:12px;color:#009690;text-align:right')}>{v.sim.enc}</span>}
                     </div>
-                    <div style={css('height:5px;border-radius:999px;background:#E6EDF4;overflow:hidden')}><div style={css('height:100%;border-radius:999px;background:#00BCB4;transition:width .35s cubic-bezier(.22,1,.36,1);width:' + v.sim.progressPct + '%')}></div></div>
+                    <div style={css('height:5px;border-radius:999px;background:#E6EDF4;overflow:hidden')}><div style={css('height:100%;border-radius:999px;transition:width .35s cubic-bezier(.22,1,.36,1),background .3s;background:' + v.sim.progressBarColor + ';width:' + v.sim.progressPct + '%')}></div></div>
                   </div>
                 )}
                 {v.sim.isIntro && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <div style={css('width:54px;height:54px;border-radius:16px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:18px')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg></div>
                     <h3 style={css('font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px')}>Encontremos tu plan ideal</h3>
                     <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 24px')}>Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
@@ -940,7 +1011,7 @@ export default function Page() {
                 )}
 
                 {v.sim.isWho && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <button onClick={v.sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px')}>Tu grupo</div>
                     <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
@@ -954,7 +1025,7 @@ export default function Page() {
                 )}
 
                 {v.sim.isEdades && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <button onClick={v.sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px')}>Las edades</div>
                     <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
@@ -994,40 +1065,40 @@ export default function Page() {
                         </div>
                       </div>
                     )}
-                    <button onClick={v.sim.toNivel} className="btn-teal" style={css('width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:background 160ms')}>Continuar</button>
+                    <button onClick={v.sim.toAddons} className="btn-teal" style={css('width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:background 160ms')}>Continuar</button>
                   </div>
                 )}
 
                 {v.sim.isNivel && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <button onClick={v.sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px')}>{v.sim.nivelEyebrow}</div>
                     <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{v.sim.nivelTitle}</h3>
                     <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{v.sim.whyNivel}</span></p>
                     <div style={css('display:flex;flex-direction:column;gap:10px')}>
                       {v.sim.nivelOpts.map((opt, i) => (
-                        <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span>}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="m9 18 6-6-6-6" /></svg></button>
+                        <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span>}</span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:#009690;white-space:nowrap')}>{opt.from}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
                       ))}
                     </div>
                   </div>
                 )}
 
                 {v.sim.isGeo && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <button onClick={v.sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px')}>Zona</div>
                     <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Hasta dónde querés cobertura?</h3>
                     <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{v.sim.whyGeo}</span></p>
                     <div style={css('display:flex;flex-direction:column;gap:10px')}>
                       {v.sim.geoOpts.map((opt, i) => (
-                        <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px')}><span>{opt.label}</span><span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span></span><span style={css('display:flex;align-items:center;gap:10px;flex:none')}><span style={css('font-size:14px;font-weight:800;color:#00BCB4;letter-spacing:0.06em')}>{opt.tier}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
+                        <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label} <span style={css('font-size:13px;font-weight:800;color:#00BCB4;letter-spacing:0.06em')}>{opt.tier}</span></span><span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span></span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:#009690;white-space:nowrap')}>{opt.impact}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
                       ))}
                     </div>
                   </div>
                 )}
 
                 {v.sim.isAddons && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <button onClick={v.sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#009690;margin-bottom:8px')}>Coberturas adicionales</div>
                     <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Querés personalizar tu cobertura?</h3>
@@ -1048,7 +1119,7 @@ export default function Page() {
                 )}
 
                 {v.sim.isResult && (
-                  <div style={css('animation:spStepIn 0.34s cubic-bezier(0.22,1,0.36,1)')}>
+                  <div style={css(v.sim.stepAnim)}>
                     <div style={css('display:flex;align-items:center;gap:13px;margin-bottom:16px')}>
                       <div style={css('position:relative;width:44px;height:44px;flex:none')}>
                         <svg width="44" height="44" viewBox="0 0 44 44" style={css('display:block')}><circle cx="22" cy="22" r="19" fill="none" stroke="#E6F7F6" strokeWidth="4"></circle><circle cx="22" cy="22" r="19" fill="none" stroke="#00BCB4" strokeWidth="4" strokeLinecap="round" strokeDasharray="119.4" strokeDashoffset="119.4" transform="rotate(-90 22 22)" style={css('animation:spRing 0.95s cubic-bezier(0.22,1,0.36,1) 0.1s forwards')}></circle></svg>
@@ -1147,7 +1218,7 @@ export default function Page() {
       </section>
 
       {/* CIERRE */}
-      <section style={css('padding:0 40px 110px;background:#003B71')}>
+      <section style={css('padding:80px 40px 110px;background:#003B71')}>
         <div data-rv style={css('max-width:1100px;margin:0 auto;background:#00BCB4;border-radius:22px;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#003B71')}>del otro lado</span>.</h2>
