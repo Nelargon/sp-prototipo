@@ -65,6 +65,7 @@ export default function Page() {
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
   const [simDir, setSimDir] = useState(1);
+  const [testiIndex, setTestiIndex] = useState(0);
   const savedSimRef = useRef(null);
   const livePrevRef = useRef(0);
   const liveRafRef = useRef(null);
@@ -332,6 +333,53 @@ export default function Page() {
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.' },
   ];
 
+  const difsData = () => [
+    { icon: 'm23 7-7 5 7 5V7ZM1 5h15v14H1z', title: 'Telemedicina garantizada por contrato', body: 'Consultas por video con un tiempo de respuesta escrito en tu plan — no una promesa suelta.' },
+    { icon: 'M3 11l9-8 9 8M5 9.5V20h14V9.5M12 12v5M9.5 14.5h5', title: 'Médico y laboratorio a domicilio', body: 'Atención y estudios en tu casa cuando más lo necesitás, según el plan que elijas.' },
+    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y acompañamiento emocional desde el plan, no como un extra aparte.' },
+  ];
+
+  const testimonios = () => [
+    { quote: 'Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Integral' },
+    { quote: 'Cuando llamé de madrugada, me atendió alguien que conocía mi plan. Eso no tiene precio.', name: 'Nombre Apellido', meta: 'Afiliado · Plan Premium' },
+    { quote: 'Entendí exactamente qué cubría antes de firmar. Cero sorpresas después.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Esencial' },
+    { quote: 'El asesor me explicó todo sin apuro y en mi idioma, no en “letra chica”.', name: 'Nombre Apellido', meta: 'Afiliado · SP Senior' },
+  ];
+
+  // Testimonials auto-advance (calm, 6s).
+  useEffect(() => {
+    const n = testimonios().length;
+    const id = setInterval(() => setTestiIndex((i) => (i + 1) % n), 6000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Count-up for the trust stats when they scroll into view (once).
+  useEffect(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('[data-stat]'));
+    if (!els.length || typeof IntersectionObserver === 'undefined') return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fmtN = (n, thousands) => (thousands ? Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : String(Math.round(n)));
+    const animateEl = (el) => {
+      const target = +el.getAttribute('data-target');
+      const prefix = el.getAttribute('data-prefix') || '';
+      const suffix = el.getAttribute('data-suffix') || '';
+      const thousands = el.getAttribute('data-thousands') === '1';
+      if (reduce) { el.textContent = prefix + fmtN(target, thousands) + suffix; return; }
+      const t0 = performance.now(), dur = 1100;
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + fmtN(target * e, thousands) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { animateEl(en.target); io.unobserve(en.target); } });
+    }, { threshold: 0.4 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   // ===== price count-up (was componentDidUpdate) =====
   useEffect(() => {
     const step = state.sim.step;
@@ -392,6 +440,7 @@ export default function Page() {
       bar = root.querySelector('.sp-prog');
       if (!bar) { bar = document.createElement('div'); bar.className = 'sp-prog'; root.appendChild(bar); }
       const nav = root.querySelector('[data-nav]');
+      const cotizarFab = root.querySelector('[data-cotizar-fab]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
       const mani = root.querySelector('[data-manifesto]');
@@ -471,6 +520,7 @@ export default function Page() {
         const max = el.scrollHeight - el.clientHeight;
         bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
         if (nav) { if (y > 70) nav.classList.add('solid'); else nav.classList.remove('solid'); }
+        if (cotizarFab) { if (y > 640) cotizarFab.classList.add('show'); else cotizarFab.classList.remove('show'); }
         if (heroBg && y < 900) heroBg.style.transform = 'translateY(' + (y * 0.16) + 'px)';
         if (heroContent && y < 900) { heroContent.style.transform = 'translateY(' + (y * 0.14) + 'px)'; heroContent.style.opacity = String(Math.max(0, 1 - y / 620)); }
         if (mani) {
@@ -710,6 +760,17 @@ export default function Page() {
     chevStyle: 'transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (state.showFullTable ? '180deg' : '0deg') + ')',
     planHeaders, fullRows, stepsHow, faqList, sim,
     showCalc, toggleCalc: () => setShowCalc((x) => !x),
+    difs: difsData(),
+    testi: (() => {
+      const list = testimonios();
+      const idx = ((testiIndex % list.length) + list.length) % list.length;
+      return {
+        index: idx, current: list[idx],
+        prev: () => setTestiIndex((i) => (i - 1 + list.length) % list.length),
+        next: () => setTestiIndex((i) => (i + 1) % list.length),
+        dots: list.map((_, i) => ({ active: i === idx, onClick: () => setTestiIndex(i) })),
+      };
+    })(),
   };
 
   // ===== markup =====
@@ -914,35 +975,23 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CÓMO FUNCIONA */}
-      <section style={css('padding:90px 40px;background:#fff')}>
+      {/* DIFERENCIADORES */}
+      <section style={css('padding:80px 40px;background:#E6F7F6')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 44px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>De la cotización a tu credencial</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
+          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 42px')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Lo que ponemos por escrito</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#009690')}>garantiza</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
           </div>
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:20px')}>
-            {v.stepsHow.map((st, i) => (
-              <div key={i} style={css('background:#F5F5F5;border-radius:16px;padding:24px 20px')}>
-                <div className="disp" style={css('width:36px;height:36px;border-radius:10px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:14px')}>{st.n}</div>
-                <div style={css('font-size:15.5px;font-weight:700;color:#003B71;line-height:1.35;margin-bottom:6px')}>{st.title}</div>
-                <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5')}>{st.body}</div>
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
+            {v.difs.map((dz, i) => (
+              <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
+                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{dz.body}</div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CONFIANZA */}
-      <section style={css('padding:0 40px 90px;background:#fff')}>
-        <div data-rv style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:44px 40px')}>
-          <div className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center')}>
-            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>2002</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Empresa familiar paraguaya, fundada en Asunción</div></div>
-            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>+23 años</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Cuidando familias en todo el país</div></div>
-            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>~9.100</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Contratos activos hoy</div></div>
-            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>~19.000</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Vidas aseguradas</div></div>
-          </div>
-          <div style={css('text-align:center;margin-top:26px;padding-top:22px;border-top:1px solid rgba(0,59,113,0.12);font-size:14.5px;color:#003B71;font-weight:600')}>Cobertura en más de 50 prestadores, incluido Lister, nuestro centro médico propio.</div>
         </div>
       </section>
 
@@ -962,7 +1011,8 @@ export default function Page() {
                 {v.sim.livePanelReady ? (
                   <div className="sim-live-panel" style={css('margin-bottom:24px')}>
                     <div style={css('font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:6px')}>Tu estimado</div>
-                    <div style={css('display:flex;align-items:baseline;gap:6px')}><span data-live-price style={css('font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1')}>{v.sim.liveTotalFmt}</span><span style={css('font-size:12px;color:#B3C7DB')}>/mes</span></div>
+                    <div data-live-price className="num-tnum" style={css('font-size:29px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1')}>{v.sim.liveTotalFmt}</div>
+                    <div style={css('font-size:12px;color:#B3C7DB;margin-top:4px')}>/mes · estimado</div>
                     <div style={css('display:inline-flex;align-items:center;margin-top:12px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;transition:background .3s;background:' + v.sim.planColor)}>{v.sim.planShort}</div>
                     {v.sim.gaugeShow && (
                       <div style={css('display:flex;gap:5px;margin-top:14px')}>
@@ -992,7 +1042,7 @@ export default function Page() {
                     <div style={css('display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px')}>
                       <span style={css('font-size:12px;font-weight:800;color:#003B71;white-space:nowrap')}>Paso {v.sim.stepNum} de {v.sim.totalSteps}</span>
                       {v.sim.livePanelReady
-                        ? <span style={css('text-align:right;white-space:nowrap')}><span style={css('font-size:11px;color:#6B6B6B')}>Estimado </span><span style={css('font-size:14px;font-weight:800;color:#003B71')}>{v.sim.liveTotalFmt}</span></span>
+                        ? <span style={css('text-align:right;white-space:nowrap')}><span style={css('font-size:11px;color:#6B6B6B')}>Estimado </span><span className="num-tnum" style={css('font-size:14px;font-weight:800;color:#003B71')}>{v.sim.liveTotalFmt}</span></span>
                         : <span style={css('font-size:12px;color:#009690;text-align:right')}>{v.sim.enc}</span>}
                     </div>
                     <div style={css('height:5px;border-radius:999px;background:#E6EDF4;overflow:hidden')}><div style={css('height:100%;border-radius:999px;transition:width .35s cubic-bezier(.22,1,.36,1),background .3s;background:' + v.sim.progressBarColor + ';width:' + v.sim.progressPct + '%')}></div></div>
@@ -1106,7 +1156,7 @@ export default function Page() {
                     {v.sim.liveReady && (
                       <div style={css('display:flex;align-items:center;justify-content:space-between;gap:10px;background:#F2FBFA;border:1px solid #d9efed;border-radius:12px;padding:12px 15px;margin-bottom:14px')}>
                         <span style={css('font-size:13px;color:#00695f')}>Tu estimado</span>
-                        <span style={css('text-align:right')}><span style={css('font-size:17px;font-weight:800;color:#003B71')}>{v.sim.liveTotal}</span><span style={css('font-size:12px;color:#6B6B6B;font-weight:500')}> /mes</span>{v.sim.liveAddonsAmount > 0 && <span style={css('display:block;font-size:12px;font-weight:700;color:#009690')}>+ {v.sim.liveAddons} en adicionales</span>}</span>
+                        <span style={css('text-align:right')}><span className="num-tnum" style={css('font-size:17px;font-weight:800;color:#003B71')}>{v.sim.liveTotal}</span><span style={css('font-size:12px;color:#6B6B6B;font-weight:500')}> /mes</span>{v.sim.liveAddonsAmount > 0 && <span className="num-tnum" style={css('display:block;font-size:12px;font-weight:700;color:#009690')}>+ {v.sim.liveAddons} en adicionales</span>}</span>
                       </div>
                     )}
                     <div style={css('display:flex;flex-direction:column;gap:10px')}>
@@ -1137,7 +1187,7 @@ export default function Page() {
                         <div style={css('font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Cobertura {v.sim.resGeo}</div>
                       </div>
                       <div style={css('padding:18px 20px;background:#fff')}>
-                        <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price style={css('font-size:31px;font-weight:800;color:#003B71;letter-spacing:-0.01em;line-height:1')}>{v.sim.resPrice}</span><span style={css('font-size:14px;color:#6B6B6B;font-weight:500')}>/ mes estimado</span></div>
+                        <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:#003B71;letter-spacing:-0.01em;line-height:1')}>{v.sim.resPrice}</span><span style={css('font-size:14px;color:#6B6B6B;font-weight:500')}>/ mes estimado</span></div>
                         <div style={css('font-size:12px;color:#6B6B6B;margin:6px 0 14px')}>{v.sim.resGroup} · titular de {v.sim.titularAge}. El precio final lo confirma un asesor.</div>
                         <p style={css('font-size:14px;color:#3D3D3D;line-height:1.6;margin:0')}>{v.sim.resWhy}</p>
                         {v.sim.hasAddons && <div style={css('font-size:13px;color:#003B71;font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {v.sim.resAddonsText}</span></div>}
@@ -1195,6 +1245,70 @@ export default function Page() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CÓMO FUNCIONA (después del simulador) */}
+      <section style={css('padding:100px 40px 90px;background:#fff')}>
+        <div style={css('max-width:1080px;margin:0 auto')}>
+          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 44px')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>De la cotización a tu credencial</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
+          </div>
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:20px')}>
+            {v.stepsHow.map((st, i) => (
+              <div key={i} style={css('background:#F5F5F5;border-radius:16px;padding:24px 20px')}>
+                <div className="disp" style={css('width:36px;height:36px;border-radius:10px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:14px')}>{st.n}</div>
+                <div style={css('font-size:15.5px;font-weight:700;color:#003B71;line-height:1.35;margin-bottom:6px')}>{st.title}</div>
+                <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5')}>{st.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALES — carrusel editorial */}
+      <section style={css('padding:104px 40px;background:#003B71;overflow:hidden')}>
+        <div style={css('max-width:900px;margin:0 auto;text-align:center')}>
+          <div data-rv style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:30px')}>Lo que dicen nuestros afiliados</div>
+          <div data-rv>
+            <div key={v.testi.index} style={css('animation:testiFade .5s cubic-bezier(.22,1,.36,1)')}>
+              <svg viewBox="0 0 24 24" width="44" height="44" fill="#00BCB4" style={css('opacity:.9;margin:0 auto 18px;display:block')}><path d="M9.5 5C6.5 5 4 7.6 4 10.8c0 3 2.2 5.2 5 5.2.3 0 .6 0 .9-.1-.5 1.4-1.8 2.6-3.6 3.1-.4.1-.6.5-.5.9.1.3.4.6.8.6 3.9-.4 7.4-3.7 7.4-9.1V10C13.9 7 12 5 9.5 5Zm10 0C16.5 5 14 7.6 14 10.8c0 3 2.2 5.2 5 5.2.3 0 .6 0 .9-.1-.5 1.4-1.8 2.6-3.6 3.1-.4.1-.6.5-.5.9.1.3.4.6.8.6 3.9-.4 7.4-3.7 7.4-9.1V10C23.9 7 22 5 19.5 5Z" /></svg>
+              <p className="disp" style={css('font-size:clamp(24px,3vw,34px);font-weight:800;color:#fff;line-height:1.28;letter-spacing:-0.01em;margin:0 auto 26px;max-width:760px')}>“{v.testi.current.quote}”</p>
+              <div style={css('font-size:16px;font-weight:700;color:#fff')}>{v.testi.current.name}</div>
+              <div style={css('font-size:14px;color:#80DDD8;margin-top:2px')}>{v.testi.current.meta}</div>
+            </div>
+          </div>
+          <div style={css('display:flex;align-items:center;justify-content:center;gap:20px;margin-top:34px')}>
+            <button onClick={v.testi.prev} aria-label="Testimonio anterior" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg></button>
+            <div style={css('display:flex;gap:8px')}>
+              {v.testi.dots.map((dt, i) => (
+                <button key={i} onClick={dt.onClick} aria-label={'Ir al testimonio ' + (i + 1)} style={css('width:9px;height:9px;border-radius:999px;border:none;cursor:pointer;padding:0;transition:all .3s;background:' + (dt.active ? '#00BCB4' : 'rgba(255,255,255,0.3)') + (dt.active ? ';width:24px' : ''))}></button>
+              ))}
+            </div>
+            <button onClick={v.testi.next} aria-label="Testimonio siguiente" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></button>
+          </div>
+          <div style={css('font-size:12px;color:#7f9cbb;margin-top:30px')}>Testimonios de ejemplo — se reemplazan por reales, con su consentimiento.</div>
+        </div>
+      </section>
+
+      {/* CONFIANZA */}
+      <section style={css('padding:96px 40px 40px;background:#fff')}>
+        <div data-rv style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:44px 40px')}>
+          <div className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center')}>
+            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>2002</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Empresa familiar paraguaya, fundada en Asunción</div></div>
+            <div><div className="disp num-tnum" data-stat data-target="23" data-prefix="+" data-suffix=" años" style={css('font-size:34px;color:#003B71')}>+23 años</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Cuidando familias en todo el país</div></div>
+            <div><div className="disp num-tnum" data-stat data-target="9100" data-prefix="~" data-thousands="1" style={css('font-size:34px;color:#003B71')}>~9.100</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Contratos activos hoy</div></div>
+            <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:34px;color:#003B71')}>~19.000</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Vidas aseguradas</div></div>
+          </div>
+        </div>
+      </section>
+
+      {/* FRANJA RED / LISTER */}
+      <section style={css('padding:0 40px 90px;background:#fff')}>
+        <div data-rv style={css('max-width:1080px;margin:0 auto;background:#003B71;border-radius:20px;padding:30px 36px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center')}>
+          <span style={css('width:52px;height:52px;border-radius:14px;background:rgba(0,188,180,0.18);color:#00BCB4;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><path d="M10 10 6.5 7.5M14 10l3.5-2.5M10 14l-3.5 2.5M14 14l3.5 2.5" /></svg></span>
+          <div style={css('font-size:18px;color:#fff;line-height:1.5')}><b>Lister + más de 50 prestadores</b> <span style={css('color:#80DDD8')}>en todo el país.</span> Nuestro centro médico propio, más una red que te cubre donde estés.</div>
         </div>
       </section>
 
@@ -1258,6 +1372,9 @@ export default function Page() {
         </div>
         <div style={css('max-width:1100px;margin:20px auto 0;font-size:12.5px;color:#7f9cbb')}>© 2026 Salud Protegida (Odontomedica S.A.). Coberturas de referencia sujetas a confirmación.</div>
       </footer>
+
+      {/* COTIZAR STICKY (aparece al scrollear) */}
+      <a href="#simulador" data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Cotizar mi plan</a>
 
       {/* WHATSAPP FLOTANTE */}
       <a href={v.waHref} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
