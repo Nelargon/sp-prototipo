@@ -762,6 +762,7 @@ export default function Page() {
     showCalc, toggleCalc: () => setShowCalc((x) => !x),
     difs: difsData(),
     aliados: ['Farmacia Catedral', 'Farmatotal', 'Fisio Spa', 'Barberos López', 'Charpentier', 'Acuadante', 'Billio', 'Farmacia San José', 'Punto Farma', 'Promedik', 'Phönix Med', 'Óptica Meister', 'Upalala', 'Assist Card'],
+    prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Odontología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
     testi: (() => {
       const list = testimonios();
       const n = list.length;
@@ -1355,25 +1356,38 @@ export default function Page() {
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Ventajas y ofertas exclusivas <span style={css('color:#009690')}>con tu plan</span>.</h2>
             <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos en farmacias, ópticas, bienestar y más — solo por ser afiliado de Salud Protegida.</p>
           </div>
-          <div data-rv className="ally-grid" style={css('display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:38px')}>
-            {v.aliados.map((name, i) => (
-              <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:12px;min-height:74px;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center')}>
-                <span style={css('font-size:12.5px;font-weight:800;color:#9aa0a6;line-height:1.25;letter-spacing:0.01em')}>{name}</span>
-              </div>
-            ))}
+          <div data-rv className="mq" style={css('margin-top:38px;--mq-dur:48s')}>
+            <div className="mq-track">
+              {[...v.aliados, ...v.aliados].map((name, i) => (
+                <div key={i} style={css('flex:none;width:160px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:12px;height:76px;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center')}>
+                  <span style={css('font-size:12.5px;font-weight:800;color:#9aa0a6;line-height:1.25;letter-spacing:0.01em')}>{name}</span>
+                </div>
+              ))}
+            </div>
           </div>
           <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Aliados de ejemplo — se reemplazan por el logo real de cada uno.</div>
         </div>
       </section>
 
-      {/* PRESTADORES (próximamente) */}
+      {/* PRESTADORES (marquee, próximamente) */}
       <section style={css('padding:0 40px 96px;background:#F5F5F5')}>
-        <div data-rv style={css('max-width:1100px;margin:0 auto;background:#fff;border:1.5px dashed #cfd8e3;border-radius:20px;padding:40px 36px;text-align:center')}>
-          <div style={css('width:52px;height:52px;border-radius:14px;background:#E6EDF4;color:#003B71;display:flex;align-items:center;justify-content:center;margin:0 auto 16px')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 10h.01M15 10h.01M9 13h.01M15 13h.01" /></svg></div>
-          <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:10px')}>Prestadores</div>
-          <h3 className="disp" style={css('font-size:24px;font-weight:800;color:#003B71;line-height:1.2;margin:0 0 8px')}>Sanatorios, laboratorios y profesionales de la red</h3>
-          <p style={css('font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 auto 16px;max-width:520px')}>Muy pronto vas a poder explorar acá toda la red de prestadores de Salud Protegida, con sus especialidades y ubicaciones.</p>
-          <span style={css('display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;background:#E6F7F6;color:#009690;font-size:13px;font-weight:700')}>Próximamente</span>
+        <div style={css('max-width:1100px;margin:0 auto')}>
+          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto')}>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;margin-bottom:12px')}><div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690')}>Prestadores</div><span style={css('padding:4px 11px;border-radius:999px;background:#E6F7F6;color:#009690;font-size:11px;font-weight:800;letter-spacing:.03em')}>Próximamente</span></div>
+            <h2 className="disp" style={css('font-size:32px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.02em;margin:0 0 12px')}>Sanatorios, laboratorios y profesionales de la <span style={css('color:#009690')}>red</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Muy pronto vas a poder explorar toda la red médica de Salud Protegida, con especialidades y ubicaciones.</p>
+          </div>
+          <div data-rv className="mq" style={css('margin-top:36px;--mq-dur:40s')}>
+            <div className="mq-track">
+              {[...v.prestadores, ...v.prestadores].map((pr, i) => (
+                <div key={i} style={css('flex:none;width:180px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:14px;height:82px;display:flex;align-items:center;gap:11px;padding:0 16px')}>
+                  <span style={css('width:38px;height:38px;border-radius:10px;background:#E6EDF4;color:#5b83ac;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg></span>
+                  <span style={css('font-size:13px;font-weight:700;color:#6B6B6B;line-height:1.25')}>{pr}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Prestadores de ejemplo — se completarán con la red real de Salud Protegida.</div>
         </div>
       </section>
 

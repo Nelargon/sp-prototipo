@@ -78,6 +78,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(max-width:560px){.ally-grid{grid-template-columns:repeat(3,1fr) !important}}
 @media(max-width:380px){.ally-grid{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:820px){.testi-side{display:none !important}}
+/* Marquee / logo ticker — infinite right-to-left scroll (seamless: content rendered twice) */
+.mq{overflow:hidden;position:relative;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mqscroll var(--mq-dur,45s) linear infinite;will-change:transform}
+.mq:hover .mq-track{animation-play-state:paused}
+@keyframes mqscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.mq{overflow-x:auto}}
 .num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
 .cotizar-fab{opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.22,1,.36,1),background .2s}
 .cotizar-fab.show{opacity:1;transform:none;pointer-events:auto}
