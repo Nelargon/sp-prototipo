@@ -16,7 +16,8 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .rvon .rv{opacity:0;transform:translateY(18px)}
 .rvon .rv.in{opacity:1;transform:none}
 .sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#00BCB4,#009690);z-index:120;transition:width .12s linear;pointer-events:none}
-[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease}
+[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease;background:linear-gradient(180deg,rgba(0,16,34,0.5) 0%,rgba(0,16,34,0.12) 60%,rgba(0,16,34,0) 100%)}
+[data-nav]:not(.solid) .nav-link{color:#fff !important;text-shadow:0 1px 10px rgba(0,0,0,0.5)}
 [data-nav].solid{background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 #E8E8E8}
 [data-nav].solid .nav-link{--nl:#3D3D3D}
 [data-nav].solid .nav-logo{color:#003B71}
@@ -76,6 +77,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(max-width:900px){.ally-grid{grid-template-columns:repeat(4,1fr) !important}}
 @media(max-width:560px){.ally-grid{grid-template-columns:repeat(3,1fr) !important}}
 @media(max-width:380px){.ally-grid{grid-template-columns:repeat(2,1fr) !important}}
+@media(max-width:820px){.testi-side{display:none !important}}
 .num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
 .cotizar-fab{opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.22,1,.36,1),background .2s}
 .cotizar-fab.show{opacity:1;transform:none;pointer-events:auto}
