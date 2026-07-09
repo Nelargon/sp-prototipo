@@ -761,7 +761,20 @@ export default function Page() {
     planHeaders, fullRows, stepsHow, faqList, sim,
     showCalc, toggleCalc: () => setShowCalc((x) => !x),
     difs: difsData(),
-    aliados: ['Farmacia Catedral', 'Farmatotal', 'Fisio Spa', 'Barberos López', 'Charpentier', 'Acuadante', 'Billio', 'Farmacia San José', 'Punto Farma', 'Promedik', 'Phönix Med', 'Óptica Meister', 'Upalala', 'Assist Card'],
+    aliados: [
+      { name: 'Farmatotal', file: 'farmatotal.webp' },
+      { name: 'Fisio Spa', file: 'fisiospa.webp' },
+      { name: 'Barberos López', file: 'barberos.webp' },
+      { name: 'Charpentier', file: 'charpentier.webp' },
+      { name: 'Acuidarte', file: 'acuidarte.webp' },
+      { name: 'Billio', file: 'billio.webp' },
+      { name: 'Farmacia San José', file: 'sanjose.webp' },
+      { name: 'Punto Farma', file: 'puntofarma.webp' },
+      { name: 'Promedik', file: 'promedik.webp' },
+      { name: 'Óptica Meister', file: 'meister.webp' },
+      { name: 'Upalala', file: 'upalala.webp' },
+      { name: 'Assist Card', file: 'assistcard.webp' },
+    ],
     prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Odontología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
     testi: (() => {
       const list = testimonios();
@@ -784,8 +797,8 @@ export default function Page() {
       {/* NAV */}
       <nav data-nav style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
         <div className="nav-logo" style={css('position:relative;display:flex;align-items:center')}>
-          <img src={`${BP}/assets/logo-sp-white-crop.png`} alt="Salud Protegida" className="nlogo-w" style={css('height:36px;display:block;transition:opacity .3s')} />
-          <img src={`${BP}/assets/isologo-04-crop.png`} alt="" className="nlogo-c" style={css('height:36px;position:absolute;left:0;top:0;transition:opacity .3s')} />
+          <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" className="nlogo-w" style={css('height:34px;display:block;transition:opacity .3s')} />
+          <img src={`${BP}/assets/brand/logo-sp-color.webp`} alt="" className="nlogo-c" style={css('height:34px;position:absolute;left:0;top:0;transition:opacity .3s')} />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
           <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
@@ -1314,18 +1327,9 @@ export default function Page() {
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section style={css('padding:96px 40px 40px;background:#fff')}>
         <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
-          <div style={css('position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:210px')}>
-            <div style={css('position:absolute;top:6px;width:180px;height:180px;border-radius:50%;background:#d4e0ee')}></div>
-            {/* Placeholder line-art del edificio SP — reemplazar por el boceto real */}
-            <svg viewBox="0 0 260 190" width="100%" style={css('position:relative;max-width:250px')} fill="none" stroke="#5b83ac" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M36 66 L130 26 L224 66 Z" />
-              <path d="M40 66 H220 M40 78 H220" />
-              <path d="M56 78 V158 M92 78 V158 M128 78 V158 M164 78 V158 M200 78 V158" />
-              <path d="M30 158 H230 M22 172 H238" />
-              <path d="M110 128 h40 v30 h-40 z M110 128 a20 20 0 0 1 40 0" />
-              <path d="M130 26 v-8" /><circle cx="130" cy="14" r="4" />
-            </svg>
-            <div style={css('position:relative;margin-top:12px;font-size:11px;color:#9aa0a6;text-align:center;line-height:1.4')}>Ilustración de referencia — reemplazar por el boceto real del edificio.</div>
+          <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
+            <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:#d4e0ee')}></div>
+            <img src={`${BP}/assets/edificio.webp`} alt="Edificio administrativo de Salud Protegida" style={css('position:relative;width:100%;max-width:340px;height:auto;display:block')} />
           </div>
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:12px')}>Quiénes somos</div>
@@ -1356,16 +1360,16 @@ export default function Page() {
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Ventajas y ofertas exclusivas <span style={css('color:#009690')}>con tu plan</span>.</h2>
             <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos en farmacias, ópticas, bienestar y más — solo por ser afiliado de Salud Protegida.</p>
           </div>
-          <div data-rv className="mq" style={css('margin-top:38px;--mq-dur:48s')}>
+          <div data-rv className="mq" style={css('margin-top:38px;--mq-dur:52s')}>
             <div className="mq-track">
-              {[...v.aliados, ...v.aliados].map((name, i) => (
-                <div key={i} style={css('flex:none;width:160px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:12px;height:76px;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center')}>
-                  <span style={css('font-size:12.5px;font-weight:800;color:#9aa0a6;line-height:1.25;letter-spacing:0.01em')}>{name}</span>
+              {[...v.aliados, ...v.aliados].map((a, i) => (
+                <div key={i} style={css('flex:none;width:170px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:12px;height:86px;display:flex;align-items:center;justify-content:center;padding:16px')}>
+                  <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} className="ally-logo" />
                 </div>
               ))}
             </div>
           </div>
-          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Aliados de ejemplo — se reemplazan por el logo real de cada uno.</div>
+          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Pasá el cursor para verlos a color. Beneficios con nuestros aliados.</div>
         </div>
       </section>
 
@@ -1428,7 +1432,7 @@ export default function Page() {
       <footer style={css('background:#002A52;color:#fff;padding:56px 40px 30px')}>
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
-            <img src={`${BP}/assets/logo-sp-white-crop.png`} alt="Salud Protegida" style={css('height:38px;display:block;margin-bottom:14px')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:38px;display:block;margin-bottom:14px')} />
             <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +23 años · Asunción, Paraguay</div>
           </div>
           <div>
