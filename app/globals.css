@@ -21,9 +21,10 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 [data-nav].solid{background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 #E8E8E8}
 [data-nav].solid .nav-link{--nl:#3D3D3D}
 [data-nav].solid .nav-logo{color:#003B71}
-[data-nav] .nlogo-c{opacity:0}
+/* Navy logo (nlogo-c) sits underneath at full opacity; the white logo fades
+   out on top when the nav turns solid, so the mark "colours in" white→navy
+   with no gap and no doubling. */
 [data-nav].solid .nlogo-w{opacity:0}
-[data-nav].solid .nlogo-c{opacity:1}
 [data-nav].solid .nav-burger{background:rgba(0,59,113,0.08) !important;color:#003B71 !important}
 .lift{transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s cubic-bezier(.22,1,.36,1)}
 .lift:hover{transform:translateY(-5px);box-shadow:0 14px 34px rgba(0,59,113,0.14) !important}
