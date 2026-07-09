@@ -797,7 +797,7 @@ export default function Page() {
       {/* NAV */}
       <nav data-nav style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
         <div className="nav-logo" style={css('position:relative;display:flex;align-items:center')}>
-          <img src={`${BP}/assets/brand/logo-sp-navy.png`} alt="Salud Protegida" className="nlogo-c" style={css('height:34px;display:block;position:relative;z-index:1')} />
+          <img src={`${BP}/assets/brand/logo-sp-color.png`} alt="Salud Protegida" className="nlogo-c" style={css('height:34px;display:block;position:relative;z-index:1')} />
           <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="" className="nlogo-w" style={css('height:34px;position:absolute;left:0;top:0;z-index:2;transition:opacity .3s')} />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
@@ -1352,47 +1352,40 @@ export default function Page() {
         </div>
       </section>
 
-      {/* RED DE BENEFICIOS / ALIADOS */}
-      <section style={css('padding:90px 40px;background:#F5F5F5')}>
-        <div style={css('max-width:1100px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto')}>
+      {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
+      <section style={css('padding:88px 0 92px;background:#F5F5F5;overflow:hidden')}>
+        <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
+          <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Ventajas y ofertas exclusivas <span style={css('color:#009690')}>con tu plan</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos en farmacias, ópticas, bienestar y más — solo por ser afiliado de Salud Protegida.</p>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:#009690')}>de tu plan</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.</p>
           </div>
-          <div data-rv className="mq" style={css('margin-top:38px;--mq-dur:52s')}>
-            <div className="mq-track">
-              {[...v.aliados, ...v.aliados].map((a, i) => (
-                <div key={i} style={css('flex:none;width:170px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:12px;height:86px;display:flex;align-items:center;justify-content:center;padding:16px')}>
-                  <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} className="ally-logo" />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Pasá el cursor para verlos a color. Beneficios con nuestros aliados.</div>
         </div>
-      </section>
 
-      {/* PRESTADORES (marquee, próximamente) */}
-      <section style={css('padding:0 40px 96px;background:#F5F5F5')}>
-        <div style={css('max-width:1100px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;margin-bottom:12px')}><div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690')}>Prestadores</div><span style={css('padding:4px 11px;border-radius:999px;background:#E6F7F6;color:#009690;font-size:11px;font-weight:800;letter-spacing:.03em')}>Próximamente</span></div>
-            <h2 className="disp" style={css('font-size:32px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.02em;margin:0 0 12px')}>Sanatorios, laboratorios y profesionales de la <span style={css('color:#009690')}>red</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Muy pronto vas a poder explorar toda la red médica de Salud Protegida, con especialidades y ubicaciones.</p>
+        {/* Tira 1 — aliados · derecha → izquierda */}
+        <div data-rv className="mq" style={css('margin-top:42px;--mq-dur:54s')}>
+          <div className="mq-track">
+            {[...v.aliados, ...v.aliados].map((a, i) => (
+              <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
+                <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} className="ally-logo" />
+              </div>
+            ))}
           </div>
-          <div data-rv className="mq" style={css('margin-top:36px;--mq-dur:40s')}>
-            <div className="mq-track">
-              {[...v.prestadores, ...v.prestadores].map((pr, i) => (
-                <div key={i} style={css('flex:none;width:180px;margin-right:16px;background:#fff;border:1px solid #E8E8E8;border-radius:14px;height:82px;display:flex;align-items:center;gap:11px;padding:0 16px')}>
-                  <span style={css('width:38px;height:38px;border-radius:10px;background:#E6EDF4;color:#5b83ac;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg></span>
-                  <span style={css('font-size:13px;font-weight:700;color:#6B6B6B;line-height:1.25')}>{pr}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Prestadores de ejemplo — se completarán con la red real de Salud Protegida.</div>
         </div>
+
+        {/* Tira 2 — prestadores (próximamente) · izquierda → derecha */}
+        <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:48s')}>
+          <div className="mq-track">
+            {[...v.prestadores, ...v.prestadores].map((pr, i) => (
+              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:#9aa0a6')}>
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
+                <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:#9aa0a6')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:#009690')}>próximamente</b> con la red médica real.</div>
       </section>
 
       {/* FAQ */}
