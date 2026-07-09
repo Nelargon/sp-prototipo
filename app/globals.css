@@ -48,7 +48,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(max-width:1150px){.mani-lines{width:100% !important}}
 @media(max-width:1250px){[data-hero-bg]{-webkit-mask:linear-gradient(90deg,transparent 12%,#000 55%) !important;mask:linear-gradient(90deg,transparent 12%,#000 55%) !important}}
 @media(max-width:820px){.disp-hero{font-size:44px !important}.two-col{grid-template-columns:1fr !important}[data-hero-bg]{width:100% !important;opacity:.45}.sim-card{flex-direction:column !important}.sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}.sim-side-h{display:none !important}.sim-steps{display:none !important}.sim-side-enc{display:none !important}.sim-live-panel{display:none !important}.sim-trust{margin-top:0 !important}.sim-body{padding:24px 20px !important;min-height:0 !important}.sim-mobile-progress{display:block !important}}
-@media(max-width:860px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}}
+@media(max-width:860px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}}
+@media(max-width:420px){.urg-pill .num-tnum{display:none !important}}
 .nav-sim-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08)}
 .nav-sim-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
 [data-nav].solid .nav-sim-cta{color:#009690;border-color:rgba(0,150,144,0.45);background:rgba(0,188,180,0.06)}
@@ -72,6 +73,9 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
 .search-inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
 .sim-mobile-progress{display:none}
+@media(max-width:900px){.ally-grid{grid-template-columns:repeat(4,1fr) !important}}
+@media(max-width:560px){.ally-grid{grid-template-columns:repeat(3,1fr) !important}}
+@media(max-width:380px){.ally-grid{grid-template-columns:repeat(2,1fr) !important}}
 .num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
 .cotizar-fab{opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.22,1,.36,1),background .2s}
 .cotizar-fab.show{opacity:1;transform:none;pointer-events:auto}

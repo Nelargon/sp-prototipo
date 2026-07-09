@@ -3,10 +3,11 @@
 import { useState, useEffect, useRef, createElement } from 'react';
 import { BP } from './basePath';
 
-/* WhatsApp number is an intentional placeholder in the design export — flagged
-   in the chats as "set your real number here". Kept verbatim; replace with the
-   real number to make every WhatsApp CTA point at wa.me/<number>. */
-const WHATSAPP_NUMBER = '595 9XX XXX XXX';
+/* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
+   WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
+const WHATSAPP_NUMBER = '595 21 319 0000';
+const SP_PHONE_DISPLAY = '(021) 319 0000';
+const SP_TEL = '+595213190000';
 
 /* Parse a CSS declaration string ("color:red;font-size:14px") into a React
    style object, so the exact style strings from the design export are preserved
@@ -761,6 +762,7 @@ export default function Page() {
     planHeaders, fullRows, stepsHow, faqList, sim,
     showCalc, toggleCalc: () => setShowCalc((x) => !x),
     difs: difsData(),
+    aliados: ['Farmacia Catedral', 'Farmatotal', 'Fisio Spa', 'Barberos López', 'Charpentier', 'Acuadante', 'Billio', 'Farmacia San José', 'Punto Farma', 'Promedik', 'Phönix Med', 'Óptica Meister', 'Upalala', 'Assist Card'],
     testi: (() => {
       const list = testimonios();
       const idx = ((testiIndex % list.length) + list.length) % list.length;
@@ -783,20 +785,24 @@ export default function Page() {
           <img src={`${BP}/assets/logo-sp-white-crop.png`} alt="Salud Protegida" className="nlogo-w" style={css('height:36px;display:block;transition:opacity .3s')} />
           <img src={`${BP}/assets/isologo-04-crop.png`} alt="" className="nlogo-c" style={css('height:36px;position:absolute;left:0;top:0;transition:opacity .3s')} />
         </div>
-        <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
-          <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Cartilla viva</a>
-          <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
-          <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
-          <a href="#simulador" className="nav-sim-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:background 200ms,border-color 200ms')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulador de planes</a>
-          <a href="#simulador" className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Cotizá tu plan</a>
+        <div style={css('display:flex;align-items:center;gap:16px')}>
+          <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
+          <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
+            <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Cartilla viva</a>
+            <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
+            <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
+            <a href="#simulador" className="nav-sim-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:background 200ms,border-color 200ms')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulador de planes</a>
+            <a href="#simulador" className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Cotizá tu plan</a>
+          </div>
+          <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
+            {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
+            {v.mobileMenuOpen && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6 6 18" /></svg>}
+          </button>
         </div>
-        <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
-          {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
-          {v.mobileMenuOpen && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6 6 18" /></svg>}
-        </button>
       </nav>
       {v.mobileMenuOpen && (
         <div id="mobile-menu" role="menu" style={css('position:fixed;top:66px;left:14px;right:14px;z-index:99;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,59,113,0.18);padding:10px;display:flex;flex-direction:column;gap:2px')}>
+          <a href={'tel:' + SP_TEL} onClick={v.closeMenu} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
           <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Cartilla viva</a>
           <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
           <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
@@ -1292,14 +1298,31 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CONFIANZA */}
+      {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section style={css('padding:96px 40px 40px;background:#fff')}>
-        <div data-rv style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:44px 40px')}>
-          <div className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center')}>
-            <div><div className="disp" style={css('font-size:34px;color:#003B71')}>2002</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Empresa familiar paraguaya, fundada en Asunción</div></div>
-            <div><div className="disp num-tnum" data-stat data-target="23" data-prefix="+" data-suffix=" años" style={css('font-size:34px;color:#003B71')}>+23 años</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Cuidando familias en todo el país</div></div>
-            <div><div className="disp num-tnum" data-stat data-target="9100" data-prefix="~" data-thousands="1" style={css('font-size:34px;color:#003B71')}>~9.100</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Contratos activos hoy</div></div>
-            <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:34px;color:#003B71')}>~19.000</div><div style={css('font-size:13.5px;color:#3D3D3D;margin-top:4px')}>Vidas aseguradas</div></div>
+        <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
+          <div style={css('position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:210px')}>
+            <div style={css('position:absolute;top:6px;width:180px;height:180px;border-radius:50%;background:#d4e0ee')}></div>
+            {/* Placeholder line-art del edificio SP — reemplazar por el boceto real */}
+            <svg viewBox="0 0 260 190" width="100%" style={css('position:relative;max-width:250px')} fill="none" stroke="#5b83ac" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M36 66 L130 26 L224 66 Z" />
+              <path d="M40 66 H220 M40 78 H220" />
+              <path d="M56 78 V158 M92 78 V158 M128 78 V158 M164 78 V158 M200 78 V158" />
+              <path d="M30 158 H230 M22 172 H238" />
+              <path d="M110 128 h40 v30 h-40 z M110 128 a20 20 0 0 1 40 0" />
+              <path d="M130 26 v-8" /><circle cx="130" cy="14" r="4" />
+            </svg>
+            <div style={css('position:relative;margin-top:12px;font-size:11px;color:#9aa0a6;text-align:center;line-height:1.4')}>Ilustración de referencia — reemplazar por el boceto real del edificio.</div>
+          </div>
+          <div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:12px')}>Quiénes somos</div>
+            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de 23 años.</h3>
+            <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px 20px')}>
+              <div><div className="disp" style={css('font-size:32px;color:#003B71')}>2002</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Fundada en Asunción</div></div>
+              <div><div className="disp num-tnum" data-stat data-target="23" data-prefix="+" data-suffix=" años" style={css('font-size:32px;color:#003B71')}>+23 años</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Cuidando familias en todo el país</div></div>
+              <div><div className="disp num-tnum" data-stat data-target="9100" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:#003B71')}>~9.100</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Contratos activos hoy</div></div>
+              <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:#003B71')}>~19.000</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Vidas aseguradas</div></div>
+            </div>
           </div>
         </div>
       </section>
@@ -1309,6 +1332,36 @@ export default function Page() {
         <div data-rv style={css('max-width:1080px;margin:0 auto;background:#003B71;border-radius:20px;padding:30px 36px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center')}>
           <span style={css('width:52px;height:52px;border-radius:14px;background:rgba(0,188,180,0.18);color:#00BCB4;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><path d="M10 10 6.5 7.5M14 10l3.5-2.5M10 14l-3.5 2.5M14 14l3.5 2.5" /></svg></span>
           <div style={css('font-size:18px;color:#fff;line-height:1.5')}><b>Lister + más de 50 prestadores</b> <span style={css('color:#80DDD8')}>en todo el país.</span> Nuestro centro médico propio, más una red que te cubre donde estés.</div>
+        </div>
+      </section>
+
+      {/* RED DE BENEFICIOS / ALIADOS */}
+      <section style={css('padding:90px 40px;background:#F5F5F5')}>
+        <div style={css('max-width:1100px;margin:0 auto')}>
+          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Ventajas y ofertas exclusivas <span style={css('color:#009690')}>con tu plan</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos en farmacias, ópticas, bienestar y más — solo por ser afiliado de Salud Protegida.</p>
+          </div>
+          <div data-rv className="ally-grid" style={css('display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:38px')}>
+            {v.aliados.map((name, i) => (
+              <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:12px;min-height:74px;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center')}>
+                <span style={css('font-size:12.5px;font-weight:800;color:#9aa0a6;line-height:1.25;letter-spacing:0.01em')}>{name}</span>
+              </div>
+            ))}
+          </div>
+          <div style={css('text-align:center;margin-top:18px;font-size:12px;color:#9aa0a6')}>Aliados de ejemplo — se reemplazan por el logo real de cada uno.</div>
+        </div>
+      </section>
+
+      {/* PRESTADORES (próximamente) */}
+      <section style={css('padding:0 40px 96px;background:#F5F5F5')}>
+        <div data-rv style={css('max-width:1100px;margin:0 auto;background:#fff;border:1.5px dashed #cfd8e3;border-radius:20px;padding:40px 36px;text-align:center')}>
+          <div style={css('width:52px;height:52px;border-radius:14px;background:#E6EDF4;color:#003B71;display:flex;align-items:center;justify-content:center;margin:0 auto 16px')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 10h.01M15 10h.01M9 13h.01M15 13h.01" /></svg></div>
+          <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:10px')}>Prestadores</div>
+          <h3 className="disp" style={css('font-size:24px;font-weight:800;color:#003B71;line-height:1.2;margin:0 0 8px')}>Sanatorios, laboratorios y profesionales de la red</h3>
+          <p style={css('font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 auto 16px;max-width:520px')}>Muy pronto vas a poder explorar acá toda la red de prestadores de Salud Protegida, con sus especialidades y ubicaciones.</p>
+          <span style={css('display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;background:#E6F7F6;color:#009690;font-size:13px;font-weight:700')}>Próximamente</span>
         </div>
       </section>
 
@@ -1356,7 +1409,7 @@ export default function Page() {
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Contacto</div>
             <div style={css('font-size:14px;color:#cfe0f0;line-height:2')}>
               <div>Asunción, Paraguay <span style={css('opacity:.55')}>(dirección a confirmar)</span></div>
-              <div>Teléfono: <span style={css('opacity:.55')}>a confirmar</span></div>
+              <div>Urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:#cfe0f0;font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
               <div>hola@saludprotegida.com.py <span style={css('opacity:.55')}>(a confirmar)</span></div>
             </div>
           </div>
