@@ -341,16 +341,15 @@ export default function Page() {
   ];
 
   const testimonios = () => [
-    { quote: 'Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Integral' },
-    { quote: 'Cuando llamé de madrugada, me atendió alguien que conocía mi plan. Eso no tiene precio.', name: 'Nombre Apellido', meta: 'Afiliado · Plan Premium' },
-    { quote: 'Entendí exactamente qué cubría antes de firmar. Cero sorpresas después.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Esencial' },
-    { quote: 'El asesor me explicó todo sin apuro y en mi idioma, no en “letra chica”.', name: 'Nombre Apellido', meta: 'Afiliado · SP Senior' },
+    { quote: 'Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Integral', photo: '' },
+    { quote: 'Cuando llamé de madrugada, me atendió alguien que conocía mi plan. Eso no tiene precio.', name: 'Nombre Apellido', meta: 'Afiliado · Plan Premium', photo: '' },
+    { quote: 'Entendí exactamente qué cubría antes de firmar. Cero sorpresas después.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Esencial', photo: '' },
+    { quote: 'El asesor me explicó todo sin apuro y en mi idioma, no en “letra chica”.', name: 'Nombre Apellido', meta: 'Afiliado · SP Senior', photo: '' },
   ];
 
   // Testimonials auto-advance (calm, 6s).
   useEffect(() => {
-    const n = testimonios().length;
-    const id = setInterval(() => setTestiIndex((i) => (i + 1) % n), 6000);
+    const id = setInterval(() => setTestiIndex((i) => i + 1), 6000);
     return () => clearInterval(id);
   }, []);
 
@@ -765,11 +764,13 @@ export default function Page() {
     aliados: ['Farmacia Catedral', 'Farmatotal', 'Fisio Spa', 'Barberos López', 'Charpentier', 'Acuadante', 'Billio', 'Farmacia San José', 'Punto Farma', 'Promedik', 'Phönix Med', 'Óptica Meister', 'Upalala', 'Assist Card'],
     testi: (() => {
       const list = testimonios();
-      const idx = ((testiIndex % list.length) + list.length) % list.length;
+      const n = list.length;
+      const at = (i) => list[((i % n) + n) % n];
+      const idx = ((testiIndex % n) + n) % n;
       return {
-        index: idx, current: list[idx],
-        prev: () => setTestiIndex((i) => (i - 1 + list.length) % list.length),
-        next: () => setTestiIndex((i) => (i + 1) % list.length),
+        index: idx, current: at(idx), left: at(idx - 1), right: at(idx + 1),
+        prev: () => setTestiIndex((i) => i - 1),
+        next: () => setTestiIndex((i) => i + 1),
         dots: list.map((_, i) => ({ active: i === idx, onClick: () => setTestiIndex(i) })),
       };
     })(),
@@ -791,8 +792,7 @@ export default function Page() {
             <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Cartilla viva</a>
             <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
             <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
-            <a href="#simulador" className="nav-sim-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:background 200ms,border-color 200ms')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulador de planes</a>
-            <a href="#simulador" className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Cotizá tu plan</a>
+            <a href="#simulador" className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
           </div>
           <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
             {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
@@ -806,8 +806,7 @@ export default function Page() {
           <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Cartilla viva</a>
           <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
           <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
-          <a href="#simulador" onClick={v.closeMenu} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;border:1.5px solid #00BCB4;color:#009690;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulador de planes</a>
-          <a href="#simulador" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center')}>Cotizá tu plan</a>
+          <a href="#simulador" onClick={v.closeMenu} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
         </div>
       )}
 
@@ -948,7 +947,7 @@ export default function Page() {
               </div>
               <div style={css('display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid #F0F0F0')}>
                 <button onClick={v.toggleFullTable} aria-expanded={v.showFullTable} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:#6B6B6B;font-weight:600')}>{v.fullTableLabel} <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(v.chevStyle)}><path d="m6 9 6 6 6-6" /></svg></button>
-                <a href={v.waHref} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Cotizar este plan</a>
+                <a href={v.waHref} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
               </div>
               {v.showFullTable && (
                 <div style={css('margin-top:22px;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;overflow-x:auto')}>
@@ -976,7 +975,7 @@ export default function Page() {
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#009690;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>SP Senior</b> y <b style={css('color:#003B71')}>SP Senior Plus</b> tienen cuidado continuo pensado para ellos.</div></div>
-            <a href="#simulador" className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Cotizar Senior</a>
+            <a href="#simulador" className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Senior</a>
           </div>
         </div>
       </section>
@@ -1273,28 +1272,41 @@ export default function Page() {
         </div>
       </section>
 
-      {/* TESTIMONIALES — carrusel editorial */}
+      {/* TESTIMONIALES — coverflow 3-up */}
       <section style={css('padding:104px 40px;background:#003B71;overflow:hidden')}>
-        <div style={css('max-width:900px;margin:0 auto;text-align:center')}>
-          <div data-rv style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:30px')}>Lo que dicen nuestros afiliados</div>
-          <div data-rv>
-            <div key={v.testi.index} style={css('animation:testiFade .5s cubic-bezier(.22,1,.36,1)')}>
-              <svg viewBox="0 0 24 24" width="44" height="44" fill="#00BCB4" style={css('opacity:.9;margin:0 auto 18px;display:block')}><path d="M9.5 5C6.5 5 4 7.6 4 10.8c0 3 2.2 5.2 5 5.2.3 0 .6 0 .9-.1-.5 1.4-1.8 2.6-3.6 3.1-.4.1-.6.5-.5.9.1.3.4.6.8.6 3.9-.4 7.4-3.7 7.4-9.1V10C13.9 7 12 5 9.5 5Zm10 0C16.5 5 14 7.6 14 10.8c0 3 2.2 5.2 5 5.2.3 0 .6 0 .9-.1-.5 1.4-1.8 2.6-3.6 3.1-.4.1-.6.5-.5.9.1.3.4.6.8.6 3.9-.4 7.4-3.7 7.4-9.1V10C23.9 7 22 5 19.5 5Z" /></svg>
-              <p className="disp" style={css('font-size:clamp(24px,3vw,34px);font-weight:800;color:#fff;line-height:1.28;letter-spacing:-0.01em;margin:0 auto 26px;max-width:760px')}>“{v.testi.current.quote}”</p>
+        <div style={css('max-width:1180px;margin:0 auto;text-align:center')}>
+          <div data-rv style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:38px')}>Lo que dicen nuestros afiliados</div>
+          <div data-rv key={v.testi.index} style={css('display:flex;align-items:center;justify-content:center;gap:22px;animation:testiFade .5s cubic-bezier(.22,1,.36,1)')}>
+            {/* lateral izquierdo */}
+            <button onClick={v.testi.prev} aria-label="Testimonio anterior" className="testi-side" style={css('flex:none;width:250px;text-align:left;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px 20px;opacity:.5;transform:scale(.94);transition:opacity .3s,transform .3s')}>
+              <span style={css('display:flex;align-items:center;gap:11px;margin-bottom:12px')}>{v.testi.left.photo ? <img src={v.testi.left.photo} alt="" style={css('width:44px;height:44px;border-radius:999px;object-fit:cover')} /> : <span style={css('width:44px;height:44px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}<span style={css('font-size:13px;font-weight:700;color:#fff')}>{v.testi.left.name}</span></span>
+              <span style={css('display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:#cfe0f0;line-height:1.5')}>“{v.testi.left.quote}”</span>
+            </button>
+            {/* centro protagonista */}
+            <div style={css('flex:none;width:520px;max-width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);border-radius:24px;padding:36px 34px;box-shadow:0 24px 60px rgba(0,0,0,0.22)')}>
+              {v.testi.current.photo
+                ? <img src={v.testi.current.photo} alt={v.testi.current.name} style={css('width:76px;height:76px;border-radius:999px;object-fit:cover;margin:0 auto 18px;display:block;border:3px solid rgba(0,188,180,0.5)')} />
+                : <span style={css('width:76px;height:76px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;border:3px solid rgba(0,188,180,0.4)')}><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}
+              <p className="disp" style={css('font-size:clamp(21px,2.4vw,27px);font-weight:800;color:#fff;line-height:1.32;letter-spacing:-0.01em;margin:0 0 22px')}>“{v.testi.current.quote}”</p>
               <div style={css('font-size:16px;font-weight:700;color:#fff')}>{v.testi.current.name}</div>
               <div style={css('font-size:14px;color:#80DDD8;margin-top:2px')}>{v.testi.current.meta}</div>
             </div>
+            {/* lateral derecho */}
+            <button onClick={v.testi.next} aria-label="Testimonio siguiente" className="testi-side" style={css('flex:none;width:250px;text-align:left;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px 20px;opacity:.5;transform:scale(.94);transition:opacity .3s,transform .3s')}>
+              <span style={css('display:flex;align-items:center;gap:11px;margin-bottom:12px')}>{v.testi.right.photo ? <img src={v.testi.right.photo} alt="" style={css('width:44px;height:44px;border-radius:999px;object-fit:cover')} /> : <span style={css('width:44px;height:44px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}<span style={css('font-size:13px;font-weight:700;color:#fff')}>{v.testi.right.name}</span></span>
+              <span style={css('display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:#cfe0f0;line-height:1.5')}>“{v.testi.right.quote}”</span>
+            </button>
           </div>
-          <div style={css('display:flex;align-items:center;justify-content:center;gap:20px;margin-top:34px')}>
-            <button onClick={v.testi.prev} aria-label="Testimonio anterior" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg></button>
+          <div style={css('display:flex;align-items:center;justify-content:center;gap:20px;margin-top:36px')}>
+            <button onClick={v.testi.prev} aria-label="Anterior" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg></button>
             <div style={css('display:flex;gap:8px')}>
               {v.testi.dots.map((dt, i) => (
                 <button key={i} onClick={dt.onClick} aria-label={'Ir al testimonio ' + (i + 1)} style={css('width:9px;height:9px;border-radius:999px;border:none;cursor:pointer;padding:0;transition:all .3s;background:' + (dt.active ? '#00BCB4' : 'rgba(255,255,255,0.3)') + (dt.active ? ';width:24px' : ''))}></button>
               ))}
             </div>
-            <button onClick={v.testi.next} aria-label="Testimonio siguiente" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></button>
+            <button onClick={v.testi.next} aria-label="Siguiente" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></button>
           </div>
-          <div style={css('font-size:12px;color:#7f9cbb;margin-top:30px')}>Testimonios de ejemplo — se reemplazan por reales, con su consentimiento.</div>
+          <div style={css('font-size:12px;color:#7f9cbb;margin-top:28px')}>Testimonios de ejemplo (con espacio para foto) — se reemplazan por reales, con su consentimiento.</div>
         </div>
       </section>
 
@@ -1427,7 +1439,7 @@ export default function Page() {
       </footer>
 
       {/* COTIZAR STICKY (aparece al scrollear) */}
-      <a href="#simulador" data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Cotizar mi plan</a>
+      <a href="#simulador" data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
 
       {/* WHATSAPP FLOTANTE */}
       <a href={v.waHref} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
