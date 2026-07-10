@@ -32,7 +32,7 @@ export default function SimuladorPage() {
       <header style={css('position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;background:#003B71;box-shadow:0 1px 0 rgba(255,255,255,0.08)')}>
         <div style={css('display:flex;align-items:center;gap:18px;min-width:0')}>
           <a href={`${BP}/`} aria-label="Salud Protegida — Inicio" style={css('display:flex;align-items:center;flex:none')}>
-            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:40px;display:block')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:52px;display:block')} />
           </a>
           <a href={`${BP}/`} className="link-teal" style={css('display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.72);font-size:13px;font-weight:600;white-space:nowrap')}>← Volver al inicio</a>
         </div>
@@ -98,7 +98,7 @@ export default function SimuladorPage() {
       <footer style={css('background:#002A52;color:#fff;padding:36px 24px')}>
         <div style={css('max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap')}>
           <div style={css('display:flex;align-items:center;gap:14px')}>
-            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:34px;display:block')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:50px;display:block')} />
             <span style={css('font-size:13.5px;color:#9bb6d2')}>Salud Protegida · Asunción, Paraguay</span>
           </div>
           <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('font-size:14px;color:#cfe0f0;font-weight:700')}>Urgencias 24 h: {SP_PHONE_DISPLAY}</a>
