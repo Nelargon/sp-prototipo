@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Guía Médica | Salud Protegida</title>
+    <meta name="description" content="Encontrá dónde atenderte en la red de Salud Protegida: médicos, sanatorios, laboratorios y farmacias. Buscá como hablás — por especialidad, estudio, síntoma o ciudad.">
+
+    <link rel="icon" type="image/png" href="assets/logo-sp-color.png">
+
+    <!-- Tipografías: Gilroy (display, archivos locales) + Inter (cuerpo, Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- NOTA PARA PRODUCCIÓN: reemplazar el CDN por un build compilado de Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy':      '#003B71',
+                        'navy-dk':   '#002B54',
+                        'teal':      '#00BCB4',
+                        'teal-dk':   '#009690',
+                        'mint':      '#E6F7F6',
+                        'ink':       '#1D1D1B',
+                        'body':      '#3D3D3D',
+                        'line':      '#E8E8E8',
+                        'soft':      '#F7FAF9',
+                        'urgent':    '#D92D20',
+                        'gold':      '#C9A227',
+                    },
+                    fontFamily: {
+                        display: ['Gilroy', 'Manrope', 'sans-serif'],
+                        body:    ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: { 'xl2': '1.25rem' },
+                }
+            }
+        }
+    </script>
+    <style>
+        @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-ExtraBold.ttf') format('truetype'); font-weight:800; font-display:swap; }
+        @font-face { font-family:'Gilroy'; src:url('fonts/Gilroy-SemiBold.ttf') format('truetype'); font-weight:600; font-display:swap; }
+        body { font-family:'Inter',sans-serif; color:#3D3D3D; }
+        h1,h2,h3,h4 { font-family:'Gilroy','Manrope',sans-serif; color:#003B71; }
+        .lift { transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s; }
+        .lift:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,59,113,.10); }
+        [role="option"][aria-selected="true"] { background:#E6F7F6; }
+    </style>
+</head>
+<body class="bg-soft min-h-screen flex flex-col">
+
+    <!-- ============ HEADER ============ -->
+    <header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur border-b border-line">
+        <nav class="flex justify-between items-center h-20 px-5 md:px-8 max-w-7xl mx-auto" aria-label="Principal">
+            <a href="guia_home.html" class="flex items-center shrink-0">
+                <img src="assets/logo-sp-color.png" alt="Salud Protegida" class="h-11 w-auto object-contain"/>
+            </a>
+            <div class="hidden md:flex items-center gap-7 text-sm font-semibold text-navy">
+                <a href="guia_home.html" class="text-teal-dk border-b-2 border-teal pb-1" aria-current="page">Guía Médica</a>
+                <a href="https://saludprotegida.com.py/planes/" class="hover:text-teal-dk transition-colors">Planes</a>
+                <a href="https://saludprotegida.com.py/" class="hover:text-teal-dk transition-colors">Salud Protegida</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Urgencias siempre visible: el caso de uso más crítico de una guía médica -->
+                <a href="tel:0213190000" onclick="track('click_urgencias',{origen:'header'})"
+                   class="flex items-center gap-2 bg-urgent text-white pl-3 pr-4 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="hidden sm:inline">Urgencias</span> (021)&nbsp;319&nbsp;0000
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow pt-20">
+
+        <!-- ============ HERO + BUSCADOR ÚNICO ============ -->
+        <section class="relative bg-gradient-to-br from-navy to-navy-dk overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-teal/15 rounded-full blur-3xl" aria-hidden="true"></div>
+            <div class="relative max-w-7xl mx-auto px-5 md:px-8 pt-16 pb-20 md:pt-24 md:pb-28 flex flex-col items-center">
+
+                <div class="text-[11px] font-bold tracking-[0.18em] uppercase text-teal mb-5">Guía Médica · Toda la red, sin letra chica</div>
+                <h1 class="font-display font-extrabold text-4xl md:text-6xl text-white text-center tracking-tight leading-tight mb-4">
+                    ¿Dónde te atendés <span class="text-teal">hoy</span>?
+                </h1>
+                <p class="text-white/85 text-base md:text-lg text-center max-w-2xl mb-10">
+                    Escribí como te salga: una especialidad, un estudio, un médico, tu ciudad
+                    o lo que te está pasando. Nosotros te orientamos.
+                </p>
+
+                <!-- Buscador único: un solo campo que entiende especialidades, estudios,
+                     prestadores, ciudades, sinónimos cotidianos y errores de tipeo -->
+                <div class="w-full max-w-3xl relative">
+                    <form action="guia_resultados.html" method="GET" role="search" onsubmit="track('search',{q:document.getElementById('q').value})">
+                        <div class="flex items-center bg-white rounded-2xl shadow-2xl p-2">
+                            <svg class="ml-4 shrink-0 text-teal-dk" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <input id="q" name="q" type="text" autocomplete="off"
+                                   role="combobox" aria-expanded="false" aria-controls="q-sugerencias" aria-autocomplete="list"
+                                   aria-label="Buscar en la guía médica"
+                                   placeholder="Ej: dentista, resonancia, pediatra en Luque…"
+                                   class="flex-1 border-none focus:ring-0 text-base md:text-lg text-ink placeholder:text-slate-400 px-3 py-3 bg-transparent"/>
+                            <button type="submit" class="bg-teal hover:bg-teal-dk transition-colors text-white font-bold rounded-xl px-6 py-3 text-sm md:text-base shrink-0">
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Sugerencias agrupadas por categoría, navegables con teclado -->
+                    <ul id="q-sugerencias" role="listbox" aria-label="Sugerencias de búsqueda"
+                        class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-line overflow-hidden z-40 max-h-96 overflow-y-auto"></ul>
+                </div>
+
+                <!-- Accesos rápidos: lo más pedido, a un toque -->
+                <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-3xl">
+                    <span class="text-white/60 text-xs self-center mr-1">Frecuentes:</span>
+                    <a href="guia_resultados.html?q=Pediatría" class="chip bg-white/10 hover:bg-teal text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors">Pediatría</a>
+                    <a href="guia_resultados.html?q=Odontología" class="chip bg-white/10 hover:bg-teal text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors">Odontología</a>
+                    <a href="guia_resultados.html?q=Laboratorio" class="chip bg-white/10 hover:bg-teal text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors">Laboratorio</a>
+                    <a href="guia_resultados.html?q=Ecografía" class="chip bg-white/10 hover:bg-teal text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors">Ecografía</a>
+                    <a href="guia_resultados.html?urgencias=1" class="chip bg-urgent/90 hover:bg-urgent text-white text-[13px] font-bold px-4 py-2 rounded-full transition-colors">Urgencias 24h</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ VER SEGÚN MI PLAN (cédula + fecha de nacimiento) ============ -->
+        <section class="max-w-7xl mx-auto px-5 md:px-8 -mt-10 relative z-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-line p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div class="lg:col-span-5">
+                    <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Para asegurados</div>
+                    <h2 class="font-display font-extrabold text-2xl tracking-tight mb-2">Mirá la red según <span class="text-teal-dk">tu plan</span>.</h2>
+                    <p class="text-sm text-body leading-relaxed">
+                        Con tu cédula y tu fecha de nacimiento te mostramos solo los prestadores
+                        habilitados para tu plan. No mostramos tu nombre ni el detalle de tu plan en pantalla.
+                    </p>
+                </div>
+                <!-- El backend debe: validar CI+fecha contra el padrón, aplicar rate limiting,
+                     enviar por POST y no exponer datos del titular en la respuesta (ver ANEXO) -->
+                <form class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3" method="POST" action="#"
+                      onsubmit="track('filtro_plan',{}); return false;">
+                    <div>
+                        <label for="ci" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Cédula de identidad</label>
+                        <input id="ci" name="ci" type="text" inputmode="numeric" placeholder="1.234.567"
+                               class="w-full bg-soft border border-line rounded-xl py-3 px-4 text-sm text-ink focus:ring-2 focus:ring-teal focus:border-teal"/>
+                    </div>
+                    <div>
+                        <label for="nac" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Fecha de nacimiento</label>
+                        <input id="nac" name="nac" type="date"
+                               class="w-full bg-soft border border-line rounded-xl py-3 px-4 text-sm text-ink focus:ring-2 focus:ring-teal focus:border-teal"/>
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full bg-navy hover:bg-navy-dk transition-colors text-white font-bold rounded-xl py-3 text-sm">
+                            Ver mi red
+                        </button>
+                    </div>
+                    <p class="sm:col-span-3 text-[11px] text-slate-400">
+                        Tus datos se usan solo para esta consulta y no quedan guardados en tu navegador.
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- ============ ACCESOS DE URGENCIA + CÓMO USAR ============ -->
+        <section class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <a href="guia_resultados.html?urgencias=1" class="lift lg:col-span-4 bg-white rounded-2xl border border-line p-7 flex flex-col gap-4 group">
+                <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-urgent" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 8.4 8 10 4.6-1.6 8-5 8-10V6l-8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-display font-extrabold text-xl mb-1.5">Urgencias 24 horas</h3>
+                    <p class="text-sm text-body leading-relaxed">Centros de atención inmediata abiertos ahora, con teléfono y cómo llegar.</p>
+                </div>
+                <span class="mt-auto text-teal-dk font-bold text-sm group-hover:underline">Ver centros de urgencia →</span>
+            </a>
+
+            <a href="guia_resultados.html?tipo=ambulancia" class="lift lg:col-span-4 bg-white rounded-2xl border border-line p-7 flex flex-col gap-4 group">
+                <div class="w-12 h-12 bg-mint rounded-xl flex items-center justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-teal-dk" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.6" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="18" r="1.6" stroke="currentColor" stroke-width="2"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-display font-extrabold text-xl mb-1.5">Ambulancias</h3>
+                    <p class="text-sm text-body leading-relaxed">Servicios de traslado de la red, con contacto directo para pedirlos ya.</p>
+                </div>
+                <span class="mt-auto text-teal-dk font-bold text-sm group-hover:underline">Ver ambulancias →</span>
+            </a>
+
+            <div class="lg:col-span-4 bg-navy rounded-2xl p-7 text-white flex flex-col">
+                <h3 class="font-display font-extrabold text-xl text-white mb-5">Cómo usar la guía</h3>
+                <ol class="space-y-4 text-sm">
+                    <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-teal/25 text-teal font-bold flex items-center justify-center shrink-0">1</span><p>Buscá como hablás: <em class="not-italic text-teal">"dentista"</em>, <em class="not-italic text-teal">"eco"</em> o <em class="not-italic text-teal">"me duele la espalda"</em> también funcionan.</p></li>
+                    <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-teal/25 text-teal font-bold flex items-center justify-center shrink-0">2</span><p>Filtrá por tu ciudad o ingresá tu CI para ver solo lo habilitado para tu plan.</p></li>
+                    <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-teal/25 text-teal font-bold flex items-center justify-center shrink-0">3</span><p>Llamá, escribí por WhatsApp o tocá "Cómo llegar" — directo desde la ficha.</p></li>
+                </ol>
+                <div class="mt-auto pt-6 bg-white/0">
+                    <div class="bg-white/10 rounded-xl p-4 text-[13px] leading-relaxed">
+                        <strong class="text-teal">Lister</strong> es nuestro centro médico propio (consultas, laboratorio e imagen).
+                        <strong>La red</strong> suma Lister + prestadores externos en todo el país.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ MÁS BUSCADOS (calculado con búsquedas reales — ver ANEXO) ============ -->
+        <section class="bg-white border-y border-line">
+            <div class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-16">
+                <div class="flex flex-wrap justify-between items-end gap-3 mb-8">
+                    <div>
+                        <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Esta semana en tu zona</div>
+                        <h2 class="font-display font-extrabold text-3xl tracking-tight">Los más buscados<span class="text-teal">.</span></h2>
+                    </div>
+                    <a href="guia_resultados.html" class="text-teal-dk font-bold text-sm hover:underline">Ver todos los prestadores →</a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- DATOS DE EJEMPLO — en producción esta sección se llena con el ranking real
+                         de búsquedas registradas (evento "search", ver ANEXO-requisitos-backend.md) -->
+                    <a href="guia_prestador.html" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-navy text-white font-display font-extrabold flex items-center justify-center shrink-0">LC</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Lister Centro Médico</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Policlínica · Centro propio SP</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">Asunción · Abierto ahora</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                    <a href="guia_prestador.html" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-teal-dk text-white font-display font-extrabold flex items-center justify-center shrink-0">MB</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Dra. María Benítez Rojas</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Ginecología</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">Asunción · 2 consultorios</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                    <a href="guia_resultados.html?q=Pediatría" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-mint text-teal-dk font-display font-extrabold flex items-center justify-center shrink-0">Pe</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Pediatría</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Especialidad · 48 profesionales</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">En 12 ciudades</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                    <a href="guia_resultados.html" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-teal text-white font-display font-extrabold flex items-center justify-center shrink-0">SR</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Sanatorio San Rafael</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Sanatorio · Urgencias 24h</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">Fernando de la Mora</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                    <a href="guia_resultados.html?q=Laboratorio" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-mint text-teal-dk font-display font-extrabold flex items-center justify-center shrink-0">La</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Laboratorio</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Estudio · Análisis clínicos</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">En 15 ciudades</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                    <a href="guia_resultados.html" class="lift flex items-center gap-4 bg-soft rounded-2xl p-4 border border-line group">
+                        <span class="w-12 h-12 rounded-full bg-teal-dk text-white font-display font-extrabold flex items-center justify-center shrink-0">CV</span>
+                        <span class="flex-1 min-w-0">
+                            <span class="block font-bold text-navy text-sm truncate group-hover:text-teal-dk transition-colors">Dr. Carlos Villalba Ortiz</span>
+                            <span class="block text-xs text-teal-dk font-semibold mt-0.5">Pediatría</span>
+                            <span class="block text-xs text-slate-400 mt-0.5">Luque · Clínica Santa Ana</span>
+                        </span>
+                        <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
+                    </a>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-4">Este ranking se calcula automáticamente con las búsquedas de los usuarios.</p>
+            </div>
+        </section>
+
+        <!-- ============ ESPECIALIDADES ============ -->
+        <section class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-20">
+            <div class="mb-8">
+                <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Nuestra red</div>
+                <h2 class="font-display font-extrabold text-3xl tracking-tight">Explorá por especialidad<span class="text-teal">.</span></h2>
+            </div>
+            <!-- Las 12 más consultadas siempre visibles; el resto se despliega
+                 acá mismo, agrupado por categoría — sin saltar a otra página -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="grid-especialidades">
+                <!-- Nombres en Tipo Oración (no MAYÚSCULAS SOSTENIDAS): más legibles y accesibles -->
+            </div>
+            <div id="todas-especialidades" class="hidden mt-8 space-y-7"></div>
+            <div class="mt-7 text-center">
+                <button id="btn-toggle-esp" aria-expanded="false" aria-controls="todas-especialidades"
+                        class="inline-flex items-center gap-2 border-2 border-teal text-teal-dk font-bold text-sm rounded-xl px-6 py-3 hover:bg-mint transition-colors">
+                    Ver las 64 especialidades ↓
+                </button>
+            </div>
+        </section>
+
+        <!-- ============ FALLBACK HUMANO ============ -->
+        <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16 md:pb-24">
+            <div class="bg-teal rounded-2xl px-7 py-9 md:px-12 md:py-11 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="flex-1">
+                    <h2 class="font-display font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-1.5">¿No encontrás lo que buscás?</h2>
+                    <p class="text-white/90 text-sm md:text-base">Contanos qué necesitás y te orientamos nosotros. Además, tu consulta nos ayuda a sumar lo que falta a la red.</p>
+                </div>
+                <a href="https://wa.me/595XXXXXXXXX?text=Hola%2C%20estoy%20buscando%20en%20la%20Gu%C3%ADa%20M%C3%A9dica%20y%20no%20encuentro%3A%20"
+                   onclick="track('fallback_whatsapp',{origen:'home'})"
+                   class="bg-white text-teal-dk font-bold rounded-xl px-7 py-3.5 text-sm hover:bg-mint transition-colors shrink-0">
+                    Escribinos por WhatsApp
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-navy text-white/80 text-sm">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <p class="font-display font-extrabold text-white text-lg mb-3">Salud Protegida</p>
+                <p class="text-white/60 leading-relaxed max-w-xs">+23 años cuidando familias paraguayas, con Lister y una red de prestadores en todo el país.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-4 uppercase tracking-wider text-xs">Guía Médica</h4>
+                <ul class="space-y-2.5 text-white/70">
+                    <li><a href="guia_resultados.html" class="hover:text-teal transition-colors">Todos los prestadores</a></li>
+                    <li><a href="guia_resultados.html?urgencias=1" class="hover:text-teal transition-colors">Urgencias 24h</a></li>
+                    <li><a href="https://saludprotegida.com.py/planes/" class="hover:text-teal transition-colors">Planes</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-4 uppercase tracking-wider text-xs">Contacto</h4>
+                <ul class="space-y-2.5 text-white/70">
+                    <li><a href="tel:0213190000" class="hover:text-teal transition-colors">(021) 319 0000</a></li>
+                    <li><a href="mailto:info@saludprotegida.com.py" class="hover:text-teal transition-colors">info@saludprotegida.com.py</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <div class="max-w-7xl mx-auto px-5 md:px-8 py-5 flex flex-col md:flex-row justify-between gap-2 text-xs text-white/50">
+                <span>© 2026 Salud Protegida. Todos los derechos reservados.</span>
+                <span class="uppercase tracking-widest">Vigilado por Superintendencia de Salud</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    /* =====================================================================
+       REGISTRO DE EVENTOS (inteligencia de negocio)
+       En producción, track() debe enviar el evento al backend (o GA4).
+       Eventos emitidos en esta página: search, suggestion_pick,
+       search_zero_results, click_urgencias, filtro_plan, fallback_whatsapp.
+       Detalle completo de campos en ANEXO-requisitos-backend.md
+       ===================================================================== */
+    function track(evento, datos) {
+        // TODO backend: fetch('/api/eventos', {method:'POST', body: JSON.stringify({evento, datos, ts: Date.now()})})
+        console.debug('[track]', evento, datos);
+    }
+
+    /* =====================================================================
+       BUSCADOR ÚNICO — demo funcional del comportamiento esperado.
+       En producción este catálogo y el matching viven en el backend
+       (mismo algoritmo: normalizar → sinónimos → substring → fuzzy).
+       ===================================================================== */
+    const CATALOGO = [
+        // --- Especialidades (con sinónimos cotidianos y palabras de síntomas) ---
+        { l:'Pediatría',            t:'Especialidad', k:['pediatra','medico de niños','niños','bebe','hijo'] },
+        { l:'Odontología',          t:'Especialidad', k:['dentista','muela','dientes','caries','dolor de muela'] },
+        { l:'Cardiología',          t:'Especialidad', k:['cardiologo','corazon','presion alta','palpitaciones'] },
+        { l:'Dermatología',         t:'Especialidad', k:['dermatologo','piel','acne','manchas','alergia en la piel'] },
+        { l:'Ginecología',          t:'Especialidad', k:['ginecologo','embarazo','pap','control femenino'] },
+        { l:'Traumatología',        t:'Especialidad', k:['traumatologo','huesos','fractura','esguince','rodilla','dolor de espalda','espalda'] },
+        { l:'Oftalmología',         t:'Especialidad', k:['oculista','ojos','vista','lentes'] },
+        { l:'Otorrinolaringología', t:'Especialidad', k:['otorrino','oido','garganta','nariz','dolor de oido'] },
+        { l:'Psicología',           t:'Especialidad', k:['psicologo','terapia','ansiedad','depresion','salud mental'] },
+        { l:'Psiquiatría',          t:'Especialidad', k:['psiquiatra','salud mental'] },
+        { l:'Nutrición',            t:'Especialidad', k:['nutricionista','dieta','bajar de peso'] },
+        { l:'Fisioterapia',         t:'Especialidad', k:['fisio','kinesiologo','rehabilitacion','dolor de espalda'] },
+        { l:'Urología',             t:'Especialidad', k:['urologo','prostata'] },
+        { l:'Neurología',           t:'Especialidad', k:['neurologo','dolor de cabeza','migraña','mareos'] },
+        { l:'Gastroenterología',    t:'Especialidad', k:['gastro','estomago','digestivo','dolor de panza','acidez'] },
+        { l:'Clínica Médica',       t:'Especialidad', k:['clinico','medico general','consulta general','chequeo'] },
+        // --- Estudios ---
+        { l:'Resonancia Magnética (RM)', t:'Estudio', k:['resonancia','rm'] },
+        { l:'Tomografía (TAC)',          t:'Estudio', k:['tomografia','tac','escaner'] },
+        { l:'Ecografía',                 t:'Estudio', k:['eco','ultrasonido','ecografia'] },
+        { l:'Laboratorio · Análisis clínicos', t:'Estudio', k:['analisis de sangre','laboratorio','analisis','orina'] },
+        { l:'Radiografía',               t:'Estudio', k:['rayos x','placa','radiografia'] },
+        { l:'Electrocardiograma',        t:'Estudio', k:['ecg','electro'] },
+        { l:'Mamografía',                t:'Estudio', k:['mamografia','mama','control de mamas'] },
+        // --- Prestadores (muestra) ---
+        { l:'Lister Centro Médico',      t:'Prestador', k:['lister','centro propio'] },
+        { l:'Dra. María Benítez Rojas',  t:'Prestador', k:['benitez','ginecologa'], href:'guia_prestador.html' },
+        { l:'Sanatorio San Rafael',      t:'Prestador', k:['san rafael','sanatorio'] },
+        { l:'Centro de Diagnóstico Medlab', t:'Prestador', k:['medlab','laboratorio'] },
+        // --- Ciudades ---
+        { l:'Asunción',      t:'Ciudad', k:[] },
+        { l:'Luque',         t:'Ciudad', k:[] },
+        { l:'San Lorenzo',   t:'Ciudad', k:[] },
+        { l:'Ciudad del Este', t:'Ciudad', k:['cde'] },
+        { l:'Encarnación',   t:'Ciudad', k:[] },
+        { l:'Lambaré',       t:'Ciudad', k:[] },
+    ];
+
+    // Normalizar: minúsculas y sin tildes → "Pediatría" y "pediatria" son lo mismo
+    const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    // Distancia de edición: tolera errores de tipeo ("rezonancia" ≈ "resonancia")
+    function editDist(a, b) {
+        const m = a.length, n = b.length;
+        if (Math.abs(m - n) > 2) return 3;
+        const d = Array.from({length: m + 1}, (_, i) => [i, ...Array(n).fill(0)]);
+        for (let j = 0; j <= n; j++) d[0][j] = j;
+        for (let i = 1; i <= m; i++)
+            for (let j = 1; j <= n; j++)
+                d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+        return d[m][n];
+    }
+
+    function buscar(q) {
+        q = norm(q.trim());
+        if (q.length < 2) return [];
+        const puntuar = (item) => {
+            const campos = [item.l, ...item.k].map(norm);
+            if (campos.some(c => c.startsWith(q))) return 0;          // prefijo exacto
+            if (campos.some(c => c.includes(q))) return 1;            // contiene
+            // fuzzy palabra por palabra (solo con consultas de 4+ letras)
+            if (q.length >= 4 && campos.some(c => c.split(/\s+/).some(w => editDist(w, q) <= (q.length > 6 ? 2 : 1)))) return 2;
+            return -1;
+        };
+        return CATALOGO.map(it => ({ it, s: puntuar(it) }))
+                       .filter(x => x.s >= 0)
+                       .sort((a, b) => a.s - b.s)
+                       .slice(0, 8)
+                       .map(x => x.it);
+    }
+
+    // --- UI del combobox (accesible: ARIA + teclado) ---
+    const inp = document.getElementById('q');
+    const lista = document.getElementById('q-sugerencias');
+    let activo = -1, resultados = [];
+
+    function render() {
+        if (!resultados.length) { cerrar(); return; }
+        let html = '', ultTipo = '';
+        resultados.forEach((r, i) => {
+            if (r.t !== ultTipo) { html += `<li class="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-slate-400" aria-hidden="true">${r.t === 'Especialidad' ? 'Especialidades' : r.t === 'Estudio' ? 'Estudios' : r.t === 'Prestador' ? 'Prestadores' : 'Ciudades'}</li>`; ultTipo = r.t; }
+            html += `<li id="opt-${i}" role="option" aria-selected="${i === activo}" data-i="${i}"
+                         class="px-4 py-2.5 cursor-pointer hover:bg-mint text-sm text-ink flex justify-between items-center">
+                         <span>${r.l}</span><span class="text-[10px] text-slate-400 uppercase">${r.t}</span></li>`;
+        });
+        lista.innerHTML = html;
+        lista.classList.remove('hidden');
+        inp.setAttribute('aria-expanded', 'true');
+        lista.querySelectorAll('[role="option"]').forEach(li =>
+            li.addEventListener('mousedown', e => { e.preventDefault(); elegir(+li.dataset.i); }));
+    }
+    function cerrar() { lista.classList.add('hidden'); inp.setAttribute('aria-expanded', 'false'); activo = -1; }
+    function elegir(i) {
+        const r = resultados[i];
+        track('suggestion_pick', { q: inp.value, eleccion: r.l, tipo: r.t });
+        if (r.href) { location.href = r.href; return; }
+        location.href = 'guia_resultados.html?q=' + encodeURIComponent(r.l);
+    }
+
+    let deb;
+    inp.addEventListener('input', () => {
+        clearTimeout(deb);
+        deb = setTimeout(() => {
+            resultados = buscar(inp.value); activo = -1;
+            if (inp.value.trim().length >= 3 && !resultados.length)
+                track('search_zero_results', { q: inp.value });   // ← oro para Convenios
+            render();
+        }, 180);
+    });
+    inp.addEventListener('keydown', e => {
+        if (lista.classList.contains('hidden')) return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); activo = Math.min(activo + 1, resultados.length - 1); render(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); activo = Math.max(activo - 1, 0); render(); }
+        else if (e.key === 'Enter' && activo >= 0) { e.preventDefault(); elegir(activo); }
+        else if (e.key === 'Escape') cerrar();
+    });
+    document.addEventListener('click', e => { if (!lista.contains(e.target) && e.target !== inp) cerrar(); });
+
+    // --- Grilla de especialidades (Tipo Oración, no MAYÚSCULAS) ---
+    // Las 12 más consultadas, siempre visibles. En producción este orden
+    // sale del ranking real de búsquedas (evento "search").
+    const chipEsp = e => `<a href="guia_resultados.html?q=${encodeURIComponent(e)}"
+            class="lift bg-white border border-line rounded-2xl p-4 text-center group hover:border-teal transition-colors">
+            <span class="block font-bold text-navy text-sm group-hover:text-teal-dk transition-colors">${e}</span>
+         </a>`;
+    const POPULARES = ['Pediatría','Odontología','Cardiología','Ginecología','Dermatología','Traumatología','Oftalmología','Psicología','Clínica Médica','Laboratorio','Ecografía','Fisioterapia'];
+    document.getElementById('grid-especialidades').innerHTML = POPULARES.map(chipEsp).join('');
+
+    // Catálogo completo (64), agrupado para que se pueda escanear de un vistazo.
+    // El agrupamiento también es una propuesta de taxonomía: hoy "Sanatorio" o
+    // "Centro de Diagnóstico por Imagen" figuran mezclados como especialidades.
+    const GRUPOS = [
+        { titulo: 'Especialidades médicas', items: ['Alergista','Cardiología','Cirugía General','Cirugía Plástica','Cirugía Torácica','Cirugía Vascular y Flebología','Clínica Médica','Coloproctología','Dermatología','Diabetología','Endocrinología','Gastroenterología','Geriatría','Ginecología','Hematología','Infectología','Mastología','Medicina del Trabajo','Nefrología','Neumología','Neurocirugía','Neurología','Nutrición','Odontología','Oftalmología','Oncología Médica','Otorrinolaringología','Reumatología','Traumatología','Urología'] },
+        { titulo: 'Salud infantil', items: ['Pediatría','Alergia Infantil','Cardiología Infantil','Cirugía Pediátrica','Gastroenterología Infantil','Infectología Infantil','Mastología Infantil','Nefrología Infantil','Neurología Infantil','Nutrición Infantil','Oftalmología Infantil'] },
+        { titulo: 'Estudios y diagnóstico', items: ['Laboratorio','Ecografía','Ecocardiograma','Electrocardiograma','Radiografía','Mamografía','Tomografía (TAC)','Resonancia (RM)','MAPA y Holter','PAP y Colposcopia','Estudios Audiológicos','Anatomía Patológica','Diagnóstico por Imagen'] },
+        { titulo: 'Salud mental y terapias', items: ['Psicología','Psiquiatría','Psicopedagogía','Fonoaudiología','Fisioterapia','Medicina Física y Rehabilitación','Podología','Otoneurología','Toxicología'] },
+        { titulo: 'Centros y servicios', items: ['Sanatorios','Policlínicas','Clínicas y consultorios','Ambulancias'] },
+    ];
+    const cont = document.getElementById('todas-especialidades');
+    cont.innerHTML = GRUPOS.map(g => `
+        <div>
+            <h3 class="text-[11px] font-bold uppercase tracking-[0.15em] text-teal-dk mb-3">${g.titulo}</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                ${g.items.map(e => `<a href="guia_resultados.html?q=${encodeURIComponent(e)}"
+                    class="bg-white border border-line rounded-xl px-3.5 py-2.5 text-center text-[13px] font-semibold text-navy hover:border-teal hover:text-teal-dk transition-colors">${e}</a>`).join('')}
+            </div>
+        </div>`).join('');
+
+    const btnEsp = document.getElementById('btn-toggle-esp');
+    btnEsp.addEventListener('click', () => {
+        const abierto = !cont.classList.contains('hidden');
+        cont.classList.toggle('hidden');
+        btnEsp.setAttribute('aria-expanded', String(!abierto));
+        btnEsp.textContent = abierto ? 'Ver las 64 especialidades ↓' : 'Mostrar menos ↑';
+        if (!abierto) track('especialidades_expand', {});
+        else cont.closest('section').scrollIntoView({ behavior: 'smooth' });
+    });
+    </script>
+</body>
+</html>
