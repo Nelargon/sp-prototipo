@@ -49,6 +49,8 @@ sesión anónima, dispositivo y origen:
 | `click_llamar` / `click_whatsapp` / `click_como_llegar` | prestador, sede | la búsqueda terminó en contacto (conversión) |
 | `fallback_whatsapp`   | texto buscado                            | cola CX con contexto |
 | `filtro_plan`         | (sin datos personales)                   | uso de la vista por plan |
+| `vista_personalizada` | nivel de plan (sin identidad)            | adopción del modo "mi red" |
+| `upsell_view` / `upsell_click_simulador` | prestador, plan requerido, plan del usuario | **qué prestadores generan deseo de upgrade → Comercial** |
 
 Con esto se arma el tablero mínimo: top búsquedas sin resultado, matriz
 especialidad × ciudad (demanda vs. oferta), prestadores más contactados.
@@ -77,7 +79,13 @@ El molde de las páginas asume, por prestador:
   **teléfonos separados** (uno por campo, con marca de cuál es WhatsApp),
   **horarios** por día (permite calcular "Abierto ahora").
 - **Planes aceptados** por prestador (y cobertura/copago por plan, si se
-  integra la cartilla).
+  integra la cartilla). La cobertura es **jerárquica** (Premium ⊇ Integral ⊇
+  Esencial), así que basta almacenar el **nivel mínimo** por prestador
+  (`min_plan`). SP Senior corre por su propio carril (Senior / Senior Plus)
+  con su propio nivel mínimo. En la UI: sin CI se muestra "Desde SP X" /
+  "★ Exclusivo SP Premium"; con CI, "✓ Con tu plan" o la etiqueta dorada
+  que abre la hoja de upsell hacia el simulador. Regla de tono: nunca
+  "No cubierto" ni rojo — la ausencia se comunica como oportunidad.
 - **Atributos**: urgencias 24h · a domicilio · telemedicina.
 - Especialidades ≠ tipos de prestador (hoy "SANATORIO" figura como
   especialidad). Corregir typo del catálogo: "SERVICIO DE AMBULACIA".

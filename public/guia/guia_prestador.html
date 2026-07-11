@@ -55,12 +55,24 @@
                 <a href="https://saludprotegida.com.py/planes/" class="hover:text-teal-dk transition-colors">Planes</a>
                 <a href="https://saludprotegida.com.py/" class="hover:text-teal-dk transition-colors">Salud Protegida</a>
             </div>
-            <a href="tel:0213190000" onclick="track('click_urgencias',{origen:'header'})"
-               class="flex items-center gap-2 bg-urgent text-white pl-3 pr-4 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="hidden sm:inline">Urgencias</span> (021)&nbsp;319&nbsp;0000
-            </a>
+            <div class="flex items-center gap-3">
+                <a href="tel:0213190000" onclick="track('click_urgencias',{origen:'header'})"
+                   class="flex items-center gap-2 bg-urgent text-white pl-3 pr-4 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="hidden sm:inline">Urgencias</span> (021)&nbsp;319&nbsp;0000
+                </a>
+                <button id="btn-menu" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú"
+                        class="md:hidden w-11 h-11 rounded-xl bg-soft border border-line flex items-center justify-center text-navy">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
         </nav>
+        <div id="menu-movil" class="hidden md:hidden absolute top-20 left-3 right-3 bg-white rounded-2xl shadow-2xl border border-line p-3 flex-col gap-1">
+            <a href="tel:0213190000" class="flex items-center gap-2 bg-urgent text-white font-bold text-sm rounded-xl px-4 py-3.5 mb-1">🚨 Urgencias · (021) 319 0000</a>
+            <a href="guia_home.html" class="px-4 py-3 rounded-xl font-semibold text-teal-dk text-sm bg-mint">Guía Médica</a>
+            <a href="https://saludprotegida.com.py/planes/" class="px-4 py-3 rounded-xl font-semibold text-navy text-sm hover:bg-soft">Planes</a>
+            <a href="https://saludprotegida.com.py/" class="px-4 py-3 rounded-xl font-semibold text-navy text-sm hover:bg-soft">Salud Protegida</a>
+        </div>
     </header>
 
     <main class="flex-grow pt-20">
@@ -89,12 +101,11 @@
                         </div>
                         <h1 class="font-display font-extrabold text-3xl md:text-4xl tracking-tight leading-tight">Dra. María Benítez Rojas</h1>
                         <p class="text-lg font-semibold text-teal-dk mt-1">Ginecología</p>
+                        <!-- Cobertura jerárquica: una sola etiqueta de nivel mínimo dice todo.
+                             SP Senior corre por su propio carril, por eso va aparte. -->
                         <div class="flex flex-wrap items-center gap-1.5 mt-4" aria-label="Planes que acepta">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende con:</span>
-                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-mint text-teal-dk">SP Esencial</span>
-                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-mint text-teal-dk">SP Integral</span>
-                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-gold/15 text-gold">SP Premium</span>
-                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">SP Senior</span>
+                            <span class="text-[11px] font-bold px-3 py-1 rounded-full bg-mint text-teal-dk">Desde SP Esencial</span>
+                            <span class="text-[11px] font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-500">SP Senior: desde Senior</span>
                         </div>
                     </div>
                     <div class="flex md:flex-col gap-2 w-full md:w-auto shrink-0">
@@ -173,7 +184,7 @@
                     <section class="bg-white rounded-2xl border border-line p-6">
                         <h2 class="font-display font-extrabold text-xl mb-1">Tu consulta, según tu plan<span class="text-teal">.</span></h2>
                         <p class="text-xs text-slate-400 mb-5">Cifras de referencia — el detalle final lo confirmás con tu asesor.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                             <div class="rounded-xl border border-line p-4">
                                 <p class="text-xs font-bold text-teal-dk mb-2">● SP Esencial</p>
                                 <span class="inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk mb-2">Cubierta</span>
@@ -188,6 +199,11 @@
                                 <p class="text-xs font-bold text-gold mb-2">● SP Premium</p>
                                 <span class="inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk mb-2">Cubierta</span>
                                 <p class="text-xs text-slate-500">Al 100% + agenda prioritaria</p>
+                            </div>
+                            <div class="rounded-xl border border-line bg-soft p-4">
+                                <p class="text-xs font-bold text-slate-500 mb-2">● SP Senior</p>
+                                <span class="inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk mb-2">Cubierta</span>
+                                <p class="text-xs text-slate-500">Desde Senior · Plus suma domicilio</p>
                             </div>
                         </div>
                     </section>
@@ -259,6 +275,22 @@
         // TODO backend: enviar a /api/eventos
         console.debug('[track]', evento, datos);
     }
+
+    // Menú móvil
+    const btnMenu = document.getElementById('btn-menu');
+    const menuMovil = document.getElementById('menu-movil');
+    btnMenu.addEventListener('click', () => {
+        const abierto = !menuMovil.classList.contains('hidden');
+        menuMovil.classList.toggle('hidden'); menuMovil.classList.toggle('flex');
+        btnMenu.setAttribute('aria-expanded', String(!abierto));
+        if (!abierto) track('menu_open', {});
+    });
+    document.addEventListener('click', e => {
+        if (!menuMovil.contains(e.target) && !btnMenu.contains(e.target)) {
+            menuMovil.classList.add('hidden'); menuMovil.classList.remove('flex');
+            btnMenu.setAttribute('aria-expanded', 'false');
+        }
+    });
     </script>
 </body>
 </html>
