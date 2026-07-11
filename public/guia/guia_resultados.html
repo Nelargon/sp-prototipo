@@ -42,12 +42,24 @@
                 <a href="https://saludprotegida.com.py/planes/" class="hover:text-teal-dk transition-colors">Planes</a>
                 <a href="https://saludprotegida.com.py/" class="hover:text-teal-dk transition-colors">Salud Protegida</a>
             </div>
-            <a href="tel:0213190000" onclick="track('click_urgencias',{origen:'header'})"
-               class="flex items-center gap-2 bg-urgent text-white pl-3 pr-4 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="hidden sm:inline">Urgencias</span> (021)&nbsp;319&nbsp;0000
-            </a>
+            <div class="flex items-center gap-3">
+                <a href="tel:0213190000" onclick="track('click_urgencias',{origen:'header'})"
+                   class="flex items-center gap-2 bg-urgent text-white pl-3 pr-4 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="hidden sm:inline">Urgencias</span> (021)&nbsp;319&nbsp;0000
+                </a>
+                <button id="btn-menu" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú"
+                        class="md:hidden w-11 h-11 rounded-xl bg-soft border border-line flex items-center justify-center text-navy">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
         </nav>
+        <div id="menu-movil" class="hidden md:hidden absolute top-20 left-3 right-3 bg-white rounded-2xl shadow-2xl border border-line p-3 flex-col gap-1">
+            <a href="tel:0213190000" class="flex items-center gap-2 bg-urgent text-white font-bold text-sm rounded-xl px-4 py-3.5 mb-1">🚨 Urgencias · (021) 319 0000</a>
+            <a href="guia_home.html" class="px-4 py-3 rounded-xl font-semibold text-teal-dk text-sm bg-mint">Guía Médica</a>
+            <a href="https://saludprotegida.com.py/planes/" class="px-4 py-3 rounded-xl font-semibold text-navy text-sm hover:bg-soft">Planes</a>
+            <a href="https://saludprotegida.com.py/" class="px-4 py-3 rounded-xl font-semibold text-navy text-sm hover:bg-soft">Salud Protegida</a>
+        </div>
     </header>
 
     <main class="flex-grow pt-20">
@@ -59,6 +71,16 @@
                 <span aria-hidden="true">›</span>
                 <span class="text-slate-600 font-medium">Resultados</span>
             </nav>
+
+            <!-- ============ MODO PERSONALIZADO (C3) ============
+                 Aparece cuando el usuario consultó con su CI. Una sola lista,
+                 ordenada con lo cubierto primero; lo no cubierto invita, no bloquea. -->
+            <div id="banner-plan" class="hidden bg-navy rounded-2xl px-5 py-4 mb-6 items-center justify-between gap-3 flex-wrap">
+                <p class="text-white text-sm font-semibold">
+                    ✓ Viendo la red con tu plan: <span id="banner-plan-nombre" class="text-teal font-display font-extrabold"></span>
+                </p>
+                <a href="guia_resultados.html" class="text-white/70 hover:text-white text-xs font-bold underline underline-offset-2">Ver toda la red</a>
+            </div>
 
             <!-- ============ BUSCADOR PERSISTENTE ============ -->
             <!-- El mismo buscador único de la portada acompaña los resultados:
@@ -170,7 +192,7 @@
                              planes, geo). Ver ANEXO-requisitos-backend.md -->
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-tags="dra maria benitez rojas ginecologia ginecologo embarazo pap asuncion medicos">
+                                 data-min-plan="esencial" data-tags="dra maria benitez rojas ginecologia ginecologo embarazo pap asuncion medicos">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal-dk text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">MB</span>
                                 <div class="flex-grow min-w-0">
@@ -182,12 +204,7 @@
                                         <span>📍 2 consultorios · Asunción</span>
                                         <span>🕐 Lun–Vie 08:00–17:00 · <strong class="text-teal-dk">Abierto ahora</strong></span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-1.5 mt-3" aria-label="Planes que acepta">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende:</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Esencial</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Integral</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gold/15 text-gold">Premium</span>
-                                    </div>
+                                    <div class="plan-slot mt-3" aria-label="Cobertura por plan"></div>
                                 </div>
                                 <div class="flex md:flex-col gap-2 shrink-0 w-full md:w-auto">
                                     <a href="tel:0217299090" onclick="track('click_llamar',{prestador:'dra-benitez'})"
@@ -199,7 +216,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-tags="lister centro medico policlinica laboratorio imagen asuncion urgencias 24 sanatorios y clinicas">
+                                 data-min-plan="esencial" data-tags="lister centro medico policlinica laboratorio imagen asuncion urgencias 24 sanatorios y clinicas">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-navy text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">LC</span>
                                 <div class="flex-grow min-w-0">
@@ -211,10 +228,7 @@
                                         <span>📍 Avda. España 1234, Asunción</span>
                                         <span class="font-bold text-urgent">🚨 Urgencias 24h</span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-1.5 mt-3" aria-label="Planes que acepta">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende:</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Todos los planes</span>
-                                    </div>
+                                    <div class="plan-slot mt-3" aria-label="Cobertura por plan"></div>
                                 </div>
                                 <div class="flex md:flex-col gap-2 shrink-0 w-full md:w-auto">
                                     <a href="tel:0213190000" onclick="track('click_llamar',{prestador:'lister'})"
@@ -226,7 +240,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-tags="sanatorio san rafael internacion urgencias 24 fernando de la mora sanatorios y clinicas">
+                                 data-min-plan="integral" data-tags="sanatorio san rafael internacion urgencias 24 fernando de la mora sanatorios y clinicas">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">SR</span>
                                 <div class="flex-grow min-w-0">
@@ -238,11 +252,7 @@
                                         <span>📍 Avda. Mcal. López 2455, Fernando de la Mora</span>
                                         <span class="font-bold text-urgent">🚨 Urgencias 24h</span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-1.5 mt-3" aria-label="Planes que acepta">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende:</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Integral</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gold/15 text-gold">Premium</span>
-                                    </div>
+                                    <div class="plan-slot mt-3" aria-label="Cobertura por plan"></div>
                                 </div>
                                 <div class="flex md:flex-col gap-2 shrink-0 w-full md:w-auto">
                                     <a href="tel:021555000" onclick="track('click_llamar',{prestador:'san-rafael'})"
@@ -254,7 +264,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-tags="centro de diagnostico medlab laboratorio analisis radiografia electrocardiograma san alberto laboratorios">
+                                 data-min-plan="esencial" data-tags="centro de diagnostico medlab laboratorio analisis radiografia electrocardiograma san alberto laboratorios">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-mint text-teal-dk font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">ML</span>
                                 <div class="flex-grow min-w-0">
@@ -266,10 +276,7 @@
                                         <span>📍 Juana de Lara c/ Avda. Mcal. López, San Alberto</span>
                                         <span>🕐 Lun–Sáb 06:30–18:00</span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-1.5 mt-3" aria-label="Planes que acepta">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende:</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Todos los planes</span>
-                                    </div>
+                                    <div class="plan-slot mt-3" aria-label="Cobertura por plan"></div>
                                 </div>
                                 <div class="flex md:flex-col gap-2 shrink-0 w-full md:w-auto">
                                     <a href="tel:0984500320" onclick="track('click_llamar',{prestador:'medlab'})"
@@ -281,7 +288,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-tags="dr carlos villalba pediatria pediatra niños luque medicos">
+                                 data-min-plan="premium" data-tags="dr carlos villalba pediatria pediatra niños luque medicos">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal-dk text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">CV</span>
                                 <div class="flex-grow min-w-0">
@@ -293,11 +300,7 @@
                                         <span>📍 Clínica Santa Ana, Luque</span>
                                         <span>🕐 Lun–Vie 13:00–19:00</span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-1.5 mt-3" aria-label="Planes que acepta">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Atiende:</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Esencial</span>
-                                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-mint text-teal-dk">Integral</span>
-                                    </div>
+                                    <div class="plan-slot mt-3" aria-label="Cobertura por plan"></div>
                                 </div>
                                 <div class="flex md:flex-col gap-2 shrink-0 w-full md:w-auto">
                                     <a href="tel:021645123" onclick="track('click_llamar',{prestador:'dr-villalba'})"
@@ -351,6 +354,28 @@
             <span class="uppercase tracking-widest">Vigilado por Superintendencia de Salud</span>
         </div>
     </footer>
+
+    <!-- ============ HOJA DE UPSELL ============
+         Se abre al tocar una etiqueta dorada en modo personalizado.
+         Nunca dice "no cubierto": presenta el plan superior como puerta,
+         y conecta con el simulador para cerrar el círculo comercial. -->
+    <div id="upsell-fondo" class="hidden fixed inset-0 bg-navy/50 backdrop-blur-sm z-[60]"></div>
+    <div id="upsell-hoja" class="hidden fixed left-3 right-3 bottom-3 md:left-1/2 md:right-auto md:bottom-auto md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[440px] bg-white rounded-2xl shadow-2xl z-[70] p-7"
+         role="dialog" aria-modal="true" aria-labelledby="upsell-titulo">
+        <div class="w-11 h-11 rounded-xl bg-gold/15 text-gold flex items-center justify-center mb-4">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 2.6 6.2L21 9l-5 4.4 1.5 6.6L12 16.5 6.5 20 8 13.4 3 9l6.4-.8L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 id="upsell-titulo" class="font-display font-extrabold text-xl mb-2">Este prestador te espera en <span class="text-gold" id="upsell-plan">SP Premium</span>.</h3>
+        <p class="text-sm text-body leading-relaxed mb-5">
+            Con <strong id="upsell-plan-2">SP Premium</strong> accedés a <strong id="upsell-nombre">este prestador</strong> y a decenas más,
+            con internación en sala privada y prioridad de agenda. Mirá cuánto te costaría el cambio — sin compromiso.
+        </p>
+        <div class="flex gap-2.5">
+            <a href="../simulador/" onclick="track('upsell_click_simulador',{prestador: window._upsellId})"
+               class="flex-1 text-center bg-navy hover:bg-navy-dk text-white font-bold rounded-xl py-3 text-sm transition-colors">Simulá el cambio →</a>
+            <button id="upsell-cerrar" class="border-2 border-line text-slate-500 font-bold rounded-xl px-5 py-2.5 text-sm hover:border-navy hover:text-navy transition-colors">Seguir mirando</button>
+        </div>
+    </div>
 
     <script>
     /* Registro de eventos — ver ANEXO-requisitos-backend.md */
@@ -436,6 +461,78 @@
     // Si venimos de la portada con ?q=..., precargar la búsqueda
     const qParam = new URLSearchParams(location.search).get('q');
     if (qParam) { inp.value = qParam; filtrar(); track('search', { q: qParam, origen: 'home' }); }
+
+    /* =====================================================================
+       COBERTURA POR PLAN (jerárquica: Premium ⊇ Integral ⊇ Esencial;
+       SP Senior corre por su propio carril con Senior/Senior Plus).
+       - Sin CI (modo general): etiqueta "Desde SP X" / "Exclusivo SP Premium".
+       - Con CI (?plan=..., modo personalizado): "✓ Con tu plan" o etiqueta
+         dorada que abre la hoja de upsell; lo cubierto se ordena primero.
+       ===================================================================== */
+    const NIVEL = { esencial: 1, integral: 2, premium: 3 };
+    const NOMBRE = { esencial: 'SP Esencial', integral: 'SP Integral', premium: 'SP Premium' };
+    const planUsuario = (new URLSearchParams(location.search).get('plan') || '').toLowerCase();
+    const personalizado = !!NIVEL[planUsuario];
+
+    if (personalizado) {
+        const banner = document.getElementById('banner-plan');
+        banner.classList.remove('hidden'); banner.classList.add('flex');
+        document.getElementById('banner-plan-nombre').textContent = NOMBRE[planUsuario];
+        track('vista_personalizada', { plan: planUsuario });
+    }
+
+    const hoja = document.getElementById('upsell-hoja'), fondo = document.getElementById('upsell-fondo');
+    function abrirUpsell(nombre, planMin, id) {
+        window._upsellId = id;
+        document.getElementById('upsell-plan').textContent = NOMBRE[planMin];
+        document.getElementById('upsell-plan-2').textContent = NOMBRE[planMin];
+        document.getElementById('upsell-nombre').textContent = nombre;
+        hoja.classList.remove('hidden'); fondo.classList.remove('hidden');
+        track('upsell_view', { prestador: id, planRequerido: planMin, planUsuario });
+    }
+    function cerrarUpsell() { hoja.classList.add('hidden'); fondo.classList.add('hidden'); }
+    document.getElementById('upsell-cerrar').addEventListener('click', cerrarUpsell);
+    fondo.addEventListener('click', cerrarUpsell);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarUpsell(); });
+
+    const lista = document.getElementById('lista-resultados');
+    const cubiertas = [], noCubiertas = [];
+    tarjetas.forEach(t => {
+        const min = t.dataset.minPlan || 'esencial';
+        const slot = t.querySelector('.plan-slot');
+        const nombre = t.querySelector('h3').textContent.trim();
+        if (!personalizado) {
+            slot.innerHTML = min === 'premium'
+                ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-gold/15 text-gold">★ Exclusivo SP Premium</span>`
+                : `<span class="text-[11px] font-bold px-3 py-1 rounded-full bg-mint text-teal-dk">Desde ${NOMBRE[min]}</span>`;
+        } else if (NIVEL[min] <= NIVEL[planUsuario]) {
+            slot.innerHTML = `<span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-mint text-teal-dk">✓ Con tu plan</span>`;
+            cubiertas.push(t);
+        } else {
+            slot.innerHTML = `<button class="upsell-chip inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-gold/15 text-gold hover:bg-gold hover:text-white transition-colors cursor-pointer">★ Con ${NOMBRE[min]} →</button>`;
+            slot.querySelector('.upsell-chip').addEventListener('click', () => abrirUpsell(nombre, min, nombre));
+            t.classList.add('opacity-80');
+            noCubiertas.push(t);
+        }
+    });
+    // lo cubierto primero — el orden también comunica
+    if (personalizado) [...cubiertas, ...noCubiertas].forEach(t => lista.appendChild(t));
+
+    // Menú móvil
+    const btnMenu = document.getElementById('btn-menu');
+    const menuMovil = document.getElementById('menu-movil');
+    btnMenu.addEventListener('click', () => {
+        const abierto = !menuMovil.classList.contains('hidden');
+        menuMovil.classList.toggle('hidden'); menuMovil.classList.toggle('flex');
+        btnMenu.setAttribute('aria-expanded', String(!abierto));
+        if (!abierto) track('menu_open', {});
+    });
+    document.addEventListener('click', e => {
+        if (!menuMovil.contains(e.target) && !btnMenu.contains(e.target)) {
+            menuMovil.classList.add('hidden'); menuMovil.classList.remove('flex');
+            btnMenu.setAttribute('aria-expanded', 'false');
+        }
+    });
     </script>
 </body>
 </html>
