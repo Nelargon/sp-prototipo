@@ -32,9 +32,9 @@ export default function SimuladorPage() {
       <header style={css('position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;background:#003B71;box-shadow:0 1px 0 rgba(255,255,255,0.08)')}>
         <div style={css('display:flex;align-items:center;gap:18px;min-width:0')}>
           <a href={`${BP}/`} aria-label="Salud Protegida — Inicio" style={css('display:flex;align-items:center;flex:none')}>
-            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:52px;display:block')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" className="sim-logo" style={css('height:52px;display:block')} />
           </a>
-          <a href={`${BP}/`} className="link-teal" style={css('display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.72);font-size:13px;font-weight:600;white-space:nowrap')}>← Volver al inicio</a>
+          <a href={`${BP}/`} className="link-teal sim-back" style={css('display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.72);font-size:13px;font-weight:600;white-space:nowrap')}>← Volver al inicio</a>
         </div>
         <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
       </header>
