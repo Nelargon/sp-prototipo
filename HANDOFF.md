@@ -217,8 +217,10 @@ cd out && python3 -m http.server 8080
 - `HANDOVER.md` — implementación técnica de la página de planes (v6).
 - `guia/ANEXO-requisitos-backend.md` — eventos de medición, seguridad de
   cédula, campos de datos, higiene técnica. **Es el contrato con la empresa.**
-- `project/uploads/` — briefs del rediseño (01–06), plan estratégico, y los
-  3 HTML de la guía actual de SIP (`cloud_home/search/prestador`, subidos
-  por el usuario en la sesión de julio 2026).
-- `project/Resumen - Web SP.md` — historia y decisiones de la web de planes.
+- **Material interno** (briefs 01–06, plan estratégico, los 3 HTML de la
+  guía actual de SIP, transcripciones y prototipos históricos): vive en el
+  repo **privado `Nelargon/sp-interno`** (carpetas `project/` y `chats/`,
+  más las ramas `archivo/*`). Se movió ahí en julio 2026 para que el repo
+  público no exponga documentos confidenciales. **No compartir acceso a
+  sp-interno con proveedores.**
 - ZIP de entrega para la empresa: regenerable con `zip -r guia-medica-sp.zip guia/`.

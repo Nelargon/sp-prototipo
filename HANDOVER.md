@@ -3,7 +3,8 @@
 ## 1. Qué se pidió
 Implementar de verdad el diseño exportado de Claude Design
 **`project/Planes v6 - Pagina viva (Gilroy completo).dc.html`** (sitio one-page de Salud
-Protegida, seguro médico, Paraguay).
+Protegida, seguro médico, Paraguay). *Nota 2026-07: ese export y todo `project/`
+viven ahora en el repo privado `Nelargon/sp-interno`.*
 
 Decisiones ya tomadas por el usuario (no volver a preguntar):
 - **Stack: Next.js** (App Router).
@@ -28,7 +29,7 @@ app/page.jsx       # toda la página (client component): lógica + markup (~1024
 app/globals.css    # @font-face Gilroy, keyframes, media queries, clases hover/focus
 public/assets/     # hero.webp, logos, manifiesto/frase-1|4|7.webp, favicon
 public/fonts/      # Gilroy 400/500/600/700/800
-project/, chats/   # export original de Claude Design (referencia)
+(project/ y chats/ se movieron al repo privado sp-interno — julio 2026)
 ```
 
 ## 4. Cómo correr
@@ -65,7 +66,8 @@ ensuciar `package.json`.
 ## 7. Git / remoto
 - Remoto: **`Nelargon/sp-prototipo`** (GitHub). Rama de trabajo: `implement-planes-v6`.
 - Si en una sesión nueva el trabajo no está, reimplementar desde
-  `project/Planes v6 - Pagina viva (Gilroy completo).dc.html` siguiendo este handover.
+  `project/Planes v6 - Pagina viva (Gilroy completo).dc.html` (en el repo
+  privado `sp-interno`) siguiendo este handover.
 
 ## 8. Próximos pasos sugeridos
 - Cargar número real de WhatsApp + datos de contacto.
