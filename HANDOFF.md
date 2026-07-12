@@ -196,9 +196,9 @@ cd out && python3 -m http.server 8080
 # → http://localhost:8080/guia/guia_home.html (guía)
 ```
 
-- **La guía vive duplicada a propósito**: `guia/` es la fuente (y el paquete
-  que se entrega a la empresa); `public/guia/` es la copia que Pages
-  publica. **Tras editar `guia/`, sincronizar con `cp guia/*.html public/guia/`.**
+- **La guía se edita solo en `guia/`** (la fuente y el paquete que se entrega
+  a la empresa). `public/guia/` se genera automáticamente en cada build
+  (`scripts/sync-guia.mjs`, hook `prebuild`) y está fuera de git — no editar.
 - Las páginas de la guía usan el CDN de Tailwind → necesitan internet para
   verse con estilos. En entornos sin salida a internet: compilar Tailwind
   local (v3, con los tokens del `tailwind.config` inline de cada página) e
