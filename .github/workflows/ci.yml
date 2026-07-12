@@ -1,0 +1,27 @@
+name: CI
+
+# Control de calidad en la puerta: cada Pull Request debe construir sin
+# errores antes de poder fusionarse. Atrapa lockfiles desincronizados,
+# imports rotos y errores de build ANTES de que lleguen a main.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build (incluye sincronización de la guía)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /sp-prototipo
+      - name: Verificar que la guía quedó en el export
+        run: test -f out/guia/guia_home.html && echo "✓ guía presente en el build"
