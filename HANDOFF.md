@@ -142,10 +142,11 @@ usa `npm ci`).
    navy con el nav sólido), simulador en teal sólido; en el menú móvil la
    guía va destacada en mint. Y la guía ahora vuelve al homepage: el logo
    e "Inicio" → `../`, "Planes" → `../#comparar` (en producción esos
-   links apuntan al dominio público — anotado en el ANEXO §5). Además, al
-   scrollear el header ya no se vuelve blanco sólido sino **translúcido**
-   (vidrio esmerilado: alpha 0.55 + blur; ojo: el minificador de CSS
-   rompe `backdrop-filter` con funciones encadenadas o con la variante
+   links apuntan al dominio público — anotado en el ANEXO §5). Además, el
+   header es **translúcido en sus dos estados** (vidrio esmerilado: oscuro
+   `rgba(0,22,44,.35)` sobre el hero, claro `rgba(255,255,255,.55)` al
+   scrollear, blur 18px constante; ojo: el minificador de CSS rompe
+   `backdrop-filter` con funciones encadenadas o con la variante
    `-webkit-` declarada a mano — declarar solo la propiedad estándar con
    un único `blur()`), y el nav ganó **"Blog"** → `/blog`, una página
    placeholder "muy pronto" que anticipa los temas y devuelve al inicio.

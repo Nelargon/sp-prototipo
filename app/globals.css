@@ -16,15 +16,16 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .rvon .rv{opacity:0;transform:translateY(18px)}
 .rvon .rv.in{opacity:1;transform:none}
 .sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#00BCB4,#009690);z-index:120;transition:width .12s linear;pointer-events:none}
-[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease;background:linear-gradient(180deg,rgba(0,16,34,0.5) 0%,rgba(0,16,34,0.12) 60%,rgba(0,16,34,0) 100%)}
+/* Header translúcido en ambos estados: vidrio esmerilado oscuro sobre el
+   hero, claro al scrollear (.solid). El blur vive acá para que aplique
+   siempre; solo cambia el color de fondo. */
+[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease;background:rgba(0,22,44,0.35);backdrop-filter:blur(18px)}
 [data-nav]:not(.solid) .nav-link{color:#fff !important;text-shadow:0 1px 10px rgba(0,0,0,0.5)}
-/* Al scrollear el header no se vuelve blanco sólido sino translúcido:
-   vidrio esmerilado — el contenido se transluce detrás y el blur mantiene
-   la legibilidad del texto oscuro. */
-/* Solo blur y solo la propiedad estándar: encadenar saturate() se minifica
-   sin espacio entre funciones (inválido), y declarar también -webkit- hace
-   que el minificador se quede únicamente con la versión prefijada. */
-[data-nav].solid{background:rgba(255,255,255,0.55);backdrop-filter:blur(18px);box-shadow:0 1px 0 rgba(0,59,113,0.08)}
+/* Solo la propiedad backdrop-filter estándar y con un único blur():
+   encadenar saturate() se minifica sin espacio entre funciones (inválido),
+   y declarar también -webkit- a mano hace que el minificador se quede
+   únicamente con la versión prefijada. */
+[data-nav].solid{background:rgba(255,255,255,0.55);box-shadow:0 1px 0 rgba(0,59,113,0.08)}
 [data-nav].solid .nav-link{--nl:#3D3D3D}
 [data-nav].solid .nav-logo{color:#003B71}
 /* Navy logo (nlogo-c) sits underneath at full opacity; the white logo fades
