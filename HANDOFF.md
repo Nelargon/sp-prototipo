@@ -181,8 +181,10 @@ usa `npm ci`).
    urgencias y WhatsApp (`WHATSAPP_NUMBER`/`SP_TEL` en `app/quote.js` y
    los `wa.me/595213190000` de rescate en la guía; el WhatsApp de la
    ficha de prestador es dato ilustrativo del prestador, no de SP).
-   Siguen pendientes la **dirección y el email del footer** ("a
-   confirmar").
+   Footer también resuelto con los datos reales: Sede Administrativa
+   (Perú 222 esq. Eligio Ayala, Asunción), Centro Médico Lister (Paí
+   Perez 630 c/ Azara, Asunción) y **hola@saludprotegida.com.py**
+   (reemplazó al info@ que tenía la guía). ✔ Completo.
 5. **Fotos reales** (hero y secciones — estaba previsto en el plan original).
 6. **Precios y coberturas definitivos** para simulador y comparador
    (esperan a la mesa técnica; hoy dicen "cifras de referencia").
