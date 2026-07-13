@@ -126,12 +126,17 @@ PR #2 (QA móvil + menú + cobertura por plan + upsell) — ambos mergeados a
 
 ### Prioridad alta (próxima sesión)
 
-1. **Integrar la guía al homepage (A+B)**: agregar "Guía Médica" al menú,
-   footer y menú móvil del homepage; renombrar la sección "Cartilla viva"
-   a "Guía Médica" y que su buscador lleve a la guía real con la búsqueda
-   hecha. **Destino (C, declarado, no ejecutar aún)**: fusionar "qué cubre"
-   + "dónde atenderse" en una sola respuesta cuando haya datos reales de
-   cobertura.
+1. ~~**Integrar la guía al homepage (A+B)**~~ ✔ **Hecho (julio 2026)**:
+   "Guía Médica" en menú desktop, menú móvil y footer (link directo a
+   `guia_home.html`); la sección se renombró "Guía Médica · sin letra
+   chica" (el ancla sigue siendo `#cartilla`, en menú/footer aparece como
+   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…` (Enter, o
+   la fila fija del dropdown — que aparece incluso sin matches locales,
+   cero resultados nunca es un callejón), y bajo la tarjeta hay un link
+   permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
+   local siguen igual. **Destino (C, declarado, no ejecutar aún)**:
+   fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
+   haya datos reales de cobertura.
 2. **Registro de búsquedas de SIP**: "Más buscados" YA se calcula solo y
    SP TIENE acceso al registro. **El usuario va a pasar el HTML de esa
    pantalla** → con eso: auditar qué campos guarda hoy, compararlo con el
