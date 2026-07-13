@@ -136,7 +136,21 @@ usa `npm ci`).
    la fila fija del dropdown — que aparece incluso sin matches locales,
    cero resultados nunca es un callejón), y bajo la tarjeta hay un link
    permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
-   local siguen igual. **Destino (C, declarado, no ejecutar aún)**:
+   local siguen igual. *Refinado después del merge (PR #6)*: el header del
+   homepage da énfasis propio a cada destino — urgencias en rojo, Guía
+   Médica como pastilla con contorno e ícono de pin (blanca sobre el hero,
+   navy con el nav sólido), simulador en teal sólido; en el menú móvil la
+   guía va destacada en mint. Y la guía ahora vuelve al homepage: el logo
+   e "Inicio" → `../`, "Planes" → `../#comparar` (en producción esos
+   links apuntan al dominio público — anotado en el ANEXO §5). Además, el
+   header es **translúcido en sus dos estados** (vidrio esmerilado: oscuro
+   `rgba(0,22,44,.35)` sobre el hero, claro `rgba(255,255,255,.55)` al
+   scrollear, blur 18px constante; ojo: el minificador de CSS rompe
+   `backdrop-filter` con funciones encadenadas o con la variante
+   `-webkit-` declarada a mano — declarar solo la propiedad estándar con
+   un único `blur()`), y el nav ganó **"Blog"** → `/blog`, una página
+   placeholder "muy pronto" que anticipa los temas y devuelve al inicio.
+   **Destino (C, declarado, no ejecutar aún)**:
    fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
    haya datos reales de cobertura.
 2. **Registro de búsquedas de SIP**: "Más buscados" YA se calcula solo y
@@ -180,6 +194,10 @@ usa `npm ci`).
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
 14. **Agendamiento de turnos**, empezando por Lister: el paso de "dónde
     atenderse" a "atenderse".
+15. **Contenido del blog**: `/blog` hoy es un placeholder "muy pronto"
+    (con el lugar ya reservado en el header). Definir estrategia
+    editorial, quién escribe y con qué CMS — ligado a la gobernanza de
+    contenido (#10).
 
 ### Preguntas abiertas (y quién responde)
 

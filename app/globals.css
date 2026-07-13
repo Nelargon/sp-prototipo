@@ -16,9 +16,16 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .rvon .rv{opacity:0;transform:translateY(18px)}
 .rvon .rv.in{opacity:1;transform:none}
 .sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#00BCB4,#009690);z-index:120;transition:width .12s linear;pointer-events:none}
-[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease;background:linear-gradient(180deg,rgba(0,16,34,0.5) 0%,rgba(0,16,34,0.12) 60%,rgba(0,16,34,0) 100%)}
+/* Header translúcido en ambos estados: vidrio esmerilado oscuro sobre el
+   hero, claro al scrollear (.solid). El blur vive acá para que aplique
+   siempre; solo cambia el color de fondo. */
+[data-nav]{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease;background:rgba(0,22,44,0.35);backdrop-filter:blur(18px)}
 [data-nav]:not(.solid) .nav-link{color:#fff !important;text-shadow:0 1px 10px rgba(0,0,0,0.5)}
-[data-nav].solid{background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 #E8E8E8}
+/* Solo la propiedad backdrop-filter estándar y con un único blur():
+   encadenar saturate() se minifica sin espacio entre funciones (inválido),
+   y declarar también -webkit- a mano hace que el minificador se quede
+   únicamente con la versión prefijada. */
+[data-nav].solid{background:rgba(255,255,255,0.55);box-shadow:0 1px 0 rgba(0,59,113,0.08)}
 [data-nav].solid .nav-link{--nl:#3D3D3D}
 [data-nav].solid .nav-logo{color:#003B71}
 /* Navy logo (nlogo-c) sits underneath at full opacity; the white logo fades
@@ -58,10 +65,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* FAB de cotización: versión compacta en móvil para tapar menos contenido */
 .fab-short{display:none}
 @media(max-width:640px){.cotizar-fab{padding:0 16px !important}.fab-full{display:none}.fab-short{display:inline}}
-.nav-sim-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08)}
-.nav-sim-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
-[data-nav].solid .nav-sim-cta{color:#009690;border-color:rgba(0,150,144,0.45);background:rgba(0,188,180,0.06)}
-[data-nav].solid .nav-sim-cta:hover{background:rgba(0,188,180,0.14)}
+/* Cada destino del header con su propio énfasis: rojo = urgencias,
+   pastilla con contorno = Guía Médica, teal sólido = simulador.
+   Sobre el hero (nav transparente) el contorno es blanco; con el nav
+   sólido pasa a navy. */
+.nav-guia-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08);transition:background .3s,color .3s,border-color .3s}
+.nav-guia-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
+[data-nav].solid .nav-guia-cta{color:#003B71;border-color:rgba(0,59,113,0.4);background:rgba(0,59,113,0.05)}
+[data-nav].solid .nav-guia-cta:hover{background:rgba(0,59,113,0.12)}
 
 /* --------------------------------------------------------------------------
    Hover / focus utilities — replace the prototype's inline style-hover / style-focus.
