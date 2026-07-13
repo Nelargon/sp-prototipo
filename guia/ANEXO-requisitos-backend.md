@@ -56,9 +56,28 @@ Con esto se arma el tablero mínimo: top búsquedas sin resultado, matriz
 especialidad × ciudad (demanda vs. oferta), prestadores más contactados.
 Revisión mensual sugerida con Comercial / Convenios / CX.
 
+**La web pública emite eventos al mismo endpoint.** La web de planes
+(homepage y simulador, `app/track.js` en el prototipo) usa el mismo
+`track(evento, datos)` con estos eventos — el embudo completo es
+web → guía → contacto y debe poder reconstruirse por sesión anónima:
+
+| Evento (web)          | Datos                                    | Para qué sirve |
+|-----------------------|------------------------------------------|----------------|
+| `guia_handoff`        | q (texto buscado, puede ser vacío), via (enter / dropdown / nav / menú / link) | cuánta demanda de la guía nace en la web |
+| `cartilla_select`     | práctica, via (chip / sugerencia)        | qué coberturas consulta la gente antes de comprar |
+| `comparador_plan`     | plan, via (slider / parada)              | qué nivel de plan explora cada visitante |
+| `cta_simulador`       | origen (nav / hero / teaser / senior / cierre / fab / menú) | qué sección de la web empuja a cotizar |
+| `sim_step`            | paso (1–6)                               | dónde se abandona el simulador (embudo) |
+| `sim_result_view`     | plan recomendado, precio                 | qué recomienda el motor y a qué precio |
+| `sim_lead_submit`     | plan, precio — **sin nombre/tel/email**  | conversión a lead (el dato personal va al CRM, no a la analítica) |
+| `sim_quote_download` / `sim_quote_share` | —                     | interés fuerte sin dejar datos |
+| `click_whatsapp`      | origen (comparador / cierre / fab / simulador_resultado) | conversión a conversación |
+| `click_urgencias`     | origen (header / menú móvil)             | uso del acceso de urgencias |
+| `faq_open`            | pregunta                                 | objeciones reales → contenido y guiones de venta |
+
 **Privacidad**: no guardar cédulas ni asociar búsquedas a personas
 identificadas. Las búsquedas de síntomas son datos sensibles: solo agregados
-y anónimos.
+y anónimos. Los eventos nunca llevan nombre, teléfono ni email.
 
 ## 3. Consulta por cédula ("Ver mi red")
 
@@ -109,3 +128,48 @@ El molde de las páginas asume, por prestador:
   "Inicio" / "Planes" del header, menú móvil y footer apuntan en relativo
   (`../`, `../#comparar`). En producción deben apuntar al dominio público de
   la web de Salud Protegida (p. ej. `https://saludprotegida.com.py/`).
+
+## 6. Panel de estadísticas (`/estadisticas`)
+
+El prototipo del panel ya contempla una buena base, que se mantiene:
+búsquedas hoy / 7d / 30d, **búsquedas sin resultado con detalle por
+término**, términos y especialidades más buscados, perfiles de prestador
+más vistos con cantidad, gráfico de actividad día por día y distribución
+por dispositivo/navegador.
+
+Para que el panel sirva a la operación (y no solo a la curiosidad), se
+suma lo siguiente:
+
+1. **Conversión por prestador**: además de las vistas de perfil, contar
+   `click_llamar`, `click_whatsapp` y `click_como_llegar` por prestador y
+   sede. La métrica clave es *búsquedas que terminan en contacto*, no
+   vistas.
+2. **Matriz especialidad × ciudad** (demanda vs. oferta): cuántas
+   búsquedas hubo de cada especialidad en cada ciudad vs. cuántos
+   prestadores la cubren. Las celdas con mucha demanda y poca oferta son
+   la lista de tareas de Convenios.
+3. **Embudo por sesión anónima**: búsqueda → click en resultado →
+   contacto. Requiere que cada evento lleve el ID de sesión anónima
+   (§2). Sin identidad: el embudo se mira agregado.
+4. **Sinónimos candidatos**: tabla de `suggestion_pick` (qué tipeó la
+   gente vs. qué eligió) — de ahí salen las entradas nuevas del
+   diccionario del buscador.
+5. **Cola de rescates**: `fallback_whatsapp` con el texto buscado, para
+   que CX vea con qué contexto llega cada conversación.
+6. **Adopción del modo por plan** (cuando se integre la guía nueva):
+   `vista_personalizada` por nivel, y ranking de `upsell_view` /
+   `upsell_click_simulador` por prestador — qué prestadores generan
+   deseo de upgrade (insumo directo de Comercial).
+7. **Eventos de la web** (§2): embudo del simulador (paso a paso →
+   resultado → lead), CTAs que más convierten y `guia_handoff` (cuánta
+   demanda de la guía nace en la web de planes).
+
+**Tres vistas, una por audiencia** (el mismo dato, la pregunta de cada
+equipo): **Convenios** — qué falta (sin resultados + matriz demanda/
+oferta); **Comercial** — qué vende (conversión por prestador, upsell,
+embudo del simulador); **CX** — dónde se frustra la gente (rescates,
+typos frecuentes, abandonos).
+
+Cada tabla debe poder **exportarse (CSV)** y filtrarse por rango de
+fechas. El panel es de uso interno: requiere autenticación y no expone
+ningún dato personal (§2, privacidad).
