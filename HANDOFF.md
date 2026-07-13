@@ -142,7 +142,13 @@ usa `npm ci`).
    navy con el nav sólido), simulador en teal sólido; en el menú móvil la
    guía va destacada en mint. Y la guía ahora vuelve al homepage: el logo
    e "Inicio" → `../`, "Planes" → `../#comparar` (en producción esos
-   links apuntan al dominio público — anotado en el ANEXO §5).
+   links apuntan al dominio público — anotado en el ANEXO §5). Además, al
+   scrollear el header ya no se vuelve blanco sólido sino **translúcido**
+   (vidrio esmerilado: alpha 0.55 + blur; ojo: el minificador de CSS
+   rompe `backdrop-filter` con funciones encadenadas o con la variante
+   `-webkit-` declarada a mano — declarar solo la propiedad estándar con
+   un único `blur()`), y el nav ganó **"Blog"** → `/blog`, una página
+   placeholder "muy pronto" que anticipa los temas y devuelve al inicio.
    **Destino (C, declarado, no ejecutar aún)**:
    fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
    haya datos reales de cobertura.
@@ -187,6 +193,10 @@ usa `npm ci`).
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
 14. **Agendamiento de turnos**, empezando por Lister: el paso de "dónde
     atenderse" a "atenderse".
+15. **Contenido del blog**: `/blog` hoy es un placeholder "muy pronto"
+    (con el lugar ya reservado en el header). Definir estrategia
+    editorial, quién escribe y con qué CMS — ligado a la gobernanza de
+    contenido (#10).
 
 ### Preguntas abiertas (y quién responde)
 
