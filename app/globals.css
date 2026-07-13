@@ -58,10 +58,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* FAB de cotización: versión compacta en móvil para tapar menos contenido */
 .fab-short{display:none}
 @media(max-width:640px){.cotizar-fab{padding:0 16px !important}.fab-full{display:none}.fab-short{display:inline}}
-.nav-sim-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08)}
-.nav-sim-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
-[data-nav].solid .nav-sim-cta{color:#009690;border-color:rgba(0,150,144,0.45);background:rgba(0,188,180,0.06)}
-[data-nav].solid .nav-sim-cta:hover{background:rgba(0,188,180,0.14)}
+/* Cada destino del header con su propio énfasis: rojo = urgencias,
+   pastilla con contorno = Guía Médica, teal sólido = simulador.
+   Sobre el hero (nav transparente) el contorno es blanco; con el nav
+   sólido pasa a navy. */
+.nav-guia-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08);transition:background .3s,color .3s,border-color .3s}
+.nav-guia-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
+[data-nav].solid .nav-guia-cta{color:#003B71;border-color:rgba(0,59,113,0.4);background:rgba(0,59,113,0.05)}
+[data-nav].solid .nav-guia-cta:hover{background:rgba(0,59,113,0.12)}
 
 /* --------------------------------------------------------------------------
    Hover / focus utilities — replace the prototype's inline style-hover / style-focus.

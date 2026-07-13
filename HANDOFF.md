@@ -136,7 +136,14 @@ usa `npm ci`).
    la fila fija del dropdown — que aparece incluso sin matches locales,
    cero resultados nunca es un callejón), y bajo la tarjeta hay un link
    permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
-   local siguen igual. **Destino (C, declarado, no ejecutar aún)**:
+   local siguen igual. *Refinado después del merge (PR #6)*: el header del
+   homepage da énfasis propio a cada destino — urgencias en rojo, Guía
+   Médica como pastilla con contorno e ícono de pin (blanca sobre el hero,
+   navy con el nav sólido), simulador en teal sólido; en el menú móvil la
+   guía va destacada en mint. Y la guía ahora vuelve al homepage: el logo
+   e "Inicio" → `../`, "Planes" → `../#comparar` (en producción esos
+   links apuntan al dominio público — anotado en el ANEXO §5).
+   **Destino (C, declarado, no ejecutar aún)**:
    fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
    haya datos reales de cobertura.
 2. **Registro de búsquedas de SIP**: "Más buscados" YA se calcula solo y

@@ -105,3 +105,7 @@ El molde de las páginas asume, por prestador:
 - Tipografías: Gilroy ExtraBold/SemiBold para títulos (archivos en `fonts/`),
   Inter para cuerpo. Paleta: navy `#003B71`, teal `#00BCB4`, verde `#009690`
   (tokens en el `tailwind.config` de cada página).
+- Links de vuelta a la web de planes: en el prototipo, el logo y los enlaces
+  "Inicio" / "Planes" del header, menú móvil y footer apuntan en relativo
+  (`../`, `../#comparar`). En producción deben apuntar al dominio público de
+  la web de Salud Protegida (p. ej. `https://saludprotegida.com.py/`).
