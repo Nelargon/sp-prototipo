@@ -71,10 +71,12 @@ modificar el diseño y pasárselo a la empresa desarrolladora, que lo evalúa e
 integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
 
-**Historia git:** PR #1 (rediseño de la guía + publicación en Pages) y
-PR #2 (QA móvil + menú + cobertura por plan + upsell) — ambos mergeados a
-`main`. El deploy a GitHub Pages es automático al pushear a `main`
-(`.github/workflows/deploy.yml`, usa `npm ci`).
+**Historia git:** PR #1 (rediseño de la guía + publicación en Pages),
+PR #2 (QA móvil + menú + cobertura por plan + upsell), PR #3 (HANDOFF),
+PR #4 (CI en PRs + sync de la guía + README) y PR #5 (integración de la
+guía al homepage, A+B) — todos mergeados a `main`. El deploy a GitHub
+Pages es automático al pushear a `main` (`.github/workflows/deploy.yml`,
+usa `npm ci`).
 
 ---
 
@@ -126,12 +128,17 @@ PR #2 (QA móvil + menú + cobertura por plan + upsell) — ambos mergeados a
 
 ### Prioridad alta (próxima sesión)
 
-1. **Integrar la guía al homepage (A+B)**: agregar "Guía Médica" al menú,
-   footer y menú móvil del homepage; renombrar la sección "Cartilla viva"
-   a "Guía Médica" y que su buscador lleve a la guía real con la búsqueda
-   hecha. **Destino (C, declarado, no ejecutar aún)**: fusionar "qué cubre"
-   + "dónde atenderse" en una sola respuesta cuando haya datos reales de
-   cobertura.
+1. ~~**Integrar la guía al homepage (A+B)**~~ ✔ **Hecho (julio 2026, PR #5)**:
+   "Guía Médica" en menú desktop, menú móvil y footer (link directo a
+   `guia_home.html`); la sección se renombró "Guía Médica · sin letra
+   chica" (el ancla sigue siendo `#cartilla`, en menú/footer aparece como
+   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…` (Enter, o
+   la fila fija del dropdown — que aparece incluso sin matches locales,
+   cero resultados nunca es un callejón), y bajo la tarjeta hay un link
+   permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
+   local siguen igual. **Destino (C, declarado, no ejecutar aún)**:
+   fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
+   haya datos reales de cobertura.
 2. **Registro de búsquedas de SIP**: "Más buscados" YA se calcula solo y
    SP TIENE acceso al registro. **El usuario va a pasar el HTML de esa
    pantalla** → con eso: auditar qué campos guarda hoy, compararlo con el

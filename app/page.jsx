@@ -260,6 +260,11 @@ export default function Page() {
   const waDigits = (WHATSAPP_NUMBER || '').replace(/\D/g, '');
   const waHref = waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero información sobre los planes de Salud Protegida.')) : '#';
 
+  // Guía Médica (páginas estáticas en /guia). guia_resultados lee ?q= y
+  // precarga la búsqueda, así el buscador del homepage llega "con la búsqueda hecha".
+  const guiaHome = `${BP}/guia/guia_home.html`;
+  const guiaSearchHref = (term) => (term ? `${BP}/guia/guia_resultados.html?q=${encodeURIComponent(term)}` : guiaHome);
+
   // cartilla
   const qNorm = (state.q || '').trim().toLowerCase();
   const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => setState({ sel: c.name, q: '' }) })) : [];
@@ -316,7 +321,9 @@ export default function Page() {
     mobileMenuOpen: state.mobileMenuOpen, mobileMenuClosed: !state.mobileMenuOpen,
     toggleMenu, closeMenu,
     q: state.q, onQ: (e) => setState({ q: e.target.value }),
-    matches, hasMatches: matches.length > 0, chips,
+    onQKey: (e) => { if (e.key === 'Enter' && state.q.trim()) window.location.href = guiaSearchHref(state.q.trim()); },
+    matches, showDrop: qNorm.length > 0, chips,
+    guiaHome, guiaQHref: guiaSearchHref(state.q.trim()),
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     sliderVal: state.sliderVal, onSlide: (e) => setState({ sliderVal: +e.target.value }),
     planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops,
@@ -369,7 +376,8 @@ export default function Page() {
         <div style={css('display:flex;align-items:center;gap:16px')}>
           <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
-            <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Cartilla viva</a>
+            <a href={guiaHome} className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Guía Médica</a>
+            <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Qué cubre</a>
             <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
             <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
             <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
@@ -383,7 +391,8 @@ export default function Page() {
       {v.mobileMenuOpen && (
         <div id="mobile-menu" role="menu" style={css('position:fixed;top:66px;left:14px;right:14px;z-index:99;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,59,113,0.18);padding:10px;display:flex;flex-direction:column;gap:2px')}>
           <a href={'tel:' + SP_TEL} onClick={v.closeMenu} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
-          <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Cartilla viva</a>
+          <a href={v.guiaHome} onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Guía Médica</a>
+          <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Qué cubre</a>
           <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
           <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
           <a href={`${BP}/simulador/`} onClick={v.closeMenu} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
@@ -442,7 +451,7 @@ export default function Page() {
       <section id="cartilla" style={css('padding:110px 40px;background:#fff')}>
         <div style={css('max-width:1000px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Cartilla viva · sin letra chica</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
             <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí una práctica y mirá <span style={css('color:#009690')}>qué cubre</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Nada de adivinar. Antes de contratar ya sabés qué cubre cada plan y cuánto ponés de tu bolsillo.</p>
           </div>
@@ -451,12 +460,13 @@ export default function Page() {
           <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
             <div style={css('position:relative')}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('position:absolute;left:18px;top:50%;transform:translateY(-50%);pointer-events:none')}><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-              <input type="text" role="searchbox" aria-label="Buscar una práctica médica" aria-expanded={v.hasMatches} aria-controls="cartilla-matches" value={v.q} onChange={v.onQ} placeholder="Ej: resonancia, parto, psicología…" className="search-inp" style={css('width:100%;height:58px;border:1.5px solid #cfe0dc;border-radius:14px;padding:0 18px 0 48px;font-size:17px;color:#1D1D1B;background:#fff;outline:none')} />
-              {v.hasMatches && (
+              <input type="text" role="searchbox" aria-label="Buscar una práctica médica" aria-expanded={v.showDrop} aria-controls="cartilla-matches" value={v.q} onChange={v.onQ} onKeyDown={v.onQKey} placeholder="Ej: resonancia, parto, psicología…" className="search-inp" style={css('width:100%;height:58px;border:1.5px solid #cfe0dc;border-radius:14px;padding:0 18px 0 48px;font-size:17px;color:#1D1D1B;background:#fff;outline:none')} />
+              {v.showDrop && (
                 <div id="cartilla-matches" role="listbox" style={css('position:absolute;left:0;right:0;top:64px;z-index:5;background:#fff;border:1px solid #E8E8E8;border-radius:14px;box-shadow:0 12px 34px rgba(0,59,113,0.14);overflow:hidden')}>
                   {v.matches.map((m, i) => (
                     <button key={i} role="option" onClick={m.onPick} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 16px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>{m.name}</button>
                   ))}
+                  <a role="option" href={v.guiaQHref} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#009690')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
                 </div>
               )}
             </div>
@@ -483,6 +493,7 @@ export default function Page() {
               </div>
             </div>
             <div style={css('font-size:12.5px;color:#9aa0a6;margin-top:12px;text-align:center')}>Cifras de referencia — el detalle final de tu contrato lo confirmás con tu asesor.</div>
+            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} className="link-teal" style={css('color:#009690;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
           </div>
         </div>
       </section>
@@ -770,7 +781,8 @@ export default function Page() {
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Enlaces</div>
             <div style={css('display:flex;flex-direction:column;gap:10px;font-size:14px;color:#cfe0f0')}>
-              <a href="#cartilla" className="foot-link" style={css('color:inherit')}>Cartilla viva</a>
+              <a href={v.guiaHome} className="foot-link" style={css('color:inherit')}>Guía Médica</a>
+              <a href="#cartilla" className="foot-link" style={css('color:inherit')}>Qué cubre cada plan</a>
               <a href="#comparar" className="foot-link" style={css('color:inherit')}>Planes</a>
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
               <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simular mi plan</a>
