@@ -426,7 +426,7 @@
         if (q && !visibles) {
             document.getElementById('q-eco').textContent = inp.value.trim();
             document.getElementById('wa-fallback').href =
-                'https://wa.me/595XXXXXXXXX?text=' + encodeURIComponent('Hola, busqué "' + inp.value.trim() + '" en la Guía Médica y no encontré. ¿Me ayudan?');
+                'https://wa.me/595213190000?text=' + encodeURIComponent('Hola, busqué "' + inp.value.trim() + '" en la Guía Médica y no encontré. ¿Me ayudan?');
             // ¿Quisiste decir…? — la palabra del catálogo más parecida
             const cand = VOCAB.map(w => ({ w, d: editDist(w, q) })).sort((a, b) => a.d - b.d)[0];
             const sug = document.getElementById('sugerencia-fuzzy');

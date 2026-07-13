@@ -176,9 +176,15 @@ usa `npm ci`).
 
 ### Prioridad media
 
-4. **Datos reales de contacto**: número de WhatsApp real (hoy
-   `595 9XX XXX XXX` en `WHATSAPP_NUMBER`, `app/quote.js`) y datos del
-   footer. Barato y crítico.
+4. **Datos reales de contacto**: ✔ el número quedó confirmado por el
+   usuario (julio 2026): **(021) 319 0000 para todo** — llamadas,
+   urgencias y WhatsApp (`WHATSAPP_NUMBER`/`SP_TEL` en `app/quote.js` y
+   los `wa.me/595213190000` de rescate en la guía; el WhatsApp de la
+   ficha de prestador es dato ilustrativo del prestador, no de SP).
+   Footer también resuelto con los datos reales: Sede Administrativa
+   (Perú 222 esq. Eligio Ayala, Asunción), Centro Médico Lister (Paí
+   Perez 630 c/ Azara, Asunción) y **hola@saludprotegida.com.py**
+   (reemplazó al info@ que tenía la guía). ✔ Completo.
 5. **Fotos reales** (hero y secciones — estaba previsto en el plan original).
 6. **Precios y coberturas definitivos** para simulador y comparador
    (esperan a la mesa técnica; hoy dicen "cifras de referencia").

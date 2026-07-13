@@ -777,9 +777,10 @@ export default function Page() {
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Contacto</div>
             <div style={css('font-size:14px;color:#cfe0f0;line-height:2')}>
-              <div>Asunción, Paraguay <span style={css('opacity:.55')}>(dirección a confirmar)</span></div>
-              <div>Urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:#cfe0f0;font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
-              <div>hola@saludprotegida.com.py <span style={css('opacity:.55')}>(a confirmar)</span></div>
+              <div>Sede Administrativa · Perú 222 esq. Eligio Ayala, Asunción</div>
+              <div>Centro Médico Lister · Paí Perez 630 c/ Azara, Asunción</div>
+              <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:#cfe0f0;font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
+              <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:#cfe0f0')}>hola@saludprotegida.com.py</a></div>
             </div>
           </div>
           <div>
