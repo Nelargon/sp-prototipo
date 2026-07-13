@@ -153,11 +153,20 @@ usa `npm ci`).
    **Destino (C, declarado, no ejecutar aún)**:
    fusionar "qué cubre" + "dónde atenderse" en una sola respuesta cuando
    haya datos reales de cobertura.
-2. **Registro de búsquedas de SIP**: "Más buscados" YA se calcula solo y
-   SP TIENE acceso al registro. **El usuario va a pasar el HTML de esa
-   pantalla** → con eso: auditar qué campos guarda hoy, compararlo con el
-   esquema de eventos del ANEXO, y diseñar el tablero para
-   Comercial/Convenios/CX. Es el arranque real de la inteligencia de negocio.
+2. **Registro de búsquedas / panel de estadísticas**: se aclaró (julio
+   2026) que el panel `/estadisticas` de SIP **también es un prototipo —
+   no hay datos reales todavía**; la guía online está en construcción.
+   La auditoría se convirtió en especificación: el **ANEXO §6** (nuevo)
+   toma como base lo que el panel de SIP ya contempla (búsquedas por
+   período, sin-resultados por término, perfiles vistos, tops,
+   dispositivo/navegador) y le suma lo que falta — conversión por
+   prestador, matriz especialidad × ciudad, embudo por sesión anónima,
+   sinónimos candidatos, cola de rescates CX, upsell — con **tres vistas
+   por audiencia** (Convenios / Comercial / CX) y export CSV. Además, la
+   **web quedó instrumentada** igual que la guía (`app/track.js`,
+   eventos en homepage y simulador; tabla en ANEXO §2). Queda: que la
+   empresa conecte `track()` a un endpoint real, y el ritual mensual
+   (#11).
 3. **QA integral del ecosistema**: (a) funcional — cada botón, link,
    formulario y flujo de punta a punta; (b) responsive en dispositivos
    reales (falta Safari/iOS — hasta ahora solo Chromium emulado);

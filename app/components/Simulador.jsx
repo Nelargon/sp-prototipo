@@ -6,6 +6,7 @@ import { BP } from '../basePath';
 import {
   WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge,
 } from '../quote';
+import { track } from '../track';
 
 const INITIAL_SIM = {
   step: 0, who: null, nivel: null, geo: null, addons: [], people: [],
@@ -99,6 +100,7 @@ export default function Simulador() {
     return L.join('\n');
   };
   const downloadQuote = () => {
+    track('sim_quote_download', {});
     try {
       const blob = new Blob([quoteText()], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -109,6 +111,7 @@ export default function Simulador() {
     } catch (e) {}
   };
   const shareQuote = async () => {
+    track('sim_quote_share', {});
     const r = engine(simState);
     const msg = 'Mi plan en Salud Protegida: ' + r.name + ' — ' + fmt(r.price) + '/mes estimado.';
     const url = typeof window !== 'undefined' ? window.location.href : '';
@@ -130,14 +133,20 @@ export default function Simulador() {
       simPatch({ err: 'Necesitamos tu nombre y un WhatsApp válido (mín. 8 dígitos). El email es opcional.' });
       return;
     }
+    // Sin nombre/tel/email en el evento: el lead viaja al CRM, no a la analítica.
+    const rq = engine(d);
+    track('sim_lead_submit', { plan: rq.name, precio: rq.price });
     simPatch({ sent: true, err: '' });
   };
 
   // ===== price count-up (was componentDidUpdate) =====
   useEffect(() => {
     const step = simState.step;
+    if (step > 0 && step !== prevStepRef.current) track('sim_step', { paso: Math.min(step, 6) });
     if (prevStepRef.current < 6 && step >= 6) {
-      const target = engine(simState).price;
+      const rq = engine(simState);
+      track('sim_result_view', { plan: rq.name, precio: rq.price });
+      const target = rq.price;
       const t0 = performance.now(), dur = 1150;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       const tick = (now) => {
@@ -533,7 +542,7 @@ export default function Simulador() {
                     <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Te enviamos tu cotización y un asesor te contacta para confirmarla.</div>
                   </div>
                 )}
-                <a href={waHref} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#009690;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
+                <a href={waHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado' })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#009690;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
                 <div style={css('display:flex;gap:10px;margin-top:10px')}>
                   <button onClick={sim.download} className="btn-wa-outline" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:12px;background:#fff;color:#009690;border:1.5px solid #cfe0dc;font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>Descargar</button>
                   <button onClick={sim.share} className="btn-wa-outline" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:12px;background:#fff;color:#009690;border:1.5px solid #cfe0dc;font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>{sim.shareMsg || 'Compartir'}</button>

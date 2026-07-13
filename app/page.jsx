@@ -4,6 +4,7 @@ import { useState, useEffect, createElement } from 'react';
 import { BP } from './basePath';
 import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL } from './quote';
+import { track } from './track';
 
 const INITIAL = {
   q: '',
@@ -267,10 +268,10 @@ export default function Page() {
 
   // cartilla
   const qNorm = (state.q || '').trim().toLowerCase();
-  const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => setState({ sel: c.name, q: '' }) })) : [];
+  const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'sugerencia' }); setState({ sel: c.name, q: '' }); } })) : [];
   const quick = ['Resonancia (RM)', 'Parto o cesárea', 'Sesión de psicología', 'Internación', 'Tomografía (TAC)', 'Odontología'];
   const chips = quick.map((nm) => ({
-    name: nm, onPick: () => setState({ sel: nm, q: '' }),
+    name: nm, onPick: () => { track('cartilla_select', { practica: nm, via: 'chip' }); setState({ sel: nm, q: '' }); },
     style: 'padding:9px 15px;border-radius:999px;border:1.5px solid ' + (state.sel === nm ? '#00BCB4' : '#d9e4e2') + ';background:' + (state.sel === nm ? '#00BCB4' : '#fff') + ';color:' + (state.sel === nm ? '#fff' : '#3D3D3D') + ';font-size:13px;font-weight:' + (state.sel === nm ? '700' : '500') + ';cursor:pointer;transition:all .15s',
   }));
   const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
@@ -290,7 +291,7 @@ export default function Page() {
   const segS = tSlide >= 1 ? 1 : 0, fracS = tSlide - segS;
   const color = lerpHex(plansArr[segS].color, (plansArr[segS + 1] || plansArr[segS]).color, fracS);
   const stops = plansArr.map((pl, i) => ({
-    label: pl.short, onPick: () => setState({ sliderVal: i * 100 }),
+    label: pl.short, onPick: () => { if (i !== idx) track('comparador_plan', { plan: pl.short, via: 'parada' }); setState({ sliderVal: i * 100 }); },
     style: 'background:none;border:none;cursor:pointer;font-size:13px;font-weight:' + (idx === i ? '800' : '500') + ';color:' + (idx === i ? '#003B71' : '#9aa0a6') + ';padding:2px 4px;transition:color .2s',
   }));
 
@@ -305,7 +306,7 @@ export default function Page() {
   const faqList = faqs().map((f, i) => ({
     q: f.q, a: f.a, open: state.faqOpen === i,
     chevStyle: 'transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (state.faqOpen === i ? '180deg' : '0deg') + ')',
-    toggle: () => toggleFaq(i),
+    toggle: () => { if (state.faqOpen !== i) track('faq_open', { pregunta: f.q }); toggleFaq(i); },
   }));
 
   // how it works
@@ -321,11 +322,12 @@ export default function Page() {
     mobileMenuOpen: state.mobileMenuOpen, mobileMenuClosed: !state.mobileMenuOpen,
     toggleMenu, closeMenu,
     q: state.q, onQ: (e) => setState({ q: e.target.value }),
-    onQKey: (e) => { if (e.key === 'Enter' && state.q.trim()) window.location.href = guiaSearchHref(state.q.trim()); },
+    onQKey: (e) => { if (e.key === 'Enter' && state.q.trim()) { track('guia_handoff', { q: state.q.trim(), via: 'enter' }); window.location.href = guiaSearchHref(state.q.trim()); } },
     matches, showDrop: qNorm.length > 0, chips,
     guiaHome, guiaQHref: guiaSearchHref(state.q.trim()),
+    trackGuia: (via) => track('guia_handoff', { q: state.q.trim(), via }),
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
-    sliderVal: state.sliderVal, onSlide: (e) => setState({ sliderVal: +e.target.value }),
+    sliderVal: state.sliderVal, onSlide: (e) => { const val = +e.target.value; const ni = Math.max(0, Math.min(2, Math.round(val / 100))); if (ni !== idx) track('comparador_plan', { plan: plansArr[ni].short, via: 'slider' }); setState({ sliderVal: val }); },
     planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops,
     sliderHeadStyle: 'padding:30px 30px 26px;color:#fff;transition:background .25s;background:' + color,
     sliderTrackStyle: 'width:100%;background:linear-gradient(90deg,' + color + ' ' + (tSlide / 2 * 100) + '%,#E3E6E5 ' + (tSlide / 2 * 100) + '%);--c:' + color,
@@ -374,14 +376,14 @@ export default function Page() {
           <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="" className="nlogo-w" style={css('height:56px;position:absolute;left:0;top:0;z-index:2;transition:opacity .3s')} />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
-          <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
+          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
             <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Qué cubre</a>
             <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
             <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
             <a href={`${BP}/blog/`} className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Blog</a>
-            <a href={guiaHome} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
-            <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+            <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
           </div>
           <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
             {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
@@ -391,13 +393,13 @@ export default function Page() {
       </nav>
       {v.mobileMenuOpen && (
         <div id="mobile-menu" role="menu" style={css('position:fixed;top:66px;left:14px;right:14px;z-index:99;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,59,113,0.18);padding:10px;display:flex;flex-direction:column;gap:2px')}>
-          <a href={'tel:' + SP_TEL} onClick={v.closeMenu} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
-          <a href={v.guiaHome} onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;background:#E6F7F6;color:#009690;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+          <a href={'tel:' + SP_TEL} onClick={() => { track('click_urgencias', { origen: 'menu_movil' }); v.closeMenu(); }} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
+          <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} style={css('padding:14px 16px;border-radius:10px;background:#E6F7F6;color:#009690;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
           <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Qué cubre</a>
           <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
           <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
           <a href={`${BP}/blog/`} onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Blog</a>
-          <a href={`${BP}/simulador/`} onClick={v.closeMenu} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+          <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
         </div>
       )}
 
@@ -412,7 +414,7 @@ export default function Page() {
             <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:#00BCB4')}>se siente</span>.</h1>
             <p style={css('font-size:20px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
-              <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'hero' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               <a href="#manifiesto" className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center')}>Conocé la historia</a>
             </div>
           </div>
@@ -468,7 +470,7 @@ export default function Page() {
                   {v.matches.map((m, i) => (
                     <button key={i} role="option" onClick={m.onPick} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 16px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>{m.name}</button>
                   ))}
-                  <a role="option" href={v.guiaQHref} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#009690')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                  <a role="option" href={v.guiaQHref} onClick={() => v.trackGuia('dropdown')} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#009690')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
                 </div>
               )}
             </div>
@@ -495,7 +497,7 @@ export default function Page() {
               </div>
             </div>
             <div style={css('font-size:12.5px;color:#9aa0a6;margin-top:12px;text-align:center')}>Cifras de referencia — el detalle final de tu contrato lo confirmás con tu asesor.</div>
-            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} className="link-teal" style={css('color:#009690;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
+            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} onClick={() => v.trackGuia('link_cartilla')} className="link-teal" style={css('color:#009690;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
           </div>
         </div>
       </section>
@@ -540,7 +542,7 @@ export default function Page() {
               </div>
               <div style={css('display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid #F0F0F0')}>
                 <button onClick={v.toggleFullTable} aria-expanded={v.showFullTable} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:#6B6B6B;font-weight:600')}>{v.fullTableLabel} <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(v.chevStyle)}><path d="m6 9 6 6 6-6" /></svg></button>
-                <a href={v.waHref} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
+                <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'comparador', plan: v.planName })} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
               </div>
               {v.showFullTable && (
                 <div style={css('margin-top:22px;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;overflow-x:auto')}>
@@ -568,7 +570,7 @@ export default function Page() {
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#009690;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>SP Senior</b> y <b style={css('color:#003B71')}>SP Senior Plus</b> tienen cuidado continuo pensado para ellos.</div></div>
-            <a href={`${BP}/simulador/`} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Senior</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Senior</a>
           </div>
         </div>
       </section>
@@ -606,7 +608,7 @@ export default function Page() {
               <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
               <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
             </div>
-            <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:15px;background:#00BCB4;color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:15px;background:#00BCB4;color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>
@@ -759,8 +761,8 @@ export default function Page() {
             <p style={css('font-size:17px;color:rgba(255,255,255,0.92);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
-            <a href={v.waHref} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#009690;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
-            <a href={`${BP}/simulador/`} className="btn-ghost-light2" style={css('height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.6);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simular mi plan</a>
+            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#009690;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-ghost-light2" style={css('height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.6);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simular mi plan</a>
           </div>
         </div>
       </section>
@@ -796,10 +798,10 @@ export default function Page() {
       </footer>
 
       {/* COTIZAR STICKY (aparece al scrollear) */}
-      <a href={`${BP}/simulador/`} data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg><span className="fab-full">Simulá tu plan</span><span className="fab-short">Simulá</span></a>
+      <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'fab' })} data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg><span className="fab-full">Simulá tu plan</span><span className="fab-short">Simulá</span></a>
 
       {/* WHATSAPP FLOTANTE */}
-      <a href={v.waHref} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
 
     </div>
   );
