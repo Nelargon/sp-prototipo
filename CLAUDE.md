@@ -49,4 +49,10 @@ bitácora: …" del usuario entran con su voz.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.
+- **Regla de lenguaje (julio 2026, pedido del usuario)**: escribir en el
+  idioma del cliente, no en jerga de seguros. Prohibido de cara al
+  usuario: "cartilla" / "cartilla viva" (→ "qué cubre", "cobertura",
+  "Guía Médica"), "práctica" (→ "estudio", "consulta", "lo que
+  necesitás"), "prestación" (→ "servicio"). Ante una palabra nueva,
+  preguntarse: ¿la dice una familia en su casa? Si no, buscar la que sí.
 - Los eventos `track()` nunca llevan nombre/teléfono/email.

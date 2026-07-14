@@ -260,6 +260,27 @@ que van a decirnos si la teoría de la mesa de advisors sobrevive al
 contacto con usuarios reales. Diseñar es opinar; instrumentar es
 permitir que la realidad conteste.
 
+## Capítulo 15 — El idioma del cliente (o: nadie dice "cartilla" en su casa)
+
+Observación del usuario, con su voz: *"la palabra 'cartilla' o 'cartilla
+viva' no es una palabra que se usa mucho. Tenemos que insertar algo que
+ya se conoce y ya se dice usualmente y la gente entiende fácilmente."*
+
+Tenía razón, y el hallazgo fue más profundo que una palabra: al barrer el
+sitio encontramos toda una familia de jerga de seguros que se nos había
+colado sin darnos cuenta — "cartilla" (ya renombrada antes), "práctica"
+("Escribí una práctica…" — ¿quién le dice 'práctica' a una ecografía?) y
+"prestación" (cabecera de la tabla comparativa). Las tres se fueron:
+"escribí lo que necesitás", "cobertura", "servicio".
+
+**Lo aprendido:** la jerga es invisible para el que la escribe — nosotros
+veníamos leyendo "práctica" hace semanas sin verla, porque en el mundo de
+los seguros es normal. El test que quedó como regla permanente: ante cada
+palabra visible, preguntarse *¿la dice una familia en su casa?* Si no la
+dice, hay otra palabra mejor. Y un corolario: este tipo de hallazgo lo
+hace mejor el que mira de afuera (el usuario) que el que construye — otra
+razón para mostrar el trabajo seguido y temprano.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

@@ -62,7 +62,7 @@ export default function Page() {
   const toggleFaq = (i) => setState((s) => ({ faqOpen: s.faqOpen === i ? null : i }));
 
   const faqs = () => [
-    { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo de espera desde que te afiliás hasta poder usar ciertas coberturas (como estudios de alta complejidad o internaciones programadas). Varía según la prestación — tu asesor te muestra el detalle exacto antes de firmar.' },
+    { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo de espera desde que te afiliás hasta poder usar ciertas coberturas (como estudios de alta complejidad o internaciones programadas). Varía según el servicio — tu asesor te muestra el detalle exacto antes de firmar.' },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.' },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
@@ -199,7 +199,7 @@ export default function Page() {
   const guiaHome = `${BP}/guia/guia_home.html`;
   const guiaSearchHref = (term) => (term ? `${BP}/guia/guia_resultados.html?q=${encodeURIComponent(term)}` : guiaHome);
 
-  // cartilla
+  // qué cubre (buscador de cobertura)
   const qNorm = (state.q || '').trim().toLowerCase();
   const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'sugerencia' }); setState({ sel: c.name, q: '' }); } })) : [];
   const quick = ['Resonancia (RM)', 'Parto o cesárea', 'Sesión de psicología', 'Internación', 'Tomografía (TAC)', 'Odontología'];
@@ -348,12 +348,12 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CARTILLA VIVA */}
+      {/* QUÉ CUBRE — buscador de cobertura (ex "cartilla viva": jerga, ver BITACORA cap. 15) */}
       <section id="cartilla" style={css('padding:110px 40px;background:#fff')}>
         <div style={css('max-width:1000px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí una práctica y mirá <span style={css('color:#009690')}>qué cubre</span>.</h2>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí lo que necesitás y mirá <span style={css('color:#009690')}>qué cubre</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Nada de adivinar. Antes de contratar ya sabés qué cubre cada plan y cuánto ponés de tu bolsillo.</p>
           </div>
           <div data-rv style={css('max-width:640px;margin:0 auto 32px;background:#E6F7F6;border-radius:12px;padding:14px 18px;font-size:13.5px;color:#00695f;line-height:1.55;text-align:center')}><b>Lister</b> es nuestro centro médico propio (consultas, laboratorio e imagen). <b>«La red»</b> suma Lister + más de 50 prestadores externos en todo el país.</div>
@@ -361,7 +361,7 @@ export default function Page() {
           <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
             <div style={css('position:relative')}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('position:absolute;left:18px;top:50%;transform:translateY(-50%);pointer-events:none')}><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-              <input type="text" role="searchbox" aria-label="Buscar una práctica médica" aria-expanded={v.showDrop} aria-controls="cartilla-matches" value={v.q} onChange={v.onQ} onKeyDown={v.onQKey} placeholder="Ej: resonancia, parto, psicología…" className="search-inp" style={css('width:100%;height:58px;border:1.5px solid #cfe0dc;border-radius:14px;padding:0 18px 0 48px;font-size:17px;color:#1D1D1B;background:#fff;outline:none')} />
+              <input type="text" role="searchbox" aria-label="Buscar un estudio, consulta o tratamiento" aria-expanded={v.showDrop} aria-controls="cartilla-matches" value={v.q} onChange={v.onQ} onKeyDown={v.onQKey} placeholder="Ej: resonancia, parto, psicología…" className="search-inp" style={css('width:100%;height:58px;border:1.5px solid #cfe0dc;border-radius:14px;padding:0 18px 0 48px;font-size:17px;color:#1D1D1B;background:#fff;outline:none')} />
               {v.showDrop && (
                 <div id="cartilla-matches" role="listbox" style={css('position:absolute;left:0;right:0;top:64px;z-index:5;background:#fff;border:1px solid #E8E8E8;border-radius:14px;box-shadow:0 12px 34px rgba(0,59,113,0.14);overflow:hidden')}>
                   {v.matches.map((m, i) => (
@@ -381,7 +381,7 @@ export default function Page() {
             <div key={v.selKey} style={css('margin-top:24px;background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;animation:glowin 1.1s cubic-bezier(.22,1,.36,1)')}>
               <div style={css('display:flex;align-items:center;gap:12px;padding:18px 22px;background:#003B71;color:#fff')}>
                 <div style={css('width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center')}>{v.selIcon}</div>
-                <div><div style={css('font-size:12px;color:#9bc0e0')}>Práctica</div><div className="disp" style={css('font-size:20px;font-weight:800')}>{v.selName}</div></div>
+                <div><div style={css('font-size:12px;color:#9bc0e0')}>Cobertura</div><div className="disp" style={css('font-size:20px;font-weight:800')}>{v.selName}</div></div>
               </div>
               <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr 1fr')}>
                 {v.selRows.map((row, i) => (
@@ -444,7 +444,7 @@ export default function Page() {
               {v.showFullTable && (
                 <div style={css('margin-top:22px;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;overflow-x:auto')}>
                   <div style={css('display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;background:#003B71;color:#fff;min-width:560px')}>
-                    <div style={css('padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center')}>Prestación</div>
+                    <div style={css('padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center')}>Servicio</div>
                     {v.planHeaders.map((ph, i) => (
                       <div key={i} style={css('padding:12px 10px;font-size:12px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center')}>{ph}</div>
                     ))}
