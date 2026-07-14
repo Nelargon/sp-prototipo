@@ -332,7 +332,7 @@ export default function Page() {
             <a href="#comparar" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
             <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
-            <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Nuestra historia</a>
+            <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
             <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '270ms' }}>Simulá tu plan →</a>
           </nav>
         </div>

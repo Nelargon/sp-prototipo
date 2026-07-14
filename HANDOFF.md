@@ -210,8 +210,9 @@ usa `npm ci`).
    referencia. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
    nace de acá:** testimonios reales con consentimiento (responsable: SP).
    *Refinado v2.1 (feedback del usuario, jul 2026)*: menú móvil overlay a
-   pantalla completa estilo Apple/Tesla (vidrio esmerilado, solo texto
-   grande, sin urgencias repetida — ya vive en el header), "Cómo
+   pantalla completa estilo Apple/Tesla/Ogilvy (blanco pleno, tipografía
+   enorme en Tipo Oración — la referencia Ogilvy usa mayúsculas, la regla
+   de identidad manda acá —, sin urgencias repetida: ya vive en el header), "Cómo
    funciona" compactado a paso-a-paso, y dieta de espacios en toda la
    home: **14,2 → 11,6 pantallas en móvil (-18%)**, 8,9 → 8,1 en desktop.
    El portal completo (login, credencial, estados) sigue como destino

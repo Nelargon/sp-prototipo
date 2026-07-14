@@ -36,10 +36,9 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 /* Menú móvil a pantalla completa (patrón Apple/Tesla): vidrio esmerilado
    claro, solo texto grande con entrada escalonada. El header en estado
    .menu-open replica el look sólido sin depender del scroll handler. */
-.menu-overlay{position:fixed;inset:0;z-index:99;background:rgba(251,253,253,0.86);backdrop-filter:blur(26px);padding:118px 30px 44px;overflow-y:auto}
-@supports not (backdrop-filter:blur(26px)){.menu-overlay{background:rgba(251,253,253,0.985)}}
-.menu-item{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800;font-size:31px;line-height:1.15;letter-spacing:-0.015em;color:#003B71;padding:13px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
-.menu-item-cta{color:#007d77;margin-top:10px}
+.menu-overlay{position:fixed;inset:0;z-index:99;background:#fff;padding:118px 28px 44px;overflow-y:auto}
+.menu-item{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800;font-size:clamp(34px,10.5vw,44px);line-height:1.12;letter-spacing:-0.02em;color:#1D1D1B;padding:9px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
+.menu-item-cta{color:#007d77;margin-top:14px}
 @keyframes menuItem{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 [data-nav].menu-open{background:transparent;box-shadow:none;backdrop-filter:none}
 [data-nav].menu-open .nlogo-w{opacity:0}
