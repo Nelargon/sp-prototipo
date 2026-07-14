@@ -208,9 +208,35 @@ golpes. Y hay que escribirlo — el HANDOFF para el estado, y esta bitácora
 para la historia — porque el conocimiento que no se escribe se paga dos
 veces.
 
+## Capítulo 13 — La confianza se delega por etapas (y el libro aprende a escribirse solo)
+
+Durante ocho PRs el ritual fue idéntico: yo proponía, verificaba y dejaba
+el PR en borrador; el usuario decía "fusionalo". Ese checkpoint no era
+burocracia — era el período de prueba. Hoy el usuario lo cerró con dos
+pedidos en una frase: *fusioná automáticamente, y date cuenta vos solo de
+cuándo hay que escribir en la bitácora*.
+
+Lo interesante es lo que hizo posible ese momento: ocho fusiones seguidas
+donde lo prometido y lo entregado coincidieron, cada una con verificación
+que el usuario podía ver (capturas, checks, CI). La confianza no se pidió
+— se acumuló, y cuando alcanzó cierto nivel, la delegación llegó sola.
+Quedaron excepciones explícitas (los cambios de visión o alcance siguen
+esperando confirmación), porque delegar la ejecución no es delegar el
+rumbo.
+
+**Lo aprendido:** la autonomía no se negocia al principio de una relación
+de trabajo: se gana con un historial de resultados verificables, y se
+otorga por capas — primero la ejecución rutinaria, el rumbo nunca. Y una
+segunda lección, sobre este libro: un diario que depende de que alguien
+se acuerde de pedirlo, muere; un diario con criterios escritos de *cuándo
+hay capítulo* (errores, vueltas, decisiones revertidas, intuiciones que
+cambian el rumbo) puede mantenerse solo. Las reglas quedaron en
+`CLAUDE.md`, donde cualquier sesión futura las hereda.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
-deja su entrada si enseñó algo; las observaciones del usuario entran
-dictadas ("anotá en la bitácora: …") con su propia voz.*
+deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
+lo pida; las observaciones del usuario entran dictadas ("anotá en la
+bitácora: …") con su propia voz.*

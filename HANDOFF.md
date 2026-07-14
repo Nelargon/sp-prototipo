@@ -259,8 +259,11 @@ cd out && python3 -m http.server 8080
   FUERA del repo — ver `HANDOVER.md`).
 - Probar el modo personalizado de la guía: `guia_resultados.html?plan=integral`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
-- Flujo git de este proyecto: rama de trabajo → PR en borrador → el usuario
-  dice "fusionalo" → merge a `main` → Pages se redeploya solo (~2 min).
+- Flujo git de este proyecto: rama de trabajo → PR en borrador →
+  verificación + CI verde → **merge automático** (el usuario autorizó en
+  julio 2026 dejar de esperar el "fusionalo"; excepciones — cambios de
+  visión/alcance o destructivos — esperan confirmación; detalle en
+  `CLAUDE.md`) → Pages se redeploya solo (~2 min).
 - El deploy usa `npm ci`: **no instalar dependencias dentro del repo** que
   no estén en `package.json` (ya rompió el lockfile una vez).
 
