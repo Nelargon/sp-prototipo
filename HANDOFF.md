@@ -141,6 +141,11 @@ usa `npm ci`).
    direcciones en un campo, "fax: 30", typo "SERVICIO DE AMBULACIA").
 10. **Integración guía ↔ homepage**: aprobado **A+B ahora, C como destino**
     (ver pendiente #1 abajo).
+11. **El espacio del afiliado se llama "Mi SP"** (julio 2026, elegido por
+    el usuario): corto, apropiable y crece bien — hoy lleva a "Ver mi
+    red" (la consulta CI+fecha de la guía); mañana nombra al portal
+    completo (credencial, estados). Aparece en el menú móvil; la puerta 2
+    del hero mantiene "Ya soy de SP · Ver mi red" como frase de triaje.
 
 ---
 

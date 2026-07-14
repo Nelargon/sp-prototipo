@@ -37,7 +37,7 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
    claro, solo texto grande con entrada escalonada. El header en estado
    .menu-open replica el look sólido sin depender del scroll handler. */
 .menu-overlay{position:fixed;inset:0;z-index:99;background:#fff;padding:118px 28px 44px;overflow-y:auto}
-.menu-item{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800;font-size:clamp(34px,10.5vw,44px);line-height:1.12;letter-spacing:-0.02em;color:#1D1D1B;padding:9px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
+.menu-item{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800;font-size:clamp(34px,10.5vw,44px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;padding:9px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
 .menu-item-cta{color:#007d77;margin-top:14px}
 @keyframes menuItem{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 [data-nav].menu-open{background:transparent;box-shadow:none;backdrop-filter:none}
@@ -66,14 +66,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(prefers-reduced-motion:reduce){.rv{opacity:1 !important;transform:none !important;transition:none}}
 @media(max-width:1150px){.mani-lines{width:100% !important}}
 @media(max-width:1250px){[data-hero-bg]{-webkit-mask:linear-gradient(90deg,transparent 12%,#000 55%) !important;mask:linear-gradient(90deg,transparent 12%,#000 55%) !important}}
-@media(max-width:820px){.disp-hero{font-size:44px !important}.two-col{grid-template-columns:1fr !important}[data-hero-bg]{width:100% !important;opacity:.45}.sim-card{flex-direction:column !important}.sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}.sim-side-h{display:none !important}.sim-steps{display:none !important}.sim-side-enc{display:none !important}.sim-live-panel{display:none !important}.sim-trust{margin-top:0 !important}.sim-body{padding:24px 20px !important;min-height:0 !important}.sim-mobile-progress{display:block !important}}
+@media(max-width:820px){.disp-hero{font-size:44px !important}.two-col{grid-template-columns:1fr !important}[data-hero-bg]{width:100% !important;opacity:.45}.sim-card{flex-direction:column !important}.sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}.sim-side-h{display:none !important}.sim-steps{display:none !important}.sim-side-enc{display:none !important}.sim-live-panel{display:none !important}.sim-trust{margin-top:0 !important}.sim-side>div:first-child{margin-bottom:0 !important}.sim-body{padding:24px 20px !important;min-height:0 !important}.sim-mobile-progress{display:block !important}}
 @media(max-width:860px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
 /* Touch targets ≥44px en móvil (QA integral: el 77% del tráfico entra por celular) */
 .urg-pill{height:44px !important}.nav-burger{width:44px !important;height:44px !important}}
 @media(max-width:420px){.urg-pill .num-tnum{display:none !important}}
 /* Simulador: en pantallas chicas el logo ya lleva al inicio; el link "Volver"
    se solapaba con el botón de urgencias (visto en móviles reales de 390-430px) */
-@media(max-width:640px){.sim-back{display:none !important}.sim-logo{height:42px !important}}
+@media(max-width:640px){.sim-back{display:none !important}.sim-logo{height:42px !important}.sim-body button.btn-teal{width:100%;justify-content:center}}
 /* FAB de cotización: versión compacta en móvil para tapar menos contenido */
 .fab-short{display:none}
 @media(max-width:640px){.cotizar-fab{padding:0 16px !important}.fab-full{display:none}.fab-short{display:inline}}
