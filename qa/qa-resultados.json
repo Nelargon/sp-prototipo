@@ -1,0 +1,113 @@
+{
+  "fecha": "2026-07-14T15:29:46.423Z",
+  "oks": [
+    {
+      "frente": "funcional",
+      "detalle": "crawler: 76 links internos únicos, todos responden"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "simulador: llega al precio en 6 interacciones"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "simulador: lead se envía y confirma"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "guía: búsqueda \"cardio\" muestra 5 resultados"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "guía: cero resultados ofrece rescate por WhatsApp (no es callejón)"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "guía: modo personalizado muestra el banner del plan"
+    },
+    {
+      "frente": "funcional",
+      "detalle": "ficha: acciones de contacto presentes (tel 9, wa 1, mapa 2)"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "barrido 360/390/430 completado en 4 páginas"
+    },
+    {
+      "frente": "accesibilidad",
+      "detalle": "teclado: Tab recorre 12 elementos distintos en la home"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/: 173 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/simulador/: 164 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/blog/: 149 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/historia/: 151 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "home en 3G rápido: contenido en 19 ms (< 3 s)"
+    },
+    {
+      "frente": "contenido",
+      "detalle": "10 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
+    },
+    {
+      "frente": "contenido",
+      "detalle": "lente Shapiro: hero(h1=1) + prueba social(27 elementos) + objeciones(FAQ) + 7 CTAs"
+    }
+  ],
+  "hallazgos": [
+    {
+      "frente": "accesibilidad",
+      "severidad": "confunde",
+      "detalle": "contraste 2.37:1 (mín 4.5:1) — \"Resonancia (RM)\" rgb(255, 255, 255) sobre rgb(0,188,180)",
+      "donde": "/"
+    },
+    {
+      "frente": "accesibilidad",
+      "severidad": "cosmetico",
+      "detalle": "contraste 4.23:1 (mín 4.5:1) — \"Quiénes somos\" rgb(0, 125, 119) sobre rgb(230,237,244)",
+      "donde": "/"
+    },
+    {
+      "frente": "accesibilidad",
+      "severidad": "confunde",
+      "detalle": "contraste 2.20:1 (mín 4.5:1) — \"Un asesor te acompaña a elegir, \" rgba(255, 255, 255, 0.92) sobre rgb(0,188,180)",
+      "donde": "/"
+    },
+    {
+      "frente": "accesibilidad",
+      "severidad": "confunde",
+      "detalle": "contraste 2.10:1 (mín 4.5:1) — \"Simular mi plan\" rgb(255, 255, 255) sobre rgb(41,199,192)",
+      "donde": "/"
+    },
+    {
+      "frente": "accesibilidad",
+      "severidad": "cosmetico",
+      "detalle": "contraste 2.37:1 (mín 3:1) — \"¿Preferís hablarlo con alguien?\" rgb(255, 255, 255) sobre rgb(0,188,180)",
+      "donde": "/simulador/"
+    },
+    {
+      "frente": "accesibilidad",
+      "severidad": "confunde",
+      "detalle": "contraste 2.20:1 (mín 4.5:1) — \"Escribinos por WhatsApp y un ase\" rgba(255, 255, 255, 0.92) sobre rgb(0,188,180)",
+      "donde": "/simulador/"
+    },
+    {
+      "frente": "contenido",
+      "severidad": "cosmetico",
+      "detalle": "prueba social sin voz humana: testimonios reales pendientes (responsable SP) — hoy la carga llevan números y logos",
+      "donde": "/"
+    }
+  ]
+}

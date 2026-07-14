@@ -187,12 +187,17 @@ usa `npm ci`).
    eventos en homepage y simulador; tabla en ANEXO §2). Queda: que la
    empresa conecte `track()` a un endpoint real, y el ritual mensual
    (#11).
-3. **QA integral del ecosistema**: (a) funcional — cada botón, link,
-   formulario y flujo de punta a punta; (b) responsive en dispositivos
-   reales (falta Safari/iOS — hasta ahora solo Chromium emulado);
-   (c) accesibilidad (teclado, lector de pantalla, contraste);
-   (d) rendimiento (peso, 3G); (e) contenido — cazar placeholders.
-   El QA de integración con backend queda para cuando la empresa conecte.
+3. ~~**QA integral del ecosistema**~~ ✔ **Ejecutado (julio 2026)**: suite
+   permanente en `qa/qa-integral.mjs` + informe en `qa/QA-INFORME.md`.
+   Resultado: **0 "roto"**; 12 arreglos aplicados (contrastes WCAG AA con
+   tonos imperceptiblemente más oscuros, touch targets ≥44px en móvil,
+   lazy-loading de 27 imágenes). **Quedan:** (a) la decisión
+   "blanco sobre teal #00BCB4" en los CTAs (2,4:1 — es identidad de
+   marca; opciones en el informe, resolver junto al pendiente #8);
+   (b) la prueba en iPhone/Safari real — checklist de 10 min en el
+   informe (la hace SP); (c) testimonios reales (prueba social sin voz
+   humana). El QA de integración con backend queda para cuando la
+   empresa conecte.
 
 3b. ~~**Home v2**~~ ✔ **Ejecutado (julio 2026)**: hero de dos puertas
    ("Quiero un plan" → simulador · "Ya soy de SP" → `guia_home.html#mi-red`,

@@ -58,7 +58,7 @@ export default function SimuladorPage() {
         <div className="two-col" style={css('max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
           {trust.map((t, i) => (
             <div key={i} style={css('display:flex;align-items:center;gap:12px;justify-content:center;text-align:left')}>
-              <span style={css('width:42px;height:42px;border-radius:12px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon} /></svg></span>
+              <span style={css('width:42px;height:42px;border-radius:12px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon} /></svg></span>
               <span style={css('font-size:14.5px;font-weight:700;color:#003B71;line-height:1.35')}>{t.text}</span>
             </div>
           ))}
@@ -69,7 +69,7 @@ export default function SimuladorPage() {
       <section style={css('background:#F5F5F5;padding:64px 24px')}>
         <div style={css('max-width:960px;margin:0 auto')}>
           <div style={css('text-align:center;max-width:560px;margin:0 auto 36px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:12px')}>Sin letra chica</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:12px')}>Sin letra chica</div>
             <h2 className="disp" style={css('font-size:30px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Lo que te estarás preguntando</h2>
           </div>
           <div className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px')}>
@@ -90,7 +90,7 @@ export default function SimuladorPage() {
             <h2 className="disp" style={css('font-size:26px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px')}>¿Preferís hablarlo con alguien?</h2>
             <p style={css('font-size:16px;color:rgba(255,255,255,0.92);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
           </div>
-          <a href={waHref} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 28px;border-radius:13px;background:#fff;color:#009690;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:9px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
+          <a href={waHref} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 28px;border-radius:13px;background:#fff;color:#007d77;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:9px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
         </div>
       </section>
 
@@ -98,7 +98,7 @@ export default function SimuladorPage() {
       <footer style={css('background:#002A52;color:#fff;padding:36px 24px')}>
         <div style={css('max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap')}>
           <div style={css('display:flex;align-items:center;gap:14px')}>
-            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:50px;display:block')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:50px;display:block')} />
             <span style={css('font-size:13.5px;color:#9bb6d2')}>Salud Protegida · Asunción, Paraguay</span>
           </div>
           <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('font-size:14px;color:#cfe0f0;font-weight:700')}>Urgencias 24 h: {SP_PHONE_DISPLAY}</a>

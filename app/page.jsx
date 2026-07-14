@@ -213,7 +213,7 @@ export default function Page() {
     return {
       plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d,
       wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid #F0F0F0'),
-      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#009690' : 'background:#F3F4F6;color:#9aa0a6'),
+      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F3F4F6;color:#6B6B6B'),
     };
   });
 
@@ -225,14 +225,14 @@ export default function Page() {
   const color = lerpHex(plansArr[segS].color, (plansArr[segS + 1] || plansArr[segS]).color, fracS);
   const stops = plansArr.map((pl, i) => ({
     label: pl.short, onPick: () => { if (i !== idx) track('comparador_plan', { plan: pl.short, via: 'parada' }); setState({ sliderVal: i * 100 }); },
-    style: 'background:none;border:none;cursor:pointer;font-size:13px;font-weight:' + (idx === i ? '800' : '500') + ';color:' + (idx === i ? '#003B71' : '#9aa0a6') + ';padding:2px 4px;transition:color .2s',
+    style: 'background:none;border:none;cursor:pointer;font-size:13px;font-weight:' + (idx === i ? '800' : '500') + ';color:' + (idx === i ? '#003B71' : '#6B6B6B') + ';padding:2px 4px;transition:color .2s',
   }));
 
   // full comparison table
   const planHeaders = plansArr.map((pl) => pl.short);
   const fullRows = cartArr.map((item) => ({
     name: item.name,
-    cols: item.cov.map((c) => ({ status: c.s, badge: 'display:inline-flex;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;' + (c.s !== 'No incluida' ? 'background:#E6F7F6;color:#009690' : 'background:#F3F4F6;color:#9aa0a6') })),
+    cols: item.cov.map((c) => ({ status: c.s, badge: 'display:inline-flex;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;' + (c.s !== 'No incluida' ? 'background:#E6F7F6;color:#007d77' : 'background:#F3F4F6;color:#6B6B6B') })),
   }));
 
   // faq
@@ -315,7 +315,7 @@ export default function Page() {
       {v.mobileMenuOpen && (
         <div id="mobile-menu" role="menu" style={css('position:fixed;top:66px;left:14px;right:14px;z-index:99;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,59,113,0.18);padding:10px;display:flex;flex-direction:column;gap:2px')}>
           <a href={'tel:' + SP_TEL} onClick={() => { track('click_urgencias', { origen: 'menu_movil' }); v.closeMenu(); }} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
-          <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} style={css('padding:14px 16px;border-radius:10px;background:#E6F7F6;color:#009690;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+          <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} style={css('padding:14px 16px;border-radius:10px;background:#E6F7F6;color:#007d77;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
           <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Qué cubre</a>
           <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
           <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
@@ -339,7 +339,7 @@ export default function Page() {
               <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Ver mi red</a>
             </div>
-            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:20px;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
+            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:6px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
           </div>
         </div>
         <div style={css('position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:rgba(255,255,255,0.7);display:flex;flex-direction:column;align-items:center;gap:6px')}>
@@ -352,8 +352,8 @@ export default function Page() {
       <section id="cartilla" style={css('padding:110px 40px;background:#fff')}>
         <div style={css('max-width:1000px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí lo que necesitás y mirá <span style={css('color:#009690')}>qué cubre</span>.</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí lo que necesitás y mirá <span style={css('color:#007d77')}>qué cubre</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Nada de adivinar. Antes de contratar ya sabés qué cubre cada plan y cuánto ponés de tu bolsillo.</p>
           </div>
           <div data-rv style={css('max-width:640px;margin:0 auto 32px;background:#E6F7F6;border-radius:12px;padding:14px 18px;font-size:13.5px;color:#00695f;line-height:1.55;text-align:center')}><b>Lister</b> es nuestro centro médico propio (consultas, laboratorio e imagen). <b>«La red»</b> suma Lister + más de 50 prestadores externos en todo el país.</div>
@@ -367,7 +367,7 @@ export default function Page() {
                   {v.matches.map((m, i) => (
                     <button key={i} role="option" onClick={m.onPick} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 16px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>{m.name}</button>
                   ))}
-                  <a role="option" href={v.guiaQHref} onClick={() => v.trackGuia('dropdown')} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#009690')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                  <a role="option" href={v.guiaQHref} onClick={() => v.trackGuia('dropdown')} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#007d77')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
                 </div>
               )}
             </div>
@@ -393,8 +393,8 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <div style={css('font-size:12.5px;color:#9aa0a6;margin-top:12px;text-align:center')}>Cifras de referencia — el detalle final de tu contrato lo confirmás con tu asesor.</div>
-            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} onClick={() => v.trackGuia('link_cartilla')} className="link-teal" style={css('color:#009690;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
+            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Cifras de referencia — el detalle final de tu contrato lo confirmás con tu asesor.</div>
+            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} onClick={() => v.trackGuia('link_cartilla')} className="link-teal" style={css('color:#007d77;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
           </div>
         </div>
       </section>
@@ -403,8 +403,8 @@ export default function Page() {
       <section id="comparar" style={css('padding:110px 40px;background:#F5F5F5')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 48px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Tres planes, un solo deslizador</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Movelo y mirá cómo cambia <span style={css('color:#009690')}>tu cobertura</span>.</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Tres planes, un solo deslizador</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Movelo y mirá cómo cambia <span style={css('color:#007d77')}>tu cobertura</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>De lo esencial a lo premium, arrastrá para ver qué gana cada nivel — y cuánto sale.</p>
           </div>
 
@@ -466,7 +466,7 @@ export default function Page() {
 
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
-            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#009690;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>SP Senior</b> y <b style={css('color:#003B71')}>SP Senior Plus</b> tienen cuidado continuo pensado para ellos.</div></div>
+            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>SP Senior</b> y <b style={css('color:#003B71')}>SP Senior Plus</b> tienen cuidado continuo pensado para ellos.</div></div>
             <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Senior</a>
           </div>
         </div>
@@ -494,7 +494,7 @@ export default function Page() {
       <section style={css('padding:100px 40px 90px;background:#fff')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 44px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>De la cotización a tu credencial</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>De la cotización a tu credencial</div>
             <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
           </div>
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:20px')}>
@@ -523,14 +523,14 @@ export default function Page() {
       <section style={css('padding:80px 40px;background:#E6F7F6')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 42px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Lo que ponemos por escrito</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#009690')}>garantiza</span>.</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que ponemos por escrito</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#007d77')}>garantiza</span>.</h2>
             <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
           </div>
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
             {v.difs.map((dz, i) => (
               <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
                 <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
                 <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{dz.body}</div>
               </div>
@@ -544,10 +544,10 @@ export default function Page() {
         <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
             <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:#d4e0ee')}></div>
-            <img src={`${BP}/assets/edificio.webp`} alt="Edificio administrativo de Salud Protegida" style={css('position:relative;width:100%;max-width:340px;height:auto;display:block')} />
+            <img src={`${BP}/assets/edificio.webp`} alt="Edificio administrativo de Salud Protegida" loading="lazy" style={css('position:relative;width:100%;max-width:340px;height:auto;display:block')} />
           </div>
           <div>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:12px')}>Quiénes somos</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#00736e;margin-bottom:12px')}>Quiénes somos</div>
             <h3 className="disp" style={css('font-size:26px;font-weight:800;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de 23 años.</h3>
             <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px 20px')}>
               <div><div className="disp" style={css('font-size:32px;color:#003B71')}>2002</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Fundada en Asunción</div></div>
@@ -571,8 +571,8 @@ export default function Page() {
       <section style={css('padding:88px 0 92px;background:#F5F5F5;overflow:hidden')}>
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:#009690')}>de tu plan</span>.</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:#007d77')}>de tu plan</span>.</h2>
             <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.</p>
           </div>
         </div>
@@ -582,7 +582,7 @@ export default function Page() {
           <div className="mq-track">
             {[...v.aliados, ...v.aliados].map((a, i) => (
               <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
-                <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} className="ally-logo" />
+                <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} loading="lazy" className="ally-logo" />
               </div>
             ))}
           </div>
@@ -592,7 +592,7 @@ export default function Page() {
         <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:48s')}>
           <div className="mq-track">
             {[...v.prestadores, ...v.prestadores].map((pr, i) => (
-              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:#9aa0a6')}>
+              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:#6B6B6B')}>
                 <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
                 <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr}</span>
               </div>
@@ -600,14 +600,14 @@ export default function Page() {
           </div>
         </div>
 
-        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:#9aa0a6')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:#009690')}>próximamente</b> con la red médica real.</div>
+        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:#6B6B6B')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:#007d77')}>próximamente</b> con la red médica real.</div>
       </section>
 
       {/* FAQ */}
       <section id="faq" style={css('padding:110px 40px;background:#F5F5F5')}>
         <div style={css('max-width:820px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 12px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Antes de contratar</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Antes de contratar</div>
             <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 14px')}>Preguntas frecuentes</h2>
             <p style={css('font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 0 40px')}>Respuestas orientativas — tu asesor confirma los detalles exactos de tu contrato.</p>
           </div>
@@ -630,7 +630,7 @@ export default function Page() {
             <p style={css('font-size:17px;color:rgba(255,255,255,0.92);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
-            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#009690;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
+            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#007d77;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
             <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-ghost-light2" style={css('height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.6);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simular mi plan</a>
           </div>
         </div>
@@ -640,7 +640,7 @@ export default function Page() {
       <footer style={css('background:#002A52;color:#fff;padding:56px 40px 30px')}>
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
-            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:52px;display:block;margin-bottom:14px')} />
+            <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:52px;display:block;margin-bottom:14px')} />
             <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +23 años · Asunción, Paraguay</div>
           </div>
           <div>

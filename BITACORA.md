@@ -314,6 +314,38 @@ corrigen (incómodo pero sano) y revelan lo que nadie preguntó (lo más
 valioso). Y una regla de higiene: ante un dashboard, preguntar siempre
 cómo se midió antes de creer qué dice.
 
+## Capítulo 17 — El QA integral (o: el instrumento también se audita)
+
+Recorrimos todo el ecosistema como un usuario con mala suerte: 76 links,
+el simulador de punta a punta, la guía con búsquedas absurdas, tres
+anchos de celular, contraste computado de cada texto, pesos de página y
+caza de placeholders. Resultado: cero "roto" — y una docena de arreglos
+que nadie había visto porque no dolían: textos grises y verdes que no
+cumplían el contraste mínimo para un adulto mayor (el público de SP
+Senior, nada menos), botones más chicos que un pulgar, 27 imágenes
+cargándose antes de tiempo.
+
+Dos lecciones. La primera repite el capítulo 8 con otro disfraz: **el
+primer reporte de la suite traía 34 hallazgos, y un tercio eran mentiras
+del instrumento** — el medidor de contraste no sabía componer fondos
+translúcidos ni sabía que detrás de un header fijo no está el fondo
+blanco del documento. Un QA que no audita sus propias herramientas
+fabrica trabajo falso. Depuramos el medidor antes de tocar el producto,
+y los 34 quedaron en 7 reales.
+
+La segunda es sobre qué se arregla y qué se decide: los tonos de texto se
+oscurecieron un pelo (nadie lo nota, WCAG sí) — eso es un arreglo. Pero
+el blanco sobre el teal de marca de los botones falla la norma *y es la
+identidad comercial del sitio* — eso no se "arregla" en silencio un
+martes: se documenta con opciones y lo decide el dueño de la marca. La
+línea entre bug y decisión no la marca la severidad técnica sino quién
+tiene que vivir con el cambio.
+
+**Lo aprendido:** el QA no es buscar errores; es separar tres pilas — lo
+que se arregla ya, lo que decide otro, y lo que el instrumento inventó.
+Y la accesibilidad no era un lujo: era literalmente legibilidad para el
+cliente de SP Senior.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
