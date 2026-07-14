@@ -1,0 +1,216 @@
+# BITÁCORA — el libro que escribimos mientras construimos
+
+Esto no es un changelog ni documentación técnica. Es el diario de a bordo
+del ecosistema digital de Salud Protegida: qué intentamos, qué pasó de
+verdad, qué vueltas dimos y por qué, y qué aprendimos en cada una. Se
+escribe mientras construimos — y va a seguir escribiéndose después de que
+la página exista — porque las lecciones valen para nosotros y para
+cualquiera que construya algo parecido.
+
+**Reglas del libro:**
+- Cada entrada cuenta tres cosas: *qué intentamos, qué pasó, qué
+  aprendimos*. Si no hay aprendizaje, no es una entrada.
+- Los errores se escriben con nombre y apellido. Los capítulos de lo que
+  no funcionó son los que más valen.
+- Se escribe en el momento (o lo más cerca posible): la memoria edita, el
+  diario no.
+- La bitácora solo crece; nunca se reescribe una entrada vieja. Si hoy
+  pensamos distinto que en un capítulo anterior, eso es un capítulo nuevo.
+- Todavía no sabemos de qué trata este libro. Está bien: el tema va a
+  aparecer solo cuando lo releamos.
+
+Complementa al `HANDOFF.md` (que dice *dónde estamos*) — la bitácora dice
+*cómo llegamos y qué aprendimos en el camino*.
+
+---
+
+## Capítulo 1 — El encargo era una web; la respuesta fue cuatro preguntas
+
+Todo empezó como un pedido conocido: "necesitamos una página para vender
+planes". Pudimos haber hecho eso — un folleto digital lindo — y quizás
+nadie lo habría objetado. En cambio, la pregunta que ordenó todo fue otra:
+*¿qué necesita resolver una familia paraguaya, en minutos y desde el
+celular, sin llamar a nadie?* La respuesta cupo en cuatro preguntas: ¿qué
+plan me conviene? ¿cuánto me cuesta? ¿qué me cubre? ¿dónde me atiendo?
+
+**Lo aprendido:** una lista corta de preguntas del cliente es mejor brief
+que cualquier documento de requisitos. Desde entonces, cada propuesta
+nueva se filtra con "¿a cuál de las cuatro preguntas sirve?" — y esa
+regla mató más ideas mediocres que cualquier comité.
+
+## Capítulo 2 — La guía se rediseñó en el formato "viejo" a propósito
+
+Para rediseñar la Guía Médica teníamos la tentación obvia: hacerla en el
+stack moderno del prototipo (Next.js). La descartamos y la construimos en
+el mismo formato que usa el proveedor actual de SP: archivos HTML sueltos
+con Tailwind. ¿Por qué? Porque el rediseño más elegante del mundo vale
+cero si la empresa que lo tiene que adoptar no puede integrarlo sin
+fricción.
+
+**Lo aprendido:** la adopción le gana a la elegancia técnica. Diseñá para
+el que tiene que integrar tu trabajo, no para tu portafolio.
+
+## Capítulo 3 — Datos falsos a propósito (porque los reales estaban sucios)
+
+Los datos reales de prestadores existían, pero venían con teléfonos
+concatenados que rompían el botón "Llamar", dos direcciones en un campo,
+un "fax: 30" y un typo memorable: "SERVICIO DE AMBULACIA". En vez de
+importarlos, cargamos datos **ilustrativos** con el formato correcto:
+sedes separadas, un teléfono por acción, horarios por día.
+
+**Lo aprendido:** cuando el dato real está sucio, el prototipo con datos
+inventados *bien estructurados* vale más — se convierte en el molde que
+le dice al dueño del dato cómo tiene que limpiarlo. El prototipo es la
+especificación.
+
+## Capítulo 4 — Cero resultados nunca es un callejón
+
+Decisión temprana que se volvió filosofía: cuando alguien busca algo que
+no existe en la guía, jamás recibe una página vacía. Recibe un "¿quisiste
+decir…?" y un botón de WhatsApp con su búsqueda ya escrita. Cada búsqueda
+fallida es dos cosas: un cliente rescatado y un dato para Convenios sobre
+qué le falta a la red.
+
+**Lo aprendido:** las fallas del producto son la mejor fuente de
+inteligencia de negocio, si las diseñás para capturarlas. El error no se
+esconde: se cosecha.
+
+## Capítulo 5 — Nunca "No cubierto", nunca rojo
+
+Regla de tono que costó internalizar: la ausencia de cobertura no se
+comunica como negación ("No cubierto", en rojo) sino como oportunidad
+(etiqueta dorada, "Desde SP Premium", hoja de upsell hacia el simulador).
+El rojo quedó reservado para una sola cosa: urgencias.
+
+**Lo aprendido:** en un producto comercial, cada pixel comunica. Un
+"no" mal dicho cierra la venta; el mismo dato dicho como "todavía no,
+pero mirá lo que te falta" la abre. Y reservar un color para una sola
+emoción (rojo = emergencia) es de las decisiones de diseño más baratas y
+más potentes que tomamos.
+
+## Capítulo 6 — El día que rompimos el lockfile
+
+Instalamos una dependencia de prueba dentro del repo y el archivo de
+dependencias quedó desincronizado; el deploy automático (que usa
+`npm ci`, estricto) se rompió. Barato de arreglar, valioso de aprender.
+
+**Lo aprendido:** las herramientas de verificación viven *fuera* del
+proyecto. Y el CI estricto no es una molestia: es el guardián que
+convierte un error silencioso en un error ruidoso — los ruidosos se
+arreglan, los silenciosos se acumulan.
+
+## Capítulo 7 — La integración que faltaba estaba en el menú
+
+Teníamos una web de planes y una guía médica rediseñada — dos piezas
+buenas que no se conocían entre sí. La guía ni aparecía en el menú del
+homepage, y sus links de "volver" apuntaban al sitio viejo de producción:
+el visitante que entraba a la guía quedaba atrapado en ella. La
+integración fue menos glamorosa que construir las piezas: menú, footer,
+un buscador que lleva la búsqueda puesta, links de vuelta.
+
+**Lo aprendido:** un ecosistema no es un conjunto de piezas buenas; es un
+conjunto de piezas *conectadas*. El pegamento (menús, links, contexto que
+viaja con el usuario) es trabajo de primera clase, no un detalle. Y los
+callejones sin salida se esconden justo en los bordes entre una pieza y
+otra — ahí hay que ir a buscarlos.
+
+## Capítulo 8 — El blur que nunca existió (o: verificá lo computado)
+
+Pusimos un efecto de vidrio esmerilado en el header. El código estaba
+"bien". El efecto no existía: el minificador de CSS del build encadenaba
+las funciones sin espacio (inválido — el navegador lo descartaba en
+silencio) y, cuando declarábamos la variante con prefijo a mano, el
+minificador se quedaba *solo* con la prefijada, que nuestro navegador de
+prueba no honraba. Dos bugs invisibles, apilados, sin un solo error en
+pantalla. Lo encontramos porque la verificación no lee el código fuente:
+le pregunta al navegador qué estilos *computó* de verdad.
+
+**Lo aprendido:** entre tu código y el usuario hay una cadena de
+herramientas que puede traicionarte en silencio. No verifiques lo que
+escribiste; verificá lo que el navegador entendió. (Bonus del mismo día:
+en el navegador de pruebas, el click en un link de teléfono congela la
+navegación posterior — perdimos una hora hasta descubrir que el bug era
+del entorno de prueba, no del producto. Anotado: cuando un test falla
+raro, sospechá también del test.)
+
+## Capítulo 9 — La auditoría de algo que no existe es una especificación
+
+Planificamos auditar el registro de búsquedas del sistema actual:
+comparar qué campos guarda contra los que necesitamos. Resultó que el
+panel de estadísticas del proveedor *también* es un prototipo — no hay
+datos reales; todos estamos dibujando el futuro al mismo tiempo. En vez
+de frustrarnos, giramos: la auditoría se convirtió en especificación.
+Escribimos en el contrato técnico exactamente qué debe tener ese panel
+(conversión por prestador, demanda vs. oferta por ciudad, embudo por
+sesión anónima) y de paso instrumentamos nuestra propia web con los
+mismos eventos.
+
+**Lo aprendido:** en proyectos tempranos, muchas veces vas a auditar
+cosas que aún no existen. No es una pared: es la oportunidad de definir
+la vara antes de que exista lo que va a ser medido. El que escribe la
+especificación primero, define la conversación.
+
+## Capítulo 10 — El manifiesto hermoso que era un peaje
+
+El capítulo más incómodo hasta ahora. Construimos un manifiesto
+scrollytelling del que estábamos orgullosos: siete pantallas
+cinematográficas, frases que emocionan, fotos con parallax. Y un día,
+mirando la home con ojos de usuario, hicimos la pregunta que dolía: *¿y
+si esto arruina la experiencia?* Medimos: 720vh de marca **entre** el
+hero y las herramientas. El visitante que scrollea — lo más natural del
+mundo — paga siete pantallas de peaje antes de poder resolver nada. Y
+peor: la home entera le habla solo al que todavía no es cliente; el
+afiliado que vuelve cada mes no tiene nada.
+
+Convocamos una mesa de advisors imaginaria (Miller, Ogilvy, Sutherland,
+Bezos, Munger, Christensen, Galperin) y el veredicto fue 7-0: la home
+debe resolver primero y emocionar después. El manifiesto no muere — se
+comprime a una pantalla y su versión completa se muda a su propia página.
+El plan quedó escrito en `PLAN-home-v2.md`.
+
+**Lo aprendido — tres lecciones en una:**
+1. Lo más difícil de criticar es lo que te quedó lindo. La belleza de una
+   pieza no dice nada sobre si está en el lugar correcto.
+2. "¿Estamos vendiendo demasiado?" es una pregunta que hay que hacerse
+   *en voz alta* y con frecuencia. Vender y servir no son enemigos, pero
+   el orden importa: primero resolvé, después emocioná.
+3. El truco de la mesa de advisors imaginaria funciona: obligarse a mirar
+   la misma decisión con siete pares de ojos distintos (narrativa, oficio
+   de venta, psicología, modelo de negocio, sabiduría, producto, cancha
+   local) produce mejores decisiones que discutir con uno mismo.
+
+## Capítulo 11 — La medición como espec ejecutable
+
+Cuando instrumentamos la web (cada click importante emite un evento
+anónimo), no lo hicimos conectando una herramienta de analytics: lo
+hicimos escribiendo los eventos en el código como *demostración
+ejecutable* de lo que el backend deberá registrar. El que integre después
+no tiene que interpretar un documento: abre la consola y ve los eventos
+salir, con sus campos exactos.
+
+**Lo aprendido:** la mejor especificación es la que corre. Un documento
+dice "debería"; un prototipo instrumentado dice "así". Y una regla de
+privacidad que nos ordenó todo: los eventos nunca llevan nombre, teléfono
+ni email — el dato personal va al CRM, la analítica es anónima. Decidirlo
+temprano evitó diez discusiones futuras.
+
+## Capítulo 12 — El proceso también se diseñó (y esta bitácora es parte)
+
+Sin darnos cuenta, construimos un método: ramas de trabajo → PR en
+borrador → verificación con un navegador real (no "a ojo") → el usuario
+dice "fusionalo" → deploy automático → el HANDOFF se actualiza en el
+mismo PR que el cambio. Cada pieza del método nació de un dolor real (el
+lockfile roto parió el CI; el blur fantasma parió la verificación
+computada; el miedo a perder contexto entre sesiones parió el HANDOFF).
+
+**Lo aprendido:** el proceso no se elige al principio, se destila de los
+golpes. Y hay que escribirlo — el HANDOFF para el estado, y esta bitácora
+para la historia — porque el conocimiento que no se escribe se paga dos
+veces.
+
+---
+
+*Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
+siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
+deja su entrada si enseñó algo; las observaciones del usuario entran
+dictadas ("anotá en la bitácora: …") con su propia voz.*

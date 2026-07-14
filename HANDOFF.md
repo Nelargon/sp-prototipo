@@ -266,6 +266,12 @@ cd out && python3 -m http.server 8080
 
 ## 6. MATERIAL DE REFERENCIA
 
+- **`BITACORA.md` — el libro del proyecto.** Diario narrativo de qué
+  intentamos, qué falló, qué vueltas dimos y qué aprendimos. **Ritual
+  obligatorio para quien retome este proyecto:** cada PR fusionado que
+  haya enseñado algo deja su entrada (qué intentamos / qué pasó / qué
+  aprendimos); las observaciones del usuario entran dictadas ("anotá en
+  la bitácora: …"). Solo crece — nunca reescribir entradas viejas.
 - `HANDOVER.md` — implementación técnica de la página de planes (v6).
 - `guia/ANEXO-requisitos-backend.md` — eventos de medición, seguridad de
   cédula, campos de datos, higiene técnica. **Es el contrato con la empresa.**
