@@ -174,6 +174,18 @@ usa `npm ci`).
    (d) rendimiento (peso, 3G); (e) contenido — cazar placeholders.
    El QA de integración con backend queda para cuando la empresa conecte.
 
+3b. **Home v2 — plan listo, ejecución pendiente del "adelante"**: la home
+   se convierte en hub de dos audiencias (prospecto + afiliado). Hero de
+   dos puertas ("Quiero un plan" / "Ya soy de SP" → guía personalizada
+   CI+fecha como fase 1 del portal), herramientas arriba, manifiesto
+   comprimido a una pantalla en segunda persona (el completo migra a
+   `/historia/`), testimonios afuera hasta tener reales, eventos
+   `manifesto_scroll` y `puerta_home`, presupuesto de peso móvil.
+   Detalle completo, salvaguardas y copy propuesto: **`PLAN-home-v2.md`**
+   (veredicto 7-0 de la mesa de advisors, julio 2026). El portal
+   completo (login, credencial, estados) queda como destino declarado,
+   bloqueado por el pendiente #8 y el backend de SIP.
+
 ### Prioridad media
 
 4. **Datos reales de contacto**: ✔ el número quedó confirmado por el
