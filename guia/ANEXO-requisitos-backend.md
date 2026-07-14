@@ -63,7 +63,7 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 
 | Evento (web)          | Datos                                    | Para qué sirve |
 |-----------------------|------------------------------------------|----------------|
-| `puerta_home`         | puerta (plan / ya_soy_sp)                | qué audiencia entra por el hero: prospecto vs. afiliado (la métrica de la puerta 2 es visita recurrente, no conversión) |
+| `puerta_home`         | puerta (plan / ya_soy_sp), origen (hero / menu) | qué audiencia entra por el hero: prospecto vs. afiliado (la métrica de la puerta 2 es visita recurrente, no conversión) |
 | `manifesto_scroll`    | profundidad (25/50/75/100), pagina (home / historia) | cuánta gente atraviesa el manifiesto vs. lo abandona — el dato que decide su futuro |
 | `guia_handoff`        | q (texto buscado, puede ser vacío), via (enter / dropdown / nav / menú / link) | cuánta demanda de la guía nace en la web |
 | `cartilla_select`     | práctica, via (chip / sugerencia)        | qué coberturas consulta la gente antes de comprar |

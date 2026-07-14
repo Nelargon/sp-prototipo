@@ -363,7 +363,6 @@ export default function Simulador() {
           )}
           {sim.isIntro && (
             <div style={css(sim.stepAnim)}>
-              <div style={css('width:54px;height:54px;border-radius:16px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;margin-bottom:18px')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg></div>
               <h3 style={css('font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px')}>Encontremos tu plan ideal</h3>
               <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 24px')}>Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
               <div style={css('display:flex;align-items:center;gap:16px;flex-wrap:wrap')}>
