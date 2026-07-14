@@ -281,6 +281,39 @@ dice, hay otra palabra mejor. Y un corolario: este tipo de hallazgo lo
 hace mejor el que mira de afuera (el usuario) que el que construye — otra
 razón para mostrar el trabajo seguido y temprano.
 
+## Capítulo 16 — Llegaron los primeros datos reales (y me corrigieron)
+
+El usuario trajo el Google Analytics de la web activa de SP: dos meses de
+datos reales, los primeros del proyecto. Confirmaron tres decisiones
+tomadas por intuición y teoría: **el 77% del tráfico entra por celular**
+(la ponderación móvil no era perfeccionismo), **"Guía para el asegurado"
+es la tercera página más visitada** (la puerta 2 del hero atiende una
+demanda que ya existía), y la atención media es de **50 segundos**
+("resolver en un minuto" es la vara correcta, y cualquier peaje de siete
+pantallas estaba condenado por los datos antes que por la mesa de
+advisors).
+
+Pero el capítulo se gana su lugar por dos cosas más incómodas. Primera:
+la captura inicial (un embudo con "100% de finalización" en cada paso) me
+llevó a concluir que "un tercio de los clientes ya usa el canal digital".
+Con el informe completo quedó claro que ese embudo se auto-calificaba —
+el Login real tuvo 132 usuarios, no 2.900. **Los datos merecen la misma
+desconfianza metódica que el código**: un embudo perfecto es tan
+sospechoso como un test que nunca falla. Corregido en el mismo día,
+gracias a que el usuario trajo más capturas en vez de conformarse.
+
+Segunda: el dato más valioso no confirmaba nada — revelaba. **El 91% de
+los usuarios son nuevos: casi nadie vuelve.** El sitio actual no le da a
+nadie un motivo de regreso, mientras SP paga tráfico social que aterriza
+ahí. Esa cifra (recurrencia ~9%) quedó registrada en el HANDOFF como *la
+métrica a vencer* — el día que la guía nueva y el portal existan, este
+número es el juez.
+
+**Lo aprendido:** los datos reales hacen tres trabajos — confirman (barato),
+corrigen (incómodo pero sano) y revelan lo que nadie preguntó (lo más
+valioso). Y una regla de higiene: ante un dashboard, preguntar siempre
+cómo se midió antes de creer qué dice.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
