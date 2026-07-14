@@ -80,6 +80,17 @@ modificar el diseño y pasárselo a la empresa desarrolladora, que lo evalúa e
 integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
 
+**Línea de base de datos reales (GA de la web activa de SP,
+15 may – 13 jul 2026, aportada por el usuario):** ~3.200 usuarios
+activos, **2.900 nuevos (recurrencia ~9% — la métrica a vencer con la
+guía nueva y el portal)**, 50 s de interacción media, **77% móvil**, 94%
+Paraguay. "Guía para el asegurado" es la **3ª página más visitada** (783
+usuarios — valida la puerta 2 del hero); Login solo 132 usuarios.
+Canales: Organic Search #1 (282 sesiones/semana), Paid Social pagado
+creciendo (+33%). Pregunta abierta para SIP: el embudo que mostraba
+"100% inicio de sesión" parece auto-calificarse — ¿la app/portal mide en
+otra propiedad de GA? El `BRANDSCRIPT.md` está escrito con estos números.
+
 **Historia git:** PR #1 (rediseño de la guía + publicación en Pages),
 PR #2 (QA móvil + menú + cobertura por plan + upsell), PR #3 (HANDOFF),
 PR #4 (CI en PRs + sync de la guía + README) y PR #5 (integración de la
@@ -215,6 +226,22 @@ usa `npm ci`).
 8. **Decisión de plataforma de la web pública**: el brief de BuenaVista
    dice WordPress; el prototipo es Next.js. Alguien decide qué va a
    producción y quién hospeda. Condiciona todo el trabajo siguiente.
+   **Criterios de contratación** (jul 2026, de la evaluación de
+   arquitectura de conversión): buscar arquitecto de conversión /
+   StoryBrand, no diseñador estético; el brief es `BRANDSCRIPT.md` +
+   `guia/ANEXO-requisitos-backend.md` + el prototipo funcionando;
+   prohibido lorem ipsum — el copy dicta el diseño.
+8b. **SEO** (sube de prioridad baja → media, jul 2026): los datos reales
+   muestran que **Organic Search ya es el canal #1** de la web activa
+   (282 sesiones/semana) y hay Paid Social pagado aterrizando en un
+   sitio con ~9% de recurrencia. Sitemap, metadatos, schema.org (ejemplo
+   en la ficha de la guía) valen más de lo presupuestado. La decisión de
+   dominio de la guía (#9) se evalúa junto con esto.
+8c. **Nota para la mesa técnica de precios**: al definir los precios
+   reales del comparador, evaluar el **efecto señuelo** (Integral como
+   ancla que ordena la percepción de Esencial y Premium) — con la
+   salvaguarda de Munger: persuasión sí, manipulación no; el simulador
+   debe recomendar el plan correcto, no el más caro.
 
 ### Prioridad baja / evolución
 
@@ -279,6 +306,9 @@ cd out && python3 -m http.server 8080
 
 ## 6. MATERIAL DE REFERENCIA
 
+- **`BRANDSCRIPT.md` — el argumento de venta central (SB7).** El guion
+  que dicta estructura y texto de toda pieza digital; se entrega a quien
+  construya la producción. Escrito con los datos reales de GA adentro.
 - **`BITACORA.md` — el libro del proyecto.** Diario narrativo de qué
   intentamos, qué falló, qué vueltas dimos y qué aprendimos. **Ritual
   obligatorio para quien retome este proyecto:** cada PR fusionado que
