@@ -174,6 +174,18 @@ usa `npm ci`).
    (d) rendimiento (peso, 3G); (e) contenido — cazar placeholders.
    El QA de integración con backend queda para cuando la empresa conecte.
 
+3b. **Home v2 — plan listo, ejecución pendiente del "adelante"**: la home
+   se convierte en hub de dos audiencias (prospecto + afiliado). Hero de
+   dos puertas ("Quiero un plan" / "Ya soy de SP" → guía personalizada
+   CI+fecha como fase 1 del portal), herramientas arriba, manifiesto
+   comprimido a una pantalla en segunda persona (el completo migra a
+   `/historia/`), testimonios afuera hasta tener reales, eventos
+   `manifesto_scroll` y `puerta_home`, presupuesto de peso móvil.
+   Detalle completo, salvaguardas y copy propuesto: **`PLAN-home-v2.md`**
+   (veredicto 7-0 de la mesa de advisors, julio 2026). El portal
+   completo (login, credencial, estados) queda como destino declarado,
+   bloqueado por el pendiente #8 y el backend de SIP.
+
 ### Prioridad media
 
 4. **Datos reales de contacto**: ✔ el número quedó confirmado por el
@@ -247,13 +259,22 @@ cd out && python3 -m http.server 8080
   FUERA del repo — ver `HANDOVER.md`).
 - Probar el modo personalizado de la guía: `guia_resultados.html?plan=integral`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
-- Flujo git de este proyecto: rama de trabajo → PR en borrador → el usuario
-  dice "fusionalo" → merge a `main` → Pages se redeploya solo (~2 min).
+- Flujo git de este proyecto: rama de trabajo → PR en borrador →
+  verificación + CI verde → **merge automático** (el usuario autorizó en
+  julio 2026 dejar de esperar el "fusionalo"; excepciones — cambios de
+  visión/alcance o destructivos — esperan confirmación; detalle en
+  `CLAUDE.md`) → Pages se redeploya solo (~2 min).
 - El deploy usa `npm ci`: **no instalar dependencias dentro del repo** que
   no estén en `package.json` (ya rompió el lockfile una vez).
 
 ## 6. MATERIAL DE REFERENCIA
 
+- **`BITACORA.md` — el libro del proyecto.** Diario narrativo de qué
+  intentamos, qué falló, qué vueltas dimos y qué aprendimos. **Ritual
+  obligatorio para quien retome este proyecto:** cada PR fusionado que
+  haya enseñado algo deja su entrada (qué intentamos / qué pasó / qué
+  aprendimos); las observaciones del usuario entran dictadas ("anotá en
+  la bitácora: …"). Solo crece — nunca reescribir entradas viejas.
 - `HANDOVER.md` — implementación técnica de la página de planes (v6).
 - `guia/ANEXO-requisitos-backend.md` — eventos de medición, seguridad de
   cédula, campos de datos, higiene técnica. **Es el contrato con la empresa.**
