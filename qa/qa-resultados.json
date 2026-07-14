@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-14T15:29:46.423Z",
+  "fecha": "2026-07-14T18:36:32.910Z",
   "oks": [
     {
       "frente": "funcional",
@@ -39,7 +39,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 173 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 174 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -51,7 +51,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/historia/: 151 KB gzip de contenido crítico (≤300)"
+      "detalle": "/historia/: 152 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -71,12 +71,6 @@
       "frente": "accesibilidad",
       "severidad": "confunde",
       "detalle": "contraste 2.37:1 (mín 4.5:1) — \"Resonancia (RM)\" rgb(255, 255, 255) sobre rgb(0,188,180)",
-      "donde": "/"
-    },
-    {
-      "frente": "accesibilidad",
-      "severidad": "cosmetico",
-      "detalle": "contraste 4.23:1 (mín 4.5:1) — \"Quiénes somos\" rgb(0, 125, 119) sobre rgb(230,237,244)",
       "donde": "/"
     },
     {

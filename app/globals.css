@@ -33,6 +33,17 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
    with no gap and no doubling. */
 [data-nav].solid .nlogo-w{opacity:0}
 [data-nav].solid .nav-burger{background:rgba(0,59,113,0.08) !important;color:#003B71 !important}
+/* Menú móvil a pantalla completa (patrón Apple/Tesla): vidrio esmerilado
+   claro, solo texto grande con entrada escalonada. El header en estado
+   .menu-open replica el look sólido sin depender del scroll handler. */
+.menu-overlay{position:fixed;inset:0;z-index:99;background:rgba(251,253,253,0.86);backdrop-filter:blur(26px);padding:118px 30px 44px;overflow-y:auto}
+@supports not (backdrop-filter:blur(26px)){.menu-overlay{background:rgba(251,253,253,0.985)}}
+.menu-item{font-family:var(--font-gilroy),'Segoe UI',sans-serif;font-weight:800;font-size:31px;line-height:1.15;letter-spacing:-0.015em;color:#003B71;padding:13px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
+.menu-item-cta{color:#007d77;margin-top:10px}
+@keyframes menuItem{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+[data-nav].menu-open{background:transparent;box-shadow:none;backdrop-filter:none}
+[data-nav].menu-open .nlogo-w{opacity:0}
+[data-nav].menu-open .nav-burger{background:rgba(0,59,113,0.08) !important;color:#003B71 !important}
 .lift{transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s cubic-bezier(.22,1,.36,1)}
 .lift:hover{transform:translateY(-5px);box-shadow:0 14px 34px rgba(0,59,113,0.14) !important}
 @keyframes cue{0%{transform:translateY(0);opacity:.4}50%{transform:translateY(8px);opacity:1}100%{transform:translateY(0);opacity:.4}}
@@ -98,6 +109,16 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(max-width:560px){.ally-grid{grid-template-columns:repeat(3,1fr) !important}}
 @media(max-width:380px){.ally-grid{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:820px){.testi-side{display:none !important}}
+@media(max-width:820px){.steps-flow{grid-template-columns:1fr !important;gap:16px !important}}
+/* Dieta de espacios en móvil (el 77% del tráfico): secciones más compactas
+   y títulos que no devoran pantalla. .sec-x solo ajusta lo horizontal
+   (sus verticales encadenan con la sección vecina). */
+@media(max-width:640px){
+  .sec{padding:56px 22px !important}
+  .sec-x{padding-left:22px !important;padding-right:22px !important}
+  [data-page="viva"] h2.disp{font-size:29px !important}
+  [data-page="viva"] section h3.disp{font-size:23px !important}
+}
 /* Marquee / logo ticker — infinite right-to-left scroll (seamless: content rendered twice) */
 .mq{overflow:hidden;position:relative;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 .mq-track{display:flex;width:max-content;animation:mqscroll var(--mq-dur,45s) linear infinite;will-change:transform}
