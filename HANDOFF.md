@@ -42,6 +42,13 @@ Se expresa en tres versiones — **la misma verdad para tres audiencias**:
 **Regla práctica:** ante cualquier propuesta nueva ("agreguemos X"), la
 pregunta automática es *¿a cuál de las cuatro preguntas sirve?*
 
+**Dos audiencias, los mismos jobs (home-v2, julio 2026):** las cuatro
+preguntas sirven igual al **prospecto** ("¿qué plan me conviene?") y al
+**afiliado** ("¿qué me cubre *mi* plan?"). La home hace el triaje en el
+hero con dos puertas: "Quiero un plan" → simulador · "Ya soy de SP" →
+guía en modo personalizado (fase 1 del portal; el portal completo es
+destino declarado, ver `PLAN-home-v2.md` §3).
+
 ### 1c. El círculo que se alimenta solo *(para negocio e inversión — el retorno)*
 
 > Queremos construir algo más que una web linda: un círculo que gira solo.
@@ -62,6 +69,8 @@ pregunta automática es *¿a cuál de las cuatro preguntas sirve?*
 | **Web de planes** (hero, manifiesto, cartilla viva, comparador, simulador embebido, FAQ) | `app/page.jsx` → [nelargon.github.io/sp-prototipo](https://nelargon.github.io/sp-prototipo/) | Prototipo funcional completo |
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, precios de referencia |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
+| **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
+| **Snapshot del home v1** (referencia congelada, pre-rediseño) | `public/v1/` → [/v1/](https://nelargon.github.io/sp-prototipo/v1/) | Solo referencia — no editar (fuente: commit `b8289a8`) |
 | **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
@@ -174,17 +183,18 @@ usa `npm ci`).
    (d) rendimiento (peso, 3G); (e) contenido — cazar placeholders.
    El QA de integración con backend queda para cuando la empresa conecte.
 
-3b. **Home v2 — plan listo, ejecución pendiente del "adelante"**: la home
-   se convierte en hub de dos audiencias (prospecto + afiliado). Hero de
-   dos puertas ("Quiero un plan" / "Ya soy de SP" → guía personalizada
-   CI+fecha como fase 1 del portal), herramientas arriba, manifiesto
-   comprimido a una pantalla en segunda persona (el completo migra a
-   `/historia/`), testimonios afuera hasta tener reales, eventos
-   `manifesto_scroll` y `puerta_home`, presupuesto de peso móvil.
-   Detalle completo, salvaguardas y copy propuesto: **`PLAN-home-v2.md`**
-   (veredicto 7-0 de la mesa de advisors, julio 2026). El portal
-   completo (login, credencial, estados) queda como destino declarado,
-   bloqueado por el pendiente #8 y el backend de SIP.
+3b. ~~**Home v2**~~ ✔ **Ejecutado (julio 2026)**: hero de dos puertas
+   ("Quiero un plan" → simulador · "Ya soy de SP" → `guia_home.html#mi-red`,
+   la consulta CI+fecha), herramientas arriba, manifiesto comprimido a
+   una pantalla en segunda persona (el cinematográfico completo vive en
+   `/historia/`), testimonios placeholder afuera (vuelven cuando haya
+   reales con consentimiento), eventos `manifesto_scroll` y `puerta_home`
+   (ANEXO §2), y presupuesto móvil verificado: 173 KB gzip de contenido
+   crítico (≤300 KB). El home anterior quedó congelado en `/v1/` como
+   referencia. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
+   nace de acá:** testimonios reales con consentimiento (responsable: SP).
+   El portal completo (login, credencial, estados) sigue como destino
+   declarado, bloqueado por el pendiente #8 y el backend de SIP.
 
 ### Prioridad media
 

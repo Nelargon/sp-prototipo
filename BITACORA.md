@@ -233,6 +233,33 @@ hay capítulo* (errores, vueltas, decisiones revertidas, intuiciones que
 cambian el rumbo) puede mantenerse solo. Las reglas quedaron en
 `CLAUDE.md`, donde cualquier sesión futura las hereda.
 
+## Capítulo 14 — El rediseño se ejecutó (y congelamos el "antes")
+
+Ejecutamos el plan de la mesa de advisors: la home ahora abre con dos
+puertas ("Quiero un plan" / "Ya soy de SP · Ver mi red"), las
+herramientas suben, el manifiesto quedó en una pantalla — reescrito con
+el cliente como protagonista — y su versión cinematográfica completa
+vive en `/historia/`, donde la emoción persuade sin cobrar peaje. Los
+testimonios inventados salieron (volverán cuando existan de verdad).
+
+Dos detalles del proceso que valen registro. Primero: antes de tocar
+nada, **congelamos el home anterior en `/v1/`**, navegable para siempre.
+No es nostalgia — es honestidad metodológica: dentro de unos meses, la
+memoria va a editar cómo era "el antes"; el snapshot no. Comparar contra
+lo real le gana a comparar contra el recuerdo. Segundo: el presupuesto
+de peso móvil dejó de ser una intención y se volvió un número medido en
+el pipeline — 173 KB comprimidos de contenido crítico, bien abajo del
+techo de 300 — y ahora cualquier regresión futura tiene una vara contra
+la cual fallar.
+
+**Lo aprendido:** un rediseño no está completo sin tres cosas que no son
+diseño — el snapshot del antes (para comparar sin autoengaño), la
+medición del después (para que "más liviano" sea un número y no una
+sensación), y los eventos nuevos (`puerta_home`, `manifesto_scroll`)
+que van a decirnos si la teoría de la mesa de advisors sobrevive al
+contacto con usuarios reales. Diseñar es opinar; instrumentar es
+permitir que la realidad conteste.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

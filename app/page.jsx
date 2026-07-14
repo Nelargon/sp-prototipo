@@ -27,8 +27,6 @@ export default function Page() {
 
   const patch = (p) => setState((s) => Object.assign({}, s, p));
 
-  const [testiIndex, setTestiIndex] = useState(0);
-
   // ===== pure data / helpers =====
   const cart = () => {
     const yes = (d) => ({ s: 'Cubierta', d });
@@ -78,19 +76,6 @@ export default function Page() {
     { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y acompañamiento emocional desde el plan, no como un extra aparte.' },
   ];
 
-  const testimonios = () => [
-    { quote: 'Me ayudaron a elegir según lo que mi familia necesitaba, no el plan más caro.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Integral', photo: '' },
-    { quote: 'Cuando llamé de madrugada, me atendió alguien que conocía mi plan. Eso no tiene precio.', name: 'Nombre Apellido', meta: 'Afiliado · Plan Premium', photo: '' },
-    { quote: 'Entendí exactamente qué cubría antes de firmar. Cero sorpresas después.', name: 'Nombre Apellido', meta: 'Afiliada · Plan Esencial', photo: '' },
-    { quote: 'El asesor me explicó todo sin apuro y en mi idioma, no en “letra chica”.', name: 'Nombre Apellido', meta: 'Afiliado · SP Senior', photo: '' },
-  ];
-
-  // Testimonials auto-advance (calm, 6s).
-  useEffect(() => {
-    const id = setInterval(() => setTestiIndex((i) => i + 1), 6000);
-    return () => clearInterval(id);
-  }, []);
-
   // Count-up for the trust stats when they scroll into view (once).
   useEffect(() => {
     const els = Array.prototype.slice.call(document.querySelectorAll('[data-stat]'));
@@ -118,12 +103,11 @@ export default function Page() {
     return () => io.disconnect();
   }, []);
 
-  // ===== scroll / manifiesto / reveals (was componentDidMount) =====
+  // ===== scroll / reveals (was componentDidMount; el manifiesto vive en /historia) =====
   useEffect(() => {
     let disposed = false;
     let bar = null;
     let onScroll = null;
-    let maniRaf = null;
     let loopRaf = null;
     try {
       const root = document.querySelector('[data-page="viva"]');
@@ -134,17 +118,6 @@ export default function Page() {
       const cotizarFab = root.querySelector('[data-cotizar-fab]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
-      const mani = root.querySelector('[data-manifesto]');
-      const mGlow = mani && mani.querySelector('[data-mani-glow]');
-      const mBar = mani && mani.querySelector('[data-mani-bar]');
-      let mlines = [];
-      let mphotos = [];
-      const refreshMani = () => {
-        if (!mani) return;
-        if (!mlines.length || !mlines[0].isConnected) mlines = Array.prototype.slice.call(mani.querySelectorAll('[data-mline]'));
-        if (!mphotos.length || !mphotos[0].isConnected) mphotos = Array.prototype.slice.call(mani.querySelectorAll('.mframe'));
-      };
-      refreshMani();
       Array.prototype.forEach.call(root.querySelectorAll('div'), (c) => {
         const st = c.getAttribute('style') || '';
         if (/border-radius:\s*(16|20|22)px/i.test(st) && /box-shadow/i.test(st)) c.classList.add('lift');
@@ -169,42 +142,6 @@ export default function Page() {
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(() => { if (disposed) return; revealCheck(); if (onScroll) onScroll(); });
       }
-      let maniTarget = 0, maniP = 0;
-      const CHAP_STARTS = [0, 1, 5];
-      const renderMani = (p) => {
-        const n = mlines.length;
-        if (!n) return;
-        const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-        const seg = 0.5 + Math.min(1, Math.max(0, p / 0.86)) * (n - 1);
-        mlines.forEach((ln, i) => {
-          const u = seg - i;
-          if (u <= -0.2 || u >= 1.2) { ln.style.visibility = 'hidden'; ln.style.opacity = '0'; return; }
-          ln.style.visibility = 'visible';
-          const op = ss(-0.12, 0.3, u) * (1 - ss(0.7, 1.12, u));
-          ln.style.opacity = op.toFixed(3);
-          ln.style.transform = 'translateY(calc(-50% + ' + ((0.5 - u) * 64).toFixed(1) + 'px))';
-        });
-        mphotos.forEach((ph, k) => {
-          const start = CHAP_STARTS[k];
-          const end = (k + 1 < CHAP_STARTS.length ? CHAP_STARTS[k + 1] : n) - 1;
-          const bk = start + 0.5;
-          const op = k === 0 ? 1 : ss(bk - 0.8, bk + 0.1, seg);
-          ph.style.opacity = op.toFixed(3);
-          ph.style.visibility = op <= 0.001 ? 'hidden' : 'visible';
-          const w0 = k === 0 ? 0.5 : bk - 0.8;
-          const qv = Math.min(1, Math.max(0, (seg - w0) / ((end + 1) - w0)));
-          ph.firstElementChild.style.transform = 'translate3d(0,' + (-qv * 14).toFixed(1) + 'px,0) scale(' + (1.03 + qv * 0.07).toFixed(4) + ')';
-        });
-        if (mBar) mBar.style.width = (p * 100) + '%';
-        if (mGlow) mGlow.style.opacity = String(0.5 + 0.5 * Math.sin(p * Math.PI));
-      };
-      const maniTick = () => {
-        if (disposed) return;
-        maniP += (maniTarget - maniP) * 0.065;
-        if (Math.abs(maniTarget - maniP) < 0.0005) maniP = maniTarget;
-        renderMani(maniP);
-        maniRaf = maniP === maniTarget ? null : requestAnimationFrame(maniTick);
-      };
       onScroll = () => {
         const y = (document.scrollingElement || document.documentElement).scrollTop || 0;
         const el = document.scrollingElement || document.documentElement;
@@ -214,14 +151,6 @@ export default function Page() {
         if (cotizarFab) { if (y > 640) cotizarFab.classList.add('show'); else cotizarFab.classList.remove('show'); }
         if (heroBg && y < 900) heroBg.style.transform = 'translateY(' + (y * 0.16) + 'px)';
         if (heroContent && y < 900) { heroContent.style.transform = 'translateY(' + (y * 0.14) + 'px)'; heroContent.style.opacity = String(Math.max(0, 1 - y / 620)); }
-        if (mani) {
-          refreshMani();
-          if (mlines.length) {
-            const total = mani.offsetHeight - window.innerHeight;
-            maniTarget = Math.min(1, Math.max(0, (-mani.getBoundingClientRect().top) / (total || 1)));
-            if (maniRaf === null) maniRaf = requestAnimationFrame(maniTick);
-          }
-        }
         revealCheck();
       };
       window.addEventListener('scroll', onScroll, { passive: true });
@@ -230,14 +159,6 @@ export default function Page() {
       const t0 = performance.now();
       const loop = () => { if (disposed) return; onScroll(); if (targets.length && performance.now() - t0 < 3200) loopRaf = requestAnimationFrame(loop); };
       loopRaf = requestAnimationFrame(loop);
-      let maniInitTries = 0;
-      const maniInit = () => {
-        if (disposed) return;
-        refreshMani();
-        if (mlines.length) { renderMani(maniP); onScroll(); }
-        else if (++maniInitTries < 50) setTimeout(maniInit, 100);
-      };
-      maniInit();
     } catch (e) { /* no-op */ }
 
     return () => {
@@ -247,13 +168,25 @@ export default function Page() {
         window.removeEventListener('resize', onScroll);
         window.removeEventListener('load', onScroll);
       }
-      if (maniRaf) cancelAnimationFrame(maniRaf);
       if (loopRaf) cancelAnimationFrame(loopRaf);
       if (bar && bar.parentNode) bar.parentNode.removeChild(bar);
     };
   }, []);
 
   useEffect(() => { try { document.documentElement.lang = 'es'; } catch (e) {} }, []);
+
+  // Manifiesto corto: registrar (una sola vez) que el visitante llegó a verlo.
+  useEffect(() => {
+    const el = document.querySelector('[data-mani-corto]');
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { track('manifesto_scroll', { profundidad: 100, pagina: 'home' }); io.disconnect(); }
+      });
+    }, { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   // ===== derived render values (was renderVals) =====
   const plansArr = plans();
@@ -351,18 +284,6 @@ export default function Page() {
       { name: 'Assist Card', file: 'assistcard.webp' },
     ],
     prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Odontología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
-    testi: (() => {
-      const list = testimonios();
-      const n = list.length;
-      const at = (i) => list[((i % n) + n) % n];
-      const idx = ((testiIndex % n) + n) % n;
-      return {
-        index: idx, current: at(idx), left: at(idx - 1), right: at(idx + 1),
-        prev: () => setTestiIndex((i) => i - 1),
-        next: () => setTestiIndex((i) => i + 1),
-        dots: list.map((_, i) => ({ active: i === idx, onClick: () => setTestiIndex(i) })),
-      };
-    })(),
   };
 
   // ===== markup =====
@@ -413,41 +334,17 @@ export default function Page() {
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px')}>+23 años cuidando familias paraguayas</div>
             <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:#00BCB4')}>se siente</span>.</h1>
             <p style={css('font-size:20px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
+            {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red. */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
-              <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'hero' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-              <a href="#manifiesto" className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center')}>Conocé la historia</a>
+              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Ver mi red</a>
             </div>
+            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:20px;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
           </div>
         </div>
         <div style={css('position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:rgba(255,255,255,0.7);display:flex;flex-direction:column;align-items:center;gap:6px')}>
           <span style={css('font-size:11px;letter-spacing:.1em;text-transform:uppercase')}>Bajá</span>
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" style={css('animation:cue 1.8s ease-in-out infinite')}><path d="M12 5v14M6 13l6 6 6-6" /></svg>
-        </div>
-      </section>
-
-      {/* MANIFIESTO — scrollytelling */}
-      <section id="manifiesto" data-manifesto style={css('position:relative;height:720vh;background:#002A52')}>
-        <div data-mani-inner style={css('position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#002A52')}>
-          <div style={css('position:absolute;inset:0;pointer-events:none;background:radial-gradient(85% 65% at 50% 50%,transparent 40%,rgba(0,16,32,.45) 100%)')}></div>
-          <div data-mani-glow style={css('position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.16) 0%,rgba(0,188,180,0) 62%);pointer-events:none')}></div>
-          <div className="mani-media" style={css('position:absolute;inset:0;overflow:hidden;z-index:0')}>
-            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-1.webp`} alt="" /></figure>
-            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-4.webp`} alt="" loading="lazy" decoding="async" /></figure>
-            <figure className="mframe" style={css('margin:0')}><img src={`${BP}/assets/manifiesto/frase-7.webp`} alt="" loading="lazy" decoding="async" /></figure>
-          </div>
-          <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,22,44,0.6) 0%,rgba(0,22,44,0.52) 55%,rgba(0,22,44,0.75) 100%),radial-gradient(90% 70% at 50% 50%,transparent 42%,rgba(0,14,28,0.4) 100%)')}></div>
-          <div className="mani-grid" style={css('position:relative;z-index:2;width:100%;height:100%;max-width:1060px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:center')}>
-            <div className="mani-lines" style={css('position:relative;height:60vh;width:100%;text-align:center')}>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.01em;color:#fff')}>En Paraguay, miles de familias creen que están protegidas.</div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.01em;color:#fff')}>La mayoría lo descubre recién cuando algo sale mal.</div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(28px,3.4vw,46px);line-height:1.12;letter-spacing:-0.02em;color:#fff')}>Nosotros creemos que la protección real se construye <span style={css('color:#00BCB4')}>antes</span>.</div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes de la llamada de madrugada.</div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes del diagnóstico difícil.</div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes de la eterna pregunta:<br /><span style={css('color:#80DDD8')}>«¿esto lo cubre?»</span></div>
-              <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(30px,3.7vw,50px);line-height:1.08;letter-spacing:-0.02em;color:#fff')}>Salud Protegida es<br />protección que <span style={css('color:#00BCB4')}>se siente</span>.</div>
-            </div>
-          </div>
-          <div style={css('position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:160px;height:3px;border-radius:999px;background:rgba(255,255,255,0.14)')}><div data-mani-bar style={css('height:100%;width:0;border-radius:999px;background:#00BCB4')}></div></div>
         </div>
       </section>
 
@@ -575,26 +472,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* DIFERENCIADORES */}
-      <section style={css('padding:80px 40px;background:#E6F7F6')}>
-        <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 42px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Lo que ponemos por escrito</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#009690')}>garantiza</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
-          </div>
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
-            {v.difs.map((dz, i) => (
-              <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
-                <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
-                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{dz.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* SIMULADOR — teaser hacia /simulador */}
       <section style={css('padding:110px 40px;background:#003B71')}>
         <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:56px 44px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
@@ -632,41 +509,33 @@ export default function Page() {
         </div>
       </section>
 
-      {/* TESTIMONIALES — coverflow 3-up */}
-      <section style={css('padding:104px 40px;background:#003B71;overflow:hidden')}>
-        <div style={css('max-width:1180px;margin:0 auto;text-align:center')}>
-          <div data-rv style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:38px')}>Lo que dicen nuestros afiliados</div>
-          <div data-rv key={v.testi.index} style={css('display:flex;align-items:center;justify-content:center;gap:22px;animation:testiFade .5s cubic-bezier(.22,1,.36,1)')}>
-            {/* lateral izquierdo */}
-            <button onClick={v.testi.prev} aria-label="Testimonio anterior" className="testi-side" style={css('flex:none;width:250px;text-align:left;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px 20px;opacity:.5;transform:scale(.94);transition:opacity .3s,transform .3s')}>
-              <span style={css('display:flex;align-items:center;gap:11px;margin-bottom:12px')}>{v.testi.left.photo ? <img src={v.testi.left.photo} alt="" style={css('width:44px;height:44px;border-radius:999px;object-fit:cover')} /> : <span style={css('width:44px;height:44px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}<span style={css('font-size:13px;font-weight:700;color:#fff')}>{v.testi.left.name}</span></span>
-              <span style={css('display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:#cfe0f0;line-height:1.5')}>“{v.testi.left.quote}”</span>
-            </button>
-            {/* centro protagonista */}
-            <div style={css('flex:none;width:520px;max-width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);border-radius:24px;padding:36px 34px;box-shadow:0 24px 60px rgba(0,0,0,0.22)')}>
-              {v.testi.current.photo
-                ? <img src={v.testi.current.photo} alt={v.testi.current.name} style={css('width:76px;height:76px;border-radius:999px;object-fit:cover;margin:0 auto 18px;display:block;border:3px solid rgba(0,188,180,0.5)')} />
-                : <span style={css('width:76px;height:76px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;border:3px solid rgba(0,188,180,0.4)')}><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}
-              <p className="disp" style={css('font-size:clamp(21px,2.4vw,27px);font-weight:800;color:#fff;line-height:1.32;letter-spacing:-0.01em;margin:0 0 22px')}>“{v.testi.current.quote}”</p>
-              <div style={css('font-size:16px;font-weight:700;color:#fff')}>{v.testi.current.name}</div>
-              <div style={css('font-size:14px;color:#80DDD8;margin-top:2px')}>{v.testi.current.meta}</div>
-            </div>
-            {/* lateral derecho */}
-            <button onClick={v.testi.next} aria-label="Testimonio siguiente" className="testi-side" style={css('flex:none;width:250px;text-align:left;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:22px 20px;opacity:.5;transform:scale(.94);transition:opacity .3s,transform .3s')}>
-              <span style={css('display:flex;align-items:center;gap:11px;margin-bottom:12px')}>{v.testi.right.photo ? <img src={v.testi.right.photo} alt="" style={css('width:44px;height:44px;border-radius:999px;object-fit:cover')} /> : <span style={css('width:44px;height:44px;border-radius:999px;background:rgba(0,188,180,0.22);color:#80DDD8;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg></span>}<span style={css('font-size:13px;font-weight:700;color:#fff')}>{v.testi.right.name}</span></span>
-              <span style={css('display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:#cfe0f0;line-height:1.5')}>“{v.testi.right.quote}”</span>
-            </button>
+      {/* MANIFIESTO — versión breve, en segunda persona; la historia completa vive en /historia */}
+      <section data-mani-corto style={css('padding:110px 40px;background:#002A52')}>
+        <div data-rv style={css('max-width:780px;margin:0 auto;text-align:center')}>
+          <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 24px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal. Nosotros creemos que la protección real se construye <span style={css('color:#00BCB4')}>antes</span> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
+          <p style={css('font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 0 28px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés.</p>
+          <div className="disp" style={css('font-size:21px;color:#fff;margin-bottom:24px')}>Salud Protegida. Protección que <span style={css('color:#00BCB4')}>se siente</span>.</div>
+          <a href={`${BP}/historia/`} style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px')}>Ver la historia completa →</a>
+        </div>
+      </section>
+
+      {/* DIFERENCIADORES */}
+      <section style={css('padding:80px 40px;background:#E6F7F6')}>
+        <div style={css('max-width:1080px;margin:0 auto')}>
+          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 42px')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#009690;margin-bottom:14px')}>Lo que ponemos por escrito</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#009690')}>garantiza</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
           </div>
-          <div style={css('display:flex;align-items:center;justify-content:center;gap:20px;margin-top:36px')}>
-            <button onClick={v.testi.prev} aria-label="Anterior" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg></button>
-            <div style={css('display:flex;gap:8px')}>
-              {v.testi.dots.map((dt, i) => (
-                <button key={i} onClick={dt.onClick} aria-label={'Ir al testimonio ' + (i + 1)} style={css('width:9px;height:9px;border-radius:999px;border:none;cursor:pointer;padding:0;transition:all .3s;background:' + (dt.active ? '#00BCB4' : 'rgba(255,255,255,0.3)') + (dt.active ? ';width:24px' : ''))}></button>
-              ))}
-            </div>
-            <button onClick={v.testi.next} aria-label="Siguiente" style={css('width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center')}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></button>
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
+            {v.difs.map((dz, i) => (
+              <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#009690;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
+                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{dz.body}</div>
+              </div>
+            ))}
           </div>
-          <div style={css('font-size:12px;color:#7f9cbb;margin-top:28px')}>Testimonios de ejemplo (con espacio para foto) — se reemplazan por reales, con su consentimiento.</div>
         </div>
       </section>
 
@@ -791,6 +660,7 @@ export default function Page() {
               <a href="#comparar" className="foot-link" style={css('color:inherit')}>Planes</a>
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
               <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>
+              <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>
               <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simular mi plan</a>
             </div>
           </div>
