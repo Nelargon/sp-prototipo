@@ -233,6 +233,54 @@ hay capítulo* (errores, vueltas, decisiones revertidas, intuiciones que
 cambian el rumbo) puede mantenerse solo. Las reglas quedaron en
 `CLAUDE.md`, donde cualquier sesión futura las hereda.
 
+## Capítulo 14 — El rediseño se ejecutó (y congelamos el "antes")
+
+Ejecutamos el plan de la mesa de advisors: la home ahora abre con dos
+puertas ("Quiero un plan" / "Ya soy de SP · Ver mi red"), las
+herramientas suben, el manifiesto quedó en una pantalla — reescrito con
+el cliente como protagonista — y su versión cinematográfica completa
+vive en `/historia/`, donde la emoción persuade sin cobrar peaje. Los
+testimonios inventados salieron (volverán cuando existan de verdad).
+
+Dos detalles del proceso que valen registro. Primero: antes de tocar
+nada, **congelamos el home anterior en `/v1/`**, navegable para siempre.
+No es nostalgia — es honestidad metodológica: dentro de unos meses, la
+memoria va a editar cómo era "el antes"; el snapshot no. Comparar contra
+lo real le gana a comparar contra el recuerdo. Segundo: el presupuesto
+de peso móvil dejó de ser una intención y se volvió un número medido en
+el pipeline — 173 KB comprimidos de contenido crítico, bien abajo del
+techo de 300 — y ahora cualquier regresión futura tiene una vara contra
+la cual fallar.
+
+**Lo aprendido:** un rediseño no está completo sin tres cosas que no son
+diseño — el snapshot del antes (para comparar sin autoengaño), la
+medición del después (para que "más liviano" sea un número y no una
+sensación), y los eventos nuevos (`puerta_home`, `manifesto_scroll`)
+que van a decirnos si la teoría de la mesa de advisors sobrevive al
+contacto con usuarios reales. Diseñar es opinar; instrumentar es
+permitir que la realidad conteste.
+
+## Capítulo 15 — El idioma del cliente (o: nadie dice "cartilla" en su casa)
+
+Observación del usuario, con su voz: *"la palabra 'cartilla' o 'cartilla
+viva' no es una palabra que se usa mucho. Tenemos que insertar algo que
+ya se conoce y ya se dice usualmente y la gente entiende fácilmente."*
+
+Tenía razón, y el hallazgo fue más profundo que una palabra: al barrer el
+sitio encontramos toda una familia de jerga de seguros que se nos había
+colado sin darnos cuenta — "cartilla" (ya renombrada antes), "práctica"
+("Escribí una práctica…" — ¿quién le dice 'práctica' a una ecografía?) y
+"prestación" (cabecera de la tabla comparativa). Las tres se fueron:
+"escribí lo que necesitás", "cobertura", "servicio".
+
+**Lo aprendido:** la jerga es invisible para el que la escribe — nosotros
+veníamos leyendo "práctica" hace semanas sin verla, porque en el mundo de
+los seguros es normal. El test que quedó como regla permanente: ante cada
+palabra visible, preguntarse *¿la dice una familia en su casa?* Si no la
+dice, hay otra palabra mejor. Y un corolario: este tipo de hallazgo lo
+hace mejor el que mira de afuera (el usuario) que el que construye — otra
+razón para mostrar el trabajo seguido y temprano.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
