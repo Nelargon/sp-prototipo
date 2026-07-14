@@ -346,6 +346,32 @@ que se arregla ya, lo que decide otro, y lo que el instrumento inventó.
 Y la accesibilidad no era un lujo: era literalmente legibilidad para el
 cliente de SP Senior.
 
+## Capítulo 18 — La densidad también es diseño (y el menú aprendió de Apple)
+
+Feedback del usuario, con su voz: *"la experiencia tiene que ser un poco
+menos de scroll… siento que es un poco más largo de lo que debería ser…
+usar bien los espacios que tenemos"* y, sobre el menú móvil: *"podría ser
+algo como la página de Apple o la página de Tesla… si en el header ya
+aparece urgencias, quizás al desplegar no hace falta poner urgencias"*.
+
+Tres cambios salieron de ahí. El menú móvil dejó de ser una tarjetita
+flotante con filas de colores y pasó a ser un overlay a pantalla completa
+de vidrio esmerilado: solo texto grande, entrada escalonada, y **sin
+urgencias adentro** — el usuario tenía razón en algo sutil: repetir un
+elemento que ya está siempre visible no es refuerzo, es ruido. "Cómo
+funciona la contratación" pasó de cuatro tarjetones a un paso-a-paso
+compacto (1.068 → 538 px en móvil). Y toda la página hizo dieta de
+espacios: **de 14,2 a 11,6 pantallas en móvil (-18%), de 8,9 a 8,1 en
+desktop** — medido antes y después, no estimado.
+
+**Lo aprendido:** el aire entre secciones parece elegancia en el monitor
+del que diseña y es peaje en el pulgar del que usa (y acá el 77% usa el
+pulgar). Segundo: la mejor referencia de diseño no es una tendencia sino
+un patrón que el usuario ya ama y sabe nombrar — "como Apple, como
+Tesla" es un brief más claro que cualquier documento. Y tercero: medir
+la altura de la página por sección convirtió una sensación ("es largo")
+en una lista de culpables con números.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

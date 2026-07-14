@@ -175,6 +175,16 @@ export default function Page() {
 
   useEffect(() => { try { document.documentElement.lang = 'es'; } catch (e) {} }, []);
 
+  // Menú overlay: bloquear el scroll del fondo mientras está abierto; al
+  // cerrar, re-sincronizar el estado del header (solid/transparente).
+  useEffect(() => {
+    try {
+      document.body.style.overflow = state.mobileMenuOpen ? 'hidden' : '';
+      if (!state.mobileMenuOpen) window.dispatchEvent(new Event('scroll'));
+    } catch (e) {}
+    return () => { try { document.body.style.overflow = ''; } catch (e) {} };
+  }, [state.mobileMenuOpen]);
+
   // Manifiesto corto: registrar (una sola vez) que el visitante llegó a verlo.
   useEffect(() => {
     const el = document.querySelector('[data-mani-corto]');
@@ -291,7 +301,7 @@ export default function Page() {
     <div data-page="viva" className="body" style={css('color:#3D3D3D;background:#fff')}>
 
       {/* NAV */}
-      <nav data-nav style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
+      <nav data-nav className={v.mobileMenuOpen ? 'menu-open' : undefined} style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
         <div className="nav-logo" style={css('position:relative;display:flex;align-items:center')}>
           <img src={`${BP}/assets/brand/logo-sp-color.png`} alt="Salud Protegida" className="nlogo-c" style={css('height:56px;display:block;position:relative;z-index:1')} />
           <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="" className="nlogo-w" style={css('height:56px;position:absolute;left:0;top:0;z-index:2;transition:opacity .3s')} />
@@ -312,15 +322,19 @@ export default function Page() {
           </button>
         </div>
       </nav>
+      {/* Menú móvil: overlay a pantalla completa (patrón Apple/Tesla) — solo
+          texto grande; urgencias NO se repite: ya vive en el header, siempre visible. */}
       {v.mobileMenuOpen && (
-        <div id="mobile-menu" role="menu" style={css('position:fixed;top:66px;left:14px;right:14px;z-index:99;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,59,113,0.18);padding:10px;display:flex;flex-direction:column;gap:2px')}>
-          <a href={'tel:' + SP_TEL} onClick={() => { track('click_urgencias', { origen: 'menu_movil' }); v.closeMenu(); }} style={css('padding:13px 16px;border-radius:10px;background:#E11900;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>Urgencias · {SP_PHONE_DISPLAY}</a>
-          <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} style={css('padding:14px 16px;border-radius:10px;background:#E6F7F6;color:#007d77;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
-          <a href="#cartilla" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Qué cubre</a>
-          <a href="#comparar" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Planes</a>
-          <a href="#faq" onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Preguntas frecuentes</a>
-          <a href={`${BP}/blog/`} onClick={v.closeMenu} style={css('padding:14px 16px;border-radius:10px;color:#003B71;font-size:15px;font-weight:600')}>Blog</a>
-          <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} style={css('margin-top:6px;padding:14px 16px;border-radius:10px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+        <div id="mobile-menu" className="menu-overlay" role="dialog" aria-modal="true" aria-label="Menú">
+          <nav style={css('display:flex;flex-direction:column')}>
+            <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '30ms' }}>Guía Médica</a>
+            <a href="#cartilla" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '70ms' }}>Qué cubre</a>
+            <a href="#comparar" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
+            <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
+            <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
+            <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Nuestra historia</a>
+            <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '270ms' }}>Simulá tu plan →</a>
+          </nav>
         </div>
       )}
 
@@ -349,7 +363,7 @@ export default function Page() {
       </section>
 
       {/* QUÉ CUBRE — buscador de cobertura (ex "cartilla viva": jerga, ver BITACORA cap. 15) */}
-      <section id="cartilla" style={css('padding:110px 40px;background:#fff')}>
+      <section id="cartilla" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:1000px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
@@ -400,9 +414,9 @@ export default function Page() {
       </section>
 
       {/* COMPARADOR SLIDER */}
-      <section id="comparar" style={css('padding:110px 40px;background:#F5F5F5')}>
+      <section id="comparar" className="sec" style={css('padding:80px 40px;background:#F5F5F5')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 48px')}>
+          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 34px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Tres planes, un solo deslizador</div>
             <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Movelo y mirá cómo cambia <span style={css('color:#007d77')}>tu cobertura</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>De lo esencial a lo premium, arrastrá para ver qué gana cada nivel — y cuánto sale.</p>
@@ -473,8 +487,8 @@ export default function Page() {
       </section>
 
       {/* SIMULADOR — teaser hacia /simulador */}
-      <section style={css('padding:110px 40px;background:#003B71')}>
-        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:56px 44px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
+      <section className="sec" style={css('padding:80px 40px;background:#003B71')}>
+        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
           <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
@@ -491,18 +505,20 @@ export default function Page() {
       </section>
 
       {/* CÓMO FUNCIONA (después del simulador) */}
-      <section style={css('padding:100px 40px 90px;background:#fff')}>
+      <section className="sec" style={css('padding:72px 40px 64px;background:#fff')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 44px')}>
+          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>De la cotización a tu credencial</div>
             <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
           </div>
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:20px')}>
+          <div data-rv className="steps-flow" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:26px')}>
             {v.stepsHow.map((st, i) => (
-              <div key={i} style={css('background:#F5F5F5;border-radius:16px;padding:24px 20px')}>
-                <div className="disp" style={css('width:36px;height:36px;border-radius:10px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:14px')}>{st.n}</div>
-                <div style={css('font-size:15.5px;font-weight:700;color:#003B71;line-height:1.35;margin-bottom:6px')}>{st.title}</div>
-                <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5')}>{st.body}</div>
+              <div key={i} style={css('display:flex;gap:12px;align-items:flex-start')}>
+                <span className="disp" style={css('width:30px;height:30px;flex:none;border-radius:9px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
+                <div>
+                  <div style={css('font-size:15px;font-weight:700;color:#003B71;line-height:1.3;margin-bottom:3px')}>{st.title}</div>
+                  <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5')}>{st.body}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -510,7 +526,7 @@ export default function Page() {
       </section>
 
       {/* MANIFIESTO — versión breve, en segunda persona; la historia completa vive en /historia */}
-      <section data-mani-corto style={css('padding:110px 40px;background:#002A52')}>
+      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:#002A52')}>
         <div data-rv style={css('max-width:780px;margin:0 auto;text-align:center')}>
           <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 24px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal. Nosotros creemos que la protección real se construye <span style={css('color:#00BCB4')}>antes</span> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
           <p style={css('font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 0 28px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés.</p>
@@ -520,9 +536,9 @@ export default function Page() {
       </section>
 
       {/* DIFERENCIADORES */}
-      <section style={css('padding:80px 40px;background:#E6F7F6')}>
+      <section className="sec" style={css('padding:64px 40px;background:#E6F7F6')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 42px')}>
+          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que ponemos por escrito</div>
             <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#007d77')}>garantiza</span>.</h2>
             <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
@@ -540,7 +556,7 @@ export default function Page() {
       </section>
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
-      <section style={css('padding:96px 40px 40px;background:#fff')}>
+      <section className="sec-x" style={css('padding:72px 40px 28px;background:#fff')}>
         <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
             <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:#d4e0ee')}></div>
@@ -560,7 +576,7 @@ export default function Page() {
       </section>
 
       {/* FRANJA RED / LISTER */}
-      <section style={css('padding:0 40px 90px;background:#fff')}>
+      <section className="sec-x" style={css('padding:0 40px 64px;background:#fff')}>
         <div data-rv style={css('max-width:1080px;margin:0 auto;background:#003B71;border-radius:20px;padding:30px 36px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center')}>
           <span style={css('width:52px;height:52px;border-radius:14px;background:rgba(0,188,180,0.18);color:#00BCB4;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><path d="M10 10 6.5 7.5M14 10l3.5-2.5M10 14l-3.5 2.5M14 14l3.5 2.5" /></svg></span>
           <div style={css('font-size:18px;color:#fff;line-height:1.5')}><b>Lister + más de 50 prestadores</b> <span style={css('color:#80DDD8')}>en todo el país.</span> Nuestro centro médico propio, más una red que te cubre donde estés.</div>
@@ -568,7 +584,7 @@ export default function Page() {
       </section>
 
       {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
-      <section style={css('padding:88px 0 92px;background:#F5F5F5;overflow:hidden')}>
+      <section style={css('padding:64px 0 68px;background:#F5F5F5;overflow:hidden')}>
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
@@ -604,7 +620,7 @@ export default function Page() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" style={css('padding:110px 40px;background:#F5F5F5')}>
+      <section id="faq" className="sec" style={css('padding:80px 40px;background:#F5F5F5')}>
         <div style={css('max-width:820px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 12px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Antes de contratar</div>
@@ -623,8 +639,8 @@ export default function Page() {
       </section>
 
       {/* CIERRE */}
-      <section style={css('padding:80px 40px 110px;background:#003B71')}>
-        <div data-rv style={css('max-width:1100px;margin:0 auto;background:#00BCB4;border-radius:22px;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
+      <section className="sec" style={css('padding:64px 40px 84px;background:#003B71')}>
+        <div data-rv style={css('max-width:1100px;margin:0 auto;background:#00BCB4;border-radius:22px;padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#003B71')}>del otro lado</span>.</h2>
             <p style={css('font-size:17px;color:rgba(255,255,255,0.92);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
