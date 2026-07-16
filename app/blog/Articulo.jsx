@@ -15,7 +15,7 @@ export function A({ kicker, title, intro, minutes, date, children }) {
       <article style={css('max-width:680px;margin:0 auto;padding:52px 24px 40px')}>
         <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:12px')}>{kicker}</div>
         <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,42px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;margin:0 0 14px')}>{title}</h1>
-        <p style={css('font-size:18px;line-height:1.6;color:#3D3D3D;margin:0 0 14px')}>{intro}</p>
+        <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:18px;line-height:1.65;color:#3D3D3D;margin:0 0 14px')}>{intro}</p>
         <div style={css('font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
         <div className="art-body">{children}</div>
       </article>
@@ -32,7 +32,7 @@ export function A({ kicker, title, intro, minutes, date, children }) {
 
 // Piezas de contenido con el estilo ya resuelto, para que las notas sean solo texto.
 export const H2 = ({ children }) => <h2 className="disp" style={css('font-size:23px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin:34px 0 12px')}>{children}</h2>;
-export const P = ({ children }) => <p style={css('font-size:16.5px;line-height:1.75;color:#3D3D3D;margin:0 0 16px')}>{children}</p>;
+export const P = ({ children }) => <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.8;color:#3D3D3D;margin:0 0 18px')}>{children}</p>;
 export const B = ({ children }) => <strong style={css('color:#1D1D1B;font-weight:700')}>{children}</strong>;
-export const Callout = ({ children }) => <div style={css('background:#F2FBFA;border-left:3px solid #00BCB4;border-radius:0 12px 12px 0;padding:16px 18px;font-size:15.5px;line-height:1.65;color:#00695f;margin:0 0 16px')}>{children}</div>;
-export const Nota = ({ children }) => <div style={css('font-size:13.5px;line-height:1.6;color:#6B6B6B;background:#F7F7F7;border-radius:12px;padding:14px 16px;margin:26px 0 0')}>{children}</div>;
+export const Callout = ({ children }) => <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:#F2FBFA;border-left:3px solid #00BCB4;border-radius:0 12px 12px 0;padding:16px 18px;font-size:16px;line-height:1.7;color:#00695f;margin:0 0 16px')}>{children}</div>;
+export const Nota = ({ children }) => <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:14px;line-height:1.65;color:#6B6B6B;background:#F7F7F7;border-radius:12px;padding:14px 16px;margin:26px 0 0')}>{children}</div>;

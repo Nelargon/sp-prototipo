@@ -14,3 +14,13 @@ export const gilroy = localFont({
   variable: '--font-gilroy',
   display: 'swap',
 });
+
+// Inter (variable, OFL — ver public/fonts/OFL-Inter.txt): la tipografía de
+// cuerpo que define la identidad SP (HANDOFF decisión #2, "Inter para
+// cuerpo"). Gilroy es display: en lectura larga cansa; el cuerpo de las
+// notas del blog se lee en Inter.
+export const inter = localFont({
+  src: [{ path: '../public/fonts/Inter-Variable.ttf', weight: '100 900', style: 'normal' }],
+  variable: '--font-inter',
+  display: 'swap',
+});

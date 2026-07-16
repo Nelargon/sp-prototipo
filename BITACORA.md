@@ -489,6 +489,31 @@ biblioteca de notas, no.
 
 ---
 
+## Capítulo 22 — Gilroy es para mirar, no para leer
+
+**Qué intentamos.** El blog fusionado salió al aire con todo el texto en
+Gilroy, como el resto del sitio.
+
+**Qué pasó.** El usuario lo leyó y lo dijo sin vueltas: *"el diseño del
+cuerpo debería estar en vez de Gilroy, algo más leíble, por favor, porque
+Gilroy me cuesta muchísimo leer para un blog"*. Y tenía razón dos veces:
+primero porque una geométrica display cansa en lectura larga, y segundo
+porque la propia identidad SP (decisión #2 de este mismo HANDOFF) siempre
+dijo "Gilroy para títulos, **Inter para cuerpo**" — el prototipo había
+derivado a Gilroy-para-todo sin que nadie lo decidiera. Se auto-hospedó
+Inter variable (OFL, mismo mecanismo next/font que Gilroy) y el cuerpo de
+las notas — párrafos, listas, copete, callouts y nota final — pasó a Inter
+17px/1.8; los títulos siguen en Gilroy, que es donde brilla.
+
+**Qué aprendimos.** Una tipografía display vende el titular pero cobra
+peaje en el párrafo: si un texto de 800 palabras "cuesta leer", el
+problema no es el lector. Y otra vez la lección del minificador al revés:
+la deriva silenciosa también pasa en diseño — la espec decía Inter y nadie
+lo notó hasta que dolió. Cuando el usuario dice "me cuesta", eso es un
+dato de QA, no una opinión.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
