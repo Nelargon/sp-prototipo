@@ -1,6 +1,8 @@
 // sitemap.xml del ecosistema completo (web Next + guía estática).
 // /v1/ queda afuera a propósito: es el snapshot congelado de referencia.
 
+import { getPublishedPosts } from '../lib/blog';
+
 const SITE = (process.env.SITE_URL || 'https://saludprotegida.com.py') + (process.env.NEXT_PUBLIC_BASE_PATH || '');
 
 export const dynamic = 'force-static';
@@ -15,9 +17,8 @@ export default function sitemap() {
     u('/guia/guia_prestador.html', 0.7),
     u('/mi-sp/', 0.7),
     u('/historia/', 0.6, 'monthly'),
-    u('/blog/', 0.6, 'monthly'),
-    u('/blog/como-elegir-plan-familia/', 0.5, 'monthly'),
-    u('/blog/carencia-copago-y-otras-palabras/', 0.5, 'monthly'),
-    u('/blog/chequeos-por-edad/', 0.5, 'monthly'),
+    u('/blog/', 0.6, 'weekly'),
+    // Las notas publicadas entran solas: una nota nueva = una URL nueva.
+    ...getPublishedPosts().map((p) => u(`/blog/${p.slug}/`, 0.5, 'monthly')),
   ];
 }
