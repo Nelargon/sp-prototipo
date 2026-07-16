@@ -6,6 +6,7 @@ export const metadata = {
   title: 'Blog · Salud Protegida',
   description:
     'Muy pronto: consejos de salud preventiva, guías para entender tu cobertura y novedades de la red de Salud Protegida.',
+  alternates: { canonical: '/blog/' },
 };
 
 // Placeholder editorial: reserva el lugar del blog en el ecosistema sin ser

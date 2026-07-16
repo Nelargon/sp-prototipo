@@ -372,6 +372,39 @@ Tesla" es un brief más claro que cualquier documento. Y tercero: medir
 la altura de la página por sección convirtió una sensación ("es largo")
 en una lista de culpables con números.
 
+## Capítulo 19 — El mejor SEO del prototipo es esconderlo
+
+Los datos reales habían dicho algo claro: Organic Search ya es el canal
+número uno de la web activa. La reacción obvia era "hagamos SEO al
+prototipo, ya". Y ahí apareció la trampa: **si Google indexa el
+prototipo, un cliente real que busque "salud protegida" puede aterrizar
+en una demo con precios de referencia** — creería que ese es el precio,
+que esa es la web, que eso es lo que firma. Riesgo reputacional puro, y
+encima canibalizando al sitio activo que sí vende.
+
+Lo que hicimos fue lo contrario de lo obvio, en las dos direcciones a la
+vez: construimos **toda** la infraestructura SEO (robots.txt, sitemap con
+las 7 URLs del ecosistema, canonicals por página, Open Graph, JSON-LD de
+la organización con teléfono y sedes reales) — y la dejamos **apagada
+bajo llave**. Todas las páginas, web y guía, dicen hoy `noindex`; el
+robots.txt dice `Disallow: /`. Un solo interruptor
+(`NEXT_PUBLIC_INDEXABLE=true` más el dominio) enciende todo el día que se
+decida dónde vive esto — sin retrabajo, sin "ahora hay que hacer el SEO".
+
+Hubo un detalle técnico con moraleja: en GitHub Pages, este prototipo
+vive en una subcarpeta del dominio (`/sp-prototipo/`), y los buscadores
+solo leen el robots.txt de la **raíz** del dominio — donde no podemos
+escribir. O sea que nuestro robots.txt, hoy, es decorativo; la defensa
+real es la etiqueta `noindex` dentro de cada página. Saber cuál de tus
+dos cerraduras funciona de verdad importa más que tener dos cerraduras.
+
+**Lo aprendido:** a veces el trabajo correcto es construir algo y no
+encenderlo. La madurez no era "tener SEO" sino separar la
+infraestructura (que se construye cuando se entiende el problema) de la
+activación (que se decide cuando el negocio está listo). Y la variante
+del capítulo 8: no alcanza con poner la protección — hay que saber cuál
+de las protecciones está haciendo el trabajo.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

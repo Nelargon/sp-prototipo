@@ -7,6 +7,7 @@ export const metadata = {
   title: 'Cotizá tu plan · Salud Protegida',
   description:
     'Simulá el precio de tu plan de salud en un minuto. Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.',
+  alternates: { canonical: '/simulador/' },
 };
 
 export default function SimuladorPage() {
