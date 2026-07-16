@@ -6,6 +6,13 @@ dirección, lo construido, las decisiones tomadas con su porqué, y los
 pendientes priorizados. Complementa (no reemplaza) al `HANDOVER.md` original,
 que documenta la implementación técnica de la página de planes.
 
+> ⚠ **Antes de leer: actualizate.** Hay varias sesiones trabajando en
+> paralelo y este documento cambia varias veces por día. Tu clon es una
+> foto del momento en que arrancó tu contenedor. Corré
+> `git fetch origin main && git checkout main && git pull`
+> y recién entonces leé este archivo — una sesión que lee la foto vieja
+> reporta un proyecto que ya no existe.
+
 *Última actualización: julio 2026.*
 
 ---

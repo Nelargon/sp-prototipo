@@ -3,6 +3,16 @@
 Leé `HANDOFF.md` primero: ahí están la visión, las decisiones tomadas y
 los pendientes. Este archivo fija las reglas de trabajo permanentes.
 
+## Regla cero: actualizarse antes de leer o trabajar (jul 2026)
+
+Hay **varias sesiones trabajando en paralelo** sobre este proyecto, y el
+clon de cada sesión es una foto del momento en que arrancó su contenedor.
+Antes de leer `HANDOFF.md`/`BITACORA.md` o empezar cualquier trabajo:
+`git fetch origin main && git checkout main && git pull`. Y antes de
+crear una rama de trabajo, partir siempre de `origin/main` recién
+traído. Una sesión que lee documentos viejos reporta un proyecto que ya
+no existe y puede construir cosas que otra sesión ya construyó distinto.
+
 ## Flujo git (actualizado julio 2026 — merge automático autorizado)
 
 - Rama de trabajo → PR en borrador → verificación con Playwright →
