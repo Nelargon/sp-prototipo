@@ -130,6 +130,14 @@ El molde de las páginas asume, por prestador:
   "Inicio" / "Planes" del header, menú móvil y footer apuntan en relativo
   (`../`, `../#comparar`). En producción deben apuntar al dominio público de
   la web de Salud Protegida (p. ej. `https://saludprotegida.com.py/`).
+- **SEO al publicar en el dominio definitivo** (jul 2026): las tres páginas
+  de la guía llevan `<meta name="robots" content="noindex">` a propósito —
+  el prototipo no debe aparecer en Google. Al publicar: **quitar esa
+  etiqueta**, hacer absolutas las URLs de `og:image` (hoy relativas a
+  `assets/`), agregar `<link rel="canonical">` con la URL pública de cada
+  página, y publicar el `sitemap.xml` + `robots.txt` (la web Next ya los
+  genera parametrizados: se encienden con `NEXT_PUBLIC_INDEXABLE=true` +
+  `SITE_URL`).
 
 ## 6. Panel de estadísticas (`/estadisticas`)
 

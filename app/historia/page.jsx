@@ -6,6 +6,7 @@ export const metadata = {
   title: 'Nuestra historia · Salud Protegida',
   description:
     'Por qué creemos que la protección real se construye antes — antes de la llamada de madrugada, antes del «¿esto me cubre?».',
+  alternates: { canonical: '/historia/' },
 };
 
 // La casa del manifiesto cinematográfico desde el rediseño home-v2:

@@ -253,6 +253,16 @@ usa `npm ci`).
    sitio con ~9% de recurrencia. Sitemap, metadatos, schema.org (ejemplo
    en la ficha de la guía) valen más de lo presupuestado. La decisión de
    dominio de la guía (#9) se evalúa junto con esto.
+   **Estado (jul 2026): infraestructura ✔ lista, indexación apagada a
+   propósito.** El prototipo emite `noindex` en todas las páginas (web y
+   guía) y `robots.txt` con `Disallow: /` para que ningún cliente real
+   aterrice en una demo con precios de referencia. Ya existen
+   `robots.txt`, `sitemap.xml` (7 URLs, sin `/v1/`), canonicals por
+   página, Open Graph y JSON-LD de la organización (InsuranceAgency con
+   teléfono, sedes y email reales). Todo se enciende con
+   `NEXT_PUBLIC_INDEXABLE=true` + `SITE_URL` en el build cuando haya
+   decisión de dominio — un solo flip, sin retrabajo. Lo que falta al
+   publicar la guía: quitar el `noindex` de los 3 HTML (nota en ANEXO §5).
 8c. **Nota para la mesa técnica de precios**: al definir los precios
    reales del comparador, evaluar el **efecto señuelo** (Integral como
    ancla que ordena la percepción de Esencial y Premium) — con la
