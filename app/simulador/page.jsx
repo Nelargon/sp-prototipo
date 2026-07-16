@@ -1,6 +1,6 @@
 import { css } from '../css';
 import { BP } from '../basePath';
-import { WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL } from '../quote';
+import { WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from '../quote';
 import Simulador from '../components/Simulador';
 
 export const metadata = {
@@ -21,7 +21,7 @@ export default function SimuladorPage() {
   ];
 
   const trust = [
-    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', text: '+23 años cuidando familias' },
+    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', text: '+' + YEARS_CARING + ' años cuidando familias' },
     { icon: 'M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z', text: 'Urgencias 24 h · ' + SP_PHONE_DISPLAY },
     { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z', text: 'Sin datos sensibles para ver tu precio' },
   ];

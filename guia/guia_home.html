@@ -148,7 +148,11 @@
         <section id="mi-red" class="max-w-7xl mx-auto px-5 md:px-8 -mt-10 relative z-10 scroll-mt-24">
             <div class="bg-white rounded-2xl shadow-xl border border-line p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="lg:col-span-5">
-                    <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Para asegurados</div>
+                    <div class="flex items-center gap-2 flex-wrap mb-2">
+                        <span class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk">Para asegurados</span>
+                        <!-- Honestidad visual (misma regla que Mi SP): la demo no finge integración real -->
+                        <span class="text-[10px] font-bold tracking-[0.1em] uppercase text-gold border border-gold/50 rounded-full px-2.5 py-0.5">Demostración</span>
+                    </div>
                     <h2 class="font-display font-extrabold text-2xl tracking-tight mb-2">Mirá la red según <span class="text-teal-dk">tu plan</span>.</h2>
                     <p class="text-sm text-body leading-relaxed">
                         Con tu cédula y tu fecha de nacimiento te mostramos solo los prestadores
@@ -179,6 +183,7 @@
                     </div>
                     <p class="sm:col-span-3 text-[11px] text-slate-400">
                         Tus datos se usan solo para esta consulta y no quedan guardados en tu navegador.
+                        En esta demostración, cualquier dato muestra la red de un asegurado de ejemplo (SP Integral) — la consulta real llega con la conexión al padrón.
                     </p>
                 </form>
             </div>
@@ -339,7 +344,7 @@
         <div class="max-w-7xl mx-auto px-5 md:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <p class="font-display font-extrabold text-white text-lg mb-3">Salud Protegida</p>
-                <p class="text-white/60 leading-relaxed max-w-xs">+23 años cuidando familias paraguayas, con Lister y una red de prestadores en todo el país.</p>
+                <p class="text-white/60 leading-relaxed max-w-xs">+<span data-anios>23</span> años cuidando familias paraguayas, con Lister y una red de prestadores en todo el país.</p>
             </div>
             <div>
                 <h4 class="font-bold text-white mb-4 uppercase tracking-wider text-xs">Guía Médica</h4>
@@ -379,6 +384,13 @@
         // TODO backend: fetch('/api/eventos', {method:'POST', body: JSON.stringify({evento, datos, ts: Date.now()})})
         console.debug('[track]', evento, datos);
     }
+
+    /* Años desde la fundación (agosto de 2002) — se recalcula al cargar la página. */
+    (function () {
+        var hoy = new Date();
+        var anios = hoy.getFullYear() - 2002 - (hoy.getMonth() < 7 ? 1 : 0);
+        document.querySelectorAll('[data-anios]').forEach(function (el) { el.textContent = anios; });
+    })();
 
     /* =====================================================================
        BUSCADOR ÚNICO — demo funcional del comportamiento esperado.

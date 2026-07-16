@@ -3,7 +3,7 @@
 import { useState, useEffect, createElement } from 'react';
 import { BP } from './basePath';
 import { css } from './css';
-import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL } from './quote';
+import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
 
 const INITIAL = {
@@ -29,19 +29,21 @@ export default function Page() {
 
   // ===== pure data / helpers =====
   const cart = () => {
-    const yes = (d) => ({ s: 'Cubierta', d });
-    const no = (d) => ({ s: 'No incluida', d });
+    // Regla de tono (HANDOFF §3.7): la ausencia se comunica como oportunidad,
+    // nunca "No cubierto/No incluida" — la etiqueta dice desde qué plan está.
+    const yes = (d) => ({ s: 'Cubierta', ok: true, d });
+    const no = (s, d) => ({ s, ok: false, d });
     return [
       { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Ilimitadas en Lister + 4 al mes en la red'), yes('Ilimitadas en Lister + 6 al mes en la red'), yes('Sin límite en toda la red')] },
       { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', cov: [yes('Hasta 4 al año'), yes('+ Doppler y prenatal'), yes('Hasta 12 al año')] },
       { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', cov: [yes('Hasta 2 al año'), yes('Cubierta'), yes('Cubierta, con orden médica')] },
-      { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', cov: [no('Disponible en SP Integral'), yes('Al 100%'), yes('Cubierta al 100%, con orden médica')] },
+      { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', cov: [no('Desde SP Integral', 'Se suma a tu cobertura en SP Integral y Premium'), yes('Al 100%'), yes('Cubierta al 100%, con orden médica')] },
       { name: 'Sesión de psicología', icon: 'M12 3a7 7 0 0 0-4 12.7V19l2-1 2 1 2-1 2 1v-3.3A7 7 0 0 0 12 3Z', cov: [yes('3 sesiones al año'), yes('6 sesiones al año'), yes('10 sesiones al año + nutrición')] },
       { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', cov: [yes('Hasta 25 días'), yes('Privada, 30 días'), yes('Suite, 45 días')] },
       { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', cov: [yes('Parto y cesárea'), yes('+ curso y pediatra'), yes('Suite + kit para el bebé')] },
       { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Remedios hasta ₲ 150 mil'), yes('100% · ₲ 200 mil'), yes('100% · ₲ 300 mil')] },
       { name: 'Odontología', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', cov: [yes('Limpieza anual'), yes('Incluida'), yes('Incluida')] },
-      { name: 'Medicamentos', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [no('Con descuento en Integral'), yes('40% de descuento'), yes('60% de descuento')] },
+      { name: 'Medicamentos', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [no('Desde SP Integral', '40% de descuento desde SP Integral'), yes('40% de descuento'), yes('60% de descuento')] },
     ];
   };
 
@@ -219,11 +221,11 @@ export default function Page() {
   }));
   const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
   const selRows = sel.cov.map((cv, i) => {
-    const ok = cv.s !== 'No incluida';
+    const ok = cv.ok;
     return {
       plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d,
       wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid #F0F0F0'),
-      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F3F4F6;color:#6B6B6B'),
+      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10'),
     };
   });
 
@@ -242,7 +244,7 @@ export default function Page() {
   const planHeaders = plansArr.map((pl) => pl.short);
   const fullRows = cartArr.map((item) => ({
     name: item.name,
-    cols: item.cov.map((c) => ({ status: c.s, badge: 'display:inline-flex;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;' + (c.s !== 'No incluida' ? 'background:#E6F7F6;color:#007d77' : 'background:#F3F4F6;color:#6B6B6B') })),
+    cols: item.cov.map((c) => ({ status: c.s, badge: 'display:inline-flex;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;' + (c.ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10') })),
   }));
 
   // faq
@@ -346,7 +348,7 @@ export default function Page() {
         <div style={css('position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,rgba(0,25,48,0) 0%,rgba(0,25,48,0.55) 100%)')}></div>
         <div data-hero-content style={css('position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 40px;color:#fff')}>
           <div style={css('max-width:720px')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px')}>+23 años cuidando familias paraguayas</div>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
             <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:#00BCB4')}>se siente</span>.</h1>
             <p style={css('font-size:20px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
             {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red. */}
@@ -565,11 +567,9 @@ export default function Page() {
           </div>
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#00736e;margin-bottom:12px')}>Quiénes somos</div>
-            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de 23 años.</h3>
+            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de {YEARS_CARING} años.</h3>
             <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px 20px')}>
               <div><div className="disp" style={css('font-size:32px;color:#003B71')}>2002</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Fundada en Asunción</div></div>
-              <div><div className="disp num-tnum" data-stat data-target="23" data-prefix="+" data-suffix=" años" style={css('font-size:32px;color:#003B71')}>+23 años</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Cuidando familias en todo el país</div></div>
-              <div><div className="disp num-tnum" data-stat data-target="9100" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:#003B71')}>~9.100</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Contratos activos hoy</div></div>
               <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:#003B71')}>~19.000</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Vidas aseguradas</div></div>
             </div>
           </div>
@@ -658,7 +658,7 @@ export default function Page() {
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
             <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:52px;display:block;margin-bottom:14px')} />
-            <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +23 años · Asunción, Paraguay</div>
+            <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +{YEARS_CARING} años · Asunción, Paraguay</div>
           </div>
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Contacto</div>
