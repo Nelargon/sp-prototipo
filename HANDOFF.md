@@ -331,13 +331,18 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
 14. **Agendamiento de turnos**, empezando por Lister: el paso de "dónde
     atenderse" a "atenderse".
-15. **Contenido del blog**: `/blog` dejó de ser placeholder (julio 2026):
-    tiene 3 notas reales escritas en idioma de familia — "Cómo elegir un
-    plan para tu familia", "Carencia, copago y otras palabras que nadie
-    te explicó" y "Los chequeos que conviene hacerse a cada edad" — con
-    layout de lectura propio y CTA al simulador. Sigue pendiente la
-    estrategia editorial de largo plazo: quién escribe, con qué CMS y
-    con qué calendario — ligado a la gobernanza de contenido (#10).
+15. **Contenido del blog** — RESUELTO (julio 2026): la estrategia
+    editorial existe y está en marcha. Las notas viven como markdown en
+    `contenido/blog/publicados/` (una nota nueva = un archivo nuevo;
+    índice, sitemap y página propia se generan solos con `lib/blog.js` +
+    `marked`/`gray-matter`, mismo diseño de lectura `Articulo.jsx`).
+    La cocina editorial vive en el repo privado `sp-interno`: línea
+    editorial + Routine diaria de noticias (02:00) + Routine semanal de
+    borradores (lunes 03:00). Meta acordada: 2-3 notas publicadas por
+    semana; publicar = copiar el markdown aprobado a `publicados/` vía
+    PR — revisión humana siempre. El contenido es portable: el día que
+    la web oficial pase a WordPress/HubSpot (BuenaVista), la biblioteca
+    de notas migra tal cual.
 
 ### Preguntas abiertas (y quién responde)
 

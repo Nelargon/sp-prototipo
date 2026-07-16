@@ -447,6 +447,48 @@ es copy que escucha.
 
 ---
 
+## Capítulo 21 — El blog aprende a alimentarse solo (y un repo estaba publicando al vacío)
+
+**Qué intentamos.** El usuario pidió automatizar la recolección diaria de
+noticias (salud en Paraguay, seguros, datos) y convertirla en contenido de
+blog. La primera versión se construyó entera en el repo privado
+`sp-interno`: línea editorial, plantillas, dos Routines programadas (digest
+diario a las 02:00, borradores semanales los lunes) y hasta una sección
+`/blog` propia en su copia del sitio.
+
+**Qué pasó.** Al traer `sp-prototipo` a la misma sesión apareció el
+problema: `sp-interno` tenía un `deploy.yml` copiado literal de acá —
+mismo basePath `/sp-prototipo` — pero siendo otro repo, publicaba (si
+acaso) a otra URL con todos los links rotos. Publicar un post ahí jamás
+habría tocado el sitio real. Además, los dos repos tenían *dos blogs
+distintos*: este con 3 notas JSX escritas a mano, aquel con un motor
+markdown automatizable. Dos forks del mismo sitio, cada uno con la mitad
+buena.
+
+La fusión tomó lo mejor de ambos: el motor markdown vino acá (donde vive
+la URL real) y adoptó el diseño de lectura existente — `Articulo.jsx`
+quedó como layout, las 3 notas JSX se convirtieron a markdown conservando
+sus URLs, y el índice y el sitemap se generan solos desde
+`contenido/blog/publicados/`. La cocina editorial (línea editorial,
+digests, borradores crudos) se quedó en el repo privado, que deja de ser
+fork del sitio. Publicar = copiar un markdown aprobado, vía PR. De paso,
+dos notas nuevas del pipeline estrenaron el sistema — con "cartilla"
+corregida antes de publicar, porque la regla de lenguaje también aplica a
+los robots.
+
+**Qué aprendimos.** Primero: un workflow copiado entre repos es una
+promesa rota en silencio — publicaba al vacío y nadie lo veía; cuando un
+repo se bifurca, lo primero que hay que auditar es adónde apunta su
+deploy. Segundo: la arquitectura sana no fue elegir un repo ganador sino
+darle a cada uno un rol nítido — el público es el producto, el privado es
+la cocina; la conexión entre ambos no es técnica, es el gesto humano de
+publicar. Tercero: el contenido en markdown es el único activo que
+sobrevive a cualquier decisión de plataforma futura (WordPress, HubSpot o
+lo que BuenaVista decida) — el código del blog es reemplazable; la
+biblioteca de notas, no.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
