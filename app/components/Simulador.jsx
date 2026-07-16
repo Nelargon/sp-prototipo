@@ -274,7 +274,14 @@ export default function Simulador() {
     return items;
   })() : [];
 
-  const stepEnc = { 1: 'Empecemos por lo básico.', 2: 'Esto define tu precio base.', 3: 'Elegí hasta dónde te cubrimos.', 4: 'Ahora afinamos según las edades.', 5: 'Último paso antes de tu precio.' }[d.step] || '';
+  // El acompañamiento reacciona a lo que la persona eligió — como haría un
+  // asesor que escucha — en vez de repetir un mensaje fijo por paso.
+  const encWho = { mi: 'Un plan para vos. Empecemos bien.', pareja: 'Para los dos. Cuidarse de a dos suma.', familia: 'Toda la familia junta — de eso se trata.', padres: 'Cuidar a los que nos cuidaron. Estamos con vos.' }[d.who];
+  const encNivel = isPadres
+    ? ({ equilibrio: 'SP Senior: cuidado cercano para ellos.', amplia: 'Senior Plus: lo más completo para ellos.' })[d.nivel]
+    : ({ esencial: 'Lo importante, bien cubierto.', equilibrio: 'El equilibrio que más familias eligen.', amplia: 'Tranquilidad completa. Buen viaje.' })[d.nivel];
+  const encGeo = { central: 'Cobertura donde hacés tu vida.', interior: 'Tu zona, bien cubierta.', nacional: 'Todo el país con vos.' }[d.geo];
+  const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Ahora afinamos según las edades.', 5: 'Último paso y vemos tu precio.' }[d.step] || '';
   const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
 
   const sim = {
@@ -359,6 +366,7 @@ export default function Simulador() {
                   : <span style={css('font-size:12px;color:#007d77;text-align:right')}>{sim.enc}</span>}
               </div>
               <div style={css('height:5px;border-radius:999px;background:#E6EDF4;overflow:hidden')}><div style={css('height:100%;border-radius:999px;transition:width .35s cubic-bezier(.22,1,.36,1),background .3s;background:' + sim.progressBarColor + ';width:' + sim.progressPct + '%')}></div></div>
+              {sim.livePanelReady && sim.enc && <div style={css('font-size:12px;color:#007d77;font-weight:600;margin-top:7px')}>{sim.enc}</div>}
             </div>
           )}
           {sim.isIntro && (
@@ -538,7 +546,7 @@ export default function Simulador() {
                   <div style={css('background:#E6F7F6;border:1px solid #bfe4e1;border-radius:14px;padding:24px;text-align:center')}>
                     <div style={css('width:46px;height:46px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
                     <div style={css('font-size:17px;font-weight:800;color:#003B71;margin-top:12px')}>¡Listo, {sim.nombre}!</div>
-                    <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Te enviamos tu cotización y un asesor te contacta para confirmarla.</div>
+                    <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
                   </div>
                 )}
                 <a href={waHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado' })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>

@@ -142,10 +142,21 @@ usa `npm ci`).
 10. **Integración guía ↔ homepage**: aprobado **A+B ahora, C como destino**
     (ver pendiente #1 abajo).
 11. **El espacio del afiliado se llama "Mi SP"** (julio 2026, elegido por
-    el usuario): corto, apropiable y crece bien — hoy lleva a "Ver mi
-    red" (la consulta CI+fecha de la guía); mañana nombra al portal
-    completo (credencial, estados). Aparece en el menú móvil; la puerta 2
-    del hero mantiene "Ya soy de SP · Ver mi red" como frase de triaje.
+    el usuario): corto, apropiable y crece bien. **Desde julio 2026 ya
+    tiene su página propia: `/mi-sp/`** — reúne lo que funciona hoy (Ver
+    mi red con CI+fecha, WhatsApp, urgencias) y muestra en tarjetas "en
+    camino" lo que viene (mi plan, credencial digital, turnos, pagos),
+    sin fingir que existe. El menú móvil y la puerta 2 del hero ("Ya soy
+    de SP · Mi SP") llevan ahí. Evento `mi_sp_accion` (ANEXO §2) mide
+    qué buscan los clientes — ese dato ordena qué módulo construir
+    primero.
+11b. **El simulador acompaña como una persona** (julio 2026, pedido del
+    usuario): los mensajes laterales reaccionan a cada elección ("Toda la
+    familia junta — de eso se trata") en vez de repetir texto fijo, la
+    línea de acompañamiento convive con el estimado en móvil, y el cierre
+    tras dejar datos promete "una persona, no un robot". Referencia:
+    flujos conversacionales tipo Lemonade (una pregunta por vez + lenguaje
+    llano), sin convertirlo en chatbot — balance con lo funcional.
 
 ---
 
@@ -284,10 +295,13 @@ usa `npm ci`).
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
 14. **Agendamiento de turnos**, empezando por Lister: el paso de "dónde
     atenderse" a "atenderse".
-15. **Contenido del blog**: `/blog` hoy es un placeholder "muy pronto"
-    (con el lugar ya reservado en el header). Definir estrategia
-    editorial, quién escribe y con qué CMS — ligado a la gobernanza de
-    contenido (#10).
+15. **Contenido del blog**: `/blog` dejó de ser placeholder (julio 2026):
+    tiene 3 notas reales escritas en idioma de familia — "Cómo elegir un
+    plan para tu familia", "Carencia, copago y otras palabras que nadie
+    te explicó" y "Los chequeos que conviene hacerse a cada edad" — con
+    layout de lectura propio y CTA al simulador. Sigue pendiente la
+    estrategia editorial de largo plazo: quién escribe, con qué CMS y
+    con qué calendario — ligado a la gobernanza de contenido (#10).
 
 ### Preguntas abiertas (y quién responde)
 
