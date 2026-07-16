@@ -16,13 +16,13 @@ export function A({ kicker, title, intro, minutes, date, children }) {
         <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:12px')}>{kicker}</div>
         <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,42px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;margin:0 0 14px')}>{title}</h1>
         <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:18px;line-height:1.65;color:#3D3D3D;margin:0 0 14px')}>{intro}</p>
-        <div style={css('font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
+        <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
         <div className="art-body">{children}</div>
       </article>
       <div style={css('max-width:680px;margin:0 auto;padding:0 24px 70px')}>
         <div style={css('background:#003B71;border-radius:18px;padding:28px 26px;color:#fff')}>
           <div style={css('font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px')}>¿Querés saber cuál es el plan para tu familia?</div>
-          <div style={css('font-size:14.5px;color:#B3C7DB;line-height:1.55;margin-bottom:18px')}>Contanos quiénes son y te mostramos el plan que va con ustedes, con precio estimado — en un minuto y sin dejar datos.</div>
+          <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:14.5px;color:#B3C7DB;line-height:1.55;margin-bottom:18px')}>Contanos quiénes son y te mostramos el plan que va con ustedes, con precio estimado — en un minuto y sin dejar datos.</div>
           <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:48px;padding:0 24px;border-radius:12px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:8px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
         </div>
       </div>
