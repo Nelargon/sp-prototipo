@@ -333,7 +333,7 @@ export default function Page() {
             <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
             <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
             <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
-            <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>
+            <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>
             <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>
           </nav>
         </div>
@@ -352,7 +352,7 @@ export default function Page() {
             {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red. */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
               <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-              <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Ver mi red</a>
+              <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
             </div>
             <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:6px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
           </div>

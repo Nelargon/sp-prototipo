@@ -1,9 +1,9 @@
 {
-  "fecha": "2026-07-16T01:23:12.732Z",
+  "fecha": "2026-07-16T02:18:56.023Z",
   "oks": [
     {
       "frente": "funcional",
-      "detalle": "crawler: 76 links internos únicos, todos responden"
+      "detalle": "crawler: 80 links internos únicos, todos responden"
     },
     {
       "frente": "funcional",
@@ -55,11 +55,11 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 31 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 30 ms (< 3 s)"
     },
     {
       "frente": "contenido",
-      "detalle": "10 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
+      "detalle": "14 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
     },
     {
       "frente": "contenido",

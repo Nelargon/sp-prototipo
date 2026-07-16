@@ -13,7 +13,11 @@ export default function sitemap() {
     u('/guia/guia_home.html', 0.9),
     u('/guia/guia_resultados.html', 0.8),
     u('/guia/guia_prestador.html', 0.7),
+    u('/mi-sp/', 0.7),
     u('/historia/', 0.6, 'monthly'),
     u('/blog/', 0.6, 'monthly'),
+    u('/blog/como-elegir-plan-familia/', 0.5, 'monthly'),
+    u('/blog/carencia-copago-y-otras-palabras/', 0.5, 'monthly'),
+    u('/blog/chequeos-por-edad/', 0.5, 'monthly'),
   ];
 }

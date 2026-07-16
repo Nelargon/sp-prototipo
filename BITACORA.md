@@ -405,6 +405,46 @@ activación (que se decide cuando el negocio está listo). Y la variante
 del capítulo 8: no alcanza con poner la protección — hay que saber cuál
 de las protecciones está haciendo el trabajo.
 
+## Capítulo 20 — El simulador aprende a escuchar (y el ecosistema deja de prometer)
+
+La brújula la puso el usuario, con su voz: *"lo importante siempre es que
+la experiencia se sienta humana, especialmente cuando la persona vaya a
+través del simulador, que el simulador también sea como una persona que
+le responde, que le ayude a entender lo que está escogiendo, como que le
+está acompañando en ese proceso"*. Y una salvedad sabia: *"tenemos que
+saber tener un balance con lo funcional"*.
+
+Fuimos a mirar cómo lo hacen los mejores. Lemonade —la aseguradora que
+nació conversacional— construyó su cotizador como una charla: una
+pregunta por vez, lenguaje llano, y el precio en menos de dos minutos.
+La sorpresa fue grata: nuestro simulador ya tenía casi todo eso (una
+pregunta por vez, el "por qué te preguntamos esto", el precio antes de
+pedir datos). Lo que le faltaba era más fino: **escuchar**. Los mensajes
+de aliento eran fijos por paso — decían lo mismo elijas lo que elijas.
+Una persona que acompaña no hace eso: responde a *tu* elección. Ahora,
+si elegís cuidar a tus padres, el simulador dice "cuidar a los que nos
+cuidaron — estamos con vos"; si elegís a toda la familia, "de eso se
+trata". Y al final, el cierre promete lo que la marca es: te va a
+escribir *una persona, no un robot*.
+
+El mismo día nacieron dos espacios que faltaban. El blog dejó de ser un
+cartel de "muy pronto": tres notas reales, escritas en el idioma que
+esta bitácora ya defendió a capa y espada (carencia, copago y compañía,
+traducidos a idioma de familia). Y "Mi SP" — el espacio del cliente que
+el usuario venía pidiendo — ya es una página: lo que funciona hoy
+funciona de verdad (ver mi red, WhatsApp, urgencias), y lo que no
+existe todavía se muestra como "en camino", con borde punteado y sin
+botón. **El portal no finge.**
+
+**Lo aprendido:** humanizar no era rehacer — era afinar. La
+infraestructura conversacional ya estaba; lo humano estaba en el detalle
+de reaccionar a la elección de la persona. Segundo: contra la tentación
+de fingir funcionalidades para que el prototipo "se vea completo", la
+honestidad visual (tarjetas punteadas, "en camino") vende mejor: nadie
+toca un botón que no anda. Y tercero: cuando el usuario dice "que se
+sienta humano", la respuesta técnica correcta casi nunca es un chatbot —
+es copy que escucha.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
