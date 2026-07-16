@@ -162,6 +162,39 @@ usa `npm ci`).
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
 
+### ⚡ Próxima sesión — datos reales que trae el usuario (jul 2026)
+
+El usuario anunció dos fuentes de datos reales que destraban pendientes.
+La sesión que lea esto debe pedírselas y trabajar con ellas:
+
+A. **Planes Bronce / Silver / Gold** — la versión hoy vigente de los
+   planes: anterior e inferior a los nuevos Esencial / Integral /
+   Premium, y todavía sin los paquetes definidos, pero **real**. Sirve
+   como dato interino para:
+   - calibrar el motor del simulador con precios reales por edad/grupo
+     (hoy usa cifras de referencia — ver pendiente #6);
+   - contrastar el comparador "qué cubre" con coberturas reales;
+   - proponer el mapeo Bronce→Esencial, Silver→Integral, Gold→Premium
+     como hipótesis de partida para la mesa técnica — **sin renombrar
+     nada en la web**: los nombres nuevos son la visión aprobada; los
+     datos viejos alimentan los números, no los reemplazan.
+   Formato: cualquiera sirve (Excel, PDF, foto del tarifario).
+
+B. **Base de prestadores del sistema interno de SP** (mencionado por
+   voz; el nombre del sistema hay que confirmarlo con el usuario en la
+   próxima sesión): la exportación de todos los prestadores, para
+   poblar la Guía Médica con datos reales — hoy usa el catálogo de
+   muestra. Campos deseados: los del ANEXO §4 (nombre, tipo,
+   especialidades, sedes con dirección y ciudad, teléfonos, horarios,
+   atributos urgencias 24h / a domicilio / telemedicina). Un Excel o
+   CSV con lo que haya alcanza para empezar: la limpieza conocida
+   (teléfonos concatenados, typo "AMBULACIA", especialidades que son
+   tipos) ya está especificada en el ANEXO.
+
+Cómo retomar en una sesión nueva: abrirla sobre `sp-prototipo` y decir
+**"Leé el HANDOFF.md y continuemos"** — este archivo es la memoria del
+proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
+
 ### Prioridad alta (próxima sesión)
 
 1. ~~**Integrar la guía al homepage (A+B)**~~ ✔ **Hecho (julio 2026, PR #5)**:
@@ -248,6 +281,9 @@ usa `npm ci`).
 5. **Fotos reales** (hero y secciones — estaba previsto en el plan original).
 6. **Precios y coberturas definitivos** para simulador y comparador
    (esperan a la mesa técnica; hoy dicen "cifras de referencia").
+   *Paso intermedio disponible*: los planes vigentes Bronce/Silver/Gold
+   (ver bloque ⚡ arriba) permiten calibrar con datos reales sin esperar
+   la mesa técnica.
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
 8. **Decisión de plataforma de la web pública**: el brief de BuenaVista
