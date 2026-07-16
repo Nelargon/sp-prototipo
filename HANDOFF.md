@@ -274,6 +274,29 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    El portal completo (login, credencial, estados) sigue como destino
    declarado, bloqueado por el pendiente #8 y el backend de SIP.
 
+3c. **Feedback externo sobre la web (16 jul 2026)** — evaluación de un
+   revisor externo, pimponeada con el usuario. Veredicto general: madura,
+   no maqueta; su lectura estratégica ("guía = recurrencia, simulador =
+   conversión, portada = triaje") coincide con la tesis del §1 sin haberla
+   leído. **Ejecutado en el mismo día**: (a) etiqueta "No incluida" del
+   comparador → "Desde SP Integral" en dorado (violaba la decisión #7);
+   (b) cifras: quedan solo las confirmadas — vidas ~19.000 (real),
+   contratos ~9.100 salió (sin confirmar), los años se calculan desde la
+   fundación (agosto 2002, `YEARS_CARING` en `app/quote.js` + script en
+   la guía) en cada build; (c) el bloque CI+fecha de la guía lleva
+   etiqueta visible "Demostración" y aclara que muestra un asegurado de
+   ejemplo. **En pausa hasta el test de 5 segundos (lo corre el usuario,
+   5 personas: ¿qué ofrece? ¿dónde tocás para precio? ¿dónde si ya sos
+   cliente?)**: acortar la portada ~20% (poda guiada por las cuatro
+   preguntas, no pareja), decir la categoría más rápido en el hero, una
+   acción comercial dominante (contrapropuesta: desnivelar peso visual
+   sin cerrar la puerta 2 — los datos de GA la defienden), y fusionar la
+   intro del simulador con la primera pregunta (manteniendo la promesa
+   "2 minutos, precio sin dejar datos" como microcopy). **Pendiente del
+   usuario:** confirmar el dato "+800 prestadores" — recién ahí se
+   actualizan los "más de 50 prestadores" (page.jsx y FAQ), que son
+   ciertos pero se quedan cortos.
+
 ### Prioridad media
 
 4. **Datos reales de contacto**: ✔ el número quedó confirmado por el

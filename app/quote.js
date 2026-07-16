@@ -7,6 +7,13 @@ export const WHATSAPP_NUMBER = '595 21 319 0000';
 export const SP_PHONE_DISPLAY = '(021) 319 0000';
 export const SP_TEL = '+595213190000';
 
+/* Fundación: agosto de 2002 (dato confirmado por el usuario, jul 2026).
+   Años cumplidos calculados en cada build — el sitio es estático, la cifra
+   se refresca sola con cada deploy. */
+export const FOUNDED_YEAR = 2002;
+const _now = new Date();
+export const YEARS_CARING = _now.getFullYear() - FOUNDED_YEAR - (_now.getMonth() < 7 ? 1 : 0);
+
 export const fmt = (n) =>
   '₲ ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 

@@ -547,6 +547,50 @@ desactualizada. Preguntarse "¿estoy leyendo la última versión?" antes que
 
 ---
 
+## Capítulo 24 — El feedback que nos encontró violando nuestra propia regla
+
+El usuario trajo un feedback externo sobre la web — el mejor que recibió
+el prototipo hasta ahora. La señal más valiosa no fue ningún hallazgo
+puntual sino la lectura estratégica final: "la guía consigue recurrencia,
+el simulador conversión, la portada conduce". Es exactamente la tesis del
+HANDOFF, reconstruida por alguien que nunca leyó nuestros documentos.
+Cuando un lector externo llega solo a tu tesis, la arquitectura comunica.
+
+Pero el hallazgo que dolió (y enseñó) fue otro: la etiqueta **"No
+incluida"** en el comparador de la home. La decisión #7 del proyecto dice
+desde hace meses "nunca 'No cubierto', la ausencia se comunica como
+oportunidad (dorado)" — y la guía la cumple religiosamente con su "Desde
+SP X". El comparador de la home, escrito antes de que la regla madurara,
+quedó violándola a la vista de todos. Nadie de adentro lo vio; el de
+afuera lo vio en una pasada. Se corrigió con la solución que la guía ya
+tenía: "Desde SP Integral", en dorado.
+
+Del mismo feedback salió la disciplina de cifras: solo sobreviven los
+números confirmados por el usuario. Vidas (~19.000) es real y se queda;
+contratos (~9.100) no estaba confirmado y salió; prestadores espera la
+confirmación del +800 antes de tocar el "más de 50" actual (que es
+verdadero pero se queda corto); y los años dejaron de ser un número
+escrito a mano — se calculan desde la fundación (agosto de 2002) en cada
+build, así no pueden envejecer. Y el bloque de cédula de la guía ganó su
+etiqueta visible de "Demostración": el mismo principio de Mi SP — el
+prototipo no finge integraciones que no existen.
+
+Lo que el feedback propuso y quedó en pausa, a propósito: acortar la
+portada, decir la categoría más rápido en el hero, una sola acción
+dominante y fusionar la intro del simulador. Todo eso lo decide el test
+de 5 segundos con 5 personas que el usuario va a correr — evidencia antes
+que opinión, y los datos de GA ya defendieron una vez la puerta 2.
+
+**Lo aprendido:** las reglas propias también necesitan auditoría — una
+regla que nace después del código deja huérfanos atrás, y quien mejor los
+encuentra es un ojo externo que no sabe cuáles son las reglas. Segundo:
+toda cifra pública es una promesa; la que no está confirmada se marca o
+se va, y la que puede calcularse sola (los años) nunca debería escribirse
+a mano. Tercero: el elogio más útil no es "está lindo" — es que un
+extraño reconstruya tu estrategia sin haberla leído.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
