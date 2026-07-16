@@ -343,6 +343,18 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     PR — revisión humana siempre. El contenido es portable: el día que
     la web oficial pase a WordPress/HubSpot (BuenaVista), la biblioteca
     de notas migra tal cual.
+    **⚠ Motor de contenido — EN DISEÑO, no construir (16 jul 2026):**
+    lo de arriba es la v1 funcionando (vitrina + cocina provisoria en
+    `sp-interno`). El usuario está diseñando en una conversación aparte
+    ("pimpón del cerebro", con brief preparado) la arquitectura final del
+    **motor de contenido universal**: posiblemente un repo dedicado
+    `sp-contenido` (para que su coordinadora y el equipo trabajen ahí sin
+    ver código), una sesión "Master Orquestador" con su `ORQUESTADOR.md`,
+    bandeja de entradas (informes de Manus y otros orígenes → contenido
+    multi-formato) y Routine "Publicador" como puente a la web. **Ninguna
+    sesión debe crear ese repo, mover la fábrica ni reapuntar las
+    Routines hasta que el usuario traiga el diseño del cerebro.** La v1
+    actual sigue operando mientras tanto.
 
 ### Preguntas abiertas (y quién responde)
 
