@@ -512,6 +512,39 @@ la deriva silenciosa también pasa en diseño — la espec decía Inter y nadie
 lo notó hasta que dolió. Cuando el usuario dice "me cuesta", eso es un
 dato de QA, no una opinión.
 
+## Capítulo 23 — La sesión que leyó una foto vieja
+
+El proyecto llegó a un punto que nadie planeó explícitamente: **varias
+sesiones de Claude trabajando en paralelo**, cada una en lo suyo — una en
+la web, otra en el blog, otra en la tipografía. El mismo día en que
+celebrábamos esa velocidad, apareció el costo. El usuario abrió una
+sesión nueva, le pidió "leé el HANDOFF", y la sesión respondió con
+seguridad total que el master orquestador y el motor de contenido "no
+están registrados en ninguna parte" — cuando habían quedado escritos en
+el HANDOFF *esa misma mañana*, con guarda y todo.
+
+¿Mintió el documento? No. Mintió la foto. Cada sesión clona el repo en el
+momento en que arranca su contenedor; esa sesión había nacido antes de
+los últimos merges y leyó, con total honestidad, un HANDOFF de horas
+atrás. En un proyecto de una sola sesión eso jamás duele. Con cinco PRs
+fusionados en un día por manos distintas, la foto vieja se vuelve una
+máquina de contradicciones: sesiones que reportan pendientes ya
+resueltos, o peor, que construyen algo que otra ya construyó distinto —
+también pasó hoy: dos versiones del blog nacieron en paralelo y hubo que
+reconciliarlas sobre la marcha.
+
+La solución es de una línea y ahora es la **regla cero** del proyecto:
+antes de leer cualquier documento o empezar cualquier trabajo,
+actualizarse (`git pull`). La memoria compartida solo funciona si todos
+leen la última página, no la que quedó abierta cuando entraron.
+
+**Lo aprendido:** cuando un equipo pasa de uno a varios — sean personas
+o sesiones de IA — el primer bug no es de código: es de sincronización.
+Y la confianza de una respuesta no dice nada sobre la frescura de sus
+datos: la sesión que negó el orquestador no estaba rota, estaba
+desactualizada. Preguntarse "¿estoy leyendo la última versión?" antes que
+"¿qué dice el documento?" — en ese orden.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
