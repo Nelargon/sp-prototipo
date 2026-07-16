@@ -49,6 +49,17 @@ bitácora: …" del usuario entran con su voz.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.
+- **Regla tipográfica (julio 2026, pedido del usuario): Gilroy es display,
+  Inter es lectura.** Gilroy SOLO para: títulos (h1/h2/h3, `.disp`),
+  títulos de tarjetas, botones y CTAs, etiquetas cortas en mayúsculas
+  (kickers, badges), navegación y cifras grandes. Inter (`--font-inter`,
+  auto-hospedada en `public/fonts/`) para TODO lo que se lee como oración:
+  párrafos, copetes/bajadas, descripciones de tarjetas, listas, citas,
+  tablas, bylines y metadatos ("Equipo SP · fecha · lectura"), notas al
+  pie, fuentes y estados vacíos. Test rápido: si el texto tiene más de una
+  línea o termina en punto, va en Inter; si es un titular, botón o
+  etiqueta, Gilroy. Al agregar texto nuevo, elegir la fuente a conciencia —
+  el default de `.body` es Gilroy y se filtra solo.
 - **Regla de lenguaje (julio 2026, pedido del usuario)**: escribir en el
   idioma del cliente, no en jerga de seguros. Prohibido de cara al
   usuario: "cartilla" / "cartilla viva" (→ "qué cubre", "cobertura",
