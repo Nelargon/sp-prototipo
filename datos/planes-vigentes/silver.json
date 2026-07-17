@@ -110,7 +110,7 @@
         "prima": 628000
       }
     ],
-    "descuento_debito_automatico": "Descuento por débito automático CONFIRMADO por el usuario (17 jul 2026) — aplica también a los planes Privilege. Falta precisar: si la prima única del tarifario es el precio con débito o el particular, y el porcentaje exacto (en Plan Vital la relación débito/particular es 283.000/312.000, ≈9-10%)."
+    "descuento_debito_automatico": "CONFIRMADO por el usuario (17 jul 2026): 10% de descuento pagando con débito automático o tarjeta de crédito. Pendiente una sola precisión para usarlo en la web: si la prima única del tarifario Privilege ya es el precio con pago automático (como la columna 'Costo Débito' de Vital) o si es el precio particular al que se le aplica el 10%."
   },
   "coberturas_clave": {
     "consultas": {
