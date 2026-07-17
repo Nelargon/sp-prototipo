@@ -10,37 +10,107 @@
   "iva_incluido": true,
   "precios": {
     "titular_solo": [
-      { "edad": "0-54", "prima": 432000 },
-      { "edad": "55-64", "prima": 560000 },
-      { "edad": "65-69", "prima": 680000 }
+      {
+        "edad": "0-54",
+        "prima": 432000
+      },
+      {
+        "edad": "55-64",
+        "prima": 560000
+      },
+      {
+        "edad": "65-69",
+        "prima": 680000
+      }
     ],
     "titular_conyuge_cada_uno": [
-      { "edad": "0-54", "prima": 324000 },
-      { "edad": "55-64", "prima": 440000 },
-      { "edad": "65-69", "prima": 540000 },
-      { "edad": "70-74", "prima": 680000, "solo_renovacion": true }
+      {
+        "edad": "0-54",
+        "prima": 324000
+      },
+      {
+        "edad": "55-64",
+        "prima": 440000
+      },
+      {
+        "edad": "65-69",
+        "prima": 540000
+      },
+      {
+        "edad": "70-74",
+        "prima": 680000,
+        "solo_renovacion": true
+      }
     ],
     "adherente_con_parentesco_cada_uno": [
-      { "edad": "0-20", "prima": 238000 },
-      { "edad": "21-54", "prima": 324000 },
-      { "edad": "55-64", "prima": 420000 },
-      { "edad": "65-69", "prima": 540000 },
-      { "edad": "70-99", "prima": 660000, "solo_renovacion": true }
+      {
+        "edad": "0-20",
+        "prima": 238000
+      },
+      {
+        "edad": "21-54",
+        "prima": 324000
+      },
+      {
+        "edad": "55-64",
+        "prima": 420000
+      },
+      {
+        "edad": "65-69",
+        "prima": 540000
+      },
+      {
+        "edad": "70-99",
+        "prima": 660000,
+        "solo_renovacion": true
+      }
     ],
-    "hijo_adicional_desde_3ro": { "edad": "0-20", "prima": 180000, "condicion": "cuando el contrato aplica prima de grupo familiar" },
+    "hijo_adicional_desde_3ro": {
+      "edad": "0-20",
+      "prima": 180000,
+      "condicion": "cuando el contrato aplica prima de grupo familiar"
+    },
     "grupo_familiar_titular_conyuge_2_hijos_hasta_20": [
-      { "edad_titular_conyuge": "hasta 59", "prima": 990000 },
-      { "edad_titular_conyuge": "60-64", "prima": 1300000 }
+      {
+        "edad_titular_conyuge": "hasta 59",
+        "prima": 990000
+      },
+      {
+        "edad_titular_conyuge": "60-64",
+        "prima": 1300000
+      }
     ],
     "ejemplos_grupos": [
-      { "grupo": "Titular solo hasta 54 años", "prima": 432000 },
-      { "grupo": "Titular y cónyuge hasta 54 años", "prima": 648000 },
-      { "grupo": "Titular (h/54) y 1 hijo hasta 20 años", "prima": 562000 },
-      { "grupo": "Titular (h/54) y 2 hijos hasta 20 años", "prima": 800000 },
-      { "grupo": "Titular (h/54) y 3 hijos hasta 20 años", "prima": 1038000 },
-      { "grupo": "Titular, cónyuge (h/59) y 3 hijos hasta 20 años", "prima": 1170000 },
-      { "grupo": "Titular, cónyuge (h/54) y 1 hijo hasta 20 años", "prima": 886000 }
-    ]
+      {
+        "grupo": "Titular solo hasta 54 años",
+        "prima": 432000
+      },
+      {
+        "grupo": "Titular y cónyuge hasta 54 años",
+        "prima": 648000
+      },
+      {
+        "grupo": "Titular (h/54) y 1 hijo hasta 20 años",
+        "prima": 562000
+      },
+      {
+        "grupo": "Titular (h/54) y 2 hijos hasta 20 años",
+        "prima": 800000
+      },
+      {
+        "grupo": "Titular (h/54) y 3 hijos hasta 20 años",
+        "prima": 1038000
+      },
+      {
+        "grupo": "Titular, cónyuge (h/59) y 3 hijos hasta 20 años",
+        "prima": 1170000
+      },
+      {
+        "grupo": "Titular, cónyuge (h/54) y 1 hijo hasta 20 años",
+        "prima": 886000
+      }
+    ],
+    "descuento_debito_automatico": "Descuento por débito automático CONFIRMADO por el usuario (17 jul 2026) — aplica también a los planes Privilege. Falta precisar: si la prima única del tarifario es el precio con débito o el particular, y el porcentaje exacto (en Plan Vital la relación débito/particular es 283.000/312.000, ≈9-10%)."
   },
   "coberturas_clave": {
     "consultas": {
@@ -50,18 +120,45 @@
       "nutricion": "7 consultas/año",
       "vigencia": "inmediata"
     },
-    "radiografias": { "resumen": "Simples: cobertura total, ilimitadas" },
-    "ecografias": { "resumen": "Cobertura total, la mayoría ilimitadas; obstétricas 4/año (carencia 90 días); Doppler con copago 50%" },
-    "tomografia": { "resumen": "Cobertura total (100%), hasta 2 por año (cualquiera de la lista), carencia 90 días", "tipo": "CT" },
-    "resonancia": { "resumen": "Cobertura total (100%), hasta 1 por año (cualquiera de la lista), carencia 150 días", "tipo": "CT" },
-    "internacion": { "resumen": "Habitación semi-suite (cama para acompañante), tope 25 días por beneficiario/año; carencia 60 días" },
-    "uti": { "resumen": "Cobertura total hasta 6 días por beneficiario/año" },
-    "cirugias": { "resumen": "Cuadro 3: cobertura total 1/año en la gran mayoría; carencia típica 150 días (apendicectomía 30)" },
-    "maternidad": { "resumen": "Solo titular o cónyuge; carencia 300 días; parto 3 días / cesárea 4 días; recién nacido en nursery; medicamentos hasta ₲ 1.500.000" },
-    "urgencias": { "resumen": "Cobertura total e inmediata; medicamentos hasta ₲ 200.000 por evento; ambulancia EME cubierta (Asunción y Gran Asunción)" },
-    "domicilio": { "resumen": "Urgencias a domicilio vía EME; consulta médica a domicilio hasta 4 eventos/año" },
-    "fisioterapia": { "resumen": "20 sesiones/año (traumatológica, neurológica, post-quirúrgica) + 5 respiratorias; carencia 90 días" },
-    "odontologia": { "resumen": "Sin cobertura: arancel diferenciado", "tipo": "AD" },
+    "radiografias": {
+      "resumen": "Simples: cobertura total, ilimitadas"
+    },
+    "ecografias": {
+      "resumen": "Cobertura total, la mayoría ilimitadas; obstétricas 4/año (carencia 90 días); Doppler con copago 50%"
+    },
+    "tomografia": {
+      "resumen": "Cobertura total (100%), hasta 2 por año (cualquiera de la lista), carencia 90 días",
+      "tipo": "CT"
+    },
+    "resonancia": {
+      "resumen": "Cobertura total (100%), hasta 1 por año (cualquiera de la lista), carencia 150 días",
+      "tipo": "CT"
+    },
+    "internacion": {
+      "resumen": "Habitación semi-suite (cama para acompañante), tope 25 días por beneficiario/año; carencia 60 días"
+    },
+    "uti": {
+      "resumen": "Cobertura total hasta 6 días por beneficiario/año"
+    },
+    "cirugias": {
+      "resumen": "Cuadro 3: cobertura total 1/año en la gran mayoría; carencia típica 150 días (apendicectomía 30)"
+    },
+    "maternidad": {
+      "resumen": "Solo titular o cónyuge; carencia 300 días; parto 3 días / cesárea 4 días; recién nacido en nursery; medicamentos hasta ₲ 1.500.000"
+    },
+    "urgencias": {
+      "resumen": "Cobertura total e inmediata; medicamentos hasta ₲ 200.000 por evento; ambulancia EME cubierta (Asunción y Gran Asunción)"
+    },
+    "domicilio": {
+      "resumen": "Urgencias a domicilio vía EME; consulta médica a domicilio hasta 4 eventos/año"
+    },
+    "fisioterapia": {
+      "resumen": "20 sesiones/año (traumatológica, neurológica, post-quirúrgica) + 5 respiratorias; carencia 90 días"
+    },
+    "odontologia": {
+      "resumen": "Sin cobertura: arancel diferenciado",
+      "tipo": "AD"
+    },
     "sin_cobertura_arancel_diferenciado": [
       "Odontología",
       "Alta complejidad en cardiocirugía, cirugía vascular periférica y neurocirugía",

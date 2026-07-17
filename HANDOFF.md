@@ -207,7 +207,12 @@ A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
      familiar y hijo adicional desde el 3º. El motor (`app/quote.js`)
      reproduce **los 21 ejemplos "GRUPOS" de los tres tarifarios,
      exactos** (verificado por script). "Padres/adulto mayor" →
-     Plan Vital (₲ 283.000/persona, débito).
+     Plan Vital (₲ 283.000/persona, débito). **Confirmado por el
+     usuario (17 jul 2026): el descuento por débito automático aplica
+     también a los Privilege** (anotado en los JSON). Falta precisar
+     para usarlo en la web: si la prima única del tarifario Privilege
+     es el precio con débito o el particular, y el porcentaje exacto
+     (en Vital la relación es ≈9-10%).
    - El precio es nacional: el paso "Zona" quedó informativo (sin
      recargo) y el paso "Adicionales" se eliminó (los planes vigentes
      no tienen extras) — el simulador quedó de 4 pasos.
