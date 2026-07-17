@@ -1,5 +1,11 @@
 /* Salud Protegida — shared quote/simulator logic and contact constants.
-   Pure functions (no React) used by both the home page and the /simulador route. */
+   Pure functions (no React) used by both the home page and the /simulador route.
+
+   Precios y coberturas REALES (jul 2026): planes vigentes Bronce / Silver /
+   Gold (ex "Privilege", el usuario pidió quitar esa palabra) y Plan Vital
+   (senior 65+). Fuente: datos/planes-vigentes/*.json, tomados de los
+   cuadernillos y tarifarios oficiales. Primas con IVA incluido. Contenido
+   temporal hasta que existan los planes nuevos (Esencial/Integral/Premium). */
 
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
@@ -17,13 +23,28 @@ export const YEARS_CARING = _now.getFullYear() - FOUNDED_YEAR - (_now.getMonth()
 export const fmt = (n) =>
   '₲ ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
+/* Tarifario vigente (IVA incluido). Tramos de edad: 0-54 / 55-64 / 65-69 /
+   70+ (el tramo 70+ es de renovación; se usa solo como estimación).
+   solo: titular sin adherentes · tc: titular/cónyuge cada uno (aplica en
+   cuanto hay más de una persona) · adh: adherente con parentesco ·
+   hijo3: hijo adicional desde el 3º (con prima de grupo familiar) ·
+   pkg: grupo familiar titular + cónyuge + 2 hijos (≤59 / 60-64). */
+const TARIFAS = {
+  bronce: { solo: [238000, 300000, 450000, 450000], tc: [162000, 220000, 320000, 450000], adh0_20: 119000, hijo3: 100000, pkg: [550000, 720000] },
+  silver: { solo: [324000, 420000, 570000, 570000], tc: [228000, 330000, 430000, 570000], adh0_20: 172000, hijo3: 140000, pkg: [770000, 1000000] },
+  gold: { solo: [432000, 560000, 680000, 680000], tc: [324000, 440000, 540000, 680000], adh0_20: 238000, hijo3: 180000, pkg: [990000, 1300000] },
+};
+const VITAL_PRECIO = 283000; // titular 65+, costo con débito automático
+
+const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
+
 export const plans = () => [
-  { name: 'SP Esencial', short: 'Esencial', price: 290000, color: '#00BCB4', tag: 'Para empezar a cuidarte',
-    lines: ['Ilimitadas en Lister + 4 al mes en el resto de la red', 'Urgencias 24 h cubiertas', 'Estudios básicos + tomografía', 'Internación hasta 25 días', 'Salud mental: 3 sesiones al año'] },
-  { name: 'SP Integral', short: 'Integral', price: 540000, color: '#5B7A8C', tag: 'Para tu familia',
-    lines: ['Todo lo de Esencial, y además:', 'Tomografía y resonancia cubiertas', 'Odontología incluida', 'Internación en sala privada, 30 días', 'Psicología y psiquiatría (6 al año)'] },
-  { name: 'SP Premium', short: 'Premium', price: 920000, color: '#B8860B', tag: 'Alta complejidad incluida',
-    lines: ['Consultas sin límite en toda la red', 'Cobertura amplia, incluida alta complejidad', 'Médico y laboratorio a domicilio', 'Suite privada, 45 días', '10 sesiones de psicología al año + nutrición'] },
+  { name: 'Plan Bronce', short: 'Bronce', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
+    lines: ['Urgencias 24 h al 100%, desde el día uno', 'Consultas con especialistas (hasta 3 al año por especialidad)', 'Radiografías y ecografías cubiertas', 'Internación semi-suite, hasta 20 días al año', 'Psicología: 3 sesiones al año'] },
+  { name: 'Plan Silver', short: 'Silver', price: TARIFAS.silver.solo[0], color: '#66717E', tag: 'El que suma resonancia',
+    lines: ['Todo lo de Bronce, con más consultas (5 al año)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
+  { name: 'Plan Gold', short: 'Gold', price: TARIFAS.gold.solo[0], color: '#B8860B', tag: 'La cobertura más amplia',
+    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
 
 export const ageTxt = (a) => (a >= 85 ? '85+' : String(a));
@@ -36,50 +57,51 @@ export const peopleFor = (who) => {
   return [{ role: 'Vos', age: 34, kind: 'adult' }];
 };
 
+/* Precio real de un grupo en un plan Bronce/Silver/Gold, siguiendo las
+   reglas del tarifario (verificado contra los ejemplos "GRUPOS" de los
+   PDFs oficiales):
+   - una sola persona → tarifa "titular solo" por edad;
+   - más de una → titular y cónyuge pagan la tarifa T/C por edad; los
+     hijos (0-20) pagan adherente; adultos extra pagan T/C por edad;
+   - titular + cónyuge + 2 hijos → prima de grupo familiar (≤59 / 60-64),
+     y del 3er hijo en adelante, la prima de hijo adicional. */
+const priceFor = (planKey, people) => {
+  const T = TARIFAS[planKey];
+  const adults = people.filter((p) => p.kind !== 'kid');
+  const kids = people.filter((p) => p.kind === 'kid');
+  if (people.length === 1 && adults.length === 1) return T.solo[bracket(adults[0].age)];
+  if (adults.length === 2 && kids.length >= 2) {
+    const maxAd = Math.max(adults[0].age, adults[1].age);
+    if (maxAd <= 64) return T.pkg[maxAd <= 59 ? 0 : 1] + (kids.length - 2) * T.hijo3;
+  }
+  let total = 0;
+  adults.forEach((p) => { total += T.tc[bracket(p.age)]; });
+  kids.forEach(() => { total += T.adh0_20; });
+  return total;
+};
+
 export const engine = (d) => {
   const base = plans();
   const P = {
-    esencial: { name: base[0].name, color: base[0].color, base: base[0].price, why: 'Cobertura básica clara, accesible y sin sorpresas. Para empezar a cuidarte bien, sin pagar de más.' },
-    integral: { name: base[1].name, color: base[1].color, base: base[1].price, why: 'Protección familiar clara y completa, para lo de todos los días y para lo inesperado.' },
-    premium: { name: base[2].name, color: base[2].color, base: base[2].price, why: 'Más cobertura, mayor red y prioridad de atención en alta complejidad.' },
-    senior: { name: 'SP Senior', color: '#003B71', base: 680000, why: 'Cuidado continuo con acceso real, pensado para adultos de 65 años o más.' },
-    seniorplus: { name: 'SP Senior Plus', color: '#003B71', base: 980000, why: 'El nivel más completo de SP Senior: cobertura amplia y prioridad, con respaldo total para mayores.' },
+    bronce: { name: base[0].name, color: base[0].color, why: 'Cobertura real de entrada: urgencias, consultas y estudios del día a día, al precio más accesible.' },
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: suma tomografía y resonancia al 100%, más días de terapia intensiva y topes más altos.' },
+    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia del tarifario vigente: consultas sin tope, más días de internación y los topes más altos.' },
+    vital: { name: 'Plan Vital', color: '#003B71', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
   let best;
-  if (d.who === 'padres') best = d.nivel === 'amplia' ? 'seniorplus' : 'senior';
-  else best = ({ esencial: 'esencial', equilibrio: 'integral', amplia: 'premium' })[d.nivel] || 'integral';
-  const AGE_ANCHORS = [[18, 0.95], [25, 1], [35, 1.08], [45, 1.2], [55, 1.4], [65, 1.65], [85, 2]];
-  const f = (a) => {
-    if (a <= AGE_ANCHORS[0][0]) return AGE_ANCHORS[0][1];
-    for (let i = 0; i < AGE_ANCHORS.length - 1; i++) {
-      const a0 = AGE_ANCHORS[i][0], f0 = AGE_ANCHORS[i][1], a1 = AGE_ANCHORS[i + 1][0], f1 = AGE_ANCHORS[i + 1][1];
-      if (a <= a1) return f0 + (f1 - f0) * ((a - a0) / (a1 - a0));
-    }
-    return AGE_ANCHORS[AGE_ANCHORS.length - 1][1];
-  };
-  const baseP = P[best].base;
+  if (d.who === 'padres') best = 'vital';
+  else best = ({ esencial: 'bronce', equilibrio: 'silver', amplia: 'gold' })[d.nivel] || 'silver';
   const ppl = d.people && d.people.length ? d.people : [{ age: 35, kind: 'adult' }];
-  let tPersonas = 0, ai = 0;
-  ppl.forEach((p) => {
-    if (p.kind === 'kid') tPersonas += baseP * (p.age < 6 ? 0.24 : p.age < 13 ? 0.3 : 0.36);
-    else { tPersonas += baseP * f(p.age) * (ai === 0 ? 1 : ai === 1 ? 0.75 : 0.65); ai++; }
-  });
-  const G = { central: 1, interior: 1.08, nacional: 1.18 };
-  const geoMult = G[d.geo] || 1.15;
-  const tGeo = tPersonas * geoMult;
-  const AP = { emocional: 75000, mujer: 120000, odonto: 90000, viajero: 45000, complejos: 110000, chequeo: 55000 };
-  const addonItems = (d.addons || []).map((k) => ({ key: k, price: AP[k] || 0 }));
-  const addonsSum = addonItems.reduce((s, a) => s + a.price, 0);
-  // Rounded, consistent parts so the breakdown always sums exactly to the total.
-  const r10 = (n) => Math.round(n / 10000) * 10000;
-  const personas = r10(tPersonas);
-  const geoDelta = r10(tGeo - tPersonas);
-  const price = personas + geoDelta + addonsSum;
+  const personas = best === 'vital'
+    ? VITAL_PRECIO * ppl.filter((p) => p.kind !== 'kid').length
+    : priceFor(best, ppl);
+  /* El tarifario vigente es nacional: la zona no cambia el precio. */
   const GL = { central: 'Central', interior: 'Interior', nacional: 'Nacional' };
+  const price = personas;
   return {
     key: best, name: P[best].name, color: P[best].color, why: P[best].why,
     geoLabel: GL[d.geo] || '', price,
-    breakdown: { base: baseP, personas, geoMult, geoDelta, addonsSum, addonItems },
+    breakdown: { base: personas, personas, geoMult: 1, geoDelta: 0, addonsSum: 0, addonItems: [] },
   };
 };
 
@@ -101,33 +123,26 @@ export const opts = () => ({
     { k: 'mi', label: 'Para mí', note: '' },
     { k: 'pareja', label: 'Para mi pareja y yo', note: '' },
     { k: 'familia', label: 'Para mi familia, con hijos', note: '' },
-    { k: 'padres', label: 'Para mis padres o un adulto mayor', note: 'Es un plan aparte (SP Senior), para personas de 65 años o más.' },
+    { k: 'padres', label: 'Para mis padres o un adulto mayor', note: 'Es un plan aparte (Plan Vital), para personas de 65 años o más.' },
   ],
   nivel: [
-    { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Consultas, urgencias y estudios básicos. Para quien está sano y quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Red ampliada, especialistas y estudios sin tanto copago. El que elige la mayoría.' },
-    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Internación amplia, mayor red y prioridad, incluida alta complejidad.' },
+    { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Urgencias al 100%, consultas y estudios del día a día. Para quien quiere pagar lo justo.' },
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Suma tomografía y resonancia al 100% y topes más altos. El paso que más tranquilidad agrega.' },
+    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope anual, más días de internación y terapia intensiva, los topes más altos.' },
   ],
   geo: [
-    { k: 'central', label: 'Central', tier: '$', note: 'Asunción y Gran Asunción. La opción más accesible.' },
-    { k: 'interior', label: 'Interior', tier: '$$', note: 'Tu ciudad del interior, con respaldo en Central.' },
-    { k: 'nacional', label: 'Nacional', tier: '$$$', note: 'Te atendés en cualquier punto del país, donde estés.' },
+    { k: 'central', label: 'Central', tier: '', note: 'Asunción y Gran Asunción, con Lister cerca.' },
+    { k: 'interior', label: 'Interior', tier: '', note: 'Tu ciudad del interior, con respaldo en Central.' },
+    { k: 'nacional', label: 'Me muevo por todo el país', tier: '', note: 'La red te acompaña donde estés.' },
   ],
-  addons: [
-    { k: 'emocional', label: 'Bienestar emocional y nutrición', price: 75000, note: 'Psicología, nutrición y manejo del estrés, con acompañamiento real.' },
-    { k: 'mujer', label: 'Salud femenina y maternidad', price: 120000, note: 'Controles, estudios y maternidad, con carencias y topes claros desde el inicio.' },
-    { k: 'odonto', label: 'Odontología y ortodoncia', price: 90000, note: 'Limpiezas, tratamientos y ortodoncia, para grandes y chicos.' },
-    { k: 'viajero', label: 'Cobertura viajero', price: 45000, note: 'Te cubrimos también cuando viajás, dentro y fuera del país.' },
-    { k: 'complejos', label: 'Mayor respaldo ante tratamientos complejos', price: 110000, note: 'Más respaldo para internaciones y tratamientos de mayor complejidad.' },
-    { k: 'chequeo', label: 'Chequeo preventivo anual', price: 55000, note: 'Una vez al año: laboratorio básico, consulta clínica y orientación en Lister.' },
-  ],
+  addons: [],
 });
 
 export const why = () => ({
   who: 'Así armamos un plan a la medida de quienes querés cuidar.',
-  edades: 'La edad es lo que más influye en el precio. Con este dato te damos un número real, no un estimado al voleo.',
+  edades: 'La edad define el tramo del tarifario. Con este dato te damos el precio de lista real, no un estimado al voleo.',
   nivel: 'No todos necesitan lo mismo. Te mostramos el plan que mejor equilibra lo que te importa y lo que querés pagar.',
-  geo: 'Definí hasta dónde te cubrimos. A mayor alcance, mayor precio — pagás por la zona que de verdad usás.',
-  addons: 'Sumá solo lo que tiene sentido para vos. Te mostramos el costo exacto antes de contratar.',
+  geo: 'Tu precio es el mismo en todo el país — esto nos ayuda a mostrarte la red que te queda cerca.',
+  addons: '',
   contacto: 'Te mostramos tu precio ahora. Te pedimos estos datos para que un asesor lo confirme y te acompañe, sin compromiso.',
 });
