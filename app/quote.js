@@ -35,6 +35,12 @@ const TARIFAS = {
   gold: { solo: [432000, 560000, 680000, 680000], tc: [324000, 440000, 540000, 680000], adh0_20: 238000, hijo3: 180000, pkg: [990000, 1300000] },
 };
 const VITAL_PRECIO = 283000; // titular 65+, costo con débito automático
+const VITAL_PARTICULAR = 312000; // titular 65+, costo particular
+
+/* 10% de descuento pagando con débito automático o tarjeta de crédito
+   (confirmado por el usuario, jul 2026). Las primas del tarifario
+   Privilege son el precio particular; Vital publica ambas columnas. */
+export const AUTO_PAY_DISCOUNT = 0.10;
 
 const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 
@@ -92,15 +98,20 @@ export const engine = (d) => {
   if (d.who === 'padres') best = 'vital';
   else best = ({ esencial: 'bronce', equilibrio: 'silver', amplia: 'gold' })[d.nivel] || 'silver';
   const ppl = d.people && d.people.length ? d.people : [{ age: 35, kind: 'adult' }];
+  const nAdultos = ppl.filter((p) => p.kind !== 'kid').length;
   const personas = best === 'vital'
-    ? VITAL_PRECIO * ppl.filter((p) => p.kind !== 'kid').length
+    ? VITAL_PRECIO * nAdultos
     : priceFor(best, ppl);
   /* El tarifario vigente es nacional: la zona no cambia el precio. */
   const GL = { central: 'Central', interior: 'Interior', nacional: 'Nacional' };
   const price = personas;
+  /* Privilege publica el precio particular → el pago automático descuenta 10%.
+     Vital ya publica el precio con débito → mostramos el particular como referencia. */
+  const autoPay = best === 'vital' ? null : Math.round(price * (1 - AUTO_PAY_DISCOUNT));
+  const vitalParticular = best === 'vital' ? VITAL_PARTICULAR * nAdultos : null;
   return {
     key: best, name: P[best].name, color: P[best].color, why: P[best].why,
-    geoLabel: GL[d.geo] || '', price,
+    geoLabel: GL[d.geo] || '', price, autoPay, vitalParticular,
     breakdown: { base: personas, personas, geoMult: 1, geoDelta: 0, addonsSum: 0, addonItems: [] },
   };
 };

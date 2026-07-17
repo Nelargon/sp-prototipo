@@ -110,7 +110,7 @@
         "prima": 628000
       }
     ],
-    "descuento_debito_automatico": "CONFIRMADO por el usuario (17 jul 2026): 10% de descuento pagando con débito automático o tarjeta de crédito. Pendiente una sola precisión para usarlo en la web: si la prima única del tarifario Privilege ya es el precio con pago automático (como la columna 'Costo Débito' de Vital) o si es el precio particular al que se le aplica el 10%."
+    "descuento_debito_automatico": "CONFIRMADO (17 jul 2026): 10% de descuento pagando con débito automático o tarjeta de crédito. La prima publicada del tarifario es el PRECIO PARTICULAR — el descuento se aplica sobre ella. Activo en la web (engine() expone autoPay)."
   },
   "coberturas_clave": {
     "consultas": {

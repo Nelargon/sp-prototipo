@@ -96,6 +96,8 @@ export default function Simulador() {
     if (ad.length) { L.push('Coberturas adicionales:'); ad.forEach((o) => L.push('  · ' + o.label + ': + ' + fmt(o.price))); }
     L.push('');
     L.push('TOTAL ESTIMADO: ' + fmt(r.price) + ' / mes');
+    if (r.autoPay) L.push('Con débito automático o tarjeta de crédito: ' + fmt(r.autoPay) + ' / mes (10% de descuento)');
+    if (r.vitalParticular) L.push('Precio con débito automático — pagando particular: ' + fmt(r.vitalParticular) + ' / mes');
     L.push('');
     L.push('Precios de lista vigentes, IVA incluido — un asesor de Salud Protegida confirma el detalle.');
     return L.join('\n');
@@ -317,6 +319,7 @@ export default function Simulador() {
     back: simBack, start: () => simGo({ step: 1 }),
     restart: () => { setSimDir(-1); simPatch({ step: 0, who: null, nivel: null, geo: null, addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '', resGeo: r ? r.geoLabel : '',
+    resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resTotal: r ? fmt(r.price) : '',
     download: downloadQuote, share: shareQuote, shareMsg,
@@ -515,7 +518,9 @@ export default function Simulador() {
                 </div>
                 <div style={css('padding:18px 20px;background:#fff')}>
                   <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:#003B71;letter-spacing:-0.01em;line-height:1')}>{sim.resPrice}</span><span style={css('font-size:14px;color:#6B6B6B;font-weight:500')}>/ mes estimado</span></div>
-                  <div style={css('font-size:12px;color:#6B6B6B;margin:6px 0 14px')}>{sim.resGroup} · titular de {sim.titularAge}. El precio final lo confirma un asesor.</div>
+                  <div style={css('font-size:12px;color:#6B6B6B;margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge}. El precio final lo confirma un asesor.</div>
+                  {sim.resAutoPay && <div style={css('display:flex;align-items:flex-start;gap:7px;background:#F2FBFA;border:1px solid #d9efed;border-radius:10px;padding:9px 12px;margin:0 0 14px;font-size:13px;color:#00695f;line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:#003B71')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
+                  {sim.resEsDebito && <div style={css('display:flex;align-items:flex-start;gap:7px;background:#F2FBFA;border:1px solid #d9efed;border-radius:10px;padding:9px 12px;margin:0 0 14px;font-size:13px;color:#00695f;line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Precio con débito automático o tarjeta de crédito — pagando particular: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
                   <p style={css('font-size:14px;color:#3D3D3D;line-height:1.6;margin:0')}>{sim.resWhy}</p>
                   {sim.hasAddons && <div style={css('font-size:13px;color:#003B71;font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {sim.resAddonsText}</span></div>}
                 </div>
