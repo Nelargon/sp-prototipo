@@ -591,6 +591,54 @@ extraño reconstruya tu estrategia sin haberla leído.
 
 ---
 
+## Capítulo 25 — La web deja de inventar precios
+
+Llegó el día que el proyecto esperaba desde el principio: el usuario
+pasó los cuadernillos y tarifarios **reales** de los cuatro planes
+vigentes — Vital (senior 65+), Bronce, Silver y Gold — y decidió que
+van a la web como contenido temporal, hasta que la mesa técnica defina
+los planes nuevos. Con dos reglas suyas: fuera la palabra "Privilege"
+(queda "Plan Bronce"), y nada de logos ni colores de los cuadernillos —
+Gilroy y colores de sentido común por metal.
+
+Lo primero que hicimos con el tarifario no fue diseñar: fue **escribir
+un test**. Cada PDF de precios trae una tabla "GRUPOS" con siete
+combinaciones resueltas (titular solo, pareja, familia con 1/2/3
+hijos…). Reconstruimos las reglas del tarifario — tarifa de titular
+solo, tarifa titular/cónyuge en cuanto hay más de una persona,
+adherentes por edad, prima de grupo familiar, hijo adicional desde el
+3º — y recién nos dimos por satisfechos cuando el motor reprodujo
+**los 21 ejemplos exactos, guaraní por guaraní**. Los ejemplos del
+tarifario resultaron ser la mejor suite de tests que este proyecto
+tuvo jamás: escritos por la propia empresa, sin ambigüedad.
+
+Los datos reales, además, **simplificaron el producto**. El simulador
+tenía un paso de "zona" que cambiaba el precio y un paso de
+"coberturas adicionales" — los dos eran ficción de prototipo: el
+tarifario real es nacional y los planes vigentes no tienen extras. Al
+tocar datos verdaderos, dos pasos inventados se convirtieron en uno
+informativo ("tu precio es el mismo en todo el país" — que además es
+un buen argumento comercial) y uno eliminado. El simulador quedó de
+4 pasos: la honestidad acortó el embudo.
+
+Y una simetría que nadie planeó: la regla de tono #7 ("la ausencia se
+comunica como oportunidad, en dorado") era hasta ayer una convención
+estética. Hoy es un hecho: la resonancia **de verdad** no está cubierta
+en Bronce y **de verdad** se suma al 100% desde Silver. La etiqueta
+dorada "Desde Plan Silver" dejó de ser una promesa de diseño y pasó a
+ser una cláusula del cuadernillo.
+
+**Lo aprendido:** cuando el dato real llega, lo primero es buscarle los
+ejemplos resueltos y convertirlos en tests — el modelo se valida contra
+la fuente, no contra la intuición. Segundo: los datos reales no solo
+corrigen números, corrigen *estructura* — pasos enteros del producto
+eran artefactos de no tener datos. Y tercero: guardar la fuente
+estructurada (`datos/planes-vigentes/*.json`) separada de la
+presentación pagó en horas — el mismo JSON alimentó motor, comparador
+y guía sin releer los PDFs.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

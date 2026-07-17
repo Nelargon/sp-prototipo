@@ -161,11 +161,11 @@
                 </div>
                 <!-- El backend debe: validar CI+fecha contra el padrón, aplicar rate limiting,
                      enviar por POST y no exponer datos del titular en la respuesta (ver ANEXO) -->
-                <!-- DEMO: al enviar simula un asegurado de SP Integral. En producción el
+                <!-- DEMO: al enviar simula un asegurado de Plan Silver. En producción el
                      backend valida CI + fecha contra el padrón (POST, rate limiting) y
                      devuelve solo el nivel de plan — nunca datos del titular. -->
                 <form class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3" method="POST" action="#"
-                      onsubmit="track('filtro_plan',{}); location.href='guia_resultados.html?plan=integral'; return false;">
+                      onsubmit="track('filtro_plan',{}); location.href='guia_resultados.html?plan=silver'; return false;">
                     <div>
                         <label for="ci" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Cédula de identidad</label>
                         <input id="ci" name="ci" type="text" inputmode="numeric" placeholder="1.234.567"
@@ -183,7 +183,7 @@
                     </div>
                     <p class="sm:col-span-3 text-[11px] text-slate-400">
                         Tus datos se usan solo para esta consulta y no quedan guardados en tu navegador.
-                        En esta demostración, cualquier dato muestra la red de un asegurado de ejemplo (SP Integral) — la consulta real llega con la conexión al padrón.
+                        En esta demostración, cualquier dato muestra la red de un asegurado de ejemplo (Plan Silver) — la consulta real llega con la conexión al padrón.
                     </p>
                 </form>
             </div>

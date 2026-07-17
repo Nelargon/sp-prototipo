@@ -96,7 +96,7 @@ export default function Simulador() {
     L.push('');
     L.push('TOTAL ESTIMADO: ' + fmt(r.price) + ' / mes');
     L.push('');
-    L.push('Números de referencia — el precio final lo confirma un asesor de Salud Protegida.');
+    L.push('Precios de lista vigentes, IVA incluido — un asesor de Salud Protegida confirma el detalle.');
     return L.join('\n');
   };
   const downloadQuote = () => {
@@ -192,7 +192,7 @@ export default function Simulador() {
   // Load a saved in-progress simulation once (offer to resume, don't auto-apply).
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('sp-sim-v1');
+      const raw = localStorage.getItem('sp-sim-v2');
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved && saved.step > 0 && saved.step < 6 && !saved.sent) {
@@ -207,8 +207,8 @@ export default function Simulador() {
   useEffect(() => {
     try {
       const d = simState;
-      if (d.step > 0 && d.step < 6 && !d.sent) localStorage.setItem('sp-sim-v1', JSON.stringify(d));
-      else if (d.step === 0 || d.sent) localStorage.removeItem('sp-sim-v1');
+      if (d.step > 0 && d.step < 6 && !d.sent) localStorage.setItem('sp-sim-v2', JSON.stringify(d));
+      else if (d.step === 0 || d.sent) localStorage.removeItem('sp-sim-v2');
     } catch (e) {}
   }, [simState]);
 
@@ -223,8 +223,8 @@ export default function Simulador() {
 
   const planShortOf = (who, nivel) => {
     if (!nivel) return '';
-    if (who === 'padres') return nivel === 'amplia' ? 'Senior Plus' : 'Senior';
-    return { esencial: 'Esencial', equilibrio: 'Integral', amplia: 'Premium' }[nivel] || '';
+    if (who === 'padres') return 'Vital';
+    return { esencial: 'Bronce', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
   };
 
   // Current configuration → plan colour + live estimate (geo defaults to central until chosen).
@@ -234,13 +234,12 @@ export default function Simulador() {
   const liveTotalNum = cur ? cur.price : 0;
   const livePanelReady = curReady && d.step >= 3 && d.step < 6;
 
-  const checkNames = ['¿Para quién?', 'Cobertura', 'Zona', 'Las edades', 'Adicionales'];
+  const checkNames = ['¿Para quién?', 'Cobertura', 'Zona', 'Las edades'];
   const stepValueList = [
     ({ mi: 'Vos', pareja: 'Pareja', familia: 'Familia', padres: 'Adulto mayor' })[d.who] || '',
     planShortOf(d.who, d.nivel),
     ({ central: 'Central', interior: 'Interior', nacional: 'Nacional' })[d.geo] || '',
     (d.people || []).length ? titularAge(d) + ' años' : '',
-    (d.addons || []).length ? ((d.addons || []).length + ((d.addons || []).length === 1 ? ' extra' : ' extras')) : (d.step > 5 ? 'Sin extras' : ''),
   ];
   const stepsList = checkNames.map((n, i) => {
     const stepOf = i + 1, done = d.step > stepOf || d.step >= 6, active = d.step === stepOf;
@@ -252,11 +251,10 @@ export default function Simulador() {
   });
   const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : 18, max: pp.kind === 'kid' ? 25 : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
 
-  // For 65+ the two "cobertura" choices are really SP Senior vs SP Senior Plus.
+  // Para 65+ el plan vigente es uno solo: Plan Vital (tarifa fija por persona).
   const nivelData = isPadres
     ? [
-        { k: 'equilibrio', label: 'SP Senior', note: 'Cuidado continuo para adultos de 65+, con acceso real y acompañamiento cercano.' },
-        { k: 'amplia', label: 'SP Senior Plus', note: 'El nivel más completo: cobertura amplia y prioridad, con respaldo total.' },
+        { k: 'equilibrio', label: 'Plan Vital', note: 'Pensado para 65+: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
       ]
     : O.nivel;
 
@@ -278,10 +276,10 @@ export default function Simulador() {
   // asesor que escucha — en vez de repetir un mensaje fijo por paso.
   const encWho = { mi: 'Un plan para vos. Empecemos bien.', pareja: 'Para los dos. Cuidarse de a dos suma.', familia: 'Toda la familia junta — de eso se trata.', padres: 'Cuidar a los que nos cuidaron. Estamos con vos.' }[d.who];
   const encNivel = isPadres
-    ? ({ equilibrio: 'SP Senior: cuidado cercano para ellos.', amplia: 'Senior Plus: lo más completo para ellos.' })[d.nivel]
+    ? ({ equilibrio: 'Plan Vital: cuidado cercano para ellos.', amplia: 'Plan Vital: cuidado cercano para ellos.' })[d.nivel]
     : ({ esencial: 'Lo importante, bien cubierto.', equilibrio: 'El equilibrio que más familias eligen.', amplia: 'Tranquilidad completa. Buen viaje.' })[d.nivel];
   const encGeo = { central: 'Cobertura donde hacés tu vida.', interior: 'Tu zona, bien cubierta.', nacional: 'Todo el país con vos.' }[d.geo];
-  const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Ahora afinamos según las edades.', 5: 'Último paso y vemos tu precio.' }[d.step] || '';
+  const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Último paso y vemos tu precio.' }[d.step] || '';
   const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
 
   const sim = {
@@ -292,8 +290,8 @@ export default function Simulador() {
     planShort: planShortOf(d.who, d.nivel),
     gaugeShow: !!d.nivel && !isPadres, gaugeLevel: ({ esencial: 1, equilibrio: 2, amplia: 3 })[d.nivel] || 0,
     progressBarColor: livePanelReady ? planColor : '#00BCB4',
-    whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: isPadres ? 'SP Senior tiene dos niveles. Elegí según cuánta cobertura y prioridad buscás para ellos.' : WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
-    nivelEyebrow: isPadres ? 'Nivel Senior' : 'Cobertura',
+    whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: isPadres ? 'Para 65+ el plan es uno solo, pensado a medida: Plan Vital, con tarifa fija por persona.' : WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
+    nivelEyebrow: isPadres ? 'Plan para 65+' : 'Cobertura',
     nivelTitle: isPadres ? '¿Qué nivel para el adulto mayor?' : '¿Qué nivel de cobertura buscás?',
     whoOpts: O.who.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, onClick: () => pickWho(o.k) })),
     nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, from: 'desde ' + fmt(engine(Object.assign({}, d, { nivel: o.k, geo: d.geo || 'central' })).price), onClick: () => simGo({ nivel: o.k, step: 3 }) })),
@@ -306,7 +304,7 @@ export default function Simulador() {
     kidCount: (d.people || []).filter((pp) => pp.kind === 'kid').length,
     adultCount: (d.people || []).filter((pp) => pp.kind !== 'kid').length,
     addKid, removeKid, addAdult, removeAdult,
-    toAddons: () => simGo({ step: 5 }),
+    toAddons: () => simGo({ step: 6 }), // los planes vigentes no tienen adicionales: de las edades se pasa directo al precio
     back: simBack, start: () => simGo({ step: 1 }),
     restart: () => { setSimDir(-1); simPatch({ step: 0, who: null, nivel: null, geo: null, addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '', resGeo: r ? r.geoLabel : '',
@@ -314,7 +312,7 @@ export default function Simulador() {
     resBreakdown, resTotal: r ? fmt(r.price) : '',
     download: downloadQuote, share: shareQuote, shareMsg,
     resumeAvailable, resume: resumeSim,
-    enc: stepEnc, stepNum: Math.min(5, Math.max(1, d.step)), totalSteps: 5, progressPct: d.step >= 6 ? 100 : (d.step / 5) * 100, isQuestion: d.step >= 1 && d.step <= 5,
+    enc: stepEnc, stepNum: Math.min(4, Math.max(1, d.step)), totalSteps: 4, progressPct: d.step >= 6 ? 100 : (d.step / 4.4) * 100, isQuestion: d.step >= 1 && d.step <= 5,
     headerStyle: 'padding:16px 20px;color:#fff;background:' + (r ? r.color : '#003B71'),
     formOpen: !d.sent, sentOpen: d.sent,
     nombre: d.nombre, tel: d.tel, email: d.email, err: d.err, hasErr: !!d.err,

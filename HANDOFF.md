@@ -74,7 +74,7 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 | Pieza | Dónde | Estado |
 |---|---|---|
 | **Web de planes** (hero, manifiesto, cartilla viva, comparador, simulador embebido, FAQ) | `app/page.jsx` → [nelargon.github.io/sp-prototipo](https://nelargon.github.io/sp-prototipo/) | Prototipo funcional completo |
-| **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, precios de referencia |
+| **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
 | **Snapshot del home v1** (referencia congelada, pre-rediseño) | `public/v1/` → [/v1/](https://nelargon.github.io/sp-prototipo/v1/) | Solo referencia — no editar (fuente: commit `b8289a8`) |
@@ -174,22 +174,36 @@ usa `npm ci`).
 El usuario anunció dos fuentes de datos reales que destraban pendientes.
 La sesión que lea esto debe pedírselas y trabajar con ellas:
 
-A. **Planes vigentes — PRIMERA PARTE RECIBIDA (17 jul 2026)**: el
-   usuario pasó los cuadernillos y tarifarios reales de **Plan Vital**
-   (senior 65+) y **Plan Privilege Bronze**. Ya están ingeridos y
-   estructurados en **`datos/planes-vigentes/`** (bronce.json,
-   vital.json, README con las decisiones). **Decisión del usuario que
-   actualiza lo anterior:** los planes vigentes SÍ van a la web, como
-   **contenido temporal** hasta que existan los planes nuevos
-   (Esencial/Integral/Premium). Reglas de presentación (del usuario):
-   "Privilege" se elimina (queda "Plan Bronce"), sin logos ni colores
-   de los cuadernillos, tipografía Gilroy, colores por metal (bronce/
-   plata/dorado). **Falta la segunda parte — Silver y Gold** (pedírsela
-   al usuario): recién con esas dos se hace el volcado a la web
-   (comparador de 3 niveles + Vital como carril senior; con Bronce solo
-   el comparador quedaría de una columna). El tarifario Bronze por
-   edad/parentesco (IVA incl.) es exactamente lo que necesita el motor
-   del simulador para calibrarse con precios reales.
+A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
+   2026)**: el usuario pasó los cuadernillos y tarifarios reales de los
+   cuatro planes vigentes — **Plan Vital** (senior 65+), **Bronce,
+   Silver y Gold** (ex "Privilege", palabra eliminada a pedido del
+   usuario). Todo ingerido en **`datos/planes-vigentes/`** (4 JSON +
+   README con las decisiones) y **publicado en la web como contenido
+   temporal** hasta que existan los planes nuevos (Esencial/Integral/
+   Premium — la mesa técnica sigue pendiente, #6):
+   - **Simulador con el tarifario real** (IVA incluido): tramos de edad
+     0-54/55-64/65-69, tarifa titular/cónyuge, adherentes, grupo
+     familiar y hijo adicional desde el 3º. El motor (`app/quote.js`)
+     reproduce **los 21 ejemplos "GRUPOS" de los tres tarifarios,
+     exactos** (verificado por script). "Padres/adulto mayor" →
+     Plan Vital (₲ 283.000/persona, débito).
+   - El precio es nacional: el paso "Zona" quedó informativo (sin
+     recargo) y el paso "Adicionales" se eliminó (los planes vigentes
+     no tienen extras) — el simulador quedó de 4 pasos.
+   - **Comparador con la escalera real**: 11 filas de los cuadernillos
+     (la resonancia en Bronce es la etiqueta dorada "Desde Plan Silver"
+     — el upsell ahora es literalmente cierto). Colores por metal:
+     bronce `#A9724B`, silver `#66717E`, gold `#B8860B` (pedido del
+     usuario: sin logos/colores de los cuadernillos, Gilroy, sentido
+     común por metal).
+   - **Guía Médica**: `min_plan` ahora es bronce/silver/gold, el modo
+     personalizado es `?plan=silver`, upsell "Con Plan Gold", tarjeta
+     Vital en la ficha.
+   - Los cuadernillos completos (24-37 págs.) tienen mucho más detalle
+     del volcado (cuadros de laboratorio, cirugías por carencia):
+     quedan como fuente en los PDF del usuario; los JSON guardan el
+     resumen operativo.
 
 B. **Base de prestadores del sistema interno de SP** (mencionado por
    voz; el nombre del sistema hay que confirmarlo con el usuario en la
@@ -313,11 +327,13 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    Perez 630 c/ Azara, Asunción) y **hola@saludprotegida.com.py**
    (reemplazó al info@ que tenía la guía). ✔ Completo.
 5. **Fotos reales** (hero y secciones — estaba previsto en el plan original).
-6. **Precios y coberturas definitivos** para simulador y comparador
-   (esperan a la mesa técnica; hoy dicen "cifras de referencia").
-   *Paso intermedio disponible*: los planes vigentes Bronce/Silver/Gold
-   (ver bloque ⚡ arriba) permiten calibrar con datos reales sin esperar
-   la mesa técnica.
+6. **Precios y coberturas definitivos** para simulador y comparador:
+   ✔ *resuelto de forma interina* (jul 2026) — la web corre con el
+   tarifario y las coberturas **vigentes reales** (Bronce/Silver/Gold +
+   Vital, ver bloque ⚡). Sigue pendiente la mesa técnica de los planes
+   nuevos (Esencial/Integral/Premium); cuando existan, el volcado es el
+   mismo mecanismo (plans() + TARIFAS en `app/quote.js`, cart() en
+   `app/page.jsx`, mapas NIVEL/NOMBRE en la guía).
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
 8. **Decisión de plataforma de la web pública**: el brief de BuenaVista
@@ -421,7 +437,7 @@ cd out && python3 -m http.server 8080
   inyectar el CSS al verificar con Playwright/Chromium
   (`executablePath: '/opt/pw-browsers/chromium'`, instalar playwright-core
   FUERA del repo — ver `HANDOVER.md`).
-- Probar el modo personalizado de la guía: `guia_resultados.html?plan=integral`.
+- Probar el modo personalizado de la guía: `guia_resultados.html?plan=silver`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Flujo git de este proyecto: rama de trabajo → PR en borrador →
   verificación + CI verde → **merge automático** (el usuario autorizó en

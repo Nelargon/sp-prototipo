@@ -33,17 +33,19 @@ export default function Page() {
     // nunca "No cubierto/No incluida" — la etiqueta dice desde qué plan está.
     const yes = (d) => ({ s: 'Cubierta', ok: true, d });
     const no = (s, d) => ({ s, ok: false, d });
+    // Coberturas REALES de los cuadernillos vigentes (datos/planes-vigentes/).
     return [
-      { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Ilimitadas en Lister + 4 al mes en la red'), yes('Ilimitadas en Lister + 6 al mes en la red'), yes('Sin límite en toda la red')] },
-      { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', cov: [yes('Hasta 4 al año'), yes('+ Doppler y prenatal'), yes('Hasta 12 al año')] },
-      { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', cov: [yes('Hasta 2 al año'), yes('Cubierta'), yes('Cubierta, con orden médica')] },
-      { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', cov: [no('Desde SP Integral', 'Se suma a tu cobertura en SP Integral y Premium'), yes('Al 100%'), yes('Cubierta al 100%, con orden médica')] },
-      { name: 'Sesión de psicología', icon: 'M12 3a7 7 0 0 0-4 12.7V19l2-1 2 1 2-1 2 1v-3.3A7 7 0 0 0 12 3Z', cov: [yes('3 sesiones al año'), yes('6 sesiones al año'), yes('10 sesiones al año + nutrición')] },
-      { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', cov: [yes('Hasta 25 días'), yes('Privada, 30 días'), yes('Suite, 45 días')] },
-      { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', cov: [yes('Parto y cesárea'), yes('+ curso y pediatra'), yes('Suite + kit para el bebé')] },
-      { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Remedios hasta ₲ 150 mil'), yes('100% · ₲ 200 mil'), yes('100% · ₲ 300 mil')] },
-      { name: 'Odontología', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', cov: [yes('Limpieza anual'), yes('Incluida'), yes('Incluida')] },
-      { name: 'Medicamentos', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [no('Desde SP Integral', '40% de descuento desde SP Integral'), yes('40% de descuento'), yes('60% de descuento')] },
+      { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Hasta 3 al año por especialidad'), yes('Hasta 5 al año por especialidad'), yes('Sin tope anual en casi todas')] },
+      { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', cov: [yes('Al 100% (varias con tope de 1-2 al año)'), yes('Al 100%, la mayoría sin tope'), yes('Al 100%, la mayoría sin tope')] },
+      { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', cov: [{ s: 'Copago 50%', ok: true, d: 'Pagás la mitad · 1 al año' }, yes('Al 100%, hasta 2 al año'), yes('Al 100%, hasta 2 al año y menos espera')] },
+      { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', cov: [no('Desde Plan Silver', 'Se suma al 100% desde Plan Silver'), yes('Al 100%, 1 al año'), yes('Al 100%, 1 al año')] },
+      { name: 'Sesión de psicología', icon: 'M12 3a7 7 0 0 0-4 12.7V19l2-1 2 1 2-1 2 1v-3.3A7 7 0 0 0 12 3Z', cov: [yes('3 sesiones al año'), yes('5 sesiones al año'), yes('6 sesiones al año')] },
+      { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', cov: [yes('Semi-suite, hasta 20 días al año'), yes('Semi-suite, hasta 20 días al año'), yes('Semi-suite, hasta 25 días al año')] },
+      { name: 'Terapia intensiva', icon: 'M3 12h4l2-5 4 10 2-5h6', cov: [yes('Al 100%, hasta 3 días al año'), yes('Al 100%, hasta 5 días al año'), yes('Al 100%, hasta 6 días al año')] },
+      { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', cov: [yes('Cubiertos, con el bebé en nursery'), yes('+ medicamentos hasta ₲ 1 millón'), yes('+ medicamentos hasta ₲ 1,5 millones')] },
+      { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Al 100% · remedios hasta ₲ 100 mil'), yes('Al 100% · remedios hasta ₲ 150 mil'), yes('Al 100% · remedios hasta ₲ 200 mil')] },
+      { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', cov: [yes('10 sesiones al año'), yes('15 sesiones al año'), yes('20 sesiones al año')] },
+      { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta ₲ 500 mil por evento'), yes('Hasta ₲ 1 millón por evento'), yes('Hasta ₲ 1,5 millones por evento')] },
     ];
   };
 
@@ -68,7 +70,7 @@ export default function Page() {
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.' },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
-    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades, el nivel de cobertura y la zona geográfica. Usá el simulador para ver tu precio estimado en menos de un minuto.' },
+    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido. Usá el simulador para ver tu precio de lista en menos de un minuto.' },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.' },
   ];
 
@@ -214,7 +216,7 @@ export default function Page() {
   // qué cubre (buscador de cobertura)
   const qNorm = (state.q || '').trim().toLowerCase();
   const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'sugerencia' }); setState({ sel: c.name, q: '' }); } })) : [];
-  const quick = ['Resonancia (RM)', 'Parto o cesárea', 'Sesión de psicología', 'Internación', 'Tomografía (TAC)', 'Odontología'];
+  const quick = ['Resonancia (RM)', 'Parto o cesárea', 'Sesión de psicología', 'Internación', 'Tomografía (TAC)', 'Fisioterapia'];
   const chips = quick.map((nm) => ({
     name: nm, onPick: () => { track('cartilla_select', { practica: nm, via: 'chip' }); setState({ sel: nm, q: '' }); },
     style: 'padding:9px 15px;border-radius:999px;border:1.5px solid ' + (state.sel === nm ? '#00BCB4' : '#d9e4e2') + ';background:' + (state.sel === nm ? '#00BCB4' : '#fff') + ';color:' + (state.sel === nm ? '#fff' : '#3D3D3D') + ';font-size:13px;font-weight:' + (state.sel === nm ? '700' : '500') + ';cursor:pointer;transition:all .15s',
@@ -410,7 +412,7 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Cifras de referencia — el detalle final de tu contrato lo confirmás con tu asesor.</div>
+            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — el detalle final de tu contrato lo confirmás con tu asesor.</div>
             <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} onClick={() => v.trackGuia('link_cartilla')} className="link-teal" style={css('color:#007d77;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
           </div>
         </div>
@@ -440,7 +442,7 @@ export default function Page() {
               </div>
             </div>
             <div style={css('padding:26px 30px 32px')}>
-              <input type="range" min="0" max="200" value={v.sliderVal} onChange={v.onSlide} className="sldr" aria-label="Comparar niveles de plan: Esencial, Integral, Premium" aria-valuetext={v.planName} style={css(v.sliderTrackStyle)} />
+              <input type="range" min="0" max="200" value={v.sliderVal} onChange={v.onSlide} className="sldr" aria-label="Comparar niveles de plan: Bronce, Silver, Gold" aria-valuetext={v.planName} style={css(v.sliderTrackStyle)} />
               <div style={css('display:flex;justify-content:space-between;margin-top:12px')}>
                 {v.stops.map((s, i) => (
                   <button key={i} onClick={s.onPick} style={css(s.style)}>{s.label}</button>
@@ -483,8 +485,8 @@ export default function Page() {
 
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
-            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>SP Senior</b> y <b style={css('color:#003B71')}>SP Senior Plus</b> tienen cuidado continuo pensado para ellos.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Senior</a>
+            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Plan Vital</a>
           </div>
         </div>
       </section>
@@ -682,7 +684,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <div style={css('max-width:1100px;margin:20px auto 0;font-size:12.5px;color:#7f9cbb')}>© 2026 Salud Protegida (Odontomedica S.A.). Coberturas de referencia sujetas a confirmación.</div>
+        <div style={css('max-width:1100px;margin:20px auto 0;font-size:12.5px;color:#7f9cbb')}>© 2026 Salud Protegida (Odontomedica S.A.). Coberturas según los cuadernillos vigentes, sujetas a las condiciones de cada contrato.</div>
       </footer>
 
       {/* COTIZAR STICKY (aparece al scrollear) */}

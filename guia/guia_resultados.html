@@ -169,7 +169,7 @@
                             <label for="f-plan" class="block text-[11px] font-bold uppercase tracking-wider text-teal-dk">Mi plan</label>
                             <select id="f-plan" class="w-full bg-mint border border-teal/30 rounded-xl py-2.5 px-3 text-sm focus:ring-2 focus:ring-teal focus:border-teal">
                                 <option value="">Todos los planes</option>
-                                <option>SP Esencial</option><option>SP Integral</option><option>SP Premium</option><option>SP Senior</option>
+                                <option>Plan Bronce</option><option>Plan Silver</option><option>Plan Gold</option><option>Plan Vital</option>
                             </select>
                             <p class="text-[11px] text-slate-400">¿No sabés tu plan? <a href="guia_home.html#" class="text-teal-dk font-semibold hover:underline">Consultá con tu CI</a></p>
                         </div>
@@ -201,7 +201,7 @@
                              planes, geo). Ver ANEXO-requisitos-backend.md -->
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-min-plan="esencial" data-tags="dra maria benitez rojas ginecologia ginecologo embarazo pap asuncion medicos">
+                                 data-min-plan="bronce" data-tags="dra maria benitez rojas ginecologia ginecologo embarazo pap asuncion medicos">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal-dk text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">MB</span>
                                 <div class="flex-grow min-w-0">
@@ -225,7 +225,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-min-plan="esencial" data-tags="lister centro medico policlinica laboratorio imagen asuncion urgencias 24 sanatorios y clinicas">
+                                 data-min-plan="bronce" data-tags="lister centro medico policlinica laboratorio imagen asuncion urgencias 24 sanatorios y clinicas">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-navy text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">LC</span>
                                 <div class="flex-grow min-w-0">
@@ -249,7 +249,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-min-plan="integral" data-tags="sanatorio san rafael internacion urgencias 24 fernando de la mora sanatorios y clinicas">
+                                 data-min-plan="silver" data-tags="sanatorio san rafael internacion urgencias 24 fernando de la mora sanatorios y clinicas">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">SR</span>
                                 <div class="flex-grow min-w-0">
@@ -273,7 +273,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-min-plan="esencial" data-tags="centro de diagnostico medlab laboratorio analisis radiografia electrocardiograma san alberto laboratorios">
+                                 data-min-plan="bronce" data-tags="centro de diagnostico medlab laboratorio analisis radiografia electrocardiograma san alberto laboratorios">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-mint text-teal-dk font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">ML</span>
                                 <div class="flex-grow min-w-0">
@@ -297,7 +297,7 @@
                         </article>
 
                         <article class="lift bg-white rounded-2xl border border-line border-l-4 border-l-teal p-5 md:p-6"
-                                 data-min-plan="premium" data-tags="dr carlos villalba pediatria pediatra niños luque medicos">
+                                 data-min-plan="gold" data-tags="dr carlos villalba pediatria pediatra niños luque medicos">
                             <div class="flex flex-col md:flex-row md:items-start gap-4">
                                 <span class="w-14 h-14 rounded-full bg-teal-dk text-white font-display font-extrabold text-lg flex items-center justify-center shrink-0" aria-hidden="true">CV</span>
                                 <div class="flex-grow min-w-0">
@@ -374,9 +374,9 @@
         <div class="w-11 h-11 rounded-xl bg-gold/15 text-gold flex items-center justify-center mb-4">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 2.6 6.2L21 9l-5 4.4 1.5 6.6L12 16.5 6.5 20 8 13.4 3 9l6.4-.8L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
         </div>
-        <h3 id="upsell-titulo" class="font-display font-extrabold text-xl mb-2">Este prestador te espera en <span class="text-gold" id="upsell-plan">SP Premium</span>.</h3>
+        <h3 id="upsell-titulo" class="font-display font-extrabold text-xl mb-2">Este prestador te espera en <span class="text-gold" id="upsell-plan">Plan Gold</span>.</h3>
         <p class="text-sm text-body leading-relaxed mb-5">
-            Con <strong id="upsell-plan-2">SP Premium</strong> accedés a <strong id="upsell-nombre">este prestador</strong> y a decenas más,
+            Con <strong id="upsell-plan-2">Plan Gold</strong> accedés a <strong id="upsell-nombre">este prestador</strong> y a decenas más,
             con internación en sala privada y prioridad de agenda. Mirá cuánto te costaría el cambio — sin compromiso.
         </p>
         <div class="flex gap-2.5">
@@ -472,14 +472,14 @@
     if (qParam) { inp.value = qParam; filtrar(); track('search', { q: qParam, origen: 'home' }); }
 
     /* =====================================================================
-       COBERTURA POR PLAN (jerárquica: Premium ⊇ Integral ⊇ Esencial;
-       SP Senior corre por su propio carril con Senior/Senior Plus).
-       - Sin CI (modo general): etiqueta "Desde SP X" / "Exclusivo SP Premium".
+       COBERTURA POR PLAN (jerárquica: Gold ⊇ Silver ⊇ Bronce;
+       Plan Vital (senior 65+) corre por su propio carril).
+       - Sin CI (modo general): etiqueta "Desde Plan X" / "Exclusivo Plan Gold".
        - Con CI (?plan=..., modo personalizado): "✓ Con tu plan" o etiqueta
          dorada que abre la hoja de upsell; lo cubierto se ordena primero.
        ===================================================================== */
-    const NIVEL = { esencial: 1, integral: 2, premium: 3 };
-    const NOMBRE = { esencial: 'SP Esencial', integral: 'SP Integral', premium: 'SP Premium' };
+    const NIVEL = { bronce: 1, silver: 2, gold: 3 };
+    const NOMBRE = { bronce: 'Plan Bronce', silver: 'Plan Silver', gold: 'Plan Gold' };
     const planUsuario = (new URLSearchParams(location.search).get('plan') || '').toLowerCase();
     const personalizado = !!NIVEL[planUsuario];
 
@@ -507,12 +507,12 @@
     const lista = document.getElementById('lista-resultados');
     const cubiertas = [], noCubiertas = [];
     tarjetas.forEach(t => {
-        const min = t.dataset.minPlan || 'esencial';
+        const min = t.dataset.minPlan || 'bronce';
         const slot = t.querySelector('.plan-slot');
         const nombre = t.querySelector('h3').textContent.trim();
         if (!personalizado) {
-            slot.innerHTML = min === 'premium'
-                ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-gold/15 text-gold">★ Exclusivo SP Premium</span>`
+            slot.innerHTML = min === 'gold'
+                ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-gold/15 text-gold">★ Exclusivo Plan Gold</span>`
                 : `<span class="text-[11px] font-bold px-3 py-1 rounded-full bg-mint text-teal-dk">Desde ${NOMBRE[min]}</span>`;
         } else if (NIVEL[min] <= NIVEL[planUsuario]) {
             slot.innerHTML = `<span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-mint text-teal-dk">✓ Con tu plan</span>`;
