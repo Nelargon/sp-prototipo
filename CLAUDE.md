@@ -13,6 +13,39 @@ crear una rama de trabajo, partir siempre de `origin/main` recién
 traído. Una sesión que lee documentos viejos reporta un proyecto que ya
 no existe y puede construir cosas que otra sesión ya construyó distinto.
 
+## Protocolo de sesiones paralelas (jul 2026 — complementa la regla cero)
+
+La regla cero mantiene fresca la **lectura**; estas reglas evitan que dos
+sesiones se pisen al **escribir**. Valen para cualquier combinación de
+sesiones, hoy y en el futuro:
+
+- **Una rama por sesión, siempre.** Nunca dos sesiones sobre la misma
+  rama (una pisa el push de la otra). Cada sesión nace de `origin/main`
+  recién traído, trabaja en su rama y abre su propio PR.
+- **Territorio declarado.** Cada sesión toca solo los archivos de su
+  tarea. Si necesita salir de su territorio (un componente compartido,
+  `app/quote.js`, la guía), lo declara en la descripción del PR.
+- **Antes de fusionar, mirar los otros PRs abiertos.** Si otro PR toca
+  los mismos archivos, los merges van de a uno: entra el primero, el
+  segundo trae `origin/main` a su rama (`git fetch origin main &&
+  git merge origin/main`), resuelve conflictos, re-verifica y recién
+  entonces se fusiona. Lo mismo si `main` avanzó desde que arrancó la
+  sesión, aunque no haya conflicto declarado.
+- **`HANDOFF.md` y `BITACORA.md` son los puntos de choque naturales**
+  (casi todos los PRs los tocan). Al resolver un conflicto ahí la regla
+  es **integrar, nunca descartar**: lo que escribió otra sesión se
+  conserva. La bitácora es append-only — si dos capítulos llegan con el
+  mismo número, se renumeran y quedan los dos.
+- **Lo decidido viaja por los archivos, no por la memoria.** Las
+  sesiones no se ven entre sí; el repo es la única memoria compartida.
+  Toda decisión que otra sesión va a necesitar se escribe en `HANDOFF.md`
+  en el mismo PR. Y si tu tarea depende de algo que no está escrito, no
+  lo asumas: preguntale al usuario.
+- **Respetar las guardas ⚠ del HANDOFF** (ej. "motor de contenido — EN
+  DISEÑO, no construir"): marcan trabajo que otra conversación está
+  diseñando. Ignorarlas es construir en paralelo lo que otro ya está
+  pensando distinto.
+
 ## Flujo git (actualizado julio 2026 — merge automático autorizado)
 
 - Rama de trabajo → PR en borrador → verificación con Playwright →
