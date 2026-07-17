@@ -639,6 +639,58 @@ y guía sin releer los PDFs.
 
 ---
 
+## Capítulo 26 — El simulador entra en la pantalla (y el tilde vuelve al centro)
+
+El usuario abrió el simulador en su iPhone y vio lo que ninguna
+verificación nuestra había visto: *"en varias fases todavía no encaja
+bien con la versión móvil, se requiere de scroll para ver todo"*. Y una
+segunda observación al pasar: *"el ícono de check no figura bien"*.
+
+Antes de proponer nada, medimos. Los números fueron elocuentes: en un
+iPhone de 844px de alto, la primera opción del paso 1 aparecía en
+y=783 — el usuario aterrizaba viendo todo *menos* las respuestas — y en
+el paso 2 directamente en y=890, bajo el pliegue. Peor: al elegir una
+opción, el scroll quedaba donde estaba (medimos scrollY=528 arrastrado
+entre pasos); que el paso siguiente se viera bien era suerte de
+geometría, no diseño. Y en los in-app browsers de Instagram/Facebook —
+justo donde aterriza el Paid Social — hay 150-200px menos.
+
+La cura fue en tres movimientos: **auto-scroll** al inicio de la
+tarjeta en cada cambio de paso (la corrección más importante: pocas
+líneas, garantiza que cada pregunta arranque desde arriba), **dieta del
+preámbulo** ("¿por qué te preguntamos esto?" plegado en un `<details>`
+nativo, paddings comprimidos en móvil), y el **resultado en dos actos**:
+precio y formulario juntos en el primer pantallazo, y "¿cómo calculamos
+esto?", descargar y compartir en el segundo. Después del cambio, el
+paso 1 completo — pregunta, cuatro opciones y respiro — entra en una
+sola pantalla.
+
+El tilde tenía otra historia. El ícono del "match" se centraba con
+`transform: translate(-50%,-50%)`… y su animación de entrada animaba
+`transform: scale()`. Una animación CSS con fill-mode **pisa la
+propiedad transform completa**, translate incluido: el tilde terminaba
+descentrado, montado sobre el aro, pareciendo un círculo roto. La
+solución no fue meter el translate en los keyframes (más funciones
+encadenadas, la familia de trucos que el minificador ya nos rompió una
+vez): fue quitarle al transform la responsabilidad de centrar — ahora
+centra un flexbox y la animación solo escala.
+
+Y para que nada de esto regrese, el QA integral ganó dos guardianes
+nuevos: un **presupuesto de geometría** (en 390×670, la primera opción
+de cada paso debe verse sin scroll) y la verificación **computada** de
+que el tilde queda centrado en su aro (±2px).
+
+**Lo aprendido:** el dispositivo real del usuario ve lo que el headless
+no mira — nuestras verificaciones comprobaban *que* los elementos
+existían, no *dónde* caían; ahora el "dónde" también tiene presupuesto.
+Segundo: animar `transform` pisa todo el transform — si un elemento se
+centra con translate, su animación no puede tocar esa propiedad; mejor
+aún, que el centrado no dependa de transform. Y tercero: la regla de la
+casa se confirma una vez más — verificá lo computado, no el código que
+creés haber escrito.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

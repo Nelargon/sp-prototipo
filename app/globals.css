@@ -66,7 +66,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(prefers-reduced-motion:reduce){.rv{opacity:1 !important;transform:none !important;transition:none}}
 @media(max-width:1150px){.mani-lines{width:100% !important}}
 @media(max-width:1250px){[data-hero-bg]{-webkit-mask:linear-gradient(90deg,transparent 12%,#000 55%) !important;mask:linear-gradient(90deg,transparent 12%,#000 55%) !important}}
-@media(max-width:820px){.disp-hero{font-size:44px !important}.two-col{grid-template-columns:1fr !important}[data-hero-bg]{width:100% !important;opacity:.45}.sim-card{flex-direction:column !important}.sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}.sim-side-h{display:none !important}.sim-steps{display:none !important}.sim-side-enc{display:none !important}.sim-live-panel{display:none !important}.sim-trust{margin-top:0 !important}.sim-side>div:first-child{margin-bottom:0 !important}.sim-body{padding:24px 20px !important;min-height:0 !important}.sim-mobile-progress{display:block !important}}
+@media(max-width:820px){.disp-hero{font-size:44px !important}.two-col{grid-template-columns:1fr !important}[data-hero-bg]{width:100% !important;opacity:.45}.sim-card{flex-direction:column !important}.sim-side{width:100% !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 20px !important;gap:10px}.sim-side-h{display:none !important}.sim-steps{display:none !important}.sim-side-enc{display:none !important}.sim-live-panel{display:none !important}.sim-trust{margin-top:0 !important}.sim-side>div:first-child{margin-bottom:0 !important}.sim-body{padding:18px 16px !important;min-height:0 !important}.sim-mobile-progress{display:block !important}}
+/* Dieta móvil del simulador (jul 2026): el preámbulo comprimido para que la
+   pregunta y sus opciones entren en el primer pantallazo (390×670 mínimo). */
+@media(max-width:820px){.sim-side{padding:10px 16px !important}.sim-q-title{font-size:19px !important}.sim-opt{padding:12px 14px !important}.sim-mobile-progress{margin-bottom:12px !important}}
 @media(max-width:860px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
 /* Touch targets ≥44px en móvil (QA integral: el 77% del tráfico entra por celular) */
 .urg-pill{height:44px !important}.nav-burger{width:44px !important;height:44px !important}}
@@ -104,6 +107,9 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
 .search-inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
 .sim-mobile-progress{display:none}
+.sim-why summary{list-style:none}
+.sim-why summary::-webkit-details-marker{display:none}
+.sim-why summary::marker{content:''}
 /* Mi SP y blog: las grillas colapsan por ancho, no por dispositivo */
 .blog-card{transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s}
 .blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}

@@ -164,6 +164,17 @@ usa `npm ci`).
     tras dejar datos promete "una persona, no un robot". Referencia:
     flujos conversacionales tipo Lemonade (una pregunta por vez + lenguaje
     llano), sin convertirlo en chatbot — balance con lo funcional.
+11c. **El simulador entra en la pantalla del celular** (17 jul 2026, del
+    dispositivo real del usuario): auto-scroll al inicio de la tarjeta en
+    cada paso, "¿por qué te preguntamos esto?" plegado en `<details>`,
+    paddings comprimidos en móvil, y el resultado en dos actos (precio +
+    formulario primero; desglose, descargar y compartir después). El
+    tilde del "match" se centra con flexbox — su animación pisaba el
+    `transform` que lo centraba (BITACORA cap. 26). El QA integral ganó
+    dos guardianes: presupuesto de geometría (primera opción visible sin
+    scroll en 390×670) y centrado computado del tilde (±2px). Queda como
+    evolución opcional el modo "pantalla completa" con CTA fijo (100dvh)
+    si el test con usuarios lo pide.
 
 ---
 

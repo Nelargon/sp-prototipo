@@ -79,6 +79,20 @@ console.log('\n== 1. FUNCIONAL ==');
   }
   if (await page.locator('[data-sp-price]').count()) {
     ok('funcional', 'simulador: llega al precio en ' + pasos + ' interacciones');
+    // Tilde del "match" centrado en su aro: la animación de entrada pisa la
+    // propiedad transform (BITACORA cap. 26) — el centrado va por flexbox y
+    // acá se verifica computado, no en el código fuente.
+    await page.waitForTimeout(1400); // animaciones del resultado terminadas
+    const tilde = await page.evaluate(() => {
+      const svgs = [...document.querySelectorAll('svg')];
+      const ring = svgs.find((s) => s.getAttribute('viewBox') === '0 0 44 44');
+      const chk = ring && ring.parentElement.querySelector('svg[viewBox="0 0 24 24"]');
+      if (!ring || !chk) return null;
+      const a = chk.getBoundingClientRect(), b = ring.getBoundingClientRect();
+      return { dx: Math.abs((a.x + a.width / 2) - (b.x + b.width / 2)), dy: Math.abs((a.y + a.height / 2) - (b.y + b.height / 2)) };
+    });
+    if (tilde && tilde.dx <= 2 && tilde.dy <= 2) ok('funcional', 'resultado: tilde del match centrado en el aro (±2px)');
+    else falla('funcional', 'confunde', 'el tilde del resultado no está centrado en el aro' + (tilde ? ' (dx=' + tilde.dx.toFixed(1) + ', dy=' + tilde.dy.toFixed(1) + ')' : ' (no encontrado)'), '/simulador/');
     const nombre = page.locator('input[placeholder*="ombre"]');
     if (await nombre.count()) {
       await nombre.fill('QA Prueba');
@@ -89,6 +103,30 @@ console.log('\n== 1. FUNCIONAL ==');
       else falla('funcional', 'roto', 'el envío del lead no muestra confirmación', '/simulador/');
     }
   } else falla('funcional', 'roto', 'el caminante no llegó al precio del simulador', '/simulador/');
+
+  // 1b-bis. Presupuesto de geometría móvil del simulador (390×670 ≈ viewport
+  // útil de un in-app browser): en cada paso, la primera opción debe verse
+  // sin scroll — el preámbulo comprimido + auto-scroll lo garantizan.
+  {
+    const movil = await browser.newPage({ viewport: { width: 390, height: 670 } });
+    await movil.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
+    await movil.waitForTimeout(700);
+    await movil.locator('button', { hasText: 'Empecemos' }).first().click();
+    await movil.waitForTimeout(900);
+    for (const [paso, texto] of [['1 (quién)', 'Para mi familia'], ['2 (cobertura)', 'Un equilibrio'], ['3 (zona)', 'Central']]) {
+      const b = movil.locator('button', { hasText: texto }).first();
+      const box = await b.boundingBox();
+      if (box && box.y + box.height <= 670) ok('responsive', 'simulador móvil paso ' + paso + ': primera opción visible sin scroll');
+      else falla('responsive', 'confunde', 'simulador móvil paso ' + paso + ': la primera opción queda bajo el pliegue (y=' + (box ? Math.round(box.y) : '—') + ')', '/simulador/');
+      await b.click();
+      await movil.waitForTimeout(900);
+    }
+    const cont = movil.locator('button', { hasText: 'Continuar' }).first();
+    const cbox = await cont.boundingBox();
+    if (cbox && cbox.y + cbox.height <= 670 + 260) ok('responsive', 'simulador móvil paso 4 (edades): el CTA queda a menos de un tercio de pantalla de scroll');
+    else falla('responsive', 'confunde', 'simulador móvil: el CTA de edades queda demasiado abajo (y=' + (cbox ? Math.round(cbox.y) : '—') + ')', '/simulador/');
+    await movil.close();
+  }
 
   // 1c. Guía: búsqueda con resultados, sin resultados (rescate), modo personalizado
   await page.goto(BASE + '/guia/guia_resultados.html?q=cardio', { waitUntil: 'domcontentloaded' });
