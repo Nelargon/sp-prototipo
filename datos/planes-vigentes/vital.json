@@ -1,0 +1,50 @@
+{
+  "id": "vital",
+  "nombre_web": "Plan Vital",
+  "nombre_oficial": "Plan Vital",
+  "publico": "Personas mayores: titular a partir de 65 años",
+  "fuente": {
+    "cuadernillo": "CUADERNILLO_PLAN_VITAL.pdf (jul 2026)",
+    "tarifario": "PRECIOS_PLAN_VITAL.pdf (jul 2026)"
+  },
+  "moneda": "PYG",
+  "precios": {
+    "titular_desde_65": { "costo_debito": 283000, "costo_particular": 312000 },
+    "prima_sepelio_opcional": { "costo_debito": 76000, "costo_particular": 84000 }
+  },
+  "cobertura_escalonada": {
+    "inmediata": {
+      "consultas": "26 especialidades en Lister y sanatorios adheridos (varias con ticket moderador); psicología, psiquiatría y fonoaudiología a arancel preferencial",
+      "urgencias": "Consultas de urgencia 24 h en sanatorios adheridos; primeros auxilios y procedimientos menores (enyesado, suturas hasta 5 puntos, taponamiento) con honorarios 100%; medicamentos hasta ₲ 100.000 por evento",
+      "ambulancia_domicilio": "Urgencias a domicilio sin cargo: hasta 4 veces/mes por grupo familiar y 2 por beneficiario, radio 20 km del centro de Asunción; medicamentos del evento incluidos",
+      "laboratorio_rutina": "17 determinaciones de rutina (hemograma, glucosa, colesterol…) hasta 4 veces por determinación/año",
+      "estudios": "Electrocardiograma hasta 4/año; radiografías simples hasta 4/año (hasta 4 posiciones por evento); nebulizaciones 7 eventos/año",
+      "enfermeria": "Toma de presión, curaciones, sondajes, aplicación IM/EV en Lister y sanatorios adheridos",
+      "fisioterapia": "Hasta 10 sesiones por beneficiario/año (ondas cortas, ultrasonido, infrarrojo, tracción cervical, kinesioterapia)"
+    },
+    "a_90_dias": {
+      "laboratorio_complementario": "30 determinaciones complementarias, hasta 2 por determinación/año (máximo 40 en total); el resto a aranceles preferenciales",
+      "ecografias": "Hasta 4 estudios/año del conjunto: renal, ginecológica, transvaginal, abdominal (completo/superior/inferior), prostática",
+      "papanicolau": "Papanicolau y colposcopía hasta 2/año"
+    },
+    "a_180_dias": {
+      "cirugias_menores": "Hasta 2/año del conjunto: drenaje de absceso, extracción de nevus, electrocauterización, lipoma, uña encarnada, suturas 5-10 puntos; honorarios y sala incluidos; medicamentos hasta ₲ 50.000"
+    },
+    "a_365_dias": {
+      "condicion": "12 cuotas abonadas correlativamente y al día",
+      "internacion_clinica": "Habitación privada (aire, TV, baño privado, cama para acompañante) hasta 10 días/año y 5 días por evento; honorarios del médico tratante (1 visita/día); medicamentos a cargo del asegurado",
+      "cirugia_convencional": "1 por año del listado (colecistectomía, hernias, apéndice, próstata, histerectomía, cataratas, hemorroidectomía, mastectomía simple…): pensión sanatorial, honorarios 100%, derecho operatorio 100%, medicamentos hasta ₲ 200.000",
+      "uti": "Reintegro en efectivo hasta ₲ 1.000.000, una vez por año"
+    }
+  },
+  "sepelio_opcional": {
+    "condicion": "Prima adicional; plazos de vigencia por edad: 61-70 años 18 meses, 71-75 años 24 meses, 76+ 36 meses",
+    "zona_metropolitana": "Servicio completo (féretro, traslado, preparación, sala velatoria, trámites, vehículo ceremonial)",
+    "zona_interior": "Monto fijo de ₲ 3.000.000 para gastos de sepelio"
+  },
+  "notas": [
+    "Sin cobertura de maternidad (plan senior)",
+    "Tomografía y resonancia: no figuran cubiertas; análisis especializados fuera de los listados van a aranceles preferenciales",
+    "Es el equivalente vigente del carril 'SP Senior' de la visión (Senior / Senior Plus)"
+  ]
+}

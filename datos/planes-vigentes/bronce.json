@@ -1,0 +1,83 @@
+{
+  "id": "bronce",
+  "nombre_web": "Plan Bronce",
+  "nombre_oficial": "Plan Privilege Bronze",
+  "fuente": {
+    "cuadernillo": "CUADERNILLO_PRIVILEGE_BRONZE.pdf (24 págs., jul 2026)",
+    "tarifario": "PRECIOS_PLAN_PRIVILEGE_BRONZE.pdf (jul 2026)"
+  },
+  "moneda": "PYG",
+  "iva_incluido": true,
+  "precios": {
+    "titular_solo": [
+      { "edad": "0-54", "prima": 238000 },
+      { "edad": "55-64", "prima": 300000 },
+      { "edad": "65-69", "prima": 450000 }
+    ],
+    "titular_conyuge_cada_uno": [
+      { "edad": "0-54", "prima": 162000 },
+      { "edad": "55-64", "prima": 220000 },
+      { "edad": "65-69", "prima": 320000 },
+      { "edad": "70-74", "prima": 450000, "solo_renovacion": true }
+    ],
+    "adherente_con_parentesco_cada_uno": [
+      { "edad": "0-20", "prima": 119000 },
+      { "edad": "21-54", "prima": 162000 },
+      { "edad": "55-64", "prima": 220000 },
+      { "edad": "65-69", "prima": 320000 },
+      { "edad": "70-99", "prima": 420000, "solo_renovacion": true }
+    ],
+    "hijo_adicional_desde_3ro": { "edad": "0-20", "prima": 100000, "condicion": "cuando el contrato aplica prima de grupo familiar" },
+    "grupo_familiar_titular_conyuge_2_hijos_hasta_20": [
+      { "edad_titular_conyuge": "hasta 59", "prima": 550000 },
+      { "edad_titular_conyuge": "60-64", "prima": 720000 }
+    ],
+    "ejemplos_grupos": [
+      { "grupo": "Titular solo hasta 54 años", "prima": 238000 },
+      { "grupo": "Titular y cónyuge hasta 54 años", "prima": 324000 },
+      { "grupo": "Titular (h/54) y 1 hijo hasta 20 años", "prima": 281000 },
+      { "grupo": "Titular (h/54) y 2 hijos hasta 20 años", "prima": 400000 },
+      { "grupo": "Titular (h/54) y 3 hijos hasta 20 años", "prima": 519000 },
+      { "grupo": "Titular, cónyuge (h/59) y 3 hijos hasta 20 años", "prima": 650000 },
+      { "grupo": "Titular, cónyuge (h/54) y 1 hijo hasta 20 años", "prima": 443000 }
+    ]
+  },
+  "coberturas_clave": {
+    "consultas": {
+      "resumen": "Amplia lista de especialidades en convenio; la mayoría de las especializadas con tope de 3 consultas por beneficiario/año; máximo 3 consultas al mes en una misma especialidad (desde la 4ª, copago)",
+      "psicologia": "3 sesiones/año",
+      "psiquiatria": "3 consultas/año",
+      "nutricion": "3 consultas/año",
+      "vigencia": "inmediata"
+    },
+    "laboratorio": { "resumen": "Cuadro 1: análisis de rutina y especializados, mayoría cobertura total o copago 50%; carencias de inmediata a 120 días" },
+    "radiografias": { "resumen": "Simples: cobertura total, ilimitadas; carencia inmediata a 60 días" },
+    "ecografias": { "resumen": "Cubiertas al 100% (varias con tope 1-2/año); obstétricas 3/año con carencia 180 días; Doppler a arancel diferenciado" },
+    "tomografia": { "resumen": "Copago 50%, 1 por año (cualquiera de la lista), carencia 90 días", "tipo": "COP" },
+    "resonancia": { "resumen": "Arancel diferenciado: sin cobertura, precio convenio a cargo del beneficiario", "tipo": "AD" },
+    "internacion": { "resumen": "Habitación semi-suite (incluye cama para acompañante), tope 20 días por beneficiario/año; carencia 60 días (internaciones clínicas)" },
+    "uti": { "resumen": "Cobertura total hasta 3 días por beneficiario/año" },
+    "cirugias": { "resumen": "Cuadro 3: las convencionales con cobertura total 1/año (apendicectomía, hernias, parto, cesárea…); otras con copago 50% de honorarios o parcial hasta ₲ 500.000; carencia típica 210 días (apendicectomía 30, parto/cesárea 300)" },
+    "maternidad": { "resumen": "Solo titular o cónyuge; carencia 300 días; parto normal 3 días / cesárea 4 días de internación; recién nacido en nursery; medicamentos hasta ₲ 500.000" },
+    "urgencias": { "resumen": "Cobertura total e inmediata en sanatorios en convenio (24 h); medicamentos hasta ₲ 100.000 por evento; ambulancia EME cubierta (Asunción y Gran Asunción)" },
+    "domicilio": { "resumen": "Urgencias a domicilio vía EME con cobertura total; consulta médica a domicilio hasta 2 eventos/año" },
+    "fisioterapia": { "resumen": "10 sesiones/año (traumatológica, neurológica, post-quirúrgica) + 3 respiratorias; carencia 90 días" },
+    "odontologia": { "resumen": "Sin cobertura: arancel diferenciado", "tipo": "AD" },
+    "sin_cobertura_arancel_diferenciado": [
+      "Odontología",
+      "Resonancia magnética",
+      "Alta complejidad en cardiocirugía, cirugía vascular periférica y neurocirugía",
+      "Hemodinamia",
+      "Oncología clínica y radioterapia (tratamientos)",
+      "Cirugía bariátrica"
+    ],
+    "topes_medicamentos": {
+      "internacion": 500000,
+      "cirugia_ambulatoria": 200000,
+      "urgencias": 100000,
+      "estudios_y_contrastes": 80000,
+      "receta_ambulatoria": "sin cobertura"
+    },
+    "vacunas": "Las del P.A.I. (MSPyBS) según disponibilidad, exclusivo Lister Centro Médico"
+  }
+}

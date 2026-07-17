@@ -1,0 +1,44 @@
+# Planes vigentes — datos reales (jul 2026)
+
+Fuente: cuadernillos de cobertura y tarifarios oficiales de Salud
+Protegida que pasó el usuario (PDFs, jul 2026). Esta carpeta es la capa
+de datos **temporal** que va a alimentar la web hasta que existan los
+planes nuevos (Esencial / Integral / Premium): decisión del usuario,
+jul 2026 — "esto vamos a tener en la página web al principio hasta que
+tengamos los nuevos planes".
+
+## Decisiones de presentación (del usuario, jul 2026)
+
+- **"Privilege" se elimina del nombre**: en la web es "Plan Bronce"
+  (y serán "Plan Silver" / "Plan Gold" cuando lleguen).
+- **Sin logotipos ni colores de los cuadernillos** (no encajan con la
+  identidad de la web). Tipografía Gilroy como el resto del sitio, y
+  colores de sentido común por metal: bronce para Bronce, plata para
+  Silver, dorado para Gold. Propuesta de tokens (verificar contraste
+  AA al implementarse): bronce `#A9714B`, silver `#8E9196`,
+  gold `#C9A227` (el dorado SP existente).
+- Nombres en Tipo Oración, como manda la identidad.
+
+## Qué hay
+
+| Archivo | Contenido |
+|---|---|
+| `bronce.json` | Plan Privilege Bronze: tarifa por edad/parentesco (IVA incluido) y resumen de coberturas con carencias |
+| `vital.json` | Plan Vital (senior, 65+): tarifa y cobertura escalonada por antigüedad |
+
+Pendiente: `silver.json` y `gold.json` (segunda parte, la trae el
+usuario). Recién con esos dos se hace el volcado a la web pública
+(comparador de 3 niveles + Vital como carril senior) — con Bronce solo,
+el comparador quedaría de una columna.
+
+## Notas de lectura de los cuadernillos
+
+- Tipos de cobertura: `CT` = cobertura total (100%) · `COP` = copago
+  50/50 · `CP` = cobertura parcial (diferencia a cargo del
+  beneficiario) · `AD` = arancel diferenciado (sin cobertura; precio
+  convenio, 100% a cargo del beneficiario).
+- Las primas Bronze incluyen IVA (10%). Los rangos 70+ son solo para
+  renovación, no venta nueva.
+- Regla de tono de la web: lo `AD` nunca se muestra como "No cubierto" —
+  se comunica como oportunidad de plan superior (cuando exista el
+  detalle Silver/Gold) o como arancel preferencial.
