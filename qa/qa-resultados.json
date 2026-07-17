@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-17T10:15:22.391Z",
+  "fecha": "2026-07-17T10:28:30.552Z",
   "oks": [
     {
       "frente": "funcional",
@@ -63,7 +63,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/simulador/: 166 KB gzip de contenido crítico (≤300)"
+      "detalle": "/simulador/: 165 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
