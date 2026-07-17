@@ -691,6 +691,40 @@ creés haber escrito.
 
 ---
 
+## Capítulo 27 — Las reglas para no pisarse (la otra mitad de la regla cero)
+
+El capítulo 23 resolvió la mitad del problema de trabajar con varias
+sesiones a la vez: la **lectura** (actualizarse antes de leer, o
+terminás reportando un proyecto que ya no existe). Hoy el usuario trajo
+la otra mitad. Con dos sesiones corriendo desde ayer — una sobre el
+cerebro del motor de contenido, otra sobre el sistema del blog —
+preguntó: *"¿Hay algo que se pueda dejar claro en el repo para evitar
+cualquier problema, no solo para este caso, sino para otros en el
+futuro?"*.
+
+Qué intentamos: destilar en `CLAUDE.md` un protocolo de **escritura** en
+paralelo, para que valga para cualquier combinación de sesiones y no
+solo para las dos de hoy. Qué pasó: al revisar los golpes ya anotados,
+el protocolo casi se escribió solo — cada regla ya tenía su cicatriz.
+"Una rama por sesión" (el push pisado), "integrar, nunca descartar, en
+conflictos de HANDOFF/BITACORA" (los dos blogs que nacieron en paralelo
+y hubo que reconciliar, cap. 21 y 23), "respetar las guardas ⚠" (el
+motor de contenido que ninguna sesión debe construir mientras el usuario
+lo diseña en otra conversación).
+
+Qué aprendimos: dos cosas. Primera, que git ya resolvió este problema
+hace veinte años para equipos de personas, y las sesiones de IA no
+necesitan reglas nuevas — necesitan las mismas: rama propia, territorio
+declarado, integrar antes de fusionar. Segunda, la ironía fundacional
+del protocolo: **las reglas escritas en el repo solo protegen a las
+sesiones que se actualizan para leerlas**. Las dos sesiones que ya
+están corriendo nacieron antes de este capítulo; a ellas hay que
+avisarles a mano ("traé main y releé CLAUDE.md"). La memoria compartida
+funciona — pero solo para quien lee la última página, y eso incluye a
+las reglas mismas.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

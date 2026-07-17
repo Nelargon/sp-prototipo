@@ -471,6 +471,11 @@ cd out && python3 -m http.server 8080
   julio 2026 dejar de esperar el "fusionalo"; excepciones — cambios de
   visión/alcance o destructivos — esperan confirmación; detalle en
   `CLAUDE.md`) → Pages se redeploya solo (~2 min).
+- **Sesiones paralelas**: hay varias sesiones trabajando a la vez sobre
+  este proyecto. El protocolo completo está en `CLAUDE.md` — una rama
+  por sesión, territorio declarado, merges de a uno (traer `origin/main`
+  a la rama antes de fusionar), y en conflictos de HANDOFF/BITACORA se
+  integra lo de ambas sesiones, nunca se descarta.
 - El deploy usa `npm ci`: **no instalar dependencias dentro del repo** que
   no estén en `package.json` (ya rompió el lockfile una vez).
 
