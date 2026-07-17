@@ -9,8 +9,15 @@
   },
   "moneda": "PYG",
   "precios": {
-    "titular_desde_65": { "costo_debito": 283000, "costo_particular": 312000 },
-    "prima_sepelio_opcional": { "costo_debito": 76000, "costo_particular": 84000 }
+    "titular_desde_65": {
+      "costo_debito": 283000,
+      "costo_particular": 312000
+    },
+    "prima_sepelio_opcional": {
+      "costo_debito": 76000,
+      "costo_particular": 84000
+    },
+    "nota_descuento": "El descuento del 10% por pago automático incluye también tarjeta de crédito (confirmado 17 jul 2026); 'costo débito' vs 'costo particular' reflejan esa relación."
   },
   "cobertura_escalonada": {
     "inmediata": {
