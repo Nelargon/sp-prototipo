@@ -174,18 +174,22 @@ usa `npm ci`).
 El usuario anunció dos fuentes de datos reales que destraban pendientes.
 La sesión que lea esto debe pedírselas y trabajar con ellas:
 
-A. **Planes Bronce / Silver / Gold** — la versión hoy vigente de los
-   planes: anterior e inferior a los nuevos Esencial / Integral /
-   Premium, y todavía sin los paquetes definidos, pero **real**. Sirve
-   como dato interino para:
-   - calibrar el motor del simulador con precios reales por edad/grupo
-     (hoy usa cifras de referencia — ver pendiente #6);
-   - contrastar el comparador "qué cubre" con coberturas reales;
-   - proponer el mapeo Bronce→Esencial, Silver→Integral, Gold→Premium
-     como hipótesis de partida para la mesa técnica — **sin renombrar
-     nada en la web**: los nombres nuevos son la visión aprobada; los
-     datos viejos alimentan los números, no los reemplazan.
-   Formato: cualquiera sirve (Excel, PDF, foto del tarifario).
+A. **Planes vigentes — PRIMERA PARTE RECIBIDA (17 jul 2026)**: el
+   usuario pasó los cuadernillos y tarifarios reales de **Plan Vital**
+   (senior 65+) y **Plan Privilege Bronze**. Ya están ingeridos y
+   estructurados en **`datos/planes-vigentes/`** (bronce.json,
+   vital.json, README con las decisiones). **Decisión del usuario que
+   actualiza lo anterior:** los planes vigentes SÍ van a la web, como
+   **contenido temporal** hasta que existan los planes nuevos
+   (Esencial/Integral/Premium). Reglas de presentación (del usuario):
+   "Privilege" se elimina (queda "Plan Bronce"), sin logos ni colores
+   de los cuadernillos, tipografía Gilroy, colores por metal (bronce/
+   plata/dorado). **Falta la segunda parte — Silver y Gold** (pedírsela
+   al usuario): recién con esas dos se hace el volcado a la web
+   (comparador de 3 niveles + Vital como carril senior; con Bronce solo
+   el comparador quedaría de una columna). El tarifario Bronze por
+   edad/parentesco (IVA incl.) es exactamente lo que necesita el motor
+   del simulador para calibrarse con precios reales.
 
 B. **Base de prestadores del sistema interno de SP** (mencionado por
    voz; el nombre del sistema hay que confirmarlo con el usuario en la
