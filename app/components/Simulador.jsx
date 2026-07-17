@@ -19,6 +19,7 @@ export default function Simulador() {
 
   const rafRef = useRef(null);
   const prevStepRef = useRef(0);
+  const cardRef = useRef(null);
   const [showCalc, setShowCalc] = useState(false);
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
@@ -143,6 +144,15 @@ export default function Simulador() {
   useEffect(() => {
     const step = simState.step;
     if (step > 0 && step !== prevStepRef.current) track('sim_step', { paso: Math.min(step, 6) });
+    // Cada paso arranca desde el inicio de la tarjeta: sin esto, el scroll
+    // queda donde estaba y la pregunta siguiente aparece cortada en móvil.
+    if (step !== prevStepRef.current && cardRef.current) {
+      const r = cardRef.current.getBoundingClientRect();
+      if (r.top < 0 || r.top > 130) {
+        const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        cardRef.current.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      }
+    }
     if (prevStepRef.current < 6 && step >= 6) {
       const rq = engine(simState);
       track('sim_result_view', { plan: rq.name, precio: rq.price });
@@ -322,7 +332,7 @@ export default function Simulador() {
 
   return (
     <div style={css('display:flex;justify-content:center')}>
-      <div className="sim-card" style={css('width:760px;max-width:100%;display:flex;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 24px 60px rgba(0,59,113,0.10);border:0.5px solid #E8E8E8')}>
+      <div ref={cardRef} className="sim-card" style={css('width:760px;max-width:100%;display:flex;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 24px 60px rgba(0,59,113,0.10);border:0.5px solid #E8E8E8;scroll-margin-top:74px')}>
 
         <div className="sim-side" style={css('width:250px;flex:none;background:#003B71;color:#fff;padding:30px 26px;display:flex;flex-direction:column')}>
           <div style={css('display:flex;align-items:center;gap:10px;margin-bottom:26px')}><span style={css('width:30px;height:30px;border-radius:9px;background:#fff;color:#003B71;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800')}>SP</span><span style={css('font-size:14px;font-weight:800')}>Salud Protegida</span></div>
@@ -382,8 +392,8 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Tu grupo</div>
-              <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
-              <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyWho}</span></p>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.whoOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span>}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="m9 18 6-6-6-6" /></svg></button>
@@ -396,8 +406,8 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Las edades</div>
-              <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
-              <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 18px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyEdades}</span></p>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
               <div style={css('display:flex;flex-direction:column')}>
                 {sim.people.map((person, i) => (
                   <div key={i} style={css('margin-bottom:14px')}>
@@ -441,8 +451,8 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>{sim.nivelEyebrow}</div>
-              <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{sim.nivelTitle}</h3>
-              <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyNivel}</span></p>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{sim.nivelTitle}</h3>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.nivelOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span>}</span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:#007d77;white-space:nowrap')}>{opt.from}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
@@ -455,8 +465,8 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Zona</div>
-              <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Hasta dónde querés cobertura?</h3>
-              <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyGeo}</span></p>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Hasta dónde querés cobertura?</h3>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.geoOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label} <span style={css('font-size:13px;font-weight:800;color:#00BCB4;letter-spacing:0.06em')}>{opt.tier}</span></span><span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span></span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:#007d77;white-space:nowrap')}>{opt.impact}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
@@ -469,7 +479,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Coberturas adicionales</div>
-              <h3 style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Querés personalizar tu cobertura?</h3>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Querés personalizar tu cobertura?</h3>
               <p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyAddons}</span></p>
               {sim.liveReady && (
                 <div style={css('display:flex;align-items:center;justify-content:space-between;gap:10px;background:#F2FBFA;border:1px solid #d9efed;border-radius:12px;padding:12px 15px;margin-bottom:14px')}>
@@ -488,10 +498,14 @@ export default function Simulador() {
 
           {sim.isResult && (
             <div style={css(sim.stepAnim)}>
-              <div style={css('display:flex;align-items:center;gap:13px;margin-bottom:16px')}>
-                <div style={css('position:relative;width:44px;height:44px;flex:none')}>
-                  <svg width="44" height="44" viewBox="0 0 44 44" style={css('display:block')}><circle cx="22" cy="22" r="19" fill="none" stroke="#E6F7F6" strokeWidth="4"></circle><circle cx="22" cy="22" r="19" fill="none" stroke="#00BCB4" strokeWidth="4" strokeLinecap="round" strokeDasharray="119.4" strokeDashoffset="119.4" transform="rotate(-90 22 22)" style={css('animation:spRing 0.95s cubic-bezier(0.22,1,0.36,1) 0.1s forwards')}></circle></svg>
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#00BCB4" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={css('position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);animation:spCheckIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.72s both')}><path d="M20 6 9 17l-5-5"></path></svg>
+              <div style={css('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
+                <div style={css('position:relative;width:40px;height:40px;flex:none')}>
+                  <svg width="40" height="40" viewBox="0 0 44 44" style={css('display:block')}><circle cx="22" cy="22" r="19" fill="none" stroke="#E6F7F6" strokeWidth="4"></circle><circle cx="22" cy="22" r="19" fill="none" stroke="#00BCB4" strokeWidth="4" strokeLinecap="round" strokeDasharray="119.4" strokeDashoffset="119.4" transform="rotate(-90 22 22)" style={css('animation:spRing 0.95s cubic-bezier(0.22,1,0.36,1) 0.1s forwards')}></circle></svg>
+                  {/* Centrado con flexbox, no con transform: la animación de entrada
+                      pisa la propiedad transform y descentraba el tilde. */}
+                  <div style={css('position:absolute;inset:0;display:flex;align-items:center;justify-content:center')}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={css('animation:spCheckIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.72s both')}><path d="M20 6 9 17l-5-5"></path></svg>
+                  </div>
                 </div>
                 <div>
                   <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77')}>Encontramos tu match</div>
@@ -512,18 +526,6 @@ export default function Simulador() {
                 </div>
               </div>
 
-              <div style={css('margin-top:12px')}>
-                <button onClick={toggleCalc} aria-expanded={showCalc} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:#6B6B6B;font-weight:600')}>¿Cómo calculamos esto? <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (showCalc ? '180deg' : '0deg') + ')')}><path d="m6 9 6 6 6-6" /></svg></button>
-                {showCalc && (
-                  <div style={css('margin-top:10px;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden')}>
-                    {sim.resBreakdown.map((it, i) => (
-                      <div key={i} style={css('display:flex;justify-content:space-between;gap:12px;padding:11px 14px;font-size:13.5px;color:#3D3D3D;border-top:' + (i === 0 ? '0' : '1px solid #F0F0F0'))}><span>{it.label}</span><span style={css('font-weight:700;color:#003B71;white-space:nowrap')}>{it.amount}</span></div>
-                    ))}
-                    <div style={css('display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #E8E8E8;background:#F7FBFB;font-size:14px;font-weight:800;color:#003B71')}><span>Total estimado</span><span>{sim.resTotal}</span></div>
-                    <div style={css('padding:10px 14px;font-size:11.5px;color:#6B6B6B;background:#F7FBFB;border-top:1px solid #F0F0F0;line-height:1.4')}>Números de referencia, redondeados. El asesor confirma el total final.</div>
-                  </div>
-                )}
-              </div>
 
               <div style={css('margin-top:18px')}>
                 {sim.formOpen && (
@@ -548,6 +550,18 @@ export default function Simulador() {
                   </div>
                 )}
                 <a href={waHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado' })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
+              <div style={css('margin-top:14px')}>
+                <button onClick={toggleCalc} aria-expanded={showCalc} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:#6B6B6B;font-weight:600')}>¿Cómo calculamos esto? <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (showCalc ? '180deg' : '0deg') + ')')}><path d="m6 9 6 6 6-6" /></svg></button>
+                {showCalc && (
+                  <div style={css('margin-top:10px;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden')}>
+                    {sim.resBreakdown.map((it, i) => (
+                      <div key={i} style={css('display:flex;justify-content:space-between;gap:12px;padding:11px 14px;font-size:13.5px;color:#3D3D3D;border-top:' + (i === 0 ? '0' : '1px solid #F0F0F0'))}><span>{it.label}</span><span style={css('font-weight:700;color:#003B71;white-space:nowrap')}>{it.amount}</span></div>
+                    ))}
+                    <div style={css('display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #E8E8E8;background:#F7FBFB;font-size:14px;font-weight:800;color:#003B71')}><span>Total estimado</span><span>{sim.resTotal}</span></div>
+                    <div style={css('padding:10px 14px;font-size:11.5px;color:#6B6B6B;background:#F7FBFB;border-top:1px solid #F0F0F0;line-height:1.4')}>Números de referencia, redondeados. El asesor confirma el total final.</div>
+                  </div>
+                )}
+              </div>
                 <div style={css('display:flex;gap:10px;margin-top:10px')}>
                   <button onClick={sim.download} className="btn-wa-outline" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #cfe0dc;font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>Descargar</button>
                   <button onClick={sim.share} className="btn-wa-outline" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #cfe0dc;font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>{sim.shareMsg || 'Compartir'}</button>
