@@ -175,6 +175,15 @@ usa `npm ci`).
     scroll en 390×670) y centrado computado del tilde (±2px). Queda como
     evolución opcional el modo "pantalla completa" con CTA fijo (100dvh)
     si el test con usuarios lo pide.
+11d. **Regla de etiquetas y su poda** (17 jul 2026, de la observación del
+    usuario "a todo le pones etiquetas"): quedó codificada en `CLAUDE.md`
+    la regla de las tres funciones (veredicto / estado / orientación —
+    si repite el título de al lado, se poda). Auditoría completa del
+    ecosistema: se podaron los 4 kickers de pasos del simulador ("Tu
+    grupo", "Cobertura", "Zona", "Las edades" — la checklist "Paso X de
+    4" ya orienta y cada pregunta se titula sola); el resto del sistema
+    pasó la auditoría (badges de veredicto, etiquetas de honestidad,
+    kickers de sección con nombre propio, headers de tabla y footer).
 
 ---
 

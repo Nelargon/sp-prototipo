@@ -59,6 +59,14 @@ bitácora: …" del usuario entran con su voz.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.
+- **Regla de etiquetas (jul 2026, de la observación del usuario)**: una
+  etiqueta (kicker, badge, tag) se gana su lugar solo si hace al menos
+  una de tres cosas — da un **veredicto** ("Cubierta", "Desde Plan
+  Silver"), declara un **estado que la prosa no dice** ("Demostración",
+  "En camino"), o te **ubica donde el título solo no alcanza** ("Quiénes
+  somos", "Para asegurados"). Si repite el título de al lado, se poda.
+  Colores con semántica fija: teal = cubierto/sí · dorado = oportunidad
+  (nunca ausencia) · rojo = SOLO urgencias · gris = estado neutro.
 - **Regla tipográfica (julio 2026, pedido del usuario): Gilroy es display,
   Inter es lectura.** Gilroy SOLO para: títulos (h1/h2/h3, `.disp`),
   títulos de tarjetas, botones y CTAs, etiquetas cortas en mayúsculas

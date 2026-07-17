@@ -301,7 +301,6 @@ export default function Simulador() {
     gaugeShow: !!d.nivel && !isPadres, gaugeLevel: ({ esencial: 1, equilibrio: 2, amplia: 3 })[d.nivel] || 0,
     progressBarColor: livePanelReady ? planColor : '#00BCB4',
     whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: isPadres ? 'Para 65+ el plan es uno solo, pensado a medida: Plan Vital, con tarifa fija por persona.' : WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
-    nivelEyebrow: isPadres ? 'Plan para 65+' : 'Cobertura',
     nivelTitle: isPadres ? '¿Qué nivel para el adulto mayor?' : '¿Qué nivel de cobertura buscás?',
     whoOpts: O.who.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, onClick: () => pickWho(o.k) })),
     nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, from: 'desde ' + fmt(engine(Object.assign({}, d, { nivel: o.k, geo: d.geo || 'central' })).price), onClick: () => simGo({ nivel: o.k, step: 3 }) })),
@@ -391,7 +390,6 @@ export default function Simulador() {
           {sim.isWho && (
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Tu grupo</div>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
               <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
@@ -405,7 +403,6 @@ export default function Simulador() {
           {sim.isEdades && (
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Las edades</div>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
               <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
               <div style={css('display:flex;flex-direction:column')}>
@@ -450,7 +447,6 @@ export default function Simulador() {
           {sim.isNivel && (
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>{sim.nivelEyebrow}</div>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{sim.nivelTitle}</h3>
               <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
@@ -464,7 +460,6 @@ export default function Simulador() {
           {sim.isGeo && (
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#007d77;margin-bottom:8px')}>Zona</div>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Hasta dónde querés cobertura?</h3>
               <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
