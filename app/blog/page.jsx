@@ -1,6 +1,6 @@
 import { css } from '../css';
 import { BP } from '../basePath';
-import { getPublishedPosts } from '../../lib/blog';
+import { getPublishedPosts, formatFecha } from '../../lib/blog';
 
 export const metadata = {
   title: 'Blog · Salud Protegida',
@@ -39,7 +39,7 @@ export default function BlogPage() {
                   <div className="disp" style={css('font-size:19px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin-bottom:9px')}>{n.title}</div>
                   <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13.5px;color:#3D3D3D;line-height:1.55;flex:1')}>{n.description}</div>
                   <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
-                    <span style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#6B6B6B')}>Lectura de {n.minutes} min</span>
+                    <span style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#6B6B6B')}>{formatFecha(n.date)} · {n.minutes} min de lectura</span>
                     <span style={css('display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:#007d77')}>Leer <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
                   </div>
                 </a>
