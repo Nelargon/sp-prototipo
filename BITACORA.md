@@ -725,6 +725,45 @@ las reglas mismas.
 
 ---
 
+## Capítulo 28 — El cerebro se diseñó antes que la casa (y la mudanza fue con las ollas hirviendo)
+
+**Qué intentamos.** Construir el motor de contenido universal — la
+guarda ⚠ que este propio libro defendió durante cuatro días. Pero al
+revés de como se construye casi todo: primero el usuario diseñó el
+cerebro en un pimpón de 9 temas (alcance, audiencias, voz, entradas,
+circuito humano, documentos, orquestador, medición, terreno vedado) —
+cada tema con recomendación, porqué, y cierre explícito antes de pasar
+al siguiente — y recién con el `CEREBRO-motor-de-contenido.md` aprobado
+y el "construí" dicho con todas las letras, se creó la casa: el repo
+privado `sp-contenido`.
+
+**Qué pasó.** Dos cosas que valen capítulo. La primera: mientras la
+sesión constructora armaba el repo nuevo, la Routine de borradores
+semanales — que nadie detuvo, a propósito, por la regla de corte
+("ninguna obrera se desactiva hasta verificar su reemplazo") — dejó sus
+3 borradores del lunes en la cocina vieja. Uno de ellos, "Vivimos 14
+años más" (educación con fuentes INE/Banco Mundial), resultó el estreno
+perfecto del flujo completo hasta el PR de publicación; otro, "Cómo
+funciona la cobertura de medicamentos", era 🔴 de cobertura y estrenó
+la regla de parking **el mismo día en que la regla se escribió**: quedó
+terminado y estacionado, esperando un validador de Producto que todavía
+no tiene nombre. La cola de rojos — el caso de negocio para pedirle
+validadores a Gerencia — se escribió sola antes de que terminara la
+construcción. La segunda: la guarda ⚠ funcionó exactamente como se
+diseñó — cuatro días protegiendo a todas las sesiones paralelas de
+construir antes de tiempo, y se levantó en el mismo PR que anuncia lo
+construido.
+
+**Qué aprendimos.** Diseñar el cerebro antes que las carpetas no fue
+burocracia: fue lo que permitió que la construcción entera cupiera en
+una sesión sin una sola decisión improvisada — cada archivo del repo
+nuevo es una frase del pimpón. Y la mudanza con la fábrica encendida
+(las Routines viejas siguen corriendo hasta que las nuevas prueben que
+funcionan) confirmó la lección del capítulo 13: la confianza se delega
+por etapas — también entre robots.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
