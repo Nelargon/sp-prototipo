@@ -89,6 +89,12 @@ bitácora: …" del usuario entran con su voz.
   mano).
 - En Chromium headless, el click en links `tel:` bloquea navegaciones
   posteriores — aislar esos clicks al final de los tests.
+- **Cambio de tipografía = cambio de layout** (jul 2026, BITACORA cap.
+  29): la métrica de la fuente participa de todos los anchos; un
+  `white-space:nowrap` que "entraba justo" puede desbordar con la fuente
+  nueva. Tras cambiar una tipografía, correr el QA responsive completo.
+- Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
+  medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.
@@ -100,17 +106,21 @@ bitácora: …" del usuario entran con su voz.
   somos", "Para asegurados"). Si repite el título de al lado, se poda.
   Colores con semántica fija: teal = cubierto/sí · dorado = oportunidad
   (nunca ausencia) · rojo = SOLO urgencias · gris = estado neutro.
-- **Regla tipográfica (julio 2026, pedido del usuario): Gilroy es display,
-  Inter es lectura.** Gilroy SOLO para: títulos (h1/h2/h3, `.disp`),
-  títulos de tarjetas, botones y CTAs, etiquetas cortas en mayúsculas
-  (kickers, badges), navegación y cifras grandes. Inter (`--font-inter`,
-  auto-hospedada en `public/fonts/`) para TODO lo que se lee como oración:
-  párrafos, copetes/bajadas, descripciones de tarjetas, listas, citas,
-  tablas, bylines y metadatos ("Equipo SP · fecha · lectura"), notas al
-  pie, fuentes y estados vacíos. Test rápido: si el texto tiene más de una
-  línea o termina en punto, va en Inter; si es un titular, botón o
-  etiqueta, Gilroy. Al agregar texto nuevo, elegir la fuente a conciencia —
-  el default de `.body` es Gilroy y se filtra solo.
+- **Regla tipográfica (julio 2026, pedido del usuario): Nunito Sans es
+  display, Inter es lectura.** (Nunito Sans reemplazó a Gilroy el 20 jul
+  2026 — la licencia anual de Gilroy no se podía pagar; Nunito Sans es
+  libre, SIL OFL, auto-hospedada: `--font-display` en la web y TTFs en
+  `guia/fonts/`. La regla no cambió, solo la fuente.) Nunito Sans SOLO
+  para: títulos (h1/h2/h3, `.disp`), títulos de tarjetas, botones y CTAs,
+  etiquetas cortas en mayúsculas (kickers, badges), navegación y cifras
+  grandes. Inter (`--font-inter`, auto-hospedada en `public/fonts/`) para
+  TODO lo que se lee como oración: párrafos, copetes/bajadas,
+  descripciones de tarjetas, listas, citas, tablas, bylines y metadatos
+  ("Equipo SP · fecha · lectura"), notas al pie, fuentes y estados vacíos.
+  Test rápido: si el texto tiene más de una línea o termina en punto, va
+  en Inter; si es un titular, botón o etiqueta, Nunito Sans. Al agregar
+  texto nuevo, elegir la fuente a conciencia — el default de `.body` es la
+  display y se filtra solo.
 - **Regla de lenguaje (julio 2026, pedido del usuario)**: escribir en el
   idioma del cliente, no en jerga de seguros. Prohibido de cara al
   usuario: "cartilla" / "cartilla viva" (→ "qué cubre", "cobertura",

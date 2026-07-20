@@ -4,7 +4,8 @@
   "nombre_oficial": "Plan Privilege Silver",
   "fuente": {
     "cuadernillo": "CUADERNILLO_PRIVILEGE_SILVER.pdf (jul 2026)",
-    "tarifario": "PRECIOS_PLAN_PRIVILEGE_SILVER.pdf (jul 2026)"
+    "tarifario": "PRECIOS_PLAN_PRIVILEGE_SILVER.pdf (jul 2026)",
+    "tarifario_consolidado": "Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf (pág. 1, jul 2026 — actualiza las filas 70+; las hojas por plan del mismo PDF son las anteriores)"
   },
   "moneda": "PYG",
   "iva_incluido": true,
@@ -21,6 +22,11 @@
       {
         "edad": "65-69",
         "prima": 570000
+      },
+      {
+        "edad": "70-99",
+        "prima": 741000,
+        "solo_renovacion": true
       }
     ],
     "titular_conyuge_cada_uno": [
@@ -38,7 +44,7 @@
       },
       {
         "edad": "70-74",
-        "prima": 570000,
+        "prima": 684000,
         "solo_renovacion": true
       }
     ],
@@ -61,7 +67,7 @@
       },
       {
         "edad": "70-99",
-        "prima": 550000,
+        "prima": 684000,
         "solo_renovacion": true
       }
     ],

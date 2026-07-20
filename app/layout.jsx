@@ -1,5 +1,5 @@
 import './globals.css';
-import { gilroy, inter } from './fonts';
+import { display, inter } from './fonts';
 import { BP } from './basePath';
 
 // Mientras el ecosistema sea prototipo, NO se indexa (defensa principal en
@@ -19,7 +19,7 @@ export const metadata = {
     type: 'website',
     title: 'Salud Protegida — Protección que se siente',
     description:
-      'Cotizá tu plan de salud en un minuto. Cobertura clara, sin sorpresas de último momento.',
+      'Simulá tu plan de salud en un minuto. Cobertura clara, sin sorpresas de último momento.',
     images: [`${BP}/assets/hero.webp`],
     locale: 'es_PY',
   },
@@ -58,7 +58,7 @@ const ORG_JSONLD = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={`${gilroy.variable} ${inter.variable}`}>
+    <html lang="es" className={`${display.variable} ${inter.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSONLD) }} />
         {children}

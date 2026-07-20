@@ -65,13 +65,17 @@ export default function Page() {
   const toggleFullTable = () => setState((s) => ({ showFullTable: !s.showFullTable }));
   const toggleFaq = (i) => setState((s) => ({ faqOpen: s.faqOpen === i ? null : i }));
 
+  // Cada respuesta que despierta una intención concreta termina en su paso
+  // siguiente (WhatsApp prellenado con el tema, o el simulador): quien abre
+  // una pregunta es un lead caliente — responder y no ofrecer la acción es
+  // dejarlo ir (auditoría de conversión, jul 2026).
   const faqs = () => [
     { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo de espera desde que te afiliás hasta poder usar ciertas coberturas (como estudios de alta complejidad o internaciones programadas). Varía según el servicio — tu asesor te muestra el detalle exacto antes de firmar.' },
-    { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.' },
+    { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
-    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido. Pagando con débito automático o tarjeta de crédito tenés 10% de descuento. Usá el simulador para ver tu precio en menos de un minuto.' },
-    { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.' },
+    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido. Pagando con débito automático o tarjeta de crédito tenés 10% de descuento.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
+    { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
 
   const difsData = () => [
@@ -120,6 +124,7 @@ export default function Page() {
       if (!bar) { bar = document.createElement('div'); bar.className = 'sp-prog'; root.appendChild(bar); }
       const nav = root.querySelector('[data-nav]');
       const cotizarFab = root.querySelector('[data-cotizar-fab]');
+      const ctaBar = root.querySelector('[data-cta-bar]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
       Array.prototype.forEach.call(root.querySelectorAll('div'), (c) => {
@@ -153,6 +158,7 @@ export default function Page() {
         bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
         if (nav) { if (y > 70) nav.classList.add('solid'); else nav.classList.remove('solid'); }
         if (cotizarFab) { if (y > 640) cotizarFab.classList.add('show'); else cotizarFab.classList.remove('show'); }
+        if (ctaBar) { if (y > 640) ctaBar.classList.add('show'); else ctaBar.classList.remove('show'); }
         if (heroBg && y < 900) heroBg.style.transform = 'translateY(' + (y * 0.16) + 'px)';
         if (heroContent && y < 900) { heroContent.style.transform = 'translateY(' + (y * 0.14) + 'px)'; heroContent.style.opacity = String(Math.max(0, 1 - y / 620)); }
         revealCheck();
@@ -206,7 +212,11 @@ export default function Page() {
   const plansArr = plans();
   const cartArr = cart();
   const waDigits = (WHATSAPP_NUMBER || '').replace(/\D/g, '');
-  const waHref = waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero información sobre los planes de Salud Protegida.')) : '#';
+  // WhatsApp con el contexto puesto (salvaguarda Galperin, PLAN-home-v2 §4):
+  // si la persona ya eligió un plan o abrió un tema, la conversación arranca
+  // desde ahí — nunca desde cero.
+  const waMsg = (texto) => (waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(texto)) : '#');
+  const waHref = waMsg('Hola! Quiero información sobre los planes de Salud Protegida.');
 
   // Guía Médica (páginas estáticas en /guia). guia_resultados lee ?q= y
   // precarga la búsqueda, así el buscador del homepage llega "con la búsqueda hecha".
@@ -254,6 +264,12 @@ export default function Page() {
     q: f.q, a: f.a, open: state.faqOpen === i,
     chevStyle: 'transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (state.faqOpen === i ? '180deg' : '0deg') + ')',
     toggle: () => { if (state.faqOpen !== i) track('faq_open', { pregunta: f.q }); toggleFaq(i); },
+    cta: f.cta ? {
+      label: f.cta.label,
+      href: f.cta.sim ? `${BP}/simulador/` : waMsg(f.cta.wa),
+      external: !f.cta.sim,
+      onClick: () => (f.cta.sim ? track('cta_simulador', { origen: 'faq' }) : track('click_whatsapp', { origen: 'faq', tema: f.cta.tema })),
+    } : null,
   }));
 
   // how it works
@@ -276,6 +292,7 @@ export default function Page() {
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     sliderVal: state.sliderVal, onSlide: (e) => { const val = +e.target.value; const ni = Math.max(0, Math.min(2, Math.round(val / 100))); if (ni !== idx) track('comparador_plan', { plan: plansArr[ni].short, via: 'slider' }); setState({ sliderVal: val }); },
     planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops,
+    waPlanHref: waMsg('Hola! Quiero consultar por el ' + p.name + '.'),
     sliderHeadStyle: 'padding:30px 30px 26px;color:#fff;transition:background .25s;background:' + color,
     sliderTrackStyle: 'width:100%;background:linear-gradient(90deg,' + color + ' ' + (tSlide / 2 * 100) + '%,#E3E6E5 ' + (tSlide / 2 * 100) + '%);--c:' + color,
     showFullTable: state.showFullTable, toggleFullTable,
@@ -353,12 +370,17 @@ export default function Page() {
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
             <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:#00BCB4')}>se siente</span>.</h1>
             <p style={css('font-size:20px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
-            {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red. */}
+            {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red.
+                Un solo verbo para la acción comercial en todo el sitio: "Simulá tu plan"
+                (auditoría de conversión, jul 2026 — cinco nombres eran cinco decisiones). */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
-              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Calcular mi plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#00BCB4;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
             </div>
-            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:6px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
+            {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
+                tocar el título del hero — el test de 5 segundos sigue vigente. */}
+            <div style={css('margin-top:14px;font-size:13.5px;color:rgba(255,255,255,0.82);font-family:var(--font-inter),sans-serif')}>En 1 minuto ves tu precio — planes desde <span className="num-tnum">{fmt(plansArr[0].price)}</span> al mes, sin dejar datos.</div>
+            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:2px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
           </div>
         </div>
         <div style={css('position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:rgba(255,255,255,0.7);display:flex;flex-direction:column;align-items:center;gap:6px')}>
@@ -458,7 +480,7 @@ export default function Page() {
               </div>
               <div style={css('display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid #F0F0F0')}>
                 <button onClick={v.toggleFullTable} aria-expanded={v.showFullTable} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:#6B6B6B;font-weight:600')}>{v.fullTableLabel} <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(v.chevStyle)}><path d="m6 9 6 6 6-6" /></svg></button>
-                <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'comparador', plan: v.planName })} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
+                <a href={v.waPlanHref} onClick={() => track('click_whatsapp', { origen: 'comparador', plan: v.planName })} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
               </div>
               {v.showFullTable && (
                 <div style={css('margin-top:22px;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;overflow-x:auto')}>
@@ -486,7 +508,7 @@ export default function Page() {
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simular Plan Vital</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>
@@ -634,7 +656,12 @@ export default function Page() {
             {v.faqList.map((f, i) => (
               <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:14px;overflow:hidden')}>
                 <button onClick={f.toggle} aria-expanded={f.open} style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:#003B71')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
-                {f.open && <div style={css('padding:0 20px 20px;font-size:14.5px;color:#3D3D3D;line-height:1.65')}>{f.a}</div>}
+                {f.open && (
+                  <div style={css('padding:0 20px 20px;font-size:14.5px;color:#3D3D3D;line-height:1.65')}>
+                    {f.a}
+                    {f.cta && <a href={f.cta.href} onClick={f.cta.onClick} {...(f.cta.external ? { target: '_blank', rel: 'noopener' } : {})} className="link-teal" style={css('display:inline-block;margin-top:10px;color:#007d77;font-weight:700;font-size:14px')}>{f.cta.label}</a>}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -650,7 +677,7 @@ export default function Page() {
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
             <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#007d77;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-ghost-light2" style={css('height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.6);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simular mi plan</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-ghost-light2" style={css('height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.6);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan</a>
           </div>
         </div>
       </section>
@@ -680,7 +707,7 @@ export default function Page() {
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
               <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>
               <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>
-              <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simular mi plan</a>
+              <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simulá tu plan</a>
             </div>
           </div>
         </div>
@@ -690,8 +717,18 @@ export default function Page() {
       {/* COTIZAR STICKY (aparece al scrollear) */}
       <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'fab' })} data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg><span className="fab-full">Simulá tu plan</span><span className="fab-short">Simulá</span></a>
 
-      {/* WHATSAPP FLOTANTE */}
-      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
+      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+
+      {/* BARRA CTA MÓVIL (auditoría de conversión, jul 2026): en ≤820px los dos
+          flotantes formaban una columna que tapaba texto en casi toda la página;
+          la barra vive en el borde inferior (zona del pulgar) y no tapa nada
+          porque el contenido termina encima de ella. Mismo umbral de scroll que
+          el FAB de desktop. */}
+      <div data-cta-bar className="cta-bar" role="group" aria-label="Acciones rápidas">
+        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal" style={css('flex:1;height:48px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+        <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;border-radius:13px;background:#fff;border:1.5px solid #00BCB4;color:#007d77;display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      </div>
 
     </div>
   );

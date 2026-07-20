@@ -24,15 +24,18 @@ export const fmt = (n) =>
   '₲ ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 /* Tarifario vigente (IVA incluido). Tramos de edad: 0-54 / 55-64 / 65-69 /
-   70+ (el tramo 70+ es de renovación; se usa solo como estimación).
+   70+ (el tramo 70+ es de renovación, no de venta nueva; se usa solo como
+   estimación). El tramo 70+ sale de la tabla consolidada de julio 2026
+   (Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf, pág. 1) — antes no
+   había cifra de titular solo 70+ y se estimaba con la de 65-69.
    solo: titular sin adherentes · tc: titular/cónyuge cada uno (aplica en
    cuanto hay más de una persona) · adh: adherente con parentesco ·
    hijo3: hijo adicional desde el 3º (con prima de grupo familiar) ·
    pkg: grupo familiar titular + cónyuge + 2 hijos (≤59 / 60-64). */
 const TARIFAS = {
-  bronce: { solo: [238000, 300000, 450000, 450000], tc: [162000, 220000, 320000, 450000], adh0_20: 119000, hijo3: 100000, pkg: [550000, 720000] },
-  silver: { solo: [324000, 420000, 570000, 570000], tc: [228000, 330000, 430000, 570000], adh0_20: 172000, hijo3: 140000, pkg: [770000, 1000000] },
-  gold: { solo: [432000, 560000, 680000, 680000], tc: [324000, 440000, 540000, 680000], adh0_20: 238000, hijo3: 180000, pkg: [990000, 1300000] },
+  bronce: { solo: [238000, 300000, 450000, 585000], tc: [162000, 220000, 320000, 540000], adh0_20: 119000, hijo3: 100000, pkg: [550000, 720000] },
+  silver: { solo: [324000, 420000, 570000, 741000], tc: [228000, 330000, 430000, 684000], adh0_20: 172000, hijo3: 140000, pkg: [770000, 1000000] },
+  gold: { solo: [432000, 560000, 680000, 884000], tc: [324000, 440000, 540000, 816000], adh0_20: 238000, hijo3: 180000, pkg: [990000, 1300000] },
 };
 const VITAL_PRECIO = 283000; // titular 65+, costo con débito automático
 const VITAL_PARTICULAR = 312000; // titular 65+, costo particular

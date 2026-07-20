@@ -4,7 +4,8 @@
   "nombre_oficial": "Plan Privilege Bronze",
   "fuente": {
     "cuadernillo": "CUADERNILLO_PRIVILEGE_BRONZE.pdf (24 págs., jul 2026)",
-    "tarifario": "PRECIOS_PLAN_PRIVILEGE_BRONZE.pdf (jul 2026)"
+    "tarifario": "PRECIOS_PLAN_PRIVILEGE_BRONZE.pdf (jul 2026)",
+    "tarifario_consolidado": "Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf (pág. 1, jul 2026 — actualiza las filas 70+; las hojas por plan del mismo PDF son las anteriores)"
   },
   "moneda": "PYG",
   "iva_incluido": true,
@@ -21,6 +22,11 @@
       {
         "edad": "65-69",
         "prima": 450000
+      },
+      {
+        "edad": "70-99",
+        "prima": 585000,
+        "solo_renovacion": true
       }
     ],
     "titular_conyuge_cada_uno": [
@@ -38,7 +44,7 @@
       },
       {
         "edad": "70-74",
-        "prima": 450000,
+        "prima": 540000,
         "solo_renovacion": true
       }
     ],
@@ -61,7 +67,7 @@
       },
       {
         "edad": "70-99",
-        "prima": 420000,
+        "prima": 540000,
         "solo_renovacion": true
       }
     ],

@@ -69,12 +69,12 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 | `guia_handoff`        | q (texto buscado, puede ser vacío), via (enter / dropdown / nav / menú / link) | cuánta demanda de la guía nace en la web |
 | `cartilla_select`     | práctica, via (chip / sugerencia)        | qué coberturas consulta la gente antes de comprar |
 | `comparador_plan`     | plan, via (slider / parada)              | qué nivel de plan explora cada visitante |
-| `cta_simulador`       | origen (nav / hero / teaser / senior / cierre / fab / menú) | qué sección de la web empuja a cotizar |
+| `cta_simulador`       | origen (nav / hero / teaser / senior / cierre / fab / menú / barra_movil / faq) | qué sección de la web empuja a cotizar |
 | `sim_step`            | paso (1–6)                               | dónde se abandona el simulador (embudo) |
 | `sim_result_view`     | plan recomendado, precio                 | qué recomienda el motor y a qué precio |
 | `sim_lead_submit`     | plan, precio — **sin nombre/tel/email**  | conversión a lead (el dato personal va al CRM, no a la analítica) |
 | `sim_quote_download` / `sim_quote_share` | —                     | interés fuerte sin dejar datos |
-| `click_whatsapp`      | origen (comparador / cierre / fab / simulador_resultado) | conversión a conversación |
+| `click_whatsapp`      | origen (comparador / cierre / fab / simulador_resultado / barra_movil / faq) + tema en faq | conversión a conversación (el mensaje va prellenado con el contexto: plan del comparador, tema de la FAQ) |
 | `click_urgencias`     | origen (header / menú móvil)             | uso del acceso de urgencias |
 | `faq_open`            | pregunta                                 | objeciones reales → contenido y guiones de venta |
 
@@ -124,8 +124,9 @@ El molde de las páginas asume, por prestador:
   `guia_prestador.html`.
 - Paginación: mantenerla, pero con "Cargar más" como acción principal en móvil
   y conservando los filtros al volver de una ficha.
-- Tipografías: Gilroy ExtraBold/SemiBold para títulos (archivos en `fonts/`),
-  Inter para cuerpo. Paleta: navy `#003B71`, teal `#00BCB4`, verde `#009690`
+- Tipografías: Nunito Sans ExtraBold/SemiBold para títulos (archivos en
+  `fonts/`, licencia libre SIL OFL — reemplazó a Gilroy en jul 2026 porque
+  su licencia anual no se renovó), Inter para cuerpo. Paleta: navy `#003B71`, teal `#00BCB4`, verde `#009690`
   (tokens en el `tailwind.config` de cada página).
 - Links de vuelta a la web de planes: en el prototipo, el logo y los enlaces
   "Inicio" / "Planes" del header, menú móvil y footer apuntan en relativo

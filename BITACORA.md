@@ -764,6 +764,80 @@ por etapas — también entre robots.
 
 ---
 
+## Capítulo 29 — La tipografía que no podíamos pagar
+
+**Qué intentamos.** Nada — esta vez el cambio vino de afuera. El usuario
+avisó: "cambiamos la tipografía a Nunito Sans, porque Gilroy no podemos
+pagar la licencia anual". Gilroy era la display de la identidad desde el
+primer día (decisión #2), pero era una fuente comercial; Nunito Sans es
+libre (SIL OFL), con un dibujo redondeado que hasta le queda bien a una
+marca que se define "cercana".
+
+**Qué pasó.** El reemplazo fue 1:1 a propósito: mismos pesos, mismas
+reglas, cero reforma de diseño. La variable CSS pasó de `--font-gilroy` a
+`--font-display` — un nombre semántico, así el próximo cambio de fuente
+(si lo hay) no obliga a renombrar nada. Los TTF de Gilroy se borraron del
+repo (eran, además, el riesgo legal), la guía recibió sus propios TTF de
+Nunito Sans en el mismo formato que consume la empresa desarrolladora, y
+la web usa el subset latin del variable woff2 (50 KB, alfabeto español
+completo). Pero al correr el QA integral apareció una regresión que nadie
+tocó: **scroll horizontal de 7px en el simulador a 360px**. El culpable:
+"Prefiero escribir por WhatsApp", un botón con `white-space:nowrap` que
+entraba justo con Gilroy — y Nunito Sans dibuja las mismas letras unos
+píxeles más anchas.
+
+**Qué aprendimos.** Un cambio de fuente es un cambio de layout: la
+métrica tipográfica participa de todos los anchos, y cada `nowrap` que
+"entraba justo" es una promesa hecha con la fuente vieja. La regla quedó
+en `CLAUDE.md`: después de cambiar una tipografía, el QA responsive se
+corre entero, aunque "solo se cambió la fuente". Y la de siempre, otra
+vez: lo agarró el QA computado, no el ojo.
+
+---
+
+## Capítulo 30 — La conversión no era rediseñar: era la última milla
+
+**Qué intentamos.** El usuario pidió auditar la página con ojos de
+conversión: "las personas no leen, escanean" — y que la web tenga una
+dirección definida, no solo información. La auditoría (build local,
+recorrida completa en 390px y 1440px con capturas por pantalla) llegó a
+la misma tesis que el feedback externo de julio: la arquitectura ya
+convierte; lo que faltaba era fricción de última milla.
+
+**Qué pasó.** Se ejecutó la primera ola, aprobada por el usuario, sin
+tocar lo que espera el test de 5 segundos: (a) el mismo botón tenía
+**cinco nombres** ("Calcular mi plan", "Simulá tu plan", "Simular mi
+plan", "Cotizá tu plan", "Empecemos") — quedó un solo verbo, "Simulá tu
+plan", y el BRANDSCRIPT se actualizó para que el guion mande; (b) el
+botón "Consultar este plan" del comparador abría WhatsApp con un mensaje
+**genérico** — ahora prellena el plan elegido, y la FAQ prellena su tema
+(la salvaguarda de Galperin era letra escrita que el código no cumplía);
+(c) la FAQ respondía y no ofrecía el paso siguiente — quien abre
+"¿cubren preexistencias?" es un lead caliente y ahora tiene su link; (d)
+los **dos botones flotantes** de móvil tapaban texto en la banda Senior,
+el manifiesto, los diferenciadores y el footer — los reemplazó una barra
+fija en el borde inferior (zona del pulgar) con guardián computado en el
+QA; y (e) el precio ancla entró a la pantalla 1 ("planes desde
+₲ 238.000", calculado de `plans()`, nunca escrito a mano). El punto de
+los logos de aliados en gris se propuso y el usuario lo descartó — queda
+como está. De paso, el simulador desktop dejó de flotar chico en un
+océano navy: fondo continuo, tarjeta de 920px y una intro que llena su
+vacío con datos útiles.
+
+**Qué aprendimos.** Primero: los elementos flotantes se auditan contra el
+contenido que tapan, no mirándolos a ellos — un FAB "chico" es una columna
+permanente que se come el 15% de cada pantalla de lectura. Segundo: la
+consistencia del CTA es escaneo puro — cada verbo nuevo para la misma
+acción es una decisión más que le pedimos a alguien que no lee. Tercero:
+cuando dos auditorías independientes (la externa de julio y esta) llegan
+a los mismos cuatro puntos pausados, el test de 5 segundos dejó de ser
+opcional: es la llave que ya tiene dos cerraduras esperándola. Y una
+técnica: con `scroll-behavior:smooth`, medir después de un
+`window.scrollTo()` es medir a mitad de viaje — los guardianes scrollean
+con `behavior:'instant'`.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
