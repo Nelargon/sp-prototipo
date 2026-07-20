@@ -1,24 +1,22 @@
 import localFont from 'next/font/local';
 
-// Gilroy, self-hosted. next/font emits the @font-face rules with asset URLs that
-// respect basePath/assetPrefix automatically, so the fonts resolve correctly both
-// locally and when the site is served from a GitHub Pages subpath.
-export const gilroy = localFont({
-  src: [
-    { path: '../public/fonts/Gilroy-Regular.ttf', weight: '400', style: 'normal' },
-    { path: '../public/fonts/Gilroy-Medium.ttf', weight: '500', style: 'normal' },
-    { path: '../public/fonts/Gilroy-SemiBold.ttf', weight: '600', style: 'normal' },
-    { path: '../public/fonts/Gilroy-Bold.ttf', weight: '700', style: 'normal' },
-    { path: '../public/fonts/Gilroy-ExtraBold.ttf', weight: '800', style: 'normal' },
-  ],
-  variable: '--font-gilroy',
+// Nunito Sans (variable, OFL — ver public/fonts/OFL-NunitoSans.txt): la
+// tipografía display de SP desde julio 2026. Reemplazó a Gilroy porque la
+// licencia anual de Gilroy no se podía pagar (decisión del usuario; ver
+// BITACORA). next/font emite las reglas @font-face con URLs que respetan
+// basePath/assetPrefix, así las fuentes resuelven bien en local y bajo el
+// subpath de GitHub Pages. El archivo es el subset latin (alfabeto español
+// completo); el signo ₲ cae al fallback del sistema, igual que con Gilroy.
+export const display = localFont({
+  src: [{ path: '../public/fonts/NunitoSans-Variable.woff2', weight: '200 1000', style: 'normal' }],
+  variable: '--font-display',
   display: 'swap',
 });
 
 // Inter (variable, OFL — ver public/fonts/OFL-Inter.txt): la tipografía de
 // cuerpo que define la identidad SP (HANDOFF decisión #2, "Inter para
-// cuerpo"). Gilroy es display: en lectura larga cansa; el cuerpo de las
-// notas del blog se lee en Inter.
+// cuerpo"). La display es para mirar: en lectura larga cansa; el cuerpo de
+// las notas del blog se lee en Inter.
 export const inter = localFont({
   src: [{ path: '../public/fonts/Inter-Variable.ttf', weight: '100 900', style: 'normal' }],
   variable: '--font-inter',

@@ -114,8 +114,10 @@ usa `npm ci`).
    es solo para prototipo; producción requiere build compilado.
 2. **Identidad visual**: tokens SP — navy `#003B71`, teal `#00BCB4`, verde
    `#009690`, dorado `#C9A227` (solo planes premium), rojo `#D92D20`
-   (SOLO urgencias). Gilroy ExtraBold/SemiBold para títulos, Inter para
-   cuerpo. Nombres en Tipo Oración, nunca MAYÚSCULAS SOSTENIDAS.
+   (SOLO urgencias). **Nunito Sans** ExtraBold/SemiBold para títulos
+   (desde el 20 jul 2026 — reemplazó a Gilroy porque su licencia anual no
+   se podía pagar; Nunito Sans es SIL OFL, gratis y auto-hospedada), Inter
+   para cuerpo. Nombres en Tipo Oración, nunca MAYÚSCULAS SOSTENIDAS.
 3. **Buscador único**: un campo que entiende especialidades, estudios,
    prestadores, ciudades, sinónimos cotidianos ("dentista"→Odontología),
    errores de tipeo ("rezonancia"→Resonancia) y orienta síntomas
@@ -184,6 +186,42 @@ usa `npm ci`).
     4" ya orienta y cada pregunta se titula sola); el resto del sistema
     pasó la auditoría (badges de veredicto, etiquetas de honestidad,
     kickers de sección con nombre propio, headers de tabla y footer).
+11e. **Primera ola de la auditoría de conversión — ejecutada (20 jul
+    2026, aprobada por el usuario; BITACORA cap. 30)**: (a) **un solo
+    verbo comercial** — "Simulá tu plan" en hero, cierre, footer, banda
+    Senior ("Simulá Plan Vital"), kicker/título del simulador y OG
+    (convivían cinco rótulos; `BRANDSCRIPT.md` §5 actualizado — el guion
+    manda); (b) **WhatsApp siempre con contexto** (salvaguarda Galperin):
+    el comparador prellena el plan elegido y la FAQ su tema; (c) **la FAQ
+    ofrece el paso siguiente** (preexistencias y cambio de plan →
+    WhatsApp por tema; precio → simulador), con `faq`/`barra_movil` como
+    orígenes nuevos en ANEXO §2; (d) **barra CTA fija en móvil** (Simulá
+    tu plan + WhatsApp, ≤820px, zona del pulgar) reemplaza a los dos
+    flotantes que tapaban texto — con guardián computado en
+    `qa/qa-integral.mjs` (barra visible tras scroll, flotantes ocultos,
+    copyright por encima); (e) **ancla de precio en pantalla 1**:
+    microcopy bajo las puertas del hero y ticks en la intro del simulador
+    ("planes desde ₲ 238.000" sale de `plans()`, nunca a mano). Lo que
+    depende del **test de 5 segundos** (categoría en el hero, acción
+    dominante única, portada -20%, fusión intro+pregunta 1) sigue EN
+    PAUSA (§3c) — dos auditorías independientes ya coinciden en esos
+    puntos. El punto "logos de aliados en gris en táctil" se propuso y
+    el usuario decidió NO tocarlo (20 jul) — no reabrir sin pedido suyo.
+11f. **Simulador desktop rediseñado (20 jul 2026, pedido del usuario:
+    "la versión desktop todavía no se ve bien")**: fondo continuo
+    hero→tarjeta (el degradé pasó a la sección de la tarjeta; antes había
+    una costura #00294f→#003B71), tarjeta de 920px con rail de 280px en
+    ≥1100px, y la intro llena su espacio con datos útiles (desde ₲,
+    4 pasos, 10% con débito) en vez de media tarjeta en blanco. El móvil
+    quedó intacto (decisión 11c y sus guardianes de geometría).
+11g. **Tipografía display: Nunito Sans (20 jul 2026, decisión del
+    usuario; BITACORA cap. 29)**: la licencia anual de Gilroy no se podía
+    pagar; Nunito Sans (SIL OFL, gratis) la reemplazó 1:1 — mismos pesos,
+    mismas reglas, variable renombrada a `--font-display`. Los TTF de
+    Gilroy salieron del repo (riesgo legal); la guía lleva sus TTF de
+    Nunito Sans y la web el variable woff2 (subset latin). Ojo: `/v1/`
+    (congelado) todavía sirve los TTF viejos de Gilroy — decidir si el
+    snapshot se baja o se tolera mientras sea demo interna.
 
 ---
 
@@ -222,7 +260,8 @@ A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
      (la resonancia en Bronce es la etiqueta dorada "Desde Plan Silver"
      — el upsell ahora es literalmente cierto). Colores por metal:
      bronce `#A9724B`, silver `#66717E`, gold `#B8860B` (pedido del
-     usuario: sin logos/colores de los cuadernillos, Gilroy, sentido
+     usuario: sin logos/colores de los cuadernillos, la tipografía
+     display del sitio, sentido
      común por metal).
    - **Guía Médica**: `min_plan` ahora es bronce/silver/gold, el modo
      personalizado es `?plan=silver`, upsell "Con Plan Gold", tarjeta
@@ -341,6 +380,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    usuario:** confirmar el dato "+800 prestadores" — recién ahí se
    actualizan los "más de 50 prestadores" (page.jsx y FAQ), que son
    ciertos pero se quedan cortos.
+   *Actualización 20 jul 2026:* la auditoría de conversión propia llegó,
+   sin leer este feedback, a los mismos cuatro puntos pausados — refuerza
+   correr el test de 5 segundos ya. Todo lo que NO dependía del test se
+   ejecutó en la decisión 11e.
 
 ### Prioridad media
 

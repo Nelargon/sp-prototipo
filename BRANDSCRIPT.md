@@ -59,9 +59,13 @@ de cuenta — el portal, `PLAN-home-v2.md` §3.)
 
 ## 5. Los llamados a la acción
 
-- **Directo (prospecto)**: "Calcular mi plan" — siempre teal, siempre
-  visible. El cierre es una conversación (WhatsApp/asesor), nunca un
-  "comprar ahora": en salud se vende la cita, no el carrito.
+- **Directo (prospecto)**: **"Simulá tu plan"** — siempre teal, siempre
+  visible, y siempre con ese nombre exacto: un solo verbo para una sola
+  acción en todo el sitio (unificado en jul 2026 — convivían "Calcular mi
+  plan", "Simular mi plan" y "Cotizá tu plan", y cada verbo nuevo es una
+  decisión nueva para quien escanea). El cierre es una conversación
+  (WhatsApp/asesor), nunca un "comprar ahora": en salud se vende la cita,
+  no el carrito.
 - **Directo (afiliado)**: "Ya soy de SP · Ver mi red".
 - **Transicional**: la Guía Médica abierta a todos y el simulador sin
   datos personales — utilidad gratis que construye confianza antes de

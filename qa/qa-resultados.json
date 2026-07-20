@@ -1,9 +1,9 @@
 {
-  "fecha": "2026-07-17T10:28:30.552Z",
+  "fecha": "2026-07-20T20:12:20.579Z",
   "oks": [
     {
       "frente": "funcional",
-      "detalle": "crawler: 82 links internos únicos, todos responden"
+      "detalle": "crawler: 85 links internos únicos, todos responden"
     },
     {
       "frente": "funcional",
@@ -54,20 +54,44 @@
       "detalle": "barrido 360/390/430 completado en 4 páginas"
     },
     {
+      "frente": "responsive",
+      "detalle": "barra CTA móvil en 360px: visible tras el scroll y flotantes ocultos"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "fin de página en 360px: el copyright queda por encima de la barra"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "barra CTA móvil en 390px: visible tras el scroll y flotantes ocultos"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "fin de página en 390px: el copyright queda por encima de la barra"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "barra CTA móvil en 430px: visible tras el scroll y flotantes ocultos"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "fin de página en 430px: el copyright queda por encima de la barra"
+    },
+    {
       "frente": "accesibilidad",
-      "detalle": "teclado: Tab recorre 12 elementos distintos en la home"
+      "detalle": "teclado: Tab recorre 11 elementos distintos en la home"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 174 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 175 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/simulador/: 165 KB gzip de contenido crítico (≤300)"
+      "detalle": "/simulador/: 166 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/blog/: 151 KB gzip de contenido crítico (≤300)"
+      "detalle": "/blog/: 152 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -75,15 +99,15 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 22 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 23 ms (< 3 s)"
     },
     {
       "frente": "contenido",
-      "detalle": "16 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
+      "detalle": "19 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
     },
     {
       "frente": "contenido",
-      "detalle": "lente Shapiro: hero(h1=1) + prueba social(25 elementos) + objeciones(FAQ) + 7 CTAs"
+      "detalle": "lente Shapiro: hero(h1=1) + prueba social(25 elementos) + objeciones(FAQ) + 8 CTAs"
     }
   ],
   "hallazgos": [
@@ -102,7 +126,7 @@
     {
       "frente": "accesibilidad",
       "severidad": "confunde",
-      "detalle": "contraste 2.10:1 (mín 4.5:1) — \"Simular mi plan\" rgb(255, 255, 255) sobre rgb(41,199,192)",
+      "detalle": "contraste 2.10:1 (mín 4.5:1) — \"Simulá tu plan\" rgb(255, 255, 255) sobre rgb(41,199,192)",
       "donde": "/"
     },
     {

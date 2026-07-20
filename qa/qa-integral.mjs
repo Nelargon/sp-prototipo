@@ -186,6 +186,47 @@ for (const w of [360, 390, 430]) {
 }
 ok('responsive', 'barrido 360/390/430 completado en ' + PAGINAS_APP.length + ' páginas');
 
+// 2b. Barra CTA móvil (jul 2026): en ≤820px reemplaza a los dos flotantes que
+// tapaban texto (banda Senior, manifiesto, diferenciadores, FAQ, footer).
+// Guardián computado: barra visible tras el scroll, flotantes ocultos, y el
+// final del footer por encima de la barra — nada queda tapado al fondo.
+for (const w of [360, 390, 430]) {
+  const page = await browser.newPage({ viewport: { width: w, height: 800 } });
+  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(400);
+  // behavior:'instant': el html tiene scroll-behavior:smooth y el scroll
+  // programático animado hace medir a mitad de viaje.
+  await page.evaluate(() => window.scrollTo({ top: 900, behavior: 'instant' }));
+  await page.waitForTimeout(600);
+  const bar = await page.evaluate(() => {
+    const b = document.querySelector('.cta-bar');
+    if (!b) return { existe: false };
+    const cs = getComputedStyle(b);
+    const r = b.getBoundingClientRect();
+    const fab = document.querySelector('.cotizar-fab');
+    const wa = document.querySelector('.wa-fab');
+    return {
+      existe: true,
+      visible: cs.display !== 'none' && b.classList.contains('show') && r.height > 40 && r.bottom <= window.innerHeight + 1,
+      fabOculto: !fab || getComputedStyle(fab).display === 'none',
+      waOculto: !wa || getComputedStyle(wa).display === 'none',
+    };
+  });
+  if (bar.existe && bar.visible && bar.fabOculto && bar.waOculto) ok('responsive', 'barra CTA móvil en ' + w + 'px: visible tras el scroll y flotantes ocultos');
+  else falla('responsive', 'confunde', 'barra CTA móvil en ' + w + 'px: ' + JSON.stringify(bar), '/');
+  const fondo = await page.evaluate(async () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+    await new Promise((res) => setTimeout(res, 500));
+    const b = document.querySelector('.cta-bar');
+    const foot = document.querySelector('footer');
+    if (!b || !foot || !foot.lastElementChild) return null;
+    return { textoBottom: foot.lastElementChild.getBoundingClientRect().bottom, barTop: b.getBoundingClientRect().top };
+  });
+  if (fondo && fondo.textoBottom <= fondo.barTop + 1) ok('responsive', 'fin de página en ' + w + 'px: el copyright queda por encima de la barra');
+  else falla('responsive', 'confunde', 'la barra tapa el final del footer en ' + w + 'px' + (fondo ? ' (texto ' + Math.round(fondo.textoBottom) + ' vs barra ' + Math.round(fondo.barTop) + ')' : ' (elementos no encontrados)'), '/');
+  await page.close();
+}
+
 /* ============ 3. ACCESIBILIDAD ============ */
 console.log('\n== 3. ACCESIBILIDAD ==');
 {

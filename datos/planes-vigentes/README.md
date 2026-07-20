@@ -12,7 +12,8 @@ tengamos los nuevos planes".
 - **"Privilege" se elimina del nombre**: en la web es "Plan Bronce"
   (y serán "Plan Silver" / "Plan Gold" cuando lleguen).
 - **Sin logotipos ni colores de los cuadernillos** (no encajan con la
-  identidad de la web). Tipografía Gilroy como el resto del sitio, y
+  identidad de la web). La tipografía display del sitio (Nunito Sans
+  desde jul 2026; antes Gilroy), y
   colores de sentido común por metal: bronce para Bronce, plata para
   Silver, dorado para Gold. Propuesta de tokens (verificar contraste
   AA al implementarse): bronce `#A9714B`, silver `#8E9196`,

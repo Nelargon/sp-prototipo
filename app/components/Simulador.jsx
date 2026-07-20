@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import {
-  WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge,
+  WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge, plans,
 } from '../quote';
 import { track } from '../track';
 
@@ -382,7 +382,18 @@ export default function Simulador() {
           {sim.isIntro && (
             <div style={css(sim.stepAnim)}>
               <h3 style={css('font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px')}>Encontremos tu plan ideal</h3>
-              <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 24px')}>Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
+              <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 18px;font-family:var(--font-inter),sans-serif')}>Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
+              {/* La intro llena su espacio con datos útiles (ancla de precio),
+                  no con vacío — el desktop mostraba media tarjeta en blanco. */}
+              <div style={css('display:flex;flex-direction:column;gap:8px;margin:0 0 22px')}>
+                {[
+                  'Planes desde ' + fmt(plans()[0].price) + ' al mes',
+                  '4 pasos, menos de un minuto',
+                  '10% de descuento pagando con débito automático o tarjeta',
+                ].map((t, i) => (
+                  <div key={i} style={css('display:flex;align-items:center;gap:9px;font-size:13.5px;color:#3D3D3D;font-family:var(--font-inter),sans-serif')}><span style={css('width:20px;height:20px;border-radius:999px;background:#E6F7F6;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#009690" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span><span>{t}</span></div>
+                ))}
+              </div>
               <div style={css('display:flex;align-items:center;gap:16px;flex-wrap:wrap')}>
                 <button onClick={sim.start} className="btn-teal" style={css('height:52px;padding:0 28px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background 160ms')}>Empecemos <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
                 {sim.resumeAvailable && <button onClick={sim.resume} className="link-teal" style={css('background:none;border:none;color:#007d77;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>Retomar mi simulación</button>}

@@ -26,9 +26,9 @@ Decisiones ya tomadas por el usuario (no volver a preguntar):
 ```
 app/layout.jsx     # <html lang="es">, metadata/OG, favicon
 app/page.jsx       # toda la página (client component): lógica + markup (~1024 líneas)
-app/globals.css    # @font-face Gilroy, keyframes, media queries, clases hover/focus
+app/globals.css    # keyframes, media queries, clases hover/focus (fuentes vía next/font, app/fonts.js)
 public/assets/     # hero.webp, logos, manifiesto/frase-1|4|7.webp, favicon
-public/fonts/      # Gilroy 400/500/600/700/800
+public/fonts/      # Nunito Sans variable (display, desde jul 2026; antes Gilroy) + Inter variable
 (project/ y chats/ se movieron al repo privado sp-interno — julio 2026)
 ```
 
