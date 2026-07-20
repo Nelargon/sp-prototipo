@@ -413,25 +413,25 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     `contenido/blog/publicados/` (una nota nueva = un archivo nuevo;
     índice, sitemap y página propia se generan solos con `lib/blog.js` +
     `marked`/`gray-matter`, mismo diseño de lectura `Articulo.jsx`).
-    La cocina editorial vive en el repo privado `sp-interno`: línea
-    editorial + Routine diaria de noticias (02:00) + Routine semanal de
-    borradores (lunes 03:00). Meta acordada: 2-3 notas publicadas por
-    semana; publicar = copiar el markdown aprobado a `publicados/` vía
-    PR — revisión humana siempre. El contenido es portable: el día que
-    la web oficial pase a WordPress/HubSpot (BuenaVista), la biblioteca
-    de notas migra tal cual.
-    **⚠ Motor de contenido — EN DISEÑO, no construir (16 jul 2026):**
-    lo de arriba es la v1 funcionando (vitrina + cocina provisoria en
-    `sp-interno`). El usuario está diseñando en una conversación aparte
-    ("pimpón del cerebro", con brief preparado) la arquitectura final del
-    **motor de contenido universal**: posiblemente un repo dedicado
-    `sp-contenido` (para que su coordinadora y el equipo trabajen ahí sin
-    ver código), una sesión "Master Orquestador" con su `ORQUESTADOR.md`,
-    bandeja de entradas (informes de Manus y otros orígenes → contenido
-    multi-formato) y Routine "Publicador" como puente a la web. **Ninguna
-    sesión debe crear ese repo, mover la fábrica ni reapuntar las
-    Routines hasta que el usuario traiga el diseño del cerebro.** La v1
-    actual sigue operando mientras tanto.
+    Meta acordada: 2-3 notas publicadas por semana; publicar = copiar
+    el markdown aprobado a `publicados/` vía PR — revisión humana
+    siempre. El contenido es portable: el día que la web oficial pase a
+    WordPress/HubSpot (BuenaVista), la biblioteca de notas migra tal
+    cual.
+    **✔ Motor de contenido — CONSTRUIDO (20 jul 2026, guarda
+    levantada):** el pimpón del cerebro se completó (9 temas) y Arturo
+    aprobó el diseño con "construí". La cocina definitiva es el repo
+    privado **`Nelargon/sp-contenido`**: ahí viven `CEREBRO.md` (la
+    constitución del motor), el `ORQUESTADOR.md` de la sesión Master
+    Orquestador, la línea editorial en 3 capas, el semáforo de
+    aprobaciones (`GOVERNANCE.md`), la bandeja de entradas y las
+    Routines reapuntadas (digest diario, borradores semanales, más el
+    Publicador y el Minero de reuniones). `sp-interno` queda como
+    archivo histórico. **Para este repo la regla es simple:** los PRs
+    del Publicador traen notas aprobadas a `contenido/blog/publicados/`
+    — los mergea un humano, SIEMPRE (el merge automático de este repo
+    no aplica a PRs de contenido). Ninguna sesión de la web coordina
+    contenido: eso es del Master Orquestador en `sp-contenido`.
 
 ### Preguntas abiertas (y quién responde)
 
