@@ -270,6 +270,13 @@ A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
      del volcado (cuadros de laboratorio, cirugías por carencia):
      quedan como fuente en los PDF del usuario; los JSON guardan el
      resumen operativo.
+   - *Tarifario re-confirmado (20 jul 2026)*: el usuario pasó la tabla
+     consolidada de julio (`Tabla_Precios_Planes_SP_Privilege_2026_
+     Julio.pdf`). Solo cambiaron las filas 70+ (renovación) — volcadas a
+     `datos/planes-vigentes/` y a `TARIFAS` en `app/quote.js`; los
+     precios de venta nueva y los 21 ejemplos GRUPOS quedaron idénticos
+     (motor re-verificado 21/21). Detalle y una trampa del PDF (páginas
+     internas contradicen a la consolidada) en el README de la carpeta.
 
 B. **Base de prestadores del sistema interno de SP** (mencionado por
    voz; el nombre del sistema hay que confirmarlo con el usuario en la
