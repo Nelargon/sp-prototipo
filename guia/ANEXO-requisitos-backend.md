@@ -71,6 +71,8 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 | `comparador_plan`     | plan, via (slider / parada)              | qué nivel de plan explora cada visitante |
 | `cta_simulador`       | origen (nav / hero / teaser / senior / cierre / fab / menú / barra_movil / faq) | qué sección de la web empuja a cotizar |
 | `sim_step`            | paso (1–6)                               | dónde se abandona el simulador (embudo) |
+| `sim_zona`            | ciudad, departamento, via (chip / busqueda / busqueda_enter / departamento) | **demanda por ciudad** — la contraparte web del etiquetado de pérdidas por ciudad en HubSpot (reunión MKT/Ventas 20 jul 2026); alimenta la matriz especialidad × ciudad del §6 y el caso al directorio de "dónde falta red" |
+| `sim_zona_sin_lista`  | texto (lo tipeado, normalizado — sin datos personales) | ciudades que la gente pide y el índice no tiene: candidatas a sumarse a `app/geo.js` y señal temprana de demanda en zonas nuevas |
 | `sim_result_view`     | plan recomendado, precio                 | qué recomienda el motor y a qué precio |
 | `sim_lead_submit`     | plan, precio — **sin nombre/tel/email**  | conversión a lead (el dato personal va al CRM, no a la analítica) |
 | `sim_quote_download` / `sim_quote_share` | —                     | interés fuerte sin dejar datos |

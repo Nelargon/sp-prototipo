@@ -113,7 +113,7 @@ console.log('\n== 1. FUNCIONAL ==');
     await movil.waitForTimeout(700);
     await movil.locator('button', { hasText: 'Empecemos' }).first().click();
     await movil.waitForTimeout(900);
-    for (const [paso, texto] of [['1 (quién)', 'Para mi familia'], ['2 (cobertura)', 'Un equilibrio'], ['3 (zona)', 'Central']]) {
+    for (const [paso, texto] of [['1 (quién)', 'Para mi familia'], ['2 (cobertura)', 'Un equilibrio'], ['3 (ubicación)', 'Asunción']]) {
       const b = movil.locator('button', { hasText: texto }).first();
       const box = await b.boundingBox();
       if (box && box.y + box.height <= 670) ok('responsive', 'simulador móvil paso ' + paso + ': primera opción visible sin scroll');

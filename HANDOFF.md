@@ -222,6 +222,32 @@ usa `npm ci`).
     Nunito Sans y la web el variable woff2 (subset latin). Ojo: `/v1/`
     (congelado) todavía sirve los TTF viejos de Gilroy — decidir si el
     snapshot se baja o se tolera mientras sea demo interna.
+11h. **El paso "Zona" se volvió "¿Dónde querés tu cobertura?" (21 jul
+    2026, decisión del usuario tras la reunión MKT/Ventas del 20 jul;
+    BITACORA cap. 31)**: la persona escribe SU CIUDAD (buscador tolerante
+    en `app/geo.js`: 18 departamentos, ~97 ciudades, aliases "CDE",
+    "Santaní", acentos) o toca un chip, y el departamento se resuelve
+    solo; fallback "elegí tu departamento" con las ciudades como pista.
+    Por qué: ventas pierde negocios por CIUDAD ("Filadelfia"), no por
+    "interior", y ese dato hoy no se registra en ningún lado — cada
+    elección emite `sim_zona {ciudad, departamento, via}` y cada búsqueda
+    sin match `sim_zona_sin_lista {texto}` (ANEXO §2): la contraparte web
+    del etiquetado de pérdidas por ciudad que se le pidió a Estefanía en
+    HubSpot. Juntas arman el caso al directorio de "dónde falta red".
+    Reglas: (a) **sin cobertura nunca bloquea** — el precio se muestra
+    igual y la nota de red es honesta (`redNota` en geo.js: solo
+    Asunción/Central se comunican como zona con red confirmada; el resto
+    "la red está creciendo, tu asesor te confirma" — nunca "no
+    cubierto", decisión #7); (b) **price-ready**: `DEPT_AJUSTE` por
+    departamento existe y es neutro (=1, el tarifario vigente es
+    nacional) — cuando la mesa técnica defina precio por zona
+    (estrategia a 3 años del usuario), se cargan los factores y listo;
+    (c) las simulaciones guardadas con el formato viejo (`geo` string)
+    siguen retomándose sin romper. **Pendientes que nacen acá**: cargar
+    la red real por ciudad cuando llegue la base de prestadores
+    (pendiente B) para que `redNota` hable con datos; y revisar
+    `sim_zona_sin_lista` en el ritual mensual (#11) para sumar ciudades
+    al índice.
 
 ---
 

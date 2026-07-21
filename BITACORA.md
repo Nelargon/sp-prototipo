@@ -838,6 +838,45 @@ con `behavior:'instant'`.
 
 ---
 
+## Capítulo 31 — Filadelfia, o el paso que preguntaba mal
+
+**Qué intentamos.** El usuario trajo una intuición: "en vez de hacer que
+la persona escoja interior, central o todo el país, quizás tenemos que
+preguntarle **dónde** quiere la cobertura". Propusimos tres opciones
+(tarjetas por departamento, buscador de ciudades, mapa tocable) y él
+sumó la pieza que faltaba: la transcripción de la reunión semanal de
+MKT y Ventas en tl;dv.
+
+**Qué pasó.** La reunión cambió el problema. No era UX: era inteligencia
+de mercado. Una venta real se perdió en Filadelfia — familia interesada,
+sin red en su ciudad, "yo vivo acá y necesito acá" — y la pérdida se
+registró como "fuera de zona de cobertura" **sin la ciudad**. Del
+interior "hay muchísimos" leads así, y la estrategia a 3 años del
+usuario pone la zona como dimensión del precio ("si quiere Ciudad del
+Este, Ciudad del Este tiene su precio"). Con eso, el buscador de
+ciudades dejó de ser la opción recomendada para ser la única que
+resolvía el problema: la gente sabe decir su ciudad, el negocio necesita
+demanda por ciudad, y la web ya dominaba el patrón (el buscador único de
+la guía). Se construyó en una sesión: `app/geo.js` (18 departamentos,
+~97 ciudades, aliases y acentos tolerados), eventos `sim_zona` y
+`sim_zona_sin_lista`, motor price-ready con ajuste por departamento
+neutro, y la regla de honestidad: sin cobertura **nunca bloquea** — la
+persona de Filadelfia ve su precio, una nota honesta ("la red está
+creciendo — tu pedido nos ayuda a priorizarla") y su pedido queda
+contado para el caso al directorio.
+
+**Qué aprendimos.** Primero: cuando una pregunta del formulario no le
+sirve a nadie — ni al que responde (no cambiaba su precio) ni al que
+pregunta (no registraba nada útil) — no se optimiza: se reemplaza por la
+pregunta que ambos necesitan. Segundo: la fuente del rediseño no fue un
+benchmark sino una venta perdida con nombre de ciudad — las
+transcripciones de reuniones son material de diseño, no solo actas.
+Tercero: el mismo dato vale doble si se recolecta igual en los dos
+embudos (web por `sim_zona`, ventas por HubSpot): dos fuentes, una sola
+bolsa de demanda por ciudad para Convenios y el directorio.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
