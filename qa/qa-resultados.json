@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-20T20:12:20.579Z",
+  "fecha": "2026-07-21T12:30:10.917Z",
   "oks": [
     {
       "frente": "funcional",
@@ -27,7 +27,7 @@
     },
     {
       "frente": "responsive",
-      "detalle": "simulador móvil paso 3 (zona): primera opción visible sin scroll"
+      "detalle": "simulador móvil paso 3 (ubicación): primera opción visible sin scroll"
     },
     {
       "frente": "responsive",
@@ -83,11 +83,11 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 175 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 177 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/simulador/: 166 KB gzip de contenido crítico (≤300)"
+      "detalle": "/simulador/: 169 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -99,7 +99,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 23 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 24 ms (< 3 s)"
     },
     {
       "frente": "contenido",

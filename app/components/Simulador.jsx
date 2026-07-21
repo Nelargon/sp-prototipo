@@ -6,10 +6,13 @@ import { BP } from '../basePath';
 import {
   WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge, plans,
 } from '../quote';
+import { buscarCiudad, redNota, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { track } from '../track';
 
 const INITIAL_SIM = {
-  step: 0, who: null, nivel: null, geo: null, addons: [], people: [],
+  // ubi = {ciudad, deptId, deptNombre} (buscador de ciudades, HANDOFF 11h);
+  // geo (string) queda solo por compatibilidad con simulaciones guardadas.
+  step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [],
   nombre: '', tel: '', email: '', sent: false, err: '', priceAnim: null,
 };
 
@@ -21,6 +24,8 @@ export default function Simulador() {
   const prevStepRef = useRef(0);
   const cardRef = useRef(null);
   const [showCalc, setShowCalc] = useState(false);
+  const [deptOpen, setDeptOpen] = useState(false);
+  const sinListaRef = useRef(new Set());
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
   const [simDir, setSimDir] = useState(1);
@@ -79,7 +84,28 @@ export default function Simulador() {
       return Object.assign({}, p, { age: Math.max(lo, Math.min(hi, p.age + delta)) });
     }) }));
 
-  const resumeSim = () => { if (savedSimRef.current) { setSimState(savedSimRef.current); setResumeAvailable(false); } };
+  const resumeSim = () => { if (savedSimRef.current) { setSimState(Object.assign({}, INITIAL_SIM, savedSimRef.current)); setResumeAvailable(false); } };
+
+  // Ubicación: elegir ciudad (o departamento del fallback) avanza el paso y
+  // registra la demanda por ciudad — la contraparte web del etiquetado de
+  // pérdidas por ciudad en HubSpot (reunión MKT/Ventas, 20 jul 2026).
+  const pickUbi = (e, via) => {
+    track('sim_zona', { ciudad: e.ciudad || '', departamento: e.deptNombre, via });
+    setDeptOpen(false);
+    simGo({ ubi: { ciudad: e.ciudad || null, deptId: e.deptId, deptNombre: e.deptNombre }, ubiQ: '', step: 4 });
+  };
+
+  // "No encontramos tu ciudad" también es un dato (cero resultados nunca es
+  // un callejón): se registra una vez por término, sin datos personales.
+  useEffect(() => {
+    const q = (simState.ubiQ || '').trim().toLowerCase();
+    if (simState.step !== 3 || q.length < 3) return;
+    if (buscarCiudad(q).length > 0 || sinListaRef.current.has(q)) return;
+    const t = setTimeout(() => {
+      if (!sinListaRef.current.has(q)) { sinListaRef.current.add(q); track('sim_zona_sin_lista', { texto: q }); }
+    }, 900);
+    return () => clearTimeout(t);
+  }, [simState.ubiQ, simState.step]);
 
   const quoteText = () => {
     const d = simState, r = engine(d), O2 = opts();
@@ -88,11 +114,12 @@ export default function Simulador() {
     L.push('SALUD PROTEGIDA — Cotización estimada');
     L.push('');
     L.push('Plan recomendado: ' + r.name);
-    L.push('Cobertura: ' + r.geoLabel);
+    if (d.ubi) L.push('Vivís en: ' + (d.ubi.ciudad ? d.ubi.ciudad + ' (' + d.ubi.deptNombre + ')' : d.ubi.deptNombre) + ' · cobertura en todo el país');
+    else L.push('Cobertura: ' + r.geoLabel);
     L.push('Para: ' + groupLabel(d) + ' · titular de ' + titularAge(d));
     L.push('');
     L.push('Cobertura para el grupo: ' + fmt(r.breakdown.personas));
-    L.push('Zona ' + r.geoLabel + ': ' + (r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo'));
+    L.push('Zona: ' + (r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo — el precio es el mismo en todo el país'));
     if (ad.length) { L.push('Coberturas adicionales:'); ad.forEach((o) => L.push('  · ' + o.label + ': + ' + fmt(o.price))); }
     L.push('');
     L.push('TOTAL ESTIMADO: ' + fmt(r.price) + ' / mes');
@@ -182,7 +209,7 @@ export default function Simulador() {
     const dd = simState;
     const ready = !!(dd.who && dd.nivel && (dd.people || []).length) && dd.step >= 3 && dd.step < 6;
     if (!ready) { livePrevRef.current = 0; return; }
-    const target = engine(Object.assign({}, dd, { geo: dd.geo || 'central' })).price;
+    const target = engine(dd).price;
     const from = livePrevRef.current || target;
     livePrevRef.current = target;
     if (from === target) { const el = document.querySelector('[data-live-price]'); if (el) el.textContent = fmt(target); return; }
@@ -239,18 +266,19 @@ export default function Simulador() {
     return { esencial: 'Bronce', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
   };
 
-  // Current configuration → plan colour + live estimate (geo defaults to central until chosen).
+  // Current configuration → plan colour + live estimate (el precio es
+  // nacional: la ubicación no lo cambia hasta que haya tarifa por zona).
   const curReady = !!(d.who && d.nivel && (d.people || []).length);
-  const cur = curReady ? engine(Object.assign({}, d, { geo: d.geo || 'central' })) : null;
+  const cur = curReady ? engine(d) : null;
   const planColor = cur ? cur.color : '#003B71';
   const liveTotalNum = cur ? cur.price : 0;
   const livePanelReady = curReady && d.step >= 3 && d.step < 6;
 
-  const checkNames = ['¿Para quién?', 'Cobertura', 'Zona', 'Las edades'];
+  const checkNames = ['¿Para quién?', 'Cobertura', 'Ubicación', 'Las edades'];
   const stepValueList = [
     ({ mi: 'Vos', pareja: 'Pareja', familia: 'Familia', padres: 'Adulto mayor' })[d.who] || '',
     planShortOf(d.who, d.nivel),
-    ({ central: 'Central', interior: 'Interior', nacional: 'Nacional' })[d.geo] || '',
+    d.ubi ? (d.ubi.ciudad || d.ubi.deptNombre) : (({ central: 'Central', interior: 'Interior', nacional: 'Nacional' })[d.geo] || ''),
     (d.people || []).length ? titularAge(d) + ' años' : '',
   ];
   const stepsList = checkNames.map((n, i) => {
@@ -270,16 +298,22 @@ export default function Simulador() {
       ]
     : O.nivel;
 
-  // Live estimate for the add-ons step (geo is set by then).
-  const liveBaseNum = curReady ? engine(Object.assign({}, d, { addons: [], geo: d.geo || 'central' })).price : 0;
+  // Live estimate for the add-ons step (dormido: los planes vigentes no
+  // tienen adicionales).
+  const liveBaseNum = curReady ? engine(Object.assign({}, d, { addons: [] })).price : 0;
   const liveAddonsAmount = liveTotalNum - liveBaseNum;
-  // Geo base (for the per-zone price impact on the Zona step).
-  const geoBaseNum = curReady ? engine(Object.assign({}, d, { geo: 'central' })).price : 0;
+
+  // Ubicación: matches del buscador + chips de las ciudades más pedidas +
+  // fallback por departamento (con sus ciudades como pista).
+  const ubiQNorm = (d.ubiQ || '').trim();
+  const ubiMatches = ubiQNorm.length >= 2 ? buscarCiudad(ubiQNorm) : [];
+  const ubiChips = ['Asunción', 'San Lorenzo', 'Luque', 'Ciudad del Este', 'Encarnación'].map((n) => buscarCiudad(n)[0]).filter(Boolean);
+  const deptRows = DEPARTAMENTOS.map((dep) => ({ deptId: dep.id, deptNombre: dep.nombre, ciudad: null, nota: dep.ciudades.slice(0, 3).join(' · ') + (dep.ciudades.length > 3 ? ' …' : '') }));
 
   // Result breakdown, built from the engine's rounded parts so it sums to the total.
   const resBreakdown = r ? (() => {
     const items = [{ label: 'Cobertura para ' + groupLabel(d), amount: fmt(r.breakdown.personas) }];
-    items.push({ label: 'Zona ' + r.geoLabel, amount: r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'Sin recargo' });
+    items.push({ label: d.ubi ? 'Tu zona: ' + (d.ubi.ciudad || d.ubi.deptNombre) : 'Zona ' + r.geoLabel, amount: r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'Sin recargo — precio nacional' });
     O.addons.filter((o) => (d.addons || []).includes(o.k)).forEach((o) => items.push({ label: o.label, amount: '+ ' + fmt(o.price) }));
     return items;
   })() : [];
@@ -290,7 +324,9 @@ export default function Simulador() {
   const encNivel = isPadres
     ? ({ equilibrio: 'Plan Vital: cuidado cercano para ellos.', amplia: 'Plan Vital: cuidado cercano para ellos.' })[d.nivel]
     : ({ esencial: 'Lo importante, bien cubierto.', equilibrio: 'El equilibrio que más familias eligen.', amplia: 'Tranquilidad completa. Buen viaje.' })[d.nivel];
-  const encGeo = { central: 'Cobertura donde hacés tu vida.', interior: 'Tu zona, bien cubierta.', nacional: 'Todo el país con vos.' }[d.geo];
+  const encGeo = d.ubi
+    ? (zonaConRed(d.ubi.deptId) ? 'Tu zona tiene la red más fuerte — Lister incluida.' : (d.ubi.ciudad || d.ubi.deptNombre) + ' — anotado. La red nacional te acompaña.')
+    : ({ central: 'Cobertura donde hacés tu vida.', interior: 'Tu zona, bien cubierta.', nacional: 'Todo el país con vos.' })[d.geo];
   const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Último paso y vemos tu precio.' }[d.step] || '';
   const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
 
@@ -305,8 +341,12 @@ export default function Simulador() {
     whyWho: WHY.who, whyEdades: WHY.edades, whyNivel: isPadres ? 'Para 65+ el plan es uno solo, pensado a medida: Plan Vital, con tarifa fija por persona.' : WHY.nivel, whyGeo: WHY.geo, whyAddons: WHY.addons, whyContacto: WHY.contacto,
     nivelTitle: isPadres ? '¿Qué nivel para el adulto mayor?' : '¿Qué nivel de cobertura buscás?',
     whoOpts: O.who.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, onClick: () => pickWho(o.k) })),
-    nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, from: 'desde ' + fmt(engine(Object.assign({}, d, { nivel: o.k, geo: d.geo || 'central' })).price), onClick: () => simGo({ nivel: o.k, step: 3 }) })),
-    geoOpts: O.geo.map((o) => { const delta = geoBaseNum ? engine(Object.assign({}, d, { geo: o.k })).price - geoBaseNum : 0; return { label: o.label, note: o.note, tier: o.tier, impact: delta <= 0 ? 'Incluida' : '+ ' + fmt(delta), onClick: () => simGo({ geo: o.k, step: 4 }) }; }),
+    nivelOpts: nivelData.map((o) => ({ label: o.label, note: o.note, hasNote: !!o.note, from: 'desde ' + fmt(engine(Object.assign({}, d, { nivel: o.k })).price), onClick: () => simGo({ nivel: o.k, step: 3 }) })),
+    ubiQ: d.ubiQ || '', onUbiQ: (e) => simPatch({ ubiQ: e.target.value }),
+    onUbiKey: (e) => { if (e.key === 'Enter' && ubiMatches[0]) pickUbi(ubiMatches[0], 'busqueda_enter'); },
+    ubiMatches, ubiDropOpen: ubiQNorm.length >= 2 && (ubiMatches.length > 0 || ubiQNorm.length >= 3),
+    ubiSinLista: ubiQNorm.length >= 3 && ubiMatches.length === 0,
+    ubiChips, pickUbi, deptOpen, toggleDepts: () => setDeptOpen((v) => !v), deptRows,
     addonsList: O.addons.map((o) => ({ key: o.k, label: o.label, note: o.note, priceLabel: '+ ' + fmt(o.price) + ' /mes', selected: (d.addons || []).includes(o.k), boxStyle: 'width:22px;height:22px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;transition:all 150ms;' + ((d.addons || []).includes(o.k) ? 'background:#00BCB4;border:1.5px solid #00BCB4;' : 'background:#fff;border:1.5px solid #cdd5d3;'), rowStyle: 'display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:12px;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1);' + ((d.addons || []).includes(o.k) ? 'border:1.5px solid #00BCB4;background:#F2FBFA;' : 'border:1.5px solid #E8E8E8;background:#fff;'), toggle: () => toggleAddon(o.k) })),
     liveReady: livePanelReady, liveTotal: fmt(liveTotalNum), liveAddonsAmount, liveAddons: fmt(liveAddonsAmount),
     continueLabel: (d.addons || []).length === 0 ? 'Continuar sin coberturas adicionales' : 'Ver mi cotización',
@@ -317,8 +357,10 @@ export default function Simulador() {
     addKid, removeKid, addAdult, removeAdult,
     toAddons: () => simGo({ step: 6 }), // los planes vigentes no tienen adicionales: de las edades se pasa directo al precio
     back: simBack, start: () => simGo({ step: 1 }),
-    restart: () => { setSimDir(-1); simPatch({ step: 0, who: null, nivel: null, geo: null, addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
-    resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '', resGeo: r ? r.geoLabel : '',
+    restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
+    resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '',
+    resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · cobertura en todo el país') : ('Cobertura ' + r.geoLabel)) : '',
+    resRedNota: r && r.ubi ? redNota(r.ubi) : '',
     resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resTotal: r ? fmt(r.price) : '',
@@ -474,13 +516,35 @@ export default function Simulador() {
           {sim.isGeo && (
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
-              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Hasta dónde querés cobertura?</h3>
+              <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:#003B71;line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Dónde querés tu cobertura?</h3>
               <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#007d77;font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
-              <div style={css('display:flex;flex-direction:column;gap:10px')}>
-                {sim.geoOpts.map((opt, i) => (
-                  <button key={i} onClick={opt.onClick} className="sim-opt" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid #E8E8E8;border-radius:12px;background:#fff;color:#1D1D1B;font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label} <span style={css('font-size:13px;font-weight:800;color:#00BCB4;letter-spacing:0.06em')}>{opt.tier}</span></span><span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{opt.note}</span></span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:#007d77;white-space:nowrap')}>{opt.impact}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
+              {/* Buscador de ciudades: la persona escribe SU ciudad y el
+                  departamento se resuelve solo (geo.js — HANDOFF 11h). */}
+              <div style={css('position:relative')}>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                <input type="text" role="searchbox" aria-label="Escribí tu ciudad" aria-expanded={sim.ubiDropOpen} aria-controls="ubi-matches" value={sim.ubiQ} onChange={sim.onUbiQ} onKeyDown={sim.onUbiKey} placeholder="Escribí tu ciudad — ej: Luque, CDE, Filadelfia" className="inp" style={css('width:100%;height:52px;border:1.5px solid #cfe0dc;border-radius:12px;padding:0 14px 0 44px;font-size:16px;color:#1D1D1B;background:#fff;outline:none')} />
+                {sim.ubiDropOpen && (
+                  <div id="ubi-matches" role="listbox" style={css('position:absolute;left:0;right:0;top:58px;z-index:5;background:#fff;border:1px solid #E8E8E8;border-radius:12px;box-shadow:0 12px 34px rgba(0,59,113,0.14);overflow:hidden')}>
+                    {sim.ubiMatches.map((m, i) => (
+                      <button key={i} role="option" onClick={() => sim.pickUbi(m, 'busqueda')} className="cart-match" style={css('display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{m.ciudad}</span><span style={css('margin-left:auto;font-size:12.5px;color:#6B6B6B')}>{m.deptNombre}</span></button>
+                    ))}
+                    {sim.ubiSinLista && <div style={css('padding:12px 15px;font-size:13.5px;color:#6B6B6B;background:#F7FBFB;line-height:1.5')}>No encontramos «{sim.ubiQ.trim()}» — elegí tu departamento acá abajo y listo. Tu búsqueda igual nos queda anotada para crecer hacia tu zona.</div>}
+                  </div>
+                )}
+              </div>
+              <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
+                {sim.ubiChips.map((c, i) => (
+                  <button key={i} onClick={() => sim.pickUbi(c, 'chip')} style={css('padding:9px 14px;border-radius:999px;border:1.5px solid #d9e4e2;background:#fff;color:#3D3D3D;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s')}>{c.ciudad}</button>
                 ))}
               </div>
+              <button onClick={sim.toggleDepts} aria-expanded={sim.deptOpen} className="link-teal" style={css('display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:#007d77;font-size:13.5px;font-weight:700;cursor:pointer;padding:10px 0 0;margin-top:6px')}>¿Preferís elegir tu departamento? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('transition:transform .2s;transform:rotate(' + (sim.deptOpen ? '180deg' : '0deg') + ')')}><path d="m6 9 6 6 6-6" /></svg></button>
+              {sim.deptOpen && (
+                <div style={css('margin-top:10px;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden;max-height:288px;overflow-y:auto')}>
+                  {sim.deptRows.map((dep, i) => (
+                    <button key={i} onClick={() => sim.pickUbi(dep, 'departamento')} className="cart-match" style={css('display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;padding:11px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer')}><span style={css('font-size:14.5px;font-weight:700;color:#003B71')}>{dep.deptNombre}</span><span style={css('font-size:12px;color:#6B6B6B;line-height:1.35')}>{dep.nota}</span></button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -525,13 +589,17 @@ export default function Simulador() {
                 <div style={css(sim.headerStyle)}>
                   <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85')}>Plan recomendado</div>
                   <div style={css('font-size:24px;font-weight:800;line-height:1.1;margin-top:2px')}>{sim.resName}</div>
-                  <div style={css('font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Cobertura {sim.resGeo}</div>
+                  <div style={css('font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>{sim.resGeoLine}</div>
                 </div>
                 <div style={css('padding:18px 20px;background:#fff')}>
                   <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:#003B71;letter-spacing:-0.01em;line-height:1')}>{sim.resPrice}</span><span style={css('font-size:14px;color:#6B6B6B;font-weight:500')}>/ mes estimado</span></div>
                   <div style={css('font-size:12px;color:#6B6B6B;margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge}. El precio final lo confirma un asesor.</div>
                   {sim.resAutoPay && <div style={css('display:flex;align-items:flex-start;gap:7px;background:#F2FBFA;border:1px solid #d9efed;border-radius:10px;padding:9px 12px;margin:0 0 14px;font-size:13px;color:#00695f;line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:#003B71')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
                   {sim.resEsDebito && <div style={css('display:flex;align-items:flex-start;gap:7px;background:#F2FBFA;border:1px solid #d9efed;border-radius:10px;padding:9px 12px;margin:0 0 14px;font-size:13px;color:#00695f;line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Precio con débito automático o tarjeta de crédito — pagando particular: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
+                  {/* Nota de red honesta por zona (geo.js): confirma en
+                      Asunción/Central, registra y acompaña en el resto —
+                      nunca "no cubierto" (decisión #7). */}
+                  {sim.resRedNota && <div style={css('display:flex;align-items:flex-start;gap:7px;background:#F7FBFB;border:1px solid #E8E8E8;border-radius:10px;padding:9px 12px;margin:0 0 14px;font-size:13px;color:#3D3D3D;line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRedNota}</span></div>}
                   <p style={css('font-size:14px;color:#3D3D3D;line-height:1.6;margin:0')}>{sim.resWhy}</p>
                   {sim.hasAddons && <div style={css('font-size:13px;color:#003B71;font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {sim.resAddonsText}</span></div>}
                 </div>

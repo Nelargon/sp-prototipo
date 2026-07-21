@@ -7,6 +7,8 @@
    cuadernillos y tarifarios oficiales. Primas con IVA incluido. Contenido
    temporal hasta que existan los planes nuevos (Esencial/Integral/Premium). */
 
+import { DEPT_AJUSTE } from './geo';
+
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
 export const WHATSAPP_NUMBER = '595 21 319 0000';
@@ -91,6 +93,13 @@ const priceFor = (planKey, people) => {
 
 export const engine = (d) => {
   const base = plans();
+  /* Ubicación (jul 2026): d.ubi = {ciudad, deptId, deptNombre} sale del
+     buscador de ciudades (app/geo.js). El precio vigente es nacional; el
+     ajuste por departamento existe pero es neutro (DEPT_AJUSTE, todo 1)
+     hasta que la mesa técnica defina precio por zona. d.geo (string) es
+     el formato viejo de simulaciones guardadas — solo se conserva para
+     que un "Retomar mi simulación" anterior no rompa. */
+  const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
   const P = {
     bronce: { name: base[0].name, color: base[0].color, why: 'Cobertura real de entrada: urgencias, consultas y estudios del día a día, al precio más accesible.' },
     silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: suma tomografía y resonancia al 100%, más días de terapia intensiva y topes más altos.' },
@@ -105,17 +114,18 @@ export const engine = (d) => {
   const personas = best === 'vital'
     ? VITAL_PRECIO * nAdultos
     : priceFor(best, ppl);
-  /* El tarifario vigente es nacional: la zona no cambia el precio. */
+  /* El tarifario vigente es nacional: hoy el ajuste por departamento es 1. */
   const GL = { central: 'Central', interior: 'Interior', nacional: 'Nacional' };
-  const price = personas;
+  const ajuste = ubi ? (DEPT_AJUSTE[ubi.deptId] || 1) : 1;
+  const price = Math.round(personas * ajuste);
   /* Privilege publica el precio particular → el pago automático descuenta 10%.
      Vital ya publica el precio con débito → mostramos el particular como referencia. */
   const autoPay = best === 'vital' ? null : Math.round(price * (1 - AUTO_PAY_DISCOUNT));
   const vitalParticular = best === 'vital' ? VITAL_PARTICULAR * nAdultos : null;
   return {
     key: best, name: P[best].name, color: P[best].color, why: P[best].why,
-    geoLabel: GL[d.geo] || '', price, autoPay, vitalParticular,
-    breakdown: { base: personas, personas, geoMult: 1, geoDelta: 0, addonsSum: 0, addonItems: [] },
+    geoLabel: ubi ? 'Nacional' : (GL[d.geo] || ''), ubi, price, autoPay, vitalParticular,
+    breakdown: { base: personas, personas, geoMult: ajuste, geoDelta: price - personas, addonsSum: 0, addonItems: [] },
   };
 };
 
@@ -144,11 +154,8 @@ export const opts = () => ({
     { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Suma tomografía y resonancia al 100% y topes más altos. El paso que más tranquilidad agrega.' },
     { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope anual, más días de internación y terapia intensiva, los topes más altos.' },
   ],
-  geo: [
-    { k: 'central', label: 'Central', tier: '', note: 'Asunción y Gran Asunción, con Lister cerca.' },
-    { k: 'interior', label: 'Interior', tier: '', note: 'Tu ciudad del interior, con respaldo en Central.' },
-    { k: 'nacional', label: 'Me muevo por todo el país', tier: '', note: 'La red te acompaña donde estés.' },
-  ],
+  /* geo: reemplazado por el buscador de ciudades (app/geo.js) — el paso
+     "¿Dónde querés tu cobertura?" ya no usa opciones fijas (HANDOFF 11h). */
   addons: [],
 });
 
@@ -156,7 +163,7 @@ export const why = () => ({
   who: 'Así armamos un plan a la medida de quienes querés cuidar.',
   edades: 'La edad define el tramo del tarifario. Con este dato te damos el precio de lista real, no un estimado al voleo.',
   nivel: 'No todos necesitan lo mismo. Te mostramos el plan que mejor equilibra lo que te importa y lo que querés pagar.',
-  geo: 'Tu precio es el mismo en todo el país — esto nos ayuda a mostrarte la red que te queda cerca.',
+  geo: 'Tu precio hoy es el mismo en todo el país. Tu ciudad nos deja mostrarte la red que te queda cerca — y saber dónde nos falta crecer.',
   addons: '',
   contacto: 'Te mostramos tu precio ahora. Te pedimos estos datos para que un asesor lo confirme y te acompañe, sin compromiso.',
 });
