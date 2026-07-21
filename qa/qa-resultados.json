@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-21T14:52:39.429Z",
+  "fecha": "2026-07-21T18:23:12.204Z",
   "oks": [
     {
       "frente": "funcional",
@@ -107,7 +107,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 24 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 32 ms (< 3 s)"
     },
     {
       "frente": "contenido",
