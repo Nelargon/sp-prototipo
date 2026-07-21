@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-21T12:30:10.917Z",
+  "fecha": "2026-07-21T14:52:39.429Z",
   "oks": [
     {
       "frente": "funcional",
@@ -32,6 +32,14 @@
     {
       "frente": "responsive",
       "detalle": "simulador móvil paso 4 (edades): el CTA queda a menos de un tercio de pantalla de scroll"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "modo app 1366×768: la tarjeta entra en pantalla y el flujo no mueve la página"
+    },
+    {
+      "frente": "responsive",
+      "detalle": "modo app 1440×900: la tarjeta entra en pantalla y el flujo no mueve la página"
     },
     {
       "frente": "funcional",

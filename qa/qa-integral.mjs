@@ -128,6 +128,32 @@ console.log('\n== 1. FUNCIONAL ==');
     await movil.close();
   }
 
+  // 1b-ter. Modo app desktop (HANDOFF 11i): en ≥1100px la tarjeta completa
+  // entra en el viewport, y avanzar de paso o abrir la lista de
+  // departamentos NO mueve la página — lo largo scrollea dentro del cuerpo.
+  for (const [w, h] of [[1366, 768], [1440, 900]]) {
+    const desk = await browser.newPage({ viewport: { width: w, height: h } });
+    await desk.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
+    await desk.waitForTimeout(700);
+    const medir = () => desk.evaluate(() => {
+      const c = document.querySelector('.sim-card');
+      const r = c.getBoundingClientRect();
+      return { scrollY: Math.round(window.scrollY), top: Math.round(r.top), bottom: Math.round(r.bottom), vh: window.innerHeight };
+    });
+    await desk.locator('button', { hasText: 'Empecemos' }).first().click();
+    await desk.waitForTimeout(600);
+    await desk.locator('button', { hasText: 'Para mí' }).first().click();
+    await desk.waitForTimeout(600);
+    await desk.locator('button', { hasText: 'Lo esencial' }).first().click();
+    await desk.waitForTimeout(600);
+    await desk.locator('button', { hasText: 'Preferís elegir tu departamento' }).first().click();
+    await desk.waitForTimeout(500);
+    const m = await medir();
+    if (m.scrollY === 0 && m.top >= 0 && m.bottom <= m.vh + 2) ok('responsive', 'modo app ' + w + '×' + h + ': la tarjeta entra en pantalla y el flujo no mueve la página');
+    else falla('responsive', 'confunde', 'modo app ' + w + '×' + h + ': ' + JSON.stringify(m), '/simulador/');
+    await desk.close();
+  }
+
   // 1c. Guía: búsqueda con resultados, sin resultados (rescate), modo personalizado
   await page.goto(BASE + '/guia/guia_resultados.html?q=cardio', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1200);

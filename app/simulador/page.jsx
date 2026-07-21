@@ -41,12 +41,14 @@ export default function SimuladorPage() {
       </header>
 
       {/* HERO enfocado — fondo plano; el degradé vive en la sección de la
-          tarjeta para que no haya costura de color entre ambas. */}
-      <section style={css('background:#003B71;color:#fff;padding:48px 24px 40px')}>
+          tarjeta para que no haya costura de color entre ambas. En desktop
+          ≥1100px el hero se compacta (modo app: header + hero + tarjeta =
+          una pantalla, sin scroll — globals.css). */}
+      <section className="sim-hero" style={css('background:#003B71;color:#fff;padding:48px 24px 40px')}>
         <div style={css('max-width:720px;margin:0 auto;text-align:center')}>
-          <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px;border:1px solid rgba(128,221,216,.4);padding:6px 14px;border-radius:999px')}>Simulá tu plan</div>
-          <h1 className="disp" style={css('font-size:clamp(32px,5vw,50px);line-height:1.08;letter-spacing:-0.025em;margin:0 0 16px')}>Tu plan y tu precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h1>
-          <p style={css('font-size:17px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 auto')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
+          <div className="sim-hero-kicker" style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px;border:1px solid rgba(128,221,216,.4);padding:6px 14px;border-radius:999px')}>Simulá tu plan</div>
+          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(32px,5vw,50px);line-height:1.08;letter-spacing:-0.025em;margin:0 0 16px')}>Tu plan y tu precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h1>
+          <p className="sim-hero-p" style={css('font-size:17px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 auto')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
         </div>
       </section>
 
