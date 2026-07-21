@@ -268,6 +268,19 @@ usa `npm ci`).
     los chips conservan su borde visible porque sin puntero no hay
     reveal. Guardián nuevo en el QA: en 1366×768 y 1440×900 la tarjeta
     entra en pantalla y el flujo no scrollea la página.
+    *Refinado en el día (poda del usuario, 21 jul)*: (a) el hero del
+    simulador quedó SOLO con el título — el kicker "Simulá tu plan" y la
+    bajada repetían lo que la tarjeta ya dice (los ticks de la intro, el
+    candado del rail); el espacio liberado se lo quedó la tarjeta (hero
+    171→70px, tarjeta hasta 760px de alto — menos scroll interno);
+    (b) **"← Volver y ajustar" en el resultado**: vuelve un paso (a las
+    edades, salteando el paso dormido de adicionales) para evaluar
+    decisiones sin arrancar de cero — antes solo existía "Empezar de
+    nuevo"; lo configurado queda y el precio se recalcula;
+    (c) FYI del usuario codificado en `geo.js`: **Asunción y Central son
+    UNA zona de cobertura** (`ZONA_COBERTURA` las agrupa como
+    'asu-central') — administrativamente dos, para red y futuro precio
+    por zona, una.
 
 ---
 

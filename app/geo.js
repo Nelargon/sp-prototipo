@@ -59,8 +59,15 @@ export const DEPT_AJUSTE = Object.fromEntries(DEPARTAMENTOS.map((d) => [d.id, 1]
 /* Nota de red para el resultado. SOLO Asunción/Central tienen texto de zona
    con red confirmada públicamente (Lister + sedes SP). El resto usa el texto
    honesto por defecto hasta que llegue la base real de prestadores
-   (pendiente B del HANDOFF) — ahí se carga la nota por departamento. */
+   (pendiente B del HANDOFF) — ahí se carga la nota por departamento.
+
+   FYI del usuario (21 jul 2026): "Asunción y Central van juntos en lo que
+   tiene que ver con cobertura" — administrativamente son dos, pero como
+   zona de cobertura son UNA. Por eso comparten set acá, texto de redNota,
+   y el día del precio por zona seguramente compartan tarifa (usar
+   ZONA_COBERTURA para agrupar, no el deptId suelto). */
 const RED_CONFIRMADA = new Set(['asuncion', 'central']);
+export const ZONA_COBERTURA = { asuncion: 'asu-central', central: 'asu-central' }; // el resto: su propio deptId
 export const zonaConRed = (deptId) => RED_CONFIRMADA.has(deptId);
 export const redNota = (ubi) => {
   if (!ubi) return '';

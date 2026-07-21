@@ -40,15 +40,15 @@ export default function SimuladorPage() {
         <a href={'tel:' + SP_TEL} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
       </header>
 
-      {/* HERO enfocado — fondo plano; el degradé vive en la sección de la
-          tarjeta para que no haya costura de color entre ambas. En desktop
-          ≥1100px el hero se compacta (modo app: header + hero + tarjeta =
-          una pantalla, sin scroll — globals.css). */}
-      <section className="sim-hero" style={css('background:#003B71;color:#fff;padding:48px 24px 40px')}>
+      {/* HERO enfocado — solo el título (21 jul 2026, poda del usuario: el
+          kicker y la bajada repetían lo que la tarjeta ya dice — la promesa
+          vive en los ticks de la intro y el candado del rail). El espacio
+          liberado se lo queda la tarjeta (modo app, globals.css). Fondo
+          plano; el degradé vive en la sección de la tarjeta para que no
+          haya costura de color. */}
+      <section className="sim-hero" style={css('background:#003B71;color:#fff;padding:40px 24px 26px')}>
         <div style={css('max-width:720px;margin:0 auto;text-align:center')}>
-          <div className="sim-hero-kicker" style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px;border:1px solid rgba(128,221,216,.4);padding:6px 14px;border-radius:999px')}>Simulá tu plan</div>
-          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(32px,5vw,50px);line-height:1.08;letter-spacing:-0.025em;margin:0 0 16px')}>Tu plan y tu precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h1>
-          <p className="sim-hero-p" style={css('font-size:17px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 auto')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
+          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.025em;margin:0')}>Tu plan y tu precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h1>
         </div>
       </section>
 

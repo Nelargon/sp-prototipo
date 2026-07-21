@@ -365,6 +365,11 @@ export default function Simulador() {
     addKid, removeKid, addAdult, removeAdult,
     toAddons: () => simGo({ step: 6 }), // los planes vigentes no tienen adicionales: de las edades se pasa directo al precio
     back: simBack, start: () => simGo({ step: 1 }),
+    // Desde el resultado se vuelve UN paso (a las edades, salteando el paso
+    // dormido de adicionales) — antes solo existía "empezar de nuevo"
+    // (pedido del usuario, 21 jul: poder evaluar decisiones sin arrancar
+    // de cero). Lo configurado queda intacto; el precio se recalcula solo.
+    backFromResult: () => { setSimDir(-1); simPatch({ step: 4 }); },
     restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [], sent: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '',
     resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · cobertura en todo el país') : ('Cobertura ' + r.geoLabel)) : '',
@@ -579,6 +584,7 @@ export default function Simulador() {
 
           {sim.isResult && (
             <div style={css(sim.stepAnim)}>
+              <button onClick={sim.backFromResult} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#6B6B6B;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver y ajustar</button>
               <div style={css('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
                 <div style={css('position:relative;width:40px;height:40px;flex:none')}>
                   <svg width="40" height="40" viewBox="0 0 44 44" style={css('display:block')}><circle cx="22" cy="22" r="19" fill="none" stroke="#E6F7F6" strokeWidth="4"></circle><circle cx="22" cy="22" r="19" fill="none" stroke="#00BCB4" strokeWidth="4" strokeLinecap="round" strokeDasharray="119.4" strokeDashoffset="119.4" transform="rotate(-90 22 22)" style={css('animation:spRing 0.95s cubic-bezier(0.22,1,0.36,1) 0.1s forwards')}></circle></svg>
