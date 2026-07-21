@@ -23,6 +23,7 @@ export default function Simulador() {
   const rafRef = useRef(null);
   const prevStepRef = useRef(0);
   const cardRef = useRef(null);
+  const bodyRef = useRef(null);
   const [showCalc, setShowCalc] = useState(false);
   const [deptOpen, setDeptOpen] = useState(false);
   const sinListaRef = useRef(new Set());
@@ -173,13 +174,20 @@ export default function Simulador() {
   useEffect(() => {
     const step = simState.step;
     if (step > 0 && step !== prevStepRef.current) track('sim_step', { paso: Math.min(step, 6) });
-    // Cada paso arranca desde el inicio de la tarjeta: sin esto, el scroll
-    // queda donde estaba y la pregunta siguiente aparece cortada en móvil.
+    // Cada paso arranca desde el inicio de la tarjeta. En móvil/tablet eso
+    // es scrollear la página (cap. 26); en desktop ≥1100 la tarjeta es de
+    // altura fija (modo app, HANDOFF 11i): la página NO se mueve — solo se
+    // resetea el scroll interno del cuerpo.
     if (step !== prevStepRef.current && cardRef.current) {
-      const r = cardRef.current.getBoundingClientRect();
-      if (r.top < 0 || r.top > 130) {
-        const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        cardRef.current.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      const appMode = typeof window !== 'undefined' && window.matchMedia('(min-width: 1100px)').matches;
+      if (appMode) {
+        if (bodyRef.current) bodyRef.current.scrollTop = 0;
+      } else {
+        const r = cardRef.current.getBoundingClientRect();
+        if (r.top < 0 || r.top > 130) {
+          const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          cardRef.current.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        }
       }
     }
     if (prevStepRef.current < 6 && step >= 6) {
@@ -408,7 +416,7 @@ export default function Simulador() {
           <div className="sim-trust" style={css('font-size:12px;color:#B3C7DB;display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles · menos de 1 minuto</div>
         </div>
 
-        <div className="sim-body" style={css('flex:1;min-width:0;background:#fff;padding:34px 34px;min-height:560px;display:flex;flex-direction:column;justify-content:center')}>
+        <div ref={bodyRef} className="sim-body" style={css('flex:1;min-width:0;background:#fff;padding:34px 34px;min-height:560px;display:flex;flex-direction:column;justify-content:center')}>
           {sim.isQuestion && (
             <div className="sim-mobile-progress" style={css('margin:0 0 20px')}>
               <div style={css('display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px')}>
@@ -526,7 +534,7 @@ export default function Simulador() {
                 {sim.ubiDropOpen && (
                   <div id="ubi-matches" role="listbox" style={css('position:absolute;left:0;right:0;top:58px;z-index:5;background:#fff;border:1px solid #E8E8E8;border-radius:12px;box-shadow:0 12px 34px rgba(0,59,113,0.14);overflow:hidden')}>
                     {sim.ubiMatches.map((m, i) => (
-                      <button key={i} role="option" onClick={() => sim.pickUbi(m, 'busqueda')} className="cart-match" style={css('display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{m.ciudad}</span><span style={css('margin-left:auto;font-size:12.5px;color:#6B6B6B')}>{m.deptNombre}</span></button>
+                      <button key={i} role="option" onClick={() => sim.pickUbi(m, 'busqueda')} className="cart-match ubi-row" style={css('display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span className="ubi-row-title" style={css('transition:color .18s')}>{m.ciudad}</span><span style={css('margin-left:auto;font-size:12.5px;color:#6B6B6B')}>{m.deptNombre}</span><span className="ubi-go" style={css('display:inline-flex;flex:none')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
                     ))}
                     {sim.ubiSinLista && <div style={css('padding:12px 15px;font-size:13.5px;color:#6B6B6B;background:#F7FBFB;line-height:1.5')}>No encontramos «{sim.ubiQ.trim()}» — elegí tu departamento acá abajo y listo. Tu búsqueda igual nos queda anotada para crecer hacia tu zona.</div>}
                   </div>
@@ -534,14 +542,14 @@ export default function Simulador() {
               </div>
               <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
                 {sim.ubiChips.map((c, i) => (
-                  <button key={i} onClick={() => sim.pickUbi(c, 'chip')} style={css('padding:9px 14px;border-radius:999px;border:1.5px solid #d9e4e2;background:#fff;color:#3D3D3D;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s')}>{c.ciudad}</button>
+                  <button key={i} onClick={() => sim.pickUbi(c, 'chip')} className="ubi-chip" style={css('padding:9px 14px;border-radius:999px;border:1.5px solid #d9e4e2;background:#fff;color:#3D3D3D;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .18s cubic-bezier(.22,1,.36,1)')}>{c.ciudad}</button>
                 ))}
               </div>
               <button onClick={sim.toggleDepts} aria-expanded={sim.deptOpen} className="link-teal" style={css('display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:#007d77;font-size:13.5px;font-weight:700;cursor:pointer;padding:10px 0 0;margin-top:6px')}>¿Preferís elegir tu departamento? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('transition:transform .2s;transform:rotate(' + (sim.deptOpen ? '180deg' : '0deg') + ')')}><path d="m6 9 6 6 6-6" /></svg></button>
               {sim.deptOpen && (
                 <div style={css('margin-top:10px;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden;max-height:288px;overflow-y:auto')}>
                   {sim.deptRows.map((dep, i) => (
-                    <button key={i} onClick={() => sim.pickUbi(dep, 'departamento')} className="cart-match" style={css('display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;padding:11px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer')}><span style={css('font-size:14.5px;font-weight:700;color:#003B71')}>{dep.deptNombre}</span><span style={css('font-size:12px;color:#6B6B6B;line-height:1.35')}>{dep.nota}</span></button>
+                    <button key={i} onClick={() => sim.pickUbi(dep, 'departamento')} className="cart-match ubi-row" style={css('display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 15px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer')}><span style={css('display:flex;flex-direction:column;gap:2px;min-width:0;flex:1')}><span className="ubi-row-title" style={css('font-size:14.5px;font-weight:700;color:#003B71;transition:color .18s')}>{dep.deptNombre}</span><span style={css('font-size:12px;color:#6B6B6B;line-height:1.35')}>{dep.nota}</span></span><span className="ubi-go" style={css('display:inline-flex;flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#00BCB4" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
                   ))}
                 </div>
               )}

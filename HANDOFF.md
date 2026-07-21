@@ -248,6 +248,26 @@ usa `npm ci`).
     (pendiente B) para que `redNota` hable con datos; y revisar
     `sim_zona_sin_lista` en el ritual mensual (#11) para sumar ciudades
     al índice.
+11i. **Modo app del simulador en desktop + hover reveal (21 jul 2026,
+    pedido del usuario: "la ideal es no escrollear, tener todo en una
+    pantalla, casi como una app")** — ejecuta la evolución 100dvh que
+    11c había dejado declarada: en ≥1100px el hero se compacta y la
+    tarjeta tiene altura fija (`clamp(460px, 100dvh−275px, 680px)`);
+    header + hero + tarjeta = una pantalla, la página NO se mueve al
+    avanzar de paso (el auto-scroll de 11c queda solo en ≤1099px) y lo
+    que no entra (lista de departamentos, resultado) scrollea DENTRO
+    del cuerpo, que resetea su scroll interno en cada paso. El centrado
+    vertical usa `::before/::after{margin:auto}` para no romper el
+    overflow. En móvil el hero del simulador se compactó (la bajada se
+    oculta ≤640px) para que la tarjeta arranque en el primer
+    pantallazo; el comportamiento fino de 11c no se tocó. **Hover
+    reveal** en ciudades y departamentos (pedido del usuario: "que el
+    botón sea invisible hasta que uno acerca el puntero"): filas y chips
+    planos que al hover se vuelven botón (fondo mint, título teal,
+    chevron que aparece) — SOLO bajo `@media(hover:hover)`; en táctil
+    los chips conservan su borde visible porque sin puntero no hay
+    reveal. Guardián nuevo en el QA: en 1366×768 y 1440×900 la tarjeta
+    entra en pantalla y el flujo no scrollea la página.
 
 ---
 
