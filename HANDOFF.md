@@ -371,6 +371,29 @@ A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
      precios de venta nueva y los 21 ejemplos GRUPOS quedaron idénticos
      (motor re-verificado 21/21). Detalle y una trampa del PDF (páginas
      internas contradicen a la consolidada) en el README de la carpeta.
+   - *Grilla oficial completa incorporada al git (22 jul 2026)*: el
+     usuario pasó `SP_Privilege · Grilla Coberturas y Precios Jul 2026.xlsx`
+     — 8 hojas con **el detalle por ítem de los tres planes** (Precios,
+     Consultas x especialidad, y los 4 Cuadros: Laboratorio 348, Estudios
+     e Imágenes 271, Cirugías e Internación 314, Fisioterapia; + Parámetros
+     Clave). Vive en `datos/planes-vigentes/` (el `.xlsx` como fuente de
+     verdad + `grilla-coberturas-precios-jul2026.json`, transcripción fiel
+     y diffeable). **Precios verificados exactos** contra `TARIFAS` de
+     `app/quote.js` para los tres planes. Con esto **Silver/Gold dejan de
+     estar "pendientes"** (su detalle completo está en la grilla) y se
+     destraban tres cosas de la auditoría: (a) **carencias con número**
+     (internación 60 d, maternidad 300 d, y por estudio); (b) el insumo
+     del bloque **"qué no cubre / qué pagás aparte"** — los ítems `AD`
+     (100% a cargo) salen por plan de los cuadros: **114 en Bronze, 73 en
+     Silver, 14 en Gold** (el gradiente del upsell, a comunicar en gris,
+     nunca rojo); (c) **chequeo de sobrepromesa confirmado**: en las 8
+     hojas **no existe "telemedicina" ni "laboratorio a domicilio"**; sí
+     "consulta médica a domicilio" (2/3/4 por año). ⚠ **A revisar antes de
+     tocar el sitio** (no ejecutado en este PR): los resúmenes curados del
+     comparador (`cart()` en `app/page.jsx`) podrían diferir de la grilla
+     en categorías multi-fila (resonancia/TAC tienen muchas filas con
+     coberturas distintas — CT/COP/AD) — cotejar contra la grilla antes de
+     dar por buena cada celda del comparador.
 
 B. **Base de prestadores del sistema interno de SP** (mencionado por
    voz; el nombre del sistema hay que confirmarlo con el usuario en la
