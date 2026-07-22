@@ -281,6 +281,41 @@ usa `npm ci`).
     UNA zona de cobertura** (`ZONA_COBERTURA` las agrupa como
     'asu-central') — administrativamente dos, para red y futuro precio
     por zona, una.
+11j. **Segunda ola de auditoría — estratégica (CRO/UX/contenido/CX,
+    22 jul 2026).** Auditoría de la web contra la pregunta central "¿la
+    web cura o repite la enfermedad de prometer más de lo que cumple?".
+    Veredicto: **empieza a curar** (precio real sin pedir datos, "qué
+    cubre" con topes/copagos reales, demos bien rotuladas), con **un foco
+    crítico**: el bloque "Lo que casi nadie te garantiza" promete
+    telemedicina "garantizada por contrato" y laboratorio a domicilio
+    (`app/page.jsx:82-84`) que **los cuadernillos volcados no documentan**
+    (`datos/planes-vigentes/*.json`) — la enfermedad textual, en el bloque
+    que debía probar lo contrario. **Ejecutado en este PR (arreglos que no
+    dependen de datos nuevos ni del test de 5 seg en pausa §3c):**
+    (a) **"Mi SP" ahora es puerta persistente del afiliado en desktop** —
+    link en el nav y en el footer (antes solo vivía en el hero y el menú
+    móvil; el cliente actual se quedaba sin camino al scrollear — contradecía
+    "retención primero"); (b) **honestidad pareja en la Guía**: badge visible
+    "Datos de ejemplo" en "Los más buscados" y en el conteo "590 prestadores"
+    (el caveat vivía solo en un comentario HTML invisible), y "el ranking se
+    calcula automáticamente" pasó a futuro; (c) **"sin letra chica" se
+    desacopló del hero de la Guía** (`guia_home.html:104`) — esa promesa se
+    gana donde se muestran límites reales (el "qué cubre" del home), no sobre
+    un directorio de prestadores ilustrativos. **Bug latente arreglado de
+    paso** (BITACORA cap. 32): el nav desktop ya desbordaba por debajo de
+    ~1145px cortando el CTA "Simulá tu plan"; ahora colapsa al menú
+    hamburguesa (que tiene todo, incluida Mi SP) por debajo de 1200px.
+    **Queda pendiente del material del usuario (Drive de contratos, en
+    marcha):** el Crítico de telemedicina/domicilio (¿el contrato lo
+    respalda? si no, reetiquetar "En camino"), el bloque "qué no cubre / qué
+    pagás aparte" (regla de tono: gris, nunca rojo) y las carencias con
+    número — todo necesita el detalle de exclusiones/AD y los cuadernillos
+    Silver/Gold. **Requiere validación externa:** "Vigilado por
+    Superintendencia de Salud" (footer de la guía) — confirmar nombre del
+    ente y registro. **Decisión de negocio abierta:** ¿SP Empresas/B2B entra
+    en el alcance de la web? El brief del usuario nombra tres públicos, los
+    docs internos declaran dos. El informe completo de la auditoría se
+    entregó en la conversación.
 
 ---
 

@@ -70,7 +70,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* Dieta móvil del simulador (jul 2026): el preámbulo comprimido para que la
    pregunta y sus opciones entren en el primer pantallazo (390×670 mínimo). */
 @media(max-width:820px){.sim-side{padding:10px 16px !important}.sim-q-title{font-size:19px !important}.sim-opt{padding:12px 14px !important}.sim-mobile-progress{margin-bottom:12px !important}}
-@media(max-width:860px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
+/* El nav desktop lleva 5 links + Guía + Simulá + urgencias; su ancho natural
+   (~1171px) desbordaba por debajo de ~1145px CORTANDO el CTA "Simulá tu plan"
+   (bug latente en producción, que salió al medir tras sumar "Mi SP" — auditoría
+   jul 2026). Se colapsa al menú hamburguesa —que ya tiene Mi SP y todo— por
+   debajo de 1200px, donde el nav completo no entra. Verificado: sin desborde
+   ≥1200px, hamburguesa completa por debajo. */
+.nav-links-desktop .nav-link{white-space:nowrap}
+@media(max-width:1199px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
 /* Touch targets ≥44px en móvil (QA integral: el 77% del tráfico entra por celular) */
 .urg-pill{height:44px !important}.nav-burger{width:44px !important;height:44px !important}}
 @media(max-width:420px){.urg-pill .num-tnum{display:none !important}}

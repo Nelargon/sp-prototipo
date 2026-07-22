@@ -877,6 +877,37 @@ bolsa de demanda por ciudad para Convenios y el directorio.
 
 ---
 
+## Capítulo 32 — El link que destapó un desborde viejo
+
+**Qué intentamos.** La segunda ola de auditoría (estratégica, 22 jul
+2026) pidió darle al afiliado una puerta persistente en desktop: "Mi SP"
+solo vivía en el hero y el menú móvil, así que apenas se scrolleaba, el
+cliente actual —la prioridad de retención— se quedaba sin camino. El
+arreglo parecía de una línea: sumar "Mi SP" como link del nav.
+
+**Qué pasó.** Al medir la geometría (no el código), el nav desbordaba a
+960px: "Mi SP" envolvía a dos líneas y el CTA "Simulá tu plan" quedaba
+cortado fuera de pantalla. Pero el cálculo mostró algo peor: el nav
+completo necesita ~1171px, y el corte al hamburguesa estaba en 860px. O
+sea, **el nav ya venía cortando el "Simulá tu plan" en cualquier pantalla
+de 861 a 1145px — un bug que estaba en producción y nadie había visto.**
+El link nuevo no rompió nada: destapó lo que ya estaba roto. Se subió el
+corte al hamburguesa a 1200px (el hamburguesa ya tiene todo, Mi SP
+incluida) y se verificó sin desborde ≥1200 en 1200/1280/1440/1680.
+
+**Qué aprendimos.** Dos cosas. Primero, la de siempre pero que siempre
+vuelve: **el bug no estaba en el diff, estaba en lo computado.** Agregar
+un ítem a un contenedor que se ve "holgado" a pantalla completa puede
+revelar que ya desbordaba en la franja de anchos que uno nunca abre.
+Cada vez que se suma algo a una barra de ancho fijo, se mide la
+geometría en la franja incómoda (861–1199), no solo en el monitor
+grande. Segundo, más de fondo: un nav que necesita 1200px para entrar es
+un nav sobrecargado — el corte no fue una decisión de diseño sino la
+factura de haber apilado cinco links + dos CTA + urgencias. La próxima
+poda del header ya tiene su primer argumento.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
