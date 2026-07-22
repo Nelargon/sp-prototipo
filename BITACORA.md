@@ -908,6 +908,40 @@ poda del header ya tiene su primer argumento.
 
 ---
 
+## Capítulo 33 — El resumen no es la fuente
+
+**Qué intentamos.** La auditoría había dejado una pregunta abierta con
+etiqueta "requiere validación": ¿la web sobrepromete al decir
+"telemedicina garantizada por contrato" y "laboratorio a domicilio"? El
+resumen curado que teníamos en el repo (`bronce.json`) no las mencionaba,
+pero un resumen que no menciona algo no prueba que no exista — podía estar
+incompleto. El usuario pasó la grilla oficial completa (`.xlsx`, 8 hojas,
+~950 ítems de los tres planes) y pidió incorporarla al git.
+
+**Qué pasó.** Con la fuente completa en la mano, la búsqueda fue
+concluyente: en las 8 hojas **no aparece "telemedicina" en ningún lado**
+(los únicos "video" son *Videolaparoscopía*, una técnica quirúrgica) ni
+"laboratorio a domicilio". Sí existe "consulta médica a domicilio" (2/3/4
+eventos por año). O sea, el Crítico de la auditoría quedó **confirmado con
+la fuente**, no con el resumen. Y de yapa, al cotejar celda por celda,
+salió que los resúmenes del comparador (`cart()`) podrían no coincidir con
+la grilla en categorías multi-fila (resonancia y TAC tienen decenas de
+filas con CT/COP/AD distintos) — quedó anotado para revisar antes de tocar
+el sitio.
+
+**Qué aprendimos.** Para un chequeo de sobrepromesa, **verificá contra la
+fuente completa, no contra el resumen** — el resumen es una vista con
+pérdida, y lo que no dice puede ser omisión, no ausencia. La grilla cruda
+(el `.xlsx` y su transcripción JSON diffeable) es ahora la fuente de
+verdad de coberturas; los `*.json` curados por plan son una vista cómoda,
+pero cuando el detalle importa (una cláusula, un copago, una carencia) se
+va a la grilla. Corolario del método: cuando entra material nuevo del
+negocio, primero se incorpora fiel y verificado (precios cotejados 3/3
+contra el motor), y recién después se decide qué mostrar — ingerir y
+mostrar son dos pasos, no uno.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
