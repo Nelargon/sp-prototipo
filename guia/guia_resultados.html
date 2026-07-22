@@ -185,7 +185,9 @@
                 <section class="flex-grow space-y-4" aria-live="polite">
 
                     <div class="flex flex-wrap justify-between items-center gap-3 bg-white rounded-2xl border border-line px-5 py-3.5">
-                        <span class="text-sm text-slate-500"><strong id="conteo" class="text-navy font-bold">590</strong> prestadores en la red</span>
+                        <!-- Caveat VISIBLE (auditoría jul 2026, problema E): el conteo corre
+                             sobre prestadores de ejemplo; el badge lo dice de frente. -->
+                        <span class="text-sm text-slate-500"><strong id="conteo" class="text-navy font-bold">590</strong> prestadores en la red <span class="text-[10px] font-bold tracking-[0.1em] uppercase text-gold border border-gold/50 rounded-full px-2 py-0.5 ml-1 align-middle whitespace-nowrap">Datos de ejemplo</span></span>
                         <label class="flex items-center gap-2 text-sm text-slate-500">Ordenar:
                             <select class="bg-soft border border-line rounded-lg py-1.5 px-2.5 text-xs font-semibold text-navy focus:ring-2 focus:ring-teal">
                                 <option>Relevancia</option><option>Cercanía</option><option>Nombre A–Z</option>

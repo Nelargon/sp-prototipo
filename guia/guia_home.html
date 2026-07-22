@@ -101,7 +101,11 @@
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-teal/15 rounded-full blur-3xl" aria-hidden="true"></div>
             <div class="relative max-w-7xl mx-auto px-5 md:px-8 pt-16 pb-20 md:pt-24 md:pb-28 flex flex-col items-center">
 
-                <div class="text-[11px] font-bold tracking-[0.18em] uppercase text-teal mb-5">Guía Médica · Toda la red, sin letra chica</div>
+                <!-- "sin letra chica" se desacopló de la Guía mientras corra con datos
+                     ilustrativos (auditoría estratégica jul 2026, problema E): esa promesa
+                     se gana donde se muestran límites reales (el "qué cubre" del home), no
+                     sobre un directorio de prestadores de ejemplo. -->
+                <div class="text-[11px] font-bold tracking-[0.18em] uppercase text-teal mb-5">Guía Médica · Toda la red en un solo buscador</div>
                 <h1 class="font-display font-extrabold text-4xl md:text-6xl text-white text-center tracking-tight leading-tight mb-4">
                     ¿Dónde te atendés <span class="text-teal">hoy</span>?
                 </h1>
@@ -235,8 +239,11 @@
             <div class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-16">
                 <div class="flex flex-wrap justify-between items-end gap-3 mb-8">
                     <div>
-                        <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Esta semana en tu zona</div>
-                        <h2 class="font-display font-extrabold text-3xl tracking-tight">Los más buscados<span class="text-teal">.</span></h2>
+                        <div class="text-[11px] font-bold tracking-[0.15em] uppercase text-teal-dk mb-2">Lo más consultado de la red</div>
+                        <!-- Caveat VISIBLE (auditoría jul 2026, problema E): estos datos son
+                             de ejemplo; el badge lo dice de frente, como el "Demostración" de
+                             Ver mi red — no en un comentario invisible. -->
+                        <h2 class="font-display font-extrabold text-3xl tracking-tight flex items-center gap-3 flex-wrap">Los más buscados<span class="text-teal">.</span><span class="text-[10px] font-bold tracking-[0.1em] uppercase text-gold border border-gold/50 rounded-full px-2.5 py-0.5 shrink-0">Datos de ejemplo</span></h2>
                     </div>
                     <a href="guia_resultados.html" class="text-teal-dk font-bold text-sm hover:underline">Ver todos los prestadores →</a>
                 </div>
@@ -299,7 +306,7 @@
                         <span class="text-slate-300 group-hover:text-teal-dk transition-colors" aria-hidden="true">→</span>
                     </a>
                 </div>
-                <p class="text-[11px] text-slate-400 mt-4">Este ranking se calcula automáticamente con las búsquedas de los usuarios.</p>
+                <p class="text-[11px] text-slate-400 mt-4">En producción, este ranking se va a calcular solo con las búsquedas reales de los usuarios. Los de acá son ejemplos del formato.</p>
             </div>
         </section>
 
