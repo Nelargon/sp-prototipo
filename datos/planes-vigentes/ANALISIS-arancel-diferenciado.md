@@ -95,21 +95,49 @@ sola frase honesta en el punto de duda: *"cubierto con copago — ponés la mita
 
 ---
 
-## 4. El ángulo de claridad que falta confirmar: ¿AD = precio de convenio?
+## 4. El ángulo de claridad — CONFIRMADO: AD = precio de convenio
 
-El cuadernillo de Bronce sugiere que AD no es "andá a la calle a pagar lo que
-sea", sino **"precio de convenio a cargo del beneficiario"** — es decir, no está
-cubierto, **pero lo hacés al precio negociado de SP, más barato que particular.**
+**Confirmado por la grilla oficial master (jul 2026).** La leyenda dice, textual:
 
-Si la operación lo confirma, la claridad deja de ser una mala noticia desnuda y
-pasa a ser una verdad completa:
+> *"AD = Arancel Diferenciado = sin cobertura. El socio paga el 100% **(con tarifa
+> acordada en convenio)**. Cuadernillo, cláusula 2.10."*
+
+Y el Plan Vital usa la misma lógica con otro nombre — *"arancel preferencial:
+servicio no cubierto al 100%, con tarifa reducida acordada"*.
+
+O sea: AD no es "andá a la calle a pagar lo que sea", es **"no está cubierto,
+pero lo hacés al precio negociado de SP, más barato que particular"**. Ya no es
+hipótesis — tiene respaldo de cláusula. La claridad deja de ser una mala noticia
+desnuda y pasa a ser una verdad completa:
 
 > *"Esto no lo cubre tu plan. Pero con SP lo hacés al precio de convenio, no al
 > particular."*
 
-**Esto hay que verificarlo antes de escribirlo en ningún lado.** Es la diferencia
-entre "sin cobertura" (asusta) y "no cubierto, y esto podés hacer" (da
-tranquilidad) — exactamente el salto de claridad que pide la estrategia.
+Es la diferencia entre "sin cobertura" (asusta) y "no cubierto, y esto podés
+hacer" (da tranquilidad) — exactamente el salto de claridad que pide la
+estrategia. **Con esto ya se puede escribir** (citando la cláusula 2.10 como respaldo).
+
+### La "Cobertura real" — el dato que lo vuelve tangible
+
+El master sumó una hoja que resume, del total de prestaciones, **cuánto cubre de
+verdad cada plan** (base 928 prestaciones):
+
+| | Cubierto 100% | Copago 50% | Parcial | Sin cobertura (AD) |
+|---|---|---|---|---|
+| **Bronze** | 45% | 32% | 11% | 12% |
+| **Silver** | 66% | 26% | 0% | 8% |
+| **Gold** | 93% | 6% | 0% | 2% |
+
+Ese gradiente (45 → 66 → 93% cubierto de verdad) es el argumento de upsell más
+honesto posible, y el salto se concentra en **Laboratorio e Imágenes**.
+
+### Nota Vital (senior): la salud mental NO está incluida
+
+Ojo con el diferenciador de salud mental: en **Bronze/Silver/Gold** psicología y
+psiquiatría están cubiertas, pero en **Plan Vital (65+)** psicología, psiquiatría
+y fonoaudiología son **arancel preferencial (sin cobertura)**. Cuando ese
+diferenciador aparezca en la web, decir "incluida en los planes Privilege" — no
+prometerle salud mental cubierta a la familia que busca para el abuelo.
 
 ---
 
@@ -118,8 +146,8 @@ tranquilidad) — exactamente el salto de claridad que pide la estrategia.
 Entender la razón es lo que nos deja *explicar* — el nivel más alto de
 transparencia. A confirmar con quien maneje coberturas:
 
-1. **¿AD = precio de convenio (preferencial)?** ¿O es 100% a precio de mercado?
-   (Define todo el tono del punto 4.)
+1. ~~**¿AD = precio de convenio (preferencial)?**~~ ✔ **RESUELTO** (grilla master,
+   cláusula 2.10): sí, precio de convenio. Ver punto 4.
 2. **¿Por qué cada categoría grande está excluida?** Hipótesis a validar:
    - Odontología → línea aparte / otro producto.
    - Bariátrica, hemodinamia, alta complejidad, oncología-tratamiento → costo

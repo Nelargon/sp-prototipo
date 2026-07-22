@@ -36,17 +36,31 @@ son las hojas viejas por plan y contradicen a la página 1 en las filas
 | Archivo | Contenido |
 |---|---|
 | `SP_Privilege_Grilla_Coberturas_Precios_Jul2026.xlsx` | **Grilla oficial completa (fuente de verdad, jul 2026)** — 8 hojas: Precios, Consultas x especialidad (43), Cuadro 1 Laboratorio (348), Cuadro 2 Estudios e Imágenes (271), Cuadro 3 Cirugías e Internación (314), Cuadro 4 Fisioterapia, Parámetros Clave. La pasó el usuario. |
-| `grilla-coberturas-precios-jul2026.json` | **Transcripción fiel de la grilla** (mismo contenido, versionable y diffeable). Cada ítem trae `cob` (CT/COP/CP/AD), `cantidad` (tope) y `carencia` para Bronze / Silver / Gold. Es el volcado estructurado del `.xlsx`. |
-| `bronce.json` | Plan Privilege Bronze: tarifa por edad/parentesco (IVA incluido) y **resumen curado** de coberturas con carencias |
-| `vital.json` | Plan Vital (senior, 65+): tarifa y cobertura escalonada por antigüedad |
+| `grilla-coberturas-precios-jul2026.json` | **Transcripción fiel de la grilla Privilege** (Bronze/Silver/Gold), versionable y diffeable. Cada ítem trae `cob` (CT/COP/CP/AD), `cantidad` y `carencia`. Incluye `cobertura_real` (% cubierto por plan) y la leyenda `AD` con la cláusula 2.10. |
+| `grilla-vital-coberturas-jul2026.json` | **Transcripción fiel de la grilla Plan Vital (65+)** — precios (débito/particular + sepelio), coberturas por carencia (4 tramos), 26 especialidades, laboratorio y estudios, sepelio. |
+| `bronce.json` / `silver.json` / `gold.json` | **Resumen curado** por plan Privilege: tarifa por edad/parentesco (IVA incl.) + coberturas clave. Vista cómoda; para el detalle fino, ir a la grilla. |
+| `vital.json` | Plan Vital: resumen curado (tarifa + cobertura escalonada). El detalle completo está en `grilla-vital-coberturas-jul2026.json`. |
 
-**Silver y Gold (jul 2026): ya están en el repo, dentro de la grilla completa.**
-La grilla trae los tres planes con todo el detalle por ítem, así que el
-volcado a la web pública (comparador de 3 niveles) ya no está bloqueado — de
-hecho el sitio ya corre con los tres planes (`plans()`/`TARIFAS` en
-`app/quote.js`). Los `silver.json` / `gold.json` con el mismo *resumen curado*
-que `bronce.json` quedan como tarea opcional; la fuente autoritativa para
-Silver/Gold es `grilla-coberturas-precios-jul2026.json`.
+## Pipeline de datos (Drive → repo) — runbook
+
+Los **masters** viven en el Drive del usuario (carpeta `SP-Web`) y son la fuente
+de verdad. El repo guarda la transcripción versionada. Para **re-ingerir** cuando
+el usuario actualiza un master:
+
+1. Leer el master por su **fileId** con la herramienta de Google Drive
+   (`get_file_metadata` / `read_file_content`).
+2. Transcribir a JSON fiel (mismo formato que los `grilla-*.json`).
+3. **Verificar** los precios contra `TARIFAS` en `app/quote.js` (deben coincidir).
+4. PR en borrador → revisión humana → merge.
+
+| Master (Drive) | fileId | Última ingestión |
+|---|---|---|
+| SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx | `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh` | 22 jul 2026 (enriquecida: cobertura_real + AD cláusula 2.10) |
+| SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | 22 jul 2026 (primera ingestión) |
+
+> Nota: los atajos `.lnk` en Drive **no** funcionan como puntero (son atajos de
+> Windows); se trackea el **fileId** del master. Hay un chequeo mensual propuesto
+> que compara el `modifiedTime` de cada master contra estas fechas.
 
 **Integridad verificada (jul 2026):** los precios `titular_solo` de la grilla
 coinciden **exactos** con `TARIFAS` en `app/quote.js` para los tres planes
