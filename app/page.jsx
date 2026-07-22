@@ -78,10 +78,16 @@ export default function Page() {
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
 
+  // Cada tarjeta se gana su lugar con una cláusula real del cuadernillo
+  // (verificado contra los 4 contratos SP, jul 2026): telemedicina y
+  // "laboratorio a domicilio" NO figuran en ningún plan — se quitaron para
+  // no prometer lo que el contrato no respalda (el bloque "por escrito" no
+  // puede sobreprometer). Números de médico a domicilio y salud mental salen
+  // de las secciones 2.9.1.5 y consultas de los cuadernillos Bronce/Silver/Gold.
   const difsData = () => [
-    { icon: 'm23 7-7 5 7 5V7ZM1 5h15v14H1z', title: 'Telemedicina garantizada por contrato', body: 'Consultas por video con un tiempo de respuesta escrito en tu plan — no una promesa suelta.' },
-    { icon: 'M3 11l9-8 9 8M5 9.5V20h14V9.5M12 12v5M9.5 14.5h5', title: 'Médico y laboratorio a domicilio', body: 'Atención y estudios en tu casa cuando más lo necesitás, según el plan que elijas.' },
-    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y acompañamiento emocional desde el plan, no como un extra aparte.' },
+    { icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M16 13H8M16 17H8M10 9H8', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
+    { icon: 'M3 11l9-8 9 8M5 9.5V20h14V9.5M12 12v5M9.5 14.5h5', title: 'Médico a domicilio', body: 'El médico va a tu casa: hasta 2, 3 o 4 consultas a domicilio al año según tu plan, más urgencias y ambulancia sin cargo.' },
+    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronce, Silver y Gold, no como un extra aparte.' },
   ];
 
   // Count-up for the trust stats when they scroll into view (once).
@@ -589,7 +595,7 @@ export default function Page() {
               <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
                 <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
                 <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
-                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{dz.body}</div>
+                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
               </div>
             ))}
           </div>

@@ -1004,6 +1004,48 @@ transformación de CSS.
 
 ---
 
+## Capítulo 36 — La tarjeta que prometía lo que el contrato no decía
+
+**Qué intentamos.** Retomar el Crítico #1 de la Parte 2: el bloque del home
+"Lo que casi nadie te garantiza" —el mismo que jura "quedan escritas en tu
+plan"— encabezaba con "Telemedicina **garantizada por contrato**" y "Médico
+y **laboratorio a domicilio**". El resumen del repo (la grilla de 8 hojas)
+ya avisaba que ninguna de las dos aparecía. En vez de reetiquetar por
+inferencia, fuimos a la fuente: leímos los cuatro cuadernillos SP
+(Bronce/Silver/Gold + Vital) en el Drive.
+
+**Qué pasó.** El contrato confirmó lo peor y sumó una sorpresa. Telemedicina:
+**cero menciones** en los cuatro planes (el único "video" es
+*videolaparoscopía*, una técnica quirúrgica — un falso amigo perfecto).
+Laboratorio a domicilio: **no existe**; los labs son siempre en laboratorio
+habilitado, y de yapa **la enfermería a domicilio está EXCLUIDA** (cláusula
+2.9.2, "a cargo del beneficiario"). Lo que sí está, con número y todo:
+**consulta médica a domicilio** (2/3/4 eventos al año según plan, secc.
+2.9.1.5, vigencia inmediata) y **salud mental** en Privilege (3/5/6 sesiones)
+— pero **Vital no la incluye** (arancel preferencial). O sea: la enfermedad
+que la web venía a curar —prometer de más— vivía justo en el bloque que decía
+"esto lo ponemos por escrito".
+
+**Qué aprendimos.** Tres cosas. Primera, la más incómoda: **el bloque que más
+promete es el que más hay que auditar.** Un kicker que dice "Lo que ponemos
+por escrito" es un cheque que alguien puede querer cobrar; si no está en el
+contrato, no se firma. Segunda: **cuando el dato no alcanza, andá a la fuente,
+no al resumen.** La grilla decía "no aparece"; el cuadernillo lo confirmó Y
+agregó la exclusión de enfermería que la grilla no mostraba — el resumen es un
+mapa, no el territorio (eco del cap. 33). Tercera, la salida no fue tapar el
+agujero sino darlo vuelta: la tarjeta de telemedicina se volvió **"Sin letra
+chica"** — "ves qué cubre y qué pagás aparte antes de firmar". Donde había una
+promesa que el contrato desmentía, ahora está la única promesa que el contrato
+**sí** puede sostener: la de mostrar la verdad. El diferenciador más honesto
+era la honestidad.
+
+**Un detalle de método.** La verificación la hizo una sub-sesión leyendo los
+PDF completos y devolviendo citas textuales por plan; el hilo principal no se
+llenó con cientos de páginas de cuadernillo. Cuando la fuente es enorme y solo
+querés el veredicto, delegá la lectura y quedate con la cita.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

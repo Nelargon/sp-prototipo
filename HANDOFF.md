@@ -46,16 +46,22 @@ documentado en el repo.
 - **AD = sin cobertura, el socio paga 100% con tarifa de convenio** (cláusula 2.10). Confirmado.
 - **Cobertura real** Privilege: Bronze **45%** / Silver **66%** / Gold **93%** cubierto al 100% (el mejor argumento de upsell honesto).
 - **Vital (65+) NO incluye salud mental** (psico/psiq/fono = arancel preferencial) → el diferenciador de salud mental es de **Privilege**, no de Vital.
-- **Telemedicina y "laboratorio a domicilio" NO aparecen** en ninguna grilla → la tarjeta "garantiza" del home sobrepromete (médico a domicilio sí existe).
+- **Telemedicina y "laboratorio a domicilio" NO aparecen** en ninguna grilla → la tarjeta "garantiza" del home sobreprometía. **✔ Resuelto (dec. 11l):** verificado también contra los 4 cuadernillos SP y corregido en el home. Médico a domicilio (2/3/4 al año) y salud mental (Bronce/Silver/Gold) sí existen y quedaron con su número real.
 
 ### Pendientes priorizados (Parte 2)
-1. **Telemedicina/domicilio (Crítico de la auditoría):** revisar los cuadernillos
-   PDF (Drive, carpeta PRIVILEGE) por la cláusula, o reetiquetar la tarjeta del
-   home "En camino".
+1. ~~**Telemedicina/domicilio (Crítico de la auditoría)**~~ ✔ **HECHO (22 jul
+   2026, dec. 11l):** se verificaron los 4 contratos SP en el Drive —
+   telemedicina y "laboratorio a domicilio" NO existen en ningún plan. Se
+   corrigió el bloque "Lo que casi nadie te garantiza" del home (telemedicina →
+   "Sin letra chica"; "médico a domicilio" con números reales; salud mental
+   acotada a Bronce/Silver/Gold). Queda afuera del home: el filtro
+   "Telemedicina" de la guía (`guia_resultados.html`) si SP no va a ofrecerla.
 2. **Bloque "qué no cubre / qué pagás aparte"** con la data nueva (cobertura real
    + AD=convenio), en gris (regla de tono).
-3. **Salud mental:** al mostrar el diferenciador, decir "incluida en los planes
-   Privilege" — no prometérsela al que busca Vital.
+3. ~~**Salud mental**~~ ✔ **HECHO (dec. 11l):** el diferenciador del home ya dice
+   "incluida en los planes Bronce, Silver y Gold" (nombres públicos, no a quien
+   mira Vital); el comparador ya la mostraba por plan (3/5/6 sesiones, exacto al
+   contrato). No aparece como promesa general en ningún otro lado.
 4. **Hoja de plataformas para BuenaVista** (comparación abajo, aún sin escribir).
 5. Testimonios reales + fotos reales (pendientes viejos).
 
@@ -412,6 +418,31 @@ usa `npm ci`).
     integral 0 roto + walkthrough del flujo nuevo (13 checks). El resultado
     con plan puesto rotula "Tu plan elegido" (no "recomendado"). Territorio:
     `app/page.jsx`, `app/components/Simulador.jsx`.
+11l. **Crítico de la auditoría resuelto — el bloque "por escrito" ya no
+    sobrepromete (22 jul 2026; verificado contra los 4 contratos SP,
+    BITACORA cap. 36).** El home, en "Lo que casi nadie te garantiza"
+    (`app/page.jsx`, `difsData`), prometía tres cosas que el contrato no
+    respaldaba parejo: "Telemedicina **garantizada por contrato**", "Médico
+    y **laboratorio a domicilio**" y "Salud mental incluida" (sin distinguir
+    plan). Se leyeron los cuatro cuadernillos SP (Bronce/Silver/Gold + Vital)
+    en el Drive: **telemedicina NO existe en ningún plan** (el único "video"
+    es videolaparoscopía, técnica quirúrgica); **"laboratorio a domicilio"
+    tampoco** (los labs son siempre en laboratorio habilitado; ojo:
+    **enfermería a domicilio está EXCLUIDA**, cláusula 2.9.2). Sí son reales y
+    quedaron con su número: **consulta médica a domicilio** (Bronce 2 /
+    Silver 3 / Gold 4 eventos/año, secc. 2.9.1.5, vigencia inmediata) +
+    urgencias/ambulancia a domicilio sin cargo; y **salud mental** en
+    Privilege (psicología y psiquiatría, Bronce 3 / Silver 5 / Gold 6
+    sesiones) — **Vital NO la incluye** (arancel preferencial). Fix: (a)
+    telemedicina → tarjeta **"Sin letra chica"** (ves qué cubre y qué pagás
+    aparte antes de firmar: pasa de contradecir la tesis del sitio a
+    probarla); (b) "Médico a domicilio" con los números reales, sin
+    "laboratorio"; (c) salud mental acotada a "los planes Bronce, Silver y
+    Gold". El cuerpo de las tarjetas pasó a Inter (regla tipográfica: es
+    prosa). QA integral: 0 roto, sin hallazgos nuevos (los mismos 6
+    pre-existentes de contraste/testimonios). Territorio: `app/page.jsx`.
+    **Pendiente afuera:** el filtro "Telemedicina" de la guía si SP no va a
+    ofrecerla.
 
 ---
 
