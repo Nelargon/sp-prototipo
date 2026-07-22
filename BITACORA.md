@@ -942,6 +942,35 @@ mostrar son dos pasos, no uno.
 
 ---
 
+## Capítulo 34 — "Arancel diferenciado" es decir "sin cobertura" con saco y corbata
+
+**Qué pasó.** Con la grilla ya en el repo, el usuario puso el dedo en una
+palabra: *«"Arancel diferenciado" es una forma elegante de decir sin
+cobertura. No hay que eliminar esas determinaciones, pero en pos de la
+claridad tenemos que ayudar siempre a dar claridad con esa clase de cosas.
+Y tengo que entender cuál es la razón de ese arancel diferencial.»*
+
+**Qué encontramos al mirar el dato.** Tres cosas cambiaron el mapa. Una:
+la exclusión *total* (AD en los tres planes) es corta — 13 ítems, casi
+todos técnicas de contraste en desuso + "Depilación"; lo que pesa de
+verdad son categorías enteras (odontología, bariátrica, oncología-
+tratamiento). Dos: la sorpresa más grande **no es el AD sino el copago** —
+300 ítems en Bronce donde pagás la mitad y creés que está cubierto. Tres:
+hay una pista de que AD = *precio de convenio* (no precio de mercado), que
+de confirmarse convierte "sin cobertura" en "no cubierto, pero a precio SP".
+
+**Qué aprendimos.** Dos ideas. Primera, del usuario: **la claridad no es
+mostrar todo ni esconder todo — es traducir la jerga que suena a beneficio
+y significa bolsillo propio** (AD, COP), y explicar el *por qué*, que es el
+nivel más alto de transparencia. Segunda, de método: una etiqueta única
+("AD") tapaba dos cosas distintas —exclusión real vs. cobertura-desde-un-
+plan-superior— y sin abrir el dato no se veía; el gris de la "letra chica"
+casi nunca es un solo color. El análisis quedó en
+`datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` — insumo de
+estrategia, todavía no copy de web.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

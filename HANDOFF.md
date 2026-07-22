@@ -393,7 +393,20 @@ A. ~~**Planes vigentes**~~ ✔ **COMPLETO Y VOLCADO A LA WEB (17 jul
      comparador (`cart()` en `app/page.jsx`) podrían diferir de la grilla
      en categorías multi-fila (resonancia/TAC tienen muchas filas con
      coberturas distintas — CT/COP/AD) — cotejar contra la grilla antes de
-     dar por buena cada celda del comparador.
+     dar por buena cada celda del comparador. *(Revisado 22 jul: la mayoría
+     de las RMN son CT en Silver; el comparador está mayormente OK, solo
+     casos borde como la colangioresonancia difieren.)*
+   - *Análisis de "arancel diferenciado / copago / exclusiones"
+     (22 jul 2026, intuición del usuario — BITACORA cap. 34)*: quedó en
+     `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md`. Traduce la
+     jerga (AD = sin cobertura / COP = pagás la mitad) y abre la superficie
+     de sorpresa en tres capas: exclusión total (solo 13 ítems sueltos +
+     categorías enteras: odontología, bariátrica, oncología-tratamiento,
+     hemodinamia, alta complejidad), AD-recuperable-en-plan-superior (101,
+     el upsell honesto), y **copago — la capa más grande y silenciosa (300
+     ítems en Bronce)**. Es insumo de estrategia, NO copy de web. Preguntas
+     abiertas para la operación: ¿AD = precio de convenio? y el porqué de
+     cada exclusión. Cuando se defina, recién ahí se toca la web.
 
 B. **Base de prestadores del sistema interno de SP** (mencionado por
    voz; el nombre del sistema hay que confirmarlo con el usuario en la
