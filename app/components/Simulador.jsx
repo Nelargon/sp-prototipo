@@ -33,11 +33,17 @@ export default function Simulador() {
   const savedSimRef = useRef(null);
   const livePrevRef = useRef(0);
   const liveRafRef = useRef(null);
+  // Plan pre-elegido desde el comparador (?plan=…): el nivel entra puesto y el
+  // paso "¿qué plan?" se saltea (editable después, en el resultado).
+  const planPresetRef = useRef(null);
 
   const toggleCalc = () => setShowCalc((v) => !v);
 
   // ===== Simulador (nativo) =====
-  const pickWho = (k) => { setSimDir(1); simPatch({ who: k, people: peopleFor(k), step: 2 }); };
+  // Con plan pre-elegido (viene del comparador) salteamos el paso "nivel":
+  // de "¿para quién?" pasamos directo a la ubicación (excepto adulto mayor,
+  // que corre por Plan Vital y ve su propio paso).
+  const pickWho = (k) => { setSimDir(1); const skipNivel = !!planPresetRef.current && k !== 'padres'; simPatch({ who: k, people: peopleFor(k), step: skipNivel ? 3 : 2 }); };
   const setPersonAge = (i, val) =>
     setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => (idx === i ? Object.assign({}, p, { age: +val }) : p)) }));
   const addKid = () =>
@@ -75,7 +81,12 @@ export default function Simulador() {
       const next = cur.includes(k) ? cur.filter((x) => x !== k) : cur.concat([k]);
       return Object.assign({}, s, { addons: next });
     });
-  const simBack = () => { setSimDir(-1); setSimState((s) => Object.assign({}, s, { step: Math.max(0, s.step - 1) })); };
+  const simBack = () => { setSimDir(-1); setSimState((s) => {
+    let prev = Math.max(0, s.step - 1);
+    // Con plan pre-elegido el paso "nivel" (2) no existe en el flujo: lo salteamos también al volver.
+    if (planPresetRef.current && s.who !== 'padres' && prev === 2) prev = 1;
+    return Object.assign({}, s, { step: prev });
+  }); };
   const simGo = (patch, dir = 1) => { setSimDir(dir); simPatch(patch); };
 
   const bumpPersonAge = (i, delta) =>
@@ -236,6 +247,18 @@ export default function Simulador() {
 
   useEffect(() => () => { if (liveRafRef.current) cancelAnimationFrame(liveRafRef.current); }, []);
 
+  // Plan pre-elegido desde el comparador (?plan=bronce|silver|gold): entra con
+  // el nivel puesto para que el simulador saltee la pregunta "¿qué plan?". La
+  // consulta llega caliente — la persona ve su precio antes de hablar con nadie.
+  useEffect(() => {
+    try {
+      const pv = (new URLSearchParams(window.location.search).get('plan') || '').toLowerCase();
+      const map = { bronce: 'esencial', silver: 'equilibrio', gold: 'amplia' };
+      if (map[pv]) { planPresetRef.current = map[pv]; simPatch({ nivel: map[pv] }); track('sim_plan_preset', { plan: pv }); }
+    } catch (e) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Load a saved in-progress simulation once (offer to resume, don't auto-apply).
   useEffect(() => {
     try {
@@ -267,6 +290,8 @@ export default function Simulador() {
   const d = simState, O = opts(), WHY = why();
   const r = d.step >= 6 ? engine(d) : null;
   const isPadres = d.who === 'padres';
+  // Llegó con un plan puesto desde el comparador (y no es el carril senior).
+  const planPreset = !!planPresetRef.current && !isPadres;
 
   const planShortOf = (who, nivel) => {
     if (!nivel) return '';
@@ -290,7 +315,8 @@ export default function Simulador() {
     (d.people || []).length ? titularAge(d) + ' años' : '',
   ];
   const stepsList = checkNames.map((n, i) => {
-    const stepOf = i + 1, done = d.step > stepOf || d.step >= 6, active = d.step === stepOf;
+    // Con plan pre-elegido, "Cobertura" (paso 2) queda marcado desde el arranque.
+    const stepOf = i + 1, done = (planPreset && stepOf === 2) || d.step > stepOf || d.step >= 6, active = d.step === stepOf;
     return {
       name: n, num: String(i + 1), isDone: done, showNum: !done, value: done ? stepValueList[i] : '',
       dot: 'flex:none;width:25px;height:25px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:#00BCB4;color:#fff;' : active ? 'background:#fff;color:#003B71;box-shadow:inset 0 0 0 2px #00BCB4;' : 'background:rgba(255,255,255,0.12);color:#7fa6cc;'),
@@ -338,6 +364,11 @@ export default function Simulador() {
   const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Último paso y vemos tu precio.' }[d.step] || '';
   const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
 
+  // Con plan pre-elegido el flujo tiene 3 pasos (¿para quién? · ubicación ·
+  // edades); sin él, 4. El contador y la barra se ajustan para no "saltear" un número.
+  const totalSteps = planPreset ? 3 : 4;
+  const displayStep = planPreset ? (d.step >= 4 ? 3 : d.step === 3 ? 2 : 1) : Math.min(4, Math.max(1, d.step));
+
   const sim = {
     isIntro: d.step === 0, isWho: d.step === 1, isNivel: d.step === 2, isGeo: d.step === 3, isEdades: d.step === 4, isAddons: d.step === 5, isResult: d.step >= 6,
     stepAnim: simAnim,
@@ -365,6 +396,8 @@ export default function Simulador() {
     addKid, removeKid, addAdult, removeAdult,
     toAddons: () => simGo({ step: 6 }), // los planes vigentes no tienen adicionales: de las edades se pasa directo al precio
     back: simBack, start: () => simGo({ step: 1 }),
+    introTitle: planPreset ? ('Tu precio para el Plan ' + planShortOf(d.who, planPresetRef.current)) : 'Encontremos tu plan ideal',
+    introText: planPreset ? ('Elegiste Plan ' + planShortOf(d.who, planPresetRef.current) + '. Contanos para quién es y en un toque ves tu precio real — antes de dejar cualquier dato. Después podés compararlo con los otros planes.') : 'Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.',
     // Desde el resultado se vuelve UN paso (a las edades, salteando el paso
     // dormido de adicionales) — antes solo existía "empezar de nuevo"
     // (pedido del usuario, 21 jul: poder evaluar decisiones sin arrancar
@@ -377,9 +410,15 @@ export default function Simulador() {
     resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resTotal: r ? fmt(r.price) : '',
+    planPreset, resLabel: planPreset ? 'Tu plan elegido' : 'Plan recomendado',
+    // Mini-comparador con TU precio: "editable pero puesto" (decisión del usuario).
+    // Cambiar de plan recalcula el resultado sin salir de la pantalla.
+    planSwitch: (!isPadres && r) ? ['esencial', 'equilibrio', 'amplia'].map((k) => ({ key: k, label: planShortOf(d.who, k), price: fmt(engine(Object.assign({}, d, { nivel: k })).price), active: d.nivel === k, onPick: () => { if (d.nivel !== k) { track('sim_plan_switch', { plan: planShortOf(d.who, k) }); setSimDir(1); simPatch({ nivel: k }); } } })) : [],
+    // El WhatsApp secundario del resultado ya lleva el plan (cierre caliente).
+    waResultHref: (r && waDigits) ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero consultar por el ' + r.name + ' — vi mi precio en el simulador.')) : waHref,
     download: downloadQuote, share: shareQuote, shareMsg,
     resumeAvailable, resume: resumeSim,
-    enc: stepEnc, stepNum: Math.min(4, Math.max(1, d.step)), totalSteps: 4, progressPct: d.step >= 6 ? 100 : (d.step / 4.4) * 100, isQuestion: d.step >= 1 && d.step <= 5,
+    enc: stepEnc, stepNum: displayStep, totalSteps, progressPct: d.step >= 6 ? 100 : (displayStep / (totalSteps + 0.3)) * 100, isQuestion: d.step >= 1 && d.step <= 5,
     headerStyle: 'padding:16px 20px;color:#fff;background:' + (r ? r.color : '#003B71'),
     formOpen: !d.sent, sentOpen: d.sent,
     nombre: d.nombre, tel: d.tel, email: d.email, err: d.err, hasErr: !!d.err,
@@ -436,14 +475,14 @@ export default function Simulador() {
           )}
           {sim.isIntro && (
             <div style={css(sim.stepAnim)}>
-              <h3 style={css('font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px')}>Encontremos tu plan ideal</h3>
-              <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 18px;font-family:var(--font-inter),sans-serif')}>Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.</p>
+              <h3 style={css('font-size:25px;font-weight:800;color:#003B71;line-height:1.18;letter-spacing:-0.01em;margin:0 0 10px')}>{sim.introTitle}</h3>
+              <p style={css('font-size:15px;color:#3D3D3D;line-height:1.6;margin:0 0 18px;font-family:var(--font-inter),sans-serif')}>{sim.introText}</p>
               {/* La intro llena su espacio con datos útiles (ancla de precio),
                   no con vacío — el desktop mostraba media tarjeta en blanco. */}
               <div style={css('display:flex;flex-direction:column;gap:8px;margin:0 0 22px')}>
                 {[
                   'Planes desde ' + fmt(plans()[0].price) + ' al mes',
-                  '4 pasos, menos de un minuto',
+                  sim.totalSteps + ' pasos, menos de un minuto',
                   '10% de descuento pagando con débito automático o tarjeta',
                 ].map((t, i) => (
                   <div key={i} style={css('display:flex;align-items:center;gap:9px;font-size:13.5px;color:#3D3D3D;font-family:var(--font-inter),sans-serif')}><span style={css('width:20px;height:20px;border-radius:999px;background:#E6F7F6;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#009690" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span><span>{t}</span></div>
@@ -601,7 +640,7 @@ export default function Simulador() {
               </div>
               <div style={css('border-radius:16px;overflow:hidden;border:0.5px solid #E8E8E8;animation:spGlow 1.3s cubic-bezier(0.22,1,0.36,1) 0.15s both')}>
                 <div style={css(sim.headerStyle)}>
-                  <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85')}>Plan recomendado</div>
+                  <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85')}>{sim.resLabel}</div>
                   <div style={css('font-size:24px;font-weight:800;line-height:1.1;margin-top:2px')}>{sim.resName}</div>
                   <div style={css('font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>{sim.resGeoLine}</div>
                 </div>
@@ -619,6 +658,22 @@ export default function Simulador() {
                 </div>
               </div>
 
+              {/* Mini-comparador con TU precio: la persona puede cambiar de plan
+                  sin salir (editable pero puesto). Resuelve la duda acá, no la
+                  manda de vuelta al comparador. */}
+              {sim.planSwitch.length > 0 && (
+                <div style={css('margin-top:14px')}>
+                  <div style={css('font-size:12.5px;color:#6B6B6B;margin-bottom:8px;font-weight:600')}>¿Querés ver los otros planes para tu familia?</div>
+                  <div style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:8px')}>
+                    {sim.planSwitch.map((o, i) => (
+                      <button key={i} onClick={o.onPick} aria-pressed={o.active} style={css('display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;cursor:pointer;transition:all .15s cubic-bezier(0.22,1,0.36,1);border:1.5px solid ' + (o.active ? '#00BCB4' : '#E8E8E8') + ';background:' + (o.active ? '#F2FBFA' : '#fff'))}>
+                        <span style={css('font-size:13px;font-weight:800;color:' + (o.active ? '#007d77' : '#003B71'))}>{o.label}</span>
+                        <span className="num-tnum" style={css('font-size:12px;font-weight:700;color:#6B6B6B')}>{o.price}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div style={css('margin-top:18px')}>
                 {sim.formOpen && (
@@ -642,7 +697,7 @@ export default function Simulador() {
                     <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
                   </div>
                 )}
-                <a href={waHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado' })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
+                <a href={sim.waResultHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado', plan: sim.resName })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
               <div style={css('margin-top:14px')}>
                 <button onClick={toggleCalc} aria-expanded={showCalc} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:#6B6B6B;font-weight:600')}>¿Cómo calculamos esto? <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (showCalc ? '180deg' : '0deg') + ')')}><path d="m6 9 6 6 6-6" /></svg></button>
                 {showCalc && (

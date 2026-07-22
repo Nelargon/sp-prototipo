@@ -316,6 +316,29 @@ usa `npm ci`).
     en el alcance de la web? El brief del usuario nombra tres públicos, los
     docs internos declaran dos. El informe completo de la auditoría se
     entregó en la conversación.
+11k. **Consulta caliente: el comparador entra al simulador, no a WhatsApp
+    (22 jul 2026, intuición del usuario — BITACORA cap. 35).** El botón
+    "Consultar este plan" del comparador saltaba a un **WhatsApp frío**:
+    el asesor recibía "Hola, quiero Silver" y **empezaba de cero** el
+    descubrimiento (¿cuántos son?, ¿edades?, ¿te conviene?) — el proceso
+    doloroso otra vez. El usuario lo reencuadró: *"la consulta tiene que
+    ser la cereza sobre la torta, no el arranque del laburo; la persona
+    tiene que llegar sold on the idea"*. Nuevo flujo: **comparador →
+    simulador con el plan puesto → su precio para su familia → cierre
+    humano**. Detalle (3 decisiones del usuario): (a) **plan editable pero
+    puesto** — entra con el nivel pre-elegido (`/simulador/?plan=bronce|
+    silver|gold`), el simulador **saltea el paso "¿qué plan?"** (3 pasos en
+    vez de 4; adelante y al volver) y en el resultado hay un **mini-
+    comparador con TU precio** (Bronce/Silver/Gold, cada uno con la prima
+    de tu grupo) para cambiar sin salir; (b) **cierre con los dos, principal
+    dejar el dato** — el form "un asesor te escribe" es primario, el
+    WhatsApp secundario ya lleva el plan (cierre caliente); (c) **hilito
+    "por esto importa"** bajo el comparador → nota de gasto de bolsillo (el
+    porqué racional, no un CTA a cotizar). Eventos nuevos: `sim_plan_preset`,
+    `sim_plan_switch`, `blog_open{origen:comparador}`. Verificado: QA
+    integral 0 roto + walkthrough del flujo nuevo (13 checks). El resultado
+    con plan puesto rotula "Tu plan elegido" (no "recomendado"). Territorio:
+    `app/page.jsx`, `app/components/Simulador.jsx`.
 
 ---
 
