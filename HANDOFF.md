@@ -17,6 +17,79 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🔖 ESTADO AL CIERRE DE LA PARTE 1 (22 jul 2026) — handoff para la Parte 2
+
+**Si retomás el proyecto, empezá por acá.** Una sesión larga (Parte 1) hizo una
+auditoría estratégica y varias mejoras; todo lo de abajo está **en vivo** o
+documentado en el repo.
+
+### En vivo (fusionado + deploy verde)
+- **#41** Auditoría — "Mi SP" persistente (nav+footer), honestidad pareja en la
+  Guía (badges "Datos de ejemplo"), y arreglo de un desborde latente del nav.
+- **#42** Grilla oficial Privilege incorporada al git.
+- **#43** Análisis de arancel diferenciado / copago / exclusiones (estrategia).
+- **#44** **Consulta caliente**: el comparador entra al simulador con el plan
+  puesto (no salta a WhatsApp) → precio → cierre humano.
+- **(este PR)** Re-ingesta de grillas enriquecidas: Privilege (+ cobertura_real,
+  + AD cláusula 2.10) y **Vital** (nueva, `grilla-vital-coberturas-jul2026.json`).
+
+### Pipeline de datos (Drive → repo) — NUEVO
+- Carpeta **`SP-Web`** en el Drive del usuario, reorganizada (00_LEEME,
+  01_APROBADO-para-web, 02_Brief, 03_Prototipos, 04_Fotos, 05_Textos, …).
+- **Masters canónicos** (fuente de verdad; se leen por `fileId` con la
+  herramienta de Google Drive — los atajos `.lnk` NO sirven de puntero):
+  - Privilege: `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh`
+  - Vital: `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3`
+- Runbook de re-ingesta + fechas + chequeo mensual: `datos/planes-vigentes/README.md`.
+
+### Hallazgos clave (de los masters)
+- **AD = sin cobertura, el socio paga 100% con tarifa de convenio** (cláusula 2.10). Confirmado.
+- **Cobertura real** Privilege: Bronze **45%** / Silver **66%** / Gold **93%** cubierto al 100% (el mejor argumento de upsell honesto).
+- **Vital (65+) NO incluye salud mental** (psico/psiq/fono = arancel preferencial) → el diferenciador de salud mental es de **Privilege**, no de Vital.
+- **Telemedicina y "laboratorio a domicilio" NO aparecen** en ninguna grilla → la tarjeta "garantiza" del home sobrepromete (médico a domicilio sí existe).
+
+### Pendientes priorizados (Parte 2)
+1. **Telemedicina/domicilio (Crítico de la auditoría):** revisar los cuadernillos
+   PDF (Drive, carpeta PRIVILEGE) por la cláusula, o reetiquetar la tarjeta del
+   home "En camino".
+2. **Bloque "qué no cubre / qué pagás aparte"** con la data nueva (cobertura real
+   + AD=convenio), en gris (regla de tono).
+3. **Salud mental:** al mostrar el diferenciador, decir "incluida en los planes
+   Privilege" — no prometérsela al que busca Vital.
+4. **Hoja de plataformas para BuenaVista** (comparación abajo, aún sin escribir).
+5. Testimonios reales + fotos reales (pendientes viejos).
+
+### Guardas — qué NO tocar sin input humano
+- **Test de 5 segundos (§3c): EN PAUSA** — no tocar hero/categoría/acción
+  dominante hasta que el usuario corra el test con usuarios.
+- No afirmar "garantizado por contrato" sin la cláusula.
+- Reglas de **tono / tipografía / lenguaje** en `CLAUDE.md` — respetarlas.
+
+### Decisiones que viajaron por conversación (escritas acá para no perderlas)
+- **Plataforma (pendiente #8):** *WordPress* (lo propone BuenaVista) vs *Next.js*
+  (el prototipo) vs *híbrido* (Next.js + CMS headless). La pregunta que decide:
+  **¿quién mantiene la web en el día a día?** El backend hace falta igual (ANEXO).
+  Criterio: buscar **arquitecto de conversión, no diseñador estético**. Falta la
+  "hoja compartible" de una carilla (pendiente 4).
+- **Drive `SP-Web`:** ordenar por rol, separar materia prima de
+  `01_APROBADO-para-web`; regla de oro: nada sale a la web si no está "aprobado".
+
+### Índice — dónde vive cada cosa
+Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-puesto)
+· Motor de precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
+`datos/planes-vigentes/` · Análisis AD `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md`
+· Blog `contenido/blog/` · QA `qa/qa-integral.mjs`.
+
+### Eventos de tracking nuevos (para cuando se conecte el backend)
+`sim_plan_preset`, `sim_plan_switch`, `blog_open{origen:comparador}` (+ los del ANEXO §2).
+
+### Recordatorio mensual de datos
+El usuario pidió un chequeo mensual de si las grillas cambiaron (comparar
+`modifiedTime` de los masters vs la última ingestión del README). **Estado: a
+definir con el usuario** (la Routine automática quedó pendiente de su OK).
+
+---
+
 ## 1. LA DIRECCIÓN — por qué existe todo esto
 
 La dirección es lo permanente; todo lo demás en este documento es táctico.

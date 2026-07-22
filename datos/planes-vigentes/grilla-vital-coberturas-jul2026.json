@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "titulo": "Salud Protegida · Plan Vital — Grilla de coberturas y precios",
+    "plan": "Vital",
+    "publico": "Titulares a partir de 65 años (plan individual)",
+    "vigencia": "Julio 2026",
+    "moneda": "PYG",
+    "fuente": "Cuadernillo de Cobertura Plan Vital y Precios Plan Vital (Odontomédica S.A. · Salud Protegida) — transcripción fiel",
+    "archivo_fuente_drive": { "id": "1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3", "nombre": "SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx" },
+    "prestador_principal": "Lister Centro Médico (Pa'i Pérez 630 casi Azara, Asunción) + sanatorios/clínicas adheridos según Guía Médica",
+    "leyenda": {
+      "Cubierto": "La prestación está cubierta (sin cargo / 100%, dentro del límite indicado)",
+      "Ticket": "Ticket moderador — copago fijo que abona el beneficiario en algunas especialidades",
+      "Sin cobertura": "Arancel preferencial: la prestación NO está cubierta; el socio paga el 100% con tarifa reducida acordada en convenio"
+    },
+    "tramos_carencia": ["inmediata", "90 días", "180 días", "365 días"],
+    "nota_365": "Internaciones y cirugías: requieren 12 meses de antigüedad y 12 cuotas abonadas correlativamente, al día."
+  },
+
+  "precios": {
+    "titular_65mas": { "debito": 283000, "particular": 312000 },
+    "sepelio_adicional_opcional": { "debito": 76000, "particular": 84000 },
+    "sepelio_carencia_por_edad_ingreso": [
+      { "edad": "61-70", "meses": 18 },
+      { "edad": "71-75", "meses": 24 },
+      { "edad": "76+", "meses": 36 }
+    ],
+    "nota": "Costo Débito = cuota con débito automático · Costo Particular = otras formas de pago. La prima de Sepelio se suma a la cuota solo si se contrata esa cobertura."
+  },
+
+  "coberturas_por_carencia": {
+    "inmediata": [
+      { "prestacion": "Consultas médicas", "cobertura": "Cubierto", "alcance": "Lister y sanatorios/clínicas/consultorios adheridos (según Guía Médica). 26 especialidades, algunas con ticket moderador.", "limite": "Según especialidad" },
+      { "prestacion": "Consultas de urgencias", "cobertura": "Cubierto", "alcance": "En sanatorios adheridos, de lunes a domingo, 24 h (según disponibilidad y Guía Médica).", "limite": "24 h" },
+      { "prestacion": "Urgencias/emergencias a domicilio", "cobertura": "Cubierto", "alcance": "Ambulancia con médico o paramédico, sin cargo, radio de hasta 20 km del centro de Asunción. Incluye medicamentos utilizados; hasta 1 evento por día con intervalo de 24 h.", "limite": "4 por grupo familiar · 2 por beneficiario al mes" },
+      { "prestacion": "Consultas con arancel preferencial", "cobertura": "Sin cobertura", "alcance": "Psicología, Psiquiatría y Fonoaudiología, con profesionales de la Guía Médica. El socio paga el arancel (tarifa preferencial).", "limite": "N/A" },
+      { "prestacion": "Análisis de laboratorio de rutina", "cobertura": "Cubierto", "alcance": "Sin cargo, en laboratorios habilitados. 17 determinaciones.", "limite": "Hasta 4 por determinación al año" },
+      { "prestacion": "Electrocardiogramas", "cobertura": "Cubierto", "limite": "Hasta 4 por beneficiario al año" },
+      { "prestacion": "Radiografías simples", "cobertura": "Cubierto", "limite": "Hasta 4 posiciones al año y hasta 4 posiciones por evento" },
+      { "prestacion": "Nebulizaciones", "cobertura": "Cubierto", "alcance": "Oxígeno, medicamentos y descartables a cargo del asegurado.", "limite": "Hasta 7 eventos al año · hasta 8 sesiones por evento" },
+      { "prestacion": "Servicio de enfermería", "cobertura": "Cubierto", "alcance": "Toma de presión, curación simple, enema evacuador (sin medicamentos), sondaje vesical/nasogástrico, lavado de oído, aplicación IM y EV. En Lister y sanatorios adheridos; cada 24 h en urgencias.", "limite": "8 servicios" },
+      { "prestacion": "Primeros auxilios y procedimientos menores", "cobertura": "Cubierto", "alcance": "Enyesado y férula de urgencia, extracción de cuerpo extraño de nariz/oído, sutura hasta 5 puntos, taponamiento nasal, honorarios médicos 100% y derecho a sala.", "limite": "Medicamentos y descartables por evento", "tope_gs": 100000 },
+      { "prestacion": "Fisioterapia", "cobertura": "Cubierto", "alcance": "Ondas cortas, ultrasonido, infrarrojo, tracción cervical y kinesioterapia.", "limite": "Hasta 10 sesiones al año" }
+    ],
+    "90_dias": [
+      { "prestacion": "Análisis de laboratorio complementarios y especializados", "cobertura": "Cubierto", "alcance": "En Lister y laboratorios/instituciones habilitadas. 30 determinaciones. Los demás análisis especializados van por arancel preferencial (sin cobertura).", "limite": "Hasta 2 por determinación al año · máx. 40 determinaciones" },
+      { "prestacion": "Ecografías", "cobertura": "Cubierto", "alcance": "Conjunto convencional: renal, ginecológicas, transvaginales, abdominal completo/superior/inferior y prostática.", "limite": "Hasta 4 estudios al año" },
+      { "prestacion": "Papanicolau y Colposcopía", "cobertura": "Cubierto", "limite": "Hasta 2 por año" }
+    ],
+    "180_dias": [
+      { "prestacion": "Cirugías menores y procedimientos ambulatorios", "cobertura": "Cubierto", "alcance": "Conjunto: drenaje de absceso, extracción de nevus, electrocauterización, extirpación de lipoma, uña encarnada, sutura de 5 a 10 puntos, honorarios médicos y sala de procedimientos.", "limite": "Hasta 2 por beneficiario al año", "tope_gs": 50000 }
+    ],
+    "365_dias": [
+      { "prestacion": "Internaciones clínicas", "cobertura": "Cubierto", "alcance": "Pensión sanatorial sin cargo en habitación privada (aire acondicionado, TV, baño privado, cama para acompañante, alimentación y 1 visita diaria del médico tratante). Medicamentos y descartables a cargo del asegurado.", "limite": "10 días al año · hasta 5 días por evento" },
+      { "prestacion": "Intervenciones quirúrgicas convencionales", "cobertura": "Cubierto", "alcance": "1 cirugía del conjunto (colecistectomía, laparotomía, litiasis renal, septumplastía, amígdalas, adenoides, nefrectomía simple, próstata, postectomía, cirugías escrotales/testiculares, vesicular, hernias inguinal/umbilical, apéndice, peritonitis apendicular, hemorroidectomía, absceso perianal, mastectomía simple, histerectomía, anexectomía, quistectomía de ovario, ooforectomía, cataratas, pterigión, cistocele, rectocele, colpoperineorrafia). Incluye pensión sanatorial, honorarios 100% y derecho operatorio 100%. Se exceptúan las complicaciones.", "limite": "1 cirugía al año", "tope_gs": 200000 },
+      { "prestacion": "Internación en terapia intensiva", "cobertura": "Cubierto", "alcance": "En sanatorios designados, según disponibilidad. Cobertura únicamente en efectivo.", "limite": "1 vez al año", "tope_gs": 1000000 }
+    ],
+    "sin_cobertura_a_cargo_del_socio": [
+      "Consultas de Psicología, Psiquiatría y Fonoaudiología (arancel preferencial)",
+      "Todo análisis especializado no listado en «Laboratorio y Estudios»",
+      "Medicamentos y descartables por encima de los topes indicados"
+    ]
+  },
+
+  "especialidades": {
+    "cubiertas": [
+      { "n": 1, "especialidad": "Clínica Médica", "acceso": "Cobertura inmediata" },
+      { "n": 2, "especialidad": "Ginecología y Obstetricia", "acceso": "Cobertura inmediata" },
+      { "n": 3, "especialidad": "Pediatría", "acceso": "Cobertura inmediata" },
+      { "n": 4, "especialidad": "Cardiología", "acceso": "Cobertura inmediata" },
+      { "n": 5, "especialidad": "Gastroenterología", "acceso": "Cobertura inmediata" },
+      { "n": 6, "especialidad": "Traumatología y Ortopedia", "acceso": "Cobertura inmediata" },
+      { "n": 7, "especialidad": "Dermatología", "acceso": "Cobertura inmediata" },
+      { "n": 8, "especialidad": "Urología", "acceso": "Cobertura inmediata" },
+      { "n": 9, "especialidad": "Otorrinolaringología", "acceso": "Cobertura inmediata" },
+      { "n": 10, "especialidad": "Alergia", "acceso": "Cobertura inmediata" },
+      { "n": 11, "especialidad": "Nutricionista", "acceso": "Cobertura inmediata" },
+      { "n": 12, "especialidad": "Cirugía General", "acceso": "Cobertura inmediata" },
+      { "n": 13, "especialidad": "Cirugía Infantil", "acceso": "Cobertura inmediata" },
+      { "n": 14, "especialidad": "Mastología", "acceso": "Cobertura inmediata" },
+      { "n": 15, "especialidad": "Endocrinología", "acceso": "Con ticket moderador" },
+      { "n": 16, "especialidad": "Flebología", "acceso": "Con ticket moderador" },
+      { "n": 17, "especialidad": "Hematología", "acceso": "Cobertura inmediata" },
+      { "n": 18, "especialidad": "Neurología", "acceso": "Con ticket moderador" },
+      { "n": 19, "especialidad": "Neumología", "acceso": "Con ticket moderador" },
+      { "n": 20, "especialidad": "Cardiología infantil", "acceso": "Cobertura inmediata" },
+      { "n": 21, "especialidad": "Oftalmología", "acceso": "Con ticket moderador" },
+      { "n": 22, "especialidad": "Reumatología", "acceso": "Con ticket moderador" },
+      { "n": 23, "especialidad": "Proctología", "acceso": "Con ticket moderador" },
+      { "n": 24, "especialidad": "Nefrología", "acceso": "Con ticket moderador" },
+      { "n": 25, "especialidad": "Geriatría", "acceso": "Con ticket moderador" },
+      { "n": 26, "especialidad": "Infectología", "acceso": "Con ticket moderador" }
+    ],
+    "arancel_preferencial_sin_cobertura": ["Psicología", "Psiquiatría", "Fonoaudiología"]
+  },
+
+  "laboratorio_y_estudios": {
+    "rutina_inmediata": {
+      "condicion": "Sin cargo · hasta 4 veces por determinación por año, por beneficiario",
+      "determinaciones": ["Hemograma", "Glucosa", "Urea", "Creatinina", "Colesterol Total", "Triglicéridos", "Ácido Úrico", "VDRL", "Orina simple", "Tipificación", "Heces simples", "Eritrosedimentación", "Factor reumatoideo-artritest", "Plaquetas", "Colesterol HDL", "Colesterol LDL", "Colesterol VLDL"]
+    },
+    "complementarios_90dias": {
+      "condicion": "Hasta 2 veces por determinación por año, sin superar 40 determinaciones. Los demás especializados: arancel preferencial.",
+      "determinaciones": ["Asto", "Bilirrubina total directa e indirecta", "Calcio sérico", "Coprocultivo y Antibiograma", "Cloro", "Electrolitos", "Fosfatasa ácida total", "Fosfatasa alcalina", "Fósforo", "Frotis de sangre periférica", "FTA-abs-ac IGG", "FTA-abs-ac IGM", "HBA1c (Hemoglobina glicosada)", "Heces seriadas", "Heces Frotis/Mucus fecal", "Heces simples", "Hepatograma", "HIV", "Orina rutina cult. y ATB (urocultivo)", "PAS total (Antígeno Prostático Específico)", "Perfil proteico", "Potasio", "Proteína C reactiva (PCR Cualitativo)", "Proteínas totales", "Proteínas totales - orina 24 hs", "Sec. Vaginal Cultivo y ATB", "Sodio", "Toxoplasmosis IGG", "Toxoplasmosis IGM", "TSH"]
+    },
+    "imagenes_90dias": {
+      "ecografias_condicion": "Hasta 4 estudios del conjunto por año",
+      "ecografias": ["Ecografía renal", "Ecografía ginecológica", "Ecografía transvaginal", "Ecografía abdominal completo", "Ecografía abdominal superior", "Ecografía abdominal inferior", "Ecografía prostática"],
+      "papanicolau_colposcopia": "Hasta 2 por año"
+    }
+  },
+
+  "sepelio": {
+    "tipo": "Adicional opcional (prima aparte de la cuota del plan)",
+    "zona_metropolitana_servicios": ["Féretro estándar para panteón (visor, manijas metálicas, lustrado y tapizado)", "Ambulancia para traslado a la empresa que presta el servicio", "Preparación del cuerpo y formolización", "Sala velatoria climatizada o capilla luminosa en su domicilio", "Servicio de cafetería y gaseosas", "Servicio de mozo", "Álbum para registro de asistentes", "Trámites civiles y municipales", "Una copia del Certificado de defunción", "Tarjeta de agradecimiento", "Un anuncio en exequias", "Vehículo ceremonial", "Asesoramiento y servicio integral"],
+    "zona_interior": "Monto fijo de Gs. 3.000.000 destinado a gastos de sepelio",
+    "carencia_por_edad_ingreso": [
+      { "edad": "61-70", "meses": 18 },
+      { "edad": "71-75", "meses": 24 },
+      { "edad": "76+", "meses": 36 }
+    ]
+  }
+}

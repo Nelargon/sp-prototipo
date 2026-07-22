@@ -14,9 +14,13 @@
       "CT": "Cobertura Total (100%)",
       "COP": "Copago 50% SP / 50% beneficiario",
       "CP": "Cobertura Parcial de un evento; diferencia a cargo del beneficiario",
-      "AD": "Arancel Diferenciado: 100% a cargo del beneficiario"
+      "AD": "Arancel Diferenciado = SIN COBERTURA. El socio paga el 100%, con tarifa acordada en convenio (cuadernillo, cláusula 2.10). En estas filas, cantidad y carencia figuran como N/A."
     },
-    "archivo_fuente": "SP_Privilege_Grilla_Coberturas_Precios_Jul2026.xlsx"
+    "archivo_fuente": "SP_Privilege_Grilla_Coberturas_Precios_Jul2026.xlsx",
+    "archivo_fuente_drive": {
+      "id": "1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh",
+      "nombre": "SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx"
+    }
   },
   "precios": [
     {
@@ -17992,5 +17996,51 @@
         }
       }
     ]
+  },
+  "cobertura_real": {
+    "nota": "Del total de prestaciones que lista cada plan (Cuadros 1-4), cuánto cubre de verdad. Base: 928 prestaciones con valor por plan.",
+    "por_plan": {
+      "bronze": {
+        "cubierto_100": "45%",
+        "copago_50": "32%",
+        "parcial": "11%",
+        "sin_cobertura_AD": "12%"
+      },
+      "silver": {
+        "cubierto_100": "66%",
+        "copago_50": "26%",
+        "parcial": "0%",
+        "sin_cobertura_AD": "8%"
+      },
+      "gold": {
+        "cubierto_100": "93%",
+        "copago_50": "6%",
+        "parcial": "0%",
+        "sin_cobertura_AD": "2%"
+      }
+    },
+    "sin_cobertura_AD_por_cuadro": {
+      "cuadro1_laboratorio": {
+        "bronze": "18%",
+        "silver": "18%",
+        "gold": "1%"
+      },
+      "cuadro2_estudios_imagenes": {
+        "bronze": "18%",
+        "silver": "3%",
+        "gold": "3%"
+      },
+      "cuadro3_cirugias_internacion": {
+        "bronze": "1%",
+        "silver": "0%",
+        "gold": "1%"
+      },
+      "cuadro4_fisioterapia": {
+        "bronze": "0%",
+        "silver": "0%",
+        "gold": "0%"
+      }
+    },
+    "lectura": "El salto de cobertura real entre planes está sobre todo en Laboratorio e Imágenes."
   }
 }
