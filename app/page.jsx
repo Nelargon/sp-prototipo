@@ -291,7 +291,7 @@ export default function Page() {
     trackGuia: (via) => track('guia_handoff', { q: state.q.trim(), via }),
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     sliderVal: state.sliderVal, onSlide: (e) => { const val = +e.target.value; const ni = Math.max(0, Math.min(2, Math.round(val / 100))); if (ni !== idx) track('comparador_plan', { plan: plansArr[ni].short, via: 'slider' }); setState({ sliderVal: val }); },
-    planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops,
+    planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops, planShortName: p.short,
     waPlanHref: waMsg('Hola! Quiero consultar por el ' + p.name + '.'),
     sliderHeadStyle: 'padding:30px 30px 26px;color:#fff;transition:background .25s;background:' + color,
     sliderTrackStyle: 'width:100%;background:linear-gradient(90deg,' + color + ' ' + (tSlide / 2 * 100) + '%,#E3E6E5 ' + (tSlide / 2 * 100) + '%);--c:' + color,
@@ -485,7 +485,11 @@ export default function Page() {
               </div>
               <div style={css('display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid #F0F0F0')}>
                 <button onClick={v.toggleFullTable} aria-expanded={v.showFullTable} className="link-teal" style={css('background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:#6B6B6B;font-weight:600')}>{v.fullTableLabel} <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(v.chevStyle)}><path d="m6 9 6 6 6-6" /></svg></button>
-                <a href={v.waPlanHref} onClick={() => track('click_whatsapp', { origen: 'comparador', plan: v.planName })} target="_blank" rel="noopener" className="btn-teal" style={css('height:48px;padding:0 26px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Consultar este plan</a>
+                {/* Auditoría de conversión (jul 2026): "Consultar este plan" ya no salta
+                    a un WhatsApp frío — entra al simulador con el plan puesto, ve su
+                    precio para su familia y RECIÉN ahí el cierre humano. La consulta
+                    llega caliente (pedido del usuario). */}
+                <a href={`${BP}/simulador/?plan=${v.planShortName.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'comparador', plan: v.planName })} className="btn-teal" style={css('height:48px;padding:0 24px;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>Quiero {v.planShortName} · ver mi precio <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               </div>
               {v.showFullTable && (
                 <div style={css('margin-top:22px;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;overflow-x:auto')}>
@@ -509,6 +513,11 @@ export default function Page() {
               )}
             </div>
           </div>
+
+          {/* Hilito de "por esto importa" (auditoría de conversión, jul 2026): antes de
+              elegir plan, sembrar el porqué — no es un CTA a cotizar, es el argumento
+              racional. Lleva a la nota de gasto de bolsillo, no a WhatsApp. */}
+          <div data-rv style={css('text-align:center;margin-top:20px;font-size:14px;color:#6B6B6B;line-height:1.6')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Por qué importa →</a></div>
 
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>

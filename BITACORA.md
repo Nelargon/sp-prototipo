@@ -971,6 +971,39 @@ estrategia, todavía no copy de web.
 
 ---
 
+## Capítulo 35 — La consulta era la cereza, no el arranque
+
+**Qué pasó.** Mirando el comparador, el usuario notó algo que la auditoría
+había rozado sin afilar: el botón "Consultar este plan" saltaba a un
+WhatsApp frío. Su reencuadre, textual: *"cuando uno quiere consultar el
+plan, prácticamente que sea la cereza sobre la torta. Que no sea toda otra
+vez el proceso doloroso de entender si ese plan le conviene. O que la
+persona también sea sold on the idea of getting insurance."*
+
+**Qué aprendimos.** Dos ideas que van a volver. Primera: **un handoff no es
+un cierre.** Mandar a la persona a WhatsApp desde una tabla la deja MÁS
+lejos, no más cerca — el asesor tiene que redescubrir todo, y ella siente
+que vuelve a empezar. El cierre bueno llega cuando la persona ya vio su
+precio y ya decidió; ahí el asesor confirma, no descubre. Por eso el
+comparador ahora entra al simulador con el plan puesto (`?plan=`), saltea
+la pregunta "¿qué plan?" y muestra el precio para su familia antes de
+hablar con nadie. Segunda, del guion de marca: **la solución no era sacar
+WhatsApp** —en salud se vende la cita, no el carrito— sino que la persona
+**llegue caliente**. El WhatsApp quedó, pero de cierre, con el plan puesto,
+y detrás del "dejá tu dato y un asesor te escribe".
+
+**Un detalle de método (dos golpes de test que no eran bugs).** Verificando
+el flujo nuevo, cuatro checks "fallaron" y ninguno era real: el contador
+"Paso X de 3" es solo móvil (en desktop lo reemplaza el checklist del
+costado), y el rótulo "Tu plan elegido" lleva `text-transform:uppercase`,
+así que el `innerText` de Chrome lo devuelve en MAYÚSCULAS y un match
+sensible a mayúsculas no lo encuentra. Moraleja que ya conocíamos y volvió:
+**cuando el test falla, sospechá del test tanto como del código** —
+verificá el viewport correcto y que la comparación no se rompa por una
+transformación de CSS.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
