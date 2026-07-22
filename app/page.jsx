@@ -533,6 +533,71 @@ export default function Page() {
         </div>
       </section>
 
+      {/* CLARIDAD DEL BOLSILLO — "qué pagás aparte" (pendiente #2 del HANDOFF;
+          pedido explícito de la reunión con departamentos, 22 jul 2026: traducir
+          "diferencial/preferencial" a "esto lo pagás vos"). Honestidad sobre el
+          gasto propio, en gris (regla de tono: nunca rojo, nunca "No cubierto" a
+          secas). Datos = cobertura real de la grilla oficial
+          (datos/planes-vigentes/ANALISIS-arancel-diferenciado.md §2 y §4).
+          AD = precio de convenio (cláusula 2.10) — la versión honesta de
+          "arancel diferenciado". */}
+      <section className="sec" style={css('padding:80px 40px;background:#fff')}>
+        <div style={css('max-width:1080px;margin:0 auto')}>
+          <div data-rv style={css('text-align:center;max-width:670px;margin:0 auto 34px')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que pagás de tu bolsillo</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>No todo lo cubre el plan. <span style={css('color:#007d77')}>Te lo decimos de entrada.</span></h2>
+            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0;font-family:var(--font-inter),sans-serif')}>Ningún plan de salud cubre el 100% — y preferimos decírtelo a prometerte lo contrario. Estos son los tres modos en que se reparte lo que usás, para que sepas cuánto sale de tu bolsillo antes de firmar.</p>
+          </div>
+
+          {/* Los tres modos, en idioma de familia (CT / COP / AD traducidos) */}
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px')}>
+            {[
+              { c: '#00BCB4', t: 'Cubierto', b: 'No ponés nada. El plan lo cubre al 100%.' },
+              { c: '#8a9997', t: 'Copago', b: 'Ponés una parte. Está cubierto… a medias — es la sorpresa más común.' },
+              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'No lo cubre el plan, pero lo hacés al precio negociado de SP: más barato que en la calle.' },
+            ].map((m, i) => (
+              <div key={i} style={css('background:#F7FBFB;border:1px solid #E8EFEE;border-radius:16px;padding:22px 22px')}>
+                <div style={css('display:flex;align-items:center;gap:9px;margin-bottom:9px')}><span style={css('width:12px;height:12px;border-radius:999px;flex:none;background:' + m.c)}></span><span style={css('font-size:16px;font-weight:800;color:#003B71')}>{m.t}</span></div>
+                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55;font-family:var(--font-inter),sans-serif')}>{m.b}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Cobertura real por plan — el gradiente honesto (45 → 66 → 93) */}
+          <div data-rv style={css('background:#F5F8FB;border:1px solid #e4ecf3;border-radius:20px;padding:28px 28px 22px')}>
+            <div style={css('text-align:center;margin-bottom:22px')}>
+              <div className="disp" style={css('font-size:19px;font-weight:800;color:#003B71')}>Cuánto cubre de verdad cada plan</div>
+              <div style={css('font-size:14px;color:#6B6B6B;line-height:1.5;margin-top:5px;font-family:var(--font-inter),sans-serif')}>Cuanto más alto el plan, menos ponés de tu bolsillo. Ese es el único upsell honesto.</div>
+            </div>
+            <div className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px')}>
+              {[
+                { name: 'Bronce', col: '#A9724B', cub: 45, conv: 12 },
+                { name: 'Silver', col: '#66717E', cub: 66, conv: 8 },
+                { name: 'Gold', col: '#B8860B', cub: 93, conv: 2 },
+              ].map((p, i) => (
+                <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:14px;padding:18px 18px')}>
+                  <div style={css('display:flex;align-items:center;gap:8px;margin-bottom:10px')}><span style={css('width:10px;height:10px;border-radius:999px;flex:none;background:' + p.col)}></span><span style={css('font-size:14px;font-weight:800;color:#003B71')}>{p.name}</span></div>
+                  <div style={css('display:flex;align-items:baseline;gap:6px;margin-bottom:11px')}><span className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1')}>{p.cub}%</span><span style={css('font-size:13px;color:#6B6B6B;font-family:var(--font-inter),sans-serif')}>cubierto al 100%</span></div>
+                  <div style={css('display:flex;height:9px;border-radius:999px;overflow:hidden;background:#eef2f1')} role="img" aria-label={p.name + ': ' + p.cub + ' por ciento cubierto al cien por ciento'}>
+                    <div style={css('width:' + p.cub + '%;background:#00BCB4')}></div>
+                    <div style={css('width:' + (100 - p.cub - p.conv) + '%;background:#8a9997')}></div>
+                    <div style={css('width:' + p.conv + '%;background:#5f6d6c')}></div>
+                  </div>
+                  <div style={css('font-size:12.5px;color:#6B6B6B;line-height:1.5;margin-top:9px;font-family:var(--font-inter),sans-serif')}>El resto lo ponés vos: con copago o al precio de convenio.</div>
+                </div>
+              ))}
+            </div>
+            <div style={css('font-size:12px;color:#666;line-height:1.5;margin-top:16px;text-align:center;font-family:var(--font-inter),sans-serif')}>Sobre 928 servicios de la grilla vigente. «Al precio de convenio» = no cubierto por el plan, con la tarifa acordada de SP (cláusula 2.10 del contrato) — más barato que como particular.</div>
+          </div>
+
+          {/* Exclusiones verdaderas — no las cubre ningún plan (capa 1 del análisis) */}
+          <div data-rv style={css('margin-top:22px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
+            <span style={css('width:26px;height:26px;border-radius:8px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
+            <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}><b style={css('color:#333')}>Y esto no lo cubre ningún plan</b> — mejor saberlo hoy que en la sala de espera: odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad (cardiocirugía, neurocirugía y cirugía vascular).</div>
+          </div>
+        </div>
+      </section>
+
       {/* SIMULADOR — teaser hacia /simulador */}
       <section className="sec" style={css('padding:80px 40px;background:#003B71')}>
         <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
