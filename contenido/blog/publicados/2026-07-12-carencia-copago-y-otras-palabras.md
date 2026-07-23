@@ -2,6 +2,7 @@
 title: "Carencia, copago y otras palabras que nadie te explicó"
 slug: "carencia-copago-y-otras-palabras"
 kicker: "Entendé tu cobertura"
+categoria: "Entendé tu plan"
 date: "2026-07-12"
 minutes: 4
 description: "El diccionario para leer tu plan en idioma de familia: qué significa cada término y qué conviene preguntar antes de firmar."

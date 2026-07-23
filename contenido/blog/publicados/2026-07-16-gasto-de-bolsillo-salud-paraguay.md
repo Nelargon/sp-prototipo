@@ -2,6 +2,7 @@
 title: "Gasto de bolsillo: el número que explica para qué sirve un seguro de salud"
 slug: "gasto-de-bolsillo-salud-paraguay"
 kicker: "El dato"
+categoria: "Entendé tu plan"
 date: "2026-07-16"
 minutes: 4
 description: "En Paraguay, más de un tercio del gasto en salud sale directo del bolsillo de las familias. Qué significa ese dato y cómo cambia con un seguro."

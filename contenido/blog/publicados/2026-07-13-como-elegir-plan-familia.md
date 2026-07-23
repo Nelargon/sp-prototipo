@@ -2,6 +2,7 @@
 title: "Cómo elegir un plan de salud para tu familia (sin perderte)"
 slug: "como-elegir-plan-familia"
 kicker: "Decisiones"
+categoria: "Entendé tu plan"
 date: "2026-07-13"
 minutes: 4
 description: "La decisión se ordena con cuatro preguntas: quiénes son, cuánto lo van a usar, dónde viven y qué pasa en el peor día."

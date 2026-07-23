@@ -10,9 +10,11 @@ generan cada lunes. Publicar una nota = copiar acá el markdown aprobado
 (con `status: "publicado"`) vía PR. Nada se publica sin revisión humana.
 
 Formato de archivo: `YYYY-MM-DD-slug.md` con frontmatter `title`, `slug`,
-`kicker`, `date`, `minutes`, `description` (para la tarjeta del índice y el
-SEO), `intro` (el copete de la nota), `tags`, `sources` (opcional), `nota`
-(opcional, el recuadro gris final) y `author`. Referencia completa:
+`kicker`, `categoria` (para el filtro del índice — hoy **"Prevención"** o
+**"Entendé tu plan"**; sin `categoria` la nota cae en "General"), `date`,
+`minutes`, `description` (para la tarjeta del índice y el SEO), `intro` (el
+copete de la nota), `tags`, `sources` (opcional), `nota` (opcional, el
+recuadro gris final) y `author`. Referencia completa:
 `contenido/blog/PLANTILLA.md` del repo `sp-interno`.
 
 Regla de lenguaje (ver CLAUDE.md): idioma de familia, no jerga de seguros —
