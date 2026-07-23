@@ -605,6 +605,36 @@ usa `npm ci`).
     Territorio de esta ola: `app/Header.jsx` (nuevo), `app/blog/page.jsx`,
     `app/blog/Articulo.jsx`.
 
+11t. **Auditoría de honestidad del home — las herramientas que prometían y
+    no cumplían (24 jul 2026, observación del usuario).** El usuario señaló que
+    dos módulos del home no cumplen su utilidad: (a) el "comparador" **no compara
+    — es un slider** que muestra un plan a la vez, con la tabla que sí compara
+    (11 servicios × Bronce/Silver/Gold) **escondida detrás de un toggle**; y (b)
+    el buscador de "Guía Médica" del home **promete búsqueda y termina en
+    redirección**: está etiquetado *Guía Médica* pero busca sobre solo 11
+    coberturas y, ante cualquier término fuera de ese índice, expulsa a la página
+    de la guía. Lo único que le funcionó fue **el simulador** — porque da una
+    respuesta personal y completa **ahí mismo**. De ahí el principio: *una
+    herramienta se gana el home solo si responde ahí mismo; si redirige o pliega
+    el premio, es una puerta disfrazada de herramienta.* Plan acordado con el
+    usuario ("adelante", 24 jul 2026).
+    **Ola 1 — buscador (HECHO en este PR):** la sección `#cartilla` deja de ser
+    un buscador falso. Se quitó la caja de texto abierta (con 11 ítems, una caja
+    promete saber todo y falla) y la redirección-al-no-encontrar; ahora es un
+    **explorador curado**: los 11 servicios reales como chips → tarjeta
+    Bronce/Silver/Gold al toque, sin salir del home. Se **separó la conflación**:
+    el título deja de decir "Guía Médica" (pasa a *"Qué cubre tu plan"*), y la
+    Guía Médica (buscar médico/sanatorio) queda como **puerta honesta** — una
+    tarjeta-CTA *"¿Dónde atenderte?"* que abre la guía, donde la búsqueda SÍ
+    devuelve resultados. Chip activo pasó a teal accesible `#007d77` (blanco
+    sobre `#00BCB4` daba 2.37:1). Territorio: `app/page.jsx`.
+    **Ola 2 — comparador + `/planes` (PENDIENTE, ya acordada):** reemplazar el
+    slider por una vista que muestre **lo que cada nivel suma** (el delta es el
+    mensaje) y **mudar la tabla fila-por-fila a una página `/planes` propia**
+    (mejor para SEO y para la decisión; el home solo teaser + ruteo al
+    simulador). Con solo 3 niveles hoy, el delta es limpio; `/planes` se rehace
+    cuando entren Esencial/Integral/Premium.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

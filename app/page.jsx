@@ -7,7 +7,6 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 
 const INITIAL = {
-  q: '',
   sel: 'Resonancia (RM)',
   sliderVal: 100,
   mobileMenuOpen: false,
@@ -224,18 +223,20 @@ export default function Page() {
   const waMsg = (texto) => (waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(texto)) : '#');
   const waHref = waMsg('Hola! Quiero información sobre los planes de Salud Protegida.');
 
-  // Guía Médica (páginas estáticas en /guia). guia_resultados lee ?q= y
-  // precarga la búsqueda, así el buscador del homepage llega "con la búsqueda hecha".
+  // Guía Médica (páginas estáticas en /guia). Es la puerta a "dónde/con quién
+  // atenderte" — la búsqueda de médicos/sanatorios vive allá, donde devuelve
+  // resultados; el home solo abre la puerta, no finge buscarla acá.
   const guiaHome = `${BP}/guia/guia_home.html`;
-  const guiaSearchHref = (term) => (term ? `${BP}/guia/guia_resultados.html?q=${encodeURIComponent(term)}` : guiaHome);
 
-  // qué cubre (buscador de cobertura)
-  const qNorm = (state.q || '').trim().toLowerCase();
-  const matches = qNorm ? cartArr.filter((c) => c.name.toLowerCase().includes(qNorm)).slice(0, 5).map((c) => ({ name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'sugerencia' }); setState({ sel: c.name, q: '' }); } })) : [];
-  const quick = ['Resonancia (RM)', 'Parto o cesárea', 'Sesión de psicología', 'Internación', 'Tomografía (TAC)', 'Fisioterapia'];
-  const chips = quick.map((nm) => ({
-    name: nm, onPick: () => { track('cartilla_select', { practica: nm, via: 'chip' }); setState({ sel: nm, q: '' }); },
-    style: 'padding:9px 15px;border-radius:999px;border:1.5px solid ' + (state.sel === nm ? '#00BCB4' : '#d9e4e2') + ';background:' + (state.sel === nm ? '#00BCB4' : '#fff') + ';color:' + (state.sel === nm ? '#fff' : '#3D3D3D') + ';font-size:13px;font-weight:' + (state.sel === nm ? '700' : '500') + ';cursor:pointer;transition:all .15s',
+  // Qué cubre — explorador curado de coberturas (ex "buscador" que expulsaba a
+  // la Guía Médica al no encontrar: BITACORA cap. 44). Con 11 coberturas reales
+  // una caja de texto abierta promete saber todo y falla; los chips muestran lo
+  // que REALMENTE tenemos y responden ahí mismo, sin redirección.
+  const chips = cartArr.map((c) => ({
+    name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'chip' }); setState({ sel: c.name }); },
+    // Chip activo en teal accesible #007d77 (blanco sobre #00BCB4 daba 2.37:1 —
+    // hallazgo QA; mismo arreglo que /agendar). El resto, borde gris neutro.
+    style: 'padding:9px 15px;border-radius:999px;border:1.5px solid ' + (state.sel === c.name ? '#007d77' : '#d9e4e2') + ';background:' + (state.sel === c.name ? '#007d77' : '#fff') + ';color:' + (state.sel === c.name ? '#fff' : '#3D3D3D') + ';font-size:13px;font-weight:' + (state.sel === c.name ? '700' : '500') + ';cursor:pointer;transition:all .15s',
   }));
   const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
   const selRows = sel.cov.map((cv, i) => {
@@ -290,11 +291,9 @@ export default function Page() {
     waHref,
     mobileMenuOpen: state.mobileMenuOpen, mobileMenuClosed: !state.mobileMenuOpen,
     toggleMenu, closeMenu,
-    q: state.q, onQ: (e) => setState({ q: e.target.value }),
-    onQKey: (e) => { if (e.key === 'Enter' && state.q.trim()) { track('guia_handoff', { q: state.q.trim(), via: 'enter' }); window.location.href = guiaSearchHref(state.q.trim()); } },
-    matches, showDrop: qNorm.length > 0, chips,
-    guiaHome, guiaQHref: guiaSearchHref(state.q.trim()),
-    trackGuia: (via) => track('guia_handoff', { q: state.q.trim(), via }),
+    chips,
+    guiaHome,
+    trackGuia: (via) => track('guia_handoff', { q: '', via }),
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     sliderVal: state.sliderVal, onSlide: (e) => { const val = +e.target.value; const ni = Math.max(0, Math.min(2, Math.round(val / 100))); if (ni !== idx) track('comparador_plan', { plan: plansArr[ni].short, via: 'slider' }); setState({ sliderVal: val }); },
     planName: p.name, planTag: p.tag, planPrice: fmt(p.price), planLines: p.lines, stops, planShortName: p.short,
@@ -427,33 +426,22 @@ export default function Page() {
         </div>
       </section>
 
-      {/* QUÉ CUBRE — buscador de cobertura (ex "cartilla viva": jerga, ver BITACORA cap. 15) */}
+      {/* QUÉ CUBRE — explorador curado de coberturas (ex buscador que expulsaba
+          a la guía al no encontrar: BITACORA cap. 44). La Guía Médica es su
+          propia puerta, honesta, al final de la sección. */}
       <section id="cartilla" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:1000px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Guía Médica · sin letra chica</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Escribí lo que necesitás y mirá <span style={css('color:#007d77')}>qué cubre</span>.</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Qué cubre tu plan</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Elegí lo que necesitás y mirá <span style={css('color:#007d77')}>qué te toca</span> en cada plan.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Nada de adivinar. Antes de contratar ya sabés qué cubre cada plan y cuánto ponés de tu bolsillo.</p>
           </div>
-          <div data-rv style={css('max-width:640px;margin:0 auto 32px;background:#E6F7F6;border-radius:12px;padding:14px 18px;font-size:13.5px;color:#00695f;line-height:1.55;text-align:center')}><b>Lister</b> es nuestro centro médico propio (consultas, laboratorio e imagen). <b>«La red»</b> suma Lister + más de 50 prestadores externos en todo el país.</div>
 
           <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-            <div style={css('position:relative')}>
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('position:absolute;left:18px;top:50%;transform:translateY(-50%);pointer-events:none')}><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-              <input type="text" role="searchbox" aria-label="Buscar un estudio, consulta o tratamiento" aria-expanded={v.showDrop} aria-controls="cartilla-matches" value={v.q} onChange={v.onQ} onKeyDown={v.onQKey} placeholder="Ej: resonancia, parto, psicología…" className="search-inp" style={css('width:100%;height:58px;border:1.5px solid #cfe0dc;border-radius:14px;padding:0 18px 0 48px;font-size:17px;color:#1D1D1B;background:#fff;outline:none')} />
-              {v.showDrop && (
-                <div id="cartilla-matches" role="listbox" style={css('position:absolute;left:0;right:0;top:64px;z-index:5;background:#fff;border:1px solid #E8E8E8;border-radius:14px;box-shadow:0 12px 34px rgba(0,59,113,0.14);overflow:hidden')}>
-                  {v.matches.map((m, i) => (
-                    <button key={i} role="option" onClick={m.onPick} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 16px;background:#fff;border:none;border-bottom:1px solid #F0F0F0;cursor:pointer;font-size:15px;color:#1D1D1B')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>{m.name}</button>
-                  ))}
-                  <a role="option" href={v.guiaQHref} onClick={() => v.trackGuia('dropdown')} className="cart-match" style={css('display:flex;align-items:center;gap:11px;width:100%;padding:13px 16px;background:#F7FBFB;font-size:15px;font-weight:700;color:#007d77')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4" /></svg>Buscar «{v.q.trim()}» en la Guía Médica<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={css('margin-left:auto')}><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-                </div>
-              )}
-            </div>
-
-            <div style={css('display:flex;flex-wrap:wrap;gap:9px;margin-top:16px')}>
+            <div style={css('font-size:13px;font-weight:700;color:#003B71;margin-bottom:12px')}>Elegí una cobertura:</div>
+            <div style={css('display:flex;flex-wrap:wrap;gap:9px')}>
               {v.chips.map((c, i) => (
-                <button key={i} onClick={c.onPick} style={css(c.style)}>{c.name}</button>
+                <button key={i} onClick={c.onPick} aria-pressed={v.selName === c.name} style={css(c.style)}>{c.name}</button>
               ))}
             </div>
 
@@ -473,7 +461,18 @@ export default function Page() {
               </div>
             </div>
             <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
-            <div style={css('margin-top:18px;padding-top:18px;border-top:1px solid #d9efed;text-align:center;font-size:14.5px;color:#3D3D3D')}>¿Buscás dónde atenderte? <a href={v.guiaHome} onClick={() => v.trackGuia('link_cartilla')} className="link-teal" style={css('color:#007d77;font-weight:700')}>Abrí la Guía Médica</a> — médicos, sanatorios y estudios de toda la red.</div>
+          </div>
+
+          {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia
+              utilidad; acá una entrada honesta, no un buscador que finge. La
+              búsqueda real (médicos, sanatorios, estudios) vive en la guía. */}
+          <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div style={css('width:52px;height:52px;border-radius:14px;background:#003B71;color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+            <div>
+              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>¿Dónde atenderte?</div>
+              <div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>Buscá tu <b style={css('color:#003B71')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
+            </div>
+            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>

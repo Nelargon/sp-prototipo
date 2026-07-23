@@ -1221,6 +1221,36 @@ se arriesga una regresión de lo recién bendecido para ahorrarse una ola.
 
 ---
 
+## Capítulo 44 — Una herramienta que te patea afuera no es una herramienta
+
+**Qué pasó.** El usuario miró el home y puso el dedo en algo incómodo: *"el
+comparador de planes no es un comparador, es un slider… y tampoco muestra muchas
+diferencias"*, y *"la guía médica del home es medio raro: ponés algo que no está
+en el buscador y te lleva directo a la página de la guía médica — no me cumple
+esa utilidad"*. Y remató: *"lo único que ahora me funcionó fue el simulador"*.
+Fuimos al código y tenía toda la razón, con nombre y apellido: el "comparador"
+era un `input range` que mostraba **un plan a la vez** y escondía la tabla que sí
+compara detrás de un toggle; el "buscador" buscaba sobre **11 coberturas** y, ante
+cualquier término fuera de esa lista, hacía `window.location.href` a la guía. Dos
+herramientas que prometían y, al primer roce, o plegaban el premio o te expulsaban.
+
+**Qué aprendimos.** El simulador funcionó por una razón que sirve de vara para
+todo lo demás: **da una respuesta personal y completa ahí mismo**, no te manda a
+otro lado. De ahí el principio que queda: *una herramienta se gana su lugar en el
+home solo si responde en el lugar. Si redirige o esconde el resultado, no es una
+herramienta: es una puerta disfrazada de herramienta — y el usuario lo siente
+como "raro" antes de poder explicar por qué.* El arreglo de la primera ola no fue
+mejorar el buscador, fue **dejar de fingir que era uno**: con 11 datos reales, la
+honestidad es un explorador curado (chips → tarjeta, sin caja que promete saber
+todo), y la búsqueda de verdad (médicos, sanatorios) se la queda la Guía Médica,
+que ahí sí devuelve resultados; el home solo abre esa puerta, honesta y separada.
+La generalización de método: cuando algo "se siente raro" y no sabés por qué,
+buscá el **hueco entre lo que la interfaz promete y lo que entrega** — casi
+siempre está ahí. Y la data manda el diseño: un buscador con 11 ítems no es un
+buscador, es una lista; forzarlo a parecer buscador es el origen del engaño.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
