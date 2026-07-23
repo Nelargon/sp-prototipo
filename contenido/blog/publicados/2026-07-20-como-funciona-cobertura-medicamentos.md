@@ -2,6 +2,7 @@
 title: "Cómo funciona la cobertura de medicamentos en tu plan"
 slug: "como-funciona-cobertura-medicamentos"
 kicker: "Entendé tu cobertura"
+categoria: "Entendé tu plan"
 date: "2026-07-20"
 minutes: 4
 description: "Qué suele cubrir un plan de salud en medicamentos, cómo saber qué te toca a vos y qué hacer cuando la farmacia no tiene lo que buscás."

@@ -2,6 +2,7 @@
 title: "Cobertura de salud en el interior: qué mirar si vivís lejos de Asunción"
 slug: "cobertura-de-salud-en-el-interior"
 kicker: "El dato"
+categoria: "Entendé tu plan"
 date: "2026-07-20"
 minutes: 4
 description: "En las ciudades, 36 de cada 100 paraguayos tienen cobertura de salud; en el campo, solo 16. Qué mirar en un plan cuando tu vida no pasa por la capital."

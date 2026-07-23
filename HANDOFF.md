@@ -78,8 +78,8 @@ para la web, más allá del #2 ya arrancado:
   frecuentes y un "speech" que traduce la jerga (CT, COP, "arancel por
   restricción activa" = cuotas atrasadas, evento, prestador, sanatorio en
   convenio). **Acción: pedir esa lista** y armar el componente buscable.
-- **Blog por categorías** (una = Prevención), listo para el lanzamiento de la
-  web; calza con las campañas oct–nov (cáncer de mama/próstata). Palanca SEO.
+- ~~**Blog por categorías**~~ ✔ **HECHO (dec. 11n):** filtro por categoría en el
+  índice (Prevención · Entendé tu plan). Palanca SEO; calza con oct–nov.
 - **Fotos reales** de sanatorios/prestadores para "quiénes somos" (Arturo las
   pidió en voz alta) — mismo pendiente #5.
 - **NO construir todavía**: precios de sanatorio para lo no cubierto (Arturo lo
@@ -87,10 +87,12 @@ para la web, más allá del #2 ya arrancado:
   vencimientos, noticias-HubSpot) — territorio de la app de Luján + backend;
   definir la frontera app↔web antes de tocar.
 - **Preguntas abiertas que cambian qué construimos** (confirmar con Arturo):
-  (1) ¿hay "nuevos planes" en curso? (impacta simulador/comparador/grilla);
-  (2) "Privilege" ¿es público o interno? (lo público hoy es Bronce/Silver/Gold);
-  (3) ¿la decisión de plataforma sigue abierta o el prototipo ya es la web de
-  facto?; (4) ¿SEO sigue en prioridad?
+  ~~(1) ¿nuevos planes en curso?~~ ✔ **respondido (dec. 11o):** solo Bronce/
+  Silver/Gold hoy; Esencial/Integral/Premium (versiones mejoradas de esos tres)
+  llegan en 2-3 meses — no modelar los demás productos. ~~(2) "Privilege"
+  ¿público o interno?~~ ✔ **interno**; lo público es Bronce/Silver/Gold. Quedan:
+  (3) ¿la plataforma sigue abierta o el prototipo ya es la web de facto?;
+  (4) ¿SEO sigue en prioridad?
 
 ### Guardas — qué NO tocar sin input humano
 - **Test de 5 segundos (§3c): EN PAUSA** — no tocar hero/categoría/acción
@@ -488,6 +490,28 @@ usa `npm ci`).
     sobre panel casi-blanco). Territorio: `app/page.jsx`. **Sigue pendiente:** el
     glosario BUSCABLE completo — Visaciones ya tiene la lista de FAQs
     (pedírsela); acá quedó embebido solo el glosario mínimo (los 3 modos).
+11n. **Blog por categorías (22 jul 2026, pedido de la reunión con
+    departamentos: "separar los artículos en categorías, una = prevención").**
+    El índice de `/blog` ganó pastillas de filtro por categoría —client-side,
+    el SSR rinde todas las notas (SEO y no-JS ven todo)—. Dos categorías hoy:
+    **Prevención** (3) y **Entendé tu plan** (5, sinergia con la claridad recién
+    subida). Campo `categoria` nuevo en el frontmatter (documentado en
+    `contenido/README.md`; sin categoría → "General"). Componente nuevo
+    `app/blog/BlogList.jsx` (cliente) al que `page.jsx` le pasa las notas ya
+    serializadas + fecha formateada, para no arrastrar `fs` al bundle. QA 0
+    roto, /blog 153 KB. Territorio: `app/blog/*`, `lib/blog.js`, las 8 notas,
+    `contenido/README.md`. Futuro (si SEO sube): páginas por categoría
+    (`/blog/categoria/…`) — hoy es filtro sin ruta nueva.
+11o. **Solo Bronce/Silver/Gold en la web — simplificar, no reflejar la
+    realidad (22 jul 2026, decisión del usuario; BITACORA cap. 38).** SP tiene
+    muchos más productos que los de la web ("miles", formas traslapadas de los
+    mismos). El usuario decidió NO modelarlos: los nuevos Esencial/Integral/
+    Premium son las versiones mejoradas de Bronce/Silver/Gold y llegan en 2-3
+    meses; poner el resto hoy "son más confusos otra vez". **Regla de diseño
+    para toda sesión: escribir siempre sobre Bronce/Silver/Gold, no mencionar
+    los otros productos**, y dejar el set armado para que los nuevos planes sean
+    un swap de datos (`plans()` + `TARIFAS` + `cart()`), no un rehacer.
+    "Privilege" es nombre interno; lo público es Bronce/Silver/Gold.
 
 ---
 

@@ -1078,6 +1078,30 @@ nada sirve la claridad del mensaje si la claridad del pixel no acompaña.
 
 ---
 
+## Capítulo 38 — Menos planes en la web que en la realidad (a propósito)
+
+**Qué pasó.** Preguntando por los "nuevos planes" que la reunión había
+mencionado, Arturo aclaró algo que cambia el alcance: SP no tiene cuatro
+planes, tiene muchos —"miles de otros planes", formas traslapadas de los
+mismos—. Y su decisión fue tajante: en la web, solo Bronce, Silver y Gold.
+Textual: *"la idea es simplificarlo… si pongo los otros planes son más
+confusos otra vez, porque son como formas traslapadas de los planes que ya
+tenemos… no tiene sentido trabajar todos los planes que realmente existen"*.
+Los nuevos —Esencial, Integral, Premium— son las versiones mejoradas de esos
+tres y llegan en dos o tres meses.
+
+**Qué aprendimos.** La web no es un espejo del backend, es un filtro. El
+instinto de ingeniería es modelar toda la realidad —los mil productos, cada
+excepción—; el de producto es al revés: mostrar lo mínimo que le sirve a la
+persona para decidir y esconder la complejidad que solo confunde. Es la misma
+tesis de claridad de los caps. 36 y 37, aplicada al catálogo: menos opciones,
+mejor decisión. Y una consecuencia práctica para las sesiones que vienen: se
+escribe siempre sobre Bronce/Silver/Gold, "Privilege" es nombre de trastienda,
+y el set queda armado para que cuando lleguen los nuevos planes sea cambiar los
+datos, no rehacer la web.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

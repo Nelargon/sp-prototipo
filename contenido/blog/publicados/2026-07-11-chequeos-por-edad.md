@@ -2,6 +2,7 @@
 title: "Los chequeos que conviene hacerse a cada edad"
 slug: "chequeos-por-edad"
 kicker: "Salud preventiva"
+categoria: "Prevención"
 date: "2026-07-11"
 minutes: 5
 description: "Los sustos grandes suelen avisar antes — si alguien los va a buscar. Una guía simple de controles para cada etapa de la vida."

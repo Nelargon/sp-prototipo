@@ -2,6 +2,7 @@
 title: "Virus respiratorios en invierno: lo que tu familia debería saber este julio"
 slug: "virus-respiratorios-invierno-2026"
 kicker: "Salud preventiva"
+categoria: "Prevención"
 date: "2026-07-16"
 minutes: 4
 description: "Influenza y virus sincitial marcan el invierno 2026 en Paraguay. Qué está pasando, hasta cuándo va la campaña de vacunación y cómo prepararte."
