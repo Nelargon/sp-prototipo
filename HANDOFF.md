@@ -91,8 +91,9 @@ para la web, más allá del #2 ya arrancado:
   Silver/Gold hoy; Esencial/Integral/Premium (versiones mejoradas de esos tres)
   llegan en 2-3 meses — no modelar los demás productos. ~~(2) "Privilege"
   ¿público o interno?~~ ✔ **interno**; lo público es Bronce/Silver/Gold. Quedan:
-  (3) ¿la plataforma sigue abierta o el prototipo ya es la web de facto?;
-  (4) ¿SEO sigue en prioridad?
+  ~~(3) ¿plataforma abierta o el prototipo ya es la web?~~ ✔ **el prototipo ES
+  la web (dec. 11p).** Queda solo (4) **SEO** — destrabado por lo anterior;
+  falta el dominio (#9) y cuándo el sitio sale público (hoy noindex).
 
 ### Guardas — qué NO tocar sin input humano
 - **Test de 5 segundos (§3c): EN PAUSA** — no tocar hero/categoría/acción
@@ -101,11 +102,11 @@ para la web, más allá del #2 ya arrancado:
 - Reglas de **tono / tipografía / lenguaje** en `CLAUDE.md` — respetarlas.
 
 ### Decisiones que viajaron por conversación (escritas acá para no perderlas)
-- **Plataforma (pendiente #8):** *WordPress* (lo propone BuenaVista) vs *Next.js*
-  (el prototipo) vs *híbrido* (Next.js + CMS headless). La pregunta que decide:
-  **¿quién mantiene la web en el día a día?** El backend hace falta igual (ANEXO).
-  Criterio: buscar **arquitecto de conversión, no diseñador estético**. Falta la
-  "hoja compartible" de una carilla (pendiente 4).
+- **Plataforma (pendiente #8): ✔ DECIDIDO (23 jul 2026, dec. 11p) — el prototipo
+  Next.js ES la web** ("a muchísimos les está gustando cómo está quedando"). Se
+  descarta WordPress. El backend hace falta igual (ANEXO); quedan quién hospeda +
+  el dominio (#9). La "hoja de plataformas para BuenaVista" (pendiente 4) pierde
+  urgencia: ya no se comparan plataformas, se decide hosting/dominio.
 - **Drive `SP-Web`:** ordenar por rol, separar materia prima de
   `01_APROBADO-para-web`; regla de oro: nada sale a la web si no está "aprobado".
 
@@ -512,6 +513,20 @@ usa `npm ci`).
     los otros productos**, y dejar el set armado para que los nuevos planes sean
     un swap de datos (`plans()` + `TARIFAS` + `cart()`), no un rehacer.
     "Privilege" es nombre interno; lo público es Bronce/Silver/Gold.
+11p. **La plataforma quedó decidida: el prototipo Next.js ES la web pública
+    (23 jul 2026, decisión del usuario; BITACORA cap. 39).** Cierra el
+    pendiente #8 (WordPress de BuenaVista vs Next.js), que "condicionaba todo
+    el trabajo siguiente". Textual: *"el prototipo va a ser la web… a muchísimos
+    les está gustando cómo está quedando"*. Se descarta WordPress como
+    plataforma; BuenaVista, si entra, es implementador/hosting, no dueño del
+    diseño. **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
+    la infra ya está lista (robots/noindex/sitemap/canonicals/OG/JSON-LD, se
+    prende con `NEXT_PUBLIC_INDEXABLE=true` + `SITE_URL`). Ahora SEO solo espera
+    dos definiciones del negocio: el **dominio** (#9) y **cuándo el sitio sale
+    público** (hoy noindex a propósito, por los precios de referencia). Lo que
+    mueve la aguja ya está en marcha: el blog (2-3 notas/semana, ahora por
+    categorías) y la guía médica como directorio verificable (esta última,
+    cuando tenga datos reales de prestadores, pendiente B).
 
 ---
 
@@ -739,9 +754,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    `app/page.jsx`, mapas NIVEL/NOMBRE en la guía).
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
-8. **Decisión de plataforma de la web pública**: el brief de BuenaVista
-   dice WordPress; el prototipo es Next.js. Alguien decide qué va a
-   producción y quién hospeda. Condiciona todo el trabajo siguiente.
+8. ~~**Decisión de plataforma de la web pública**~~ ✔ **RESUELTO (23 jul 2026,
+   dec. 11p): el prototipo Next.js ES la web.** Se descarta WordPress/BuenaVista
+   como plataforma. Quedan quién hospeda y el dominio (#9); el backend (ANEXO)
+   hace falta igual.
    **Criterios de contratación** (jul 2026, de la evaluación de
    arquitectura de conversión): buscar arquitecto de conversión /
    StoryBrand, no diseñador estético; el brief es `BRANDSCRIPT.md` +

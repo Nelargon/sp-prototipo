@@ -1102,6 +1102,28 @@ datos, no rehacer la web.
 
 ---
 
+## Capítulo 39 — El prototipo dejó de ser prototipo
+
+**Qué pasó.** La pregunta que estuvo abierta desde el principio —¿la web
+pública se hace en WordPress (como proponía la agencia) o en el prototipo
+Next.js?— se cerró en una frase del usuario: *"el prototipo va a ser la web.
+A muchísimos les está gustando cómo está quedando"*. El pendiente #8, el que
+"condicionaba todo el trabajo siguiente", quedó resuelto a favor de lo que ya
+estábamos construyendo.
+
+**Qué aprendimos.** El prototipo ganó por acumulación, no por decreto: cada PR
+que sumó honestidad, claridad y contenido lo fue volviendo indefendible de
+descartar. La lección de método: cuando la decisión de plataforma está trabada,
+la mejor forma de destrabarla no es un documento comparativo — es hacer el
+producto tan bueno que la comparación se vuelva obvia. "Prohibido lorem ipsum,
+el copy dicta el diseño" (criterio que ya estaba en el HANDOFF) resultó ser
+también la estrategia para ganar la discusión de plataforma. Consecuencia
+práctica: BuenaVista, si entra, es implementador/hosting, no dueño del diseño;
+y el SEO —que dependía de esta decisión— quedó a un flip de distancia (falta
+solo el dominio y la fecha de salida a público).
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
