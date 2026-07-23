@@ -571,10 +571,15 @@ usa `npm ci`).
     "logo + volver"), sin componente compartido ni desglose. Modelo pedido:
     Anthropic — header idéntico en todo el sitio, vidrio, y cada título que se
     **desglosa** en un panel con animación suave ("un poco, pero no demasiado").
-    **Primer paso, en la home:** "Qué cubre" y "Planes" son ahora **mega-menús
-    fluidos** — panel de vidrio que se revela con hover/focus (fade+slide 180ms),
-    chevron que rota, ítems con título + subtítulo (`.navmenu*` en
-    `globals.css`; CSS puro, sin JS, accesible por teclado con `:focus-within`).
+    **Primer paso, en la home:** tres **mega-menús fluidos** — **Cobertura**
+    (ex "Qué cubre", con "Preguntas" adentro), **Planes**, y **Mi SP**
+    (desplegable de usuario con Agendar / Ver mi red / Ir a Mi SP) — panel de
+    vidrio que se revela con hover/focus (fade+slide 180ms), chevron que rota,
+    ítems con título + subtítulo (`.navmenu*` en `globals.css`; CSS puro, sin
+    JS, accesible por teclado con `:focus-within`). El header se **simplificó**
+    (de 7 a 4 ítems de texto): "Preguntas" pasó adentro de Cobertura y "Agendar"
+    adentro de Mi SP (feedback del usuario: "son demasiados ítems"); el corte de
+    colapso del nav volvió a 1199px.
     Verificado: `backdrop-filter` computa (no lo tragó el minificador), QA 0
     roto, Tab recorre 12 elementos. Se le dio ancla `#bolsillo` a la sección de
     claridad para deep-link. Territorio: `app/page.jsx`, `app/globals.css`.
