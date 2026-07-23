@@ -33,8 +33,8 @@ const falla = (frente, severidad, detalle, donde = '') => {
   console.log('  ✗ [' + severidad + '] ' + detalle + (donde ? ' — ' + donde : ''));
 };
 
-const PAGINAS = ['/', '/simulador/', '/blog/', '/historia/', '/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html'];
-const PAGINAS_APP = ['/', '/simulador/', '/blog/', '/historia/']; // con estilos propios (sin CDN)
+const PAGINAS = ['/', '/simulador/', '/agendar/', '/blog/', '/historia/', '/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html'];
+const PAGINAS_APP = ['/', '/simulador/', '/agendar/', '/blog/', '/historia/']; // con estilos propios (sin CDN)
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
 

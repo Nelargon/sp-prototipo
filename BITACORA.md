@@ -1148,6 +1148,29 @@ reales son el destino, no el bloqueo.
 
 ---
 
+## Capítulo 41 — Agendar no puede vivir detrás de una contraseña
+
+**Qué pasó.** Encarando el header, el usuario frenó con una observación fina:
+el agendamiento estaba pensado como algo "en camino" dentro de Mi SP —o sea,
+detrás del login—. Y lo dijo claro: *"capaz tiene que haber un espacio directo
+de agendamiento para no dar muchas vueltas"*. Pedir un turno es de las cosas de
+más alta intención que hace una persona; enterrarlo detrás de usuario y
+contraseña es ponerle un peaje a la puerta.
+
+**Qué aprendimos.** Salió una regla de arquitectura de información que vale para
+todo el sitio: **separar la intención de la identidad.** Las acciones de alta
+intención y baja fricción —agendar, simular, urgencias— van directas, sin
+login; el login (Mi SP) es solo para lo personal —mis turnos, mi red, mi
+credencial, mis pagos—. "Quiero un turno" es directo; "ver MIS turnos" es con
+login. Con eso nació `/agendar`: sin login, empieza por Lister (el centro
+propio) y hace hoy lo único que se puede sin backend — un handoff caliente a la
+recepción por WhatsApp, con todo cargado. El sistema real de turnos, cuando
+exista, se enchufa detrás sin mover la experiencia. La lección general: **no le
+pongas login a lo que la persona quiere hacer ya.** El login protege lo suyo,
+no le cobra entrada a la intención.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

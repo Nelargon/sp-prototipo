@@ -77,7 +77,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    debajo de 1200px, donde el nav completo no entra. Verificado: sin desborde
    ≥1200px, hamburguesa completa por debajo. */
 .nav-links-desktop .nav-link{white-space:nowrap}
-@media(max-width:1199px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
+@media(max-width:1279px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
 /* Touch targets ≥44px en móvil (QA integral: el 77% del tráfico entra por celular) */
 .urg-pill{height:44px !important}.nav-burger{width:44px !important;height:44px !important}}
 @media(max-width:420px){.urg-pill .num-tnum{display:none !important}}
