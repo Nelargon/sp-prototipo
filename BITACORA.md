@@ -1124,6 +1124,30 @@ solo el dominio y la fecha de salida a público).
 
 ---
 
+## Capítulo 40 — Las imágenes no se consiguen, se generan
+
+**Qué pasó.** Arturo señaló un hueco real: *"cada vez que hago el diseño de la
+web, me sale sin imágenes… no me tiran las imágenes automáticamente, percibiendo
+la necesidad"*. Tenía que ir a ChatGPT, Gemini o Envato a mano. Y las fotos
+reales —las buenas, de Lister y del equipo— toman tiempo: hay que agendar,
+sacar, elegir. Mientras tanto, el blog salía sin una sola imagen.
+
+**Qué aprendimos.** La causa raíz: un asistente de código genera código, no
+píxeles. Entonces la salida sostenible no es que aprenda a generar imágenes —
+es **hacer que el código genere lo visual.** Se dio vuelta el problema: en vez
+de conseguir una imagen para cada nota, cada nota genera su propia portada de
+marca (SVG por código: degradé + formas + ícono de categoría, variado de forma
+determinística por el slug). Costo cero, sin conector, sin trabajo humano. Y con
+**degradación elegante**: si algún día hay una foto real (`cover` en el
+frontmatter), esa manda; si no, la portada generada — el sitio nunca queda sin
+imagen. La foto real deja de ser un requisito y pasa a ser una mejora opcional.
+Regla que queda para las imágenes (HANDOFF, capa 1/2/3): para lo abstracto y
+editorial, generamos por código; el banco de stock (Pexels/Envato) o la IA por
+API se reservan para cuando hace falta una cara humana concreta, y las fotos
+reales son el destino, no el bloqueo.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

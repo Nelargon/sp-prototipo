@@ -93,7 +93,8 @@ para la web, más allá del #2 ya arrancado:
   ¿público o interno?~~ ✔ **interno**; lo público es Bronce/Silver/Gold. Quedan:
   ~~(3) ¿plataforma abierta o el prototipo ya es la web?~~ ✔ **el prototipo ES
   la web (dec. 11p).** Queda solo (4) **SEO** — destrabado por lo anterior;
-  falta el dominio (#9) y cuándo el sitio sale público (hoy noindex).
+  falta el dominio del sitio y de la guía (#9), quitar el `noindex` de los 3
+  HTML de la guía, y cuándo el sitio sale público.
 
 ### Guardas — qué NO tocar sin input humano
 - **Test de 5 segundos (§3c): EN PAUSA** — no tocar hero/categoría/acción
@@ -105,7 +106,8 @@ para la web, más allá del #2 ya arrancado:
 - **Plataforma (pendiente #8): ✔ DECIDIDO (23 jul 2026, dec. 11p) — el prototipo
   Next.js ES la web** ("a muchísimos les está gustando cómo está quedando"). Se
   descarta WordPress. El backend hace falta igual (ANEXO); quedan quién hospeda +
-  el dominio (#9). La "hoja de plataformas para BuenaVista" (pendiente 4) pierde
+  el dominio del sitio y de la guía (#9). La "hoja de plataformas para
+  BuenaVista" (pendiente 4) pierde
   urgencia: ya no se comparan plataformas, se decide hosting/dominio.
 - **Drive `SP-Web`:** ordenar por rol, separar materia prima de
   `01_APROBADO-para-web`; regla de oro: nada sale a la web si no está "aprobado".
@@ -520,13 +522,31 @@ usa `npm ci`).
     les está gustando cómo está quedando"*. Se descarta WordPress como
     plataforma; BuenaVista, si entra, es implementador/hosting, no dueño del
     diseño. **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
-    la infra ya está lista (robots/noindex/sitemap/canonicals/OG/JSON-LD, se
-    prende con `NEXT_PUBLIC_INDEXABLE=true` + `SITE_URL`). Ahora SEO solo espera
-    dos definiciones del negocio: el **dominio** (#9) y **cuándo el sitio sale
+    la infra de las páginas Next.js ya está lista (robots/noindex/sitemap/
+    canonicals/OG/JSON-LD, se prende con `NEXT_PUBLIC_INDEXABLE=true` +
+    `SITE_URL`). Faltan, concretas: (a) el **hostname público del sitio** (para
+    `SITE_URL`) y el **dominio de la guía** (#9, ampliado); (b) **quitar el
+    `noindex` hardcodeado de los 3 `guia/*.html`** (checklist #8b — el flag de
+    Next.js NO los cubre); (c) la decisión de negocio de **cuándo salir
     público** (hoy noindex a propósito, por los precios de referencia). Lo que
     mueve la aguja ya está en marcha: el blog (2-3 notas/semana, ahora por
     categorías) y la guía médica como directorio verificable (esta última,
     cuando tenga datos reales de prestadores, pendiente B).
+11q. **Estrategia de imágenes + portadas de marca generadas (23 jul 2026,
+    pedido del usuario; BITACORA cap. 40).** El problema: los diseños salían
+    "sin imágenes" y conseguirlas a mano (ChatGPT/Gemini/Envato) no escala. La
+    causa: un asistente de código genera código, no píxeles → la solución es que
+    el código genere lo visual. **Tres capas:** (1) **portadas de marca por
+    código** (SVG: degradé + formas + ícono de categoría, `app/blog/Cover.jsx`)
+    — costo cero, sin conector, automáticas; capa default, ya en el blog;
+    (2) **stock (Pexels/Envato) o IA por API** (centavos/imagen, en el motor de
+    contenido) para una "foto" real-ish puntual (héroes/secciones) — falta
+    elegir proveedor con el usuario; (3) **fotos reales** (Lister, equipo) — el
+    destino, toma tiempo, no bloquea. **Regla:** `cover` opcional en el
+    frontmatter (una foto real manda); sin él, la portada generada — el sitio
+    nunca queda sin imagen. En el mismo cambio: **schema.org `BlogPosting`** por
+    nota (SEO on-page, inerte con noindex, listo para el flip). Territorio:
+    `app/blog/*`, `lib/blog.js`, `contenido/README.md`.
 
 ---
 
@@ -681,7 +701,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    tonos imperceptiblemente más oscuros, touch targets ≥44px en móvil,
    lazy-loading de 27 imágenes). **Quedan:** (a) la decisión
    "blanco sobre teal #00BCB4" en los CTAs (2,4:1 — es identidad de
-   marca; opciones en el informe, resolver junto al pendiente #8);
+   marca; opciones en el informe, resolver antes de salir a público —
+   el #8, plataforma, ya se resolvió: Next.js);
    (b) la prueba en iPhone/Safari real — checklist de 10 min en el
    informe (la hace SP); (c) testimonios reales (prueba social sin voz
    humana). El QA de integración con backend queda para cuando la
@@ -704,7 +725,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    funciona" compactado a paso-a-paso, y dieta de espacios en toda la
    home: **14,2 → 11,6 pantallas en móvil (-18%)**, 8,9 → 8,1 en desktop.
    El portal completo (login, credencial, estados) sigue como destino
-   declarado, bloqueado por el pendiente #8 y el backend de SIP.
+   declarado, bloqueado por el backend de SIP (el #8 —plataforma— ya se
+   resolvió: Next.js, dec. 11p).
 
 3c. **Feedback externo sobre la web (16 jul 2026)** — evaluación de un
    revisor externo, pimponeada con el usuario. Veredicto general: madura,
@@ -787,9 +809,12 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 
 ### Prioridad baja / evolución
 
-9. **SEO y dominio**: sitemap, metadatos, schema.org (ejemplo ya incluido
-   en la ficha), y decidir si la guía vive en `guia.saludprotegida.com.py`
-   (la marca se lleva el crédito en Google) o queda en `sp.sip.com.py`.
+9. **SEO y dominio**: sitemap, metadatos, schema.org (ejemplo ya incluido en
+   la ficha). **Dos hostnames que decidir, no uno:** (a) el **dominio público
+   del sitio Next.js** —hace falta para `SITE_URL` (canonicals, robots,
+   sitemap); hoy indefinido—; y (b) si la **guía** vive en
+   `guia.saludprotegida.com.py` (la marca se lleva el crédito en Google) o
+   queda en `sp.sip.com.py`.
 10. **Gobernanza de contenido**: quién actualiza prestadores, textos y
     especialidades (el brief pedía CMS editable por SP).
 11. **Ritual mensual de datos**: revisión de 30 minutos del top de búsquedas
@@ -831,8 +856,9 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
   pasar el usuario** (pendiente #2).
 - ¿Quién carga `min_plan` por prestador y quién corrige teléfonos/
   direcciones/horarios? → SP + empresa desarrolladora.
-- ¿WordPress o Next.js para la web pública? → SP + BuenaVista.
-- ¿Dominio de la guía? → SP.
+- ~~¿WordPress o Next.js para la web pública?~~ ✔ RESUELTO (dec. 11p): Next.js
+  (el prototipo). BuenaVista, si entra, es implementador/hosting.
+- ¿Dominio **del sitio** (hostname para `SITE_URL`) y **de la guía**? → SP.
 
 ---
 
