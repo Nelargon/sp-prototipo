@@ -547,6 +547,24 @@ usa `npm ci`).
     nunca queda sin imagen. En el mismo cambio: **schema.org `BlogPosting`** por
     nota (SEO on-page, inerte con noindex, listo para el flip). Territorio:
     `app/blog/*`, `lib/blog.js`, `contenido/README.md`.
+11r. **Agendamiento directo, sin login: el espacio `/agendar` (24 jul 2026,
+    pedido del usuario; BITACORA cap. 41).** Pedir un turno no debe estar
+    enterrado detrás del login de Mi SP — *"capaz tiene que haber un espacio
+    directo de agendamiento para no dar muchas vueltas"*. **Regla de IA que
+    queda:** las **acciones de alta intención** (agendar, simular, urgencias)
+    van **directas, sin login**; lo **personal** del afiliado (mis turnos, mi
+    red, credencial, pagos) queda detrás del login de Mi SP. Nuevo `/agendar`
+    (`app/agendar/`): centro (Lister primero) → especialidad → cuándo → nombre,
+    y **handoff a la recepción de Lister por WhatsApp** (la persona llega
+    "caliente", con todo cargado) — sin backend, funcional hoy; el día que
+    exista el sistema real de turnos se enchufa detrás sin mover la experiencia.
+    "Agendar" entró **directo en la nav** (desktop + menú móvil; se subió el
+    corte de colapso del nav a 1279px para no desbordar con el link nuevo).
+    Eventos nuevos (ANEXO §2): `cta_agendar`, `agendar_envio`, `agendar_llamar`
+    (sin PII). QA 0 roto, /agendar en el sitemap y en la suite. Territorio:
+    `app/agendar/*`, `app/page.jsx` (nav), `app/globals.css`, `app/sitemap.js`,
+    `qa/qa-integral.mjs`. **Sigue en camino:** el header unificado tipo Anthropic
+    (POC) — ya con "Agendar" en su lugar en la nav.
 
 ---
 
@@ -823,8 +841,11 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 12. **"Cerca de mi ubicación" + mapa** (necesita coordenadas en la base).
 13. **Variante C2 del modo personalizado** (lista dividida "Tu red / El
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
-14. **Agendamiento de turnos**, empezando por Lister: el paso de "dónde
-    atenderse" a "atenderse".
+14. ~~**Agendamiento de turnos**, empezando por Lister~~ ✔ **PRIMERA VERSIÓN
+    (24 jul 2026, dec. 11r):** espacio directo `/agendar`, **sin login**, con
+    handoff a la recepción de Lister por WhatsApp — el paso de "dónde atenderse"
+    a "atenderse". Falta: el sistema real de turnos (backend / app de Luján)
+    detrás del handoff, y extender de Lister a la red.
 15. **Contenido del blog** — RESUELTO (julio 2026): la estrategia
     editorial existe y está en marcha. Las notas viven como markdown en
     `contenido/blog/publicados/` (una nota nueva = un archivo nuevo;
