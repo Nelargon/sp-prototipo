@@ -1171,6 +1171,28 @@ no le cobra entrada a la intención.
 
 ---
 
+## Capítulo 42 — El header es el mapa (y el mapa cambiaba en cada módulo)
+
+**Qué pasó.** El usuario miró la web y nombró algo que ya se sentía: el header
+no era UNA experiencia, eran varios. La home tenía un nav rico; el blog, el
+artículo, Mi SP, el simulador traían cada uno un "logo + volver" reinventado.
+Alguien que iba de la home al blog sentía que cambiaba de sitio. Su referencia:
+el header de Anthropic — cómo cada título se desglosa en un panel, con una
+animación fluida "pero no demasiado".
+
+**Qué aprendimos.** El header no es decoración, es el mapa del sitio; si el mapa
+cambia en cada módulo, el sitio se siente roto aunque cada página esté linda. El
+primer paso fue enseñarle a los títulos a desglosarse —"Qué cubre" y "Planes"
+abren un panel de vidrio con fade+slide— para aprobar el *feel* antes de la
+migración grande: extraer el header a un componente compartido y rodarlo a todos
+los módulos, incluida la guía (que corre en otra tecnología). La lección de
+método: cuando algo tiene que vivir en "todos los módulos", primero se prueba el
+feel en uno, y recién con el sí se paga el costo de unificar. (Y de paso, el
+vidrio del panel volvió a recordar el cap. 24: el `backdrop-filter` hay que
+verificarlo computado, no en el código — esta vez sobrevivió al minificador.)
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

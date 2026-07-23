@@ -565,6 +565,23 @@ usa `npm ci`).
     `app/agendar/*`, `app/page.jsx` (nav), `app/globals.css`, `app/sitemap.js`,
     `qa/qa-integral.mjs`. **Sigue en camino:** el header unificado tipo Anthropic
     (POC) — ya con "Agendar" en su lugar en la nav.
+11s. **Header fluido tipo Anthropic — POC del desglose (24 jul 2026, pedido del
+    usuario).** El header hoy NO es una experiencia única: cada módulo
+    reimplementa el suyo (home rico; blog/artículo/historia/Mi SP/simulador =
+    "logo + volver"), sin componente compartido ni desglose. Modelo pedido:
+    Anthropic — header idéntico en todo el sitio, vidrio, y cada título que se
+    **desglosa** en un panel con animación suave ("un poco, pero no demasiado").
+    **Primer paso, en la home:** "Qué cubre" y "Planes" son ahora **mega-menús
+    fluidos** — panel de vidrio que se revela con hover/focus (fade+slide 180ms),
+    chevron que rota, ítems con título + subtítulo (`.navmenu*` en
+    `globals.css`; CSS puro, sin JS, accesible por teclado con `:focus-within`).
+    Verificado: `backdrop-filter` computa (no lo tragó el minificador), QA 0
+    roto, Tab recorre 12 elementos. Se le dio ancla `#bolsillo` a la sección de
+    claridad para deep-link. Territorio: `app/page.jsx`, `app/globals.css`.
+    **Sigue pendiente (el grueso):** extraer el header a un **componente
+    compartido** y rodarlo a TODOS los módulos (blog, agendar, Mi SP, historia,
+    simulador) + su **gemelo en la guía** (HTML/Tailwind), con el overlay móvil
+    unificado. Este POC es el *feel* para aprobar antes de esa migración.
 
 ---
 

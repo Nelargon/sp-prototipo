@@ -336,8 +336,26 @@ export default function Page() {
         <div style={css('display:flex;align-items:center;gap:16px')}>
           <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
-            <a href="#cartilla" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Qué cubre</a>
-            <a href="#comparar" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Planes</a>
+            <div className="navmenu-wrap">
+              <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Qué cubre <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
+              <div className="navmenu">
+                <div className="navmenu-card">
+                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Buscá tu estudio o consulta</span><span className="navmenu-s">Escribí lo que necesitás y mirá qué cubre cada plan</span></a>
+                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Compará los tres planes</span><span className="navmenu-s">De lo esencial a lo premium, con su precio</span></a>
+                  <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Copago, precio de convenio y lo que no cubre ningún plan</span></a>
+                </div>
+              </div>
+            </div>
+            <div className="navmenu-wrap">
+              <a href="#comparar" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Planes <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
+              <div className="navmenu">
+                <div className="navmenu-card">
+                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Bronce, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
+                  <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
+                  <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Simulá tu precio</span><span className="navmenu-s">Unas preguntas y ves el precio, en 1 minuto</span></a>
+                </div>
+              </div>
+            </div>
             <a href="#faq" className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Preguntas</a>
             <a href={`${BP}/blog/`} className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Blog</a>
             {/* Puerta persistente del afiliado en desktop (auditoría estratégica jul 2026,
@@ -543,7 +561,7 @@ export default function Page() {
           (datos/planes-vigentes/ANALISIS-arancel-diferenciado.md §2 y §4).
           AD = precio de convenio (cláusula 2.10) — la versión honesta de
           "arancel diferenciado". */}
-      <section className="sec" style={css('padding:80px 40px;background:#fff')}>
+      <section id="bolsillo" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:670px;margin:0 auto 34px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que pagás de tu bolsillo</div>
