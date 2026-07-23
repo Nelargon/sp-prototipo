@@ -56,14 +56,41 @@ documentado en el repo.
    "Sin letra chica"; "médico a domicilio" con números reales; salud mental
    acotada a Bronce/Silver/Gold). Queda afuera del home: el filtro
    "Telemedicina" de la guía (`guia_resultados.html`) si SP no va a ofrecerla.
-2. **Bloque "qué no cubre / qué pagás aparte"** con la data nueva (cobertura real
-   + AD=convenio), en gris (regla de tono).
+2. ~~**Bloque "qué no cubre / qué pagás aparte"**~~ ✔ **PRIMERA VERSIÓN HECHA
+   (22 jul 2026, dec. 11m):** sección "Lo que pagás de tu bolsillo" en el home
+   (después del comparador) — los 3 modos (Cubierto/Copago/Al precio de
+   convenio) + cobertura real por plan (45/66/93) + exclusiones verdaderas, en
+   gris. Falta el **glosario buscable** completo (Visaciones ya tiene la lista
+   de FAQs — pedírsela).
 3. ~~**Salud mental**~~ ✔ **HECHO (dec. 11l):** el diferenciador del home ya dice
    "incluida en los planes Bronce, Silver y Gold" (nombres públicos, no a quien
    mira Vital); el comparador ya la mostraba por plan (3/5/6 sesiones, exacto al
    contrato). No aparece como promesa general en ningún otro lado.
 4. **Hoja de plataformas para BuenaVista** (comparación abajo, aún sin escribir).
 5. Testimonios reales + fotos reales (pendientes viejos).
+
+### Reunión con departamentos (22 jul 2026) — norte para la web
+La reunión cross-departamental (MKT + áreas) validó la tesis ("SP no vende
+salud, vende tranquilidad y transparencia; hoy NO somos transparentes") y el
+anti-sobrepromesa ("no existe un plan que cubra todo"). Insumos accionables
+para la web, más allá del #2 ya arrancado:
+- **Glosario buscable + FAQ**: Visaciones YA tiene la lista de preguntas
+  frecuentes y un "speech" que traduce la jerga (CT, COP, "arancel por
+  restricción activa" = cuotas atrasadas, evento, prestador, sanatorio en
+  convenio). **Acción: pedir esa lista** y armar el componente buscable.
+- **Blog por categorías** (una = Prevención), listo para el lanzamiento de la
+  web; calza con las campañas oct–nov (cáncer de mama/próstata). Palanca SEO.
+- **Fotos reales** de sanatorios/prestadores para "quiénes somos" (Arturo las
+  pidió en voz alta) — mismo pendiente #5.
+- **NO construir todavía**: precios de sanatorio para lo no cubierto (Arturo lo
+  pospuso a septiembre), y el portal/app (credencial, turnos, pagos,
+  vencimientos, noticias-HubSpot) — territorio de la app de Luján + backend;
+  definir la frontera app↔web antes de tocar.
+- **Preguntas abiertas que cambian qué construimos** (confirmar con Arturo):
+  (1) ¿hay "nuevos planes" en curso? (impacta simulador/comparador/grilla);
+  (2) "Privilege" ¿es público o interno? (lo público hoy es Bronce/Silver/Gold);
+  (3) ¿la decisión de plataforma sigue abierta o el prototipo ya es la web de
+  facto?; (4) ¿SEO sigue en prioridad?
 
 ### Guardas — qué NO tocar sin input humano
 - **Test de 5 segundos (§3c): EN PAUSA** — no tocar hero/categoría/acción
@@ -443,6 +470,24 @@ usa `npm ci`).
     pre-existentes de contraste/testimonios). Territorio: `app/page.jsx`.
     **Pendiente afuera:** el filtro "Telemedicina" de la guía si SP no va a
     ofrecerla.
+11m. **"Lo que pagás de tu bolsillo" — el sitio empieza a explicar lo que NO
+    cubre (22 jul 2026; pendiente #2 de la Parte 2 + pedido de la reunión con
+    departamentos; BITACORA cap. 37).** Nueva sección en el home (`app/page.jsx`,
+    después del comparador) contra la "incertidumbre del plan" —el tema central
+    de la reunión— con la data confirmada y en gris (regla de tono: nunca rojo,
+    nunca "No cubierto" a secas): (a) **los tres modos en criollo** — Cubierto
+    (no ponés nada) · Copago (ponés una parte) · Al precio de convenio (no lo
+    cubre el plan, pero al precio negociado de SP, no al particular — cláusula
+    2.10, la versión honesta de "arancel diferenciado"); (b) **cobertura real
+    por plan** — Bronce 45% / Silver 66% / Gold 93% cubierto al 100%, con barra
+    apilada (el gradiente ES el upsell honesto); (c) **exclusiones verdaderas**
+    planas — odontología, bariátrica, tratamiento oncológico, alta complejidad
+    ("mejor saberlo hoy que en la sala de espera"). Datos de
+    `ANALISIS-arancel-diferenciado.md` (§2 cobertura real y §4 AD=convenio). QA
+    integral 0 roto (se arregló de paso un contraste del footnote, #8a8a8a→#666
+    sobre panel casi-blanco). Territorio: `app/page.jsx`. **Sigue pendiente:** el
+    glosario BUSCABLE completo — Visaciones ya tiene la lista de FAQs
+    (pedírsela); acá quedó embebido solo el glosario mínimo (los 3 modos).
 
 ---
 

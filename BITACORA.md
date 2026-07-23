@@ -1046,6 +1046,38 @@ querés el veredicto, delegá la lectura y quedate con la cita.
 
 ---
 
+## Capítulo 37 — Explicar lo que no se cubre (sin pintar de rojo la verdad)
+
+**Qué intentamos.** Después de sacar las promesas falsas (cap. 36), el paso
+natural: que el sitio diga, de frente, lo que el plan NO cubre y lo que ponés
+de tu bolsillo. Lo pedían dos frentes a la vez: el pendiente #2 del HANDOFF y
+—el mismo día— la reunión con los departamentos, donde Arturo lo puso en una
+frase: *"no somos transparentes hoy como empresa… si quiere Bronce, que sepa en
+qué se está metiendo"*. Y Visaciones desnudó el truco del lenguaje: *"hacer
+'preferencial' o 'diferencial' es la misma cosa que no te cubrimos, se lo lleva
+a cargo el asegurado"*.
+
+**Qué pasó.** El desafío no era el dato —ya estaba en la grilla— sino el TONO.
+La regla del proyecto dice "nunca rojo, nunca 'No cubierto' a secas". ¿Cómo
+mostrás la ausencia sin asustar? La respuesta la dio el propio contrato: AD no
+es "andá a pagar lo que sea", es "no cubierto, pero al precio de convenio de SP"
+(cláusula 2.10). Eso convierte una mala noticia desnuda en una verdad completa.
+Entonces el bloque entero se pintó de gris, no de rojo: tres modos en criollo
+(Cubierto / Copago / Al precio de convenio), la cobertura real por plan
+(45→66→93, donde el gradiente mismo es el argumento de subir de plan), y las
+exclusiones de verdad dichas planas ("mejor saberlo hoy que en la sala de
+espera").
+
+**Qué aprendimos.** Dos cosas. Primera: **la transparencia no es mostrar lo
+malo, es mostrar lo completo.** "Sin cobertura" asusta; "no cubierto, y esto sí
+podés hacer" da tranquilidad — es la misma información con el final puesto. La
+honestidad bien hecha vende. Segunda, un recordatorio de oficio: el número más
+honesto puede fallar el contraste. El footnote gris claro (#8a8a8a) sobre el
+panel casi-blanco daba 3,2:1 — lo cazó el QA. Bajarlo a #666 lo arregló. De
+nada sirve la claridad del mensaje si la claridad del pixel no acompaña.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
