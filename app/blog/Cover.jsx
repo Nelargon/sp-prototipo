@@ -1,3 +1,5 @@
+import { BP } from '../basePath';
+
 // Portada de marca generada por código para las notas del blog.
 // Sin foto, sin costo, sin conector: cada nota recibe una ilustración
 // abstracta on-brand (degradé + formas + ícono de categoría), variada de
@@ -28,12 +30,21 @@ function seed(s) {
   return h >>> 0;
 }
 
-export default function Cover({ categoria, slug, cover, alt = '', height = 'auto', radius = 0 }) {
-  const base = { display: 'block', width: '100%', height, borderRadius: radius };
+// `aspect` (no `height`) para que la portada escale proporcional en cualquier
+// ancho — clave en el layout de una columna (<860px), donde una altura fija
+// recortaría la ilustración 2:1. `alt=''` (o ausente) = decorativa: no la
+// anuncia el lector de pantalla (la tarjeta ya expone el título). `eager` para
+// el hero del artículo (probable LCP); las tarjetas quedan lazy.
+export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
+  const base = { display: 'block', width: '100%', aspectRatio: aspect, borderRadius: radius };
+  const decorative = !alt;
 
-  // Foto real: manda sobre la ilustración generada.
+  // Foto real: manda sobre la ilustración generada. Ruta local (root-relative)
+  // → prefijo con basePath (GitHub Pages sirve bajo /sp-prototipo); URL externa
+  // se deja igual.
   if (cover) {
-    return <img src={cover} alt={alt} loading="lazy" style={{ ...base, objectFit: 'cover' }} />;
+    const src = /^https?:\/\//.test(cover) ? cover : `${BP}${cover}`;
+    return <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ ...base, objectFit: 'cover' }} />;
   }
 
   const t = THEMES[categoria] || DEFAULT_THEME;
@@ -44,9 +55,12 @@ export default function Cover({ categoria, slug, cover, alt = '', height = 'auto
   const c1x = 330 + j(3, 40),  c1y = 168 + j(6, 40);   // círculo blanco, sangra abajo-derecha
   const c2x = 80 + j(9, 44),   c2y = -12 + j(12, 34);  // círculo acento, sangra arriba-izquierda
   const rx  = 306 + j(15, 40), ry  = 30 + j(18, 34);   // anillo, arriba-derecha
+  const a11y = decorative
+    ? { 'aria-hidden': true, focusable: 'false' }
+    : { role: 'img', 'aria-label': alt };
 
   return (
-    <svg viewBox="0 0 400 200" role="img" aria-label={alt || ('Ilustración de la categoría ' + (categoria || 'blog'))} preserveAspectRatio="xMidYMid slice" style={base}>
+    <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio="xMidYMid slice" style={base}>
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0.85" y2="1">
           <stop offset="0" stopColor={t.g1} />

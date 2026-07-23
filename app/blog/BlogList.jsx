@@ -39,7 +39,7 @@ export default function BlogList({ notas, basePath }) {
       <div className="blog-list" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
         {shown.map((n) => (
           <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-card" style={css('display:flex;flex-direction:column;background:#fff;border-radius:18px;overflow:hidden;color:#1D1D1B;min-height:300px')}>
-            <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" height="150px" />
+            <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" />
             <div style={css('display:flex;flex-direction:column;flex:1;padding:22px 22px')}>
               <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#007d77;margin-bottom:10px')}>{n.kicker}</div>
               <div className="disp" style={css('font-size:19px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin-bottom:9px')}>{n.title}</div>
