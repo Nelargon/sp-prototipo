@@ -583,10 +583,27 @@ usa `npm ci`).
     Verificado: `backdrop-filter` computa (no lo tragó el minificador), QA 0
     roto, Tab recorre 12 elementos. Se le dio ancla `#bolsillo` a la sección de
     claridad para deep-link. Territorio: `app/page.jsx`, `app/globals.css`.
-    **Sigue pendiente (el grueso):** extraer el header a un **componente
-    compartido** y rodarlo a TODOS los módulos (blog, agendar, Mi SP, historia,
-    simulador) + su **gemelo en la guía** (HTML/Tailwind), con el overlay móvil
-    unificado. Este POC es el *feel* para aprobar antes de esa migración.
+    **Migración en curso (el grueso) — `app/Header.jsx` (24 jul 2026).** El POC
+    quedó aprobado (el usuario fusionó #51) y arrancó la extracción a un
+    **componente compartido**: `app/Header.jsx` es autocontenido (maneja su
+    propio estado de menú móvil y el toggle transparente→sólido) con tres
+    variantes por fondo — `hero` (home: vidrio oscuro→sólido al scrollear),
+    `dark` (páginas navy: vidrio oscuro fijo, links blancos) y `solid` (páginas
+    de lectura claras: sólido/claro fijo, links oscuros — sobre blanco el vidrio
+    oscuro dejaría el texto ilegible). Los anchors apuntan a la home
+    (`${BP}/#cartilla|#comparar|#bolsillo|#faq`) para funcionar desde cualquier
+    módulo. **Primera ola: el blog** — índice (`app/blog/page.jsx`, `dark`) y
+    nota (`app/blog/Articulo.jsx`, `solid`) ya no reimplementan "logo + volver":
+    llevan el nav real con los tres mega-menús y el overlay móvil. La home sigue
+    con su nav inline intacto (variant `hero` se aplicará en una ola futura para
+    no arriesgar la regresión de lo recién aprobado). Verificado: build OK, QA 0
+    roto (87 links internos responden), menú móvil abre/cierra, screenshots
+    desktop+móvil de índice y nota.
+    **Sigue pendiente:** rodar `Header.jsx` a los módulos restantes (agendar,
+    Mi SP, historia, simulador) y a la home (variant `hero`, reemplazando el nav
+    inline de `app/page.jsx`), más su **gemelo en la guía** (HTML/Tailwind).
+    Territorio de esta ola: `app/Header.jsx` (nuevo), `app/blog/page.jsx`,
+    `app/blog/Articulo.jsx`.
 
 ---
 
