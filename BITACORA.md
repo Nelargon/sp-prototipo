@@ -1193,6 +1193,34 @@ verificarlo computado, no en el código — esta vez sobrevivió al minificador.
 
 ---
 
+## Capítulo 43 — Un header compartido no es un header con un solo color
+
+**Qué intentamos.** Con el *feel* aprobado (cap. 42), arrancó la migración: sacar
+el header a `app/Header.jsx` y llevarlo al primer módulo, el blog. La idea
+ingenua era "un componente, un look": copio el nav de la home tal cual y lo
+reuso. El índice del blog es navy, así que el vidrio oscuro con links blancos —el
+mismo de la home sobre el hero— cayó perfecto de una.
+
+**Qué pasó.** La nota del blog reventó esa idea. La página del artículo es de
+fondo **blanco** (es lectura larga, tiene que descansar la vista). El mismo
+header de vidrio oscuro con texto blanco, sobre blanco, es texto invisible: al
+scrollear, el contenido pasa por debajo del nav fijo y no se lee nada. Un solo
+look no servía para los dos fondos.
+
+**Qué aprendimos.** Un header verdaderamente compartido no lleva UN color: lleva
+una **variante por fondo**. Quedaron tres — `hero` (home: transparente sobre el
+hero → sólido al scrollear), `dark` (páginas navy: vidrio oscuro fijo, links
+blancos) y `solid` (páginas de lectura claras: sólido/claro fijo, links
+oscuros). La estructura del nav es idéntica en todos —los mismos mega-menús, el
+mismo overlay móvil, el mismo mapa—; lo único que cambia es cómo se pinta para
+que se lea sobre lo que tiene detrás. La generalización: cuando unificás un
+componente que vive sobre fondos distintos, el eje de variación no es el estilo
+entero, es *el contraste con el fondo*. Y se decidió arrancar por el blog y
+**dejar la home para el final**: su nav inline se acababa de aprobar (#51), y no
+se arriesga una regresión de lo recién bendecido para ahorrarse una ola.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
