@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { css } from '../css';
+import Cover from './Cover';
 
 // Filtro por categoría del índice del blog (reunión departamentos, jul 2026:
 // "separar los artículos en categorías, una de ellas prevención"). Cliente:
@@ -37,13 +38,16 @@ export default function BlogList({ notas, basePath }) {
       )}
       <div className="blog-list" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
         {shown.map((n) => (
-          <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-card" style={css('display:flex;flex-direction:column;background:#fff;border-radius:18px;padding:24px 22px;color:#1D1D1B;min-height:230px')}>
-            <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#007d77;margin-bottom:10px')}>{n.kicker}</div>
-            <div className="disp" style={css('font-size:19px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin-bottom:9px')}>{n.title}</div>
-            <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13.5px;color:#3D3D3D;line-height:1.55;flex:1')}>{n.description}</div>
-            <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
-              <span style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#6B6B6B')}>{n.fechaFmt} · {n.minutes} min de lectura</span>
-              <span style={css('display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:#007d77')}>Leer <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+          <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-card" style={css('display:flex;flex-direction:column;background:#fff;border-radius:18px;overflow:hidden;color:#1D1D1B;min-height:300px')}>
+            <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" />
+            <div style={css('display:flex;flex-direction:column;flex:1;padding:22px 22px')}>
+              <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#007d77;margin-bottom:10px')}>{n.kicker}</div>
+              <div className="disp" style={css('font-size:19px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin-bottom:9px')}>{n.title}</div>
+              <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13.5px;color:#3D3D3D;line-height:1.55;flex:1')}>{n.description}</div>
+              <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
+                <span style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#6B6B6B')}>{n.fechaFmt} · {n.minutes} min de lectura</span>
+                <span style={css('display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:#007d77')}>Leer <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+              </div>
             </div>
           </a>
         ))}

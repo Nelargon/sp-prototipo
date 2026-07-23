@@ -1102,6 +1102,52 @@ datos, no rehacer la web.
 
 ---
 
+## Capítulo 39 — El prototipo dejó de ser prototipo
+
+**Qué pasó.** La pregunta que estuvo abierta desde el principio —¿la web
+pública se hace en WordPress (como proponía la agencia) o en el prototipo
+Next.js?— se cerró en una frase del usuario: *"el prototipo va a ser la web.
+A muchísimos les está gustando cómo está quedando"*. El pendiente #8, el que
+"condicionaba todo el trabajo siguiente", quedó resuelto a favor de lo que ya
+estábamos construyendo.
+
+**Qué aprendimos.** El prototipo ganó por acumulación, no por decreto: cada PR
+que sumó honestidad, claridad y contenido lo fue volviendo indefendible de
+descartar. La lección de método: cuando la decisión de plataforma está trabada,
+la mejor forma de destrabarla no es un documento comparativo — es hacer el
+producto tan bueno que la comparación se vuelva obvia. "Prohibido lorem ipsum,
+el copy dicta el diseño" (criterio que ya estaba en el HANDOFF) resultó ser
+también la estrategia para ganar la discusión de plataforma. Consecuencia
+práctica: BuenaVista, si entra, es implementador/hosting, no dueño del diseño;
+y el SEO —que dependía de esta decisión— quedó a un flip de distancia (falta
+solo el dominio y la fecha de salida a público).
+
+---
+
+## Capítulo 40 — Las imágenes no se consiguen, se generan
+
+**Qué pasó.** Arturo señaló un hueco real: *"cada vez que hago el diseño de la
+web, me sale sin imágenes… no me tiran las imágenes automáticamente, percibiendo
+la necesidad"*. Tenía que ir a ChatGPT, Gemini o Envato a mano. Y las fotos
+reales —las buenas, de Lister y del equipo— toman tiempo: hay que agendar,
+sacar, elegir. Mientras tanto, el blog salía sin una sola imagen.
+
+**Qué aprendimos.** La causa raíz: un asistente de código genera código, no
+píxeles. Entonces la salida sostenible no es que aprenda a generar imágenes —
+es **hacer que el código genere lo visual.** Se dio vuelta el problema: en vez
+de conseguir una imagen para cada nota, cada nota genera su propia portada de
+marca (SVG por código: degradé + formas + ícono de categoría, variado de forma
+determinística por el slug). Costo cero, sin conector, sin trabajo humano. Y con
+**degradación elegante**: si algún día hay una foto real (`cover` en el
+frontmatter), esa manda; si no, la portada generada — el sitio nunca queda sin
+imagen. La foto real deja de ser un requisito y pasa a ser una mejora opcional.
+Regla que queda para las imágenes (HANDOFF, capa 1/2/3): para lo abstracto y
+editorial, generamos por código; el banco de stock (Pexels/Envato) o la IA por
+API se reservan para cuando hace falta una cara humana concreta, y las fotos
+reales son el destino, no el bloqueo.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
