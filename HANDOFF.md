@@ -682,6 +682,16 @@ usa `npm ci`).
     interactiva y considerada. Pendiente si el usuario quiere más: chips e
     interactivos sin clase compartida (requieren pasada por módulo).
 
+11v. **Previews por rama con Cloudflare Pages (24 jul 2026, pedido del usuario:
+    "¿cómo veo la rama sin fusionar?").** `main` sigue en GitHub Pages; se suma
+    Cloudflare Pages para dar **una URL en vivo por rama y por PR**, para revisar
+    antes de fusionar. El `next.config.mjs` ya hace `basePath = env || ''`, así
+    que en Cloudflare **no se setea `NEXT_PUBLIC_BASE_PATH`** (sirve desde la raíz
+    de `*.pages.dev`; el prefijo `/sp-prototipo` es solo de GitHub Pages). Se
+    agregó `.node-version` (Node 20) y **`docs/PREVIEW.md`** con los pasos de
+    conexión (una vez, dashboard de Cloudflare — lo hace el dueño de la cuenta).
+    Territorio: `.node-version`, `docs/PREVIEW.md`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
