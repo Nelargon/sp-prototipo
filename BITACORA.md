@@ -1287,6 +1287,36 @@ cuidada — que se resuelven al revés una de la otra:
 
 ---
 
+## Capítulo 46 — El deslizador que revelaba de a uno → el comparador de entrada
+
+**Qué intentamos.** El comparador del home era un `slider`: arrastrabas y veías
+**un plan a la vez**, con la tabla que sí compara escondida detrás de un toggle.
+Divertido el primer minuto; poco práctico siempre, porque comparar es, por
+definición, ver varios a la vez. La cura la nombró el usuario (cap. 45): *ver de
+entrada*.
+
+**Qué aprendimos (construyendo la cura).** Reemplazamos el slider por **tres
+columnas Bronce/Silver/Gold a la vista**, cada una mostrando el **delta** — lo
+que suma sobre el anterior ("La base" → "Todo lo de Bronce, y suma" → "Todo lo de
+Silver, y suma"). Ahí la interacción cambió de rol: ya no es la reja que te deja
+ver un plan, es un **bonus de foco** — pasás el mouse por una columna y esa se
+eleva mientras las otras se atenúan apenas; nada se esconde. Es el principio del
+cap. 45 hecho pixeles: *la interacción agrega claridad, no la tapa.*
+
+Y la pregunta home-vs-página se resolvió **partiendo por profundidad**: el home
+se queda con el **resumen completo de un vistazo** (las tres columnas + precio);
+el **detalle exhaustivo** —11 servicios × 3 planes, con el estado y la letra
+chica real de cada uno— se mudó a una **página propia `/planes`**, a un click.
+Dos lecciones de ingeniería que dejó el traslado: (1) cuando un dato va a vivir
+en dos lugares (home + /planes), se **extrae a una fuente única** (`coverage.js`)
+antes de duplicar — o en tres semanas hay dos verdades; (2) una página de detalle
+puede permitirse lo que la portada no: la tabla con toda la letra chica estorba
+en el home y es exactamente lo que alguien busca en `/planes`. **El mismo dato,
+dos profundidades, dos formas.** Queda pendiente aplicarle la misma cura al
+explorador de "qué cubre", que todavía revela de a una cobertura.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

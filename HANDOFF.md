@@ -643,11 +643,23 @@ usa `npm ci`).
     dedicado) se responde **por profundidad**: el **home** muestra un resumen
     **completo de un vistazo** (la comparación entera al llegar) + puerta; el
     espacio dedicado (`/planes`, quizá `/cobertura`) guarda el detalle
-    exhaustivo, clickeable, con aire y bueno para SEO. Forma propuesta: comparador
-    de 3 columnas Bronce/Silver/Gold visibles a la vez con el **delta** resaltado
-    (lo que cada nivel suma), hover para enfocar; el explorador, una **matriz
-    compacta** cobertura×plan de un vistazo con los chips como filtro. Antes de
-    construir: **prototipo visual para que el usuario lo VEA** (decide mirando).
+    exhaustivo, clickeable, con aire y bueno para SEO.
+    **Comparador — PROTOTIPO CONSTRUIDO (24 jul 2026), a la espera del ok visual
+    del usuario (NO fusionar sin su sí — decide mirando).** El slider se
+    reemplazó por **3 columnas Bronce/Silver/Gold a la vez**, cada una con su
+    precio y el **delta** ("La base" / "Todo lo de Bronce, y suma" / "Todo lo de
+    Silver, y suma"); hover **enfoca** una columna (las otras se atenúan apenas —
+    agrega foco, no tapa). El detalle fila-por-fila se **mudó a `/planes`** (nueva
+    página, `Header variant="solid"`): tabla 11 servicios × 3 planes con estado
+    real y detalle, precios y CTA por plan en el encabezado. El home lleva una
+    puerta *"¿Querés el detalle fila por fila? Ver todos los planes → /planes"*.
+    La data de cobertura se extrajo a **`app/coverage.js`** (fuente única
+    compartida home + /planes). `/planes` agregado a sitemap y a las PAGINAS del
+    QA. Territorio: `app/page.jsx`, `app/coverage.js` (nuevo), `app/planes/*`
+    (nuevo), `app/globals.css`, `app/sitemap.js`, `qa/qa-integral.mjs`.
+    **Falta de la ola 2:** el **explorador "qué cubre"** todavía es de-a-una-
+    cobertura; aplicarle el mismo principio (matriz compacta cobertura×plan de un
+    vistazo, chips como filtro) — pendiente, después del ok del comparador.
 
 11u. **Vocabulario de hover — que todo lo interactivo telegrafíe el toque
     (24 jul 2026, pedido del usuario).** El usuario señaló (con el subrayado de

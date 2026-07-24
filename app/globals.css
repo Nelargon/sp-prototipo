@@ -202,6 +202,13 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* Mi SP y blog: las grillas colapsan por ancho, no por dispositivo */
 .blog-card{transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s}
 .blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}
+/* Comparador de entrada: 3 columnas visibles a la vez → 1 en pantallas chicas.
+   La interacción AGREGA foco, no tapa nada (BITACORA cap. 46): al pasar el mouse
+   por una columna, esa se eleva y las otras se atenúan apenas — todo sigue a la
+   vista. Solo con puntero real (hover:hover); en táctil las tres quedan plenas. */
+.plan-col{transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s cubic-bezier(.22,1,.36,1),opacity .2s ease}
+@media(max-width:900px){.plan3{grid-template-columns:1fr !important}}
+@media(hover:hover){.plan3:hover .plan-col:not(:hover){opacity:.72}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
