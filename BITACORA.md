@@ -1251,6 +1251,42 @@ buscador, es una lista; forzarlo a parecer buscador es el origen del engaño.
 
 ---
 
+## Capítulo 45 — La interacción que aclara vs. la que tapa (y la señal del toque)
+
+**Qué pasó.** Dos observaciones del usuario el mismo día, chicas en apariencia,
+grandes en fondo. La primera: *"que se sienta que estás tocando algo — un
+subrayado, lo que sea. Necesitamos poner más eso en toda la web."* La segunda,
+volviendo sobre el slider y el explorador de "qué cubre": *"un comparador que se
+ve de entrada es mucho mejor… parece divertido al principio, pero al mismo tiempo
+tiene que dar mejor claridad… no parece completo, le falta más para interactuar."*
+Y una confesión de método que vale oro: *"al principio me encantan, pero después
+de verlas varias veces me doy cuenta si realmente ayudan o hay una forma mejor."*
+
+**Qué aprendimos.** Dos capas del mismo objetivo — que la web se sienta viva y
+cuidada — que se resuelven al revés una de la otra:
+
+- *Micro (el hover):* faltaba **señal de que estás tocando algo**. Los botones y
+  tarjetas ya avisaban; los links de texto solo cambiaban de color, señal débil.
+  Se sumó un subrayado que crece (nav) y que aparece (inline/footer/menú),
+  currentColor para servir sobre cualquier fondo, en el CSS compartido → cae en
+  todo. Barato, y cambia cuánto "responde" la página.
+- *Macro (el slider y el explorador):* la lección más profunda. Ambos **revelaban
+  una porción a la vez** —un plan, una cobertura— y por eso "no parecían
+  completos". El usuario nombró la cura sin querer: *ver de entrada*. De ahí el
+  principio: **la interacción tiene que AGREGAR claridad, no ser la reja que la
+  tapa.** El test: *si sacás la interacción, ¿el núcleo sigue claro?* Un slider
+  que esconde los otros planes falla; una comparación entera a la vista, donde
+  tocar solo enfoca o profundiza, pasa. Corolario que explica su propia
+  confesión: **novedad ≠ utilidad.** Lo divertido deslumbra la primera vez y
+  cansa a la quinta si cada uso sigue mostrando una sola tajada; lo que aguanta
+  es claro de un vistazo Y premia explorar. Por eso "después de verlo varias
+  veces" se cae: el test de las repeticiones es el juez honesto, no el flechazo.
+- *Método:* como el usuario decide **mirando** ("me doy cuenta después de ver"),
+  la forma de proponerle rediseños no es describirlos, es **prototiparlos para
+  que los vea** — y dejar que las repeticiones, no la primera impresión, decidan.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
