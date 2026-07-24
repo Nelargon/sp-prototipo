@@ -77,6 +77,18 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    debajo de 1200px, donde el nav completo no entra. Verificado: sin desborde
    ≥1200px, hamburguesa completa por debajo. */
 .nav-links-desktop .nav-link{white-space:nowrap}
+/* Señal de hover del nav: un subrayado que crece de izquierda a derecha bajo el
+   link (la señal del header de Anthropic — pedido del usuario, jul 2026).
+   currentColor → funciona sobre nav oscuro y claro por igual. Refleja en
+   :focus-visible para el teclado. Los desplegables ya avisan con el chevron
+   que rota + el panel; excluimos el subrayado ahí para no rayar bajo el chevron. */
+.nav-link{position:relative}
+.nav-link:not(.nav-link-menu)::after{content:'';position:absolute;left:0;bottom:-6px;height:2px;width:100%;background:currentColor;border-radius:2px;transform:scaleX(0);transform-origin:left center;transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.nav-link:not(.nav-link-menu):hover::after,.nav-link:not(.nav-link-menu):focus-visible::after{transform:scaleX(1)}
+@media(prefers-reduced-motion:reduce){.nav-link::after{transition:none}}
+/* Menú móvil a pantalla completa: el ítem también subraya al hover/focus */
+.menu-item{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:8px;transition:text-decoration-color .2s ease}
+.menu-item:hover,.menu-item:focus-visible{text-decoration-color:currentColor}
 /* Mega-menú fluido del nav (POC header tipo Anthropic, jul 2026): el panel se
    revela con hover/focus con un fade+slide suave; vidrio como el propio nav.
    Solo desktop — bajo 1280px el nav ya colapsa al menú overlay. */
@@ -170,12 +182,17 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .btn-ghost-light2:hover{background:rgba(255,255,255,0.24) !important}
 .btn-white-teal:hover{background:#f0fbfa !important}
 .btn-wa-outline:hover{background:#E6F7F6 !important}
-.link-teal:hover{color:#009690 !important}
-.link-grey:hover{color:#6B6B6B !important}
+/* Links de texto: el subrayado aparece al hover/focus (color transparente →
+   currentColor, sin mover el layout). Antes solo cambiaban de color — señal
+   débil. Pedido del usuario (jul 2026): que se sienta que estás tocando algo,
+   como el subrayado de "Policy" en Anthropic. En todos los módulos. */
+.link-teal,.link-grey,.foot-link{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:color .2s ease,text-decoration-color .2s ease}
+.link-teal:hover,.link-teal:focus-visible{color:#009690 !important;text-decoration-color:currentColor}
+.link-grey:hover,.link-grey:focus-visible{color:#6B6B6B !important;text-decoration-color:currentColor}
+.foot-link:hover,.foot-link:focus-visible{color:#fff !important;text-decoration-color:currentColor}
 .cart-match:hover{background:#F2FBFA !important}
 .sim-opt:hover{border-color:#00BCB4 !important;background:#E6F7F6 !important;color:#003B71 !important}
 .step-btn:hover{border-color:#00BCB4 !important}
-.foot-link:hover{color:#fff !important}
 .inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
 .search-inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
 .sim-mobile-progress{display:none}

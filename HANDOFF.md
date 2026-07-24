@@ -628,12 +628,42 @@ usa `npm ci`).
     tarjeta-CTA *"¿Dónde atenderte?"* que abre la guía, donde la búsqueda SÍ
     devuelve resultados. Chip activo pasó a teal accesible `#007d77` (blanco
     sobre `#00BCB4` daba 2.37:1). Territorio: `app/page.jsx`.
-    **Ola 2 — comparador + `/planes` (PENDIENTE, ya acordada):** reemplazar el
-    slider por una vista que muestre **lo que cada nivel suma** (el delta es el
-    mensaje) y **mudar la tabla fila-por-fila a una página `/planes` propia**
-    (mejor para SEO y para la decisión; el home solo teaser + ruteo al
-    simulador). Con solo 3 niveles hoy, el delta es limpio; `/planes` se rehace
-    cuando entren Esencial/Integral/Premium.
+    **Ola 2 — comparador + explorador + `/planes` (PENDIENTE, ya acordada;
+    feedback afinado del usuario 24 jul 2026).** El usuario miró el slider Y el
+    explorador de "qué cubre" y detectó que comparten UNA misma falla:
+    **revelan una porción a la vez** (el slider, un plan; el explorador, una
+    cobertura), así que "no parecen completos" y "no son tan prácticos". Su
+    instinto, textual: *"un comparador que se ve de entrada es mucho mejor"*, y
+    *"tiene que ser divertido/interactivo pero al mismo tiempo dar mejor
+    claridad"*. La regla que sale (cap. 45): **la interacción tiene que AGREGAR
+    claridad, no ser la reja que la tapa** — se muestra el todo de entrada, y
+    tocar/hover/expandir es un bonus de profundidad, no el único modo de ver
+    algo. Test: *si sacás la interacción, ¿el núcleo sigue claro?* Slider y
+    explorador hoy fallan ese test. Y su pregunta abierta (home vs. espacio
+    dedicado) se responde **por profundidad**: el **home** muestra un resumen
+    **completo de un vistazo** (la comparación entera al llegar) + puerta; el
+    espacio dedicado (`/planes`, quizá `/cobertura`) guarda el detalle
+    exhaustivo, clickeable, con aire y bueno para SEO. Forma propuesta: comparador
+    de 3 columnas Bronce/Silver/Gold visibles a la vez con el **delta** resaltado
+    (lo que cada nivel suma), hover para enfocar; el explorador, una **matriz
+    compacta** cobertura×plan de un vistazo con los chips como filtro. Antes de
+    construir: **prototipo visual para que el usuario lo VEA** (decide mirando).
+
+11u. **Vocabulario de hover — que todo lo interactivo telegrafíe el toque
+    (24 jul 2026, pedido del usuario).** El usuario señaló (con el subrayado de
+    "Policy" en Anthropic) que faltaba señal de hover: *"que se sienta que estás
+    tocando algo… necesitamos poner más eso en toda la web"*. Los botones y
+    tarjetas ya avisaban (color/lift); el hueco eran los **links de texto**. Se
+    agregó al CSS compartido (`app/globals.css`, cae en todos los módulos): en el
+    nav, un **subrayado que crece** de izquierda a derecha (`currentColor` →
+    sirve sobre nav oscuro y claro; los desplegables siguen con el chevron, sin
+    subrayado bajo él); en links inline (`.link-teal/.link-grey`), de footer
+    (`.foot-link`) e ítems del menú móvil (`.menu-item`), el subrayado aparece
+    (color transparente→`currentColor`, sin mover el layout). Todo refleja en
+    `:focus-visible` (teclado) y respeta `prefers-reduced-motion`. Es la capa
+    micro del mismo objetivo que la ola 2 (macro): que la web se sienta
+    interactiva y considerada. Pendiente si el usuario quiere más: chips e
+    interactivos sin clase compartida (requieren pasada por módulo).
 
 ---
 
