@@ -1317,6 +1317,41 @@ explorador de "qué cubre", que todavía revela de a una cobertura.
 
 ---
 
+## Capítulo 47 — Una diferencia solo se ve alineada (y restando lo igual)
+
+**Qué intentamos.** El "comparador de entrada" (cap. 46) mostró los tres planes a
+la vez, pero como **tres tarjetas de precios**. Lo mostramos al usuario.
+
+**Qué pasó.** *"Se ve muy genérico, y poco claro. No siento que puedo ver la
+diferencia entre planes."* Dos golpes en una frase, y con razón. Genérico: tres
+pricing cards es el molde de *toda* web de planes. Y no se veía la diferencia por
+algo más profundo: **las tres columnas eran tres listas separadas, con texto
+distinto cada una** — para comparar había que leerlas y diferenciarlas de memoria.
+
+**Qué aprendimos.** Dos leyes de las comparaciones, que valen para cualquier tabla
+que hagamos:
+
+1. **Una diferencia solo se ve cuando lo mismo está alineado al lado.** Las
+   tarjetas son *column-first*: cada una monologa lo suyo. La comparación es
+   *row-first*: el mismo servicio, tres valores en columnas alineadas, y el ojo
+   compara cruzando la fila. Cards → tres monólogos; tabla → un careo.
+2. **Para ver la diferencia hay que restar lo igual.** Si repetís en cada columna
+   lo que es idéntico, la diferencia se ahoga en el ruido. La cura: mostrar solo
+   las filas que difieren, **resaltar (en teal) únicamente la celda donde cada
+   nivel mejora sobre el anterior** —aparece una *escalera* visible de lo que
+   ganás subiendo— y mandar "lo igual en los tres" a una línea apagada abajo. De
+   yapa, **barras** para la magnitud: "5 vs 3" entra más rápido por una barra que
+   por un número. Anti-genérico no fue decorar: fue cambiar de *checklist* a
+   *mapa de diferencias*.
+
+Método (otra vez cap. 45): esto se entendió recién en la **tercera** forma
+—slider → tarjetas → tabla-diff—, cada una prototipada y mirada. El flechazo
+miente; las repeticiones y el ojo del usuario mandan. (Pendiente: la tabla-diff
+en móvil scrollea horizontal con la columna de servicios pegada; si hace falta,
+una vista móvil nativa de "saltos" — Bronce→Silver→Gold — es el próximo paso.)
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
