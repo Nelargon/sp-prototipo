@@ -648,13 +648,24 @@ usa `npm ci`).
     del usuario (NO fusionar sin su sí — decide mirando).** Iter 1 fueron 3
     **tarjetas de precio**; el usuario: *"muy genérico, no veo la diferencia"*
     (BITACORA cap. 47 — una diferencia solo se ve alineada, y restando lo igual).
-    Iter 2, la forma actual: **tabla "lo que cambia"** — filas = los ~7 servicios
-    que DIFIEREN, columnas = los 3 planes ALINEADOS; se resalta **en teal solo la
-    celda donde cada nivel mejora** sobre el anterior (una escalera visible de lo
-    que ganás), **barras** para la magnitud (3/5/6…), y "En los tres, igual" en
-    una línea apagada abajo. Encabezado con precio + CTA (#007d77) por plan. En
-    móvil scrollea horizontal con la **columna de servicios pegada** (`.cmp-lbl`
-    sticky). El detalle fila-por-fila (11 servicios) se **mudó a `/planes`** (nueva
+    Iter 2 fue una tabla-diff con **teal condicional** (resaltar solo donde cada
+    nivel mejora) — el usuario, con ojo de CX, la volteó: *"prioriza ser ingeniosa
+    sobre ser clara; me obliga a leer una regla antes de entender; y castiga a
+    Gold"* (Gold quedaba gris donde ya estaba al 100% desde Silver → Silver se veía
+    más completo que el premium). **Iter 3, la forma ACTUAL (BITACORA cap. 48):**
+    tabla "lo que cambia" con **"Al 100%" en teal CONSISTENTE en los tres** (Gold
+    ya no se apaga); **Silver resaltado como "la más elegida"** (badge + tinte de
+    columna — anclaje); una **línea humana** bajo cada plan (para quién es); **sin
+    barras** (eran ruido); y lo común, abajo, como **garantía positiva** ("Todos
+    los planes te garantizan…"), no letra chica. Encabezado con precio + CTA
+    (#007d77) por plan. En móvil scrollea horizontal con la **columna de servicios
+    pegada** (`.cmp-lbl` sticky).
+    **Rename de marca (pedido del usuario):** unificado a **Bronze, Silver, Gold**
+    (antes "Bronce" en español mezclado). Es site-wide (`quote.js`, comparador,
+    `/planes`, simulador, etc.); el mapa `?plan=` del simulador acepta `bronze` y
+    `bronce` (links viejos no se rompen). Territorio extra de esta iter:
+    `app/quote.js`, `app/components/Simulador.jsx`, `app/coverage.js`,
+    `app/Header.jsx`, `app/planes/*`. El detalle fila-por-fila (11 servicios) se **mudó a `/planes`** (nueva
     página, `Header variant="solid"`): tabla 11 servicios × 3 planes con estado
     real y detalle, precios y CTA por plan en el encabezado. El home lleva una
     puerta *"¿Querés el detalle fila por fila? Ver todos los planes → /planes"*.
@@ -691,6 +702,29 @@ usa `npm ci`).
     agregó `.node-version` (Node 20) y **`docs/PREVIEW.md`** con los pasos de
     conexión (una vez, dashboard de Cloudflare — lo hace el dueño de la cuenta).
     Territorio: `.node-version`, `docs/PREVIEW.md`.
+
+11w. **⚠ El "puente de venta" — la transición al simulador tiene que respirar
+    empatía (24 jul 2026, dirección estratégica del usuario). EN DISEÑO, acordar
+    antes de construir.** El usuario nombró la fractura clásica: una página de
+    precios cálida y clara (la promesa) que, al clickear, cae en un formulario que
+    "escupe un número" (cotización fría) — y en un segundo pasás de asesor de
+    confianza a **cajero automático**. Su regla: *la promesa de marketing y el
+    proceso de venta tienen que ser el mismo material; el cierre debe respirar
+    humanidad, empatía, integridad y responsabilidad.* Estado real hoy: el puente
+    está **a medio construir** — el `?plan=` entra puesto (sin re-preguntar), sin
+    login, el precio sube animado y personalizado, hay objeciones respondidas y un
+    handoff humano. Pero el **centro sigue siendo transaccional**: el número llega
+    solo (sin contexto ni tranquilidad), la captura de datos puede leerse como
+    peaje, y el asesor es anónimo. **Dirección propuesta (a diseñar con el
+    usuario):** (1) contextualizar el número ("para tu familia de N, con lo que
+    elegiste — este es tu punto de partida" + qué ya incluye); (2) enmarcar los
+    datos como regalo, no peaje ("te lo guardamos y te lo mandamos"); (3) ponerle
+    cara/nombre al asesor; (4) mantener la MISMA lengua cálida de la tabla. Toca
+    `app/components/Simulador.jsx` (conversión — no tocar sin acordar).
+    Relacionado — **auditoría/rebalanceo de la home** (dec. previa, "valle de la
+    súper saturación"): tres tablas de datos apiladas arriba y en tono negativo;
+    pendiente el mapa sección-por-sección (qué se queda / comprime / baja a página
+    profunda / reencuadra en positivo).
 
 ---
 

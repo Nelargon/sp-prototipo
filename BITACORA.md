@@ -1348,7 +1348,43 @@ Método (otra vez cap. 45): esto se entendió recién en la **tercera** forma
 —slider → tarjetas → tabla-diff—, cada una prototipada y mirada. El flechazo
 miente; las repeticiones y el ojo del usuario mandan. (Pendiente: la tabla-diff
 en móvil scrollea horizontal con la columna de servicios pegada; si hace falta,
-una vista móvil nativa de "saltos" — Bronce→Silver→Gold — es el próximo paso.)
+una vista móvil nativa de "saltos" — Bronze→Silver→Gold — es el próximo paso.)
+
+---
+
+## Capítulo 48 — La claridad ingeniosa no es claridad: "no me hagas pensar"
+
+**Qué intentamos.** La tabla-diff (cap. 47) resaltaba en teal **solo** la celda
+donde cada plan mejoraba sobre el anterior. Analíticamente impecable.
+
+**Qué pasó.** El usuario, con ojo de CX, la desarmó en dos golpes: *"prioriza ser
+ingeniosa por encima de ser clara… me obliga a leer instrucciones ('en teal, lo
+que ganás') antes de entender los precios. La regla de oro es: no me hagas
+pensar."* Y el peor efecto secundario: **castigaba al plan más rentable.** Como
+Resonancia y Tomografía ya estaban al 100% en Silver, en Gold aparecían **en
+gris** — así Silver, con más celdas teñidas, se veía *más completo que Gold*. La
+transparencia terminó vendiendo peor el plan premium.
+
+**Qué aprendimos.** Varias reglas de CX que valen para cualquier pantalla:
+
+- **El color semántico consistente le gana al color condicional ingenioso.**
+  "Al 100%" va en teal en **todos** los planes que lo tienen — el premium se ve
+  premium. Un mapa que apaga lo que un plan superior *sí* incluye miente
+  emocionalmente.
+- **Si el usuario tiene que leer una regla para entender la tabla, la tabla
+  falló.** La claridad que exige decodificar es fricción disfrazada.
+- **Guiá, no solo informes.** Una línea humana bajo cada plan ("la más elegida",
+  "tranquilidad total") saca a la persona de la parálisis de "no sé cuántas
+  sesiones de fisio necesito". Y **anclá**: destacar UN plan (el intermedio)
+  orienta más que resaltar deltas.
+- **Menos burocracia visual = más claridad.** Las barritas bajo los números no
+  aportaban nada: fuera. Que el número respire.
+- **Lo común no es letra chica, es la base de integridad.** "Todos los planes te
+  garantizan…", con peso y en positivo — no gris al pie como una cláusula.
+
+La meta de fondo, que el usuario nombró: **la tabla no muestra la diferencia
+matemática, lleva de la mano hacia la mejor decisión sin estresar.** El objetivo
+no es el dato; es el cliente eligiendo tranquilo.
 
 ---
 

@@ -1,7 +1,7 @@
 // Coberturas REALES de los cuadernillos vigentes (datos/planes-vigentes/).
 // Fuente única compartida entre el explorador "qué cubre" del home y la
 // comparación fila-por-fila de /planes — antes vivía dentro de app/page.jsx.
-// El orden de `cov` es [Bronce, Silver, Gold]. Regla de tono (HANDOFF §3.7): la
+// El orden de `cov` es [Bronze, Silver, Gold]. Regla de tono (HANDOFF §3.7): la
 // ausencia se comunica como oportunidad ("Desde Plan Silver"), nunca "No cubierto".
 const yes = (d) => ({ s: 'Cubierta', ok: true, d });
 const no = (s, d) => ({ s, ok: false, d });

@@ -51,11 +51,11 @@ export default function Page() {
   // "laboratorio a domicilio" NO figuran en ningún plan — se quitaron para
   // no prometer lo que el contrato no respalda (el bloque "por escrito" no
   // puede sobreprometer). Números de médico a domicilio y salud mental salen
-  // de las secciones 2.9.1.5 y consultas de los cuadernillos Bronce/Silver/Gold.
+  // de las secciones 2.9.1.5 y consultas de los cuadernillos Bronze/Silver/Gold.
   const difsData = () => [
     { icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M16 13H8M16 17H8M10 9H8', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
     { icon: 'M3 11l9-8 9 8M5 9.5V20h14V9.5M12 12v5M9.5 14.5h5', title: 'Médico a domicilio', body: 'El médico va a tu casa: hasta 2, 3 o 4 consultas a domicilio al año según tu plan, más urgencias y ambulancia sin cargo.' },
-    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronce, Silver y Gold, no como un extra aparte.' },
+    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronze, Silver y Gold, no como un extra aparte.' },
   ];
 
   // Count-up for the trust stats when they scroll into view (once).
@@ -217,33 +217,30 @@ export default function Page() {
     };
   });
 
-  // Comparador "lo que cambia" (ola 2, iter 2 — BITACORA cap. 46/47). Las tarjetas
-  // se veían genéricas y no dejaban VER la diferencia (feedback del usuario): una
-  // diferencia solo se ve cuando lo mismo está alineado al lado. Acá las filas son
-  // los servicios que DIFIEREN y las columnas los planes ALINEADOS; se resalta en
-  // teal solo la celda donde cada nivel MEJORA sobre el anterior → una escalera
-  // visible de lo que ganás. Barras para la magnitud. Lo igual en los tres, abajo.
-  const planHead = plansArr.map((pl) => ({
-    short: pl.short, price: fmt(pl.price), color: pl.color,
+  // Comparador "lo que cambia" (ola 2, iter 3 — feedback CX del usuario, BITACORA
+  // cap. 48). Iter 2 (el teal condicional) apagaba a Gold y obligaba a leer una
+  // regla antes de entender: "no me hagas pensar". Ahora: "Al 100%" en teal
+  // CONSISTENTE en los tres (Gold no se apaga); Silver resaltado como "la más
+  // elegida" (anclaje); una línea humana bajo cada plan (para quién es); sin
+  // barras (eran ruido); y lo común, abajo, como GARANTÍA positiva, no letra chica.
+  const FORWHOM = [
+    'Lo esencial para quienes cuidan su prevención.',
+    'La más elegida. Cobertura equilibrada para tu familia.',
+    'Tranquilidad total, sin preocupaciones.',
+  ];
+  const planHead = plansArr.map((pl, i) => ({
+    short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: FORWHOM[i], recommended: i === 1,
     href: `${BP}/simulador/?plan=${pl.short.toLowerCase()}`,
     onCta: () => track('cta_simulador', { origen: 'comparador', plan: pl.name }),
   }));
-  // Fila de cantidad: barra ∝ magnitud, y "sube" (teal) si mejora sobre el de la izq.
-  const num = (name, unit, vals) => {
-    const max = Math.max(...vals.map((x) => x.n));
-    return { name, unit, kind: 'num', cells: vals.map((x, i) => ({
-      t: x.t || String(x.n), w: x.full ? 100 : Math.max(12, Math.round((x.n / max) * 100)),
-      tone: i === 0 ? 'base' : (x.n > vals[i - 1].n ? 'up' : 'same'),
-    })) };
-  };
   const cmp = [
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: 'Desde Silver', tone: 'opp' }, { t: 'Al 100%', tone: 'up' }, { t: 'Al 100%', tone: 'same' }] },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: 'Copago 50%', tone: 'opp' }, { t: 'Al 100%', tone: 'up' }, { t: 'Al 100%', tone: 'same' }] },
-    num('Consultas por especialista', 'al año', [{ n: 3 }, { n: 5 }, { n: 6, t: 'Sin tope', full: true }]),
-    num('Sesiones de psicología', 'al año', [{ n: 3 }, { n: 5 }, { n: 6 }]),
-    num('Fisioterapia', 'sesiones/año', [{ n: 10 }, { n: 15 }, { n: 20 }]),
-    num('Internación', 'días/año', [{ n: 20 }, { n: 20 }, { n: 25 }]),
-    num('Medicamentos internado', 'tope por evento', [{ n: 500, t: '₲500 mil' }, { n: 1000, t: '₲1 millón' }, { n: 1500, t: '₲1,5 mill.' }]),
+    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: 'Desde Silver', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: 'Copago 50%', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
+    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: 'Sin tope' }] },
+    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
+    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '10' }, { t: '15' }, { t: '20' }] },
+    { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20' }, { t: '20' }, { t: '25' }] },
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲500 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
   ];
   const cmpIgual = 'Urgencias 24 h · Ecografías y radiografías · Parto y cesárea · Laboratorio · Terapia intensiva';
 
@@ -322,7 +319,7 @@ export default function Page() {
               <a href="#comparar" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Planes <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
               <div className="navmenu">
                 <div className="navmenu-card">
-                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Bronce, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
+                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Bronze, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Simulá tu precio</span><span className="navmenu-s">Unas preguntas y ves el precio, en 1 minuto</span></a>
                 </div>
@@ -450,33 +447,36 @@ export default function Page() {
         </div>
       </section>
 
-      {/* COMPARADOR "LO QUE CAMBIA" — filas alineadas (los servicios que difieren)
-          × planes; se resalta en teal SOLO donde cada nivel mejora → la escalera
-          de lo que ganás. Barras para la magnitud, lo igual en los tres abajo.
-          Iter 2: las tarjetas se veían genéricas y no dejaban ver la diferencia
-          (feedback del usuario, BITACORA cap. 47). Detalle completo → /planes. */}
+      {/* COMPARADOR "LO QUE CAMBIA" (iter 3, feedback CX del usuario) — filas
+          alineadas de lo que difiere × planes. "Al 100%" en teal CONSISTENTE en
+          los tres (Gold ya no se apaga); Silver resaltado como "la más elegida"
+          (anclaje); una línea humana bajo cada plan; sin barras (ruido); lo común
+          abajo como GARANTÍA positiva. BITACORA cap. 48. Detalle → /planes. */}
       <section id="comparar" className="sec" style={css('padding:80px 40px;background:#F5F5F5')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Bronce, Silver y Gold</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Mirá exactamente qué <span style={css('color:#007d77')}>cambia</span> de un plan al otro.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>En <b style={css('color:#007d77')}>teal</b>, solo lo que ganás al subir de nivel. Lo que es igual en los tres queda abajo — así la diferencia se ve de un vistazo.</p>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Bronze, Silver y Gold</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Elegí el nivel que le queda a <span style={css('color:#007d77')}>tu familia</span>.</h2>
+            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial. Lo que cambia es <b style={css('color:#007d77')}>cuánto</b> — mirá dónde está la diferencia y elegí sin adivinar.</p>
           </div>
 
           <div data-rv style={css('background:#fff;border:1px solid #E8E8E8;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
             <div style={css('min-width:640px')}>
-              {/* Encabezado: los tres planes con precio + CTA, borde de color por plan */}
+              {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
               <div style={css('display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr')}>
                 <div className="cmp-lbl" style={css('padding:18px 22px;background:#fff')}></div>
                 {v.planHead.map((ph, i) => (
-                  <div key={i} style={css('padding:16px 12px 16px;text-align:center;border-left:1px solid #F0F0F0;border-top:3px solid ' + ph.color)}>
+                  <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid #F0F0F0;border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
+                    {ph.recommended && <div style={css('display:inline-block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px;margin-bottom:8px')}>La más elegida</div>}
                     <div className="disp" style={css('font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{ph.short}</div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:#1D1D1B')}>{ph.price}</span></div>
-                    <a href={ph.href} onClick={ph.onCta} style={css('margin-top:10px;height:34px;padding:0 15px;border-radius:9px;background:#007d77;color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transition:background .2s')}>Ver mi precio</a>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
+                    <a href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;border-radius:9px;background:#007d77;color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transition:background .2s')}>Ver mi precio</a>
                   </div>
                 ))}
               </div>
-              {/* Filas de diferencias: se resalta en teal la celda donde mejora */}
+              {/* Filas: "Al 100%" en teal en TODOS los planes que lo tienen (Gold no se
+                  apaga); "Desde Silver"/"Copago" en dorado (oportunidad). Silver tenue. */}
               {v.cmp.map((row, r) => (
                 <div key={r} style={css('display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr;border-top:1px solid #F0F0F0')}>
                   <div className="cmp-lbl" style={css('padding:15px 22px;background:#fff;display:flex;flex-direction:column;justify-content:center')}>
@@ -484,25 +484,24 @@ export default function Page() {
                     {row.unit && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;margin-top:2px')}>{row.unit}</span>}
                   </div>
                   {row.cells.map((c, j) => (
-                    <div key={j} style={css('padding:13px 12px;border-left:1px solid #F0F0F0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;' + (c.tone === 'up' ? 'background:#EAF9F7;' : ''))}>
+                    <div key={j} style={css('padding:14px 12px;border-left:1px solid #F0F0F0;display:flex;align-items:center;justify-content:center;text-align:center;' + (j === 1 ? 'background:#F1FAF9;' : ''))}>
                       {row.kind === 'num' ? (
-                        <>
-                          <span style={css('font-size:15px;font-weight:' + (c.tone === 'up' ? '800' : '600') + ';color:' + (c.tone === 'up' ? '#007d77' : '#3D3D3D') + ';line-height:1;text-align:center')}>{c.t}</span>
-                          <span style={css('width:100%;max-width:78px;height:6px;border-radius:999px;background:#EAECEB;overflow:hidden')}><span style={css('display:block;height:100%;width:' + c.w + '%;border-radius:999px;background:' + (c.tone === 'up' ? '#00BCB4' : '#C2C8C6'))}></span></span>
-                        </>
+                        <span style={css('font-size:16px;font-weight:700;color:#1D1D1B;line-height:1.1')}>{c.t}</span>
                       ) : (
-                        <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;text-align:center;' + (c.tone === 'up' ? 'background:#E6F7F6;color:#007d77' : c.tone === 'opp' ? 'background:#F8F1DE;color:#7a5f10' : 'background:#F2F3F2;color:#6B6B6B'))}>{c.t}</span>
+                        <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (c.ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10'))}>{c.t}</span>
                       )}
                     </div>
                   ))}
                 </div>
               ))}
-              {/* Igual en los tres: se resta el ruido para que la diferencia se vea */}
-              <div style={css('display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr;border-top:1px solid #F0F0F0;background:#FAFBFB')}>
-                <div className="cmp-lbl" style={css('padding:14px 22px;background:#FAFBFB;display:flex;align-items:center;font-size:12px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:#6B6B6B')}>En los tres, igual</div>
-                <div style={css('grid-column:span 3;padding:14px 16px;border-left:1px solid #F0F0F0;font-family:var(--font-inter),sans-serif;font-size:13px;color:#6B6B6B;line-height:1.5;display:flex;align-items:center')}>{v.cmpIgual}</div>
-              </div>
             </div>
+          </div>
+
+          {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
+              de integridad sobre la que se construyen los tres planes. */}
+          <div data-rv style={css('margin-top:16px;display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:16px 22px;border:1px solid #cfeeeb;border-radius:16px;background:#F2FBFA')}>
+            <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:#007d77;white-space:nowrap')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>Todos los planes te garantizan</span>
+            <span style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#3D3D3D;font-weight:600;line-height:1.5')}>{v.cmpIgual}</span>
           </div>
 
           {/* La comparación entera vive de un vistazo arriba; el detalle
@@ -563,7 +562,7 @@ export default function Page() {
             </div>
             <div className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px')}>
               {[
-                { name: 'Bronce', col: '#A9724B', cub: 45, conv: 12 },
+                { name: 'Bronze', col: '#A9724B', cub: 45, conv: 12 },
                 { name: 'Silver', col: '#66717E', cub: 66, conv: 8 },
                 { name: 'Gold', col: '#B8860B', cub: 93, conv: 2 },
               ].map((p, i) => (

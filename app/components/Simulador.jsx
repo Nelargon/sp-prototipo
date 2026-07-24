@@ -247,13 +247,14 @@ export default function Simulador() {
 
   useEffect(() => () => { if (liveRafRef.current) cancelAnimationFrame(liveRafRef.current); }, []);
 
-  // Plan pre-elegido desde el comparador (?plan=bronce|silver|gold): entra con
+  // Plan pre-elegido desde el comparador (?plan=bronze|silver|gold): entra con
   // el nivel puesto para que el simulador saltee la pregunta "¿qué plan?". La
   // consulta llega caliente — la persona ve su precio antes de hablar con nadie.
+  // (`bronce` se conserva por si algún link viejo trae el nombre anterior.)
   useEffect(() => {
     try {
       const pv = (new URLSearchParams(window.location.search).get('plan') || '').toLowerCase();
-      const map = { bronce: 'esencial', silver: 'equilibrio', gold: 'amplia' };
+      const map = { bronze: 'esencial', bronce: 'esencial', silver: 'equilibrio', gold: 'amplia' };
       if (map[pv]) { planPresetRef.current = map[pv]; simPatch({ nivel: map[pv] }); track('sim_plan_preset', { plan: pv }); }
     } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -296,7 +297,7 @@ export default function Simulador() {
   const planShortOf = (who, nivel) => {
     if (!nivel) return '';
     if (who === 'padres') return 'Vital';
-    return { esencial: 'Bronce', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
+    return { esencial: 'Bronze', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
   };
 
   // Current configuration → plan colour + live estimate (el precio es

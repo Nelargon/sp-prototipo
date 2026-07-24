@@ -1,7 +1,7 @@
 /* Salud Protegida — shared quote/simulator logic and contact constants.
    Pure functions (no React) used by both the home page and the /simulador route.
 
-   Precios y coberturas REALES (jul 2026): planes vigentes Bronce / Silver /
+   Precios y coberturas REALES (jul 2026): planes vigentes Bronze / Silver /
    Gold (ex "Privilege", el usuario pidió quitar esa palabra) y Plan Vital
    (senior 65+). Fuente: datos/planes-vigentes/*.json, tomados de los
    cuadernillos y tarifarios oficiales. Primas con IVA incluido. Contenido
@@ -50,10 +50,10 @@ export const AUTO_PAY_DISCOUNT = 0.10;
 const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 
 export const plans = () => [
-  { name: 'Plan Bronce', short: 'Bronce', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
+  { name: 'Plan Bronze', short: 'Bronze', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
     lines: ['Urgencias 24 h al 100%, desde el día uno', 'Consultas con especialistas (hasta 3 al año por especialidad)', 'Radiografías y ecografías cubiertas', 'Internación semi-suite, hasta 20 días al año', 'Psicología: 3 sesiones al año'] },
   { name: 'Plan Silver', short: 'Silver', price: TARIFAS.silver.solo[0], color: '#66717E', tag: 'El que suma resonancia',
-    lines: ['Todo lo de Bronce, con más consultas (5 al año)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
+    lines: ['Todo lo de Bronze, con más consultas (5 al año)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
   { name: 'Plan Gold', short: 'Gold', price: TARIFAS.gold.solo[0], color: '#B8860B', tag: 'La cobertura más amplia',
     lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
@@ -68,7 +68,7 @@ export const peopleFor = (who) => {
   return [{ role: 'Vos', age: 34, kind: 'adult' }];
 };
 
-/* Precio real de un grupo en un plan Bronce/Silver/Gold, siguiendo las
+/* Precio real de un grupo en un plan Bronze/Silver/Gold, siguiendo las
    reglas del tarifario (verificado contra los ejemplos "GRUPOS" de los
    PDFs oficiales):
    - una sola persona → tarifa "titular solo" por edad;
