@@ -22,7 +22,7 @@ export default function Planes() {
       <div style={css('max-width:1080px;margin:0 auto;padding:104px 24px 20px')}>
         <div style={css('text-align:center;max-width:680px;margin:0 auto 36px')}>
           <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Los tres planes</div>
-          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,46px);font-weight:800;color:#003B71;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Bronce, Silver y Gold — <span style={css('color:#007d77')}>todo el detalle</span>.</h1>
+          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,46px);font-weight:800;color:#003B71;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Bronze, Silver y Gold — <span style={css('color:#007d77')}>todo el detalle</span>.</h1>
           <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Servicio por servicio, qué cubre cada nivel y cuánto sale. Cada nivel incluye todo el anterior y suma lo suyo.</p>
         </div>
       </div>
