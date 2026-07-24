@@ -49,14 +49,26 @@ export const AUTO_PAY_DISCOUNT = 0.10;
 
 const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 
+// `nivel` es la clave interna del simulador; `short.toLowerCase()` es la clave
+// pública del `?plan=` del comparador. Ambas viven ACÁ (fuente única): el botón y
+// el simulador derivan de este mismo array, así el puente no se puede desincronizar.
 export const plans = () => [
-  { name: 'Plan Bronze', short: 'Bronze', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
+  { name: 'Plan Bronze', short: 'Bronze', nivel: 'esencial', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
     lines: ['Urgencias 24 h al 100%, desde el día uno', 'Consultas con especialistas (hasta 3 al año por especialidad)', 'Radiografías y ecografías cubiertas', 'Internación semi-suite, hasta 20 días al año', 'Psicología: 3 sesiones al año'] },
-  { name: 'Plan Silver', short: 'Silver', price: TARIFAS.silver.solo[0], color: '#66717E', tag: 'El que suma resonancia',
+  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: '#66717E', tag: 'El que suma resonancia',
     lines: ['Todo lo de Bronze, con más consultas (5 al año)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
-  { name: 'Plan Gold', short: 'Gold', price: TARIFAS.gold.solo[0], color: '#B8860B', tag: 'La cobertura más amplia',
+  { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: '#B8860B', tag: 'La cobertura más amplia',
     lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
+
+// El puente comparador → simulador, en un solo lugar. La clave pública del
+// `?plan=` es `short.toLowerCase()` (bronze/silver/gold); `bronce` queda como
+// alias por si sobrevive algún link con el nombre viejo.
+export const planKeyToNivel = () => {
+  const m = { bronce: 'esencial' }; // alias heredado
+  for (const p of plans()) m[p.short.toLowerCase()] = p.nivel;
+  return m;
+};
 
 export const ageTxt = (a) => (a >= 85 ? '85+' : String(a));
 
