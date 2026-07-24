@@ -1287,6 +1287,71 @@ cuidada — que se resuelven al revés una de la otra:
 
 ---
 
+## Capítulo 46 — El deslizador que revelaba de a uno → el comparador de entrada
+
+**Qué intentamos.** El comparador del home era un `slider`: arrastrabas y veías
+**un plan a la vez**, con la tabla que sí compara escondida detrás de un toggle.
+Divertido el primer minuto; poco práctico siempre, porque comparar es, por
+definición, ver varios a la vez. La cura la nombró el usuario (cap. 45): *ver de
+entrada*.
+
+**Qué aprendimos (construyendo la cura).** Reemplazamos el slider por **tres
+columnas Bronce/Silver/Gold a la vista**, cada una mostrando el **delta** — lo
+que suma sobre el anterior ("La base" → "Todo lo de Bronce, y suma" → "Todo lo de
+Silver, y suma"). Ahí la interacción cambió de rol: ya no es la reja que te deja
+ver un plan, es un **bonus de foco** — pasás el mouse por una columna y esa se
+eleva mientras las otras se atenúan apenas; nada se esconde. Es el principio del
+cap. 45 hecho pixeles: *la interacción agrega claridad, no la tapa.*
+
+Y la pregunta home-vs-página se resolvió **partiendo por profundidad**: el home
+se queda con el **resumen completo de un vistazo** (las tres columnas + precio);
+el **detalle exhaustivo** —11 servicios × 3 planes, con el estado y la letra
+chica real de cada uno— se mudó a una **página propia `/planes`**, a un click.
+Dos lecciones de ingeniería que dejó el traslado: (1) cuando un dato va a vivir
+en dos lugares (home + /planes), se **extrae a una fuente única** (`coverage.js`)
+antes de duplicar — o en tres semanas hay dos verdades; (2) una página de detalle
+puede permitirse lo que la portada no: la tabla con toda la letra chica estorba
+en el home y es exactamente lo que alguien busca en `/planes`. **El mismo dato,
+dos profundidades, dos formas.** Queda pendiente aplicarle la misma cura al
+explorador de "qué cubre", que todavía revela de a una cobertura.
+
+---
+
+## Capítulo 47 — Una diferencia solo se ve alineada (y restando lo igual)
+
+**Qué intentamos.** El "comparador de entrada" (cap. 46) mostró los tres planes a
+la vez, pero como **tres tarjetas de precios**. Lo mostramos al usuario.
+
+**Qué pasó.** *"Se ve muy genérico, y poco claro. No siento que puedo ver la
+diferencia entre planes."* Dos golpes en una frase, y con razón. Genérico: tres
+pricing cards es el molde de *toda* web de planes. Y no se veía la diferencia por
+algo más profundo: **las tres columnas eran tres listas separadas, con texto
+distinto cada una** — para comparar había que leerlas y diferenciarlas de memoria.
+
+**Qué aprendimos.** Dos leyes de las comparaciones, que valen para cualquier tabla
+que hagamos:
+
+1. **Una diferencia solo se ve cuando lo mismo está alineado al lado.** Las
+   tarjetas son *column-first*: cada una monologa lo suyo. La comparación es
+   *row-first*: el mismo servicio, tres valores en columnas alineadas, y el ojo
+   compara cruzando la fila. Cards → tres monólogos; tabla → un careo.
+2. **Para ver la diferencia hay que restar lo igual.** Si repetís en cada columna
+   lo que es idéntico, la diferencia se ahoga en el ruido. La cura: mostrar solo
+   las filas que difieren, **resaltar (en teal) únicamente la celda donde cada
+   nivel mejora sobre el anterior** —aparece una *escalera* visible de lo que
+   ganás subiendo— y mandar "lo igual en los tres" a una línea apagada abajo. De
+   yapa, **barras** para la magnitud: "5 vs 3" entra más rápido por una barra que
+   por un número. Anti-genérico no fue decorar: fue cambiar de *checklist* a
+   *mapa de diferencias*.
+
+Método (otra vez cap. 45): esto se entendió recién en la **tercera** forma
+—slider → tarjetas → tabla-diff—, cada una prototipada y mirada. El flechazo
+miente; las repeticiones y el ojo del usuario mandan. (Pendiente: la tabla-diff
+en móvil scrollea horizontal con la columna de servicios pegada; si hace falta,
+una vista móvil nativa de "saltos" — Bronce→Silver→Gold — es el próximo paso.)
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

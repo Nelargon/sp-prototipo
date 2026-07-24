@@ -643,11 +643,28 @@ usa `npm ci`).
     dedicado) se responde **por profundidad**: el **home** muestra un resumen
     **completo de un vistazo** (la comparación entera al llegar) + puerta; el
     espacio dedicado (`/planes`, quizá `/cobertura`) guarda el detalle
-    exhaustivo, clickeable, con aire y bueno para SEO. Forma propuesta: comparador
-    de 3 columnas Bronce/Silver/Gold visibles a la vez con el **delta** resaltado
-    (lo que cada nivel suma), hover para enfocar; el explorador, una **matriz
-    compacta** cobertura×plan de un vistazo con los chips como filtro. Antes de
-    construir: **prototipo visual para que el usuario lo VEA** (decide mirando).
+    exhaustivo, clickeable, con aire y bueno para SEO.
+    **Comparador — PROTOTIPO, iter 2 (24 jul 2026), a la espera del ok visual
+    del usuario (NO fusionar sin su sí — decide mirando).** Iter 1 fueron 3
+    **tarjetas de precio**; el usuario: *"muy genérico, no veo la diferencia"*
+    (BITACORA cap. 47 — una diferencia solo se ve alineada, y restando lo igual).
+    Iter 2, la forma actual: **tabla "lo que cambia"** — filas = los ~7 servicios
+    que DIFIEREN, columnas = los 3 planes ALINEADOS; se resalta **en teal solo la
+    celda donde cada nivel mejora** sobre el anterior (una escalera visible de lo
+    que ganás), **barras** para la magnitud (3/5/6…), y "En los tres, igual" en
+    una línea apagada abajo. Encabezado con precio + CTA (#007d77) por plan. En
+    móvil scrollea horizontal con la **columna de servicios pegada** (`.cmp-lbl`
+    sticky). El detalle fila-por-fila (11 servicios) se **mudó a `/planes`** (nueva
+    página, `Header variant="solid"`): tabla 11 servicios × 3 planes con estado
+    real y detalle, precios y CTA por plan en el encabezado. El home lleva una
+    puerta *"¿Querés el detalle fila por fila? Ver todos los planes → /planes"*.
+    La data de cobertura se extrajo a **`app/coverage.js`** (fuente única
+    compartida home + /planes). `/planes` agregado a sitemap y a las PAGINAS del
+    QA. Territorio: `app/page.jsx`, `app/coverage.js` (nuevo), `app/planes/*`
+    (nuevo), `app/globals.css`, `app/sitemap.js`, `qa/qa-integral.mjs`.
+    **Falta de la ola 2:** el **explorador "qué cubre"** todavía es de-a-una-
+    cobertura; aplicarle el mismo principio (matriz compacta cobertura×plan de un
+    vistazo, chips como filtro) — pendiente, después del ok del comparador.
 
 11u. **Vocabulario de hover — que todo lo interactivo telegrafíe el toque
     (24 jul 2026, pedido del usuario).** El usuario señaló (con el subrayado de
@@ -664,6 +681,16 @@ usa `npm ci`).
     micro del mismo objetivo que la ola 2 (macro): que la web se sienta
     interactiva y considerada. Pendiente si el usuario quiere más: chips e
     interactivos sin clase compartida (requieren pasada por módulo).
+
+11v. **Previews por rama con Cloudflare Pages (24 jul 2026, pedido del usuario:
+    "¿cómo veo la rama sin fusionar?").** `main` sigue en GitHub Pages; se suma
+    Cloudflare Pages para dar **una URL en vivo por rama y por PR**, para revisar
+    antes de fusionar. El `next.config.mjs` ya hace `basePath = env || ''`, así
+    que en Cloudflare **no se setea `NEXT_PUBLIC_BASE_PATH`** (sirve desde la raíz
+    de `*.pages.dev`; el prefijo `/sp-prototipo` es solo de GitHub Pages). Se
+    agregó `.node-version` (Node 20) y **`docs/PREVIEW.md`** con los pasos de
+    conexión (una vez, dashboard de Cloudflare — lo hace el dueño de la cuenta).
+    Territorio: `.node-version`, `docs/PREVIEW.md`.
 
 ---
 

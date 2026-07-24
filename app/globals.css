@@ -202,6 +202,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* Mi SP y blog: las grillas colapsan por ancho, no por dispositivo */
 .blog-card{transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s}
 .blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}
+/* Comparador "lo que cambia": en móvil la tabla scrollea horizontal (los planes
+   no entran en 390px) — la columna de servicios queda PEGADA a la izquierda para
+   no perder el contexto de qué fila estás mirando mientras corrés los planes. */
+.cmp-lbl{position:sticky;left:0;z-index:2}
+@media(max-width:640px){.cmp-lbl{box-shadow:1px 0 0 #EDEDED}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
