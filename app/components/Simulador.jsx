@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import {
-  WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge, plans,
+  WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge, plans, planKeyToNivel,
 } from '../quote';
 import { buscarCiudad, redNota, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { track } from '../track';
@@ -254,7 +254,7 @@ export default function Simulador() {
   useEffect(() => {
     try {
       const pv = (new URLSearchParams(window.location.search).get('plan') || '').toLowerCase();
-      const map = { bronze: 'esencial', bronce: 'esencial', silver: 'equilibrio', gold: 'amplia' };
+      const map = planKeyToNivel(); // fuente única en quote.js: no se puede desincronizar del botón
       if (map[pv]) { planPresetRef.current = map[pv]; simPatch({ nivel: map[pv] }); track('sim_plan_preset', { plan: pv }); }
     } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
