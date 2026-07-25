@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-25T18:53:14.755Z",
+  "fecha": "2026-07-25T19:06:51.408Z",
   "oks": [
     {
       "frente": "funcional",
@@ -91,7 +91,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 181 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 180 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
