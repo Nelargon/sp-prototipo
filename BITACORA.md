@@ -1505,6 +1505,54 @@ encantan —la banda "Todos los planes te garantizan", el "Ver todos los planes"
 
 ---
 
+## Capítulo 52 — El hallazgo chico que era la marca entera
+
+**Qué intentamos.** Cerrar un pendiente menor: el QA venía marcando, hacía días,
+dos contrastes flojos en la banda de cierre de `/simulador/`. Un parche de diez
+minutos, en principio.
+
+**Qué pasó.** Antes de tocar nada escribimos un auditor que recorre el DOM y
+calcula el contraste sobre **estilos computados** —componiendo el alfa y subiendo
+por los padres hasta encontrar fondo opaco— y lo corrimos sobre las seis páginas.
+El parche de diez minutos se convirtió en otra cosa: **17 fallas**, y en el centro
+no estaba la banda sino **el CTA "Simulá tu plan": blanco sobre `#00BCB4`, 2.37:1,
+en el header de todas las páginas.** El botón más importante del sitio —el que
+sostiene la conversión entera— apoyado en un color que se lava con sol o en una
+pantalla mala. Nadie lo había visto porque *se ve lindo en el monitor del que lo
+diseña*.
+
+Peor: el peor número no era ese. El botón deshabilitado de `/agendar/` daba
+**1.51:1** — blanco sobre gris claro. No se leía "todavía no", se leía roto.
+
+**Qué aprendimos.**
+
+- **Un hallazgo de QA es una punta, no un tamaño.** El reporte decía "dos
+  contrastes en /simulador/" y el problema real era la paleta de acción de la
+  marca. Antes de parchear lo que el QA nombra, conviene preguntarse *de qué es
+  síntoma* y medir alrededor. Si hubiéramos arreglado solo la banda, habríamos
+  cerrado el ticket dejando el bug grande intacto — y con la sensación de haberlo
+  resuelto, que es lo peligroso.
+- **La regla que ordena mejor no inventa: elige entre lo que ya hay.** La solución
+  no fue un color nuevo sino repartir los dos teals que ya vivían en la paleta:
+  **`#00BCB4` decora, `#007d77` carga texto blanco.** Una frase que se puede
+  aplicar sin volver a medir, y que además unificó los botones con los del
+  comparador.
+- **Los arreglos de contraste se propagan.** Oscurecer la tarjeta rompió el acento
+  navy que vivía encima (de 4.75:1 a 2.25:1): sobre fondo oscuro el acento tiene
+  que **aclararse**, no mantenerse. Y el secundario "fantasma" con relleno blanco
+  translúcido resultó el peor de la banda (2.1:1) porque el relleno *aclaraba el
+  fondo debajo del texto* — quitarle el relleno lo arregló. Nada de esto se ve
+  leyendo el código: aparece midiendo.
+- **La bitácora otra vez, en carne propia (cap. 8):** calculé a mano 3.2:1 donde el
+  navegador medía 2.1:1. **Verificá lo computado**, incluso cuando "la cuenta es
+  fácil".
+- **Y el falso positivo también enseña.** El auditor marcó los links del nav en
+  2.26:1 porque no ve imágenes y asume fondo blanco; en la realidad están sobre el
+  hero oscuro y se leen perfecto. Una herramienta automática propone, el ojo
+  dispone: cerrar hallazgos sin mirar habría oscurecido un nav que estaba bien.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

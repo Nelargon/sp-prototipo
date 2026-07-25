@@ -788,6 +788,35 @@ usa `npm ci`).
       no es un gasto" más grande. Regla: *un buen elemento subdimensionado se saltea
       — calidad no compensa falta de peso visual.* Tocó `app/page.jsx` + `app/globals.css`.
 
+12a. **⭐ REGLA DE COLOR: el teal brillante decora, el profundo carga texto blanco
+    (25 jul 2026, decisión explícita del usuario). HECHO** (BITACORA cap. 52).
+    El QA venía marcando dos contrastes en `/simulador/`; al medir con el navegador
+    apareció que el problema era **sistémico**: `#00BCB4` con texto blanco daba
+    **2.37:1** (mínimo 4.5:1) — y ese es el CTA "Simulá tu plan", el botón más
+    importante del sitio, presente en el header de TODAS las páginas. La marca
+    entera apoyaba su acción principal en un color que no se lee al sol.
+    - **La regla, para todo lo que venga:** `#00BCB4` es **decorativo** (íconos,
+      acentos sobre navy oscuro, bordes, barras de progreso, el "se siente" del
+      hero); **`#007d77`** es el que **lleva texto blanco** (≈5:1). Ese teal ya
+      vivía en la paleta (los "Ver mi precio" del comparador, los links), así que
+      no se inventó color: se ordenó el uso de los dos que ya había.
+    - Aplicado: CTAs de header/hero/teaser/barra móvil/simulador/blog/historia;
+      hover de `.btn-teal` (#009690 daba 3.6:1) → `#00615C`; bandas de cierre de
+      home y `/simulador/` a teal profundo, con el acento "del otro lado" de navy
+      a menta `#A5EFEA` (sobre teal profundo el navy caía a 2.25:1); nueva
+      `.btn-onteal` para el secundario sobre tarjeta teal (el relleno translúcido
+      aclaraba el fondo bajo el texto: 2.1:1 medido); y el botón deshabilitado de
+      `/agendar/` (blanco sobre #c8d4dc = **1.51:1**, se leía roto, no "todavía no").
+    - **Resultado medido:** de 17 fallas de contraste en 6 páginas a **0 reales**
+      (quedan 4 falsos positivos: los links del nav sobre el hero — el auditor no
+      ve imágenes y asume fondo blanco; verificado a ojo que se leen perfecto).
+    - Herramienta: `qa/` + auditor propio de contraste que recorre el DOM y calcula
+      sobre **estilos computados** (compone alfa y sube por los padres). La lección
+      de la bitácora otra vez: mi cálculo a mano decía 3.2:1 donde el navegador
+      medía 2.1:1. Territorio: `app/page.jsx`, `app/globals.css`, `app/Header.jsx`,
+      `app/components/Simulador.jsx`, `app/simulador/page.jsx`, `app/agendar/Agendar.jsx`,
+      `app/blog/*`, `app/historia/page.jsx`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
