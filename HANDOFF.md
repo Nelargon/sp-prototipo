@@ -745,6 +745,24 @@ usa `npm ci`).
       (comparador + bloque flotantes + scroll useEffect) y `app/globals.css`
       (`.cotizar-fab`/`.fab-full`/`.fab-short` eliminadas).
 
+11y. **Comparador móvil que encaja + protagonismo de las tres piezas bajo la tabla
+    (25 jul 2026, observación del usuario). HECHO** (mismo PR #59, BITACORA cap. 50):
+    - **Móvil:** la tabla con scroll horizontal mostraba un solo plan y la columna
+      de servicios se comía la pantalla ("no se ve tan bien… algo que encaje"). La
+      grilla pasó a clase (`.cmp-row`/`.cmp-inner`) para reencuadrar por CSS: en
+      ≤640px la etiqueta se angosta a 104px y los planes se ensanchan → entran DOS
+      planes completos + asomo del tercero (affordance), con la etiqueta pegajosa y
+      un rótulo "Deslizá para comparar los tres planes →" (`.cmp-hint`, solo móvil).
+      Desktop sin cambios. Regla: *el teléfono no es la web angosta — comparativa en
+      móvil = etiqueta angosta+sticky, 2 planes visibles, asomo del 3º, hint de scroll.*
+    - **Protagonismo:** las tres piezas bajo la tabla (garantía "Todos los planes te
+      garantizan", "Ver todos los planes", "un seguro no es un gasto") estaban muy
+      chicas ("es magnífico, pero se ve muy pequeño… más protagonismo"). Se
+      agrandaron: la garantía con check en círculo teal + más cuerpo; "Ver todos los
+      planes" ahora es CTA con borde (hover relleno, `.cmp-verplanes`); el "un seguro
+      no es un gasto" más grande. Regla: *un buen elemento subdimensionado se saltea
+      — calidad no compensa falta de peso visual.* Tocó `app/page.jsx` + `app/globals.css`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

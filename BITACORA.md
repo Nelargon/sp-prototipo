@@ -1429,6 +1429,46 @@ agregar señales, es podar las que no aportan.** Menos, pero cada cosa en su lug
 
 ---
 
+## Capítulo 50 — El teléfono no es la web angosta, y darle peso a lo que ya funcionaba
+
+**Qué intentamos.** El comparador de la home era una tabla con scroll horizontal
+(`min-width:640px`). En desktop se ve entero; confiamos en que en móvil "también
+se entiende deslizando". Y debajo de la tabla vivían tres piezas que al usuario le
+encantan —la banda "Todos los planes te garantizan", el "Ver todos los planes" y el
+"un seguro no es un gasto"— pero chicas, casi al pie.
+
+**Qué pasó.** Dos observaciones del usuario, el mismo día:
+
+- *"Este espacio es genial… pero se ve muy pequeño. Siento que debería tener más
+  protagonismo."* Las tres piezas buenas estaban subdimensionadas: contenido
+  magnífico que la jerarquía mandaba a segundo plano.
+- *"La versión móvil de esta comparativa no se ve tan bien todavía… algo que
+  encaje y no se vea medio raro."* En 390px la columna de servicios (≈222px) se
+  comía la pantalla y dejaba ver **un solo plan**, cortado, sin señal de que había
+  más. Se leía como algo roto, no como algo que se desliza.
+
+**Qué aprendimos.**
+
+- **Un buen elemento subdimensionado se saltea.** Calidad no compensa falta de
+  peso visual: si algo importa, tiene que *pesar* — cuerpo, aire, y en el caso del
+  "Ver todos los planes", forma de CTA (borde + relleno en hover) en vez de link
+  al pie. Darle protagonismo fue agrandar lo que ya era bueno, no inventar nada.
+- **El teléfono no es "la web pero angosta".** Una tabla comparativa en 360–430px
+  necesita: columna de etiquetas **angosta y pegajosa** (labels siempre visibles),
+  **dos planes completos** a la vez (no uno), **asomo del tercero** como affordance
+  de scroll, y un **rótulo explícito** ("Deslizá para comparar los tres planes →")
+  para que el corte se lea como intención, no como bug. La grilla se movió a una
+  clase (`.cmp-row`) para reencuadrarla por CSS sin tocar el markup fila por fila.
+- **Nota de método — el contenedor es efímero, el remoto es la memoria.** A mitad
+  de sesión el clon local "volvió" a un `main` viejo (reflog: *Reset to
+  origin/main* sobre un commit anterior; el commit ya pusheado no estaba en el
+  object-db local). El susto dura hasta recordar la regla: **lo pusheado es la
+  verdad.** `git fetch` + `git reset` a `origin/<rama>` recuperó el trabajo intacto
+  (el PR y su CI nunca se habían movido). Nunca reconstruir a mano lo que el remoto
+  ya tiene guardado.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

@@ -203,6 +203,25 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    no perder el contexto de qué fila estás mirando mientras corrés los planes. */
 .cmp-lbl{position:sticky;left:0;z-index:2}
 @media(max-width:640px){.cmp-lbl{box-shadow:1px 0 0 #EDEDED}}
+/* Comparador — grilla en clase (para reencuadrar en móvil sin tocar el markup
+   fila por fila). Desktop = igual que antes; en ≤640px la columna de servicios
+   se angosta y los planes se ensanchan para que entren DOS planes completos +
+   asomo del tercero (affordance de scroll), en vez de una sola columna con la
+   etiqueta comiéndose la pantalla (feedback del usuario, jul 2026). */
+.cmp-inner{min-width:640px}
+.cmp-row{display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr}
+.cmp-hint{display:none}
+@media(max-width:640px){
+  .cmp-inner{min-width:520px}
+  .cmp-row{grid-template-columns:104px 1fr 1fr 1fr}
+  .cmp-lbl{padding-left:13px !important;padding-right:9px !important}
+  .cmp-hint{display:flex}
+  .cmp-garantia{padding:18px 18px !important;gap:10px 14px !important}
+}
+/* "Ver todos los planes" ganó peso de CTA secundario (borde + más cuerpo);
+   el hover rellena en teal muy suave — misma gramática que los demás botones. */
+.cmp-verplanes{transition:background .2s,border-color .2s}
+.cmp-verplanes:hover{background:#F2FBFA;border-color:#8fd9d3}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
