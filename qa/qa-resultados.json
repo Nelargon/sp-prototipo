@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-25T13:58:45.756Z",
+  "fecha": "2026-07-25T18:34:01.123Z",
   "oks": [
     {
       "frente": "funcional",
@@ -115,7 +115,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 20 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 21 ms (< 3 s)"
     },
     {
       "frente": "contenido",
@@ -127,18 +127,6 @@
     }
   ],
   "hallazgos": [
-    {
-      "frente": "accesibilidad",
-      "severidad": "cosmetico",
-      "detalle": "contraste 2.37:1 (mín 3:1) — \"¿Preferís hablarlo con alguien?\" rgb(255, 255, 255) sobre rgb(0,188,180)",
-      "donde": "/simulador/"
-    },
-    {
-      "frente": "accesibilidad",
-      "severidad": "confunde",
-      "detalle": "contraste 2.20:1 (mín 4.5:1) — \"Escribinos por WhatsApp y un ase\" rgba(255, 255, 255, 0.92) sobre rgb(0,188,180)",
-      "donde": "/simulador/"
-    },
     {
       "frente": "contenido",
       "severidad": "cosmetico",

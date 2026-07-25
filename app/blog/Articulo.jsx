@@ -24,7 +24,7 @@ export function A({ kicker, title, intro, minutes, date, categoria, slug, cover,
         <div style={css('background:#003B71;border-radius:18px;padding:28px 26px;color:#fff')}>
           <div style={css('font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px')}>¿Querés saber cuál es el plan para tu familia?</div>
           <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:14.5px;color:#B3C7DB;line-height:1.55;margin-bottom:18px')}>Contanos quiénes son y te mostramos el plan que va con ustedes, con precio estimado — en un minuto y sin dejar datos.</div>
-          <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:48px;padding:0 24px;border-radius:12px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:8px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <a href={`${BP}/simulador/`} className="btn-teal" style={css('height:48px;padding:0 24px;border-radius:12px;background:#007d77;color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:8px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
         </div>
       </div>
     </div>

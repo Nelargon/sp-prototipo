@@ -104,7 +104,10 @@ export default function Agendar() {
               <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Cómo te llamás" aria-label="Tu nombre" style={inputStyle} />
             </div>
 
-            <button type="button" onClick={pedir} disabled={!listo} style={css('width:100%;height:56px;border:none;border-radius:15px;background:' + (listo ? '#00BCB4' : '#c8d4dc') + ';color:#fff;font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
+            {/* Deshabilitado: antes era blanco sobre #c8d4dc (1.51:1 medido) — el
+                rótulo casi desaparecía y se leía "roto", no "todavía no". Gris
+                oscuro sobre gris claro dice deshabilitado Y se lee. */}
+            <button type="button" onClick={pedir} disabled={!listo} style={css('width:100%;height:56px;border:none;border-radius:15px;background:' + (listo ? '#007d77' : '#E4EAEF') + ';color:' + (listo ? '#fff' : '#4A5A66') + ';font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>
               Pedir turno por WhatsApp
             </button>

@@ -38,7 +38,7 @@ export default async function BlogPost({ params }) {
         <div style={css('background:#fff;border-radius:18px;padding:44px 32px;text-align:center;max-width:460px')}>
           <h1 className="disp" style={css('font-size:26px;color:#003B71;margin:0 0 10px')}>Muy pronto</h1>
           <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 0 22px')}>Todavía no hay notas publicadas en el blog.</p>
-          <a href={`${BP}/blog/`} className="btn-teal" style={css('display:inline-flex;align-items:center;height:46px;padding:0 24px;border-radius:12px;background:#00BCB4;color:#fff;font-size:14.5px;font-weight:800')}>Ir al blog</a>
+          <a href={`${BP}/blog/`} className="btn-teal" style={css('display:inline-flex;align-items:center;height:46px;padding:0 24px;border-radius:12px;background:#007d77;color:#fff;font-size:14.5px;font-weight:800')}>Ir al blog</a>
         </div>
       </div>
     );

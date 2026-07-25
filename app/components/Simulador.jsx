@@ -349,7 +349,7 @@ export default function Simulador() {
     const stepOf = i + 1, done = (planPreset && stepOf === 2) || d.step > stepOf || d.step >= 6, active = d.step === stepOf;
     return {
       name: n, num: String(i + 1), isDone: done, showNum: !done, value: done ? stepValueList[i] : '',
-      dot: 'flex:none;width:25px;height:25px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:#00BCB4;color:#fff;' : active ? 'background:#fff;color:#003B71;box-shadow:inset 0 0 0 2px #00BCB4;' : 'background:rgba(255,255,255,0.12);color:#7fa6cc;'),
+      dot: 'flex:none;width:25px;height:25px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:#007d77;color:#fff;' : active ? 'background:#fff;color:#003B71;box-shadow:inset 0 0 0 2px #00BCB4;' : 'background:rgba(255,255,255,0.12);color:#7fa6cc;'),
       label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:#9fb8d2;font-weight:500;'),
     };
   });
@@ -527,7 +527,7 @@ export default function Simulador() {
                 ))}
               </div>
               <div style={css('display:flex;align-items:center;gap:16px;flex-wrap:wrap')}>
-                <button onClick={sim.start} className="btn-teal" style={css('height:52px;padding:0 28px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background 160ms')}>Empecemos <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
+                <button onClick={sim.start} className="btn-teal" style={css('height:52px;padding:0 28px;border:none;border-radius:13px;background:#007d77;color:#fff;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background 160ms')}>Empecemos <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
                 {sim.resumeAvailable && <button onClick={sim.resume} className="link-teal" style={css('background:none;border:none;color:#007d77;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>Retomar mi simulación</button>}
               </div>
             </div>
@@ -586,7 +586,7 @@ export default function Simulador() {
                   </div>
                 </div>
               )}
-              <button onClick={sim.toAddons} className="btn-teal" style={css('width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:background 160ms')}>Continuar</button>
+              <button onClick={sim.toAddons} className="btn-teal" style={css('width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:#007d77;color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:background 160ms')}>Continuar</button>
             </div>
           )}
 
@@ -655,7 +655,7 @@ export default function Simulador() {
                   <button key={i} onClick={ad.toggle} style={css(ad.rowStyle)}><span style={css('display:flex;align-items:center;gap:12px;min-width:0')}><span style={css(ad.boxStyle)}>{ad.selected && <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}</span><span style={css('display:flex;flex-direction:column;gap:2px;min-width:0')}><span style={css('font-size:15px;font-weight:600;color:#1D1D1B')}>{ad.label}</span><span style={css('font-size:12px;font-weight:400;color:#6B6B6B;line-height:1.35')}>{ad.note}</span></span></span><span style={css('font-size:12.5px;font-weight:800;color:#007d77;white-space:nowrap;flex:none')}>{ad.priceLabel}</span></button>
                 ))}
               </div>
-              <button onClick={sim.toResult} className="btn-teal" style={css('width:100%;height:50px;margin-top:18px;border:none;border-radius:13px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms')}>{sim.continueLabel}</button>
+              <button onClick={sim.toResult} className="btn-teal" style={css('width:100%;height:50px;margin-top:18px;border:none;border-radius:13px;background:#007d77;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms')}>{sim.continueLabel}</button>
             </div>
           )}
 
@@ -725,23 +725,23 @@ export default function Simulador() {
                     <input type="email" value={sim.email} onChange={sim.setEmail} placeholder="Email (opcional)" className="inp" style={css('width:100%;height:46px;border:1.5px solid #E8E8E8;border-radius:8px;padding:0 14px;font-size:15px;color:#1D1D1B;background:#fff;outline:none;margin-bottom:8px')} />
                     <div style={css('font-size:11.5px;color:#6B6B6B;margin-bottom:12px;line-height:1.4')}>Tu WhatsApp con código de país si podés (ej: +595 9…). El email es opcional.</div>
                     {sim.hasErr && <div role="alert" style={css('font-size:12px;color:#F44336;margin-bottom:10px')}>{sim.err}</div>}
-                    <button onClick={sim.submit} disabled={sim.sending} className="btn-teal" style={css('width:100%;height:48px;border:none;border-radius:12px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : 'Enviarme mi cotización'}</button>
+                    <button onClick={sim.submit} disabled={sim.sending} className="btn-teal" style={css('width:100%;height:48px;border:none;border-radius:12px;background:#007d77;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:background 160ms;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : 'Enviarme mi cotización'}</button>
                   </div>
                 )}
                 {sim.sentOpen && (
                   <div style={css('background:#E6F7F6;border:1px solid #bfe4e1;border-radius:14px;padding:24px;text-align:center')}>
-                    <div style={css('width:46px;height:46px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
+                    <div style={css('width:46px;height:46px;border-radius:999px;background:#007d77;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
                     <div style={css('font-size:17px;font-weight:800;color:#003B71;margin-top:12px')}>¡Listo, {sim.nombre}!</div>
                     <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
                   </div>
                 )}
                 {sim.waLeadOpen && (
                   <div style={css('background:#E6F7F6;border:1px solid #bfe4e1;border-radius:14px;padding:24px;text-align:center')}>
-                    <div style={css('width:46px;height:46px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
+                    <div style={css('width:46px;height:46px;border-radius:999px;background:#007d77;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
                     <div style={css('font-size:17px;font-weight:800;color:#003B71;margin-top:12px')}>¡Listo, {sim.nombre}! Falta un solo toque</div>
                     <div style={css('font-size:14px;color:#3D3D3D;margin-top:4px;line-height:1.5')}>Tu cotización ya está escrita, con tu plan y tu precio. Tocá el botón y nos llega entera por WhatsApp — queda por escrito y te responde un asesor, una persona de verdad.</div>
                     {sim.crmErr && <div style={css('font-size:12px;color:#6B6B6B;margin-top:8px;line-height:1.4')}>El envío automático no funcionó esta vez — por WhatsApp llega igual, no se pierde nada.</div>}
-                    <a href={sim.waLeadHref} onClick={() => track('click_whatsapp', { origen: 'simulador_lead', plan: sim.resName })} target="_blank" rel="noopener" className="btn-teal" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#00BCB4;color:#fff;font-size:15px;font-weight:800;margin-top:14px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Enviar mi cotización por WhatsApp</a>
+                    <a href={sim.waLeadHref} onClick={() => track('click_whatsapp', { origen: 'simulador_lead', plan: sim.resName })} target="_blank" rel="noopener" className="btn-teal" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#007d77;color:#fff;font-size:15px;font-weight:800;margin-top:14px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Enviar mi cotización por WhatsApp</a>
                   </div>
                 )}
                 {!sim.waLeadOpen && <a href={sim.waResultHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado', plan: sim.resName })} target="_blank" rel="noopener" className="btn-wa-outline" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:12px;background:#fff;color:#007d77;border:1.5px solid #00BCB4;font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>}
