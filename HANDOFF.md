@@ -726,6 +726,25 @@ usa `npm ci`).
     pendiente el mapa sección-por-sección (qué se queda / comprime / baja a página
     profunda / reencuadra en positivo).
 
+11x. **Resalte balanceado en el comparador + poda del FAB redundante (25 jul
+    2026, observación del usuario). HECHO.** Dos afinados de la home, misma raíz
+    ("ruido que no se gana su lugar", ver BITACORA cap. 49):
+    - **Comparador:** el badge "La más elegida" de Silver vivía dentro del flujo de
+      su columna y empujaba el nombre hacia abajo, descuadrando la línea base de las
+      tres columnas ("desbalancea la estética"). Fix: **ranura de badge de alto fijo
+      en las TRES columnas** (vacía en Bronze/Gold) — nombres, precios y CTAs quedan
+      alineados; el resalte de Silver queda como franja teñida serena, no como bulto.
+      Regla general: *un elemento que aparece en un ítem de una grilla comparativa
+      reserva su alto en todos.*
+    - **FAB flotante:** se eliminó el pill "Simulá tu plan" flotante (desktop, abajo
+      a la derecha) — el header es `position:fixed` y ya lleva ese CTA en el scroll,
+      así que el FAB repetía el mismo verbo a 300px. **Se conserva** el WhatsApp
+      flotante (otra acción) y, en móvil, la barra CTA inferior (Simulá + WhatsApp)
+      intacta. Regla de etiquetas aplicada a CTAs: *un botón se gana su lugar solo
+      si ofrece un destino o momento que otro no cubre.* Tocó `app/page.jsx`
+      (comparador + bloque flotantes + scroll useEffect) y `app/globals.css`
+      (`.cotizar-fab`/`.fab-full`/`.fab-short` eliminadas).
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

@@ -97,7 +97,6 @@ export default function Page() {
       bar = root.querySelector('.sp-prog');
       if (!bar) { bar = document.createElement('div'); bar.className = 'sp-prog'; root.appendChild(bar); }
       const nav = root.querySelector('[data-nav]');
-      const cotizarFab = root.querySelector('[data-cotizar-fab]');
       const ctaBar = root.querySelector('[data-cta-bar]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
@@ -131,7 +130,6 @@ export default function Page() {
         const max = el.scrollHeight - el.clientHeight;
         bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
         if (nav) { if (y > 70) nav.classList.add('solid'); else nav.classList.remove('solid'); }
-        if (cotizarFab) { if (y > 640) cotizarFab.classList.add('show'); else cotizarFab.classList.remove('show'); }
         if (ctaBar) { if (y > 640) ctaBar.classList.add('show'); else ctaBar.classList.remove('show'); }
         if (heroBg && y < 900) heroBg.style.transform = 'translateY(' + (y * 0.16) + 'px)';
         if (heroContent && y < 900) { heroContent.style.transform = 'translateY(' + (y * 0.14) + 'px)'; heroContent.style.opacity = String(Math.max(0, 1 - y / 620)); }
@@ -467,7 +465,13 @@ export default function Page() {
                 <div className="cmp-lbl" style={css('padding:18px 22px;background:#fff')}></div>
                 {v.planHead.map((ph, i) => (
                   <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid #F0F0F0;border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
-                    {ph.recommended && <div style={css('display:inline-block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px;margin-bottom:8px')}>La más elegida</div>}
+                    {/* Ranura de badge de altura fija en LAS TRES columnas: el badge de
+                        Silver ya no empuja su título hacia abajo — nombres, precios y
+                        CTAs quedan en la misma línea base (el resalte de Silver deja de
+                        desbalancear la sección; feedback del usuario, jul 2026). */}
+                    <div style={css('height:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center')}>
+                      {ph.recommended && <span style={css('font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px')}>La más elegida</span>}
+                    </div>
                     <div className="disp" style={css('font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{ph.short}</div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:#1D1D1B')}>{ph.price}</span></div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
@@ -790,9 +794,6 @@ export default function Page() {
         </div>
         <div style={css('max-width:1100px;margin:20px auto 0;font-size:12.5px;color:#7f9cbb')}>© 2026 Salud Protegida (Odontomedica S.A.). Coberturas según los cuadernillos vigentes, sujetas a las condiciones de cada contrato.</div>
       </footer>
-
-      {/* COTIZAR STICKY (aparece al scrollear) */}
-      <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'fab' })} data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg><span className="fab-full">Simulá tu plan</span><span className="fab-short">Simulá</span></a>
 
       {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
       <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>

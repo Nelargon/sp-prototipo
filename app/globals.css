@@ -148,18 +148,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
   .ubi-row .ubi-go{opacity:0;transform:translateX(-5px);transition:opacity .18s cubic-bezier(.22,1,.36,1),transform .18s cubic-bezier(.22,1,.36,1)}
   .ubi-row:hover .ubi-go{opacity:1;transform:none}
 }
-/* FAB de cotización: versión compacta en móvil para tapar menos contenido */
-.fab-short{display:none}
-@media(max-width:640px){.cotizar-fab{padding:0 16px !important}.fab-full{display:none}.fab-short{display:inline}}
-/* Barra CTA móvil (jul 2026): reemplaza a los dos flotantes en ≤820px — la
-   columna de FABs tapaba texto (banda Senior, manifiesto, diferenciadores,
-   FAQ, footer). Vidrio esmerilado como el header: UNA sola función blur()
+/* Barra CTA móvil (jul 2026): reemplaza al WhatsApp flotante en ≤820px — el
+   flotante tapaba texto (banda Senior, manifiesto, diferenciadores, FAQ,
+   footer). Vidrio esmerilado como el header: UNA sola función blur()
    sin -webkit- a mano (el minificador rompe lo demás — BITACORA cap. 8). */
 .cta-bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:120;gap:10px;padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,0.72);backdrop-filter:blur(18px);border-top:1px solid rgba(0,59,113,0.10);transform:translateY(110%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
 .cta-bar.show{transform:translateY(0)}
 @media(max-width:820px){
   .cta-bar{display:flex}
-  .cotizar-fab{display:none !important}
   .wa-fab{display:none !important}
   /* el contenido termina por encima de la barra: nada queda tapado al final */
   [data-page="viva"] footer{padding-bottom:110px !important}
@@ -235,9 +231,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .ally-logo{max-height:40px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.62;transition:filter .3s,opacity .3s}
 .mq:hover .ally-logo{filter:grayscale(0);opacity:1}
 .num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
-.cotizar-fab{opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.22,1,.36,1),background .2s}
-.cotizar-fab.show{opacity:1;transform:none;pointer-events:auto}
-.cotizar-fab:hover{background:#002A52 !important}
 
 /* --------------------------------------------------------------------------
    Blog — prosa de las notas en markdown (.art-body la define Articulo.jsx).

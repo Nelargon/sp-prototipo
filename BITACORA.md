@@ -1388,6 +1388,47 @@ no es el dato; es el cliente eligiendo tranquilo.
 
 ---
 
+## Capítulo 49 — El resalte que desbalancea, y el segundo CTA que no suma
+
+**Qué intentamos.** Dos detalles de la home, heredados de iteraciones previas: (1)
+en el comparador, Silver se destacaba como "la más elegida" con un badge encima
+del nombre y una columna teñida; (2) al scrollear aparecía un FAB flotante "Simulá
+tu plan" abajo a la derecha, además del CTA del header.
+
+**Qué pasó.** El usuario miró la sección y nombró dos cosas distintas con la misma
+raíz —*ruido que no se gana su lugar*:
+
+- *"Cuando dice acerca del plan Silver, el más usado, como que desbalancea la
+  estética de esa parte."* El badge vivía **dentro** del flujo de la columna del
+  medio, así que empujaba el nombre "Silver" hacia abajo: Bronze y Gold quedaban
+  en una línea base, Silver en otra. El resalte, que buscaba anclar, terminaba
+  descuadrando las tres columnas.
+- *"Ya tenemos un iconito de 'Simulá tu plan' abajo y también en el header, que se
+  desplaza al hacer scroll. No creo que sea necesario ese de abajo… ¿cuál es la
+  utilidad?"* Dos botones con **el mismo verbo** compitiendo por la misma acción.
+
+**Qué aprendimos.**
+
+- **Énfasis sin alineación se lee como desbalance.** Para destacar una columna
+  entre pares, la *ranura* del badge tiene que existir en **todas** las columnas
+  (vacía en las demás), no solo en la destacada. Si el marcador vive en el flujo de
+  una sola, mueve solo a esa y rompe la línea base. La regla general: **un elemento
+  que aparece en un ítem de una grilla comparativa reserva su alto en todos.** Así
+  el resalte de Silver quedó como una tenue franja teñida —emphasis sereno— en vez
+  de un bulto que descuadra.
+- **Dos CTAs con el mismo verbo no se refuerzan: se estorban.** El header ya es
+  `position:fixed` y su "Simulá tu plan" viaja con el scroll en desktop; el FAB
+  flotante repetía exactamente esa función a 300px de distancia. Redundancia, no
+  seguro. (Se aplica la regla de etiquetas a los CTAs: **un botón se gana su lugar
+  solo si ofrece un destino o un momento que otro no cubre.**) El WhatsApp flotante
+  se queda —*ese* sí es otra acción— y en móvil la barra inferior sigue igual: un
+  Simulá + un WhatsApp, sin flotantes que tapen texto.
+
+El hilo con el cap. 48 y con el "valle de la súper saturación": **la claridad no es
+agregar señales, es podar las que no aportan.** Menos, pero cada cosa en su lugar.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
