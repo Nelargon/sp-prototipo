@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-07-25T18:34:01.123Z",
+  "fecha": "2026-07-25T18:50:28.718Z",
   "oks": [
     {
       "frente": "funcional",
@@ -127,6 +127,12 @@
     }
   ],
   "hallazgos": [
+    {
+      "frente": "accesibilidad",
+      "severidad": "confunde",
+      "detalle": "contraste 2.78:1 (mín 4.5:1) — \"Cómo se reparte lo que usás\" rgb(138, 153, 151) sobre rgb(245,248,251)",
+      "donde": "/"
+    },
     {
       "frente": "contenido",
       "severidad": "cosmetico",

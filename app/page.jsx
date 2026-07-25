@@ -574,7 +574,9 @@ export default function Page() {
               <div className="disp" style={css('font-size:18px;font-weight:800;color:#003B71')}>Cuánto cubre de verdad cada plan</div>
               <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5;margin-top:4px;font-family:var(--font-inter),sans-serif')}>Cuanto más alto el plan, menos ponés de tu bolsillo. Ese es el único upsell honesto.</div>
             </div>
-            <div style={css('display:flex;align-items:center;gap:12px;font-family:var(--font-inter),sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a9997;padding-bottom:7px')}>
+            {/* #6B6B6B, no #8a9997: el gris claro daba 2.78:1 sobre este fondo
+                (lo cazó el QA una hora después de publicar la regla 12a). */}
+            <div style={css('display:flex;align-items:center;gap:12px;font-family:var(--font-inter),sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6B;padding-bottom:7px')}>
               <span style={css('width:72px;flex:none')}>Plan</span>
               <span style={css('flex:1')}>Cómo se reparte lo que usás</span>
               <span style={css('width:52px;flex:none;text-align:right')}>Cubierto</span>

@@ -1601,6 +1601,13 @@ simulador al puesto 2** y **fusionar "qué cubre" con "bolsillo"**.
   y otra vez se llevó ediciones no commiteadas. La regla del cap. 51 ya no es un
   aprendizaje sino un hábito: **commitear y pushear apenas una tanda funciona**,
   no al final. Lo pusheado es lo único que existe.
+- **Coda: la regla nueva cazó a su propio autor.** Al rearmar el gradiente le puse
+  un mini-encabezado ("PLAN · CÓMO SE REPARTE · CUBIERTO") en gris claro. El QA
+  lo marcó en **2.78:1** — una hora después de haber publicado la regla de
+  contraste del cap. 52, y en el mismo bloque que estaba reordenando. La moraleja
+  no es "qué distraído": es que **una regla escrita en el HANDOFF no alcanza si no
+  hay una verificación que la haga cumplir**. La disciplina no está en acordarse,
+  está en que el QA corra siempre y en no cerrar sin mirarlo.
 
 ---
 
