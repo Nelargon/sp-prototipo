@@ -307,7 +307,7 @@ export default function Page() {
               <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Cobertura <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
               <div className="navmenu">
                 <div className="navmenu-card">
-                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Buscá qué cubre tu plan</span><span className="navmenu-s">Escribí un estudio o consulta y mirá qué cubre cada plan</span></a>
+                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Elegí una cobertura y mirá qué te toca en cada plan</span></a>
                   <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Copago, precio de convenio y lo que no cubre ningún plan</span></a>
                   <a href="#faq" className="navmenu-item"><span className="navmenu-t">Preguntas frecuentes</span><span className="navmenu-s">Carencias, preexistencias, cambios de plan y más</span></a>
                 </div>
@@ -394,53 +394,25 @@ export default function Page() {
         </div>
       </section>
 
-      {/* QUÉ CUBRE — explorador curado de coberturas (ex buscador que expulsaba
-          a la guía al no encontrar: BITACORA cap. 44). La Guía Médica es su
-          propia puerta, honesta, al final de la sección. */}
-      <section id="cartilla" className="sec" style={css('padding:80px 40px;background:#fff')}>
-        <div style={css('max-width:1000px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 20px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Qué cubre tu plan</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Elegí lo que necesitás y mirá <span style={css('color:#007d77')}>qué te toca</span> en cada plan.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Nada de adivinar. Antes de contratar ya sabés qué cubre cada plan y cuánto ponés de tu bolsillo.</p>
-          </div>
-
-          <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-            <div style={css('font-size:13px;font-weight:700;color:#003B71;margin-bottom:12px')}>Elegí una cobertura:</div>
-            <div style={css('display:flex;flex-wrap:wrap;gap:9px')}>
-              {v.chips.map((c, i) => (
-                <button key={i} onClick={c.onPick} aria-pressed={v.selName === c.name} style={css(c.style)}>{c.name}</button>
-              ))}
+      {/* SIMULADOR — teaser hacia /simulador. SUBIDO al puesto 2 (25 jul 2026,
+          decisión del usuario sobre el mapa de la home): vivía en la pantalla 7.2
+          de 14.9 en móvil, o sea que la única herramienta que de verdad funciona
+          quedaba enterrada bajo 6 pantallas de tablas. Ahora es la continuación
+          natural del hero — "protección que se siente" → probala — y todo lo que
+          sigue pasa a RESPALDAR esa decisión en vez de ser el peaje para llegar. */}
+      <section className="sec" style={css('padding:80px 40px;background:#003B71')}>
+        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
+          <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
+          <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
+            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h2>
+            <p style={css('font-size:17px;color:#B3C7DB;line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
+            <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;margin-bottom:34px')}>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>En 1 minuto</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
             </div>
-
-            <div key={v.selKey} style={css('margin-top:24px;background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;animation:glowin 1.1s cubic-bezier(.22,1,.36,1)')}>
-              <div style={css('display:flex;align-items:center;gap:12px;padding:18px 22px;background:#003B71;color:#fff')}>
-                <div style={css('width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center')}>{v.selIcon}</div>
-                <div><div style={css('font-size:12px;color:#9bc0e0')}>Cobertura</div><div className="disp" style={css('font-size:20px;font-weight:800')}>{v.selName}</div></div>
-              </div>
-              <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr 1fr')}>
-                {v.selRows.map((row, i) => (
-                  <div key={i} style={css(row.wrap)}>
-                    <div style={css('display:flex;align-items:center;gap:7px;margin-bottom:8px')}><span style={css('width:9px;height:9px;border-radius:999px;background:' + row.color)}></span><span style={css('font-size:13px;font-weight:700;color:#003B71')}>{row.plan}</span></div>
-                    <div style={css(row.badge)}>{row.status}</div>
-                    <div style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin-top:6px')}>{row.detail}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
-          </div>
-
-          {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia
-              utilidad; acá una entrada honesta, no un buscador que finge. La
-              búsqueda real (médicos, sanatorios, estudios) vive en la guía. */}
-          <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div style={css('width:52px;height:52px;border-radius:14px;background:#003B71;color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
-            <div>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>¿Dónde atenderte?</div>
-              <div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>Buscá tu <b style={css('color:#003B71')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
-            </div>
-            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:15px;background:#007d77;color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>
@@ -532,90 +504,121 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CLARIDAD DEL BOLSILLO — "qué pagás aparte" (pendiente #2 del HANDOFF;
-          pedido explícito de la reunión con departamentos, 22 jul 2026: traducir
-          "diferencial/preferencial" a "esto lo pagás vos"). Honestidad sobre el
-          gasto propio, en gris (regla de tono: nunca rojo, nunca "No cubierto" a
-          secas). Datos = cobertura real de la grilla oficial
-          (datos/planes-vigentes/ANALISIS-arancel-diferenciado.md §2 y §4).
-          AD = precio de convenio (cláusula 2.10) — la versión honesta de
-          "arancel diferenciado". */}
-      <section id="bolsillo" className="sec" style={css('padding:80px 40px;background:#fff')}>
+      {/* QUÉ CUBRE Y QUÉ PAGÁS — sección FUSIONADA (25 jul 2026, decisión del
+          usuario sobre el mapa de la home). Antes eran dos secciones consecutivas
+          —"qué cubre" y "claridad del bolsillo"— que respondían la MISMA pregunta
+          y pesaban 4 pantallas de móvil seguidas, dentro de un tramo de 6.2
+          pantallas de tablas encadenadas ("el valle de la súper saturación").
+          Al fusionarlas, los tres modos (cubierto / copago / precio de convenio)
+          dejan de ser tres tarjetas grandes y pasan a ser la LEYENDA del
+          explorador: es lo que siempre fueron — el vocabulario que usan sus
+          propios badges. El gradiente honesto pasa de tres tarjetas altas a tres
+          filas comparables (además, en móvil ya no se apilan).
+          ⚠ Conserva las DOS anclas (#cartilla y #bolsillo): el menú enlaza ambas.
+          Datos = grilla oficial (datos/planes-vigentes/ANALISIS-arancel-
+          diferenciado.md §2 y §4). "Precio de convenio" = cláusula 2.10, la
+          versión honesta de "arancel diferenciado". */}
+      <section id="cartilla" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:670px;margin:0 auto 34px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que pagás de tu bolsillo</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>No todo lo cubre el plan. <span style={css('color:#007d77')}>Te lo decimos de entrada.</span></h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0;font-family:var(--font-inter),sans-serif')}>Ningún plan de salud cubre el 100% — y preferimos decírtelo a prometerte lo contrario. Estos son los tres modos en que se reparte lo que usás, para que sepas cuánto sale de tu bolsillo antes de firmar.</p>
+          <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto 24px')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Qué cubre y qué pagás</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre el plan y <span style={css('color:#007d77')}>qué ponés vos</span>.</h2>
+            <p style={css('font-size:17px;line-height:1.6;color:#3D3D3D;margin:0;font-family:var(--font-inter),sans-serif')}>Ningún plan de salud cubre el 100% — y preferimos decírtelo a prometerte lo contrario. Elegí una cobertura y mirá exactamente qué te toca en cada plan.</p>
           </div>
 
-          {/* Los tres modos, en idioma de familia (CT / COP / AD traducidos) */}
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px')}>
+          {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
+              es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
+          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:#F7FBFB;border:1px solid #E8EFEE;border-radius:14px;margin-bottom:18px')}>
             {[
-              { c: '#00BCB4', t: 'Cubierto', b: 'No ponés nada. El plan lo cubre al 100%.' },
-              { c: '#8a9997', t: 'Copago', b: 'Ponés una parte. Está cubierto… a medias — es la sorpresa más común.' },
-              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'No lo cubre el plan, pero lo hacés al precio negociado de SP: más barato que en la calle.' },
+              { c: '#00BCB4', t: 'Cubierto', b: 'no ponés nada' },
+              { c: '#8a9997', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
+              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
             ].map((m, i) => (
-              <div key={i} style={css('background:#F7FBFB;border:1px solid #E8EFEE;border-radius:16px;padding:22px 22px')}>
-                <div style={css('display:flex;align-items:center;gap:9px;margin-bottom:9px')}><span style={css('width:12px;height:12px;border-radius:999px;flex:none;background:' + m.c)}></span><span style={css('font-size:16px;font-weight:800;color:#003B71')}>{m.t}</span></div>
-                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55;font-family:var(--font-inter),sans-serif')}>{m.b}</div>
-              </div>
+              <span key={i} style={css('display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.5')}>
+                <span style={css('width:10px;height:10px;border-radius:999px;flex:none;transform:translateY(1px);background:' + m.c)}></span>
+                <span><b style={css('color:#003B71;font-weight:800')}>{m.t}</b> <span style={css('color:#6B6B6B')}>· {m.b}</span></span>
+              </span>
             ))}
           </div>
 
-          {/* Cobertura real por plan — el gradiente honesto (45 → 66 → 93) */}
-          <div data-rv style={css('background:#F5F8FB;border:1px solid #e4ecf3;border-radius:20px;padding:28px 28px 22px')}>
-            <div style={css('text-align:center;margin-bottom:22px')}>
-              <div className="disp" style={css('font-size:19px;font-weight:800;color:#003B71')}>Cuánto cubre de verdad cada plan</div>
-              <div style={css('font-size:14px;color:#6B6B6B;line-height:1.5;margin-top:5px;font-family:var(--font-inter),sans-serif')}>Cuanto más alto el plan, menos ponés de tu bolsillo. Ese es el único upsell honesto.</div>
-            </div>
-            <div className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px')}>
-              {[
-                { name: 'Bronze', col: '#A9724B', cub: 45, conv: 12 },
-                { name: 'Silver', col: '#66717E', cub: 66, conv: 8 },
-                { name: 'Gold', col: '#B8860B', cub: 93, conv: 2 },
-              ].map((p, i) => (
-                <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:14px;padding:18px 18px')}>
-                  <div style={css('display:flex;align-items:center;gap:8px;margin-bottom:10px')}><span style={css('width:10px;height:10px;border-radius:999px;flex:none;background:' + p.col)}></span><span style={css('font-size:14px;font-weight:800;color:#003B71')}>{p.name}</span></div>
-                  <div style={css('display:flex;align-items:baseline;gap:6px;margin-bottom:11px')}><span className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1')}>{p.cub}%</span><span style={css('font-size:13px;color:#6B6B6B;font-family:var(--font-inter),sans-serif')}>cubierto al 100%</span></div>
-                  <div style={css('display:flex;height:9px;border-radius:999px;overflow:hidden;background:#eef2f1')} role="img" aria-label={p.name + ': ' + p.cub + ' por ciento cubierto al cien por ciento'}>
-                    <div style={css('width:' + p.cub + '%;background:#00BCB4')}></div>
-                    <div style={css('width:' + (100 - p.cub - p.conv) + '%;background:#8a9997')}></div>
-                    <div style={css('width:' + p.conv + '%;background:#5f6d6c')}></div>
-                  </div>
-                  <div style={css('font-size:12.5px;color:#6B6B6B;line-height:1.5;margin-top:9px;font-family:var(--font-inter),sans-serif')}>El resto lo ponés vos: con copago o al precio de convenio.</div>
-                </div>
+          <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+            <div style={css('font-size:13px;font-weight:700;color:#003B71;margin-bottom:12px')}>Elegí una cobertura:</div>
+            <div style={css('display:flex;flex-wrap:wrap;gap:9px')}>
+              {v.chips.map((c, i) => (
+                <button key={i} onClick={c.onPick} aria-pressed={v.selName === c.name} style={css(c.style)}>{c.name}</button>
               ))}
             </div>
-            <div style={css('font-size:12px;color:#666;line-height:1.5;margin-top:16px;text-align:center;font-family:var(--font-inter),sans-serif')}>Sobre 928 servicios de la grilla vigente. «Al precio de convenio» = no cubierto por el plan, con la tarifa acordada de SP (cláusula 2.10 del contrato) — más barato que como particular.</div>
+
+            <div key={v.selKey} style={css('margin-top:24px;background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;animation:glowin 1.1s cubic-bezier(.22,1,.36,1)')}>
+              <div style={css('display:flex;align-items:center;gap:12px;padding:18px 22px;background:#003B71;color:#fff')}>
+                <div style={css('width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center')}>{v.selIcon}</div>
+                <div><div style={css('font-size:12px;color:#9bc0e0')}>Cobertura</div><div className="disp" style={css('font-size:20px;font-weight:800')}>{v.selName}</div></div>
+              </div>
+              <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr 1fr')}>
+                {v.selRows.map((row, i) => (
+                  <div key={i} style={css(row.wrap)}>
+                    <div style={css('display:flex;align-items:center;gap:7px;margin-bottom:8px')}><span style={css('width:9px;height:9px;border-radius:999px;background:' + row.color)}></span><span style={css('font-size:13px;font-weight:700;color:#003B71')}>{row.plan}</span></div>
+                    <div style={css(row.badge)}>{row.status}</div>
+                    <div style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin-top:6px')}>{row.detail}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
+          </div>
+
+          {/* El gradiente honesto (45 → 66 → 93), ahora en filas comparables: tres
+              tarjetas altas se apilaban en móvil y costaban casi una pantalla. */}
+          <div data-rv style={css('margin-top:18px;background:#F5F8FB;border:1px solid #e4ecf3;border-radius:18px;padding:22px 24px 18px')}>
+            <div style={css('text-align:center;margin-bottom:14px')}>
+              <div className="disp" style={css('font-size:18px;font-weight:800;color:#003B71')}>Cuánto cubre de verdad cada plan</div>
+              <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5;margin-top:4px;font-family:var(--font-inter),sans-serif')}>Cuanto más alto el plan, menos ponés de tu bolsillo. Ese es el único upsell honesto.</div>
+            </div>
+            <div style={css('display:flex;align-items:center;gap:12px;font-family:var(--font-inter),sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a9997;padding-bottom:7px')}>
+              <span style={css('width:72px;flex:none')}>Plan</span>
+              <span style={css('flex:1')}>Cómo se reparte lo que usás</span>
+              <span style={css('width:52px;flex:none;text-align:right')}>Cubierto</span>
+            </div>
+            {[
+              { name: 'Bronze', col: '#A9724B', cub: 45, conv: 12 },
+              { name: 'Silver', col: '#66717E', cub: 66, conv: 8 },
+              { name: 'Gold', col: '#B8860B', cub: 93, conv: 2 },
+            ].map((p, i) => (
+              <div key={i} style={css('display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid #e4ecf3')}>
+                <span style={css('width:72px;flex:none;display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:800;color:#003B71')}><span style={css('width:10px;height:10px;border-radius:999px;flex:none;background:' + p.col)}></span>{p.name}</span>
+                <span style={css('flex:1;display:flex;height:10px;border-radius:999px;overflow:hidden;background:#eef2f1')} role="img" aria-label={p.name + ': ' + p.cub + ' por ciento cubierto al cien por ciento, el resto con copago o al precio de convenio'}>
+                  <span style={css('width:' + p.cub + '%;background:#00BCB4')}></span>
+                  <span style={css('width:' + (100 - p.cub - p.conv) + '%;background:#8a9997')}></span>
+                  <span style={css('width:' + p.conv + '%;background:#5f6d6c')}></span>
+                </span>
+                <span className="disp num-tnum" style={css('width:52px;flex:none;text-align:right;font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{p.cub}%</span>
+              </div>
+            ))}
+            <div style={css('font-size:12px;color:#666;line-height:1.5;margin-top:13px;text-align:center;font-family:var(--font-inter),sans-serif')}>Sobre 928 servicios de la grilla vigente. El resto lo ponés vos: con copago o al precio de convenio (cláusula 2.10 del contrato) — más barato que como particular.</div>
           </div>
 
           {/* Exclusiones verdaderas — no las cubre ningún plan (capa 1 del análisis) */}
-          <div data-rv style={css('margin-top:22px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
+          <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:20px 24px;display:flex;align-items:flex-start;gap:14px')}>
             <span style={css('width:26px;height:26px;border-radius:8px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
             <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}><b style={css('color:#333')}>Y esto no lo cubre ningún plan</b> — mejor saberlo hoy que en la sala de espera: odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad (cardiocirugía, neurocirugía y cirugía vascular).</div>
           </div>
-        </div>
-      </section>
 
-      {/* SIMULADOR — teaser hacia /simulador */}
-      <section className="sec" style={css('padding:80px 40px;background:#003B71')}>
-        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
-          <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
-          <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
-            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h2>
-            <p style={css('font-size:17px;color:#B3C7DB;line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
-            <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;margin-bottom:34px')}>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>En 1 minuto</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
+          {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia
+              utilidad; acá una entrada honesta, no un buscador que finge. La
+              búsqueda real (médicos, sanatorios, estudios) vive en la guía. */}
+          <div data-rv className="two-col" style={css('margin-top:18px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div style={css('width:52px;height:52px;border-radius:14px;background:#003B71;color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+            <div>
+              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>¿Dónde atenderte?</div>
+              <div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>Buscá tu <b style={css('color:#003B71')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
             </div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:15px;background:#007d77;color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>
 
-      {/* CÓMO FUNCIONA (después del simulador) */}
+      {/* CÓMO FUNCIONA — el proceso después de decidir (el teaser del simulador
+          subió al puesto 2; esta sección sigue explicando qué pasa al contratar) */}
       <section className="sec" style={css('padding:72px 40px 64px;background:#fff')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>

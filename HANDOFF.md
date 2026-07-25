@@ -817,6 +817,36 @@ usa `npm ci`).
       `app/components/Simulador.jsx`, `app/simulador/page.jsx`, `app/agendar/Agendar.jsx`,
       `app/blog/*`, `app/historia/page.jsx`.
 
+12b. **⭐ REBALANCEO DE LA HOME — la acción antes del estudio (25 jul 2026,
+    decisión del usuario sobre el mapa medido). HECHO** (BITACORA cap. 53).
+    Cierra el pendiente del "valle de la súper saturación" que el usuario abrió en
+    julio. **Se midió antes de opinar** (`scratchpad/home-map.mjs`: alto y posición
+    de cada sección en pantallas, desktop y móvil) y el mapa mostró dos cosas duras:
+    - El **teaser del simulador arrancaba en la pantalla 7.2 de 14.9** en móvil: la
+      única herramienta que el usuario dijo que funciona quedaba enterrada bajo
+      **6.2 pantallas seguidas de tablas** (qué cubre 1.88 + comparador 2.2 +
+      bolsillo 2.12). La home hacía estudiar el producto antes de dejar probarlo.
+    - Dos de esos tres bloques estaban en registro negativo (lo que *no* tenés, lo
+      que pagás vos), encadenados y en la primera mitad.
+    **Qué se hizo:** (a) el **teaser del simulador sube al puesto 2**, pegado al
+    hero — "protección que se siente" → probala; todo lo que sigue pasa a respaldar
+    la decisión en vez de ser el peaje para llegar a ella. (b) **"Qué cubre" y
+    "Claridad del bolsillo" se fusionan** en una sola sección: respondían la misma
+    pregunta, y los tres modos (cubierto/copago/precio de convenio) pasaron de ser
+    tres tarjetas grandes a ser la **leyenda del explorador** — que es lo que
+    siempre fueron, el vocabulario de sus propios badges. El gradiente honesto
+    (45/66/93) pasó de tres tarjetas altas a **tres filas alineadas**, aplicando el
+    principio del cap. 47: *una diferencia solo se ve alineada*.
+    **Orden nuevo:** Hero → **Simulador** → Comparador → **Qué cubre y qué pagás** →
+    Cómo funciona → Manifiesto → Diferenciadores → Confianza → Red → FAQ → Cierre.
+    **Medido:** simulador de pantalla 7.2 → **1.0**; total móvil 14.9 → **13.7**
+    pantallas; la sección fusionada 4.0 → **2.77**.
+    ⚠ La sección fusionada **conserva las dos anclas** (`#cartilla` en la sección y
+    `#bolsillo` en la leyenda) porque el menú de `Header.jsx` enlaza ambas. De paso
+    se corrigieron las etiquetas del menú que aún decían "Buscá…/Escribí un estudio"
+    (el buscador ya no existe desde el cap. 44). Territorio: `app/page.jsx`,
+    `app/Header.jsx` (solo rótulos del menú — compartido, declarado).
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

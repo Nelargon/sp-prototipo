@@ -1553,6 +1553,57 @@ Peor: el peor número no era ese. El botón deshabilitado de `/agendar/` daba
 
 ---
 
+## Capítulo 53 — Medir la home antes de opinar sobre la home
+
+**Qué intentamos.** Encarar el pendiente más viejo y más difuso del proyecto: el
+"valle de la súper saturación" que el usuario había nombrado semanas antes —
+*"estás yendo mucho por el tema de la súper claridad… demasiados botones… quiero
+que vayas un poquito más atrás, mires el panorama completo y lo que realmente se
+necesita poner en la home page"*. Un diagnóstico sin números es una opinión, y
+sobre opiniones no se rediseña una home.
+
+**Qué pasó.** En vez de proponer, medimos: un script que recorre la home y devuelve
+**el alto y la posición de cada sección en pantallas**, desktop y móvil. El valle
+dejó de ser una sensación y pasó a tener coordenadas:
+
+- El **teaser del simulador arrancaba en la pantalla 7.2 de 14.9** en móvil. La
+  única herramienta que el usuario había dicho que funcionaba estaba enterrada
+  bajo **6.2 pantallas seguidas de tablas**.
+- Esas tablas eran tres: "qué cubre" (1.88), comparador (2.2) y "bolsillo" (2.12).
+  Dos de las tres en registro negativo — lo que *no* tenés, lo que pagás vos —
+  encadenadas y en la primera mitad.
+- "Qué cubre" concentraba **11 botones**: la mayor densidad de la página, el
+  "demasiados botones" del usuario con nombre y apellido.
+
+Con el mapa sobre la mesa, las dos decisiones se tomaron solas: **subir el
+simulador al puesto 2** y **fusionar "qué cubre" con "bolsillo"**.
+
+**Qué aprendimos.**
+
+- **La home no se rediseña con criterio, se rediseña con un mapa.** El mismo
+  problema que veníamos nombrando de forma vaga se volvió accionable cuando tuvo
+  unidades. "Pantallas de scroll" resultó la unidad correcta: es lo que la persona
+  realmente gasta.
+- **El orden es un argumento.** Poner el estudio antes que la acción dice
+  "demostrame que entendiste antes de dejarte probar". Poner la acción antes dice
+  "probá; acá abajo está todo lo que respalda lo que viste". Es la misma
+  información y la promesa cambia entera.
+- **La mejor fusión no recorta: descubre que dos cosas eran una.** "Qué cubre" y
+  "bolsillo" respondían la misma pregunta. Y al juntarlas apareció lo que no se
+  veía por separado: los tres modos (cubierto / copago / precio de convenio) **no
+  eran una sección, eran la leyenda del explorador** — el vocabulario que sus
+  propios badges ya usaban. Puestos como leyenda ocupan un cuarto y explican más.
+- **Los principios viejos siguen pagando.** El gradiente 45/66/93 estaba en tres
+  tarjetas altas que en móvil se apilaban: imposible comparar. Pasarlo a tres
+  filas con las barras alineadas es el cap. 47 otra vez —*una diferencia solo se
+  ve alineada*— aplicado en otra parte de la página.
+- **Nota de método, segunda vez en dos días:** el contenedor volvió a reiniciarse
+  y otra vez se llevó ediciones no commiteadas. La regla del cap. 51 ya no es un
+  aprendizaje sino un hábito: **commitear y pushear apenas una tanda funciona**,
+  no al final. Lo pusheado es lo único que existe.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

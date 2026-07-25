@@ -75,7 +75,7 @@ export default function Header({ variant = 'dark' }) {
             <div className="navmenu-wrap">
               <a href={`${BP}/#cartilla`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Cobertura {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
-                <Item href={`${BP}/#cartilla`} t="Buscá qué cubre tu plan" s="Escribí un estudio o consulta y mirá qué cubre cada plan" />
+                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Elegí una cobertura y mirá qué te toca en cada plan" />
                 <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Carencias, preexistencias, cambios de plan y más" />
               </div></div>
