@@ -751,6 +751,43 @@ usa `npm ci`).
     queda condicionado por ella. Territorio: `app/quote.js`,
     `app/components/Simulador.jsx`.
 
+11y. **Resalte balanceado en el comparador + poda del FAB redundante (25 jul
+    2026, observación del usuario). HECHO.** Dos afinados de la home, misma raíz
+    ("ruido que no se gana su lugar", ver BITACORA cap. 50):
+    - **Comparador:** el badge "La más elegida" de Silver vivía dentro del flujo de
+      su columna y empujaba el nombre hacia abajo, descuadrando la línea base de las
+      tres columnas ("desbalancea la estética"). Fix: **ranura de badge de alto fijo
+      en las TRES columnas** (vacía en Bronze/Gold) — nombres, precios y CTAs quedan
+      alineados; el resalte de Silver queda como franja teñida serena, no como bulto.
+      Regla general: *un elemento que aparece en un ítem de una grilla comparativa
+      reserva su alto en todos.*
+    - **FAB flotante:** se eliminó el pill "Simulá tu plan" flotante (desktop, abajo
+      a la derecha) — el header es `position:fixed` y ya lleva ese CTA en el scroll,
+      así que el FAB repetía el mismo verbo a 300px. **Se conserva** el WhatsApp
+      flotante (otra acción) y, en móvil, la barra CTA inferior (Simulá + WhatsApp)
+      intacta. Regla de etiquetas aplicada a CTAs: *un botón se gana su lugar solo
+      si ofrece un destino o momento que otro no cubre.* Tocó `app/page.jsx`
+      (comparador + bloque flotantes + scroll useEffect) y `app/globals.css`
+      (`.cotizar-fab`/`.fab-full`/`.fab-short` eliminadas).
+
+11z. **Comparador móvil que encaja + protagonismo de las tres piezas bajo la tabla
+    (25 jul 2026, observación del usuario). HECHO** (mismo PR #59, BITACORA cap. 51):
+    - **Móvil:** la tabla con scroll horizontal mostraba un solo plan y la columna
+      de servicios se comía la pantalla ("no se ve tan bien… algo que encaje"). La
+      grilla pasó a clase (`.cmp-row`/`.cmp-inner`) para reencuadrar por CSS: en
+      ≤640px la etiqueta se angosta a 104px y los planes se ensanchan → entran DOS
+      planes completos + asomo del tercero (affordance), con la etiqueta pegajosa y
+      un rótulo "Deslizá para comparar los tres planes →" (`.cmp-hint`, solo móvil).
+      Desktop sin cambios. Regla: *el teléfono no es la web angosta — comparativa en
+      móvil = etiqueta angosta+sticky, 2 planes visibles, asomo del 3º, hint de scroll.*
+    - **Protagonismo:** las tres piezas bajo la tabla (garantía "Todos los planes te
+      garantizan", "Ver todos los planes", "un seguro no es un gasto") estaban muy
+      chicas ("es magnífico, pero se ve muy pequeño… más protagonismo"). Se
+      agrandaron: la garantía con check en círculo teal + más cuerpo; "Ver todos los
+      planes" ahora es CTA con borde (hover relleno, `.cmp-verplanes`); el "un seguro
+      no es un gasto" más grande. Regla: *un buen elemento subdimensionado se saltea
+      — calidad no compensa falta de peso visual.* Tocó `app/page.jsx` + `app/globals.css`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

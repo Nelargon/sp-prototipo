@@ -97,7 +97,6 @@ export default function Page() {
       bar = root.querySelector('.sp-prog');
       if (!bar) { bar = document.createElement('div'); bar.className = 'sp-prog'; root.appendChild(bar); }
       const nav = root.querySelector('[data-nav]');
-      const cotizarFab = root.querySelector('[data-cotizar-fab]');
       const ctaBar = root.querySelector('[data-cta-bar]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
@@ -131,7 +130,6 @@ export default function Page() {
         const max = el.scrollHeight - el.clientHeight;
         bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
         if (nav) { if (y > 70) nav.classList.add('solid'); else nav.classList.remove('solid'); }
-        if (cotizarFab) { if (y > 640) cotizarFab.classList.add('show'); else cotizarFab.classList.remove('show'); }
         if (ctaBar) { if (y > 640) ctaBar.classList.add('show'); else ctaBar.classList.remove('show'); }
         if (heroBg && y < 900) heroBg.style.transform = 'translateY(' + (y * 0.16) + 'px)';
         if (heroContent && y < 900) { heroContent.style.transform = 'translateY(' + (y * 0.14) + 'px)'; heroContent.style.opacity = String(Math.max(0, 1 - y / 620)); }
@@ -460,14 +458,24 @@ export default function Page() {
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial. Lo que cambia es <b style={css('color:#007d77')}>cuánto</b> — mirá dónde está la diferencia y elegí sin adivinar.</p>
           </div>
 
+          {/* Hint de scroll (solo móvil): en el teléfono la tabla se compara
+              deslizando — decilo antes para que no se lea como algo cortado. */}
+          <div data-rv className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:#00736e')}>Deslizá para comparar los tres planes <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
+
           <div data-rv style={css('background:#fff;border:1px solid #E8E8E8;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
-            <div style={css('min-width:640px')}>
+            <div className="cmp-inner">
               {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
-              <div style={css('display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr')}>
+              <div className="cmp-row">
                 <div className="cmp-lbl" style={css('padding:18px 22px;background:#fff')}></div>
                 {v.planHead.map((ph, i) => (
                   <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid #F0F0F0;border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
-                    {ph.recommended && <div style={css('display:inline-block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px;margin-bottom:8px')}>La más elegida</div>}
+                    {/* Ranura de badge de altura fija en LAS TRES columnas: el badge de
+                        Silver ya no empuja su título hacia abajo — nombres, precios y
+                        CTAs quedan en la misma línea base (el resalte de Silver deja de
+                        desbalancear la sección; feedback del usuario, jul 2026). */}
+                    <div style={css('height:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center')}>
+                      {ph.recommended && <span style={css('font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px')}>La más elegida</span>}
+                    </div>
                     <div className="disp" style={css('font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{ph.short}</div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:#1D1D1B')}>{ph.price}</span></div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
@@ -478,7 +486,7 @@ export default function Page() {
               {/* Filas: "Al 100%" en teal en TODOS los planes que lo tienen (Gold no se
                   apaga); "Desde Silver"/"Copago" en dorado (oportunidad). Silver tenue. */}
               {v.cmp.map((row, r) => (
-                <div key={r} style={css('display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr;border-top:1px solid #F0F0F0')}>
+                <div key={r} className="cmp-row" style={css('border-top:1px solid #F0F0F0')}>
                   <div className="cmp-lbl" style={css('padding:15px 22px;background:#fff;display:flex;flex-direction:column;justify-content:center')}>
                     <span style={css('font-size:14px;font-weight:700;color:#003B71;line-height:1.2')}>{row.name}</span>
                     {row.unit && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;margin-top:2px')}>{row.unit}</span>}
@@ -499,22 +507,22 @@ export default function Page() {
 
           {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
               de integridad sobre la que se construyen los tres planes. */}
-          <div data-rv style={css('margin-top:16px;display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:16px 22px;border:1px solid #cfeeeb;border-radius:16px;background:#F2FBFA')}>
-            <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:#007d77;white-space:nowrap')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>Todos los planes te garantizan</span>
-            <span style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#3D3D3D;font-weight:600;line-height:1.5')}>{v.cmpIgual}</span>
+          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:18px;background:#F2FBFA')}>
+            <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:#007d77;white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#00BCB4;color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
+            <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
           </div>
 
           {/* La comparación entera vive de un vistazo arriba; el detalle
               fila-por-fila (11 servicios × 3 planes) se fue a /planes: home =
               resumen completo, la profundidad a un click (HANDOFF 11t, cap. 46). */}
-          <div data-rv style={css('text-align:center;margin-top:26px')}>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="link-teal" style={css('display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <div data-rv style={css('text-align:center;margin-top:30px')}>
+            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:13px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
 
           {/* Hilito de "por esto importa" (auditoría de conversión, jul 2026): antes de
               elegir plan, sembrar el porqué — no es un CTA a cotizar, es el argumento
               racional. Lleva a la nota de gasto de bolsillo, no a WhatsApp. */}
-          <div data-rv style={css('text-align:center;margin-top:20px;font-size:14px;color:#6B6B6B;line-height:1.6')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Por qué importa →</a></div>
+          <div data-rv style={css('text-align:center;margin:22px auto 0;max-width:660px;font-size:15.5px;color:#5A5A58;line-height:1.65')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Por qué importa →</a></div>
 
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
@@ -790,9 +798,6 @@ export default function Page() {
         </div>
         <div style={css('max-width:1100px;margin:20px auto 0;font-size:12.5px;color:#7f9cbb')}>© 2026 Salud Protegida (Odontomedica S.A.). Coberturas según los cuadernillos vigentes, sujetas a las condiciones de cada contrato.</div>
       </footer>
-
-      {/* COTIZAR STICKY (aparece al scrollear) */}
-      <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'fab' })} data-cotizar-fab className="cotizar-fab" aria-label="Cotizar mi plan" style={css('position:fixed;right:22px;bottom:90px;z-index:110;height:48px;padding:0 20px;border-radius:999px;background:#003B71;color:#fff;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg><span className="fab-full">Simulá tu plan</span><span className="fab-short">Simulá</span></a>
 
       {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
       <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#00BCB4;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>

@@ -1424,6 +1424,87 @@ confianza: justo cuando la persona acababa de entregar su nombre y su número.
 
 ---
 
+## Capítulo 50 — El resalte que desbalancea, y el segundo CTA que no suma
+
+**Qué intentamos.** Dos detalles de la home, heredados de iteraciones previas: (1)
+en el comparador, Silver se destacaba como "la más elegida" con un badge encima
+del nombre y una columna teñida; (2) al scrollear aparecía un FAB flotante "Simulá
+tu plan" abajo a la derecha, además del CTA del header.
+
+**Qué pasó.** El usuario miró la sección y nombró dos cosas distintas con la misma
+raíz —*ruido que no se gana su lugar*:
+
+- *"Cuando dice acerca del plan Silver, el más usado, como que desbalancea la
+  estética de esa parte."* El badge vivía **dentro** del flujo de la columna del
+  medio, así que empujaba el nombre "Silver" hacia abajo: Bronze y Gold quedaban
+  en una línea base, Silver en otra. El resalte, que buscaba anclar, terminaba
+  descuadrando las tres columnas.
+- *"Ya tenemos un iconito de 'Simulá tu plan' abajo y también en el header, que se
+  desplaza al hacer scroll. No creo que sea necesario ese de abajo… ¿cuál es la
+  utilidad?"* Dos botones con **el mismo verbo** compitiendo por la misma acción.
+
+**Qué aprendimos.**
+
+- **Énfasis sin alineación se lee como desbalance.** Para destacar una columna
+  entre pares, la *ranura* del badge tiene que existir en **todas** las columnas
+  (vacía en las demás), no solo en la destacada. Si el marcador vive en el flujo de
+  una sola, mueve solo a esa y rompe la línea base. La regla general: **un elemento
+  que aparece en un ítem de una grilla comparativa reserva su alto en todos.** Así
+  el resalte de Silver quedó como una tenue franja teñida —emphasis sereno— en vez
+  de un bulto que descuadra.
+- **Dos CTAs con el mismo verbo no se refuerzan: se estorban.** El header ya es
+  `position:fixed` y su "Simulá tu plan" viaja con el scroll en desktop; el FAB
+  flotante repetía exactamente esa función a 300px de distancia. Redundancia, no
+  seguro. (Se aplica la regla de etiquetas a los CTAs: **un botón se gana su lugar
+  solo si ofrece un destino o un momento que otro no cubre.**) El WhatsApp flotante
+  se queda —*ese* sí es otra acción— y en móvil la barra inferior sigue igual: un
+  Simulá + un WhatsApp, sin flotantes que tapen texto.
+
+El hilo con el cap. 48 y con el "valle de la súper saturación": **la claridad no es
+agregar señales, es podar las que no aportan.** Menos, pero cada cosa en su lugar.
+
+---
+
+## Capítulo 51 — El teléfono no es la web angosta, y darle peso a lo que ya funcionaba
+
+**Qué intentamos.** El comparador de la home era una tabla con scroll horizontal
+(`min-width:640px`). En desktop se ve entero; confiamos en que en móvil "también
+se entiende deslizando". Y debajo de la tabla vivían tres piezas que al usuario le
+encantan —la banda "Todos los planes te garantizan", el "Ver todos los planes" y el
+"un seguro no es un gasto"— pero chicas, casi al pie.
+
+**Qué pasó.** Dos observaciones del usuario, el mismo día:
+
+- *"Este espacio es genial… pero se ve muy pequeño. Siento que debería tener más
+  protagonismo."* Las tres piezas buenas estaban subdimensionadas: contenido
+  magnífico que la jerarquía mandaba a segundo plano.
+- *"La versión móvil de esta comparativa no se ve tan bien todavía… algo que
+  encaje y no se vea medio raro."* En 390px la columna de servicios (≈222px) se
+  comía la pantalla y dejaba ver **un solo plan**, cortado, sin señal de que había
+  más. Se leía como algo roto, no como algo que se desliza.
+
+**Qué aprendimos.**
+
+- **Un buen elemento subdimensionado se saltea.** Calidad no compensa falta de
+  peso visual: si algo importa, tiene que *pesar* — cuerpo, aire, y en el caso del
+  "Ver todos los planes", forma de CTA (borde + relleno en hover) en vez de link
+  al pie. Darle protagonismo fue agrandar lo que ya era bueno, no inventar nada.
+- **El teléfono no es "la web pero angosta".** Una tabla comparativa en 360–430px
+  necesita: columna de etiquetas **angosta y pegajosa** (labels siempre visibles),
+  **dos planes completos** a la vez (no uno), **asomo del tercero** como affordance
+  de scroll, y un **rótulo explícito** ("Deslizá para comparar los tres planes →")
+  para que el corte se lea como intención, no como bug. La grilla se movió a una
+  clase (`.cmp-row`) para reencuadrarla por CSS sin tocar el markup fila por fila.
+- **Nota de método — el contenedor es efímero, el remoto es la memoria.** A mitad
+  de sesión el clon local "volvió" a un `main` viejo (reflog: *Reset to
+  origin/main* sobre un commit anterior; el commit ya pusheado no estaba en el
+  object-db local). El susto dura hasta recordar la regla: **lo pusheado es la
+  verdad.** `git fetch` + `git reset` a `origin/<rama>` recuperó el trabajo intacto
+  (el PR y su CI nunca se habían movido). Nunca reconstruir a mano lo que el remoto
+  ya tiene guardado.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
