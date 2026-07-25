@@ -1,9 +1,9 @@
 {
-  "fecha": "2026-07-21T18:23:12.204Z",
+  "fecha": "2026-07-25T11:42:01.677Z",
   "oks": [
     {
       "frente": "funcional",
-      "detalle": "crawler: 85 links internos únicos, todos responden"
+      "detalle": "crawler: 90 links internos únicos, todos responden"
     },
     {
       "frente": "funcional",
@@ -59,7 +59,7 @@
     },
     {
       "frente": "responsive",
-      "detalle": "barrido 360/390/430 completado en 4 páginas"
+      "detalle": "barrido 360/390/430 completado en 6 páginas"
     },
     {
       "frente": "responsive",
@@ -87,56 +87,46 @@
     },
     {
       "frente": "accesibilidad",
-      "detalle": "teclado: Tab recorre 11 elementos distintos en la home"
+      "detalle": "teclado: Tab recorre 12 elementos distintos en la home"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 177 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 181 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/simulador/: 169 KB gzip de contenido crítico (≤300)"
+      "detalle": "/simulador/: 171 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/blog/: 152 KB gzip de contenido crítico (≤300)"
+      "detalle": "/planes/: 162 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "/historia/: 153 KB gzip de contenido crítico (≤300)"
+      "detalle": "/agendar/: 158 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 32 ms (< 3 s)"
+      "detalle": "/blog/: 163 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/historia/: 154 KB gzip de contenido crítico (≤300)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "home en 3G rápido: contenido en 27 ms (< 3 s)"
     },
     {
       "frente": "contenido",
-      "detalle": "19 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
+      "detalle": "21 páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)"
     },
     {
       "frente": "contenido",
-      "detalle": "lente Shapiro: hero(h1=1) + prueba social(25 elementos) + objeciones(FAQ) + 8 CTAs"
+      "detalle": "lente Shapiro: hero(h1=1) + prueba social(25 elementos) + objeciones(FAQ) + 9 CTAs"
     }
   ],
   "hallazgos": [
-    {
-      "frente": "accesibilidad",
-      "severidad": "confunde",
-      "detalle": "contraste 2.37:1 (mín 4.5:1) — \"Resonancia (RM)\" rgb(255, 255, 255) sobre rgb(0,188,180)",
-      "donde": "/"
-    },
-    {
-      "frente": "accesibilidad",
-      "severidad": "confunde",
-      "detalle": "contraste 2.20:1 (mín 4.5:1) — \"Un asesor te acompaña a elegir, \" rgba(255, 255, 255, 0.92) sobre rgb(0,188,180)",
-      "donde": "/"
-    },
-    {
-      "frente": "accesibilidad",
-      "severidad": "confunde",
-      "detalle": "contraste 2.10:1 (mín 4.5:1) — \"Simulá tu plan\" rgb(255, 255, 255) sobre rgb(41,199,192)",
-      "donde": "/"
-    },
     {
       "frente": "accesibilidad",
       "severidad": "cosmetico",

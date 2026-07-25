@@ -726,6 +726,31 @@ usa `npm ci`).
     pendiente el mapa sección-por-sección (qué se queda / comprime / baja a página
     profunda / reencuadra en positivo).
 
+11x. **El lead dejó de ser teatro — envío honesto con puente WhatsApp (25 jul
+    2026, aprobado por el usuario; BITACORA cap. 49).** "Enviarme mi cotización"
+    marcaba `sent:true` y no enviaba nada: la tarjeta de éxito prometía un
+    asesor que jamás iba a escribir (violaba el principio inmutable #7 en el
+    sitio publicado). Ahora el submit tiene un canal real con respaldo:
+    (a) **CRM listo para enchufar** — `HUBSPOT_PORTAL_ID = '48242096'` (portal
+    real de SP) y `HUBSPOT_FORM_ID` en `app/quote.js`; con el ID cargado, el
+    lead viaja a HubSpot por la API pública de formularios (funciona desde el
+    sitio estático, sin backend). **Falta crear el formulario en HubSpot**
+    (Marketing → Formularios) con campos `firstname`, `phone`, `email`,
+    `message` — al pegar su ID el CRM queda vivo sin tocar más código.
+    (b) **Puente WhatsApp mientras tanto y ante fallas** — sin formId (hoy) o
+    si el POST falla, la tarjeta post-envío pide "un solo toque": botón que
+    abre WhatsApp con la cotización entera prellenada (nombre, plan, precio,
+    grupo y el número de contacto DENTRO del mensaje, por si escriben desde
+    otro teléfono). Cada dato pedido se usa (principio #3) y una falla nunca
+    es un lead perdido (misma doctrina que el cero-resultados de la guía).
+    (c) **Eventos**: `sim_lead_submit` ahora lleva `via: 'crm'|'whatsapp'`;
+    nuevo `sim_lead_crm_error`; `click_whatsapp{origen:'simulador_lead'}`.
+    Nombre/tel/email jamás en la analítica. El formulario sigue primario y el
+    WhatsApp secundario (decisión 11k-b intacta); el rediseño empático del
+    puente de venta (11w, EN DISEÑO) corre por encima de esta cañería y no
+    queda condicionado por ella. Territorio: `app/quote.js`,
+    `app/components/Simulador.jsx`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

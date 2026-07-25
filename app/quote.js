@@ -15,6 +15,16 @@ export const WHATSAPP_NUMBER = '595 21 319 0000';
 export const SP_PHONE_DISPLAY = '(021) 319 0000';
 export const SP_TEL = '+595213190000';
 
+/* HubSpot — canal del lead del simulador. El portal es el real de SP.
+   HUBSPOT_FORM_ID queda vacío hasta que exista el formulario de leads en
+   HubSpot (Marketing → Formularios, campos: firstname, phone, email,
+   message). Con ID cargado, "Enviarme mi cotización" envía el lead al CRM
+   (API pública de formularios, funciona desde el sitio estático); vacío o
+   con el envío fallado, el lead viaja por WhatsApp prellenado — la vía que
+   ya funciona. Nunca un lead que se pierde en silencio. */
+export const HUBSPOT_PORTAL_ID = '48242096';
+export const HUBSPOT_FORM_ID = '';
+
 /* Fundación: agosto de 2002 (dato confirmado por el usuario, jul 2026).
    Años cumplidos calculados en cada build — el sitio es estático, la cifra
    se refresca sola con cada deploy. */
