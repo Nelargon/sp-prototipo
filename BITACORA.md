@@ -1611,6 +1611,54 @@ simulador al puesto 2** y **fusionar "qué cubre" con "bolsillo"**.
 
 ---
 
+## Capítulo 54 — Honestidad sin pelos en la lengua (o: la transparencia también se diseña)
+
+**Qué intentamos.** Habíamos construido, con orgullo, el bloque *"Cuánto cubre de
+verdad cada plan"*: 45% / 66% / 93%, con barras que mostraban cómo se reparte lo
+que usás. Era el punto más alto de nuestra transparencia — decir en números lo que
+nadie dice.
+
+**Qué pasó.** El usuario lo miró y lo desarmó con una analogía que vale más que el
+bloque entero:
+
+> *"La transparencia tiene que cumplir un propósito. No puede ser transparencia por
+> ser transparencia nada más. Es lo mismo que yo sea honesto, pero sin pelos en la
+> lengua: puede salir de mi boca honestidad, pero no va a caer bien."*
+
+Y tenía razón en lo concreto: **"45% cubierto" se lee como "55% NO cubierto".** El
+bloque no ayudaba a elegir nada —eso ya lo hace el comparador— y encima le pegaba
+al plan de entrada. Era una confesión, no una herramienta. Es el mismo error del
+cap. 48 con otra cara: allá la claridad ingeniosa castigaba a Gold, acá la
+transparencia numérica castigaba a Bronze.
+
+Su segunda observación fue más fina todavía: mostrábamos *lo que no cubre SP* como
+si fuera un defecto nuestro, cuando la mayoría de esas categorías son **el límite
+del producto**, no una carencia de la empresa.
+
+**Qué aprendimos.**
+
+- **La transparencia es una herramienta, no una virtud que se exhibe.** Si un dato
+  honesto no ayuda a decidir, a prepararse o a estar tranquilo, no está informando:
+  está descargando culpa. El test que queda: *¿esto para qué le sirve a quien lo
+  lee?* Si la respuesta es "para que vea que somos honestos", va afuera.
+- **Un bloque honesto tiene que terminar en una acción o en un alivio.** Las
+  exclusiones eran un callejón: "esto no lo cubre nadie, chau". Ahora terminan en
+  *"si alguna te preocupa, decíselo a tu asesor antes de firmar"*. Misma verdad,
+  con destinatario. (Es la misma doctrina del cero-resultados de la guía, cap. 44,
+  aplicada al copy: una mala noticia nunca es un callejón.)
+- **Encuadrar no es maquillar.** Decir "hasta acá llega la medicina prepaga" en vez
+  de "esto no lo cubrimos" no oculta nada — la lista es idéntica— pero ubica al
+  lector en la verdad correcta: no está viendo un defecto de SP, está viendo el
+  borde de una categoría de producto.
+- **Y un límite honesto sobre la honestidad misma:** el usuario pidió decir lo que
+  no cubre *la prepaga del país*. No tenemos ningún relevamiento de la competencia
+  —nuestro propio análisis deja la pregunta abierta— así que el copy dice "en
+  general" y no "ningún seguro del país". Ser honesto hacia afuera incluye ser
+  honesto sobre lo que **no sabemos**: una afirmación comparativa sin dato habría
+  sido, justamente, la clase de promesa que este proyecto se prohibió.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

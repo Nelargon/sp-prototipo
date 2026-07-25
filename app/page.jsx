@@ -567,42 +567,28 @@ export default function Page() {
             <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
           </div>
 
-          {/* El gradiente honesto (45 → 66 → 93), ahora en filas comparables: tres
-              tarjetas altas se apilaban en móvil y costaban casi una pantalla. */}
-          <div data-rv style={css('margin-top:18px;background:#F5F8FB;border:1px solid #e4ecf3;border-radius:18px;padding:22px 24px 18px')}>
-            <div style={css('text-align:center;margin-bottom:14px')}>
-              <div className="disp" style={css('font-size:18px;font-weight:800;color:#003B71')}>Cuánto cubre de verdad cada plan</div>
-              <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5;margin-top:4px;font-family:var(--font-inter),sans-serif')}>Cuanto más alto el plan, menos ponés de tu bolsillo. Ese es el único upsell honesto.</div>
+          {/* LO QUE QUEDA AFUERA — reencuadre (25 jul 2026, observación del usuario:
+              "la transparencia tiene que cumplir un propósito, no puede ser
+              transparencia por ser transparencia"). Dos cambios:
+              1) Se eliminó el bloque "cuánto cubre de verdad cada plan" (45/66/93).
+                 Informaba cuán incompleto es cada plan sin ayudar a decidir nada, y
+                 "45% cubierto" se lee como "55% NO cubierto": la transparencia
+                 terminaba vendiendo en contra. Lo que sí decide —qué cambia entre
+                 planes— ya vive alineado en el comparador.
+              2) Las exclusiones dejan de leerse como una carencia de SP y pasan a
+                 leerse como lo que son: el límite del PRODUCTO. Y cierran con qué
+                 hacer, no con un punto final.
+              ⚠ DATO PENDIENTE: no tenemos relevamiento de qué cubre la competencia
+              en Paraguay (el propio ANALISIS-arancel-diferenciado.md deja abierta
+              la pregunta), así que NO afirmamos "ningún seguro del país" — se dice
+              "en general". Con el dato en mano se puede endurecer. Ver HANDOFF 12c. */}
+          <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
+            <span style={css('width:28px;height:28px;border-radius:9px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
+            <div>
+              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Dónde termina la medicina prepaga</div>
+              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay categorías que, en general, la medicina prepaga no cubre — tampoco nosotros: <b style={css('color:#333')}>odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad</b> (cardiocirugía, neurocirugía y cirugía vascular). No es letra chica nuestra: es hasta dónde llega este tipo de producto.</div>
+              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:#333')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
             </div>
-            {/* #6B6B6B, no #8a9997: el gris claro daba 2.78:1 sobre este fondo
-                (lo cazó el QA una hora después de publicar la regla 12a). */}
-            <div style={css('display:flex;align-items:center;gap:12px;font-family:var(--font-inter),sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6B;padding-bottom:7px')}>
-              <span style={css('width:72px;flex:none')}>Plan</span>
-              <span style={css('flex:1')}>Cómo se reparte lo que usás</span>
-              <span style={css('width:52px;flex:none;text-align:right')}>Cubierto</span>
-            </div>
-            {[
-              { name: 'Bronze', col: '#A9724B', cub: 45, conv: 12 },
-              { name: 'Silver', col: '#66717E', cub: 66, conv: 8 },
-              { name: 'Gold', col: '#B8860B', cub: 93, conv: 2 },
-            ].map((p, i) => (
-              <div key={i} style={css('display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid #e4ecf3')}>
-                <span style={css('width:72px;flex:none;display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:800;color:#003B71')}><span style={css('width:10px;height:10px;border-radius:999px;flex:none;background:' + p.col)}></span>{p.name}</span>
-                <span style={css('flex:1;display:flex;height:10px;border-radius:999px;overflow:hidden;background:#eef2f1')} role="img" aria-label={p.name + ': ' + p.cub + ' por ciento cubierto al cien por ciento, el resto con copago o al precio de convenio'}>
-                  <span style={css('width:' + p.cub + '%;background:#00BCB4')}></span>
-                  <span style={css('width:' + (100 - p.cub - p.conv) + '%;background:#8a9997')}></span>
-                  <span style={css('width:' + p.conv + '%;background:#5f6d6c')}></span>
-                </span>
-                <span className="disp num-tnum" style={css('width:52px;flex:none;text-align:right;font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{p.cub}%</span>
-              </div>
-            ))}
-            <div style={css('font-size:12px;color:#666;line-height:1.5;margin-top:13px;text-align:center;font-family:var(--font-inter),sans-serif')}>Sobre 928 servicios de la grilla vigente. El resto lo ponés vos: con copago o al precio de convenio (cláusula 2.10 del contrato) — más barato que como particular.</div>
-          </div>
-
-          {/* Exclusiones verdaderas — no las cubre ningún plan (capa 1 del análisis) */}
-          <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:20px 24px;display:flex;align-items:flex-start;gap:14px')}>
-            <span style={css('width:26px;height:26px;border-radius:8px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
-            <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}><b style={css('color:#333')}>Y esto no lo cubre ningún plan</b> — mejor saberlo hoy que en la sala de espera: odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad (cardiocirugía, neurocirugía y cirugía vascular).</div>
           </div>
 
           {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia

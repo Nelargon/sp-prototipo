@@ -847,6 +847,35 @@ usa `npm ci`).
     (el buscador ya no existe desde el cap. 44). Territorio: `app/page.jsx`,
     `app/Header.jsx` (solo rótulos del menú — compartido, declarado).
 
+12c. **⭐ LA TRANSPARENCIA TIENE QUE CUMPLIR UN PROPÓSITO (25 jul 2026, corrección
+    del usuario). HECHO** (BITACORA cap. 54). Su formulación, que queda como regla:
+    *"Creo que estamos llegando a un punto en el cual la transparencia no sé si
+    ayuda realmente, porque parece que somos más negativos que positivos. La
+    transparencia tiene que cumplir un propósito, no puede ser transparencia por
+    ser transparencia nada más. Es lo mismo que yo sea honesto pero sin pelos en la
+    lengua: puede salir de mi boca honestidad, pero no va a caer bien."*
+    - **Se eliminó el bloque "Cuánto cubre de verdad cada plan"** (45/66/93).
+      Informaba cuán incompleto es cada plan sin ayudar a decidir nada, y "45%
+      cubierto" se lee como **"55% NO cubierto"**: la transparencia terminaba
+      vendiendo en contra del plan de entrada. Lo que sí ayuda a decidir —qué
+      cambia entre planes— ya vive alineado en el comparador. El dato sigue en
+      `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` para producto.
+    - **Las exclusiones se reencuadraron**: de "esto no lo cubre ningún plan
+      [nuestro]" —que se leía como carencia de SP— a **"Dónde termina la medicina
+      prepaga"**, el límite del PRODUCTO. Y cierran con qué hacer ("decíselo a tu
+      asesor antes de firmar"), no con un punto final. **Test para lo que venga:
+      un bloque honesto que no termina en una acción o en un alivio es una mala
+      noticia sin destinatario — no es transparencia, es descargo.**
+    - ⚠ **DATO PENDIENTE (bloquea endurecer el copy).** El usuario pidió decir lo
+      que **no cubre la medicina prepaga en el país**, no solo SP. La lista actual
+      sale del **cuadernillo de SP** y no tenemos ningún relevamiento de la
+      competencia — el propio análisis deja abierta la pregunta *"¿hay cosas que la
+      competencia sí cubre?"* (§5.4). Por eso el copy dice **"en general"** y no
+      "ningún seguro del país": afirmar eso sin dato sería una afirmación
+      comparativa infundada. **Con un relevamiento de 2–3 competidores se puede
+      endurecer la frase** — es la versión más fuerte y sigue siendo honesta.
+      Territorio: `app/page.jsx`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
