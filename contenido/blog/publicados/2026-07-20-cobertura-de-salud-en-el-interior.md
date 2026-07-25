@@ -67,7 +67,7 @@ La brecha urbano-rural sigue ahí, pero cada vez más familias del
 interior están encontrando opciones que les sirven de verdad — planes
 por zona, redes que crecen fuera de Central, gestiones a distancia.
 
-## Para cerrar
+## Dar vuelta la pregunta
 
 Vivir en el interior no debería significar protección de segunda. La
 clave es dar vuelta la pregunta: en vez de "¿este plan es bueno?",

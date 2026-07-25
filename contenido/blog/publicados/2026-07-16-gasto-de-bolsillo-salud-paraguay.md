@@ -63,7 +63,7 @@ La tranquilidad tiene un efecto secundario medible, además: quien tiene
 cobertura consulta antes, se controla más y llega a los problemas de salud
 más temprano, cuando tratarlos es más simple.
 
-## Para cerrar
+## Para los días malos, no los buenos
 
 El gasto de bolsillo es el número que mejor explica para qué existe un
 seguro de salud: no para los días buenos, sino para que los días malos no se
