@@ -89,10 +89,12 @@ export default function SimuladorPage() {
 
       {/* CIERRE WHATSAPP */}
       <section style={css('background:#003B71;padding:56px 24px')}>
-        <div style={css('max-width:820px;margin:0 auto;background:#00BCB4;border-radius:22px;padding:40px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap')}>
+        {/* Teal profundo: el blanco sobre #00BCB4 medía 2.37:1 en el título y 2.2:1
+            en la bajada (hallazgo del QA). Misma regla que la home. */}
+        <div style={css('max-width:820px;margin:0 auto;background:#007d77;border-radius:22px;padding:40px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap')}>
           <div style={css('max-width:460px')}>
             <h2 className="disp" style={css('font-size:26px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px')}>¿Preferís hablarlo con alguien?</h2>
-            <p style={css('font-size:16px;color:rgba(255,255,255,0.92);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
+            <p style={css('font-size:16px;color:rgba(255,255,255,0.96);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
           </div>
           {/* Sin nowrap: Nunito Sans es más ancha que Gilroy y en 360px el
               rótulo desbordaba la pantalla (QA, jul 2026) — que quiebre línea. */}
