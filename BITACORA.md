@@ -1388,7 +1388,43 @@ no es el dato; es el cliente eligiendo tranquilo.
 
 ---
 
-## Capítulo 49 — El resalte que desbalancea, y el segundo CTA que no suma
+## Capítulo 49 — El asesor que nunca iba a escribir
+
+**Qué intentamos.** Auditar el "clic crítico" del sitio: qué pasa exactamente
+cuando alguien termina el simulador y toca "Enviarme mi cotización".
+
+**Qué pasó.** Nada. Literalmente nada: `simSubmit()` validaba los campos,
+marcaba `sent: true` y mostraba "Tu cotización va en camino. Te va a escribir
+un asesor — una persona, no un robot". Ningún dato salía del navegador. Hasta
+había un comentario en el código que decía "el lead viaja al CRM" — era
+aspiracional, no descriptivo. El sitio publicado violaba el principio
+inmutable #7 (no prometer lo que no se cumple) en su momento de mayor
+confianza: justo cuando la persona acababa de entregar su nombre y su número.
+
+**Qué aprendimos.**
+
+- **La promesa más cara de romper es la del final del embudo.** Toda la web
+  puede ser honesta y un solo botón falso al final la vuelve mentirosa. La
+  auditoría de honestidad tiene que incluir *qué hace* cada botón, no solo
+  *qué dice*.
+- **Un comentario que describe el futuro como presente es una trampa.** "El
+  lead viaja al CRM" sonaba a hecho; era un deseo. Los comentarios describen
+  lo que el código HACE; los deseos van al HANDOFF como pendientes.
+- **El puente honesto se diseña con la falla adentro.** La solución quedó en
+  capas: CRM cuando exista el formulario de HubSpot (el portal real ya quedó
+  cableado), WhatsApp prellenado con la cotización entera mientras tanto —
+  **y** como respaldo si el POST al CRM falla. La misma doctrina del
+  cero-resultados de la guía: cada falla es un lead y un dato, nunca un
+  callejón.
+- **Estrategia antes de código** (el usuario lo pidió explícito en esta
+  sesión): el arreglo se dimensionó contra los tres horizontes de la web —
+  hoy máquina honesta de leads, mediano plazo ecosistema conectado
+  (HubSpot + analítica real), largo plazo el círculo que se alimenta solo.
+  Por eso no fue un parche: es la primera cañería del círculo.
+
+---
+
+## Capítulo 50 — El resalte que desbalancea, y el segundo CTA que no suma
 
 **Qué intentamos.** Dos detalles de la home, heredados de iteraciones previas: (1)
 en el comparador, Silver se destacaba como "la más elegida" con un badge encima
@@ -1429,7 +1465,7 @@ agregar señales, es podar las que no aportan.** Menos, pero cada cosa en su lug
 
 ---
 
-## Capítulo 50 — El teléfono no es la web angosta, y darle peso a lo que ya funcionaba
+## Capítulo 51 — El teléfono no es la web angosta, y darle peso a lo que ya funcionaba
 
 **Qué intentamos.** El comparador de la home era una tabla con scroll horizontal
 (`min-width:640px`). En desktop se ve entero; confiamos en que en móvil "también

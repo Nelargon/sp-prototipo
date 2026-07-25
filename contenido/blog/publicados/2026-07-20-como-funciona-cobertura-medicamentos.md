@@ -58,8 +58,8 @@ parecen:
   ser por local, no del país entero.
 - **Consultale a tu médico si existe un equivalente.** Muchos
   medicamentos tienen versiones de distinto laboratorio con el mismo
-  principio activo. La decisión de sustituir es siempre del médico —
-  nunca del mostrador ni tuya a ojo — pero preguntar cuesta una llamada.
+  principio activo. La decisión de sustituir es siempre del médico,
+  nunca del mostrador ni tuya a ojo, pero preguntar cuesta una llamada.
 - **Llamá a tu plan.** El equipo de atención suele saber qué farmacias
   de la red tienen stock y puede ahorrarte la peregrinación.
 
@@ -73,7 +73,7 @@ receta en un trámite:
 3. ¿Hay una lista de medicamentos cubiertos? ¿Dónde la veo?
 4. Si tomo algo todos los meses, ¿tiene alguna cobertura especial?
 
-## Para cerrar
+## Diez minutos hoy, una preocupación menos después
 
 La cobertura de medicamentos es de esas cosas que nadie mira al
 contratar y todos necesitan después. Diez minutos de preguntas hoy valen

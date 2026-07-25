@@ -67,7 +67,7 @@ está cambiando: cada vez más gente joven busca información de salud,
 compara opciones y decide con datos — exactamente lo que estás haciendo
 ahora mismo, leyendo esto.
 
-## Para cerrar
+## La herramienta principal: empezar antes
 
 Catorce años extra son un regalo que ninguna generación anterior
 recibió. Pero los regalos grandes vienen con una responsabilidad
