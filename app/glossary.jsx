@@ -70,7 +70,32 @@ export function Term({ k, children }) {
   // un mouseenter sintético (abre) y enseguida el click (cierra): la burbuja
   // nunca llega a verse con el dedo — bug encontrado por el QA, 26 jul 2026.
   const lastPointer = useRef('mouse');
+  const bubbleRef = useRef(null);
+  // Corrimiento horizontal para que la burbuja no se salga de la pantalla.
+  // Centrada con translateX(-50%) alcanza casi siempre, pero un término cerca
+  // del borde en 360 px la empuja afuera (12 px, hallazgo QA en /planes). Se
+  // mide al abrir y se corrige; no se puede resolver solo con CSS porque
+  // depende de dónde cayó la palabra en la línea.
+  const [shift, setShift] = useState(0);
   const id = useId();
+
+  useEffect(() => {
+    if (!open) { setShift(0); return; }
+    const el = bubbleRef.current;
+    if (el) {
+      const r = el.getBoundingClientRect();
+      const M = 8; // margen mínimo contra el borde
+      // clientWidth, NO innerWidth: en emulación móvil (y con barra de scroll)
+      // innerWidth se ensancha cuando algo ya desbordó — medimos 373 en un
+      // viewport de 360 y la corrección salía corta. clientWidth es el viewport
+      // de layout real. (Hallazgo QA /planes, 26 jul 2026.)
+      const vw = document.documentElement.clientWidth;
+      let s = 0;
+      if (r.left < M) s = M - r.left;
+      else if (r.right > vw - M) s = (vw - M) - r.right;
+      if (s) setShift(s);
+    }
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -113,9 +138,13 @@ export function Term({ k, children }) {
       {/* (2) La burbuja visual: decorativa (el texto ya lo da el span de arriba),
           y con display:none cuando está cerrada para no inflar el scrollWidth. */}
       <span
+        ref={bubbleRef}
         aria-hidden="true"
         style={css(
-          'position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 8px);z-index:40;'
+          // OJO con el signo: calc(-50% + -20px) es CSS INVÁLIDO y el navegador
+          // descarta la declaración entera en silencio. El signo va en el
+          // operador, no pegado al número.
+          'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));bottom:calc(100% + 8px);z-index:40;'
           + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:10px;background:#003B71;color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
           + 'box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;'

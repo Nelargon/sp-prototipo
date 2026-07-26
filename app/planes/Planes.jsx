@@ -4,6 +4,7 @@ import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans } from '../quote';
 import { coverage } from '../coverage';
+import { Term, waitLabel, annotate } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
 
@@ -47,18 +48,38 @@ export default function Planes() {
             {/* Filas */}
             {cov.map((item, r) => (
               <div key={r} style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;border-top:1px solid #F0F0F0;background:' + (r % 2 ? '#FAFCFC' : '#fff'))}>
-                <div style={css('padding:15px 18px;font-size:14px;font-weight:700;color:#003B71;display:flex;align-items:center')}>{item.name}</div>
-                {item.cov.map((c, j) => (
-                  <div key={j} style={css('padding:14px 12px;text-align:center;border-left:1px solid #F0F0F0')}>
-                    <div style={css(badge(c))}>{c.s}</div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;line-height:1.4;margin-top:6px')}>{c.d}</div>
-                  </div>
-                ))}
+                <div style={css('padding:15px 18px;display:flex;flex-direction:column;justify-content:center')}>
+                  <span style={css('font-size:14px;font-weight:700;color:#003B71')}>{item.name}</span>
+                  {item.waitNote && (
+                    <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:4px')}>{item.waitNote}</span>
+                  )}
+                </div>
+                {item.cov.map((c, j) => {
+                  // La espera solo se muestra donde HAY cobertura: en un plan que
+                  // no cubre el servicio no hay nada que esperar (regla AD, ver
+                  // app/coverage.js y BITACORA cap. 55).
+                  const espera = c.ok && item.wait ? waitLabel(item.wait[j]) : null;
+                  return (
+                    <div key={j} style={css('padding:14px 12px;text-align:center;border-left:1px solid #F0F0F0')}>
+                      <div style={css(badge(c))}>{c.s}</div>
+                      <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;line-height:1.4;margin-top:6px')}>{annotate(c.d)}</div>
+                      {espera && (
+                        <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:4px')}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                          <span>{espera}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
         </div>
-        <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#6B6B6B;margin-top:14px;text-align:center')}>Coberturas y precios de lista vigentes, IVA incluido — con débito automático o tarjeta de crédito, 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
+        <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#6B6B6B;margin-top:14px;text-align:center;line-height:1.6')}>
+          Los tiempos de espera son la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás.<br />
+          Coberturas y precios de lista vigentes, IVA incluido — con débito automático o tarjeta de crédito, 10% de descuento. El detalle final lo confirmás con tu asesor.
+        </div>
       </div>
 
       {/* Banda senior + cierre */}

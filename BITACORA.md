@@ -1726,6 +1726,54 @@ y ahí volvía a pelearse consigo mismo.
 
 ---
 
+## Capítulo 56 — Tres arreglos para un tooltip de 12 píxeles
+
+**Qué intentamos.** Llevar las carencias y el glosario a `/planes`, que es
+donde la gente compara y decide. La parte de datos salió derecho: las 14
+celdas con espera, la nota de la cesárea (un `waitNote` que estaba en la
+grilla y nunca se había mostrado) y Resonancia sin espera en Bronce, que no
+la cubre.
+
+**Qué pasó.** El QA encontró que a **360 px la burbuja del glosario se salía
+12 px** de la pantalla. Tres intentos hasta acertar, y cada uno falló por una
+razón distinta:
+
+1. **Clamp al viewport.** Se mide la burbuja al abrir y se corrige con
+   `translateX`. Mejoró de 12 px a 5 px. Insuficiente, pero el enfoque era el
+   correcto.
+2. **El signo del `calc`.** Con un corrimiento negativo se generaba
+   `calc(-50% + -20px)`, que es **CSS inválido**: el navegador descarta la
+   declaración entera **en silencio**. El signo va en el operador, no pegado
+   al número. Arreglado… y el resultado no se movió ni un píxel.
+3. **`window.innerWidth` mentía.** Instrumentando en vez de adivinar apareció
+   el número: en un viewport de 360, `innerWidth` devolvía **373** en el
+   momento de medir. En emulación móvil el viewport de layout **se ensancha
+   cuando algo ya desbordó**, así que la corrección se calculaba contra un
+   ancho inflado y salía corta. Con `document.documentElement.clientWidth`
+   dio exacto.
+
+**Qué aprendimos.**
+
+1. **Un `calc` inválido no avisa.** Es primo del blur fantasma del minificador
+   (cap. 12): CSS que se descarta sin ruido. Si una declaración con `calc`
+   generada por código "no hace nada", sospechar de la sintaxis antes que de
+   la lógica — y armar el string con el signo en el operador.
+2. **Medir el viewport con `innerWidth` es medir después del desastre.** Para
+   decidir si algo entra en pantalla, `clientWidth`; `innerWidth` incluye
+   barra de scroll y, en móvil, se ensancha con el propio desborde que estás
+   tratando de corregir. Es la versión espacial de la lección del scroll
+   suave: **medir a mitad de viaje**.
+3. **Dos arreglos correctos seguidos pueden dar cero.** El del `calc` era
+   necesario y no cambió el resultado porque lo tapaba el tercero. Que un
+   arreglo bueno no mueva la aguja no significa que estuviera mal: puede
+   significar que hay otro problema encima.
+4. **El corolario de método:** después de dos intentos fallidos, dejar de
+   probar hipótesis y **instrumentar**. El tercer diagnóstico —imprimir el
+   `transform` real, el rect y el ancho— resolvió en un intento lo que dos
+   suposiciones no habían podido.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
