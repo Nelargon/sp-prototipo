@@ -817,6 +817,65 @@ usa `npm ci`).
       `app/components/Simulador.jsx`, `app/simulador/page.jsx`, `app/agendar/Agendar.jsx`,
       `app/blog/*`, `app/historia/page.jsx`.
 
+12b. **⭐ REBALANCEO DE LA HOME — la acción antes del estudio (25 jul 2026,
+    decisión del usuario sobre el mapa medido). HECHO** (BITACORA cap. 53).
+    Cierra el pendiente del "valle de la súper saturación" que el usuario abrió en
+    julio. **Se midió antes de opinar** (`scratchpad/home-map.mjs`: alto y posición
+    de cada sección en pantallas, desktop y móvil) y el mapa mostró dos cosas duras:
+    - El **teaser del simulador arrancaba en la pantalla 7.2 de 14.9** en móvil: la
+      única herramienta que el usuario dijo que funciona quedaba enterrada bajo
+      **6.2 pantallas seguidas de tablas** (qué cubre 1.88 + comparador 2.2 +
+      bolsillo 2.12). La home hacía estudiar el producto antes de dejar probarlo.
+    - Dos de esos tres bloques estaban en registro negativo (lo que *no* tenés, lo
+      que pagás vos), encadenados y en la primera mitad.
+    **Qué se hizo:** (a) el **teaser del simulador sube al puesto 2**, pegado al
+    hero — "protección que se siente" → probala; todo lo que sigue pasa a respaldar
+    la decisión en vez de ser el peaje para llegar a ella. (b) **"Qué cubre" y
+    "Claridad del bolsillo" se fusionan** en una sola sección: respondían la misma
+    pregunta, y los tres modos (cubierto/copago/precio de convenio) pasaron de ser
+    tres tarjetas grandes a ser la **leyenda del explorador** — que es lo que
+    siempre fueron, el vocabulario de sus propios badges. El gradiente honesto
+    (45/66/93) pasó de tres tarjetas altas a **tres filas alineadas**, aplicando el
+    principio del cap. 47: *una diferencia solo se ve alineada*.
+    **Orden nuevo:** Hero → **Simulador** → Comparador → **Qué cubre y qué pagás** →
+    Cómo funciona → Manifiesto → Diferenciadores → Confianza → Red → FAQ → Cierre.
+    **Medido:** simulador de pantalla 7.2 → **1.0**; total móvil 14.9 → **13.7**
+    pantallas; la sección fusionada 4.0 → **2.77**.
+    ⚠ La sección fusionada **conserva las dos anclas** (`#cartilla` en la sección y
+    `#bolsillo` en la leyenda) porque el menú de `Header.jsx` enlaza ambas. De paso
+    se corrigieron las etiquetas del menú que aún decían "Buscá…/Escribí un estudio"
+    (el buscador ya no existe desde el cap. 44). Territorio: `app/page.jsx`,
+    `app/Header.jsx` (solo rótulos del menú — compartido, declarado).
+
+12c. **⭐ LA TRANSPARENCIA TIENE QUE CUMPLIR UN PROPÓSITO (25 jul 2026, corrección
+    del usuario). HECHO** (BITACORA cap. 54). Su formulación, que queda como regla:
+    *"Creo que estamos llegando a un punto en el cual la transparencia no sé si
+    ayuda realmente, porque parece que somos más negativos que positivos. La
+    transparencia tiene que cumplir un propósito, no puede ser transparencia por
+    ser transparencia nada más. Es lo mismo que yo sea honesto pero sin pelos en la
+    lengua: puede salir de mi boca honestidad, pero no va a caer bien."*
+    - **Se eliminó el bloque "Cuánto cubre de verdad cada plan"** (45/66/93).
+      Informaba cuán incompleto es cada plan sin ayudar a decidir nada, y "45%
+      cubierto" se lee como **"55% NO cubierto"**: la transparencia terminaba
+      vendiendo en contra del plan de entrada. Lo que sí ayuda a decidir —qué
+      cambia entre planes— ya vive alineado en el comparador. El dato sigue en
+      `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` para producto.
+    - **Las exclusiones se reencuadraron**: de "esto no lo cubre ningún plan
+      [nuestro]" —que se leía como carencia de SP— a **"Dónde termina la medicina
+      prepaga"**, el límite del PRODUCTO. Y cierran con qué hacer ("decíselo a tu
+      asesor antes de firmar"), no con un punto final. **Test para lo que venga:
+      un bloque honesto que no termina en una acción o en un alivio es una mala
+      noticia sin destinatario — no es transparencia, es descargo.**
+    - ⚠ **DATO PENDIENTE (bloquea endurecer el copy).** El usuario pidió decir lo
+      que **no cubre la medicina prepaga en el país**, no solo SP. La lista actual
+      sale del **cuadernillo de SP** y no tenemos ningún relevamiento de la
+      competencia — el propio análisis deja abierta la pregunta *"¿hay cosas que la
+      competencia sí cubre?"* (§5.4). Por eso el copy dice **"en general"** y no
+      "ningún seguro del país": afirmar eso sin dato sería una afirmación
+      comparativa infundada. **Con un relevamiento de 2–3 competidores se puede
+      endurecer la frase** — es la versión más fuerte y sigue siendo honesta.
+      Territorio: `app/page.jsx`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo

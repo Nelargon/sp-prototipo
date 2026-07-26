@@ -1553,6 +1553,112 @@ Peor: el peor número no era ese. El botón deshabilitado de `/agendar/` daba
 
 ---
 
+## Capítulo 53 — Medir la home antes de opinar sobre la home
+
+**Qué intentamos.** Encarar el pendiente más viejo y más difuso del proyecto: el
+"valle de la súper saturación" que el usuario había nombrado semanas antes —
+*"estás yendo mucho por el tema de la súper claridad… demasiados botones… quiero
+que vayas un poquito más atrás, mires el panorama completo y lo que realmente se
+necesita poner en la home page"*. Un diagnóstico sin números es una opinión, y
+sobre opiniones no se rediseña una home.
+
+**Qué pasó.** En vez de proponer, medimos: un script que recorre la home y devuelve
+**el alto y la posición de cada sección en pantallas**, desktop y móvil. El valle
+dejó de ser una sensación y pasó a tener coordenadas:
+
+- El **teaser del simulador arrancaba en la pantalla 7.2 de 14.9** en móvil. La
+  única herramienta que el usuario había dicho que funcionaba estaba enterrada
+  bajo **6.2 pantallas seguidas de tablas**.
+- Esas tablas eran tres: "qué cubre" (1.88), comparador (2.2) y "bolsillo" (2.12).
+  Dos de las tres en registro negativo — lo que *no* tenés, lo que pagás vos —
+  encadenadas y en la primera mitad.
+- "Qué cubre" concentraba **11 botones**: la mayor densidad de la página, el
+  "demasiados botones" del usuario con nombre y apellido.
+
+Con el mapa sobre la mesa, las dos decisiones se tomaron solas: **subir el
+simulador al puesto 2** y **fusionar "qué cubre" con "bolsillo"**.
+
+**Qué aprendimos.**
+
+- **La home no se rediseña con criterio, se rediseña con un mapa.** El mismo
+  problema que veníamos nombrando de forma vaga se volvió accionable cuando tuvo
+  unidades. "Pantallas de scroll" resultó la unidad correcta: es lo que la persona
+  realmente gasta.
+- **El orden es un argumento.** Poner el estudio antes que la acción dice
+  "demostrame que entendiste antes de dejarte probar". Poner la acción antes dice
+  "probá; acá abajo está todo lo que respalda lo que viste". Es la misma
+  información y la promesa cambia entera.
+- **La mejor fusión no recorta: descubre que dos cosas eran una.** "Qué cubre" y
+  "bolsillo" respondían la misma pregunta. Y al juntarlas apareció lo que no se
+  veía por separado: los tres modos (cubierto / copago / precio de convenio) **no
+  eran una sección, eran la leyenda del explorador** — el vocabulario que sus
+  propios badges ya usaban. Puestos como leyenda ocupan un cuarto y explican más.
+- **Los principios viejos siguen pagando.** El gradiente 45/66/93 estaba en tres
+  tarjetas altas que en móvil se apilaban: imposible comparar. Pasarlo a tres
+  filas con las barras alineadas es el cap. 47 otra vez —*una diferencia solo se
+  ve alineada*— aplicado en otra parte de la página.
+- **Nota de método, segunda vez en dos días:** el contenedor volvió a reiniciarse
+  y otra vez se llevó ediciones no commiteadas. La regla del cap. 51 ya no es un
+  aprendizaje sino un hábito: **commitear y pushear apenas una tanda funciona**,
+  no al final. Lo pusheado es lo único que existe.
+- **Coda: la regla nueva cazó a su propio autor.** Al rearmar el gradiente le puse
+  un mini-encabezado ("PLAN · CÓMO SE REPARTE · CUBIERTO") en gris claro. El QA
+  lo marcó en **2.78:1** — una hora después de haber publicado la regla de
+  contraste del cap. 52, y en el mismo bloque que estaba reordenando. La moraleja
+  no es "qué distraído": es que **una regla escrita en el HANDOFF no alcanza si no
+  hay una verificación que la haga cumplir**. La disciplina no está en acordarse,
+  está en que el QA corra siempre y en no cerrar sin mirarlo.
+
+---
+
+## Capítulo 54 — Honestidad sin pelos en la lengua (o: la transparencia también se diseña)
+
+**Qué intentamos.** Habíamos construido, con orgullo, el bloque *"Cuánto cubre de
+verdad cada plan"*: 45% / 66% / 93%, con barras que mostraban cómo se reparte lo
+que usás. Era el punto más alto de nuestra transparencia — decir en números lo que
+nadie dice.
+
+**Qué pasó.** El usuario lo miró y lo desarmó con una analogía que vale más que el
+bloque entero:
+
+> *"La transparencia tiene que cumplir un propósito. No puede ser transparencia por
+> ser transparencia nada más. Es lo mismo que yo sea honesto, pero sin pelos en la
+> lengua: puede salir de mi boca honestidad, pero no va a caer bien."*
+
+Y tenía razón en lo concreto: **"45% cubierto" se lee como "55% NO cubierto".** El
+bloque no ayudaba a elegir nada —eso ya lo hace el comparador— y encima le pegaba
+al plan de entrada. Era una confesión, no una herramienta. Es el mismo error del
+cap. 48 con otra cara: allá la claridad ingeniosa castigaba a Gold, acá la
+transparencia numérica castigaba a Bronze.
+
+Su segunda observación fue más fina todavía: mostrábamos *lo que no cubre SP* como
+si fuera un defecto nuestro, cuando la mayoría de esas categorías son **el límite
+del producto**, no una carencia de la empresa.
+
+**Qué aprendimos.**
+
+- **La transparencia es una herramienta, no una virtud que se exhibe.** Si un dato
+  honesto no ayuda a decidir, a prepararse o a estar tranquilo, no está informando:
+  está descargando culpa. El test que queda: *¿esto para qué le sirve a quien lo
+  lee?* Si la respuesta es "para que vea que somos honestos", va afuera.
+- **Un bloque honesto tiene que terminar en una acción o en un alivio.** Las
+  exclusiones eran un callejón: "esto no lo cubre nadie, chau". Ahora terminan en
+  *"si alguna te preocupa, decíselo a tu asesor antes de firmar"*. Misma verdad,
+  con destinatario. (Es la misma doctrina del cero-resultados de la guía, cap. 44,
+  aplicada al copy: una mala noticia nunca es un callejón.)
+- **Encuadrar no es maquillar.** Decir "hasta acá llega la medicina prepaga" en vez
+  de "esto no lo cubrimos" no oculta nada — la lista es idéntica— pero ubica al
+  lector en la verdad correcta: no está viendo un defecto de SP, está viendo el
+  borde de una categoría de producto.
+- **Y un límite honesto sobre la honestidad misma:** el usuario pidió decir lo que
+  no cubre *la prepaga del país*. No tenemos ningún relevamiento de la competencia
+  —nuestro propio análisis deja la pregunta abierta— así que el copy dice "en
+  general" y no "ningún seguro del país". Ser honesto hacia afuera incluye ser
+  honesto sobre lo que **no sabemos**: una afirmación comparativa sin dato habría
+  sido, justamente, la clase de promesa que este proyecto se prohibió.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
