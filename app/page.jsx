@@ -6,6 +6,7 @@ import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
 import { coverage } from './coverage';
+import { Term, waitLabel, annotate } from './glossary';
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -38,7 +39,7 @@ export default function Page() {
   // una pregunta es un lead caliente — responder y no ofrecer la acción es
   // dejarlo ir (auditoría de conversión, jul 2026).
   const faqs = () => [
-    { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo de espera desde que te afiliás hasta poder usar ciertas coberturas (como estudios de alta complejidad o internaciones programadas). Varía según el servicio — tu asesor te muestra el detalle exacto antes de firmar.' },
+    { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo que esperás desde que te afiliás hasta poder usar una cobertura. Arranca el día que te afiliás, no el día que la necesitás. Los plazos reales de los planes vigentes: consultas y urgencias, sin espera; laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 7 meses; y parto, 10 meses en los tres planes (la cesárea baja a 5 meses en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
@@ -208,8 +209,11 @@ export default function Page() {
   const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
   const selRows = sel.cov.map((cv, i) => {
     const ok = cv.ok;
+    // La carencia solo se muestra donde HAY cobertura: en un plan que no cubre
+    // el servicio no hay espera que contar (ver la regla AD en coverage.js).
+    const wait = ok && sel.wait ? waitLabel(sel.wait[i]) : null;
     return {
-      plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d,
+      plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d, wait,
       wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid #F0F0F0'),
       badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10'),
     };
@@ -559,12 +563,37 @@ export default function Page() {
                   <div key={i} style={css(row.wrap)}>
                     <div style={css('display:flex;align-items:center;gap:7px;margin-bottom:8px')}><span style={css('width:9px;height:9px;border-radius:999px;background:' + row.color)}></span><span style={css('font-size:13px;font-weight:700;color:#003B71')}>{row.plan}</span></div>
                     <div style={css(row.badge)}>{row.status}</div>
-                    <div style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin-top:6px')}>{row.detail}</div>
+                    <div style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin-top:6px')}>{annotate(row.detail)}</div>
+                    {row.wait && (
+                      <div style={css('display:flex;align-items:center;gap:5px;margin-top:7px;font-size:12.5px;color:#6B6B6B')}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        <span>{row.wait} · <Term k="carencia">carencia</Term></span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
             <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
+
+            {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
+                Parto son 300 días en los tres planes y la cesárea baja a 150 en
+                Gold — el dato más caro de descubrir tarde de todo el sistema, y
+                que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
+                al asesor). Va en dorado, no en rojo: la regla de color reserva
+                el rojo para urgencias, y el dorado es "oportunidad". Y el
+                encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
+                una trampa escondida y pasa a ser una razón para afiliarse antes.
+                No se suaviza el número: se le da un destino. */}
+            <div style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;border-radius:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <div>
+                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:#003B71;margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
+                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:#4A4A4A;line-height:1.55')}>
+                  El parto tiene <strong>10 meses de <Term k="carencia">carencia</Term></strong> en los tres planes, y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* LO QUE QUEDA AFUERA — reencuadre (25 jul 2026, observación del usuario:

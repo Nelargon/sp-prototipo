@@ -1659,6 +1659,73 @@ del producto**, no una carencia de la empresa.
 
 ---
 
+## Capítulo 55 — La espera que nadie contaba, y dos trampas del que la fue a buscar
+
+**Qué intentamos.** Mostrar las carencias en la web. La observación del
+usuario fue simple: *"algo que no se comunica mucho es el tema de
+carencias… no solamente decir qué cubre, sino cuánto tiempo tomaría"*. Y
+tenía razón con creces: la web mencionaba la palabra **una sola vez**, en
+una FAQ, y terminaba en *"tu asesor te muestra el detalle exacto"* —
+derivando a una persona un dato que ya estaba estructurado en las 935
+filas de la grilla, dentro del propio repo.
+
+**Qué pasó.**
+
+*Lo que encontramos.* Parto: **300 días de carencia en los tres planes**.
+Cesárea: 300 / 300 / **150 en Gold**. Diez meses de espera, en el servicio
+donde llegar tarde no se puede arreglar, y el sitio no lo decía en ningún
+lado. Es, literalmente, la sorpresa más cara que el producto podía
+guardar — en una marca cuya promesa es "Cero Sorpresas".
+
+*La primera trampa: el dato limpio que no lo era.* La grilla trae
+`carencia: "INMEDIATA"` en filas con `cob: "AD"`. Pero **AD significa
+Arancel Diferenciado = SIN COBERTURA**: el propio README lo aclara, y ahí
+carencia y cantidad deberían figurar como N/A. Publicado sin filtrar, el
+sitio habría dicho **"Resonancia: cubierta, sin espera"** en un plan que
+no cubre resonancia. Prometer una cobertura inexistente, en salud, por
+confiar en un campo que estaba lleno. El dato también venía sucio de
+formato: `INMENDIATA` con typo 61 veces, `DÍAS`/`DIAS`, `.120 DIAS`.
+
+*La segunda trampa: el test que acusaba al código.* El QA reportó que el
+tooltip no abría ni con hover ni con tap. Tres diagnósticos después —
+handlers atados, React hidratado, cero errores de consola— el fallo era
+**del test**: `.hover()` de Playwright hace su propio scroll y, con
+`scroll-behavior:smooth`, calcula la caja **a mitad de viaje**; el puntero
+aterriza en cualquier lado. Es la trampa que ya teníamos anotada para
+`window.scrollTo`, entrando por otra puerta.
+
+*Pero el test corregido encontró un bug de verdad.* En móvil, un tap
+dispara **primero un `mouseenter` sintético (abre) y enseguida el `click`
+(cierra)**: la burbuja nunca llegaba a verse con el dedo — justo el caso
+que el usuario había pedido. Se arregló recordando el `pointerType`: con
+mouse manda el hover, con dedo manda el click, y solo el foco de **teclado**
+(`:focus-visible`) abre — porque en mouse y touch el click también enfoca,
+y ahí volvía a pelearse consigo mismo.
+
+**Qué aprendimos.**
+
+1. **Un campo lleno no es un campo válido.** Antes de publicar una columna
+   entera, preguntar qué significa cuando la fila de al lado dice que no
+   hay cobertura. El valor más peligroso no es el vacío: es el que parece
+   una buena noticia.
+2. **Cuando el test acusa al código, sospechar del test primero si el
+   síntoma es "no pasa nada".** Un handler que no dispara suele ser un
+   puntero que no llegó, no una lógica rota. Pero **corregir el test hasta
+   que sea fiel** — porque recién ahí encontró el bug real.
+3. **`.hover()`, `.click()` y `.tap()` heredan el problema del scroll
+   suave.** Regla nueva: centrar con `behavior:'instant'`, esperar, leer la
+   caja y mover el mouse crudo.
+4. **Hover y tap no son el mismo gesto**, aunque el navegador finja que sí.
+   Todo lo que se abra con hover necesita probarse con dedo, o funciona
+   solo para quien usa mouse.
+5. **La misma información honesta cambia de signo según cuándo se dice.**
+   "10 meses de espera para el parto" descubierto al firmar es una trampa;
+   dicho antes es *"afiliándote ahora llegás"*. No se suavizó el número: se
+   le dio un destino. Por eso el aviso va en dorado —oportunidad— y no en
+   rojo, que este proyecto reserva para urgencias.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

@@ -1196,6 +1196,47 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     no aplica a PRs de contenido). Ninguna sesión de la web coordina
     contenido: eso es del Master Orquestador en `sp-contenido`.
 
+### Carencias visibles y glosario en contexto (26 jul 2026)
+
+**Qué cambió.** La web decía la palabra "carencia" **una sola vez**, en una
+FAQ, y derivaba al asesor (*"tu asesor te muestra el detalle exacto"*) un
+dato que ya estaba estructurado en las 935 filas de
+`datos/planes-vigentes/grilla-coberturas-precios-jul2026.json`. Ahora:
+
+1. **El explorador de coberturas muestra la espera** por plan, junto a cada
+   cobertura (`wait` en `app/coverage.js`, render en `app/page.jsx`).
+2. **La FAQ responde de verdad**, con los plazos reales de los planes
+   vigentes en vez de derivar.
+3. **Aviso de parto** debajo del explorador: es la espera más larga de toda
+   la grilla y la más cara de descubrir tarde.
+4. **Glosario en contexto** (`app/glossary.jsx`): carencia, copago,
+   semi-suite, nursery, tope, arancel diferenciado y preexistencia se
+   explican **donde aparecen**, con hover, dedo y teclado. `annotate()`
+   los reconoce solo dentro de cualquier texto de cobertura, así que una
+   descripción nueva que diga "semi-suite" se explica sola.
+
+**Los datos** (grilla de julio 2026, verificada por el usuario): parto
+**300 días en los tres planes**; cesárea 300/300 y **150 en Gold**;
+cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
+cubre); fisioterapia 90; tomografía 60/60/30; ecografía y laboratorio ~60;
+consultas y urgencias sin espera declarada.
+
+⚠ **Regla crítica al leer carencias de la grilla — no borrar.** Las filas
+con `cob: "AD"` (Arancel Diferenciado = **SIN COBERTURA**) traen
+`"INMEDIATA"` en el campo carencia. Es basura del origen, no una espera de
+cero: ahí no hay cobertura que esperar. **Nunca leer la carencia de una
+fila AD.** Sin ese filtro, la web diría "Resonancia: cubierta sin espera"
+en Bronce, que no la cubre. Ver BITACORA cap. 55.
+
+**Encuadre del aviso de parto (decisión, no estética).** Va en dorado
+—oportunidad— y nunca en rojo, que este proyecto reserva para urgencias. El
+número no se suaviza: se le da un destino. *"El reloj arranca el día que te
+afiliás, no el día que lo necesitás. Si el plan es para dentro de un año,
+afiliándote ahora llegás."* La misma información que descubierta tarde es
+una trampa, dicha a tiempo es una razón para decidir.
+
+**Territorio:** `app/coverage.js`, `app/glossary.jsx` (nuevo), `app/page.jsx`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
