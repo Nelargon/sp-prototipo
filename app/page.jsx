@@ -38,12 +38,25 @@ export default function Page() {
   // siguiente (WhatsApp prellenado con el tema, o el simulador): quien abre
   // una pregunta es un lead caliente — responder y no ofrecer la acción es
   // dejarlo ir (auditoría de conversión, jul 2026).
+  // ORDEN Y CONTENIDO DERIVADOS DE DATO REAL (26 jul 2026): los 4 asesores del
+  // equipo digital listaron, por separado y sin verse entre ellos, las 5
+  // preguntas más frecuentes de los clientes. Coincidencias: precio 4/4,
+  // diferencia entre planes 4/4, CARENCIA 4/4, qué cubre 3/4, descuentos 2/4,
+  // "¿cubre en todo el país?" 2/4, profesionales específicos 2/4.
+  // La FAQ anterior respondía 2 de esas 7. Las que faltaban se agregaron y el
+  // orden sigue la frecuencia real, no nuestra intuición.
+  // ⚠ Antes de sacar o reordenar una de estas, mirar la frecuencia: no las
+  // elegimos nosotros. El detalle está en sp-interno (repo privado).
   const faqs = () => [
+    { q: '¿Cuál es la diferencia entre Bronze, Silver y Gold?', a: 'Cada plan incluye todo lo del anterior y suma lo suyo. Bronze cubre lo esencial: urgencias 24 h, consultas (hasta 3 al año por especialidad), radiografías, ecografías e internación. Silver es el salto más grande: agrega resonancia y tomografía al 100%, sube a 5 consultas y estira fisioterapia y terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     { q: '¿Qué es la carencia y cuánto dura?', a: 'La carencia es el tiempo que esperás desde que te afiliás hasta poder usar una cobertura. Arranca el día que te afiliás, no el día que la necesitás. Los plazos reales de los planes vigentes: consultas y urgencias, sin espera; laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 7 meses; y parto, 10 meses en los tres planes (la cesárea baja a 5 meses en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Mirá tu precio con el descuento →', sim: true } },
+    { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés disponible cerca depende de tu ciudad: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } },
+    { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, te mostramos alternativas cerca en vez de dejarte sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
-    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido. Pagando con débito automático o tarjeta de crédito tenés 10% de descuento.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
+    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
 
@@ -251,11 +264,23 @@ export default function Page() {
     q: f.q, a: f.a, open: state.faqOpen === i,
     chevStyle: 'transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (state.faqOpen === i ? '180deg' : '0deg') + ')',
     toggle: () => { if (state.faqOpen !== i) track('faq_open', { pregunta: f.q }); toggleFaq(i); },
+    // Tres destinos posibles: el simulador, una página del sitio (`to`) o
+    // WhatsApp. El `to` se sumó al agregar las preguntas que el equipo de
+    // ventas reportó como frecuentes: varias se responden mejor mandando a
+    // /planes o a la Guía que abriendo un chat. Sin este caso, un cta con `to`
+    // caía en la rama de WhatsApp con mensaje vacío.
     cta: f.cta ? {
       label: f.cta.label,
-      href: f.cta.sim ? `${BP}/simulador/` : waMsg(f.cta.wa),
-      external: !f.cta.sim,
-      onClick: () => (f.cta.sim ? track('cta_simulador', { origen: 'faq' }) : track('click_whatsapp', { origen: 'faq', tema: f.cta.tema })),
+      href: f.cta.sim ? `${BP}/simulador/`
+        : f.cta.to === 'planes' ? `${BP}/planes/`
+        : f.cta.to === 'guia' ? `${BP}/guia/guia_home.html`
+        : waMsg(f.cta.wa),
+      external: !f.cta.sim && !f.cta.to,
+      onClick: () => (
+        f.cta.sim ? track('cta_simulador', { origen: 'faq' })
+        : f.cta.to ? track('faq_cta_interna', { origen: 'faq', destino: f.cta.to })
+        : track('click_whatsapp', { origen: 'faq', tema: f.cta.tema })
+      ),
     } : null,
   }));
 

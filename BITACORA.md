@@ -1840,6 +1840,66 @@ que cubre "la medicina prepaga" sin relevamiento con fuente y fecha.
 
 ---
 
+## Capítulo 58 — Cuatro papelitos amarillos contra un año de intuición
+
+**Qué intentamos.** Arturo le pidió a los cuatro asesores del equipo digital de
+ventas que escribieran, cada uno por su lado y en papel, **las 5 preguntas más
+frecuentes de los clientes**. Cuatro post-its amarillos, firmados a mano.
+
+**Qué pasó.** Coincidieron más de lo que cualquiera esperaba:
+
+| Pregunta | Frecuencia |
+|---|---|
+| Precio / costo | **4/4** (primera en tres de las cuatro listas) |
+| Diferencia entre planes | **4/4** |
+| **Carencia** | **4/4** |
+| Qué cubre / nivel de cobertura | 3/4 |
+| Descuentos · ¿cubre en todo el país? · profesionales específicos | 2/4 cada una |
+
+Dos golpes de una sola vez.
+
+**El primero: la carencia es unánime.** Los cuatro, sin verse entre ellos. Y
+hasta esa misma mañana la web la mencionaba **una sola vez**, en una FAQ, y
+cerraba con *"tu asesor te muestra el detalle exacto"*. **La pregunta más
+frecuente del negocio estaba derivada a humanos por diseño**, teniendo el dato
+estructurado en 935 filas dentro del propio repo. La habíamos publicado horas
+antes por otra intuición del usuario, sin saber nada de esto.
+
+**El segundo, peor: la FAQ respondía 2 de las 7 preguntas.** Tenía seis
+entradas, y gastaba slots en cosas que **ninguna asesora reportó** — incluida
+*"¿cómo doy de baja mi plan?"*, que en una home para prospectos planta la
+salida antes que la entrada. Faltaba la diferencia entre planes (4/4), el
+descuento (2/4, vivía en letra chica gris), la cobertura geográfica (2/4) y
+"¿está mi médico?" (2/4).
+
+**Qué aprendimos.**
+
+1. **Cuatro personas y quince minutos valen más que un año de intuición.** No
+   hizo falta analítica, ni encuestas, ni un panel. La gente que atiende
+   clientes todos los días ya tenía la respuesta escrita en la cabeza; nadie se
+   la había pedido.
+2. **Una FAQ se llena sola de las preguntas que nos hacemos nosotros.** Baja,
+   cambio de plan, qué es Lister: preguntas de dueño de producto, no de
+   prospecto. Sin dato externo, una FAQ deriva hacia el índice del negocio en
+   vez del de la duda.
+3. **Coincidir de a cuatro es un dato distinto a coincidir de a uno.** Una
+   pregunta en una lista es anécdota; la misma en las cuatro, sin
+   coordinación, es estructura. Vale la pena diseñar la consulta para que las
+   respuestas sean independientes — si se hubieran juntado a hacerla, la
+   convergencia no significaría nada.
+4. **Confirmación cruzada del método:** el relevamiento competitivo, ese mismo
+   día, había terminado en una lista de preguntas para el equipo comercial. Y
+   el equipo comercial, sin saberlo, ya estaba respondiendo la más importante.
+   **El dato que falta suele estar adentro de la empresa, no afuera.**
+
+**Qué quedó.** Cuatro preguntas nuevas en la FAQ, ordenadas por frecuencia real
+y no por intuición; el descuento del 10% sale de la letra chica y tiene entrada
+propia; y los CTA de la FAQ ahora pueden mandar a `/planes` o a la Guía, no solo
+a WhatsApp — porque varias de estas preguntas se responden mejor mostrando que
+conversando.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
