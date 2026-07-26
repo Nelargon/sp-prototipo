@@ -1261,6 +1261,46 @@ desborde** — para decidir si algo entra en pantalla va
 
 **Territorio:** `app/planes/Planes.jsx`, `app/glossary.jsx`.
 
+### ✔ Pendiente 12c CERRADO (26 jul 2026) — y salió al revés de lo previsto
+
+El relevamiento de los 7 competidores está hecho
+(`sp-interno/project/RELEVAMIENTO-competidores-2026-07-26.md`, repo privado).
+**No permitió endurecer la frase: obligó a corregirla.**
+
+**Lo que se encontró, con cita textual de folletos propios de cada empresa:**
+SPS (Superior Plus) cubre tratamiento oncológico —quimio en pensión y
+honorarios, radioterapia, cirugías oncológicas— y **alta complejidad**
+(*"Neurológicas, torácicas, cardiacas y vascular periférica"*). SPS y MediLife
+cubren odontología general básica. Bariátrica no se puede afirmar en ninguna
+dirección.
+
+**Consecuencia:** la frase *"es hasta dónde llega este tipo de producto"* era
+**falsa**. El "en general" protegía la primera oración, pero esa última
+afirmaba sobre toda la categoría sin hedge.
+
+**Qué cambió en la web.** El bloque pasó a llamarse **"Dónde termina nuestra
+cobertura"** y habla **solo de SP**, sin afirmar nada sobre el rubro:
+*"Hay cuatro cosas que nuestros planes no cubren… Preferimos que lo sepas ahora
+y no cuando lo necesites."* El cierre accionable (*"decíselo a tu asesor antes
+de firmar"*) queda intacto — la fuerza del bloque nunca fue "los demás tampoco"
+sino "te lo decimos antes".
+
+Verificado contra nuestra grilla: SP efectivamente **no cubre** las cuatro
+(oncológico 0 filas, alta complejidad 0 filas; lo que figura como "dental" son
+radiografías dentales, y "Gastrectomía Parcial" es cirugía general, no
+bariátrica). El bloque siempre fue exacto sobre SP; el error era la
+generalización.
+
+⚠ **Regla que deja el caso:** no escribir afirmaciones sobre lo que cubre
+"la medicina prepaga" sin relevamiento con fuente y fecha. Y al revisar copy
+sensible, leer **cada oración por separado**: una hedge no protege a la frase
+categórica que tiene al lado (BITACORA cap. 57).
+
+**Bonus estratégico (vive en el repo privado):** la hipótesis de que los
+competidores con sanatorio propio cubrirían más en alta complejidad quedó
+**refutada**, y el competidor más filoso en coberturas resultó estar en la
+categoría de los directos, no entre los grandes.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
