@@ -604,18 +604,34 @@ export default function Page() {
                  "45% cubierto" se lee como "55% NO cubierto": la transparencia
                  terminaba vendiendo en contra. Lo que sí decide —qué cambia entre
                  planes— ya vive alineado en el comparador.
-              2) Las exclusiones dejan de leerse como una carencia de SP y pasan a
-                 leerse como lo que son: el límite del PRODUCTO. Y cierran con qué
-                 hacer, no con un punto final.
-              ⚠ DATO PENDIENTE: no tenemos relevamiento de qué cubre la competencia
-              en Paraguay (el propio ANALISIS-arancel-diferenciado.md deja abierta
-              la pregunta), así que NO afirmamos "ningún seguro del país" — se dice
-              "en general". Con el dato en mano se puede endurecer. Ver HANDOFF 12c. */}
+              2) Las exclusiones cierran con qué hacer, no con un punto final.
+
+              ⚠ CORRECCIÓN (26 jul 2026) — LEER ANTES DE TOCAR ESTE BLOQUE.
+              La versión anterior decía que estas cuatro categorías "en general" no
+              las cubre la medicina prepaga y cerraba con "es hasta dónde llega este
+              tipo de producto". El relevamiento de competidores REFUTÓ esa frase con
+              cita textual: SPS (Superior Plus) cubre tratamiento oncológico —quimio
+              en pensión y honorarios, radioterapia, cirugías oncológicas— y alta
+              complejidad —"Neurológicas, torácicas, cardiacas y vascular
+              periférica"—; SPS y MediLife cubren odontología general básica.
+              O sea: NO es el límite del producto, es el límite NUESTRO.
+
+              Por eso el bloque ahora habla solo de SP y no afirma nada sobre el
+              rubro. La fuerza de esta pieza nunca fue "los demás tampoco": fue
+              "te lo decimos antes de que firmes". Eso sobrevive intacto; lo que se
+              cayó era una generalización que no podíamos sostener — y que, de
+              descubrirla una familia comparando, habría dañado justo la honestidad
+              que este bloque viene a demostrar.
+
+              NO volver a escribir afirmaciones sobre lo que cubre "la medicina
+              prepaga" sin relevamiento con fuente y fecha. Ver BITACORA cap. 57,
+              HANDOFF 12c, y sp-interno/project/RELEVAMIENTO-competidores-2026-07-26.md
+              (repo privado: el análisis de competidores nombrados no vive acá). */}
           <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
             <span style={css('width:28px;height:28px;border-radius:9px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
             <div>
-              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Dónde termina la medicina prepaga</div>
-              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay categorías que, en general, la medicina prepaga no cubre — tampoco nosotros: <b style={css('color:#333')}>odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad</b> (cardiocirugía, neurocirugía y cirugía vascular). No es letra chica nuestra: es hasta dónde llega este tipo de producto.</div>
+              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Dónde termina nuestra cobertura</div>
+              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:#333')}>nuestros planes no cubren</b>: odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites.</div>
               <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:#333')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
             </div>
           </div>

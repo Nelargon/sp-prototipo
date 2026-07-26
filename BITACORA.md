@@ -1774,6 +1774,72 @@ razón distinta:
 
 ---
 
+## Capítulo 57 — Fuimos a endurecer una frase y descubrimos que era falsa
+
+**Qué intentamos.** Cerrar el ⚠ pendiente 12c. Desde el capítulo 54 el bloque
+*"Dónde termina la medicina prepaga"* decía que odontología, bariátrica,
+oncológico y alta complejidad *"en general"* no las cubre la medicina prepaga,
+y cerraba con una frase de la que estábamos bastante orgullosos:
+
+> *"No es letra chica nuestra: es hasta dónde llega este tipo de producto."*
+
+El "en general" era una hedge deliberada: no teníamos relevamiento, así que no
+afirmábamos "ningún seguro del país". El plan era **relevar para poder
+endurecerla**. Ese era literalmente el pendiente escrito.
+
+**Qué pasó.** El relevamiento salió y no endureció nada: **tumbó la frase**.
+
+- **SPS** (Superior Plus) cubre, con cita textual de su propio folleto,
+  tratamiento oncológico —quimioterapia en pensión y honorarios, radioterapia,
+  cirugías oncológicas— y **alta complejidad**: *"Cirugía de alta complejidad:
+  Neurológicas, torácicas, cardiacas y vascular periférica"*.
+- **SPS y MediLife** cubren odontología general básica.
+- **Bariátrica** no se puede afirmar en ninguna dirección: nadie confirma
+  cubrirla, nadie la excluye.
+
+El "en general" tapaba la primera oración. Pero **la última era categórica**:
+*"es hasta dónde llega este tipo de producto"* afirma que la categoría no
+puede. Y el folleto de un competidor decía que sí.
+
+Y de paso cayó la hipótesis que habíamos anotado con confianza: creíamos que
+los competidores **con sanatorio propio** cubrirían más en alta complejidad,
+por costo marginal. **Santa Clara**, con la cabecera de mayor nivel del
+relevamiento (Británico, Nivel III), declara textual *"Alta Complejidad:
+Opcional"* — no viene en el plan base. **Promed**, con sanatorio propio, no la
+menciona en ningún plan publicado. Y **SPS, sin sanatorio, la cubre.**
+
+**Qué aprendimos.**
+
+1. **Una hedge no salva una frase categórica que está al lado.** "En general"
+   protegía la oración uno; la oración tres afirmaba sobre toda la categoría
+   sin ninguna protección. Al revisar copy sensible hay que leer **cada
+   oración por separado**, no el párrafo como bloque — la prudencia no se
+   contagia entre frases.
+2. **El daño habría caído justo donde más importa.** Este bloque existe para
+   demostrar honestidad. Una familia que compare y encuentre que SPS cubre
+   oncología no lee "SP se equivocó": lee "SP me presentó sus propios límites
+   como límites del rubro". **La pieza construida para generar confianza era la
+   que más confianza podía destruir.**
+3. **Verificar puede empeorar tu posición, y hay que ir igual.** Salimos a
+   buscar munición para afirmar más fuerte y volvimos con la obligación de
+   afirmar menos. Ese es el precio real de verificar: si solo aceptás el
+   resultado cuando te conviene, no estás verificando.
+4. **Una hipótesis cómoda es la que más hay que testear.** La del sanatorio era
+   elegante, tenía una lógica económica linda y la creíamos. Ninguna de esas
+   tres cosas es evidencia. La refutó una tabla de coberturas de dos líneas.
+5. **Lo que sobrevive es lo que siempre valía.** La fuerza del bloque nunca fue
+   "los demás tampoco" — fue **"te lo decimos antes de que firmes"**. Sacando
+   la generalización, eso queda intacto. Lo que se cayó era un adorno
+   argumental que además no era cierto.
+
+**Qué quedó.** El bloque se llama ahora *"Dónde termina nuestra cobertura"* y
+habla solo de SP: *"Hay cuatro cosas que nuestros planes no cubren… Preferimos
+que lo sepas ahora y no cuando lo necesites."* Ninguna afirmación sobre el
+rubro. Y una guarda en el código: no volver a escribir afirmaciones sobre lo
+que cubre "la medicina prepaga" sin relevamiento con fuente y fecha.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
