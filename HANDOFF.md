@@ -1301,6 +1301,36 @@ competidores con sanatorio propio cubrirían más en alta complejidad quedó
 **refutada**, y el competidor más filoso en coberturas resultó estar en la
 categoría de los directos, no entre los grandes.
 
+### La FAQ ahora responde lo que la gente pregunta (26 jul 2026)
+
+**Dato de origen — el mejor que tuvo este proyecto para copy:** los 4 asesores
+del equipo digital listaron por separado, en papel y sin verse entre ellos, las
+5 preguntas más frecuentes de los clientes. Convergencia:
+
+| Pregunta | Frecuencia | Estado antes |
+|---|---|---|
+| Precio | 4/4 | ✔ estaba |
+| **Diferencia entre planes** | **4/4** | ✗ no estaba |
+| **Carencia** | **4/4** | ✔ recién arreglada ese día |
+| Qué cubre | 3/4 | parcial (explorador) |
+| **Descuento 10%** | 2/4 | ✗ solo en letra chica |
+| **¿Cubre en todo el país?** | 2/4 | ✗ no estaba |
+| **¿Está mi médico?** | 2/4 | ✗ no estaba (la Guía lo resuelve, la FAQ no lo decía) |
+
+**La FAQ anterior respondía 2 de esas 7** y usaba slots en preguntas que
+ninguna asesora reportó (baja de plan, cambio de plan). Se agregaron las cuatro
+faltantes y el orden sigue la **frecuencia real**.
+
+⚠ **Antes de sacar o reordenar una entrada de la FAQ, mirar la frecuencia: no
+las elegimos nosotros.** El detalle vive en `sp-interno` (repo privado).
+
+**Cambio técnico incluido:** los CTA de la FAQ soportan ahora un tercer destino
+—`to: 'planes' | 'guia'`— además del simulador y WhatsApp. Varias de estas
+preguntas se responden mejor mostrando que conversando. Sin ese caso, un CTA
+interno caía en la rama de WhatsApp con mensaje vacío.
+
+**Territorio:** `app/page.jsx`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
