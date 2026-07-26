@@ -1237,6 +1237,30 @@ una trampa, dicha a tiempo es una razón para decidir.
 
 **Territorio:** `app/coverage.js`, `app/glossary.jsx` (nuevo), `app/page.jsx`.
 
+### Carencias y glosario en /planes (26 jul 2026)
+
+Segunda tanda, después de la home. `/planes` es la página de decisión, así que
+la espera importa más ahí que en ningún lado:
+
+- **Carencia por celda** en la tabla de 11 servicios × 3 planes, con la misma
+  regla: solo donde HAY cobertura (Resonancia no muestra espera en Bronce,
+  porque Bronce no la cubre).
+- **`waitNote`** por fin visible: la fila de parto aclara que *"la cesárea
+  espera 150 días en Gold"*. El campo estaba en `app/coverage.js` desde la
+  tanda anterior y nunca se había mostrado.
+- **Glosario** en los detalles de cobertura (`annotate`) y en la nota al pie,
+  que ahora explica de dónde arranca el reloj.
+
+**Mejora del glosario que vale para todo el sitio:** la burbuja se **clampea al
+viewport** al abrir, así que ya no se sale de pantalla por más al borde que
+caiga la palabra. Dos trampas encontradas al hacerlo, ambas en BITACORA cap. 56:
+un `calc(-50% + -20px)` que es CSS inválido y se descarta en silencio, y
+`window.innerWidth`, que en emulación móvil **se ensancha con el propio
+desborde** — para decidir si algo entra en pantalla va
+`document.documentElement.clientWidth`.
+
+**Territorio:** `app/planes/Planes.jsx`, `app/glossary.jsx`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
