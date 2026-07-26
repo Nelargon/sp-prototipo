@@ -55,12 +55,39 @@ el usuario actualiza un master:
 
 | Master (Drive) | fileId | Última ingestión |
 |---|---|---|
-| SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx | `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh` | 22 jul 2026 (enriquecida: cobertura_real + AD cláusula 2.10) |
+| SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx | `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh` | **26 jul 2026** (master del 24/07: filas AD → `N/A`) |
 | SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | 22 jul 2026 (primera ingestión) |
 
 > Nota: los atajos `.lnk` en Drive **no** funcionan como puntero (son atajos de
-> Windows); se trackea el **fileId** del master. Hay un chequeo mensual propuesto
-> que compara el `modifiedTime` de cada master contra estas fechas.
+> Windows); se trackea el **fileId** del master.
+
+**Chequeo quincenal automatizado (26 jul 2026):** una Routine compara el
+`modifiedTime` de cada master contra las fechas de esta tabla los días 1 y 15.
+Si un master cambió, re-ingiere y abre PR; si no, no molesta a nadie. Reemplaza
+al chequeo mensual que estaba solo propuesto.
+
+### Ingestión del 26 jul 2026 (master modificado el 24/07)
+
+Diff completo master ↔ repo, celda por celda:
+
+| | Resultado |
+|---|---|
+| Códigos de cobertura (CT/COP/CP/AD) | **0 cambios** |
+| Precios | **0 cambios** — y siguen coincidiendo exactos con `TARIFAS` de `app/quote.js` |
+| Filas agregadas o eliminadas | **0** |
+| Carencias y cantidades | **201 celdas** — todas en filas `AD`, todas a `N/A` |
+
+Las 201 celdas cambiadas son **exactamente** las filas con `cob: "AD"`. Es
+decir: el master del 24/07 corrigió los valores heredados que esas filas traían
+(`INMEDIATA`, cantidades) y los puso en `N/A`, que es lo que el propio
+cuadernillo indica para Arancel Diferenciado.
+
+⚠ **Por qué importa aunque no cambie nada en la web.** Una fila `AD` con
+`carencia: "INMEDIATA"` leída sin filtrar dice *"cubierto, sin espera"* en un
+plan que **no cubre** ese servicio. El código de la web ya lo filtraba por
+`cob !== 'AD'` (ver `app/coverage.js` y BITACORA cap. 55), así que el sitio
+nunca publicó el dato malo — pero ahora la fuente y el repo dicen lo mismo, y
+la próxima persona que lea este JSON no se puede tropezar.
 
 **Integridad verificada (jul 2026):** los precios `titular_solo` de la grilla
 coinciden **exactos** con `TARIFAS` en `app/quote.js` para los tres planes
