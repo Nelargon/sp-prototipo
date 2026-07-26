@@ -872,9 +872,24 @@ usa `npm ci`).
       competencia — el propio análisis deja abierta la pregunta *"¿hay cosas que la
       competencia sí cubre?"* (§5.4). Por eso el copy dice **"en general"** y no
       "ningún seguro del país": afirmar eso sin dato sería una afirmación
-      comparativa infundada. **Con un relevamiento de 2–3 competidores se puede
+      comparativa infundada. **Con un relevamiento de competidores se puede
       endurecer la frase** — es la versión más fuerte y sigue siendo honesta.
       Territorio: `app/page.jsx`.
+    - **Actualización 25 jul 2026:** el usuario aportó el mapa de con quién se
+      compite y por qué, y ese mapa vive en el repo **privado**
+      `sp-interno/project/MAPA-COMPETITIVO.md` — es evaluación estratégica sobre
+      empresas nombradas y **no va en este repo, que es público**. Ahí está la
+      lista concreta a relevar y el método. Dos cosas que conviene saber sin
+      abrir ese documento: (a) el mercado se ordena por **si el competidor tiene
+      sanatorio propio o solo centro médico**, no por tamaño ni precio; (b) hay
+      una hipótesis anotada que **puede dar vuelta la conclusión** — es razonable
+      que los competidores con sanatorio cubran MÁS en alta complejidad, y si se
+      confirma en uno solo, la frase absoluta sería falsa y el "en general"
+      actual queda como la única redacción honesta. O sea: el relevamiento puede
+      terminar **confirmando el copy prudente**, no habilitando el fuerte.
+      ⚠ **Regla general que deja este caso:** cualquier análisis de competidores
+      nombrados va a `sp-interno`. A la web pública solo llegan afirmaciones
+      sobre la **categoría de producto**, con fuente y fecha.
 
 ---
 
