@@ -520,10 +520,36 @@ export default function Page() {
             <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:13px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
 
-          {/* Hilito de "por esto importa" (auditoría de conversión, jul 2026): antes de
-              elegir plan, sembrar el porqué — no es un CTA a cotizar, es el argumento
-              racional. Lleva a la nota de gasto de bolsillo, no a WhatsApp. */}
-          <div data-rv style={css('text-align:center;margin:22px auto 0;max-width:660px;font-size:15.5px;color:#5A5A58;line-height:1.65')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Por qué importa →</a></div>
+          {/* POR QUÉ IMPORTA UN SEGURO — ascendido de nota al pie a bloque propio
+              (26 jul 2026, pedido de Arturo: "creo que tiene que tener mucho más
+              protagonismo… hoy en Paraguay hay una gran necesidad de que la gente
+              entienda la necesidad de un seguro médico").
+
+              Era una línea centrada debajo del comparador. El argumento que
+              sostiene la CATEGORÍA entera pesaba menos que una nota al pie de
+              precios — y en un país donde 7 de cada 10 no tienen seguro, ese
+              argumento importa más que la diferencia entre Silver y Gold.
+
+              Encuadre deliberado: informa, no asusta. Los datos son duros pero
+              el tono es sereno — se muestra el contraste (cuenta impredecible
+              vs. cuota conocida), no la catástrofe. Nada de rojo: la regla de
+              color lo reserva para urgencias. Las cifras van con fuente citada;
+              sin fuente no entran. */}
+          <div data-rv style={css('margin:26px auto 0;max-width:760px;border:1px solid #d9e4e2;border-radius:18px;padding:26px 28px;background:#fff')}>
+            <div className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:10px')}>Por qué importa</div>
+            <div className="disp" style={css('font-size:clamp(19px,2.4vw,23px);font-weight:800;color:#003B71;line-height:1.28;letter-spacing:-0.01em')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés.</div>
+            <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0 4px')}>
+              <div style={css('border-left:3px solid #00BCB4;padding-left:14px')}>
+                <div className="disp num-tnum" style={css('font-size:clamp(26px,3.4vw,32px);font-weight:800;color:#003B71;line-height:1')}>36<span style={css('font-size:.6em')}>%</span></div>
+                <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;margin-top:6px')}>de todo lo que se gasta en salud en Paraguay sale del bolsillo de alguien <b style={css('color:#333')}>justo cuando se enferma</b>. La OMS recomienda que no pase del 20%.</div>
+              </div>
+              <div style={css('border-left:3px solid #00BCB4;padding-left:14px')}>
+                <div className="disp num-tnum" style={css('font-size:clamp(26px,3.4vw,32px);font-weight:800;color:#003B71;line-height:1')}>7<span style={css('font-size:.55em;font-weight:700')}> de cada 10</span></div>
+                <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;margin-top:6px')}>paraguayos <b style={css('color:#333')}>no tienen ningún seguro médico</b>. Cuando llega una internación, la cuenta llega entera y de una vez.</div>
+              </div>
+            </div>
+            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:16px')}>Fuentes: OPS (Perfil de país, 2021) e INE. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Leé la nota completa →</a></div>
+          </div>
 
           <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
@@ -655,8 +681,8 @@ export default function Page() {
           <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
             <span style={css('width:28px;height:28px;border-radius:9px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
             <div>
-              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Dónde termina nuestra cobertura</div>
-              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:#333')}>nuestros planes no cubren</b>: odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites.</div>
+              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Para que no haya sorpresas</div>
+              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:#333')}>nuestros planes no cubren</b>: {annotate('odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites — pasá el mouse o tocá cada una para ver qué incluye.</div>
               <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:#333')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
             </div>
           </div>

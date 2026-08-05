@@ -1331,6 +1331,43 @@ interno caía en la rama de WhatsApp con mensaje vacío.
 
 **Territorio:** `app/page.jsx`.
 
+### El valor del seguro sube de nota al pie a bloque (26 jul 2026)
+
+**Pedido de Arturo:** *"Creo que tiene que tener mucho más protagonismo… hoy en
+Paraguay hay una gran necesidad de que la gente entienda la necesidad de un
+seguro médico. Todo lo que tenga que ver con eso, en cualquier cosa que hagamos
+en el futuro, es muy importante."*
+
+⚠ **Tratar esto como dirección permanente, no como un cambio puntual.**
+Cualquier pieza futura —web, blog, Tranquibara, redes— tiene que dejarle lugar
+al argumento de **por qué existe un seguro**, no solo a cuál plan conviene. En
+un mercado donde 7 de cada 10 no tienen cobertura, educar la categoría pesa más
+que diferenciar el producto.
+
+**Qué cambió.** La frase *"Un seguro no es un gasto…"* era una línea debajo del
+comparador; ahora es un bloque con kicker, titular en display y **dos cifras con
+fuente**: 36% del gasto en salud sale del bolsillo (OPS, 2021; la OMS recomienda
+≤20%) y 7 de cada 10 paraguayos sin seguro (INE). Encuadre sereno: muestra el
+contraste, no la catástrofe. Sin rojo.
+
+### El bloque de exclusiones: título con propósito y términos explicados
+
+- **Título:** *"Dónde termina nuestra cobertura"* → **"Para que no haya
+  sorpresas"**. El anterior era mi corrección de esa misma mañana: dejó de ser
+  falso pero seguía mirando el límite. Ahora el propósito está en el título.
+- **Glosario ampliado** a los cuatro términos del bloque: odontología, cirugía
+  bariátrica, tratamiento oncológico y alta complejidad. Se explican solos con
+  `annotate()`, con hover, dedo y teclado.
+
+⚠ **Hallazgo verificado contra la grilla, útil para cualquier copy futuro:** la
+**consulta de Oncología Clínica SÍ está cubierta** (con copago) y las de
+**Cardiocirugía y Neurocirugía están sin tope** en los tres planes. Lo que no se
+cubre es el **tratamiento y la cirugía**, no el acceso al especialista. Cada
+definición del glosario dice las dos mitades — es más preciso y además menos
+sombrío.
+
+**Territorio:** `app/page.jsx`, `app/glossary.jsx`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
