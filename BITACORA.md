@@ -1900,6 +1900,64 @@ conversando.
 
 ---
 
+## Capítulo 59 — El argumento que sostenía todo estaba en letra chica
+
+**Qué intentamos.** Nada, al principio: Arturo miró la home ya publicada y
+señaló tres cosas de una sola vez.
+
+**Qué pasó.**
+
+*Uno.* La frase *"Un seguro no es un gasto: cambia una cuenta impredecible por
+una cuota que conocés"* era **una línea centrada debajo del comparador**. Su
+observación:
+
+> *"Creo que tiene que tener mucho más protagonismo… hoy en Paraguay hay una
+> gran necesidad de que la gente entienda la necesidad de un seguro médico."*
+
+Tenía razón y el desbalance era grande: **el argumento que sostiene la
+categoría entera pesaba menos que una nota al pie de precios.** Toda la home
+discute *cuál plan*; nadie discutía *por qué un plan*. Y en un país donde
+**7 de cada 10 personas no tienen ningún seguro médico** (INE), la segunda
+pregunta le gana a la primera por mucho.
+
+*Dos.* El glosario explicaba *carencia* al pasar el mouse, pero no
+*tratamiento oncológico* ni *cirugía bariátrica* — las palabras más pesadas
+del bloque estaban sin explicar. Al escribir esas definiciones apareció algo
+que no sabíamos: **la consulta con el oncólogo SÍ está cubierta** (con copago),
+y las de cardiocirugía y neurocirugía están **sin tope en los tres planes**. Lo
+que no se cubre es el tratamiento y la cirugía, no al especialista.
+
+*Tres.* El título que yo mismo había puesto esa mañana —*"Dónde termina nuestra
+cobertura"*— seguía sin convencerlo:
+
+> *"Todavía es un poquito negativo y va a una transparencia que no beneficia a
+> nadie."*
+
+**Qué aprendimos.**
+
+1. **Corregir un error puede dejarte a mitad de camino.** Ese título era mi
+   arreglo de la mañana: pasé de una afirmación falsa sobre el rubro a una
+   verdadera sobre nosotros, y me detuve ahí, satisfecho de haber sacado la
+   mentira. Pero *"dónde termina"* sigue mirando el límite. **Dejó de ser
+   incorrecto sin llegar a ser bueno.** Ahora se llama *"Para que no haya
+   sorpresas"*: el propósito en el título, que es lo que el cap. 54 ya había
+   enseñado y no habíamos aplicado acá.
+2. **Explicar una exclusión obliga a mirarla de cerca, y ahí aparece lo que sí
+   está.** Escribir *"¿qué es tratamiento oncológico?"* nos hizo abrir la
+   grilla y descubrir que el oncólogo está cubierto. Cada definición ahora dice
+   las dos mitades — *"la consulta sí; el tratamiento no"*— y el bloque quedó
+   **más preciso y menos sombrío al mismo tiempo**. La transparencia que
+   beneficia no es la que muestra menos: es la que muestra **completo**.
+3. **El peso visual es un argumento.** No cambiamos una palabra de la frase del
+   seguro: cambiamos su tamaño, le pusimos las dos cifras con fuente y la
+   sacamos del gris. La idea siempre había estado bien escrita; estaba mal
+   **jerarquizada**, que es otra forma de no estar dicha.
+4. **Educar la categoría no es lo mismo que vender el producto**, y en un
+   mercado con 70% sin cobertura puede importar más. Este bloque no empuja a
+   cotizar: explica por qué existe la cotización.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

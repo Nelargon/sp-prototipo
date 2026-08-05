@@ -60,6 +60,29 @@ export const TERMS = {
     t: 'Preexistencia',
     d: 'Una condición de salud que ya tenías antes de afiliarte.',
   },
+  // Los cuatro términos del bloque de lo que no cubrimos (pedido de Arturo,
+  // 26 jul 2026: "no se explica tratamiento oncológico o cirugía bariátrica").
+  // Cada definición dice también qué SÍ está cubierto al lado — porque es
+  // verdad y porque una exclusión sin contexto asusta más de lo que informa.
+  // Verificado contra la grilla: la consulta de Oncología Clínica está cubierta
+  // con copago; las de Cardiocirugía y Neurocirugía, SIN TOPE en los tres
+  // planes; y las radiografías dentales son estudio de imagen, sí cubierto.
+  oncologico: {
+    t: 'Tratamiento oncológico',
+    d: 'El tratamiento del cáncer en sí: quimioterapia, radioterapia y las cirugías para tratarlo. La consulta con el oncólogo sí está cubierta — lo que no entra es el tratamiento.',
+  },
+  bariatrica: {
+    t: 'Cirugía bariátrica',
+    d: 'La operación para bajar de peso cuando la obesidad pone en riesgo la salud: por ejemplo la manga gástrica o el bypass.',
+  },
+  altacomplejidad: {
+    t: 'Alta complejidad',
+    d: 'Las cirugías más grandes y delicadas: las del corazón, las del cerebro y las de los vasos sanguíneos principales. Las consultas con esos especialistas sí están cubiertas y sin tope — lo que no entra es la cirugía.',
+  },
+  odontologia: {
+    t: 'Odontología',
+    d: 'La atención del dentista: limpiezas, arreglos, extracciones, tratamientos. Las radiografías dentales sí están cubiertas, porque son un estudio de imagen.',
+  },
 };
 
 export function Term({ k, children }) {
@@ -175,6 +198,12 @@ export function waitLabel(days) {
 // aparición de cada término por texto — subrayar la misma palabra tres veces en
 // una línea es ruido, no ayuda.
 const MATCHERS = [
+  // Los más largos primero: "tratamiento oncológico" tiene que ganarle a
+  // cualquier coincidencia más corta que caiga adentro.
+  [/tratamiento oncológico/i, 'oncologico'],
+  [/cirugía bariátrica/i, 'bariatrica'],
+  [/alta complejidad/i, 'altacomplejidad'],
+  [/odontología/i, 'odontologia'],
   [/semi-?suite/i, 'semisuite'],
   [/copago/i, 'copago'],
   [/nursery/i, 'nursery'],
