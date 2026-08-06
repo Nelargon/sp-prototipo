@@ -21,12 +21,15 @@ export default function BlogPage() {
   // componente cliente y no debe importar lib/blog (arrastraría `fs` al bundle).
   const notas = posts.map((n) => ({
     slug: n.slug, title: n.title, categoria: n.categoria,
-    cover: n.cover, description: n.description, minutes: n.minutes,
+    cover: n.cover, cover_dato: n.cover_dato, description: n.description, minutes: n.minutes,
     fechaFmt: formatFecha(n.date), fechaCorta: formatFechaCorta(n.date),
   }));
 
   // Solo lo que la tarjeta de guía necesita: BlogList es cliente.
-  const guias = getGuias().map((g) => ({
+  // Sin notas publicadas no hay guías que resolver: getGuia TIRA si un slug de
+  // lib/series.js no existe, y esa falla ruidosa es a propósito — pero no debe
+  // romper el build del blog vacío, que es un estado legítimo y soportado.
+  const guias = (notas.length === 0 ? [] : getGuias()).map((g) => ({
     slug: g.slug, titulo: g.titulo, promesa: g.promesa,
     cantidad: g.notas.length,
     minutos: g.notas.reduce((a, n) => a + (n.minutes || 0), 0),

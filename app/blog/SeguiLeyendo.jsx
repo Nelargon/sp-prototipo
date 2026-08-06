@@ -31,7 +31,7 @@ export default function SeguiLeyendo({ notas }) {
               href={`${BP}/blog/${n.slug}/`}
               style={css('display:block;color:inherit;text-decoration:none')}
             >
-              <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" aspect="16 / 10" radius={12} />
+              <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius={12} />
               <div style={css('font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#007d77;margin:12px 0 6px')}>
                 {n.categoria}
               </div>

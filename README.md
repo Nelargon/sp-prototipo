@@ -48,3 +48,35 @@ scripts/       # sync-guia.mjs (corre automático en el prebuild)
   el chequeo de build (CI).
 - El material interno del proyecto (briefs, plan estratégico, histórico)
   vive en el repositorio **privado** `sp-interno`.
+
+## Analítica (apagada por defecto)
+
+El sitio no mide nada hasta que alguien lo decide. Sin variable de entorno,
+`app/Analytics.jsx` no renderiza nada y no se carga un solo byte de terceros.
+
+Medir visitantes de un sitio de SALUD es una decisión de privacidad, no una
+decisión técnica: se toma a conciencia, no se hereda de un commit.
+
+| Variable | Proveedor | Cookies | Banner de consentimiento |
+|---|---|---|---|
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Plausible **(recomendado)** | no | **no hace falta** |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 | sí | sí, y política de privacidad |
+
+Si están las dos, gana Plausible: ante la duda, la opción que no sigue a la
+persona. GA4 se configura con `anonymize_ip`.
+
+Se enciende en el workflow de deploy, junto a `NEXT_PUBLIC_BASE_PATH`:
+
+```yaml
+env:
+  NEXT_PUBLIC_BASE_PATH: /sp-prototipo
+  NEXT_PUBLIC_PLAUSIBLE_DOMAIN: saludprotegida.com.py
+```
+
+**Ojo con el orden:** el sitio todavía no se indexa
+(`NEXT_PUBLIC_INDEXABLE` en false). Encender la analítica antes de que el
+sitio sea público mide casi nada — pero deja el contador andando desde el
+día uno, que es cuando el dato empieza a valer.
+
+Sin analítica no hay forma honesta de armar un "lo más leído": cualquier
+ranking sería inventado, y eso choca con el pilar Honesta de la marca.
