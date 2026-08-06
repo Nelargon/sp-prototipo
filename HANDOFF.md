@@ -1430,12 +1430,24 @@ para que la próxima sesión no tenga que volver a medir.
 
 Las secciones 3 y 4 juntas son **el 38% de la página en móvil**.
 
-**Hallazgo 1 — tres de las siete preguntas más frecuentes están enterradas.**
-Cruzando contra el dato de los asesores (`sp-interno`,
-`PREGUNTAS-FRECUENTES-asesores-2026-07.md`): descuentos (2/4), "¿cubre en todo
-el país?" (2/4) y "¿está mi médico?" (2/4) viven en la FAQ, a **11,7 pantallas
-de 14,8 — el 79% de profundidad**. Se pusieron ahí *por* ese dato, pero quien
-las pregunta tiene que scrollear once pantallas o saber que hay una FAQ.
+**Hallazgo 1 — CORREGIDO. No es profundidad: es forma.**
+
+> ⚠ La primera versión de este hallazgo decía que descuentos, cobertura
+> geográfica y "¿está mi médico?" "viven en la FAQ, al 79% de profundidad".
+> **Era falso** y lo detectó la revisión automática del PR #84. Los tres
+> aparecen antes en la página. Se corrige acá para que nadie ejecute trabajo
+> sobre una premisa equivocada:
+
+| Pregunta | Dónde aparece antes | Qué falta realmente |
+|---|---|---|
+| **Descuentos** (2/4) | `page.jsx:628` — nota al pie gris bajo el comparador (~3 pant) | Está **enunciado**, no **respondido**: es letra chica de precios, no una respuesta a "¿hay descuento?" |
+| **¿Está mi médico?** (2/4) | `page.jsx:697` — *"Buscá tu médico, sanatorio o estudio…"* con puerta a la Guía (~5 pant) | **Nada. Está bien resuelto.** El hallazgo original era incorrecto. |
+| **¿Cubre en todo el país?** (2/4) | `page.jsx:697` y `:778` — *"en todo el país"* | Es una **afirmación**, no una verificación. No hay forma de responder "¿y en mi ciudad?" sin ir a la Guía |
+
+**Lo que queda en pie, más chico y más preciso:** el descuento vive en letra
+chica y la cobertura geográfica se afirma sin poder comprobarse. **No hay que
+"desenterrar" nada de la FAQ** — hay que decidir si esas dos merecen mejor
+forma arriba. "¿Está mi médico?" se saca de la lista.
 
 **Hallazgo 2 — el argumento del "por qué un seguro" está partido en dos, y
 ninguna mitad está arriba.** El bloque *"Un seguro no es un gasto"* está a
@@ -1447,9 +1459,21 @@ mal"*) dice esencialmente lo mismo, cinco pantallas más abajo.
 que tenga que ver con eso… es muy importante"*, porque en Paraguay 7 de cada 10
 no tienen seguro.
 
-**Hallazgo 3 — dos secciones seguidas hablan de la red** (9: Lister +
-prestadores · 10: Aliados / SaludPro 360). Juntas, ~1,1 pantallas móviles.
-Candidatas a consolidar.
+**Hallazgo 3 — CORREGIDO. La repetición es 4 ↔ 9, no 9 ↔ 10.**
+
+> ⚠ También detectado en la revisión del PR #84. Había emparejado las secciones
+> por vecindad, no por contenido.
+
+La duplicación real: **`page.jsx:697` (sección 4)** dice *"Lister, nuestro
+centro propio… más de 50 prestadores en todo el país"* y **`page.jsx:778`
+(sección 9)** repite *"Lister + más de 50 prestadores en todo el país"*. Es el
+mismo mensaje dos veces.
+
+La **sección 10 NO es lo mismo**: es el carrusel de **aliados comerciales**
+(SaludPro 360), y sus prestadores médicos están marcados como ejemplos y
+*"muy pronto"* / *"próximamente"* (`page.jsx:786-815`). Consolidar 9 con 10
+mezclaría lo que existe hoy con lo que todavía no existe — y dejaría intacta
+la repetición verdadera.
 
 **Qué falta decidir (es de Arturo, altera el alcance):** si se reordena la home
 —subir el argumento del seguro, desenterrar las preguntas de alta frecuencia,

@@ -2013,6 +2013,55 @@ tamaños, antes y después.
 
 ---
 
+## Capítulo 61 — Auditar dónde está algo no es auditar qué dice
+
+**Qué intentamos.** Dejar escrita la auditoría estratégica de la home antes de
+cerrar la sesión, para que la próxima no tuviera que volver a medir. Se midió
+todo con Playwright: alto de cada sección, profundidad en pantallas, y dónde
+caía cada una de las siete preguntas más frecuentes de los clientes.
+
+**Qué pasó.** La revisión automática del PR desarmó **dos de los tres
+hallazgos**, y tenía razón en los dos.
+
+*El primero.* Yo afirmé que descuentos, cobertura geográfica y "¿está mi
+médico?" **"viven en la FAQ, al 79% de profundidad"**. Falso: los tres aparecen
+antes. El descuento está en `page.jsx:628`, la búsqueda de médico en `:697`
+—con puerta a la Guía y todo— y la cobertura nacional en `:697` y `:778`.
+**"¿Está mi médico?" ni siquiera era un problema: está bien resuelto.**
+
+*El segundo.* Recomendé consolidar las secciones 9 y 10 "porque las dos hablan
+de la red". La repetición real es entre la **4 y la 9** (las dos dicen *"Lister
++ más de 50 prestadores en todo el país"*); la sección 10 es el carrusel de
+aliados comerciales, con sus prestadores médicos marcados como *"próximamente"*.
+Consolidar 9 con 10 habría mezclado lo que existe con lo que no existe todavía,
+y habría dejado intacta la duplicación verdadera.
+
+**Qué aprendimos.**
+
+1. **Medí posiciones y no leí contenido.** Recorrí el DOM anotando `top` y
+   `height` de cada sección, y con eso creí saber dónde se responde cada
+   pregunta. Pero una sección no es una unidad de significado: **el descuento
+   estaba adentro de la sección de precios y la búsqueda de médico adentro de
+   la sección de cobertura.** Auditar la *estructura* dice cuánto scroll hay;
+   no dice qué está dicho. Son dos auditorías distintas y yo entregué una
+   creyendo que era la otra.
+2. **Emparejé por vecindad en vez de por contenido.** Las secciones 9 y 10
+   están pegadas y las dos mencionan prestadores, así que las llamé
+   redundantes. La que se repetía era la 4, cinco secciones más arriba. **Lo
+   contiguo se ve; lo distante hay que buscarlo** — y el ojo elige lo fácil.
+3. **Una premisa falsa en el HANDOFF es peor que no escribir nada.** Este
+   documento existe para que la próxima sesión no repita trabajo. Con mi
+   versión, habría "desenterrado" de la FAQ algo que ya estaba arriba, y
+   fusionado dos bloques que no son equivalentes. **Un mapa equivocado manda a
+   caminar en la dirección incorrecta con confianza.**
+4. **Tercera vez en dos días que una revisión externa ve lo que yo no.** Antes
+   fueron dos contradicciones internas en el documento de Tranquibara y una
+   frase memorable que era falsa. El patrón ya no es anécdota: **lo que uno
+   escribe, uno lo relee confirmando.** No alcanza con verificar el propio
+   trabajo — hay que exponerlo a alguien con otro punto de partida.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
