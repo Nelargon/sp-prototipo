@@ -357,6 +357,14 @@ export default function Page() {
                   <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Bronze, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Simulá tu precio</span><span className="navmenu-s">Unas preguntas y ves el precio, en 1 minuto</span></a>
+                  {/* Entrada discreta a /que-cubre (pedido del usuario, 6 ago 2026:
+                      "en algún lugar medio escondidito"). ⚠ Va DUPLICADA a propósito:
+                      la home todavía no usa `app/Header.jsx` —es el módulo que quedó
+                      afuera de la unificación del PR #83— así que un link puesto solo
+                      allá no existe justo en la página por la que entra casi todo el
+                      mundo. Cuando la home migre al Header compartido, esta copia se
+                      borra y queda la de Header.jsx. */}
+                  <a href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Landing v1</span><span className="navmenu-s">Buscá tu estudio y mirá qué hace cada plan con eso</span></a>
                 </div>
               </div>
             </div>
@@ -393,6 +401,7 @@ export default function Page() {
             <a href="#cartilla" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
             <a href="#comparar" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
+            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>Landing v1</a>
             <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
             <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
             <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>

@@ -345,3 +345,9 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
      cada tipo de respuesta (ver EJEMPLOS en lib/buscar-prestaciones.js). */
   .bus-chip:nth-of-type(n+5){display:none}
 }
+
+/* "Landing v1" en el menú móvil: misma lista, medio tono más abajo. El menú
+   móvil son titulares de 34-44px; una versión en evaluación no puede gritar
+   igual que "Cobertura" o "Planes". Más chica y en teal —el color de "esto es
+   otra cosa"— sigue siendo tocable y honesta sobre su estado. */
+.menu-item-sec{font-size:clamp(20px,5.5vw,24px) !important;color:#007d77 !important}

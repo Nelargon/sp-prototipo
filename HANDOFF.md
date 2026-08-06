@@ -53,10 +53,22 @@ forma aprobada de decir lo que el rubro llama "cartilla", y es lo que una
 familia escribe en un buscador. **No se usa "privilege" en la URL**: es nombre
 interno (dec. 11o).
 
-**Todavía no la enlaza nada.** Es deliberado —una landing de campaña no
-necesita estar en el nav— pero es una decisión pendiente: si se quiere que
-entre por el menú, hay que tocar `app/Header.jsx`, que es componente compartido
-y quedó fuera del territorio de este PR.
+**Cómo se entra (6 ago 2026).** El usuario pidió una puerta *"en algún lugar
+medio escondidito"* con el nombre **"Landing v1"**: última entrada del
+desplegable **Planes** en desktop, y en el menú móvil en teal y a menor cuerpo
+que los títulos. El nombre es la etiqueta honesta de algo en evaluación —
+cuando deje de serlo, hay que renombrarla por lo que la página hace.
+
+> ⚠ **El link va DUPLICADO, y no es un descuido.** La home **no usa
+> `app/Header.jsx`**: tiene su propio header inline. Es el módulo que quedó
+> afuera de la unificación del PR #83 ("8 de 9"). Un link puesto solo en el
+> Header compartido **no existe en la home**, que es por donde entra casi todo
+> el mundo. Por eso está en los dos lugares, con comentario en ambos. **Cuando
+> la home migre al Header compartido, se borra la copia de `app/page.jsx`.**
+> Vale para cualquier sesión que agregue navegación: verificá en la home, no
+> solo en un módulo interno.
+
+Evento: `nav_landing{destino:'que-cubre', origen:'nav_menu'|'menu_movil'}`.
 
 ### Lo que una sesión futura tiene que saber (del buscador)
 
