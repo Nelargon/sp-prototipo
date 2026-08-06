@@ -2443,6 +2443,61 @@ arreglado doce días antes. Otra verificó sobre un checkout tres merges atrás.
 
 ---
 
+## Capítulo 67 — Dos sesiones enlazaron la misma página y el merge no dijo nada
+
+**Qué intentamos.** Que la landing nueva tuviera una puerta. El usuario la pidió
+discreta: *"ponme en algún lugar medio escondidito… puedes poner justamente
+'Landing v1'"*. Eso se hizo en el PR #92: última entrada del desplegable
+*Planes*, y una línea en el menú móvil.
+
+**Qué pasó.** En paralelo, otra sesión (PR #91) integró la misma página como
+entrada de primera línea del desplegable *Cobertura* —con el nombre en idioma
+de cliente, *"¿Está cubierto lo que me pidieron?"*— más una tarjeta en el
+comparador, y documentó un reparto de superficies pensado.
+
+Los dos PRs se fusionaron el mismo día, con horas de diferencia. **Ningún
+`git merge` reportó un conflicto: los dos lados tocaban partes distintas del
+mismo archivo y aplicaron limpio.** Pero el resultado en `main` era esto:
+
+| Dónde | Cómo se llamaba |
+|---|---|
+| Desplegable Cobertura | ¿Está cubierto lo que me pidieron? |
+| Desplegable Planes | **Landing v1** |
+| Menú móvil | **Landing v1** |
+| Tarjeta del comparador | ¿Está cubierto lo que me pidieron? |
+
+**La misma página, dos veces en la misma barra de navegación, con dos nombres
+distintos.** Y uno de ellos —"Landing v1"— es jerga interna delante de una
+familia que entra a ver si le cubren un estudio, exactamente lo que prohíbe la
+regla de lenguaje del proyecto.
+
+Ganó el nombre del cliente. Se eliminaron las dos entradas "Landing v1", con una
+excepción deliberada: **el menú móvil conserva la suya**, porque es plano y no
+tiene los desplegables donde vive la de escritorio — sin ella, la página quedaba
+sin puerta de menú justo para el 77% del tráfico. Va con la misma pregunta,
+acortada, y en cuerpo menor: la discreción que pidió el usuario, sin la jerga.
+
+**Qué aprendimos.**
+
+1. **Un conflicto de navegación no es un conflicto de git.** El protocolo de
+   sesiones paralelas asume que el choque se ve al fusionar. Acá los dos lados
+   aplicaron limpio y el defecto solo existía *mirando el nav entero*. **Cuando
+   dos sesiones tocan navegación, hay que revisar la barra completa, no el
+   diff.** El test nuevo cuenta cuántas entradas apuntan a la misma página: es
+   la clase de verificación que ningún merge puede hacer por vos.
+2. **Una etiqueta honesta puede seguir siendo la etiqueta equivocada.**
+   "Landing v1" era honesta —decía que era una versión en evaluación— y cumplía
+   la regla de etiquetas. Pero la regla de lenguaje es anterior: primero se
+   escribe en el idioma del cliente, después se es preciso. **Un nombre interno
+   no se vuelve aceptable por ser sincero.**
+3. **El pedido del usuario tenía un porqué, y el porqué sobrevivió al nombre.**
+   Pidió "escondidito" porque la página era nueva y no probada. Eso se conserva
+   —cuerpo menor, dentro de un desplegable, sin CTA— aunque el nombre cambie.
+   **Cuando hay que desobedecer la letra de un pedido, conviene identificar qué
+   lo motivó y salvar eso.**
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
