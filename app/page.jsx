@@ -256,6 +256,18 @@ export default function Page() {
     href: `${BP}/simulador/?plan=${pl.short.toLowerCase()}`,
     onCta: () => track('cta_simulador', { origen: 'comparador', plan: pl.name }),
   }));
+  // ⚠ MATRIZ ÚNICA (6 ago 2026, pedido del usuario de bajar el scroll).
+  // El home tenía DOS matrices de cobertura × plan una arriba de la otra: este
+  // comparador (7 filas, 1849px) y el explorador "elegí una cobertura" del
+  // bloque "qué cubre" (11 coberturas, 1188px). Cinco filas estaban en las dos.
+  // 3037px —el 25% de la página— para responder dos veces la misma pregunta.
+  // Ahora hay una sola tabla con las 9 coberturas que DIFIEREN entre planes;
+  // las 4 que son iguales en los tres (ecografía, parto, laboratorio, terapia
+  // intensiva) siguen resumidas abajo en la banda de garantía, que es donde
+  // rinden — como veredicto positivo, no como filas que repiten "Al 100%" ×3.
+  // Las dos nuevas respecto del comparador viejo salen de coverage(): terapia
+  // intensiva y el tope de remedios de urgencias, que sí cambian por plan y
+  // hasta hoy solo se veían dentro del explorador.
   const cmp = [
     { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: 'Desde Silver', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
     { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: 'Copago 50%', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
@@ -263,7 +275,9 @@ export default function Page() {
     { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '10' }, { t: '15' }, { t: '20' }] },
     { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20' }, { t: '20' }, { t: '25' }] },
+    { name: 'Terapia intensiva', unit: 'días/año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
     { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲500 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
+    { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲100 mil' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
   ];
   const cmpIgual = 'Urgencias 24 h · Ecografías y radiografías · Parto y cesárea · Laboratorio · Terapia intensiva';
 
@@ -535,8 +549,8 @@ export default function Page() {
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Bronze, Silver y Gold</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Elegí el nivel que le queda a <span style={css('color:#007d77')}>tu familia</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial. Lo que cambia es <b style={css('color:#007d77')}>cuánto</b> — mirá dónde está la diferencia y elegí sin adivinar.</p>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:#007d77')}>qué ponés vos</span>.</h2>
+            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial y ninguno cubre el 100% — preferimos decírtelo a prometerte lo contrario. Acá está <b style={css('color:#007d77')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
@@ -568,7 +582,11 @@ export default function Page() {
               deslizando — decilo antes para que no se lea como algo cortado. */}
           <div data-rv className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:#00736e')}>Deslizá para comparar los tres planes <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
 
-          <div data-rv style={css('background:#fff;border:1px solid #E8E8E8;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
+          {/* ⚠ CONSERVA EL ANCLA #cartilla: el menú del header enlaza "Qué cubre
+              tu plan" acá. Al fusionarse las dos secciones, #comparar quedó en la
+              sección y #cartilla en la matriz, que es lo que esa entrada del menú
+              promete mostrar. Si algún día se mueve la tabla, el ancla va con ella. */}
+          <div data-rv id="cartilla" style={css('background:#fff;border:1px solid #E8E8E8;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
             <div className="cmp-inner">
               {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
               <div className="cmp-row">
@@ -611,6 +629,21 @@ export default function Page() {
             </div>
           </div>
 
+          {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
+              es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
+          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:#F7FBFB;border:1px solid #E8EFEE;border-radius:14px;margin-bottom:18px')}>
+            {[
+              { c: '#00BCB4', t: 'Cubierto', b: 'no ponés nada' },
+              { c: '#8a9997', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
+              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
+            ].map((m, i) => (
+              <span key={i} style={css('display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.5')}>
+                <span style={css('width:10px;height:10px;border-radius:999px;flex:none;transform:translateY(1px);background:' + m.c)}></span>
+                <span><b style={css('color:#003B71;font-weight:800')}>{m.t}</b> <span style={css('color:#6B6B6B')}>· {m.b}</span></span>
+              </span>
+            ))}
+          </div>
+
           {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
               de integridad sobre la que se construyen los tres planes. */}
           <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:16px;background:#F2FBFA')}>
@@ -631,82 +664,9 @@ export default function Page() {
               la categoría no puede llegar DESPUÉS de pedirle a la persona que
               elija plan. Ver la sección [data-mani-corto], arriba del comparador. */}
 
-          <div data-rv className="two-col" style={css('margin-top:26px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
-            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
-          </div>
-        </div>
-      </section>
 
-      {/* QUÉ CUBRE Y QUÉ PAGÁS — sección FUSIONADA (25 jul 2026, decisión del
-          usuario sobre el mapa de la home). Antes eran dos secciones consecutivas
-          —"qué cubre" y "claridad del bolsillo"— que respondían la MISMA pregunta
-          y pesaban 4 pantallas de móvil seguidas, dentro de un tramo de 6.2
-          pantallas de tablas encadenadas ("el valle de la súper saturación").
-          Al fusionarlas, los tres modos (cubierto / copago / precio de convenio)
-          dejan de ser tres tarjetas grandes y pasan a ser la LEYENDA del
-          explorador: es lo que siempre fueron — el vocabulario que usan sus
-          propios badges. El gradiente honesto pasa de tres tarjetas altas a tres
-          filas comparables (además, en móvil ya no se apilan).
-          ⚠ Conserva las DOS anclas (#cartilla y #bolsillo): el menú enlaza ambas.
-          Datos = grilla oficial (datos/planes-vigentes/ANALISIS-arancel-
-          diferenciado.md §2 y §4). "Precio de convenio" = cláusula 2.10, la
-          versión honesta de "arancel diferenciado". */}
-      <section id="cartilla" className="sec" style={css('padding:80px 40px;background:#fff')}>
-        <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto 24px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Qué cubre y qué pagás</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre el plan y <span style={css('color:#007d77')}>qué ponés vos</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:#3D3D3D;margin:0;font-family:var(--font-inter),sans-serif')}>Ningún plan de salud cubre el 100% — y preferimos decírtelo a prometerte lo contrario. Elegí una cobertura y mirá exactamente qué te toca en cada plan.</p>
-          </div>
 
-          {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
-              es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
-          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:#F7FBFB;border:1px solid #E8EFEE;border-radius:14px;margin-bottom:18px')}>
-            {[
-              { c: '#00BCB4', t: 'Cubierto', b: 'no ponés nada' },
-              { c: '#8a9997', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
-              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
-            ].map((m, i) => (
-              <span key={i} style={css('display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.5')}>
-                <span style={css('width:10px;height:10px;border-radius:999px;flex:none;transform:translateY(1px);background:' + m.c)}></span>
-                <span><b style={css('color:#003B71;font-weight:800')}>{m.t}</b> <span style={css('color:#6B6B6B')}>· {m.b}</span></span>
-              </span>
-            ))}
-          </div>
-
-          <div data-rv style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:26px 26px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-            <div style={css('font-size:13px;font-weight:700;color:#003B71;margin-bottom:12px')}>Elegí una cobertura:</div>
-            <div style={css('display:flex;flex-wrap:wrap;gap:9px')}>
-              {v.chips.map((c, i) => (
-                <button key={i} onClick={c.onPick} aria-pressed={v.selName === c.name} style={css(c.style)}>{c.name}</button>
-              ))}
-            </div>
-
-            <div key={v.selKey} style={css('margin-top:24px;background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;animation:glowin 1.1s cubic-bezier(.22,1,.36,1)')}>
-              <div style={css('display:flex;align-items:center;gap:12px;padding:18px 22px;background:#003B71;color:#fff')}>
-                <div style={css('width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center')}>{v.selIcon}</div>
-                <div><div style={css('font-size:12px;color:#9bc0e0')}>Cobertura</div><div className="disp" style={css('font-size:20px;font-weight:800')}>{v.selName}</div></div>
-              </div>
-              <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr 1fr')}>
-                {v.selRows.map((row, i) => (
-                  <div key={i} style={css(row.wrap)}>
-                    <div style={css('display:flex;align-items:center;gap:7px;margin-bottom:8px')}><span style={css('width:9px;height:9px;border-radius:999px;background:' + row.color)}></span><span style={css('font-size:13px;font-weight:700;color:#003B71')}>{row.plan}</span></div>
-                    <div style={css(row.badge)}>{row.status}</div>
-                    <div style={css('font-size:13px;color:#6B6B6B;line-height:1.5;margin-top:6px')}>{annotate(row.detail)}</div>
-                    {row.wait && (
-                      <div style={css('display:flex;align-items:center;gap:5px;margin-top:7px;font-size:12.5px;color:#6B6B6B')}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                        <span>{row.wait} · <Term k="carencia">carencia</Term></span>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
             <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
-
             {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
                 Parto son 300 días en los tres planes y la cesárea baja a 150 en
                 Gold — el dato más caro de descubrir tarde de todo el sistema, y
@@ -725,7 +685,6 @@ export default function Page() {
                 </div>
               </div>
             </div>
-          </div>
 
           {/* LO QUE QUEDA AFUERA — reencuadre (25 jul 2026, observación del usuario:
               "la transparencia tiene que cumplir un propósito, no puede ser
@@ -778,8 +737,16 @@ export default function Page() {
             </div>
             <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
+
+
+          <div data-rv className="two-col" style={css('margin-top:26px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
+            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+          </div>
         </div>
       </section>
+
 
       {/* CÓMO FUNCIONA — el proceso después de decidir (el teaser del simulador
           subió al puesto 2; esta sección sigue explicando qué pasa al contratar) */}

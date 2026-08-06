@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-08-06T16:52:12.530Z",
+  "fecha": "2026-08-06T17:21:55.797Z",
   "oks": [
     {
       "frente": "funcional",
@@ -91,7 +91,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/: 185 KB gzip de contenido crítico (≤300)"
+      "detalle": "/: 184 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -115,7 +115,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 23 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 28 ms (< 3 s)"
     },
     {
       "frente": "contenido",
