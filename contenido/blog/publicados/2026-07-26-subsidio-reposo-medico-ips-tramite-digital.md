@@ -15,19 +15,22 @@ status: "publicado"
 author: "Equipo Salud Protegida"
 ---
 
-Muchas familias paraguayas combinan los dos sistemas sin pensarlo dos veces:
-aportan al IPS por su trabajo y, a la vez, eligen un consultorio privado
-cuando les resulta más cómodo o más rápido. El aporte sigue ahí todos los
-meses. La pregunta que casi nadie tiene resuelta es qué pasa con ese aporte
-el día que un médico privado te certifica reposo.
+Muchas familias paraguayas combinan los dos sistemas sin pensarlo dos
+veces: aportan al IPS por su trabajo y, a la vez, eligen un consultorio
+privado cuando les resulta más cómodo o más rápido.
+
+El aporte sigue ahí todos los meses. La pregunta que casi nadie tiene
+resuelta es qué pasa con ese aporte el día que un médico privado te
+certifica reposo.
 
 ## El subsidio no depende de dónde te atendiste
 
-El subsidio por reposo es un beneficio para cualquier aportante del IPS, y
-no depende de dónde se emitió el certificado. Si un médico —del IPS, del
-MSPBS o privado— te da reposo, tenés derecho a cobrarlo igual. El beneficio
-ya existía. Lo que cambió esta semana es el trámite para pedirlo cuando el
-certificado viene de afuera de la red pública.
+**El subsidio por reposo es un beneficio para cualquier aportante del IPS,
+y no depende de dónde se emitió el certificado.** Si un médico —del IPS,
+del MSPBS o privado— te da reposo, tenés derecho a cobrarlo igual.
+
+El beneficio ya existía. Lo que cambió esta semana es el trámite para
+pedirlo cuando el certificado viene de afuera de la red pública.
 
 Antes, ese tipo de trámite suponía presentar el papel en una oficina del
 IPS, en horario de oficina. Con la plataforma nueva, se hace desde el
@@ -43,9 +46,10 @@ terminó de habilitarse para todos los casos
 ([Diario HOY, 23/07/2026](https://www.hoy.com.py/nacionales/2026/07/23/desde-hoy-rige-nuevo-sistema-digital-del-ips-para-tramitar-subsidios-por-reposos-externos)).
 
 La plataforma genera un número de expediente apenas cargás el trámite, así
-que sabés desde el primer minuto que quedó registrado. Podés seguir el
-estado del trámite en cualquier momento sin pasar por una oficina, y todo
-el proceso se completa desde el celular
+que sabés desde el primer minuto que quedó registrado.
+
+Podés seguir el estado en cualquier momento sin pasar por una oficina, y
+todo el proceso se completa desde el celular
 ([ABC Color, 17/07/2026](https://www.abc.com.py/nacionales/2026/07/17/ips-renueva-su-plataforma-tramitar-reposos-medicos-ahora-es-mas-facil/)).
 
 ## Cómo se hace, en la práctica
@@ -70,23 +74,21 @@ plataforma que los reposos emitidos dentro de la red pública.
 
 Si tenés dudas puntuales sobre tu caso —cuánto vas a cobrar, en cuántos
 días se resuelve el expediente—, esas respuestas las tiene el propio IPS
-por sus canales oficiales; acá el objetivo es que sepas que el trámite
-existe y es simple, no reemplazar esa consulta.
+por sus canales oficiales.
 
 ## Por qué conviene saberlo antes de necesitarlo
 
 El mejor momento para entender un trámite es antes de tenerlo enfrente, no
-con el certificado en la mano y la duda de por dónde empezar. Si aportás al
-IPS, ese subsidio te corresponde con independencia de si te atendés ahí, en
-el MSPBS o en un consultorio privado. Guardar ese dato hoy es tiempo que no
-vas a perder el día que lo necesites.
+con el certificado en la mano y la duda de por dónde empezar.
+
+Si aportás al IPS, ese subsidio te corresponde con independencia de si te
+atendés ahí, en el MSPBS o en un consultorio privado. Guardar ese dato hoy
+es tiempo que no vas a perder el día que lo necesites.
 
 Conocer cómo funciona el sistema público, tengas o no un plan privado, es
 parte de entender tu salud completa: cuanto menos trámites te sorprendan,
-menos energía gastás en algo que no debería costarte más que unos minutos
-desde el celular.
+menos energía gastás en algo que no debería costarte más que unos minutos.
 
 Vale también para quien organiza la salud de una familia entera: si tus
 padres o tu pareja aportan al IPS y se atienden por fuera, este mismo
-trámite les sirve a ellos igual. Un dato compartido a tiempo evita que
-alguien pierda una mañana entera por no saber que ya no hace falta.
+trámite les sirve a ellos igual.
