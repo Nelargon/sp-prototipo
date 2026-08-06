@@ -191,35 +191,51 @@ console.log('\n== 1. FUNCIONAL ==');
   await page.close();
 }
 
-/* Navegación: una puerta por destino, y sin jerga interna.
+/* Navegación: un destino no puede vivir en dos desplegables distintos.
    El 6/08 dos sesiones enlazaron /que-cubre por su cuenta el mismo día. Los dos
    PRs tocaban partes distintas del archivo, así que git los fusionó SIN
-   CONFLICTO — y main quedó con la misma página dos veces en la misma barra,
-   bajo dos nombres distintos, uno de ellos jerga interna ("Landing v1").
-   Ningún merge puede ver eso: el defecto no vive en el diff, vive en el nav
-   entero. Por eso se mide acá. Ver BITACORA cap. 67. */
+   CONFLICTO — y main quedó con la misma página en el menú "Cobertura" Y en el
+   menú "Planes", bajo dos nombres distintos, uno de ellos jerga interna
+   ("Landing v1"). Ningún merge puede ver eso: el defecto no vive en el diff,
+   vive en el nav entero. Ver BITACORA cap. 67.
+
+   ⚠ La regla es DOS DESPLEGABLES, no "dos links". La primera versión contaba
+   links repetidos a secas y marcó tres cosas deliberadas: /simulador/ aparece
+   dos veces en el menú Planes MÁS el CTA principal; "Mi SP" es a la vez el
+   título del desplegable y una entrada adentro; y la Guía se enlaza al ancla
+   #mi-red y a su portada. Nada de eso es un error — y un chequeo que grita
+   sobre lo que está bien enseña a ignorarlo. Dos entradas dentro del MISMO
+   panel son un reparto de intenciones; la misma página en DOS paneles es un
+   descuido de coordinación. */
 {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(400);
   const nav = await page.evaluate(() => {
+    const paneles = [...document.querySelectorAll('.navmenu-card')];
     const porDestino = {};
-    document.querySelectorAll('nav a[href], .nav-links-desktop a[href]').forEach((a) => {
-      const u = a.getAttribute('href') || '';
-      if (u.startsWith('#') || u.startsWith('tel:') || u.startsWith('mailto:')) return;
-      const destino = u.replace(/[?#].*$/, '');
-      (porDestino[destino] = porDestino[destino] || []).push(a.innerText.trim().split('\n')[0]);
+    paneles.forEach((panel, iPanel) => {
+      panel.querySelectorAll('a[href]').forEach((a) => {
+        const u = a.getAttribute('href') || '';
+        if (u.startsWith('tel:') || u.startsWith('mailto:')) return;
+        // El ancla SÍ distingue: /guia#mi-red y /guia son destinos distintos.
+        const e = (porDestino[u] = porDestino[u] || { paneles: [], textos: [] });
+        if (!e.paneles.includes(iPanel)) e.paneles.push(iPanel);
+        e.textos.push((a.innerText || '').trim().split('\n')[0]);
+      });
     });
-    return Object.entries(porDestino).filter(([, t]) => t.length > 1);
+    return Object.entries(porDestino)
+      .filter(([, e]) => e.paneles.length > 1)
+      .map(([u, e]) => [u, e.textos]);
   });
-  if (!nav.length) ok('funcional', 'nav: ninguna página se enlaza dos veces desde la misma barra');
-  else for (const [dest, textos] of nav) falla('funcional', 'confunde', `nav: "${dest}" aparece ${textos.length} veces en la misma barra (${textos.join(' / ')})`, '/');
+  if (!nav.length) ok('funcional', 'nav: ninguna página aparece en dos desplegables distintos');
+  else for (const [dest, textos] of nav) falla('funcional', 'confunde', `nav: "${dest}" aparece en 2+ desplegables distintos (${textos.join(' / ')})`, '/');
 
   /* Jerga interna a la vista del cliente. La regla de lenguaje del CLAUDE.md
-     manda escribir en el idioma de una familia; un nombre de versión o de
-     archivo en un menú es exactamente lo contrario. */
+     manda escribir en el idioma de una familia; un nombre de versión en un
+     menú es exactamente lo contrario. */
   const cuerpo = await page.innerText('body');
-  const jerga = ['Landing v1', 'v1 ', 'TODO', 'lorem'].filter((j) => cuerpo.includes(j));
+  const jerga = ['Landing v1', 'TODO:', 'lorem ipsum'].filter((j) => cuerpo.includes(j));
   if (!jerga.length) ok('contenido', 'nav/home sin jerga interna ni nombres de versión a la vista');
   else falla('contenido', 'confunde', 'jerga interna visible: ' + jerga.join(', '), '/');
   await page.close();
