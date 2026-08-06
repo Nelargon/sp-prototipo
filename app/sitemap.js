@@ -2,6 +2,7 @@
 // /v1/ queda afuera a propósito: es el snapshot congelado de referencia.
 
 import { getPublishedPosts } from '../lib/blog';
+import { SERIES } from '../lib/series';
 
 const SITE = (process.env.SITE_URL || 'https://saludprotegida.com.py') + (process.env.NEXT_PUBLIC_BASE_PATH || '');
 
@@ -20,6 +21,9 @@ export default function sitemap() {
     u('/mi-sp/', 0.7),
     u('/historia/', 0.6, 'monthly'),
     u('/blog/', 0.6, 'weekly'),
+    // Las guías son rutas públicas con canonical propio: si no entran acá, el
+    // sitemap deja de enumerar el sitio completo, que es justo su trabajo.
+    ...SERIES.map((g) => u(`/blog/guia/${g.slug}/`, 0.6, 'monthly')),
     // Las notas publicadas entran solas: una nota nueva = una URL nueva.
     ...getPublishedPosts().map((p) => u(`/blog/${p.slug}/`, 0.5, 'monthly')),
   ];

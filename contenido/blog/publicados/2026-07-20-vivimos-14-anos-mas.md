@@ -1,6 +1,7 @@
 ---
 title: "Vivimos 14 años más que nuestros abuelos: qué hacer con ese regalo"
 slug: "vivimos-14-anos-mas"
+cover_dato: "+14 años · en dos generaciones"
 kicker: "Decisiones"
 categoria: "Vivir más años"
 date: "2026-07-20"
@@ -23,24 +24,26 @@ author: "Equipo Salud Protegida"
 > Y las [proyecciones del INE](https://www.ine.gov.py/vt/paraguay-estimaciones-proyecciones-esperanza-de-vida-al-nacer-al-30-de-junio-1950-2050.php)
 > indican que va a seguir subiendo hacia 2050.
 
-Casi 14 años más en dos generaciones. Es una de las mejores noticias de
-la historia del país, y casi nadie la celebra — quizás porque trae una
-tarea nueva: una vida más larga hay que **llegarla bien**.
+Casi 14 años más en dos generaciones. Es una de las mejores noticias de la
+historia del país, y casi nadie la celebra — quizás porque trae una tarea
+nueva: una vida más larga hay que **llegarla bien**.
 
 ## Los años extra no vienen al final — se construyen al principio
 
-Acá está la trampa mental: pensamos los años extra como si se agregaran
-al final, cuando seamos viejos. Pero cómo vas a estar a los 70 se
-define, en gran parte, con lo que hacés entre los 25 y los 45: los
-hábitos, los controles, las cosas que detectás temprano porque alguien
-las fue a buscar.
+Acá está la trampa mental: pensamos los años extra como si se agregaran al
+final, cuando seamos viejos.
 
-A los 30 el cuerpo perdona casi todo, y esa es exactamente la razón por
-la que es tan fácil no hacer nada. [Ya escribimos sobre los chequeos
-que convienen a cada edad](/blog/chequeos-por-edad/): la medicina que
-mejor funciona es la que llega antes. Una vida más larga vuelve ese
-"antes" todavía más valioso — cada control de hoy protege más años que
-nunca.
+Pero **cómo vas a estar a los 70 se define, en gran parte, con lo que
+hacés entre los 25 y los 45**: los hábitos, los controles, las cosas que
+detectás temprano porque alguien las fue a buscar.
+
+A los 30 el cuerpo perdona casi todo, y esa es exactamente la razón por la
+que es tan fácil no hacer nada.
+
+[Ya escribimos sobre los chequeos que convienen a cada
+edad](/blog/chequeos-por-edad/): la medicina que mejor funciona es la que
+llega antes. Una vida más larga vuelve ese "antes" todavía más valioso —
+cada control de hoy protege más años que nunca.
 
 ## La salud se planifica como la plata
 
@@ -61,16 +64,18 @@ funciona igual, aunque casi nadie lo piense así:
 
 ## Una generación que ya piensa distinto
 
-Si tenés entre 25 y 35, sos parte de la primera generación paraguaya
-que puede planificar razonablemente una vida de 80 o más años. Y algo
-está cambiando: cada vez más gente joven busca información de salud,
-compara opciones y decide con datos — exactamente lo que estás haciendo
-ahora mismo, leyendo esto.
+Si tenés entre 25 y 35, sos parte de la primera generación paraguaya que
+puede planificar razonablemente una vida de 80 o más años.
+
+Y algo está cambiando: cada vez más gente joven busca información de
+salud, compara opciones y decide con datos — exactamente lo que estás
+haciendo ahora mismo, leyendo esto.
 
 ## La herramienta principal: empezar antes
 
-Catorce años extra son un regalo que ninguna generación anterior
-recibió. Pero los regalos grandes vienen con una responsabilidad
-proporcional: la de llegar a esos años con la salud para disfrutarlos.
-La buena noticia es que la herramienta principal no es cara ni
-complicada — es empezar antes.
+Catorce años extra son un regalo que ninguna generación anterior recibió.
+Pero los regalos grandes vienen con una responsabilidad proporcional: la
+de llegar a esos años con la salud para disfrutarlos.
+
+La buena noticia: la herramienta principal es barata y simple. Empezar
+antes.
