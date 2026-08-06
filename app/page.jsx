@@ -446,6 +446,67 @@ export default function Page() {
         </div>
       </section>
 
+      {/* POR QUÉ IMPORTA UN SEGURO — sección FUSIONADA y SUBIDA al puesto 3
+          (6 ago 2026, decisión de Arturo sobre la auditoría estratégica del 5 ago).
+
+          Antes eran DOS piezas que decían lo mismo y ninguna estaba arriba: el
+          bloque de datos "Un seguro no es un gasto" vivía dentro del comparador
+          (3,0 pantallas de móvil — o sea, DESPUÉS de pedirle a la persona que
+          elija plan), y el manifiesto corto —"Creés que estás protegido…"—
+          repetía la misma idea cinco pantallas más abajo.
+
+          El argumento que justifica la CATEGORÍA no puede llegar después de la
+          elección: en Paraguay 7 de cada 10 no tienen seguro, así que para la
+          mayoría la pregunta previa no es "¿cuál plan?" sino "¿por qué un plan?".
+          Ahora es lo primero que respalda al simulador — probá la herramienta →
+          por qué esto importa → cuál te queda → qué cubre — sin desalojar al
+          simulador del puesto 2, que se midió y se decidió en julio (dec. 12b).
+
+          Orden interno: el golpe humano (la frase del manifiesto) → los dos datos
+          duros que lo prueban → el reencuadre (cuenta impredecible vs. cuota
+          conocida) → qué hacemos nosotros al respecto. Informa, no asusta: nada
+          de rojo (la regla de color lo reserva para urgencias) y las cifras van
+          con fuente citada; sin fuente no entran.
+
+          Se podó "Salud Protegida. Protección que se siente." del cierre del
+          manifiesto: a dos pantallas del hero repetía su propio H1 (regla de
+          etiquetas — si repite lo de al lado, se poda). A siete pantallas no
+          repetía; acá sí.
+
+          ⚠ Conserva [data-mani-corto]: el evento manifesto_scroll sigue vivo,
+          pero ahora se dispara arriba y ya no significa "atravesó la home"
+          (anotado en ANEXO §2 para que nadie lo lea como antes). */}
+      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:#002A52')}>
+        <div style={css('max-width:860px;margin:0 auto;text-align:center')}>
+          <div data-rv>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}>Por qué importa</div>
+            <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 16px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 auto 32px;max-width:600px')}>No es una impresión nuestra: es lo que pasa cuando la salud se paga recién en el momento de necesitarla.</p>
+          </div>
+
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:left;margin-bottom:32px')}>
+            <div style={css('border-left:3px solid #00BCB4;padding-left:16px')}>
+              <div className="disp num-tnum" style={css('font-size:clamp(28px,3.6vw,36px);font-weight:800;color:#fff;line-height:1')}>36<span style={css('font-size:.6em')}>%</span></div>
+              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#B3C7DB;line-height:1.55;margin-top:8px')}>de todo lo que se gasta en salud en Paraguay sale del bolsillo de alguien <b style={css('color:#fff')}>justo cuando se enferma</b>. La OMS recomienda que no pase del 20%.</div>
+            </div>
+            <div style={css('border-left:3px solid #00BCB4;padding-left:16px')}>
+              <div className="disp num-tnum" style={css('font-size:clamp(28px,3.6vw,36px);font-weight:800;color:#fff;line-height:1')}>7<span style={css('font-size:.55em;font-weight:700')}> de cada 10</span></div>
+              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#B3C7DB;line-height:1.55;margin-top:8px')}>paraguayos <b style={css('color:#fff')}>no tienen ningún seguro médico</b>. Cuando llega una internación, la cuenta llega entera y de una vez.</div>
+            </div>
+          </div>
+
+          <div data-rv>
+            <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un seguro no es un gasto: cambia una cuenta impredecible por <span style={css('color:#00BCB4')}>una cuota que conocés</span>.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 auto 26px;max-width:620px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés. La protección real se construye <b style={css('color:#fff')}>antes</b> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
+            <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 24px')}>
+              <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>
+              <a href={`${BP}/historia/`} style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>
+            </div>
+            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#8fa8c0;margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
+          </div>
+        </div>
+      </section>
+
       {/* COMPARADOR "LO QUE CAMBIA" (iter 3, feedback CX del usuario) — filas
           alineadas de lo que difiere × planes. "Al 100%" en teal CONSISTENTE en
           los tres (Gold ya no se apaga); Silver resaltado como "la más elegida"
@@ -457,6 +518,19 @@ export default function Page() {
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Bronze, Silver y Gold</div>
             <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Elegí el nivel que le queda a <span style={css('color:#007d77')}>tu familia</span>.</h2>
             <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial. Lo que cambia es <b style={css('color:#007d77')}>cuánto</b> — mirá dónde está la diferencia y elegí sin adivinar.</p>
+          </div>
+
+          {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
+              "¿Hay descuento por la forma de pago?" es una de las preguntas que más
+              se repiten, y la respuesta vivía en gris de 12,5px al pie de OTRA
+              sección: estaba enunciada, no respondida. Ahora va donde están los
+              precios, legible, y en positivo — es una razón para elegir, no una
+              aclaración legal. La FAQ conserva la respuesta larga. */}
+          <div data-rv style={css('display:flex;justify-content:center;margin-bottom:24px')}>
+            <span style={css('display:inline-flex;align-items:flex-start;gap:11px;padding:13px 20px;border:1.5px solid #bfe8e4;background:#F2FBFA;border-radius:14px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left')}>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
+              <span>Pagando con <b style={css('color:#003B71')}>débito automático o tarjeta de crédito</b>, los tres planes tienen <b style={css('color:#007d77')}>10% de descuento</b> todos los meses.</span>
+            </span>
           </div>
 
           {/* Hint de scroll (solo móvil): en el teléfono la tabla se compara
@@ -520,38 +594,13 @@ export default function Page() {
             <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:13px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
 
-          {/* POR QUÉ IMPORTA UN SEGURO — ascendido de nota al pie a bloque propio
-              (26 jul 2026, pedido de Arturo: "creo que tiene que tener mucho más
-              protagonismo… hoy en Paraguay hay una gran necesidad de que la gente
-              entienda la necesidad de un seguro médico").
+          {/* ⚠ El bloque "Por qué importa" (36% de gasto de bolsillo · 7 de cada 10
+              sin seguro) VIVÍA ACÁ hasta el 6 ago 2026. Se mudó al puesto 3 de la
+              home, fusionado con el manifiesto corto — el argumento que justifica
+              la categoría no puede llegar DESPUÉS de pedirle a la persona que
+              elija plan. Ver la sección [data-mani-corto], arriba del comparador. */}
 
-              Era una línea centrada debajo del comparador. El argumento que
-              sostiene la CATEGORÍA entera pesaba menos que una nota al pie de
-              precios — y en un país donde 7 de cada 10 no tienen seguro, ese
-              argumento importa más que la diferencia entre Silver y Gold.
-
-              Encuadre deliberado: informa, no asusta. Los datos son duros pero
-              el tono es sereno — se muestra el contraste (cuenta impredecible
-              vs. cuota conocida), no la catástrofe. Nada de rojo: la regla de
-              color lo reserva para urgencias. Las cifras van con fuente citada;
-              sin fuente no entran. */}
-          <div data-rv style={css('margin:26px auto 0;max-width:760px;border:1px solid #d9e4e2;border-radius:18px;padding:26px 28px;background:#fff')}>
-            <div className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:10px')}>Por qué importa</div>
-            <div className="disp" style={css('font-size:clamp(19px,2.4vw,23px);font-weight:800;color:#003B71;line-height:1.28;letter-spacing:-0.01em')}>Un seguro no es un gasto: cambia una cuenta impredecible por una cuota que conocés.</div>
-            <div className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0 4px')}>
-              <div style={css('border-left:3px solid #00BCB4;padding-left:14px')}>
-                <div className="disp num-tnum" style={css('font-size:clamp(26px,3.4vw,32px);font-weight:800;color:#003B71;line-height:1')}>36<span style={css('font-size:.6em')}>%</span></div>
-                <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;margin-top:6px')}>de todo lo que se gasta en salud en Paraguay sale del bolsillo de alguien <b style={css('color:#333')}>justo cuando se enferma</b>. La OMS recomienda que no pase del 20%.</div>
-              </div>
-              <div style={css('border-left:3px solid #00BCB4;padding-left:14px')}>
-                <div className="disp num-tnum" style={css('font-size:clamp(26px,3.4vw,32px);font-weight:800;color:#003B71;line-height:1')}>7<span style={css('font-size:.55em;font-weight:700')}> de cada 10</span></div>
-                <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;margin-top:6px')}>paraguayos <b style={css('color:#333')}>no tienen ningún seguro médico</b>. Cuando llega una internación, la cuenta llega entera y de una vez.</div>
-              </div>
-            </div>
-            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:16px')}>Fuentes: OPS (Perfil de país, 2021) e INE. <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'comparador', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#007d77;font-weight:700;white-space:nowrap')}>Leé la nota completa →</a></div>
-          </div>
-
-          <div data-rv className="two-col" style={css('margin-top:22px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+          <div data-rv className="two-col" style={css('margin-top:26px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
             <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
             <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
@@ -625,7 +674,7 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido — pagando con débito automático o tarjeta de crédito tenés 10% de descuento. El detalle final lo confirmás con tu asesor.</div>
+            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
 
             {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
                 Parto son 300 días en los tres planes y la cesárea baja a 150 en
@@ -723,15 +772,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* MANIFIESTO — versión breve, en segunda persona; la historia completa vive en /historia */}
-      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:#002A52')}>
-        <div data-rv style={css('max-width:780px;margin:0 auto;text-align:center')}>
-          <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 24px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal. Nosotros creemos que la protección real se construye <span style={css('color:#00BCB4')}>antes</span> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
-          <p style={css('font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 0 28px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés.</p>
-          <div className="disp" style={css('font-size:21px;color:#fff;margin-bottom:24px')}>Salud Protegida. Protección que <span style={css('color:#00BCB4')}>se siente</span>.</div>
-          <a href={`${BP}/historia/`} style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px')}>Ver la historia completa →</a>
-        </div>
-      </section>
+      {/* ⚠ El MANIFIESTO CORTO vivía acá (puesto 6). El 6 ago 2026 se fusionó con
+          el bloque de datos "Un seguro no es un gasto" y subió al puesto 3: decían
+          lo mismo con cinco pantallas de distancia, y el argumento de la categoría
+          tiene que llegar antes de la elección de plan, no después. */}
 
       {/* DIFERENCIADORES */}
       <section className="sec" style={css('padding:64px 40px;background:#E6F7F6')}>
@@ -754,7 +798,7 @@ export default function Page() {
       </section>
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
-      <section className="sec-x" style={css('padding:72px 40px 28px;background:#fff')}>
+      <section className="sec-x" style={css('padding:72px 40px 64px;background:#fff')}>
         <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
             <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:#d4e0ee')}></div>
@@ -771,13 +815,15 @@ export default function Page() {
         </div>
       </section>
 
-      {/* FRANJA RED / LISTER */}
-      <section className="sec-x" style={css('padding:0 40px 64px;background:#fff')}>
-        <div data-rv style={css('max-width:1080px;margin:0 auto;background:#003B71;border-radius:20px;padding:30px 36px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center')}>
-          <span style={css('width:52px;height:52px;border-radius:14px;background:rgba(0,188,180,0.18);color:#00BCB4;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><path d="M10 10 6.5 7.5M14 10l3.5-2.5M10 14l-3.5 2.5M14 14l3.5 2.5" /></svg></span>
-          <div style={css('font-size:18px;color:#fff;line-height:1.5')}><b>Lister + más de 50 prestadores</b> <span style={css('color:#80DDD8')}>en todo el país.</span> Nuestro centro médico propio, más una red que te cubre donde estés.</div>
-        </div>
-      </section>
+      {/* ⚠ Acá vivía la FRANJA RED / LISTER: "Lister + más de 50 prestadores en
+          todo el país. Nuestro centro médico propio, más una red que te cubre
+          donde estés." Se eliminó el 6 ago 2026 (auditoría estratégica, hallazgo 3):
+          decía exactamente lo mismo que la puerta a la Guía Médica de la sección
+          "Qué cubre" —"Lister, nuestro centro propio (consultas, laboratorio e
+          imagen), más de 50 prestadores en todo el país"—, pero sin la acción que
+          esa sí ofrece (abrir la Guía). Un elemento se gana su lugar solo si suma
+          un destino o un momento que otro no cubre; este repetía y no sumaba.
+          El padding inferior que aportaba esta franja pasó a la sección de arriba. */}
 
       {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
       <section style={css('padding:64px 0 68px;background:#F5F5F5;overflow:hidden')}>

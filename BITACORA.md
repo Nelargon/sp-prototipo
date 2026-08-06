@@ -2062,6 +2062,65 @@ y habría dejado intacta la duplicación verdadera.
 
 ---
 
+## Capítulo 62 — El argumento de la categoría llegaba después de la elección
+
+**Qué intentamos.** Ejecutar la auditoría del capítulo anterior, ya corregida.
+De los tres hallazgos originales, dos se habían caído; el que quedaba en pie era
+el más grande y el menos vistoso: *el argumento que justifica tener un seguro
+está partido en dos, y ninguna mitad está arriba*.
+
+**Qué pasó.** Al ir a moverlo apareció lo que la medición sola no mostraba: las
+dos mitades no solo estaban lejos del hero — **estaban en el lugar equivocado
+respecto de la decisión**. El bloque de datos (36% de gasto de bolsillo · 7 de
+cada 10 sin seguro) vivía *dentro del comparador*, o sea que la página razonaba
+así:
+
+> Elegí entre Bronze, Silver y Gold. ⟶ *(y después)* ⟶ Por cierto: acá está por
+> qué te conviene tener un seguro.
+
+Y el manifiesto —*"Creés que estás protegido. La mayoría lo descubre recién
+cuando algo sale mal"*— repetía la misma idea cinco pantallas más abajo, con
+otras palabras y sin los datos. **Un mismo argumento dicho dos veces, las dos
+tarde.**
+
+La fusión salió más limpia de lo esperado porque las dos piezas eran las dos
+mitades de un mismo párrafo: el manifiesto tenía el golpe humano y ningún dato;
+el bloque tenía los datos y ninguna emoción. Juntos leen como un solo pensamiento
+— pasa algo, esto lo prueba, así se resuelve.
+
+**Qué aprendimos.**
+
+1. **Un argumento no se ubica por su peso, se ubica por su lugar en el
+   razonamiento.** La pregunta no era "¿está muy abajo?" sino "¿llega antes o
+   después de la decisión que pretende justificar?". En Paraguay 7 de cada 10 no
+   tienen seguro: para la mayoría de quienes entran, la pregunta previa no es
+   *¿cuál plan?* sino *¿por qué un plan?*. Responder la segunda después de la
+   primera es contestar una pregunta que la persona ya dejó de hacerse.
+2. **Dos piezas que dicen lo mismo casi nunca sobran las dos: suelen ser una
+   partida.** El instinto fácil era borrar una. Pero el manifiesto sin datos era
+   una afirmación, y los datos sin el manifiesto eran una estadística. La
+   redundancia no estaba en el mensaje — estaba en haberlo dicho dos veces a
+   medias.
+3. **Mover una sección mueve su métrica, y eso hay que declararlo.** El evento
+   `manifesto_scroll` se dispara cuando la sección entra en pantalla. Estaba a
+   7,7 pantallas: medía *"atravesó la home"*. Ahora está a 1,75: mide *"llegó al
+   argumento"*, que es otra cosa. El número va a **subir muchísimo** y no
+   significa que la gente lea más. Quedó anotado en el ANEXO §2 con la fecha de
+   corte, porque una métrica que cambia de significado en silencio es peor que
+   una métrica que no existe: la primera se sigue leyendo con confianza.
+4. **Al reordenar, la poda aparece sola — y hay que hacerle caso.** *"Salud
+   Protegida. Protección que se siente."* cerraba el manifiesto sin molestar a
+   nadie a siete pantallas del hero. A dos pantallas repite el H1 palabra por
+   palabra. **La misma línea puede ganarse su lugar en una posición y perderlo
+   en otra**: la regla de etiquetas no evalúa el elemento, evalúa el vecindario.
+5. **Y lo que no se pudo arreglar con palabras se dijo en voz alta.** La
+   cobertura geográfica sigue siendo una afirmación —"en todo el país"— que
+   nadie puede verificar. Se podía maquillar con mejor copy; no se hizo. Hace
+   falta la base real de prestadores por ciudad, y hasta que llegue queda
+   escrito como pendiente en vez de resuelto como texto.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

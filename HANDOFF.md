@@ -1404,7 +1404,72 @@ usuario).
 **Territorio:** `app/simulador/page.jsx`, `app/mi-sp/MiSP.jsx`,
 `app/historia/page.jsx`, `app/agendar/Agendar.jsx`, `app/globals.css`.
 
-### ⚠ PENDIENTE — Auditoría estratégica de la home (medida el 5 ago 2026)
+### ✔ EJECUTADA — Auditoría estratégica de la home (decisión de Arturo, 6 ago 2026)
+
+Arturo eligió **reordenar** (no "solo pulir"). Lo ejecutado, contra los hallazgos
+que sobrevivieron a la corrección del PR #84 — el detalle de la medición sigue
+abajo, sin tocar, porque es el insumo que justifica cada movimiento.
+
+**1. El argumento del seguro sube al puesto 3, fusionado.** Las dos piezas que
+decían lo mismo —el bloque de datos *"Un seguro no es un gasto"* (36% de gasto de
+bolsillo · 7 de cada 10 sin seguro), que vivía **dentro del comparador**, y el
+manifiesto corto *"Creés que estás protegido…"*, cinco pantallas más abajo— son
+ahora **una sola sección navy**, pegada al teaser del simulador.
+
+Orden nuevo: **Hero → Simulador → Por qué importa → Comparador → Qué cubre →
+Cómo funciona → Diferenciadores → Quiénes somos → Aliados → FAQ → Contacto.**
+
+El porqué: el argumento que justifica la **categoría** no puede llegar después de
+pedirle a la persona que elija plan. Para 7 de cada 10 paraguayos la pregunta
+previa no es *"¿cuál plan?"* sino *"¿por qué un plan?"*. El simulador **no se
+movió** del puesto 2 — eso se midió y se decidió en julio (dec. 12b) y no se
+re-litiga; el argumento entra como el primer respaldo, no como peaje.
+
+Estructura interna: golpe humano → los dos datos duros que lo prueban → el
+reencuadre (cuenta impredecible vs. cuota conocida) → qué hacemos al respecto
+(las cuatro preguntas) → las dos salidas (la nota del blog, la historia).
+
+⚠ **Dos efectos colaterales, anotados para que nadie se sorprenda:**
+- Se podó *"Salud Protegida. Protección que se siente."* del cierre del
+  manifiesto: a dos pantallas del hero repetía su propio H1. A siete no repetía;
+  acá sí (regla de etiquetas).
+- **`manifesto_scroll` cambió de significado en la home** y ya está anotado en el
+  ANEXO §2: se dispara a 1,75 pantallas en vez de ~7,7, así que mide "llegó al
+  argumento", no "atravesó la página". La serie histórica no es comparable a
+  partir del 6 ago 2026. `blog_open` pasó de `origen:'comparador'` a
+  `origen:'por_que_importa'` (el bloque se mudó; el nombre viejo mentía).
+
+**2. El descuento sale de la letra chica.** *"¿Hay descuento por la forma de
+pago?"* estaba **enunciado, no respondido**: gris de 12,5px al pie de otra
+sección. Ahora es una franja legible en el comparador, **donde están los
+precios**, y en positivo — una razón para elegir, no una aclaración legal. La FAQ
+conserva la respuesta larga; el pie de la sección "qué cubre" ya no la repite.
+
+**3. Consolidada la repetición real (hallazgo 3).** Se eliminó la franja navy
+*"Lister + más de 50 prestadores en todo el país"*: decía exactamente lo mismo
+que la puerta a la Guía Médica de la sección "Qué cubre", pero **sin la acción**
+que esa sí ofrece. El padding que aportaba pasó a la sección de arriba. La
+sección de aliados (SaludPro 360) **no se tocó** — la auditoría corregida ya
+había establecido que no es lo mismo, y consolidarla mezclaría lo que existe hoy
+con lo que todavía no.
+
+**Medido después (mismo método que el 5 ago):** escritorio **9,6 → 9,4**
+pantallas · móvil **14,8 → 14,5** · de 12 secciones a 11. El argumento del seguro
+pasó de arrancar a **3,0 pantallas** (y su gemelo a 7,7) a arrancar a **1,75**.
+El comparador bajó de 2,6 a **2,25** en móvil al soltar el bloque de datos.
+Verificado: build OK, QA integral **0 roto** (los 5 "confunde" son de notas del
+blog publicadas hoy por el bot, no de la home), y captura desktop+móvil de la
+sección nueva, del comparador y de la juntura donde estaba la franja.
+
+**Lo que NO se ejecutó, y por qué.** La **cobertura geográfica** sigue siendo una
+afirmación ("en todo el país") que nadie puede verificar sin ir a la Guía. La
+auditoría la dejaba a decisión junto con el descuento, pero **no se puede
+resolver con copy**: hace falta la base real de prestadores por ciudad
+(pendiente B) para que "¿y en mi ciudad?" tenga respuesta. Queda abierta,
+esperando ese dato. Territorio de este cambio: `app/page.jsx`,
+`guia/ANEXO-requisitos-backend.md`.
+
+### La medición que originó todo esto (5 ago 2026) — insumo, ya ejecutado
 
 Arturo pidió mirar la home "de forma estratégica… la disposición de cada
 herramienta, y si hay mucho scroll". Se midió pero **todavía no se ejecutó
@@ -1475,9 +1540,9 @@ La **sección 10 NO es lo mismo**: es el carrusel de **aliados comerciales**
 mezclaría lo que existe hoy con lo que todavía no existe — y dejaría intacta
 la repetición verdadera.
 
-**Qué falta decidir (es de Arturo, altera el alcance):** si se reordena la home
-—subir el argumento del seguro, desenterrar las preguntas de alta frecuencia,
-consolidar lo repetido— o si se deja el orden actual y solo se pulen piezas.
+~~**Qué falta decidir (es de Arturo, altera el alcance):**~~ ✔ **DECIDIDO el
+6 ago 2026: reordenar.** Arturo eligió mover, no solo pulir. Lo ejecutado está
+arriba, en el bloque que abre esta sección.
 
 *Cómo se midió, por si hay que repetirlo: build local, servir `out/` bajo
 `/sp-prototipo/`, y recorrer `document.querySelectorAll('section')` anotando
