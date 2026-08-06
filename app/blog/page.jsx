@@ -1,6 +1,6 @@
 import { css } from '../css';
 import { BP } from '../basePath';
-import { getPublishedPosts, formatFecha, formatFechaCorta } from '../../lib/blog';
+import { getPublishedPosts, getGuias, formatFecha, formatFechaCorta } from '../../lib/blog';
 import BlogList from './BlogList';
 import Header from '../Header';
 
@@ -25,6 +25,13 @@ export default function BlogPage() {
     fechaFmt: formatFecha(n.date), fechaCorta: formatFechaCorta(n.date),
   }));
 
+  // Solo lo que la tarjeta de guía necesita: BlogList es cliente.
+  const guias = getGuias().map((g) => ({
+    slug: g.slug, titulo: g.titulo, promesa: g.promesa,
+    cantidad: g.notas.length,
+    minutos: g.notas.reduce((a, n) => a + (n.minutes || 0), 0),
+  }));
+
   return (
     <div className="body" style={css('min-height:100vh;background:#002A52;color:#fff;display:flex;flex-direction:column')}>
       <Header variant="dark" />
@@ -38,7 +45,7 @@ export default function BlogPage() {
           {notas.length === 0 ? (
             <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;color:#B3C7DB')}>Las primeras notas están en camino.</p>
           ) : (
-            <BlogList notas={notas} basePath={BP} />
+            <BlogList notas={notas} basePath={BP} guias={guias} />
           )}
         </div>
       </div>

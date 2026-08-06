@@ -29,7 +29,7 @@ import { CATEGORIAS } from '../../lib/categorias';
    Tampoco hay tiempo relativo ("hace 2 horas"): el sitio es estático y se
    congelaría en el momento del build (ver formatFechaCorta en lib/blog.js). */
 
-export default function BlogList({ notas, basePath }) {
+export default function BlogList({ notas, basePath, guias }) {
   // Los chips salen de la lista CANÓNICA (orden estable, definido por marca),
   // filtrada a las que efectivamente tienen notas. Antes se armaban con lo que
   // viniera en los datos, así que un typo en un frontmatter creaba una
@@ -71,6 +71,26 @@ export default function BlogList({ notas, basePath }) {
                   <div className="disp blog-ult-t" style={css('font-size:15px;line-height:1.28;margin-bottom:5px')}>{n.title}</div>
                   <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#8fa8c0')}>{n.fechaCorta} · {n.minutes} min</div>
                 </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* GUÍAS: caminos de lectura, no baldes. Van en la PORTADA (sin filtro)
+          y arriba de las secciones a propósito: una categoría dice de qué
+          habla una nota, una guía dice por dónde empezar. Es la respuesta
+          honesta al "lo más leído" de los medios grandes — no tenemos
+          analítica, pero sí sabemos qué recorrido le sirve a una familia. */}
+      {esPortada && guias && guias.length > 0 && (
+        <div style={css('padding-top:6px;border-top:1px solid rgba(255,255,255,0.14);margin-bottom:30px')}>
+          <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin:14px 0 14px')}>Guías para empezar</div>
+          <div className="guias-grid" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:14px')}>
+            {guias.map((g) => (
+              <a key={g.slug} href={`${basePath}/blog/guia/${g.slug}/`} className="guia-card" style={css('display:block;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:18px 19px;color:inherit')}>
+                <div className="guia-card-t disp" style={css('font-size:18px;line-height:1.25;letter-spacing:-0.01em;margin:0 0 7px')}>{g.titulo}</div>
+                <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.55;color:#B3C7DB;margin:0 0 10px')}>{g.promesa}</div>
+                <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:#7FA3C4')}>{g.cantidad} notas · {g.minutos} min</div>
               </a>
             ))}
           </div>
