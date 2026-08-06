@@ -1368,6 +1368,42 @@ sombrío.
 
 **Territorio:** `app/page.jsx`, `app/glossary.jsx`.
 
+### ✔ Header unificado — ola 2 (5 ago 2026): 8 de 9 módulos
+
+Cierra el pendiente que quedó abierto el 24 jul (*"rodar `Header.jsx` a los
+módulos restantes"*). Auditoría previa: había **cinco** tratamientos distintos y
+en **5 de 9 páginas no se llegaba al resto del sitio**.
+
+**Migrados a `<Header variant="dark" />`:** simulador, Mi SP, historia, agendar.
+Los tres últimos reimplementaban el mismo "logo + volver"; el simulador tenía su
+propio `<header>` sticky de 76px.
+
+**Estado actual — verificado en 1280 y 390 px:** home, planes, blog, nota,
+simulador, Mi SP, historia y agendar llevan **el mismo nav** (8 ítems en
+escritorio, logo + urgencias + menú en móvil).
+
+⚠ **Recalibración del modo app del simulador — no revertir sin recalcular.** Su
+CSS estaba atado a un header de 76px: `.sim-card{height:calc(100dvh - 180px)}`
+con 180 = header 76 + hero 74 + aire 28. El compartido mide **88** (84 en
+móvil), y `fixed` no ocupa lugar en el flujo mientras que `sticky` sí — por eso
+el hero necesita `padding-top` explícito. Quedó en **192** y `padding:110px`.
+Verificado: la tarjeta entra en la primera pantalla en 1280×900, 1440×900,
+1366×768 y 1100×800.
+
+📌 **Dato para no volver a asustarse:** el simulador tiene ~993px de contenido
+**debajo** de la tarjeta (confianza, mini-FAQ, contacto, footer) y eso es
+intencional, viene de antes y no rompe nada. *"Modo app" significa que la
+tarjeta entra en la primera pantalla, no que la página no scrollee.*
+
+**Sigue pendiente:** el **gemelo del header en la guía** (`guia/`, HTML +
+Tailwind, otra tecnología) — es el único módulo que conserva navegación propia,
+y además no es fija. Y la home sigue con su `<nav>` inline (funciona y tiene el
+mapa completo; migrarla a `variant="hero"` es cosmética interna, no afecta al
+usuario).
+
+**Territorio:** `app/simulador/page.jsx`, `app/mi-sp/MiSP.jsx`,
+`app/historia/page.jsx`, `app/agendar/Agendar.jsx`, `app/globals.css`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a

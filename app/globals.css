@@ -125,16 +125,22 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    página no se mueve. Los ::before/::after con margin:auto centran el
    contenido corto sin romper el scroll del contenido largo. */
 @media(min-width:1100px){
-  .sim-hero{padding:22px 24px 16px !important}
+  /* El header compartido (88px, fixed) reemplazó al propio del simulador
+     (76px, sticky) el 5 ago 2026. Fixed no ocupa lugar en el flujo, así que
+     el hero tiene que abrirle espacio con padding — y la matemática de la
+     tarjeta se recalibró de 180 a 192 (88 + hero ~74 + aire 28). */
+  .sim-hero{padding:110px 24px 16px !important}
   .sim-hero-h1{font-size:30px !important}
-  /* 100dvh − header (76) − hero solo-título (~74) − aire inferior (28) */
-  .sim-card{height:clamp(460px,calc(100dvh - 180px),760px) !important}
+  /* 100dvh − header (88) − hero solo-título (~74) − aire inferior (30) */
+  .sim-card{height:clamp(460px,calc(100dvh - 192px),760px) !important}
   .sim-side{overflow-y:auto}
   .sim-body{overflow-y:auto;min-height:0 !important;justify-content:flex-start !important}
   .sim-body::before,.sim-body::after{content:'';margin:auto;flex:none}
 }
 /* Móvil: hero compacto — la tarjeta arranca en el primer pantallazo. */
-@media(max-width:640px){.sim-hero{padding:26px 20px 18px !important}}
+/* Móvil: hero compacto — la tarjeta arranca en el primer pantallazo.
+   El 84 inicial es el alto del header fijo en móvil. */
+@media(max-width:640px){.sim-hero{padding:110px 20px 18px !important}}
 /* Hover reveal en ciudades y departamentos (21 jul 2026, pedido del
    usuario: "que el botón sea invisible hasta que uno acerca el puntero").
    Solo donde hay puntero real (hover:hover) — en táctil no hay hover, así

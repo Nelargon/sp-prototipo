@@ -1,6 +1,7 @@
 'use client';
 
 import { css } from '../css';
+import Header from '../Header';
 import { BP } from '../basePath';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import { track } from '../track';
@@ -20,12 +21,7 @@ export default function MiSP() {
 
   return (
     <div className="body" style={css('min-height:100vh;background:#002A52;color:#fff;display:flex;flex-direction:column')}>
-      <div style={css('display:flex;align-items:center;justify-content:space-between;padding:20px 40px')}>
-        <a href={`${BP}/`} aria-label="Ir al inicio de Salud Protegida">
-          <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:52px;display:block')} />
-        </a>
-        <a href={`${BP}/`} style={css('color:rgba(255,255,255,0.85);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:7px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>Volver al inicio</a>
-      </div>
+      <Header variant="dark" />
 
       <div style={css('flex:1;padding:34px 24px 80px')}>
         <div style={css('max-width:860px;margin:0 auto')}>
