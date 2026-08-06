@@ -75,7 +75,17 @@ export default function Header({ variant = 'dark' }) {
             <div className="navmenu-wrap">
               <a href={`${BP}/#cartilla`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Cobertura {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
-                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Elegí una cobertura y mirá qué te toca en cada plan" />
+                {/* ⚠ El subtítulo prometía "Elegí una cobertura y mirá qué te
+                    toca en cada plan" — el selector interactivo que había
+                    detrás se eliminó el 6/08 al fusionar las dos matrices del
+                    home, y la promesa quedó apuntando a una tabla fija (lo
+                    marcó la revisión del PR #91). Ahora hay dos entradas
+                    porque hay dos preguntas: la comparación vive en el home,
+                    la búsqueda por nombre en /que-cubre (ver el mapa de
+                    cobertura en HANDOFF). Un menú que promete una interacción
+                    que ya no existe es peor que uno escueto. */}
+                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Bronze, Silver y Gold, de un vistazo" />
+                <Item href={`${BP}/que-cubre/`} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
                 <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Carencias, preexistencias, cambios de plan y más" />
               </div></div>

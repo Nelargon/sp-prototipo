@@ -15,3 +15,10 @@ npm-debug.log*
 .env*.local
 next-env.d.ts
 /public/guia
+
+# Salida de la corrida de QA: es un ARTEFACTO, no fuente.
+# Estaba trackeado y se volvio un iman de conflictos entre sesiones paralelas
+# (todas lo regeneran al correr la suite). Peor: sus numeros certifican el
+# arbol que existia cuando alguien lo corrio, no el actual — un JSON viejo
+# commiteado se lee como evidencia y no lo es. La evidencia se genera corriendo.
+qa/qa-resultados.json

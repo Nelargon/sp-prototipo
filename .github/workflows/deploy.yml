@@ -3,6 +3,16 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # ⚠ RED DE SEGURIDAD (6 ago 2026). El 6/08 tres PRs se fusionaron a main
+  # (#88, #90, #89) y NINGUNO disparó este workflow: GitHub no encadena
+  # workflows cuando el push viene de una acción autenticada con el token de
+  # otra acción. Resultado: main quedó 3 commits por delante de producción
+  # durante horas, con /que-cubre entero sin publicar, y nadie se enteró
+  # porque el sitio seguía respondiendo — solo que con contenido viejo.
+  # `push` sigue siendo el camino normal; esto es el paracaídas: si el evento
+  # no llegó, a la hora se publica igual. Cuesta un build por hora como mucho.
+  schedule:
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:

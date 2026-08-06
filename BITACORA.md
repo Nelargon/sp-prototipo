@@ -2392,6 +2392,57 @@ Qué aprendimos:
 
 ---
 
+## Capítulo 66 — El sitio respondía perfecto y hacía horas que no era el sitio
+
+**Qué intentamos.** Elegir el mejor próximo paso del proyecto. La lista de
+candidatos era razonable: la pasada de tokens (lo único que reprueba una puerta
+del criterio), terminar el 30% de scroll, cerrar un hueco en el simulador.
+
+**Qué pasó.** Ninguno de esos era el paso. Un panel de cuatro lentes
+independientes fue a verificar el estado real y encontró que **producción estaba
+tres commits atrás de `main` desde hacía horas**: los PRs #88, #90 y #89 se
+habían fusionado y ninguno disparó el deploy. La página `/que-cubre` entera —983
+respuestas de la grilla oficial, con dos bugs graves ya corregidos adentro— no
+existía para ningún visitante.
+
+La causa es una nota al pie de GitHub: **no encadena workflows cuando el push
+viene de una acción autenticada con el token de otra acción.** Los merges hechos
+desde una sesión disparaban el deploy; los hechos por otra vía, no.
+
+Y las cuatro lentes del panel, además, fallaron todas por el mismo motivo:
+argumentaron sobre un sistema que ya no existía. Una discutió contra un bug
+arreglado doce días antes. Otra verificó sobre un checkout tres merges atrás.
+
+**Qué aprendimos.**
+
+1. **Un sitio caído se nota. Un sitio viejo, no.** Si el deploy hubiera fallado
+   con error 500, alguien lo veía en un minuto. Como el sitio seguía
+   respondiendo —rápido, completo, sin un solo error— **nada indicaba que lo que
+   respondía tenía horas de atraso**. El modo de falla más peligroso no es el
+   que rompe: es el que sigue funcionando con datos de ayer.
+2. **La regla cero cubría la lectura del repo y dejaba afuera lo publicado.**
+   `CLAUDE.md` obliga a `git pull` antes de leer nada, precisamente porque una
+   sesión que lee documentos viejos reporta un proyecto que ya no existe. Pero
+   nadie tenía obligación de verificar **la URL pública**. En un proyecto donde
+   el repo es la única memoria compartida, que el repo deje de llegar a
+   producción es una falla de sistema, no una tarea de mantenimiento.
+3. **"Verificado" tiene que decir contra qué.** Todo lo que medí hoy —el scroll,
+   las puertas del criterio, los Core Web Vitals— lo medí sobre un build local.
+   Estaba bien medido y estaba certificando **un árbol que no era el que la
+   gente veía**. Un número sin su referente es decoración.
+4. **Yo mismo dije "ya está en vivo" y después dejé de mirar.** Era cierto
+   cuando lo dije. Dejó de serlo tres merges después. **Confirmar un deploy no
+   es un evento, es un estado** — y el estado hay que volver a mirarlo, sobre
+   todo cuando hay otras sesiones fusionando.
+5. **El arreglo correcto no fue el que parecía.** El instinto era "arreglar el
+   trigger". Pero no hay forma de garantizar que un evento llegue: la garantía
+   es no depender de que llegue. Por eso entró un `schedule` horario como red
+   —cuesta un build por hora como mucho— en vez de una condición más fina que
+   también podría fallar en silencio. **Ante un canal que puede romperse sin
+   avisar, la redundancia barata le gana a la precisión frágil.**
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
