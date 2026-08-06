@@ -437,8 +437,19 @@ export default function Page() {
           quedaba enterrada bajo 6 pantallas de tablas. Ahora es la continuación
           natural del hero — "protección que se siente" → probala — y todo lo que
           sigue pasa a RESPALDAR esa decisión en vez de ser el peaje para llegar. */}
-      <section className="sec" style={css('padding:80px 40px;background:#003B71')}>
-        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.35)')}>
+      {/* ⚠ FONDO CLARO, A PROPÓSITO (6 ago 2026, observación del usuario: "todo
+          está en tono azul… cansa un poco"). Esta sección era #003B71 y quedaba
+          entre el hero navy y "Por qué importa" navy: TRES bloques azules
+          seguidos, ~3 pantallas de azul continuo. Lo causó el reordenamiento de
+          hoy — antes el simulador caía sobre el comparador gris claro y había
+          contraste. Ahora el fondo es mint y la tarjeta oscura FLOTA sobre él:
+          rompe la racha, la tarjeta gana contraste en vez de perderlo, y el
+          teal es el segundo color de la marca, así que no se inventa nada.
+          Regla que deja: al mover una sección hay que mirar de qué color quedan
+          sus vecinas nuevas — el ritmo de la página es una propiedad de la
+          secuencia, no de cada sección por separado. */}
+      <section className="sec" style={css('padding:80px 40px;background:#F2FBFA')}>
+        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
           <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
@@ -772,7 +783,7 @@ export default function Page() {
 
       {/* CÓMO FUNCIONA — el proceso después de decidir (el teaser del simulador
           subió al puesto 2; esta sección sigue explicando qué pasa al contratar) */}
-      <section className="sec" style={css('padding:72px 40px 64px;background:#fff')}>
+      <section className="sec" style={css('padding:72px 40px 64px;background:#F5F5F5')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>De la cotización a tu credencial</div>
@@ -882,7 +893,7 @@ export default function Page() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="sec" style={css('padding:80px 40px;background:#F5F5F5')}>
+      <section id="faq" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:820px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 12px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Antes de contratar</div>

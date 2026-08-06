@@ -260,7 +260,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    y títulos que no devoran pantalla. .sec-x solo ajusta lo horizontal
    (sus verticales encadenan con la sección vecina). */
 @media(max-width:640px){
-  .sec{padding:56px 22px !important}
+  /* 56 → 44px (6 ago 2026, pedido del usuario de bajar el scroll). Las 11
+     secciones suman 1164px de padding = 1,38 pantallas de móvil; este recorte
+     devuelve ~350px sin tocar una sola palabra. Medido antes de opinar: es la
+     palanca más barata que queda, pero también la más chica — el peso real de
+     la página está en el contenido, no en el aire. */
+  .sec{padding:44px 22px !important}
   .sec-x{padding-left:22px !important;padding-right:22px !important}
   [data-page="viva"] h2.disp{font-size:29px !important}
   [data-page="viva"] section h3.disp{font-size:23px !important}
