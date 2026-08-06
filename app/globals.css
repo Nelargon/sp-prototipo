@@ -300,8 +300,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .art-body th{background:#F7F7F7;color:#003B71}
 
 /* --------------------------------------------------------------------------
-   /planes — la página de los tres planes y su buscador ("¿Y esto, me lo
-   cubre?", app/planes/Buscador.jsx). Las tablas anchas ya scrollean solas
+   /que-cubre — la landing de los planes y su buscador ("¿Y esto, me lo
+   cubre?", app/que-cubre/Buscador.jsx). Las tablas anchas ya scrollean solas
    dentro de su contenedor; acá van las grillas que tienen que apilarse y el
    hover de los chips de ejemplo.
    -------------------------------------------------------------------------- */

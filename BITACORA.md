@@ -2333,6 +2333,20 @@ en el markup un JS que no corre deja la página entera invisible.
    prohíbe nombre/teléfono/email se queda corta: "quimioterapia" escrito en un
    campo dice más de una persona que su apellido.
 
+**Coda — "que sea un espacio aparte".** La primera versión puso todo esto en
+`/planes`, absorbiendo la tabla comparativa que ya vivía ahí. Parecía lo
+correcto: una sola página de planes, sin duplicados. El usuario lo corrigió en
+seis palabras. Y tenía razón por un motivo que no estaba en mi razonamiento:
+**yo estaba optimizando el sitio, y lo que se pidió fue una landing.** No son
+lo mismo. Una página del sitio existe dentro de un recorrido y puede delegar —
+"eso lo explica la otra sección". Una landing es la PRIMERA pantalla que
+alguien ve, le llegó por un link, y tiene que cerrar el argumento entero sola;
+además se mide sola, que es la mitad de para qué existe. Repetir la tabla de
+servicios en las dos no es duplicación: es que cumplen funciones distintas.
+`/planes` volvió byte a byte a como estaba y la landing se fue a `/que-cubre/`.
+**"No dupliques" es una buena regla para el código y una mala regla para las
+páginas** — y el que sabe cuál de las dos cosas está pidiendo es el que pide.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

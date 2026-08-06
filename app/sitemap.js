@@ -13,6 +13,8 @@ export default function sitemap() {
     u('/', 1.0),
     u('/simulador/', 0.9),
     u('/planes/', 0.85),
+    // Landing propia de los planes con el buscador de coberturas (6 ago 2026).
+    u('/que-cubre/', 0.85),
     u('/agendar/', 0.8),
     u('/guia/guia_home.html', 0.9),
     u('/guia/guia_resultados.html', 0.8),

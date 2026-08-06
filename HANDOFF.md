@@ -17,18 +17,45 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
-## 🆕 /planes se volvió consultable (6 ago 2026) — leer antes de tocar coberturas
+## 🆕 `/que-cubre` — la landing de los planes, en espacio propio (6 ago 2026)
 
-`/planes` dejó de ser una tabla comparativa y pasó a ser **la página donde la
-promesa de transparencia se puede verificar**. Abre con un buscador: escribís
+Ruta nueva: **`/que-cubre/`** (`app/que-cubre/`). Es **la página donde la
+promesa de transparencia se puede verificar**: abre con un buscador — escribís
 el estudio, la cirugía o el especialista que necesitás y ves qué hace cada plan
-con eso. Detrás hay **983 respuestas** salidas de la grilla oficial — 935
+con eso. Detrás hay **983 respuestas** salidas de la grilla oficial: 935
 estudios/análisis/cirugías, 43 especialidades y las 5 exclusiones reales.
 
 **El dato ya estaba en el repo desde el 22/07 y solo servía para tres
 porcentajes.** Ver BITACORA cap. 65.
 
-### Lo que una sesión futura tiene que saber
+### ⚠ `/que-cubre` NO reemplaza a `/planes` — son dos cosas
+
+Decisión del usuario (6 ago 2026), textual: **"que sea un espacio aparte"**.
+
+| | `/planes` | `/que-cubre` |
+|---|---|---|
+| Qué es | Página **del sitio**: la comparación servicio por servicio | **Landing con vida propia** |
+| Para qué | La consulta alguien que ya está navegando SP | El link que se pasa por WhatsApp, el destino de una campaña |
+| Se mide | Con el resto del sitio | **Sola** (eventos con prefijo `quecubre_`) |
+
+`/planes` quedó **exactamente como estaba** — la primera versión de este
+trabajo la había reemplazado y se revirtió byte a byte. Una landing repite a
+propósito cosas que también viven en el sitio (la tabla de 11 servicios, la
+banda Vital): tiene que cerrar el argumento completo sin que nadie navegue a
+otro lado. **Si alguna vez se unifican, es una decisión de producto, no una
+limpieza de duplicados.**
+
+**El slug** sale de la regla de lenguaje del `CLAUDE.md`: "qué cubre" es la
+forma aprobada de decir lo que el rubro llama "cartilla", y es lo que una
+familia escribe en un buscador. **No se usa "privilege" en la URL**: es nombre
+interno (dec. 11o).
+
+**Todavía no la enlaza nada.** Es deliberado —una landing de campaña no
+necesita estar en el nav— pero es una decisión pendiente: si se quiere que
+entre por el menú, hay que tocar `app/Header.jsx`, que es componente compartido
+y quedó fuera del territorio de este PR.
+
+### Lo que una sesión futura tiene que saber (del buscador)
 
 - **Fuente y regeneración.** `lib/prestaciones.json` lo **genera**
   `scripts/build-prestaciones.mjs` desde
@@ -61,7 +88,7 @@ porcentajes.** Ver BITACORA cap. 65.
   2.9.2, confirmada en este mismo HANDOFF), porque el buscador tiene que
   responderle a quien escribe "enfermera a domicilio". Ninguna de las dos miente
   y ninguna canta el número, así que hoy no se contradicen a la vista. **Si se
-  unifica, que sea sumando la quinta en el home — no sacándola de `/planes`.**
+  unifica, que sea sumando la quinta en el home — no sacándola de `/que-cubre`.**
   El home está fuera del territorio de este PR.
 
 ### ⚠ Guarda — NO reponer el bloque 45/66/93 en ningún lado
@@ -72,7 +99,7 @@ cumplir un propósito, no puede ser transparencia por ser transparencia"*.
 Informa cuán incompleto es un plan sin ayudar a decidir, y "45% cubierto" se
 lee como "55% NO cubierto" — la transparencia vendiendo en contra.
 
-`/planes` usa **los mismos datos para responder lo que sí decide**: cuántas
+`/que-cubre` usa **los mismos datos para responder lo que sí decide**: cuántas
 cosas mejoran al subir de plan (**Bronze→Silver 298**, **Silver→Gold 275**) y
 en qué cuadro se concentra el salto. Los números los calcula el generador
 (`saltos`), así que no se desactualizan a mano. Si mañana alguien quiere
@@ -178,7 +205,8 @@ para la web, más allá del #2 ya arrancado:
 
 ### Índice — dónde vive cada cosa
 Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-puesto)
-· **Planes `app/planes/Planes.jsx` + buscador `app/planes/Buscador.jsx`** · Motor de
+· Planes `app/planes/Planes.jsx` · **Landing `app/que-cubre/Landing.jsx` + buscador
+`app/que-cubre/Buscador.jsx`** · Motor de
 precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
 `datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
 `scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
@@ -188,7 +216,10 @@ precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
 ### Eventos de tracking nuevos (para cuando se conecte el backend)
 `sim_plan_preset`, `sim_plan_switch`, `blog_open{origen:comparador}` (+ los del ANEXO §2).
 `planes_buscar{largo}` — **solo el largo del texto, nunca el texto: es un dato de
-salud** —, `planes_ver_especialidades`, `cta_simulador{origen:planes_tarjeta|planes_tabla|planes_cierre}`.
+salud** —, `quecubre_ver_especialidades`,
+`cta_simulador{origen:quecubre_tarjeta|quecubre_tabla|quecubre_senior|quecubre_cierre}`.
+El prefijo `quecubre_` existe para que la landing **se mida sola**, separada de
+`/planes` y del home.
 
 ### Recordatorio mensual de datos
 El usuario pidió un chequeo mensual de si las grillas cambiaron (comparar

@@ -51,7 +51,7 @@ el usuario actualiza un master:
    (`get_file_metadata` / `read_file_content`).
 2. Transcribir a JSON fiel (mismo formato que los `grilla-*.json`).
 3. **Verificar** los precios contra `TARIFAS` en `app/quote.js` (deben coincidir).
-4. **Regenerar el índice buscable de `/planes`** (desde jul→ago 2026 la grilla ya
+4. **Regenerar el índice buscable de `/que-cubre`** (desde jul→ago 2026 la grilla ya
    no es solo referencia: la consulta el buscador de la web):
 
    ```
