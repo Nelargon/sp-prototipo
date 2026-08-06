@@ -1,6 +1,7 @@
 ---
 title: "Después de los 40, sumá la vista a tu chequeo anual"
 slug: "chequeo-anual-de-vista-despues-de-los-40"
+cover_dato: "308.000 · con deficiencia visual"
 categoria: "Prevención"
 kicker: "Salud preventiva"
 date: "2026-07-25"

@@ -1,6 +1,7 @@
 ---
 title: "Vivimos 14 años más que nuestros abuelos: qué hacer con ese regalo"
 slug: "vivimos-14-anos-mas"
+cover_dato: "+14 años · en dos generaciones"
 kicker: "Decisiones"
 categoria: "Vivir más años"
 date: "2026-07-20"

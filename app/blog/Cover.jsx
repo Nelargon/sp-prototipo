@@ -60,7 +60,7 @@ function seed(s) {
 // recortaría la ilustración 2:1. `alt=''` (o ausente) = decorativa: no la
 // anuncia el lector de pantalla (la tarjeta ya expone el título). `eager` para
 // el hero del artículo (probable LCP); las tarjetas quedan lazy.
-export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
+export default function Cover({ categoria, slug, cover, dato, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
   const base = { display: 'block', width: '100%', aspectRatio: aspect, borderRadius: radius };
   const decorative = !alt;
 
@@ -80,12 +80,25 @@ export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 
   const c1x = 330 + j(3, 40),  c1y = 168 + j(6, 40);   // círculo blanco, sangra abajo-derecha
   const c2x = 80 + j(9, 44),   c2y = -12 + j(12, 34);  // círculo acento, sangra arriba-izquierda
   const rx  = 306 + j(15, 40), ry  = 30 + j(18, 34);   // anillo, arriba-derecha
+  // El dato se parte en cifra + bajada por el primer salto de línea o " · ",
+  // para que "36 %" domine y "del gasto en salud" acompañe sin competir.
+  const datoLimpio = typeof dato === 'string' ? dato.trim() : '';
+  const [cifra = '', sub = ''] = datoLimpio ? datoLimpio.split(/\s*(?:\n|·)\s*/) : [];
+  // Tamaño según cuánto ocupa: una cifra corta puede ser enorme; "7 de cada
+  // 100" necesita achicarse para no salirse de los 400px del viewBox.
+  const tam = cifra.length <= 4 ? 66 : cifra.length <= 8 ? 48 : cifra.length <= 14 ? 34 : 26;
+
+  // Con un dato encima, el recorte se ancla a la IZQUIERDA: el texto vive ahí
+  // y `xMidYMid slice` se lo comía en las tarjetas angostas. Sin dato, se
+  // centra como siempre para que la composición quede equilibrada.
+  const encuadre = datoLimpio ? 'xMinYMid slice' : 'xMidYMid slice';
+
   const a11y = decorative
     ? { 'aria-hidden': true, focusable: 'false' }
     : { role: 'img', 'aria-label': alt };
 
   return (
-    <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio="xMidYMid slice" style={base}>
+    <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio={encuadre} style={base}>
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0.85" y2="1">
           <stop offset="0" stopColor={t.g1} />
@@ -96,12 +109,33 @@ export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 
       <circle cx={c2x} cy={c2y} r="104" fill={t.soft} opacity="0.16" />
       <circle cx={c1x} cy={c1y} r="132" fill="#ffffff" opacity="0.10" />
       <circle cx={rx} cy={ry} r="58" fill="none" stroke={t.ring} strokeWidth="2" opacity="0.5" />
-      <g transform="translate(26,110)">
-        <rect width="62" height="62" rx="17" fill="#ffffff" fillOpacity="0.15" stroke="#ffffff" strokeOpacity="0.32" />
-        <g transform="translate(15,15) scale(1.33)" fill="none" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d={icon} />
+      {/* EL DATO COMO PORTADA. Una nota que se titula "solo 7 de cada 100
+          paraguayos tiene un plan" tiene su mejor imagen en el propio número:
+          es más contundente que cualquier foto de stock, es honesto, es
+          nuestro, y no lo puede copiar nadie porque el dato ES el contenido.
+          Sale del campo `cover_dato` del frontmatter; sin él, la portada
+          queda como antes, con el ícono de categoría. */}
+      {datoLimpio ? (
+        <>
+          <text
+            x="30" y={sub ? 108 : 124} fill="#ffffff"
+            style={{ font: `800 ${tam}px var(--font-display, 'Nunito Sans'), sans-serif`, letterSpacing: '-0.02em' }}
+          >{cifra}</text>
+          {sub && (
+            <text
+              x="32" y="140" fill={t.ring} fillOpacity="0.92"
+              style={{ font: "600 15px var(--font-inter, 'Inter'), sans-serif" }}
+            >{sub}</text>
+          )}
+        </>
+      ) : (
+        <g transform="translate(26,110)">
+          <rect width="62" height="62" rx="17" fill="#ffffff" fillOpacity="0.15" stroke="#ffffff" strokeOpacity="0.32" />
+          <g transform="translate(15,15) scale(1.33)" fill="none" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d={icon} />
+          </g>
         </g>
-      </g>
+      )}
     </svg>
   );
 }

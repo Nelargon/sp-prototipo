@@ -1,6 +1,7 @@
 ---
 title: "Qué hay detrás de una jornada de cirugías que destraba una lista de espera"
 slug: "jornada-solidaria-lista-espera-cirugias"
+cover_dato: "51 · operados en días"
 categoria: "Salud en Paraguay"
 kicker: "Dónde te atendés"
 date: "2026-08-01"

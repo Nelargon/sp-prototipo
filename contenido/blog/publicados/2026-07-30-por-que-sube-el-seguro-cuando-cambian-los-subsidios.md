@@ -1,6 +1,7 @@
 ---
 title: "Por qué un seguro de salud puede subir de precio sin que vos cambies nada"
 slug: "por-que-sube-el-seguro-cuando-cambian-los-subsidios"
+cover_dato: "14 % · suben las primas en 2027"
 categoria: "Salud en Paraguay"
 kicker: "Cuánto cuesta"
 date: "2026-07-30"

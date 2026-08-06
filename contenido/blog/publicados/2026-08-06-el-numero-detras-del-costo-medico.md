@@ -1,6 +1,7 @@
 ---
 title: "El número que explica por qué sube o baja el costo de un plan de salud"
 slug: "el-numero-detras-del-costo-medico"
+cover_dato: "87,4 % · el índice de costo médico"
 categoria: "Salud en Paraguay"
 kicker: "El dato"
 date: "2026-08-06"

@@ -1,6 +1,7 @@
 ---
 title: "Por qué la salud te cuesta más cada año (y qué mirar más allá de la cuota)"
 slug: "por-que-sube-el-costo-de-la-salud"
+cover_dato: "10,4 % · suben los costos en 2026"
 categoria: "Salud en Paraguay"
 kicker: "El dato"
 date: "2026-07-22"

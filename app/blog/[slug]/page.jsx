@@ -66,7 +66,7 @@ export default async function BlogPost({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover} relacionadas={getRelacionadas(post.slug, 3, serie?.siguiente ? [serie.siguiente.slug] : [])} serie={serie}>
+      <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover} dato={post.cover_dato} relacionadas={getRelacionadas(post.slug, 3, serie?.siguiente ? [serie.siguiente.slug] : [])} serie={serie}>
       <div dangerouslySetInnerHTML={{ __html: html }} />
       {post.sources.length > 0 && (
         <div style={css('border-top:1px solid #F0F0F0;margin-top:30px;padding-top:18px')}>

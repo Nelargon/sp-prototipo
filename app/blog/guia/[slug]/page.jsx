@@ -82,7 +82,7 @@ export default async function GuiaPage({ params }) {
               <li key={n.slug}>
                 <a href={`${BP}/blog/${n.slug}/`} className="guia-item" style={css('display:grid;grid-template-columns:44px 132px 1fr;gap:18px;align-items:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 18px 14px 14px;color:inherit')}>
                   <div className="disp" style={css('font-size:22px;color:#80DDD8;text-align:center')}>{i + 1}</div>
-                  <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" aspect="16 / 10" radius={9} />
+                  <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius={9} />
                   <div>
                     <div className="guia-item-t disp" style={css('font-size:17.5px;line-height:1.3;letter-spacing:-0.01em;margin:0 0 5px')}>{n.title}</div>
                     <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12.5px;color:#7FA3C4')}>{n.categoria} · {formatFechaCorta(n.date)} · {n.minutes} min</div>

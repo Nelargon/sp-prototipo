@@ -1,6 +1,7 @@
 ---
 title: "Gasto de bolsillo: el número que explica para qué sirve un seguro de salud"
 slug: "gasto-de-bolsillo-salud-paraguay"
+cover_dato: "36 % · sale del bolsillo"
 kicker: "El dato"
 categoria: "Entendé tu plan"
 date: "2026-07-16"

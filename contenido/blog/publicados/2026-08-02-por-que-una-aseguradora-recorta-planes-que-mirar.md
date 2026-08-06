@@ -1,6 +1,7 @@
 ---
 title: "Por qué hasta una aseguradora grande deja de ofrecer un plan (y qué mirar en el tuyo)"
 slug: "por-que-una-aseguradora-recorta-planes-que-mirar"
+cover_dato: "600.000 · planes dados de baja"
 categoria: "Salud en Paraguay"
 kicker: "Decisiones"
 date: "2026-08-02"

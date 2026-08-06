@@ -21,7 +21,7 @@ export default function BlogPage() {
   // componente cliente y no debe importar lib/blog (arrastraría `fs` al bundle).
   const notas = posts.map((n) => ({
     slug: n.slug, title: n.title, categoria: n.categoria,
-    cover: n.cover, description: n.description, minutes: n.minutes,
+    cover: n.cover, cover_dato: n.cover_dato, description: n.description, minutes: n.minutes,
     fechaFmt: formatFecha(n.date), fechaCorta: formatFechaCorta(n.date),
   }));
 
