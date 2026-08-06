@@ -316,3 +316,32 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .art-body table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:15px}
 .art-body th,.art-body td{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;border:1px solid #E8E8E8;padding:10px 12px;text-align:left}
 .art-body th{background:#F7F7F7;color:#003B71}
+
+/* --------------------------------------------------------------------------
+   /que-cubre — la landing de los planes y su buscador ("¿Y esto, me lo
+   cubre?", app/que-cubre/Buscador.jsx). Las tablas anchas ya scrollean solas
+   dentro de su contenedor; acá van las grillas que tienen que apilarse y el
+   hover de los chips de ejemplo.
+   -------------------------------------------------------------------------- */
+.bus-chip:hover,.bus-chip:focus-visible{background:#E6F7F6;border-color:#00BCB4}
+#bus-q:focus{border-color:#00BCB4;box-shadow:0 0 0 4px rgba(0,188,180,0.16)}
+/* El aspa nativa del type=search en WebKit pisa el borde redondeado */
+#bus-q::-webkit-search-cancel-button{cursor:pointer}
+@media(max-width:900px){
+  .planes-grid{grid-template-columns:1fr 1fr !important}
+  .planes-grid-2{grid-template-columns:1fr !important}
+  .excl-grid{grid-template-columns:1fr !important}
+}
+/* Una ficha de resultado con tres columnas a 360px deja 100px por plan: el
+   modo ("Al precio de convenio") se parte en cinco líneas. Desde acá, los
+   tres planes se apilan y cada uno se lee de corrido. */
+@media(max-width:620px){
+  .planes-grid{grid-template-columns:1fr !important}
+  .bus-celdas{grid-template-columns:1fr !important}
+  .bus-celdas>div{border-left:0 !important;border-top:1px solid #F0F0F0}
+  .bus-celdas>div:first-child{border-top:0}
+  /* Con los ocho ejemplos, los chips ocupaban tres filas y dejaban el primer
+     resultado abajo del pliegue. Quedan los cuatro primeros, que son uno de
+     cada tipo de respuesta (ver EJEMPLOS en lib/buscar-prestaciones.js). */
+  .bus-chip:nth-of-type(n+5){display:none}
+}

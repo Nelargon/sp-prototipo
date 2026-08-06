@@ -51,7 +51,21 @@ el usuario actualiza un master:
    (`get_file_metadata` / `read_file_content`).
 2. Transcribir a JSON fiel (mismo formato que los `grilla-*.json`).
 3. **Verificar** los precios contra `TARIFAS` en `app/quote.js` (deben coincidir).
-4. PR en borrador → revisión humana → merge.
+4. **Regenerar el índice buscable de `/que-cubre`** (desde jul→ago 2026 la grilla ya
+   no es solo referencia: la consulta el buscador de la web):
+
+   ```
+   node scripts/build-prestaciones.mjs   # → lib/prestaciones.json (se commitea)
+   node scripts/test-buscador.mjs        # 32 casos en el idioma del cliente
+   ```
+
+   El generador **corta** si aparece un código de cobertura que no conoce
+   —en vez de adivinar— y avisa de sinónimos que ya no matchean nada y de
+   ítems con celdas combinadas. Leer esa salida: es donde aparecen los
+   cambios que el diff de precios no muestra.
+5. PR en borrador → revisión humana → merge. El diff de `lib/prestaciones.json`
+   muestra **ítem por ítem qué cobertura se movió** — es la parte del PR que
+   hay que mirar con más cuidado, porque va derecho a la web.
 
 | Master (Drive) | fileId | Última ingestión |
 |---|---|---|
