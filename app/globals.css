@@ -248,6 +248,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .cmp-verplanes{transition:background .2s,border-color .2s}
 .cmp-verplanes:hover{background:#F2FBFA;border-color:#8fd9d3}
 @media(max-width:1000px){.blog-top{grid-template-columns:1fr !important;gap:26px !important}}
+/* "Seguí leyendo": tres columnas dentro de la caja de 680px del artículo dan
+   ~200px por nota — abajo de 640px eso deja títulos de dos palabras por línea,
+   así que pasan a una sola columna. */
+@media(max-width:640px){.sl-grid{grid-template-columns:1fr !important;gap:26px !important}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}

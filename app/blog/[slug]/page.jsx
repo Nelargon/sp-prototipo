@@ -2,7 +2,7 @@ import { marked } from 'marked';
 import { A, Nota } from '../Articulo';
 import { css } from '../../css';
 import { BP } from '../../basePath';
-import { getPublishedPosts, getPost, formatFecha } from '../../../lib/blog';
+import { getPublishedPosts, getPost, getRelacionadas, formatFecha } from '../../../lib/blog';
 
 // Con output:'export' cada slug debe existir en build time, y Next rechaza
 // una lista vacía de params: sin notas publicadas se genera una única página
@@ -65,7 +65,7 @@ export default async function BlogPost({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover}>
+      <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover} relacionadas={getRelacionadas(post.slug, 3)}>
       <div dangerouslySetInnerHTML={{ __html: html }} />
       {post.sources.length > 0 && (
         <div style={css('border-top:1px solid #F0F0F0;margin-top:30px;padding-top:18px')}>

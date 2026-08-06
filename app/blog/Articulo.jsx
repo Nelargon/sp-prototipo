@@ -2,10 +2,11 @@ import { css } from '../css';
 import { BP } from '../basePath';
 import Cover from './Cover';
 import Header from '../Header';
+import SeguiLeyendo from './SeguiLeyendo';
 
 // Layout compartido de las notas del blog: lectura cómoda (columna angosta,
 // cuerpo grande), la marca arriba y una sola invitación al final.
-export function A({ title, intro, minutes, date, categoria, slug, cover, children }) {
+export function A({ title, intro, minutes, date, categoria, slug, cover, relacionadas, children }) {
   return (
     <div className="body" style={css('min-height:100vh;background:#fff;color:#1D1D1B')}>
       <Header variant="solid" />
@@ -20,7 +21,10 @@ export function A({ title, intro, minutes, date, categoria, slug, cover, childre
         <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
         <div className="art-body">{children}</div>
       </article>
-      <div style={css('max-width:680px;margin:0 auto;padding:0 24px 70px')}>
+      {/* Primero el próximo click, después la oferta: el lector que quiere
+          seguir leyendo no tiene que pasar por encima de un CTA. */}
+      <SeguiLeyendo notas={relacionadas} />
+      <div style={css('max-width:680px;margin:0 auto;padding:26px 24px 70px')}>
         <div style={css('background:#003B71;border-radius:18px;padding:28px 26px;color:#fff')}>
           <div style={css('font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px')}>¿Querés saber cuál es el plan para tu familia?</div>
           <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:14.5px;color:#B3C7DB;line-height:1.55;margin-bottom:18px')}>Contanos quiénes son y te mostramos el plan que va con ustedes, con precio estimado — en un minuto y sin dejar datos.</div>
