@@ -17,6 +17,62 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🆕 /planes se volvió consultable (6 ago 2026) — leer antes de tocar coberturas
+
+`/planes` dejó de ser una tabla comparativa y pasó a ser **la página donde la
+promesa de transparencia se puede verificar**. Abre con un buscador: escribís
+el estudio, la cirugía o el especialista que necesitás y ves qué hace cada plan
+con eso. Detrás hay **983 respuestas** salidas de la grilla oficial — 935
+estudios/análisis/cirugías, 43 especialidades y las 5 exclusiones reales.
+
+**El dato ya estaba en el repo desde el 22/07 y solo servía para tres
+porcentajes.** Ver BITACORA cap. 65.
+
+### Lo que una sesión futura tiene que saber
+
+- **Fuente y regeneración.** `lib/prestaciones.json` lo **genera**
+  `scripts/build-prestaciones.mjs` desde
+  `datos/planes-vigentes/grilla-coberturas-precios-jul2026.json`. Se corre a
+  mano (no en el build) y **el resultado se commitea**: así una re-ingesta de
+  la grilla muestra en el diff del PR exactamente qué cobertura se movió. Si
+  cambia la grilla: `node scripts/build-prestaciones.mjs && node scripts/test-buscador.mjs`.
+- **El generador corta si no entiende.** Un código de cobertura desconocido
+  tira error en vez de adivinar. Hoy mapea una sola variante documentada
+  (`"100%"` → `CT`, una fila del master). Si aparece otra, **verificarla contra
+  el master antes de agregarla** — no normalizar en silencio.
+- **10 ítems tienen celdas combinadas en el `.xlsx`** y les falta un plan. Se
+  muestran como "Sin dato" con su aviso; **nunca se infiere cobertura**. El
+  generador los lista al correr. Vale confirmarlos con quien mantiene la grilla.
+- **El buscador habla el idioma del cliente, no el del tarifario.** La grilla
+  dice "RMN DE RODILLA"; la gente escribe "resonancia de rodilla". Esa
+  traducción vive en `SINONIMOS` y `COMO_LE_DICEN` del generador. Al agregar
+  sinónimos, correr el generador: **avisa cuáles no matchearon nada** (así se
+  descubrió que el cuadro de cirugías estaba ciego, cap. 65).
+- **Nunca dejar que una búsqueda razonable devuelva cero.** En una página de
+  transparencia el cero se lee como "no lo cubre". Por eso el índice incluye
+  las especialidades y las exclusiones, y el estado vacío aclara que no
+  encontrarlo no significa que no esté.
+- **Privacidad:** el evento `planes_buscar` lleva **solo el largo** del texto,
+  nunca el texto. Lo que alguien escribe ahí ("quimio", "psiquiatra",
+  "embarazo") es un dato de salud. No agregarle el término, por útil que suene.
+
+### ⚠ Guarda — NO reponer el bloque 45/66/93 en ningún lado
+
+La cobertura real por plan (Bronze 45% / Silver 66% / Gold 93%) **se eliminó
+del home el 25/07/2026 por decisión del usuario**: *"la transparencia tiene que
+cumplir un propósito, no puede ser transparencia por ser transparencia"*.
+Informa cuán incompleto es un plan sin ayudar a decidir, y "45% cubierto" se
+lee como "55% NO cubierto" — la transparencia vendiendo en contra.
+
+`/planes` usa **los mismos datos para responder lo que sí decide**: cuántas
+cosas mejoran al subir de plan (**Bronze→Silver 298**, **Silver→Gold 275**) y
+en qué cuadro se concentra el salto. Los números los calcula el generador
+(`saltos`), así que no se desactualizan a mano. Si mañana alguien quiere
+"mostrar cuánto cubre cada plan": eso ya se decidió que no, y esta sección es
+la versión que sí sirve.
+
+---
+
 ## 🔖 ESTADO AL CIERRE DE LA PARTE 1 (22 jul 2026) — handoff para la Parte 2
 
 **Si retomás el proyecto, empezá por acá.** Una sesión larga (Parte 1) hizo una
@@ -114,12 +170,17 @@ para la web, más allá del #2 ya arrancado:
 
 ### Índice — dónde vive cada cosa
 Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-puesto)
-· Motor de precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
-`datos/planes-vigentes/` · Análisis AD `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md`
-· Blog `contenido/blog/` · QA `qa/qa-integral.mjs`.
+· **Planes `app/planes/Planes.jsx` + buscador `app/planes/Buscador.jsx`** · Motor de
+precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
+`datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
+`scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
+`datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` · Blog `contenido/blog/`
+· QA `qa/qa-integral.mjs` + `scripts/test-buscador.mjs`.
 
 ### Eventos de tracking nuevos (para cuando se conecte el backend)
 `sim_plan_preset`, `sim_plan_switch`, `blog_open{origen:comparador}` (+ los del ANEXO §2).
+`planes_buscar{largo}` — **solo el largo del texto, nunca el texto: es un dato de
+salud** —, `planes_ver_especialidades`, `cta_simulador{origen:planes_tarjeta|planes_tabla|planes_cierre}`.
 
 ### Recordatorio mensual de datos
 El usuario pidió un chequeo mensual de si las grillas cambiaron (comparar

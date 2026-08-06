@@ -1,9 +1,9 @@
 import Planes from './Planes';
 
 export const metadata = {
-  title: 'Planes Bronze, Silver y Gold — todo el detalle · Salud Protegida',
+  title: 'Planes Bronze, Silver y Gold — buscá qué te cubre · Salud Protegida',
   description:
-    'Compará los planes de Salud Protegida servicio por servicio: qué cubre Bronze, Silver y Gold, y cuánto sale cada uno. Precios de lista vigentes.',
+    'Escribí el estudio, la cirugía o el especialista que necesitás y mirá qué hace cada plan con eso. 983 respuestas salidas de la grilla oficial de coberturas, con precios vigentes.',
   alternates: { canonical: '/planes/' },
 };
 

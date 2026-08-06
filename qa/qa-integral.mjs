@@ -36,7 +36,7 @@ const falla = (frente, severidad, detalle, donde = '') => {
 const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/', '/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html'];
 const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/']; // con estilos propios (sin CDN)
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 
 /* ============ 1. FUNCIONAL ============ */
 console.log('\n== 1. FUNCIONAL ==');

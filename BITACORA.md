@@ -2243,6 +2243,98 @@ la jerarquía del índice, el copete duplicado y el tiempo de lectura real.
 
 ---
 
+## Capítulo 65 — La grilla llevaba un mes en el repo sirviendo para tres porcentajes
+
+**Qué intentamos.** Construir "una super landing page para los planes
+Privilege" (pedido del usuario, 6 ago 2026). La reacción natural era la de
+siempre: tres tarjetas de precio más lindas, mejor jerarquía, mejor copy.
+
+**Qué pasó.** Antes de escribir nada, el inventario de datos. En
+`datos/planes-vigentes/` estaba la grilla oficial desde el 22 de julio: **935
+estudios, análisis y cirugías con su cobertura exacta en los tres planes**,
+con cantidad y carencia por ítem. Ingerida, verificada, commiteada — y usada
+para exactamente una cosa: calcular que Bronze cubre 45%, Silver 66%, Gold 93%.
+Un mes de datos finísimos comprimidos en tres números.
+
+La página cambió de idea ahí. No abre con precios: abre con un buscador.
+Escribís "resonancia" y ves que en Bronze la pagás al precio de convenio y en
+Silver está cubierta; escribís "muela" y te dice que no la cubre nadie.
+**Cualquiera puede copiar tres tarjetas de precio en una tarde; nadie puede
+copiar las 935 filas de su propia grilla, porque para publicarlas hay que
+estar dispuesto a que se lean.** El diferenciador no estaba en el diseño:
+estaba en el repo, sin usar.
+
+Cuatro golpes en el camino, todos con nombre y apellido:
+
+**1. Casi repongo algo que se había borrado a propósito.** El plan original
+tenía una sección con la barra apilada 45/66/93. Leyendo `app/page.jsx` para
+copiar el lenguaje visual, apareció el comentario que documentaba su
+eliminación el 25/07: *"la transparencia tiene que cumplir un propósito, no
+puede ser transparencia por ser transparencia"* — "45% cubierto" se lee como
+"55% NO cubierto", y la transparencia terminaba vendiendo en contra. La
+decisión no estaba en el `HANDOFF`: estaba en un comentario de código, en el
+lugar exacto donde iba a tropezar con ella. **Un `git rm` borra la línea pero
+no la razón; el comentario que explica una ausencia vale más que el que
+explica una presencia** — es el único que puede defenderse solo cuando llegue
+el próximo que quiera "agregar lo que falta".
+
+Lo que sobrevivió fue el dato, no la forma: los mismos números respondiendo
+otra pregunta. En vez de "Bronze cubre el 45%", **"de Bronze a Silver, 298
+cosas mejoran — 205 son cirugías"**. El primero informa cuán incompleto sos;
+el segundo dice qué comprás. Es el mismo archivo fuente y el argumento
+contrario.
+
+**2. El buscador andaba, y estaba roto.** Los sinónimos en idioma de familia
+("vesícula" → COLECIST) se probaban contra el nombre crudo de cada fila. Pero
+los cuadros no comparten convención: Laboratorio e Imágenes vienen en
+MAYÚSCULAS sin acentos, Cirugías en Tipo Oración con tildes — `/APENDIC/`
+nunca iba a tocar "Apendicetomía". **El cuadro entero de cirugías estaba
+ciego a los sinónimos y la búsqueda igual devolvía resultados**, porque los
+otros tres cuadros respondían. Lo que lo destapó no fue una prueba: fue el
+chequeo de sinónimos huérfanos que el generador imprime al final —
+`/HERNI/` y `/AMIGDAL/` no matcheaban nada. **Una búsqueda que devuelve algo
+parece que funciona; para saber si funciona hay que preguntarle qué NO
+encontró.**
+
+**3. El cero que miente.** "psicología" devolvía cero resultados. Técnicamente
+correcto: la psicología no está en los cuatro cuadros, está en la tabla de
+especialidades. Pero **en una página cuya promesa es la transparencia, un cero
+no se lee como "no lo tengo indexado": se lee como "no lo cubre"** — y la
+psicología está cubierta, 3/5/6 sesiones. El silencio no es neutral: dice lo
+peor. Se sumaron al índice las 43 especialidades y las 5 exclusiones reales, y
+el estado vacío se reescribió para aclarar que no encontrarlo no significa que
+no esté. La regla nueva: **si una página promete respuestas, cada pregunta
+razonable tiene que tener una — incluso "no", incluso "no sé".**
+
+**4. Un `&&` de más y la página desaparecía.** El revelado de secciones exige
+que el bloque llegue a la línea de scroll. Copiado del home, traía además
+`bottom > -80`: seguir en pantalla. Con un salto de scroll —un ancla, un "ir
+al final"— los bloques que quedaban ARRIBA del viewport no volvían a cumplirla
+nunca. Playwright lo midió: saltar al pie dejaba **12 secciones en blanco para
+siempre**. Y una segunda, de la misma familia: la clase `rvon` —la que esconde
+todo hasta revelarlo— se prende desde el efecto y jamás desde el JSX, porque
+en el markup un JS que no corre deja la página entera invisible.
+
+**Qué aprendimos.**
+
+1. **Antes de diseñar, inventariar lo que ya tenemos.** La mejor idea de esta
+   página no se le ocurrió a nadie: estaba en `datos/`, esperando. La pregunta
+   "¿qué construyo?" tiene que venir después de "¿qué tengo?".
+2. **Un dato no tiene un solo argumento adentro.** 45/66/93 vendía en contra;
+   los mismos ítems contados como saltos entre planes venden a favor, sin
+   mentir en ninguno de los dos casos. **Lo que decide no es el dato: es la
+   pregunta que le hacés.**
+3. **Escribí el chequeo que te dice qué falló en silencio.** El generador
+   avisa de sinónimos huérfanos, de códigos de cobertura desconocidos (corta
+   el build) y de los 10 ítems con celdas combinadas del `.xlsx`. Los tres
+   hallazgos que importaron salieron de ahí, no de mirar la pantalla.
+4. **Lo que se escribe en un buscador de salud es un dato de salud.** El
+   evento `planes_buscar` manda el largo del texto y nada más. La regla que
+   prohíbe nombre/teléfono/email se queda corta: "quimioterapia" escrito en un
+   campo dice más de una persona que su apellido.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
