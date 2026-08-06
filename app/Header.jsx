@@ -96,6 +96,14 @@ export default function Header({ variant = 'dark' }) {
                 <Item href={`${BP}/#comparar`} t="Bronze, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu precio" s="Unas preguntas y ves el precio, en 1 minuto" />
+                {/* Entrada discreta a /que-cubre (pedido del usuario, 6 ago 2026:
+                    "en algún lugar medio escondidito"). Va última del desplegable
+                    y se llama "Landing v1" a propósito: es la etiqueta honesta de
+                    algo que todavía se está mirando, no una sección del sitio.
+                    Cumple la regla de etiquetas — declara un ESTADO que la prosa
+                    no dice. Cuando deje de ser una versión en evaluación, el
+                    nombre tiene que cambiar por lo que la página hace. */}
+                <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="Landing v1" s="Buscá tu estudio y mirá qué hace cada plan con eso" />
               </div></div>
             </div>
             <a href={`${BP}/blog/`} className="nav-link" style={linkStyle}>Blog</a>
@@ -124,6 +132,7 @@ export default function Header({ variant = 'dark' }) {
             <a href={`${BP}/#cartilla`} onClick={close} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
             <a href={`${BP}/#comparar`} onClick={close} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href={`${BP}/#faq`} onClick={close} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
+            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); close(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>Landing v1</a>
             <a href={`${BP}/blog/`} onClick={close} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
             <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
             <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); close(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>
