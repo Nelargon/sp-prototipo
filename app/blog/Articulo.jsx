@@ -6,7 +6,7 @@ import SeguiLeyendo from './SeguiLeyendo';
 
 // Layout compartido de las notas del blog: lectura cómoda (columna angosta,
 // cuerpo grande), la marca arriba y una sola invitación al final.
-export function A({ title, intro, minutes, date, categoria, slug, cover, relacionadas, children }) {
+export function A({ title, intro, minutes, date, categoria, slug, cover, relacionadas, serie, children }) {
   return (
     <div className="body" style={css('min-height:100vh;background:#fff;color:#1D1D1B')}>
       <Header variant="solid" />
@@ -19,8 +19,28 @@ export function A({ title, intro, minutes, date, categoria, slug, cover, relacio
         <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,42px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;margin:0 0 14px')}>{title}</h1>
         <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:18px;line-height:1.65;color:#3D3D3D;margin:0 0 14px')}>{intro}</p>
         <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
+        {/* Si la nota es parte de una guía, el lector tiene que saberlo ANTES
+            de leer: cambia cómo la lee — no es una nota suelta, es un paso. */}
+        {serie && (
+          <a href={`${BP}/blog/guia/${serie.slug}/`} style={css('display:flex;align-items:center;gap:10px;background:#F2FBFA;border:1px solid #CFEDEA;border-radius:12px;padding:12px 15px;margin:0 0 28px;color:#00695f;font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13.5px')}>
+            <span style={css('font-weight:800;white-space:nowrap')}>Parte {serie.posicion} de {serie.total}</span>
+            <span style={css('color:#9CC8C4')}>·</span>
+            <span>Guía: <strong style={css('font-weight:700')}>{serie.titulo}</strong></span>
+          </a>
+        )}
         <div className="art-body">{children}</div>
       </article>
+      {/* El paso siguiente de la guía manda sobre las relacionadas: si el
+          lector entró a un camino, lo que quiere es seguirlo. */}
+      {serie && serie.siguiente && (
+        <div style={css('max-width:680px;margin:0 auto;padding:34px 24px 0')}>
+          <a href={`${BP}/blog/${serie.siguiente.slug}/`} style={css('display:block;border:1px solid #E3EEF7;border-radius:16px;padding:20px 22px;color:inherit;background:#F7FBFE')}>
+            <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#6B93B8;margin-bottom:8px')}>Siguiente en la guía · {serie.posicion + 1} de {serie.total}</div>
+            <div className="disp" style={css('font-size:20px;line-height:1.28;letter-spacing:-0.01em;color:#003B71;margin-bottom:6px')}>{serie.siguiente.title}</div>
+            <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;color:#6B6B6B')}>Lectura de {serie.siguiente.minutes} min</div>
+          </a>
+        </div>
+      )}
       {/* Primero el próximo click, después la oferta: el lector que quiere
           seguir leyendo no tiene que pasar por encima de un CTA. */}
       <SeguiLeyendo notas={relacionadas} />
