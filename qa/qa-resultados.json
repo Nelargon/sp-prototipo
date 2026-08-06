@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-08-06T17:21:55.797Z",
+  "fecha": "2026-08-06T18:04:17.158Z",
   "oks": [
     {
       "frente": "funcional",
@@ -115,11 +115,39 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 28 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 23 ms (< 3 s)"
     },
     {
       "frente": "contenido",
       "detalle": "lente Shapiro: hero(h1=1) + prueba social(25 elementos) + objeciones(FAQ) + 8 CTAs"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/: LCP 924 ms en gama media/4G (≤2500)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/: CLS 0.000 (≤0.1)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/simulador/: LCP 668 ms en gama media/4G (≤2500)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/simulador/: CLS 0.001 (≤0.1)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/planes/: LCP 324 ms en gama media/4G (≤2500)"
+    },
+    {
+      "frente": "rendimiento",
+      "detalle": "/planes/: CLS 0.000 (≤0.1)"
+    },
+    {
+      "frente": "accesibilidad",
+      "detalle": "foco visible: los 40 primeros interactivos de la home cambian al recibir foco"
     }
   ],
   "hallazgos": [
@@ -158,6 +186,18 @@
       "severidad": "cosmetico",
       "detalle": "prueba social sin voz humana: testimonios reales pendientes (responsable SP) — hoy la carga llevan números y logos",
       "donde": "/"
+    },
+    {
+      "frente": "craft",
+      "severidad": "confunde",
+      "detalle": "escala de radios dispersa: 17 valores distintos (999px×34 · 12px×33 · 14px×12 · 13px×11 · 16px×9)",
+      "donde": "app/"
+    },
+    {
+      "frente": "craft",
+      "severidad": "confunde",
+      "detalle": "colores clavados a mano: 618 usos de 84 hex distintos, sin tokens — un refresh de marca sería un rediseño",
+      "donde": "app/"
     }
   ]
 }

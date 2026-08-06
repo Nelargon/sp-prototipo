@@ -1647,6 +1647,58 @@ con el Master Orquestador en `sp-contenido`. No lo arranca una sesión de web so
 `app/blog/page.jsx`, `app/blog/[slug]/page.jsx`, `app/blog/Articulo.jsx`,
 `app/globals.css`, `contenido/README.md`.
 
+### ✔ El criterio de evaluación web, hecho ejecutable (6 ago 2026)
+
+Arturo trajo un **criterio de evaluación de la web** con tres puertas (Claridad
+A · Accesibilidad y rendimiento A · Craft B+). Es el mejor documento de los que
+circularon: operativo, con dueños y declarando sus propios agujeros. Su propia
+premisa —*"la Puerta 2 se aprueba con números, no con criterio"*— más su propia
+advertencia —*"si nadie valida técnicamente, quien entrega se autoevalúa"*— piden
+que el estándar sea **ejecutable**, no un PDF que se discute.
+
+**Qué se hizo:** `qa/qa-integral.mjs` ganó una sección 6 que mide las puertas que
+faltaban, y el resultado quedó en **`qa/CRITERIO-PUERTAS.md`** — el prototipo
+contra las tres puertas, con números.
+
+| Medición nueva | Resultado |
+|---|---|
+| **LCP** en gama media (CPU 4×) sobre 4G | home 924 ms · simulador 668 ms · planes 324 ms (vara 2500) |
+| **CLS** | 0,000 · 0,001 · 0,000 (vara 0,1) |
+| **Foco visible** | 40/40 interactivos de la home cambian al recibir foco |
+| **Tokens** | ❌ **17 valores de radio distintos · 618 hex a mano de 84 colores** |
+
+⚠ **Dos trampas de medición que quedaron aprendidas y comentadas en el código:**
+- **LCP hay que OBSERVARLO, no consultarlo.** `getEntriesByType('largest-
+  contentful-paint')` vuelve vacío: esas entradas no quedan en el buffer. El
+  `PerformanceObserver` se instala con `addInitScript`, antes de que la página
+  pinte. La primera versión medía `null` y lo reportaba como "el navegador no
+  informa" — parecía un límite del navegador y era un error nuestro.
+- **INP no se puede medir en laboratorio.** Es métrica de campo. Cualquier INP
+  verde reportado desde headless es un número inventado; sale de CrUX cuando
+  haya tráfico. Quedó escrito para que nadie lo prometa.
+
+**Lo que el boletín deja pedido (y que esta sesión NO ejecutó):**
+1. **Pasada de tokens** — es lo único que separa al prototipo del B+ de Craft.
+2. **`₲` vs `Gs.`**: el sitio renderiza `₲ 238.000`, el criterio fija
+   `Gs. 1.250.000`. Hay que elegir uno y aplicarlo en los dos lados.
+3. **La tabla de contraste del criterio necesita `#007d77`**: propone resolver
+   el botón turquesa con *texto navy sobre `#00BCB4`*; el sitio usa *teal
+   profundo `#007d77` con blanco* desde el 25/07 (dec. 12a). Las dos pasan AA,
+   pero si el criterio sale como está, lo que se construya no va a coincidir con
+   el sitio.
+4. **Las 10 preguntas** de la Puerta 1.1 no se pueden correr hasta que la lista
+   exista; hay material previo en `sp-interno`
+   (`PREGUNTAS-FRECUENTES-asesores-2026-07.md`).
+
+⚠ **Contradicción de alcance que excede a la web y no se resolvió acá:** el
+criterio se declara aplicable a *"entregas de fase 1: rediseño web, cotizador,
+guía médica básica, blog"*. La decisión **11p** (23 jul) dice que el prototipo
+Next.js **ES** la web pública y que un proveedor, si entra, es implementador u
+hosting, no dueño del diseño. Cotizador, guía y blog ya existen y funcionan. O
+el alcance cambió, o el criterio está escrito sobre un supuesto vencido. **Es
+decisión de Arturo y toca la relación con un proveedor: se discute en
+`sp-interno`, no en este repo público.**
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a

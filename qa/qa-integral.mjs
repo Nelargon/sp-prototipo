@@ -398,6 +398,107 @@ console.log('\n== 5. CONTENIDO ==');
   await page.close();
 }
 
+/* ============ 6. PUERTAS DEL CRITERIO DE EVALUACIÓN WEB ============
+   (6 ago 2026) El criterio de evaluación de la web define tres puertas y dice
+   que la Puerta 2 "se aprueba con números, no con criterio" — y después admite
+   que si nadie valida técnicamente, quien entrega se autoevalúa. Esta sección
+   cierra ese hueco: las puertas se MIDEN acá y la evidencia es qa-resultados.json,
+   no una captura de pantalla.
+   Ya estaban cubiertas por las secciones 1-5: contraste sobre estilos computados,
+   touch targets ≥44px, peso crítico, alt/labels y lenguaje sin jerga. Faltaban
+   estas tres. */
+console.log('\n== 6. PUERTAS DEL CRITERIO ==');
+{
+  /* 6a. Core Web Vitals en gama media sobre 4G — "donde vive la gente", no en
+     la notebook del diseñador. Se emula CPU 4× más lenta y red 4G real.
+     ⚠ INP NO se mide acá y no se puede: es una métrica de CAMPO (depende de
+     interacciones reales de usuarios reales). Declararla verde en headless
+     sería inventar un número. Sale de CrUX cuando el sitio tenga tráfico. */
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  /* ⚠ LCP hay que OBSERVARLO, no consultarlo: getEntriesByType('largest-
+     contentful-paint') vuelve vacío porque esas entradas no quedan en el buffer
+     por defecto. El observer se instala con addInitScript, o sea ANTES de que
+     la página empiece a pintar — si se instala después, ya te perdiste el
+     evento y medís null creyendo que el sitio no tiene LCP. */
+  await page.addInitScript(() => {
+    window.__cwv = { lcp: null, cls: 0 };
+    try {
+      new PerformanceObserver((l) => { const e = l.getEntries(); window.__cwv.lcp = e[e.length - 1].startTime; })
+        .observe({ type: 'largest-contentful-paint', buffered: true });
+      new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cwv.cls += e.value; })
+        .observe({ type: 'layout-shift', buffered: true });
+    } catch (e) {}
+  });
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await cdp.send('Network.enable');
+  await cdp.send('Network.emulateNetworkConditions', {
+    offline: false, latency: 150, downloadThroughput: (9 * 1024 * 1024) / 8, uploadThroughput: (1.5 * 1024 * 1024) / 8,
+  });
+  for (const p of ['/', '/simulador/', '/planes/']) {
+    await page.goto(BASE + p, { waitUntil: 'load' });
+    await page.evaluate(() => new Promise((r) => setTimeout(r, 2500)));
+    const cwv = await page.evaluate(() => ({ lcp: window.__cwv?.lcp ?? null, cls: window.__cwv?.cls ?? 0 }));
+    if (cwv.lcp == null) falla('rendimiento', 'cosmetico', 'LCP no reportado por el navegador', p);
+    else if (cwv.lcp > 2500) falla('rendimiento', 'confunde', 'LCP ' + Math.round(cwv.lcp) + ' ms (vara 2500) en gama media/4G', p);
+    else ok('rendimiento', p + ': LCP ' + Math.round(cwv.lcp) + ' ms en gama media/4G (≤2500)');
+    if (cwv.cls > 0.1) falla('rendimiento', 'confunde', 'CLS ' + cwv.cls.toFixed(3) + ' (vara 0.1) — salto visual del layout', p);
+    else ok('rendimiento', p + ': CLS ' + cwv.cls.toFixed(3) + ' (≤0.1)');
+  }
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+
+  /* 6b. Foco visible: recorrer con Tab y comprobar que CADA elemento
+     interactivo cambia visiblemente al recibir foco. No alcanza con que el
+     navegador ponga foco: si el CSS lo suprime con outline:none y no lo
+     reemplaza, quien navega por teclado queda a ciegas. */
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const sinFoco = await page.evaluate(() => {
+    const malos = [];
+    const els = Array.from(document.querySelectorAll('a[href],button,input,select,textarea'))
+      .filter((e) => e.offsetParent !== null).slice(0, 40);
+    for (const el of els) {
+      const antes = getComputedStyle(el);
+      const base = [antes.outlineStyle, antes.outlineWidth, antes.boxShadow, antes.backgroundColor, antes.textDecorationLine].join('|');
+      el.focus();
+      const d = getComputedStyle(el);
+      const foco = [d.outlineStyle, d.outlineWidth, d.boxShadow, d.backgroundColor, d.textDecorationLine].join('|');
+      if (base === foco) malos.push((el.textContent || el.getAttribute('aria-label') || el.tagName).trim().slice(0, 32));
+      el.blur();
+    }
+    return malos;
+  });
+  if (sinFoco.length) falla('accesibilidad', 'confunde', sinFoco.length + ' elementos sin cambio visible al recibir foco: ' + sinFoco.slice(0, 4).join(' · '), '/');
+  else ok('accesibilidad', 'foco visible: los 40 primeros interactivos de la home cambian al recibir foco');
+  await page.close();
+
+  /* 6c. Tokens, no valores clavados. El criterio pide que un refresh de marca
+     sea un cambio de variables y no un rediseño. Se cuenta la dispersión real
+     en el código: cuántos valores distintos de radio y cuántos hex a mano. */
+  const SRC = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
+  const archivos = [];
+  (function walk(d) {
+    for (const f of readdirSync(d)) {
+      const full = join(d, f);
+      if (statSync(full).isDirectory()) walk(full);
+      else if (/\.(jsx?|css)$/.test(f)) archivos.push(full);
+    }
+  })(SRC);
+  const radios = new Map(), hexes = new Map();
+  for (const f of archivos) {
+    const t = readFileSync(f, 'utf8');
+    for (const m of t.matchAll(/border-radius:\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
+    for (const m of t.matchAll(/#[0-9A-Fa-f]{6}\b/g)) hexes.set(m[0].toUpperCase(), (hexes.get(m[0].toUpperCase()) || 0) + 1);
+  }
+  const nRadios = radios.size, nHex = hexes.size;
+  const totalHex = [...hexes.values()].reduce((a, b) => a + b, 0);
+  // Varas: una escala de radios sana tiene ~5 pasos; los hex deberían vivir en
+  // variables CSS, no repetidos cientos de veces en estilos inline.
+  if (nRadios > 6) falla('craft', 'confunde', 'escala de radios dispersa: ' + nRadios + ' valores distintos (' + [...radios.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => k + 'px×' + v).join(' · ') + ')', 'app/');
+  else ok('craft', 'escala de radios: ' + nRadios + ' valores');
+  if (totalHex > 200) falla('craft', 'confunde', 'colores clavados a mano: ' + totalHex + ' usos de ' + nHex + ' hex distintos, sin tokens — un refresh de marca sería un rediseño', 'app/');
+  else ok('craft', 'colores: ' + totalHex + ' usos de ' + nHex + ' hex');
+}
+
 await browser.close();
 
 const porSev = { roto: 0, confunde: 0, cosmetico: 0 };
