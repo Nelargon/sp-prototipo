@@ -23,7 +23,8 @@ Privada (Capamed)
 07/07/2026).
 
 Sumando las 19 empresas que integran la cámara, hablamos de entre 380.000
-y 400.000 personas cubiertas.
+y 400.000 personas cubiertas
+([La Tribuna](https://www.latribuna.com.py/nacionales/2026/07/07/solo-el-7-de-los-paraguayos-tiene-seguro-medico-privado/)).
 
 Julio Ferrari, presidente de Capamed, no describe ese número como una
 carencia. Lo describe como un mercado con "amplio potencial de

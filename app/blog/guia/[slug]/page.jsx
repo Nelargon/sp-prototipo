@@ -1,6 +1,6 @@
 import { css } from '../../../css';
 import { BP } from '../../../basePath';
-import { getGuia, formatFechaCorta } from '../../../../lib/blog';
+import { getGuia, getPublishedPosts, formatFechaCorta } from '../../../../lib/blog';
 import { SERIES } from '../../../../lib/series';
 import Cover from '../../Cover';
 import Header from '../../../Header';
@@ -13,7 +13,13 @@ import Header from '../../../Header';
 
 export const dynamicParams = false;
 
+// Con output:'export' y dynamicParams:false, Next rechaza una lista vacía de
+// params — el mismo motivo por el que /blog/[slug] tiene su centinela. Sin
+// notas publicadas no hay guías, así que se genera una sola página sentinela.
+const SENTINEL = 'muy-pronto';
+
 export function generateStaticParams() {
+  if (getPublishedPosts().length === 0) return [{ slug: SENTINEL }];
   return SERIES.map((s) => ({ slug: s.slug }));
 }
 
@@ -21,16 +27,32 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const guia = getGuia(slug);
   if (!guia) return {};
+  const title = `Guía: ${guia.titulo} · Blog · Salud Protegida`;
   return {
-    title: `Guía: ${guia.titulo} · Blog · Salud Protegida`,
+    title,
     description: guia.promesa,
     alternates: { canonical: `/blog/guia/${guia.slug}/` },
+    // Sin esto las tres guías heredan el openGraph del sitio y se comparten
+    // todas con el título genérico de la home: indistinguibles en WhatsApp.
+    openGraph: { type: 'website', title, description: guia.promesa, locale: 'es_PY' },
+    twitter: { card: 'summary_large_image', title, description: guia.promesa },
   };
 }
 
 export default async function GuiaPage({ params }) {
   const { slug } = await params;
   const guia = getGuia(slug);
+
+  if (!guia) {
+    return (
+      <div className="body" style={css('min-height:100vh;background:#002A52;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px')}>
+        <div style={css('text-align:center;max-width:460px')}>
+          <h1 className="disp" style={css('font-size:28px;margin:0 0 10px')}>Muy pronto</h1>
+          <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;color:#B3C7DB;line-height:1.6')}>Todavía no hay guías publicadas.</p>
+        </div>
+      </div>
+    );
+  }
 
   const totalMin = guia.notas.reduce((a, n) => a + (n.minutes || 0), 0);
 

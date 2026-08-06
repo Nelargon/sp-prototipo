@@ -25,9 +25,11 @@ author: "Equipo Salud Protegida"
 > La Organización Mundial de la Salud recomienda que ese componente ronde el
 > 20 % para proteger a las familias de gastos catastróficos.
 
-Dicho de otra forma: de cada 100.000 guaraníes que se gastan en salud en
-Paraguay, unos 36.000 salen directamente del bolsillo de alguien en el
-momento en que se enferma — sin plan, sin previsión, sin cuota conocida.
+Dicho de otra forma, con ese mismo dato de la
+[OPS](https://hia.paho.org/en/country-profiles/paraguay): de cada 100.000
+guaraníes que se gastan en salud en Paraguay, unos 36.000 salen
+directamente del bolsillo de alguien en el momento en que se enferma — sin
+plan, sin previsión, sin cuota conocida.
 
 El [Banco Mundial](https://documents1.worldbank.org/curated/en/099614509262319953/pdf/IDU0b653fa210545c044d5083450b2bb0f0ed2b0.pdf)
 lo mide de otra manera y llega a la misma conclusión: las familias
@@ -52,8 +54,9 @@ seguros, medido contra el tamaño de la economía, ronda el 1,3 % — menos de
 la mitad del promedio de América Latina, según el
 [anuario de la Superintendencia de Seguros del BCP](https://assalweb.org/wp-content/uploads/2026/04/Mercado-Asegurador-Paraguay-2025.pdf).
 
-La buena noticia: está cambiando. Según ese mismo anuario, la cobertura
-subió del 28,6 % al 31 % en el último año.
+La buena noticia: está cambiando. Según el
+[INE](https://www.ine.gov.py/noticias/2353/el-ine-comparte-los-datos-relevantes-sobre-el-acceso-a-la-salud-en-paraguay),
+la cobertura subió del 28,6 % en 2024 al 31 % en 2025.
 
 ## Lo que hace un seguro, en una frase
 
