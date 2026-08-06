@@ -1,6 +1,7 @@
 ---
 title: "Cómo elegir un plan de salud en Paraguay: 5 preguntas antes de firmar"
 slug: "como-elegir-plan-de-salud-paraguay"
+categoria: "Entendé tu plan"
 kicker: "Decisiones"
 date: "2026-07-16"
 minutes: 4

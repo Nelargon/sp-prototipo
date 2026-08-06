@@ -1,6 +1,7 @@
 ---
 title: "Resolver tu cobertura de salud antes de necesitarla"
 slug: "resolver-cobertura-de-salud-antes-de-necesitarla"
+categoria: "Entendé tu plan"
 kicker: "Decisiones"
 date: "2026-07-23"
 minutes: 4

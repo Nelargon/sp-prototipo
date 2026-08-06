@@ -8,45 +8,42 @@ import { BP } from '../basePath';
 // esa manda — así el sitio nunca queda sin imagen (HANDOFF jul 2026, capa 1
 // de la estrategia de imágenes). Componente puro: sirve en server y cliente.
 
-// ⚠ UN TEMA POR SECCIÓN (6 ago 2026). Antes había dos temas —"Prevención" y
-// "Entendé tu plan"— y el resto caía al DEFAULT: como 14 de las 22 notas no
-// traían categoría, la mayoría del blog compartía degradé E ícono. A tres notas
-// no se notaba; a 22 la grilla se leía como un solo bloque azul y ninguna nota
-// se distinguía de la de al lado. Ahora el tema sale del KICKER (el eje que sí
-// existe en las 22) y hay uno por cada sección que el motor de contenido usa.
-// Paleta: todo dentro del rango navy↔teal de la marca — el dorado es
-// "oportunidad" y el rojo es SOLO urgencias, así que ninguno entra acá.
+// Cinco categorías, cinco anclas de color de la marca. La regla de
+// `references/colors.md` es que Sage, Lavender y Terracota son TERRITORIOS
+// NARRATIVOS, no acentos decorativos: marcan de qué habla la pieza y nunca
+// se mezclan entre sí. Por eso hay exactamente cinco categorías — una por
+// ancla disponible — y no una lista abierta.
+//
+// Cada degradé es de un solo tono (variante -900/-800 → -500 del MISMO
+// color). La marca prohíbe degradés agresivos y los que cruzan colores de
+// marca: "usar colores sólidos o degradés muy sutiles de un solo tono".
+// Todos los hex de acá salen de la paleta oficial, ninguno inventado.
 const THEMES = {
-  'Salud preventiva':     { g1: '#0a8f86', g2: '#00b3a8', soft: '#8fe6de', ring: '#c6f2ee' },
-  'Decisiones':           { g1: '#00335f', g2: '#0a63b0', soft: '#8fb8e6', ring: '#c3ddf5' },
-  'El dato':              { g1: '#062f4a', g2: '#0d7a86', soft: '#8fd8dd', ring: '#c3eaf0' },
-  'Entendé tu cobertura': { g1: '#013a63', g2: '#1a7fb8', soft: '#9cc9e8', ring: '#cfe4f5' },
-  'Entendé el sistema':   { g1: '#052744', g2: '#2a6b8f', soft: '#a3c4d6', ring: '#d0e2ec' },
-  'Dónde te atendés':     { g1: '#065c63', g2: '#00a0a8', soft: '#8fe0e6', ring: '#c6f0f2' },
-  'Cuánto cuesta':        { g1: '#0a4d6b', g2: '#12909b', soft: '#93dbe2', ring: '#c8edf0' },
-  // Alias de la taxonomía vieja (`categoria`), por si alguna nota la usa de tema.
-  'Prevención':           { g1: '#0a8f86', g2: '#00b3a8', soft: '#8fe6de', ring: '#c6f2ee' },
-  'Entendé tu plan':      { g1: '#00335f', g2: '#0a63b0', soft: '#8fb8e6', ring: '#c3ddf5' },
+  // Turquesa — cobertura y protección: el territorio core de SP
+  'Entendé tu plan':   { g1: '#006B66', g2: '#00BCB4', soft: '#80DDD8', ring: '#B3EAE7' },
+  // Navy — institucional: cómo funciona el sistema de salud y el mercado
+  'Salud en Paraguay': { g1: '#002A52', g2: '#003B71', soft: '#B3C7DB', ring: '#E6EDF4' },
+  // Sage — prevención y vida sana
+  'Prevención':        { g1: '#2E5740', g2: '#7FB396', soft: '#A9D1B4', ring: '#D4E8DB' },
+  // Lavender — maternidad y primera infancia
+  'Primeros años':     { g1: '#4A3A6E', g2: '#9B84C0', soft: '#C4B3DD', ring: '#E2D9EE' },
+  // Terracota — madurez, trayectoria, adulto mayor
+  'Vivir más años':    { g1: '#7A3D2E', g2: '#C67B5C', soft: '#DDB29C', ring: '#EBD0C0' },
 };
-const DEFAULT_THEME = { g1: '#013a63', g2: '#0a63b0', soft: '#8fb8e6', ring: '#c3ddf5' };
+// Turquesa: si una nota llega sin categoría, cae al color primario de marca.
+const DEFAULT_THEME = { g1: '#006B66', g2: '#00BCB4', soft: '#80DDD8', ring: '#B3EAE7' };
 
 const ICONS = {
-  // shield + check (protección / cuidarte antes)
-  'Salud preventiva': 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 11.5l2 2 4-4',
-  // camino que se bifurca (elegir entre opciones)
-  'Decisiones': 'M12 3v6M12 9l-5 5v7M12 9l5 5v7',
-  // barras (una cifra que explica algo)
-  'El dato': 'M3 21h18M7 21V11M12 21V5M17 21v-8',
-  // file-text (leer la letra chica sin vueltas)
-  'Entendé tu cobertura': 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8ZM14 3v5h5M9 13h6M9 17h4',
-  // institución (cómo funciona el sistema de salud)
-  'Entendé el sistema': 'M4 21V6l8-3v18M12 21h8V10l-8-3M8 10h.01M8 14h.01M16 14h.01M16 18h.01',
-  // pin de mapa (dónde te atendés)
-  'Dónde te atendés': 'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0ZM12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
-  // billetera (lo que sale de tu bolsillo)
-  'Cuánto cuesta': 'M3 7h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm0 0 2-3h11M16 13h.01',
-  'Prevención': 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 11.5l2 2 4-4',
-  'Entendé tu plan': 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8ZM14 3v5h5M9 13h6M9 17h4',
+  // file-text — leer la letra chica sin vueltas
+  'Entendé tu plan':   'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8ZM14 3v5h5M9 13h6M9 17h4',
+  // edificio con cruz — el sistema de salud, hospitales, trámites
+  'Salud en Paraguay': 'M3 21h18M5 21V8l7-4 7 4v13M10 12h4M12 10v4M9 21v-4h6v4',
+  // escudo + check — cuidarte antes de que pase
+  'Prevención':        'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 11.5l2 2 4-4',
+  // corazón — primera infancia, maternidad
+  'Primeros años':     'M12 20.5s-7-4.6-7-9.2A3.9 3.9 0 0 1 12 8.6a3.9 3.9 0 0 1 7 2.7c0 4.6-7 9.2-7 9.2z',
+  // sol sobre el horizonte — los años que vienen
+  'Vivir más años':    'M12 3.5v3M6.2 6.2l2.1 2.1M3.5 14h3M17.5 14h3M15.7 8.3l2.1-2.1M8 14a4 4 0 0 1 8 0M3 18.5h18',
 };
 const DEFAULT_ICON = 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z';
 
@@ -63,7 +60,7 @@ function seed(s) {
 // recortaría la ilustración 2:1. `alt=''` (o ausente) = decorativa: no la
 // anuncia el lector de pantalla (la tarjeta ya expone el título). `eager` para
 // el hero del artículo (probable LCP); las tarjetas quedan lazy.
-export default function Cover({ tema, slug, cover, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
+export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
   const base = { display: 'block', width: '100%', aspectRatio: aspect, borderRadius: radius };
   const decorative = !alt;
 
@@ -75,9 +72,9 @@ export default function Cover({ tema, slug, cover, alt = '', aspect = '2 / 1', r
     return <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ ...base, objectFit: 'cover' }} />;
   }
 
-  const t = THEMES[tema] || DEFAULT_THEME;
-  const icon = ICONS[tema] || DEFAULT_ICON;
-  const sd = seed(String(slug || tema || 'sp'));
+  const t = THEMES[categoria] || DEFAULT_THEME;
+  const icon = ICONS[categoria] || DEFAULT_ICON;
+  const sd = seed(String(slug || categoria || "sp"));
   const j = (shift, span) => ((sd >> shift) % span) - (span >> 1); // jitter centrado
   const gid = 'cov' + (sd % 100000);
   const c1x = 330 + j(3, 40),  c1y = 168 + j(6, 40);   // círculo blanco, sangra abajo-derecha

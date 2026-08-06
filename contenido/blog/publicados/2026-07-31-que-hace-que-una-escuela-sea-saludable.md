@@ -1,6 +1,7 @@
 ---
 title: "Qué hace que una escuela sea saludable, más allá del cartel"
 slug: "que-hace-que-una-escuela-sea-saludable"
+categoria: "Prevención"
 kicker: "Salud preventiva"
 date: "2026-07-31"
 minutes: 4

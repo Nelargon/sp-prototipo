@@ -1,6 +1,7 @@
 ---
 title: "Qué hace un equipo de Salud cuando toca la puerta de tu casa por un brote"
 slug: "encuesta-domiciliaria-fiebre-amarilla-que-esperar"
+categoria: "Prevención"
 kicker: "Salud preventiva"
 date: "2026-08-03"
 minutes: 4

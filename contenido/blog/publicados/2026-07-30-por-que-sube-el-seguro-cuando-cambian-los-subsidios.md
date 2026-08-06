@@ -1,6 +1,7 @@
 ---
 title: "Por qué un seguro de salud puede subir de precio sin que vos cambies nada"
 slug: "por-que-sube-el-seguro-cuando-cambian-los-subsidios"
+categoria: "Salud en Paraguay"
 kicker: "Cuánto cuesta"
 date: "2026-07-30"
 minutes: 4

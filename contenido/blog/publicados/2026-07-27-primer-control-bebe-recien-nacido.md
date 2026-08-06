@@ -1,6 +1,7 @@
 ---
 title: "Qué mira el primer control de tu bebé recién nacido"
 slug: "primer-control-bebe-recien-nacido"
+categoria: "Primeros años"
 kicker: "Salud preventiva"
 date: "2026-07-27"
 minutes: 4

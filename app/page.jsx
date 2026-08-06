@@ -182,6 +182,14 @@ export default function Page() {
   }, [state.mobileMenuOpen]);
 
   // Manifiesto corto: registrar (una sola vez) que el visitante llegó a verlo.
+  // ⚠ El umbral era 0.5 y con la sección fusionada dejó de ser alcanzable en
+  // pantallas bajas (6 ago 2026, lo marcó la revisión del PR #86): la razón
+  // máxima de intersección es alto-de-viewport / alto-de-sección, y en un
+  // teléfono apaisado la sección mide más del doble del viewport — el evento
+  // no se disparaba NUNCA, aunque la persona leyera el argumento entero.
+  // Con threshold 0 + rootMargin negativo se dispara cuando la sección entra
+  // en la banda central del viewport: alcanzable con cualquier alto de sección,
+  // y sigue significando "llegó al argumento" y no "lo rozó al pasar".
   useEffect(() => {
     const el = document.querySelector('[data-mani-corto]');
     if (!el || typeof IntersectionObserver === 'undefined') return;
@@ -189,7 +197,7 @@ export default function Page() {
       entries.forEach((en) => {
         if (en.isIntersecting) { track('manifesto_scroll', { profundidad: 100, pagina: 'home' }); io.disconnect(); }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0, rootMargin: '-25% 0px -25% 0px' });
     io.observe(el);
     return () => io.disconnect();
   }, []);

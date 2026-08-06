@@ -2158,8 +2158,9 @@ escribieron. Lo que cambió fue **la cantidad**.
    convivieron desde julio sin que nadie notara que no se hablaban. El síntoma
    visible era absurdo y aun así invisible: la tarjeta mostraba *"Decisiones"* y
    el filtro de al lado ofrecía *"General"*. Cuando dos campos describen el
-   mismo eje, **el que se ve gana y el otro hay que jubilarlo** — mantener los
-   dos garantiza que se separen.
+   mismo eje, **uno gana y el otro hay que jubilarlo** — mantener los dos
+   garantiza que se separen. (Cuál de los dos ganó lo decidió el capítulo
+   siguiente, y no fue el que esta sesión eligió.)
 4. **Copiar una referencia es elegir qué NO copiar.** Men's Health tiene un
    "MOST READ" numerado del 1 al 5 y fechas relativas ("hace 17 horas"). Los dos
    son buenos y **los dos quedaron afuera**: no tenemos analítica conectada, así
@@ -2176,6 +2177,69 @@ escribieron. Lo que cambió fue **la cantidad**.
    uniforme. Eso no se arregla desde la web: se anotó para `sp-contenido`. **Un
    diagnóstico honesto a veces termina en la puerta de otro equipo, y hay que
    dejarlo ahí en vez de disfrazarlo de arreglo.**
+
+---
+
+## Capítulo 64 — Dos sesiones, el mismo hallazgo, el mismo día (y la mía perdió)
+
+**Qué intentamos.** Fusionar el PR #86 con el "dale" de Arturo: *"encargate del
+pull y merge porfa. Automático."* Antes de apretar el botón, el protocolo de
+`CLAUDE.md` obliga a mirar los otros PRs abiertos.
+
+**Qué pasó.** Había uno, abierto cinco minutos después del mío por otra sesión
+que no me veía ni yo a ella: **#87, "Cinco categorías de blog, una por ancla de
+color de la marca"**. Su descripción abría con mi mismo diagnóstico, palabra por
+palabra en sustancia: *14 de 22 notas no tenían `categoria`, así que dos tercios
+del blog renderizaban el mismo degradé*.
+
+Dos sesiones, el mismo día, encontraron el mismo defecto. Y lo resolvieron
+distinto:
+
+| | Yo (#86) | La otra (#87) |
+|---|---|---|
+| Eje | el `kicker`, 7 secciones **sacadas de lo que ya había en los datos** | una lista **cerrada de 5**, decidida y después asignada a las 22 notas |
+| Colores | 7 degradés que **inventé** "dentro del rango navy↔teal" | los **colores-ancla del manual de marca**, Sage/Lavender/Terracota como territorios narrativos |
+| Los datos | **cambié de eje para esquivar** el campo vacío | **llenaron el campo** en los 16 markdown que faltaban |
+
+**La suya era mejor y la mía se resolvió a favor de la suya.** Se fusionó #87
+primero, después esta rama trajo `origin/main` y los conflictos se resolvieron
+adoptando su taxonomía entera, conservando de acá solo lo que ellos no tocaban:
+la jerarquía del índice, el copete duplicado y el tiempo de lectura real.
+
+**Qué aprendimos.**
+
+1. **Inventé una paleta que la marca ya tenía resuelta.** Escribí en el código,
+   con todas las letras, *"todo dentro del rango navy↔teal de la marca"*, y me
+   sentí prolijo por reservar el dorado y el rojo. Nunca se me ocurrió que
+   pudiera existir un documento de color con más anclas que las cuatro que yo
+   recordaba. La otra sesión abrió `references/colors.md` y encontró Sage,
+   Lavender y Terracota **definidos como territorios narrativos**. **Respetar
+   las reglas que uno recuerda no es lo mismo que ir a buscar las que hay** — y
+   la diferencia entre las dos es exactamente la distancia entre un color
+   inventado y uno que la marca ya decidió.
+2. **Esquivar un campo vacío no es arreglarlo.** Vi que `categoria` estaba en 8
+   de 22 notas y cambié el eje al campo que sí estaba lleno. Elegante, cero
+   archivos de contenido tocados, y **dejaba el problema exactamente donde
+   estaba**: el motor iba a seguir publicando sin categoría. Ellos editaron 16
+   markdown a mano y le pusieron una guarda al build. **La solución que no toca
+   los datos suele ser la que no arregla nada** — solo mueve la mirada.
+3. **Siete etiquetas encontradas le pierden a cinco decididas.** Mis secciones
+   salieron de contar lo que había: quedaron dos con una sola nota y dos casi
+   sinónimas ("Entendé el sistema" / "Entendé tu cobertura"). Las suyas salieron
+   de un criterio previo. **Una taxonomía derivada de los datos describe el
+   pasado; una decidida ordena lo que viene.**
+4. **El protocolo de sesiones paralelas se ganó el sueldo.** "Mirar los otros
+   PRs abiertos antes de fusionar" suena a burocracia hasta el día que evita
+   esto. Si mi rama entraba primero —y el merge estaba autorizado, iba a
+   entrar—, el blog quedaba con colores inventados encima de una paleta oficial,
+   y la otra sesión habría llegado a un `main` que le pisó el trabajo. **Un
+   protocolo se prueba el día en que cuesta obedecerlo**, y este costó una hora
+   de trabajo mío tirado. Valió.
+5. **Y una cosa que sí sobrevivió, por una razón:** los tres arreglos que
+   aporté —copete duplicado, lectura real, jerarquía del índice— no chocaron con
+   nada porque **no eran otra respuesta a la misma pregunta**, eran respuestas a
+   preguntas que la otra sesión no se hizo. Cuando dos trabajos se superponen,
+   lo que se conserva no es lo que llegó primero: es lo que no tiene rival.
 
 ---
 

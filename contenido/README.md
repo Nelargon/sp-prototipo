@@ -10,7 +10,13 @@ generan cada lunes. Publicar una nota = copiar acá el markdown aprobado
 (con `status: "publicado"`) vía PR. Nada se publica sin revisión humana.
 
 Formato de archivo: `YYYY-MM-DD-slug.md` con frontmatter `title`, `slug`,
-`kicker`, `date`, `description` (para la tarjeta del índice y el SEO), `cover`
+`kicker`, `categoria` (OBLIGATORIA, y exactamente una de estas cinco:
+**"Entendé tu plan"** · **"Salud en Paraguay"** · **"Prevención"** ·
+**"Primeros años"** · **"Vivir más años"**. Define el color y el ícono de la
+portada y el filtro del índice. La lista es cerrada: vive en `lib/categorias.js`
+y cada una tiene su tema en `app/blog/Cover.jsx`. Una categoría inexistente o
+ausente cae en "Entendé tu plan" y el build lo avisa por consola), `date`,
+`description` (para la tarjeta del índice y el SEO), `cover`
 (opcional — ruta a una foto en `/public`; si falta, el blog genera una portada
 de marca automática por código), `intro` (el
 copete de la nota), `tags`, `sources` (opcional), `nota` (opcional, el
@@ -19,16 +25,14 @@ recuadro gris final) y `author`. Referencia completa:
 
 ## Tres cosas que cambiaron el 6 ago 2026 — leer antes de escribir una nota
 
-1. **El `kicker` ES la sección.** Antes había dos ejes: el `kicker` (que se ve
-   en cada tarjeta) y `categoria` (que alimentaba el filtro). No coincidían —
-   14 de 22 notas no traían `categoria` y caían en "General", y el mismo kicker
-   aparecía con categorías distintas. Ahora **el filtro del índice usa el
-   kicker**, que existe en todas las notas. `categoria` se sigue leyendo pero
-   ya no manda en la UI: **elegí bien el kicker, es lo que ordena el blog.**
-   Los que están en uso: *Salud preventiva · Decisiones · El dato · Entendé tu
-   cobertura · Dónde te atendés · Entendé el sistema · Cuánto cuesta*. Un
-   kicker nuevo crea una sección nueva (y necesita su tema visual en
-   `app/blog/Cover.jsx` — si no, cae al degradé por defecto).
+1. **`categoria` es el ÚNICO eje de la UI, y el `kicker` ya no se muestra.**
+   Convivían dos etiquetas sobre la misma nota: el `kicker` se veía en cada
+   tarjeta y `categoria` alimentaba el filtro, y no coincidían — el lector veía
+   "El dato" en la tarjeta y "General" en el filtro de al lado. Hoy la
+   **categoría maneja todo**: color de portada, ícono, filtro y etiqueta
+   visible. El `kicker` sigue en el frontmatter como rúbrica editorial interna,
+   pero no llega a la pantalla. **Elegí bien la categoría: es lo que ordena el
+   blog** (y es obligatoria — ver arriba).
 2. **`minutes` ya no se usa: el tiempo de lectura se calcula** del cuerpo
    (200 palabras/minuto). Las 22 notas declaraban "4" y era un default, no una
    medición. Podés dejar el campo o sacarlo; el sitio lo ignora.

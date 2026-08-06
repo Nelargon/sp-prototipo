@@ -20,7 +20,7 @@ export default function BlogPage() {
   // Solo lo que la tarjeta necesita, y la fecha ya formateada: BlogList es un
   // componente cliente y no debe importar lib/blog (arrastraría `fs` al bundle).
   const notas = posts.map((n) => ({
-    slug: n.slug, title: n.title, tema: n.tema,
+    slug: n.slug, title: n.title, categoria: n.categoria,
     cover: n.cover, description: n.description, minutes: n.minutes,
     fechaFmt: formatFecha(n.date), fechaCorta: formatFechaCorta(n.date),
   }));

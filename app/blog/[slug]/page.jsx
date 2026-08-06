@@ -56,7 +56,7 @@ export default async function BlogPost({ params }) {
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    articleSection: post.tema,
+    articleSection: post.categoria,
     inLanguage: 'es-PY',
     author: { '@type': 'Organization', name: post.author },
     publisher: { '@type': 'Organization', name: 'Salud Protegida' },
@@ -65,7 +65,7 @@ export default async function BlogPost({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <A kicker={post.kicker} title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} tema={post.tema} slug={post.slug} cover={post.cover}>
+      <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover}>
       <div dangerouslySetInnerHTML={{ __html: html }} />
       {post.sources.length > 0 && (
         <div style={css('border-top:1px solid #F0F0F0;margin-top:30px;padding-top:18px')}>

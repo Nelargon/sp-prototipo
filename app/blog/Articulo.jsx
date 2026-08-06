@@ -5,7 +5,7 @@ import Header from '../Header';
 
 // Layout compartido de las notas del blog: lectura cómoda (columna angosta,
 // cuerpo grande), la marca arriba y una sola invitación al final.
-export function A({ kicker, title, intro, minutes, date, tema, slug, cover, children }) {
+export function A({ title, intro, minutes, date, categoria, slug, cover, children }) {
   return (
     <div className="body" style={css('min-height:100vh;background:#fff;color:#1D1D1B')}>
       <Header variant="solid" />
@@ -13,8 +13,8 @@ export function A({ kicker, title, intro, minutes, date, tema, slug, cover, chil
         <a href={`${BP}/blog/`} style={css('display:inline-flex;align-items:center;gap:7px;color:#003B71;font-size:14px;font-weight:700;padding:104px 0 0')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>Volver al blog</a>
       </div>
       <article style={css('max-width:680px;margin:0 auto;padding:18px 24px 40px')}>
-        <Cover tema={tema} slug={slug} cover={cover} alt={title} radius={18} eager />
-        <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin:24px 0 12px')}>{kicker}</div>
+        <Cover categoria={categoria} slug={slug} cover={cover} alt={title} radius={18} eager />
+        <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin:24px 0 12px')}>{categoria}</div>
         <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,42px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;margin:0 0 14px')}>{title}</h1>
         <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:18px;line-height:1.65;color:#3D3D3D;margin:0 0 14px')}>{intro}</p>
         <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;color:#6B6B6B;padding-bottom:26px;border-bottom:1px solid #F0F0F0;margin-bottom:30px')}>Equipo Salud Protegida · {date} · Lectura de {minutes} min</div>
