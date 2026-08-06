@@ -414,28 +414,36 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
      ⚠ INP NO se mide acá y no se puede: es una métrica de CAMPO (depende de
      interacciones reales de usuarios reales). Declararla verde en headless
      sería inventar un número. Sale de CrUX cuando el sitio tenga tráfico. */
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   /* ⚠ LCP hay que OBSERVARLO, no consultarlo: getEntriesByType('largest-
      contentful-paint') vuelve vacío porque esas entradas no quedan en el buffer
      por defecto. El observer se instala con addInitScript, o sea ANTES de que
      la página empiece a pintar — si se instala después, ya te perdiste el
      evento y medís null creyendo que el sitio no tiene LCP. */
-  await page.addInitScript(() => {
-    window.__cwv = { lcp: null, cls: 0 };
-    try {
-      new PerformanceObserver((l) => { const e = l.getEntries(); window.__cwv.lcp = e[e.length - 1].startTime; })
-        .observe({ type: 'largest-contentful-paint', buffered: true });
-      new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cwv.cls += e.value; })
-        .observe({ type: 'layout-shift', buffered: true });
-    } catch (e) {}
-  });
-  const cdp = await page.context().newCDPSession(page);
-  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
-  await cdp.send('Network.enable');
-  await cdp.send('Network.emulateNetworkConditions', {
-    offline: false, latency: 150, downloadThroughput: (9 * 1024 * 1024) / 8, uploadThroughput: (1.5 * 1024 * 1024) / 8,
-  });
-  for (const p of ['/', '/simulador/', '/planes/']) {
+  /* ⚠ CACHÉ FRÍA POR RUTA (lo marcó la revisión del PR #91). La primera versión
+     medía las tres rutas reusando la misma página: la segunda y la tercera
+     cargaban los chunks, CSS y fuentes que la primera ya había dejado en caché,
+     así que reportaban un LCP de visitante recurrente y lo presentaban como si
+     fuera el de alguien que entra por primera vez. Quien llega a /simulador/
+     desde Google no tiene nada cacheado. Ahora cada ruta se mide en un contexto
+     nuevo, con su propio throttling. */
+  for (const p of ['/', '/simulador/', '/planes/', '/que-cubre/']) {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    await page.addInitScript(() => {
+      window.__cwv = { lcp: null, cls: 0 };
+      try {
+        new PerformanceObserver((l) => { const e = l.getEntries(); window.__cwv.lcp = e[e.length - 1].startTime; })
+          .observe({ type: 'largest-contentful-paint', buffered: true });
+        new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cwv.cls += e.value; })
+          .observe({ type: 'layout-shift', buffered: true });
+      } catch (e) {}
+    });
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    await cdp.send('Network.enable');
+    await cdp.send('Network.emulateNetworkConditions', {
+      offline: false, latency: 150, downloadThroughput: (9 * 1024 * 1024) / 8, uploadThroughput: (1.5 * 1024 * 1024) / 8,
+    });
     await page.goto(BASE + p, { waitUntil: 'load' });
     await page.evaluate(() => new Promise((r) => setTimeout(r, 2500)));
     const cwv = await page.evaluate(() => ({ lcp: window.__cwv?.lcp ?? null, cls: window.__cwv?.cls ?? 0 }));
@@ -444,18 +452,25 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
     else ok('rendimiento', p + ': LCP ' + Math.round(cwv.lcp) + ' ms en gama media/4G (≤2500)');
     if (cwv.cls > 0.1) falla('rendimiento', 'confunde', 'CLS ' + cwv.cls.toFixed(3) + ' (vara 0.1) — salto visual del layout', p);
     else ok('rendimiento', p + ': CLS ' + cwv.cls.toFixed(3) + ' (≤0.1)');
+    await ctx.close();
   }
-  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
 
   /* 6b. Foco visible: recorrer con Tab y comprobar que CADA elemento
      interactivo cambia visiblemente al recibir foco. No alcanza con que el
      navegador ponga foco: si el CSS lo suprime con outline:none y no lo
      reemplaza, quien navega por teclado queda a ciegas. */
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  /* ⚠ SIN MUESTREO (lo marcó la revisión del PR #91). La primera versión cortaba
+     en los 40 primeros: la FAQ, el cierre y el footer quedaban afuera, así que
+     un control sin foco visible allá abajo daba verde igual. Un guardián que
+     mira una muestra y reporta como si hubiera mirado todo es peor que no
+     tenerlo — certifica lo que no revisó. Ahora recorre TODOS los visibles. */
   const sinFoco = await page.evaluate(() => {
     const malos = [];
     const els = Array.from(document.querySelectorAll('a[href],button,input,select,textarea'))
-      .filter((e) => e.offsetParent !== null).slice(0, 40);
+      .filter((e) => e.offsetParent !== null);
+    window.__focoTotal = els.length;
     for (const el of els) {
       const antes = getComputedStyle(el);
       const base = [antes.outlineStyle, antes.outlineWidth, antes.boxShadow, antes.backgroundColor, antes.textDecorationLine].join('|');
@@ -467,8 +482,9 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
     }
     return malos;
   });
-  if (sinFoco.length) falla('accesibilidad', 'confunde', sinFoco.length + ' elementos sin cambio visible al recibir foco: ' + sinFoco.slice(0, 4).join(' · '), '/');
-  else ok('accesibilidad', 'foco visible: los 40 primeros interactivos de la home cambian al recibir foco');
+  const focoTotal = await page.evaluate(() => window.__focoTotal || 0);
+  if (sinFoco.length) falla('accesibilidad', 'confunde', sinFoco.length + ' de ' + focoTotal + ' elementos sin cambio visible al recibir foco: ' + sinFoco.slice(0, 4).join(' · '), '/');
+  else ok('accesibilidad', 'foco visible: los ' + focoTotal + ' interactivos visibles de la home cambian al recibir foco');
   await page.close();
 
   /* 6c. Tokens, no valores clavados. El criterio pide que un refresh de marca
@@ -487,7 +503,19 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
   for (const f of archivos) {
     const t = readFileSync(f, 'utf8');
     for (const m of t.matchAll(/border-radius:\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
-    for (const m of t.matchAll(/#[0-9A-Fa-f]{6}\b/g)) hexes.set(m[0].toUpperCase(), (hexes.get(m[0].toUpperCase()) || 0) + 1);
+    /* ⚠ Cuenta hex de 3, 4, 6 y 8 dígitos, no solo de 6 (lo marcó la revisión
+       del PR #91): el árbol ya tenía 173 `#fff`/`#000` que el patrón viejo no
+       veía. Un guardián de tokens ciego a la forma corta puede dar verde con
+       cientos de colores clavados a mano — que es exactamente lo que vino a
+       impedir. Se normaliza la forma corta a larga para no contar #fff y
+       #ffffff como dos colores distintos. */
+    for (const m of t.matchAll(/#([0-9A-Fa-f]{3,8})\b/g)) {
+      const h = m[1];
+      if (![3, 4, 6, 8].includes(h.length)) continue;
+      const largo = h.length <= 4 ? h.split('').map((c) => c + c).join('') : h;
+      const k = ('#' + largo.slice(0, 6)).toUpperCase();
+      hexes.set(k, (hexes.get(k) || 0) + 1);
+    }
   }
   const nRadios = radios.size, nHex = hexes.size;
   const totalHex = [...hexes.values()].reduce((a, b) => a + b, 0);

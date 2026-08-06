@@ -275,10 +275,18 @@ export default function Page() {
     { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '10' }, { t: '15' }, { t: '20' }] },
     { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20' }, { t: '20' }, { t: '25' }] },
-    { name: 'Terapia intensiva', unit: 'días/año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
+    { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
     { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲500 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
     { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲100 mil' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
   ];
+  // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
+  // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero
+  // solo si no comparten el nombre: por eso las filas se llaman "Días de
+  // terapia intensiva" y "Remedios en urgencias", no "Terapia intensiva" y
+  // "Urgencias". Una fila que se llama igual que un ítem de la garantía le dice
+  // al lector dos cosas distintas sobre la misma palabra (lo marcó la revisión
+  // del PR #91). Regla: si un servicio está en la banda, su fila en la tabla
+  // tiene que nombrar el LÍMITE, no el servicio.
   const cmpIgual = 'Urgencias 24 h · Ecografías y radiografías · Parto y cesárea · Laboratorio · Terapia intensiva';
 
   // faq
@@ -358,7 +366,10 @@ export default function Page() {
               <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Cobertura <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
               <div className="navmenu">
                 <div className="navmenu-card">
-                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Elegí una cobertura y mirá qué te toca en cada plan</span></a>
+                  {/* Ver la nota del mismo ítem en app/Header.jsx: el subtítulo
+                      prometía un selector que ya no existe. */}
+                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Lo que cambia entre Bronze, Silver y Gold, de un vistazo</span></a>
+                  <a href={`${BP}/que-cubre/`} className="navmenu-item"><span className="navmenu-t">¿Está cubierto lo que me pidieron?</span><span className="navmenu-s">Buscá el estudio, análisis o cirugía por su nombre</span></a>
                   <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Copago, precio de convenio y lo que no cubre ningún plan</span></a>
                   <a href="#faq" className="navmenu-item"><span className="navmenu-t">Preguntas frecuentes</span><span className="navmenu-s">Carencias, preexistencias, cambios de plan y más</span></a>
                 </div>

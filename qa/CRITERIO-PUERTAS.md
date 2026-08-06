@@ -26,13 +26,30 @@ que construye.
 
 | Puerta | Objetivo | Estado del prototipo |
 |---|---|---|
-| **1 · Claridad** | A | **Pasa**, con una salvedad de contenido del blog |
+| **1 · Claridad** | A | **NO PASA** — 1.5 falla, 1.4 tiene hallazgos, 1.1 no se pudo correr |
 | **2 · Accesibilidad y rendimiento** | A | **Pasa lo medible**; una métrica no es medible en laboratorio |
 | **3 · Craft, marca y futuro** | B+ | **NO pasa** — el punto de tokens |
 
-**La conclusión incómoda:** el criterio pide tokens y no valores clavados. Ese es
-el punto donde nuestro propio prototipo reprueba, y por bastante. Si se le va a
-exigir a alguien, conviene saber que hoy no lo cumplimos nosotros.
+> ⚠️ **La primera versión de este resumen decía que la Puerta 1 "pasa, con una
+> salvedad de contenido del blog"** — mientras la tabla de abajo, en la misma
+> página, marcaba 1.5 como ❌, 1.1 como pendiente y 1.4 con hallazgos. Lo detectó
+> la revisión automática del PR #91.
+>
+> Y es un error con nombre: **el criterio dice que un solo criterio binario de la
+> Puerta 1 que falle hace que la entrega no se acepte.** Un resumen que dice
+> "pasa" cuando una fila obligatoria falla es exactamente el tipo de
+> autocertificación que este boletín existe para impedir — y quien lea solo el
+> resumen certifica una puerta cuyos propios chequeos están rojos.
+>
+> **Regla que deja: el resumen no puede ser más indulgente que su peor fila.**
+
+**Las dos conclusiones incómodas:**
+
+1. **La Puerta 1 no pasa.** El flujo que pide nombre y teléfono no nombra la
+   carencia antes de pedirlos (1.5), y la prueba de las diez preguntas ni
+   siquiera se pudo correr (1.1).
+2. **La Puerta 3 tampoco**, por tokens. Si se le va a exigir a alguien, conviene
+   saber que hoy no lo cumplimos nosotros.
 
 ---
 
@@ -47,13 +64,25 @@ exigir a alguien, conviene saber que hoy no lo cumplimos nosotros.
 | Criterio | Cómo se verificó | Resultado |
 |---|---|---|
 | **1.2** Lugar permanente para lo que NO cubrimos, sin PDF ni enlace externo | **Inspección manual** de la sección de planes: contiene exclusiones ("Para que no haya sorpresas"), carencias por servicio y el aviso de los 10 meses de parto, en la misma página, sin abrir nada | ✅ *(no automatizado)* |
-| **1.3** Precio con piso real, no "consultanos" | **Automatizado** — la suite verifica que el "desde" del hero sale de `plans()` y no de un número a mano. El simulador da precio sin pedir datos | ✅ |
+| **1.3** Precio con piso real, no "consultanos" | **Inspección manual** del hero (publica "desde ₲ 238.000") + **automatizado** el recorrido del simulador hasta ver un precio sin dejar datos | ✅ *(el origen del "desde" NO está verificado — ver abajo)* |
 | **1.4** Lenguaje de paciente, cero jerga | **Automatizado**: la suite busca `cartilla`, `prestación` y `práctica` en el HTML publicado de las 9 páginas | ⚠️ **3 notas del blog** dicen "práctica"; 2 tienen placeholders "a confirmar" |
 | **1.5** El flujo que pide datos avisa antes de pedirlos | **Inspección del simulador** | ❌ **NO PASA** — ver abajo |
 | **1.1** Prueba de las diez preguntas | **No se puede correr todavía**: la lista de las 10 preguntas reales no está cerrada. Existe material previo en `sp-interno` (`PREGUNTAS-FRECUENTES-asesores-2026-07.md`, 4 asesores) — no se arranca de cero | ⏸ Pendiente |
 
 **Sobre 1.4:** los hallazgos son de notas del blog publicadas por el motor de
 contenido, no de las páginas de producto. Se corrigen en `sp-contenido`.
+
+**Sobre 1.3 — una afirmación que había que bajar de tono.** La versión anterior
+de esta fila decía *"la suite verifica que el 'desde' del hero sale de `plans()`
+y no de un número a mano"*. **Esa verificación no existe.** La suite recorre el
+simulador hasta ver un precio; nadie compara el "desde" del hero contra
+`plans()`. Si mañana alguien clava ese número y el tarifario se mueve, el
+guardián sigue en verde y el hero miente. Lo detectó la revisión del PR #91.
+
+Es el mismo error que este boletín vino a corregir, cometido una fila más abajo:
+**decir "automatizado" sobre algo que se miró a ojo.** Queda como pendiente
+concreto de la suite — es una comparación de tres líneas — y hasta que exista,
+la fila dice lo que realmente hay.
 
 ### 1.5 — la fila que faltaba, y no pasa
 
@@ -109,9 +138,35 @@ calcula sobre **estilos computados**, componiendo alfa y subiendo por los padres
 
 | Página | LCP (vara 2500 ms) | CLS (vara 0,1) |
 |---|---|---|
-| Home | **924 ms** ✅ | **0,000** ✅ |
-| Simulador | **668 ms** ✅ | **0,001** ✅ |
-| Planes | **324 ms** ✅ | **0,000** ✅ |
+| Home | **824 ms** ✅ | **0,000** ✅ |
+| Simulador | **960 ms** ✅ | **0,000** ✅ |
+| Planes | **668 ms** ✅ | **0,000** ✅ |
+| `/que-cubre` | **912 ms** ✅ | **0,154** ❌ |
+
+> ⚠️ **Estos números son más altos que los de la primera corrida, y los de antes
+> estaban mal.** La versión anterior medía las cuatro rutas **reusando la misma
+> página**: la segunda y la tercera cargaban los chunks, CSS y fuentes que la
+> primera ya había dejado en caché, así que reportaban el LCP de un visitante
+> **recurrente** y lo presentaban como el de alguien que entra por primera vez.
+> Quien llega a `/simulador/` desde Google no tiene nada cacheado. Lo detectó la
+> revisión del PR #91; ahora cada ruta se mide en un contexto nuevo. El
+> simulador pasó de 668 a **960 ms** — sigue holgado, pero es el número real.
+
+**`/que-cubre` no pasa CLS, y el diagnóstico está hecho.** El salto es de
+**0,154** y ocurre en un solo evento a los **~1910 ms**. El elemento que se mueve
+es la fila de chips *"Probá con:"* del buscador (`app/que-cubre/Buscador.jsx`),
+que usa la tipografía display: cuando la fuente termina de cargar bajo conexión
+lenta, los chips cambian de ancho, la fila rewrapea y empuja todo lo de abajo.
+
+⚠️ **Solo se ve con throttling.** Sin CPU lenta ni 4G la misma página da **CLS
+0,000** — la fuente llega antes de que nadie vea nada. Es exactamente por eso
+que el criterio exige medir *"en el celular que la gente tiene"*: este defecto
+es invisible en la notebook del que construye.
+
+*No se corrigió acá: `app/que-cubre/` es territorio de otra sesión y se fusionó
+hace horas. Queda el diagnóstico completo para que lo arregle quien lo
+construyó — la dirección probable es reservar el alto de esa fila o revisar el
+`font-display` de la tipografía display.*
 
 Peso crítico (gzip, documento + CSS + JS): home 185 KB, resto entre 161 y 175 KB.
 La vara del criterio es 2 MB de peso total; la nuestra, más estricta, es 300 KB
@@ -125,9 +180,14 @@ de contenido crítico.
 
 ### 2.3 Teclado y foco visible
 
-- **Foco visible: 40/40.** Los primeros 40 elementos interactivos de la home
-  cambian de estilo al recibir foco (se compara el computado antes y después:
-  `outline`, `box-shadow`, `background`, `text-decoration`).
+- **Foco visible: 57/57.** **Todos** los elementos interactivos visibles de la
+  home cambian de estilo al recibir foco (se compara el computado antes y
+  después: `outline`, `box-shadow`, `background`, `text-decoration`).
+
+  > ⚠️ La primera versión cortaba en los **40 primeros** y reportaba verde: la
+  > FAQ, el cierre y el footer quedaban fuera de la muestra. **Un guardián que
+  > mira una parte y reporta como si hubiera mirado todo certifica lo que no
+  > revisó** — peor que no tenerlo. Lo detectó la revisión del PR #91.
 - Imágenes sin `alt` y campos sin etiqueta accesible: **0**.
 - ⏸ **No cubierto:** lector de pantalla real y orden de lectura. La suite verifica
   que el foco se ve y que las etiquetas existen; no verifica que la experiencia
@@ -150,7 +210,13 @@ Medido sobre `app/`:
 | | Medido | Lectura |
 |---|---|---|
 | Valores distintos de `border-radius` | **17** | Una escala sana tiene ~5 pasos |
-| Usos de color hex escritos a mano | **618** | De **84** colores distintos |
+| Usos de color hex escritos a mano | **970** | De **100** colores distintos |
+
+> ⚠️ **Antes decía 618 de 84, y estaba mal por debajo.** El contador solo veía
+> hex de 6 dígitos: los `#fff` y `#000` —173 en el árbol— no se contaban. Un
+> guardián de tokens ciego a la forma corta puede dar verde con cientos de
+> colores clavados a mano, que es justo lo que vino a impedir. Lo detectó la
+> revisión del PR #91.
 
 El criterio lo dice con precisión: *"si los colores están escritos a mano en cada
 componente, esta entrega nos cuesta el doble el año que viene"*. Es exactamente
