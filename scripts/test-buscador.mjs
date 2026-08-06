@@ -57,6 +57,28 @@ const CASOS = [
   ['quimio', 'oncológico'],
   ['bajar de peso', 'bariátrica'],
   ['enfermera a domicilio', 'Enfermería'],
+  /* Los cuatro de la revisión del 6 ago 2026 (PR #89). Cada uno devolvía algo
+     equivocado o nada; quedan acá para que no vuelvan. */
+  ['RMN DE RODILLA.', 'RODILLA'],          // la puntuación de una orden copiada
+  // Una palabra de más no puede dar vacío. Y lo primero tiene que ser la
+  // exclusión: para quien pregunta esto, "el tratamiento no lo cubre ningún
+  // plan" decide más que la consulta con el mastólogo.
+  ['cancer de mama', 'oncológico'],
+  ['cirugia de cerebro', 'alta complejidad'], // la exclusión manda, no un "Cubierto"
+];
+
+/* Casos con una condición propia, que no se expresa como "el primero contiene X". */
+const CASOS_ESPECIALES = [
+  {
+    q: 'resonancia de rodilla',
+    porque: 'la fila COMPLETA gana a la que tiene huecos de celda combinada',
+    ok: (hits) => hits[0] && hits[0].b[0] !== -1 && hits[0].s[0] !== -1 && hits[0].o[0] !== -1,
+  },
+  {
+    q: 'muela',
+    porque: 'una exclusión nunca queda debajo de un resultado "Cubierto"',
+    ok: (hits) => hits[0] && hits[0].t === 'x',
+  },
 ];
 
 let fallos = 0;
@@ -73,11 +95,22 @@ for (const [q, esperado] of CASOS) {
   }
 }
 
+for (const c of CASOS_ESPECIALES) {
+  const { hits } = buscar(datos, idx, c.q);
+  if (c.ok(hits)) {
+    console.log(`✔ ${c.q.padEnd(24)} → ${(hits[0] ? hits[0].n : '—').slice(0, 46).padEnd(46)} (${c.porque})`);
+  } else {
+    fallos++;
+    console.log(`✘ "${c.q}" — ${c.porque}`);
+    hits.slice(0, 3).forEach((h) => console.log(`     · [${h.t}] ${h.n}  ${JSON.stringify([h.b[0], h.s[0], h.o[0]])}`));
+  }
+}
+
 /* Ninguna búsqueda razonable debería devolver cero: un cero en una página de
    transparencia se lee como "no lo cubre". */
 console.log('');
 if (fallos) {
-  console.log(`✘ ${fallos} de ${CASOS.length} casos fallaron.`);
+  console.log(`✘ ${fallos} caso(s) fallaron.`);
   process.exit(1);
 }
-console.log(`✔ ${CASOS.length}/${CASOS.length} — el buscador responde en el idioma del cliente.`);
+console.log(`✔ ${CASOS.length + CASOS_ESPECIALES.length}/${CASOS.length + CASOS_ESPECIALES.length} — el buscador responde en el idioma del cliente.`);

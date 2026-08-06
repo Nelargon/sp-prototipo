@@ -183,12 +183,23 @@ function celda(v) {
   return [cob, cantIdx(v.cantidad), carencia(v.carencia)];
 }
 
-const sinonimosDe = (nombre, grupo) => {
+/* ⚠ Los sinónimos se prueban SOLO contra el nombre del ítem, NUNCA contra su
+   grupo. El grupo del master agrupa por especialidad que opera, no por órgano:
+   "Cirugía túnel carpiano" está en el grupo NEUROCIRUGIA —correcto, la opera un
+   neurocirujano— pero es una cirugía de la muñeca. Cuando el grupo alimentaba
+   los sinónimos, esa fila heredaba el alias "cerebro" y la búsqueda
+   "cirugía de cerebro" devolvía PRIMERO una cirugía CUBIERTA en los tres
+   planes, mientras la exclusión real ("Cirugías de alta complejidad", que no
+   cubre ningún plan) quedaba tercera. La respuesta opuesta, arriba de todo, en
+   la página cuyo argumento es la honestidad.
+   El grupo NO se pierde: sigue entrando al texto buscable por `fila.g`, así
+   quien escribe "neurocirugía" la encuentra igual. Lo que no hace es expandirse
+   a órganos que la fila no menciona. */
+const sinonimosDe = (nombre) => {
   const M = paraMatch(nombre);
-  const G = paraMatch(grupo);
   const out = new Set();
   for (const [re, syn] of SINONIMOS) {
-    if (re.test(M) || (G && re.test(G))) {
+    if (re.test(M)) {
       usados.add(re.source);
       for (const w of syn.split(' ')) out.add(w);
     }
@@ -212,7 +223,7 @@ for (const [cuadro, rows] of Object.entries(grilla.cuadros)) {
     const celdas = ['bronze', 'silver', 'gold'].map((p) => celda(r[p]));
     if (celdas.every((c) => c[0] === -1)) continue; // fila vacía del master
 
-    const alias = sinonimosDe(nombre, r.grupo);
+    const alias = sinonimosDe(nombre);
     const M = paraMatch(nombre);
     if (cuadro === 'laboratorio') {
       alias.add('analisis').add('laboratorio');
@@ -276,7 +287,7 @@ const formasDePaciente = (esp) => {
 for (const r of grilla.consultas_por_especialidad) {
   const esp = (r.especialidad || '').trim();
   if (!esp || norm(esp) === 'especialidad') continue;
-  const alias = sinonimosDe(esp, null);
+  const alias = sinonimosDe(esp);
   for (const w of formasDePaciente(esp)) alias.add(w);
   alias.add('consulta').add('especialista').add('medico').add('doctor');
   const fila = { t: 'c', n: esp, c: 'esp', b: tope(r.bronze), s: tope(r.silver), o: tope(r.gold) };
@@ -353,9 +364,28 @@ const out = {
   saltos,
 };
 
-writeFileSync(OUT, JSON.stringify(out) + '\n');
+/* ⚠ Serializado A MANO, un ítem por línea. El archivo se commitea justamente
+   para que una re-ingesta muestre en el diff QUÉ COBERTURA SE MOVIÓ; con
+   `JSON.stringify(out)` a secas todo quedaba en UNA línea de 130 KB y cambiar
+   una sola celda reemplazaba la línea entera — el diff no mostraba nada y la
+   supuesta red de seguridad no atrapaba nada. Sigue siendo JSON válido. */
+const serializar = (o) => {
+  const partes = [];
+  for (const [k, v] of Object.entries(o)) {
+    if (k === 'items') {
+      partes.push('"items":[\n' + v.map((i) => JSON.stringify(i)).join(',\n') + '\n]');
+    } else if (Array.isArray(v)) {
+      partes.push(JSON.stringify(k) + ':[\n' + v.map((x) => JSON.stringify(x)).join(',\n') + '\n]');
+    } else {
+      partes.push(JSON.stringify(k) + ':' + JSON.stringify(v, null, 1));
+    }
+  }
+  return '{\n' + partes.join(',\n') + '\n}\n';
+};
+const texto = serializar(out);
+writeFileSync(OUT, texto);
 
-const size = Buffer.byteLength(JSON.stringify(out));
+const size = Buffer.byteLength(texto);
 console.log(`✔ lib/prestaciones.json — ${items.length} ítems (${out.meta.porTipo.e} estudios · ${out.meta.porTipo.c} especialidades · ${out.meta.porTipo.x} exclusiones), ${parametros.length} parámetros, ${(size / 1024).toFixed(1)} KB`);
 console.log(`  Salto de plan: Bronze→Silver ${saltos.bs.total} mejoran · Silver→Gold ${saltos.so.total} · Bronze→Gold ${saltos.bo.total}`);
 if (huecos.length) {

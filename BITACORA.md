@@ -2347,6 +2347,49 @@ servicios en las dos no es duplicación: es que cumplen funciones distintas.
 **"No dupliques" es una buena regla para el código y una mala regla para las
 páginas** — y el que sabe cuál de las dos cosas está pidiendo es el que pide.
 
+**Segunda coda — un revisor automático encontró ocho cosas, y las ocho eran
+verdad.** Un bot dejó ocho comentarios en el PR. Verifiqué los cuatro
+empíricos corriendo las consultas: los cuatro se reprodujeron. Dos eran
+graves, y los dos golpeaban donde más dolía:
+
+- **`resonancia de rodilla`** —el ejemplo que yo mismo puse en el PR como
+  prueba de que esto funciona— devolvía primero la fila `RMN DE RODILLA` con
+  Bronze y Gold en **"Sin dato"**, mientras la fila hermana (la misma
+  resonancia, partida por una celda combinada del `.xlsx`) tenía los tres
+  planes declarados y quedaba segunda. **La consulta estrella escondía una
+  cobertura que el dato oficial sí tiene.**
+- **`cirugía de cerebro`** devolvía primero "Cirugía túnel carpiano ·
+  Cubierto en los tres planes", y la exclusión real —las cirugías de cerebro
+  **no las cubre ningún plan**— aparecía tercera. La causa: el master agrupa
+  el túnel carpiano bajo `NEUROCIRUGIA` (correcto, la opera un neurocirujano)
+  y mi generador convertía ese grupo en el alias "cerebro". **La respuesta
+  opuesta, arriba de todo, en la página cuyo argumento entero es la
+  honestidad.**
+
+Y una que me dejó sin defensa: escribí en el PR que el índice se commitea
+"porque el diff muestra ítem por ítem qué cobertura se movió", y lo serialicé
+con `JSON.stringify` a secas — **130 KB en una sola línea**. Cambiar una celda
+reemplazaba la línea entera. La red de seguridad que argumenté no atrapaba
+nada. Ahora va un ítem por línea.
+
+Qué aprendimos:
+
+1. **Mis propios tests pasaban.** El caso `resonancia de rodilla` estaba en la
+   suite y daba verde, porque yo había escrito la aserción "el primer
+   resultado contiene RODILLA" — y la fila rota también contiene RODILLA. **Un
+   test escrito por el mismo que escribió el código hereda sus puntos ciegos:
+   verifica lo que el autor pensó mirar.** Los casos nuevos ya no preguntan
+   "¿dice lo que espero?" sino "¿la fila que gané está completa?".
+2. **El error más caro no fue un bug: fue una frase.** Lo del JSON en una línea
+   no rompía nada; rompía un argumento que yo había escrito con confianza.
+   **Cuando el PR explica por qué algo es seguro, esa explicación también hay
+   que verificarla.**
+3. **La procedencia se declara partida.** El buscador decía "983 respuestas
+   salidas de la grilla oficial", pero 5 —las exclusiones— salen del contrato,
+   no de la grilla. Exagerar el respaldo justo de las afirmaciones NEGATIVAS,
+   que son las más fuertes que hace la página, en la página de la
+   transparencia. Ahora dice de dónde sale cada grupo.
+
 ---
 
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { css } from '../css';
 import { track } from '../track';
 import { Term } from '../glossary';
@@ -140,21 +140,28 @@ function Ficha({ item, datos }) {
 export default function Buscador() {
   const [q, setQ] = useState('');
   const idx = useMemo(() => indexar(datos), []);
-  const { hits, total } = useMemo(() => buscar(datos, idx, q), [q, idx]);
+  const { hits, total, aproximado } = useMemo(() => buscar(datos, idx, q), [q, idx]);
   const yaContado = useRef(false);
 
-  const escribir = (valor) => {
-    setQ(valor);
-    /* Un evento por sesión de búsqueda, sin el texto: solo si el buscador se
-       usó y si respondió. Ver la nota de PRIVACIDAD arriba. */
-    if (!yaContado.current && valor.trim().length >= 2) {
-      yaContado.current = true;
-      track('planes_buscar', { largo: valor.trim().length });
-    }
-  };
+  const escribir = (valor) => setQ(valor);
 
   const buscando = q.trim().length >= 2;
   const vacio = buscando && total === 0;
+
+  /* Un solo evento por sesión de búsqueda, cuando la consulta SE ASENTÓ.
+     Antes se disparaba al segundo carácter y quedaba ahí: escribir "resonancia"
+     registraba `largo: 2` y nada sobre si el buscador respondió — la métrica
+     era casi constante y no servía para saber si esto funciona. Ahora espera a
+     que la persona deje de tipear y manda el largo final y si hubo resultados.
+     Sigue sin viajar el texto: ver la nota de PRIVACIDAD arriba. */
+  useEffect(() => {
+    if (yaContado.current || !buscando) return;
+    const t = setTimeout(() => {
+      yaContado.current = true;
+      track('planes_buscar', { largo: q.trim().length, hubo_resultados: total > 0, aproximado });
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [q, buscando, total, aproximado]);
 
   return (
     <div style={css('background:#F7FBFB;border:1px solid #d9efed;border-radius:20px;padding:24px 22px 26px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
@@ -193,25 +200,45 @@ export default function Buscador() {
         ))}
       </div>
 
-      {/* aria-live: quien navega con lector de pantalla se entera de que la
-          lista cambió sin tener que salir a buscarla. */}
-      <div id="bus-resultados" aria-live="polite" style={css('margin-top:18px')}>
+      {/* ⚠ El aria-live cubre SOLO esta línea de estado, nunca la lista.
+          Cuando envolvía las fichas, cada tecla le anunciaba a un lector de
+          pantalla hasta 40 nombres con sus tres planes, cantidades, esperas y
+          avisos: un chorro imposible de escuchar. Acá se anuncia lo que cambió
+          —cuántos resultados hay— y la lista queda afuera, para leerla
+          navegando. */}
+      <div aria-live="polite" style={css('margin-top:18px')}>
         {!buscando && (
+          /* Procedencia partida a propósito: los estudios y las especialidades
+             salen de la grilla oficial; las exclusiones NO están en la grilla
+             —se toman del contrato— y decir que las 983 salen de la grilla
+             exageraría el respaldo justo de las afirmaciones más fuertes, las
+             negativas. En una página de transparencia eso importa. */
           <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#6B6B6B;line-height:1.6;text-align:center;padding:14px 6px')}>
-            <b className="disp" style={css('color:#003B71')}>{datos.meta.total} respuestas</b> salidas de la grilla oficial de coberturas: {datos.meta.porTipo.e} estudios, análisis y cirugías, {datos.meta.porTipo.c} especialidades, y lo que no cubre ningún plan.
+            <b className="disp" style={css('color:#003B71')}>{datos.meta.total} respuestas</b>: {datos.meta.porTipo.e} estudios, análisis y cirugías y {datos.meta.porTipo.c} especialidades salidas de la <b>grilla oficial de coberturas</b>, más {datos.meta.porTipo.x} cosas que <b>no cubre ningún plan</b>, tomadas del contrato.
           </div>
         )}
 
         {buscando && total > 0 && (
-          <>
-            <div style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:#6B6B6B;margin-bottom:11px')}>
-              {total === 1 ? '1 resultado' : `${total} resultados`}
-              {total > hits.length && <> · mostramos los {hits.length} más parecidos</>}
-            </div>
-            <div style={css('display:flex;flex-direction:column;gap:10px')}>
-              {hits.map((it, i) => <Ficha key={`${it.t}-${it.n}-${i}`} item={it} datos={datos} />)}
-            </div>
-          </>
+          <div style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:#6B6B6B')}>
+            {aproximado
+              ? 'No encontramos eso exacto. Esto es lo más parecido que hay en la grilla:'
+              : <>{total === 1 ? '1 resultado' : `${total} resultados`}{total > hits.length && <> · mostramos los {hits.length} más parecidos</>}</>}
+          </div>
+        )}
+
+        {/* El vacío también se anuncia — la tarjeta que lo explica vive abajo,
+            fuera de la región viva, pero quien no ve la pantalla tiene que
+            enterarse de que no hubo resultados. */}
+        {vacio && (
+          <div style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:#6B6B6B')}>Sin resultados para esa búsqueda.</div>
+        )}
+      </div>
+
+      <div id="bus-resultados" style={css('margin-top:11px')}>
+        {buscando && total > 0 && (
+          <div style={css('display:flex;flex-direction:column;gap:10px')}>
+            {hits.map((it, i) => <Ficha key={`${it.t}-${it.n}-${i}`} item={it} datos={datos} />)}
+          </div>
         )}
 
         {vacio && (

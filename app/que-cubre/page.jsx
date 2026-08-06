@@ -8,7 +8,7 @@ import Landing from './Landing';
 export const metadata = {
   title: '¿Y esto, me lo cubre? — Bronze, Silver y Gold · Salud Protegida',
   description:
-    'Escribí el estudio, la cirugía o el especialista que necesitás y mirá qué hace cada plan con eso. 983 respuestas salidas de la grilla oficial de coberturas, con los precios vigentes.',
+    'Escribí el estudio, la cirugía o el especialista que necesitás y mirá qué hace cada plan con eso: 935 estudios y 43 especialidades de la grilla oficial de coberturas, con los precios vigentes.',
   alternates: { canonical: '/que-cubre/' },
 };
 

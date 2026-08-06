@@ -22,8 +22,11 @@ que documenta la implementación técnica de la página de planes.
 Ruta nueva: **`/que-cubre/`** (`app/que-cubre/`). Es **la página donde la
 promesa de transparencia se puede verificar**: abre con un buscador — escribís
 el estudio, la cirugía o el especialista que necesitás y ves qué hace cada plan
-con eso. Detrás hay **983 respuestas** salidas de la grilla oficial: 935
-estudios/análisis/cirugías, 43 especialidades y las 5 exclusiones reales.
+con eso. Detrás hay **983 respuestas**: 935 estudios/análisis/cirugías y 43
+especialidades **salidas de la grilla oficial**, más 5 exclusiones **tomadas del
+contrato** (no están en la grilla — la procedencia se dice partida en la
+pantalla, porque decir que las 983 salen de la grilla exageraría el respaldo
+justo de las afirmaciones negativas, que son las más fuertes).
 
 **El dato ya estaba en el repo desde el 22/07 y solo servía para tres
 porcentajes.** Ver BITACORA cap. 65.
@@ -79,8 +82,8 @@ y quedó fuera del territorio de este PR.
   transparencia el cero se lee como "no lo cubre". Por eso el índice incluye
   las especialidades y las exclusiones, y el estado vacío aclara que no
   encontrarlo no significa que no esté.
-- **Privacidad:** el evento `planes_buscar` lleva **solo el largo** del texto,
-  nunca el texto. Lo que alguien escribe ahí ("quimio", "psiquiatra",
+- **Privacidad:** el evento `planes_buscar` lleva **solo el largo** del texto
+  (más `hubo_resultados` y `aproximado`), nunca el texto. Lo que alguien escribe ahí ("quimio", "psiquiatra",
   "embarazo") es un dato de salud. No agregarle el término, por útil que suene.
 - **Pendiente chico, anotado para no perderlo:** el home dice *"cuatro cosas que
   nuestros planes no cubren"* (odontología, bariátrica, oncológico, alta
