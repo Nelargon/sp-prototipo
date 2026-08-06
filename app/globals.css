@@ -6,6 +6,98 @@
    replace the prototype's style-hover / style-focus attributes.
    ========================================================================== */
 
+/* ==========================================================================
+   TOKENS (6 ago 2026) — "el refresh de marca de 2027 tiene que ser un cambio
+   de tokens, no un rediseño". Antes había 970 colores escritos a mano de 100
+   distintos, repartidos por estilos inline en todo `app/`: cambiar el navy
+   habría sido recorrer cientos de lugares en vez de una línea.
+
+   QUÉ SE TOKENIZÓ Y QUÉ NO — el criterio es "¿un rebrand lo cambiaría?".
+   Los colores de marca y los neutros semánticos, sí. El blanco puro y el
+   negro puro, no: no son decisiones de marca, y tokenizarlos era 174 cambios
+   de ruido con cero valor para un rebrand.
+
+   La pasada fue en dos olas. La PRIMERA cambió los colores de marca ya
+   nombrados (611 reemplazos, cero píxeles de diferencia). La SEGUNDA salió a
+   buscar lo que el conteo dejaba ver: 20 colores que se repetían tres o más
+   veces sin nombre — o sea, decisiones de diseño tomadas y no declaradas. Los
+   tres colores de plan estaban clavados por separado en `quote.js`, `Buscador`
+   y `Landing`: cambiar el dorado en uno dejaba a los otros dos en desacuerdo y
+   nada avisaba. Y había cuatro azules distintos (#8FA8C0 #7FA3C4 #9BB6D2
+   #7FA6CC) haciendo exactamente un trabajo — "texto secundario sobre navy" —
+   más siete valores de línea sobre menta. Un token por decisión, no por valor:
+   los cuatro azules son ahora --sp-blue-meta. Eso sí mueve píxeles (unos pocos
+   pasos de RGB en metadatos), y es el punto: cuatro valores para una decisión
+   es la enfermedad que el sistema de tokens viene a curar.
+
+   ⚠ Los hex que quedan en ATRIBUTOS SVG (`fill="#..."`, `stroke="#..."`) no se
+   pueden tokenizar: un atributo de presentación SVG no acepta var(). Tampoco
+   la paleta de `blog/Cover.jsx`, que alimenta esos atributos por variable
+   (`stopColor={t.g1}`). Para tokenizarlos habría que moverlos a `style`, que
+   es un cambio de forma con riesgo visual — no entra en una pasada mecánica.
+
+   ⚠ REGLA DE COLOR VIGENTE (dec. 12a): --sp-teal es DECORATIVO (íconos,
+   acentos sobre navy). El que lleva texto blanco es --sp-teal-deep (≈5:1).
+   #00BCB4 con blanco da 2,37:1 y no pasa AA. */
+:root{
+  /* Marca */
+  --sp-navy:#003B71;        /* azul institucional, el color de los títulos */
+  --sp-navy-deep:#002A52;   /* fondo de las secciones oscuras */
+  --sp-teal:#00BCB4;        /* turquesa decorativo — NUNCA con texto blanco */
+  --sp-teal-deep:#007d77;   /* el que carga texto blanco (CTAs) */
+  --sp-teal-900:#00736E;    /* kickers sobre fondo claro */
+  --sp-teal-hover:#009690;
+  --sp-mint:#80DDD8;        /* acento claro sobre navy */
+  --sp-mint-bg:#E6F7F6;     /* fondo de sección */
+  --sp-mint-soft:#F2FBFA;   /* fondo de tarjeta/banda */
+  --sp-mint-tint:#F7FBFB;   /* el más claro de la familia */
+  --sp-blue-soft:#B3C7DB;   /* texto secundario sobre navy */
+  --sp-blue-meta:#8FA8C0;   /* metadatos y bajadas menores sobre navy */
+  --sp-blue-ice:#E6F0FA;    /* texto/íconos casi blancos sobre navy */
+  --sp-blue-bg:#E6EDF4;     /* fondo de banda clara */
+  --sp-blue-pale:#CFE0F0;
+  --sp-blue-line:#D4E0EE;   /* línea sobre fondo azul pálido */
+  --sp-teal-ink:#00695F;    /* texto sobre fondos menta */
+  --sp-mint-line:#D9EFED;   /* línea de caja sobre menta */
+  --sp-mint-line-strong:#CFE6E4; /* borde de control (input, chip) sobre blanco */
+  --sp-gold-ink:#7a5f10;    /* texto sobre dorado — oportunidad, nunca ausencia */
+  --sp-gold-bg:#F8F1DE;     /* fondo de la banda de oportunidad */
+  /* Planes: la identidad de cada nivel. Vivía clavada por separado en
+     quote.js, Buscador y Landing — cambiar el dorado en uno dejaba a los
+     otros dos en desacuerdo, sin que nada avisara. */
+  --sp-plan-bronze:#A9724B;
+  --sp-plan-silver:#66717E;
+  --sp-plan-gold:#B8860B;
+  /* Estados de cobertura: la escala gris del proyecto (gris = estado neutro;
+     rojo = SOLO urgencias, nunca cobertura). */
+  --sp-estado-bg:#F4F5F6;
+  --sp-estado-bg-2:#EFF3F3;
+  --sp-estado-ink:#5F6D6C;
+  --sp-estado-ink-2:#4F5C5B;
+  --sp-estado-punto:#8A9997;
+  --sp-estado-punto-2:#9AA3A2;
+  /* Neutros semánticos */
+  --sp-ink:#1D1D1B;         /* texto más fuerte */
+  --sp-text:#3D3D3D;        /* cuerpo */
+  --sp-text-2:#4A4A4A;
+  --sp-muted:#6B6B6B;       /* metadatos, notas al pie */
+  --sp-line:#E8E8E8;        /* borde de tarjeta */
+  --sp-line-2:#F0F0F0;      /* separador suave */
+  --sp-line-3:#E6E8EA;      /* línea sobre gris */
+  --sp-surface:#F5F5F5;     /* fondo de sección clara */
+  --sp-surface-2:#FAFCFC;   /* fila alterna de tabla */
+  /* Radios: una escala, no 17 valores sueltos. Los que estaban a 1-2px de un
+     paso (13, 15, 22, 8, 9, 11) se acercaron al paso — es un ajuste que nadie
+     ve y que saca 35 valores del camino. Los que están a mitad de camino entre
+     dos pasos y se repiten mucho (14px ×19, 18px ×11) NO se movieron: correr
+     30 tarjetas 2px es una decisión de diseño, no una pasada mecánica, y el QA
+     la deja anotada hasta que alguien la mire con ojos de diseño. */
+  --r-pill:999px;
+  --r-lg:20px;              /* contenedor grande (tabla, tarjeta principal) */
+  --r-md:16px;              /* banda ancha */
+  --r-sm:12px;              /* botón */
+  --r-xs:10px;              /* chip, ícono, ítem de menú */
+}
 html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
 body{margin:0;background:#fff}
 *{box-sizing:border-box}
@@ -15,7 +107,7 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .rv{transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1.05s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
 .rvon .rv{opacity:0;transform:translateY(18px)}
 .rvon .rv.in{opacity:1;transform:none}
-.sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#00BCB4,#009690);z-index:120;transition:width .12s linear;pointer-events:none}
+.sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--sp-teal),var(--sp-teal-hover));z-index:120;transition:width .12s linear;pointer-events:none}
 /* Header translúcido en ambos estados: vidrio esmerilado oscuro sobre el
    hero, claro al scrollear (.solid). El blur vive acá para que aplique
    siempre; solo cambia el color de fondo. */
@@ -26,23 +118,23 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
    y declarar también -webkit- a mano hace que el minificador se quede
    únicamente con la versión prefijada. */
 [data-nav].solid{background:rgba(255,255,255,0.55);box-shadow:0 1px 0 rgba(0,59,113,0.08)}
-[data-nav].solid .nav-link{--nl:#3D3D3D}
-[data-nav].solid .nav-logo{color:#003B71}
+[data-nav].solid .nav-link{--nl:var(--sp-text)}
+[data-nav].solid .nav-logo{color:var(--sp-navy)}
 /* Navy logo (nlogo-c) sits underneath at full opacity; the white logo fades
    out on top when the nav turns solid, so the mark "colours in" white→navy
    with no gap and no doubling. */
 [data-nav].solid .nlogo-w{opacity:0}
-[data-nav].solid .nav-burger{background:rgba(0,59,113,0.08) !important;color:#003B71 !important}
+[data-nav].solid .nav-burger{background:rgba(0,59,113,0.08) !important;color:var(--sp-navy) !important}
 /* Menú móvil a pantalla completa (patrón Apple/Tesla): vidrio esmerilado
    claro, solo texto grande con entrada escalonada. El header en estado
    .menu-open replica el look sólido sin depender del scroll handler. */
 .menu-overlay{position:fixed;inset:0;z-index:99;background:#fff;padding:118px 28px 44px;overflow-y:auto}
-.menu-item{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:800;font-size:clamp(34px,10.5vw,44px);line-height:1.12;letter-spacing:-0.02em;color:#003B71;padding:9px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
-.menu-item-cta{color:#007d77;margin-top:14px}
+.menu-item{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:800;font-size:clamp(34px,10.5vw,44px);line-height:1.12;letter-spacing:-0.02em;color:var(--sp-navy);padding:9px 0;opacity:0;animation:menuItem .45s cubic-bezier(.22,1,.36,1) forwards}
+.menu-item-cta{color:var(--sp-teal-deep);margin-top:14px}
 @keyframes menuItem{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 [data-nav].menu-open{background:transparent;box-shadow:none;backdrop-filter:none}
 [data-nav].menu-open .nlogo-w{opacity:0}
-[data-nav].menu-open .nav-burger{background:rgba(0,59,113,0.08) !important;color:#003B71 !important}
+[data-nav].menu-open .nav-burger{background:rgba(0,59,113,0.08) !important;color:var(--sp-navy) !important}
 .lift{transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s cubic-bezier(.22,1,.36,1)}
 .lift:hover{transform:translateY(-5px);box-shadow:0 14px 34px rgba(0,59,113,0.14) !important}
 @keyframes cue{0%{transform:translateY(0);opacity:.4}50%{transform:translateY(8px);opacity:1}100%{transform:translateY(0);opacity:.4}}
@@ -59,10 +151,10 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 @keyframes testiFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){[data-hero-content] *{animation:none !important}}
-input[type=range].sldr{-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;outline:none}
-input[type=range].sldr::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:999px;background:#fff;border:3px solid #00BCB4;box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab;transition:transform .15s}
+input[type=range].sldr{-webkit-appearance:none;appearance:none;height:6px;border-radius:var(--r-pill);outline:none}
+input[type=range].sldr::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab;transition:transform .15s}
 input[type=range].sldr::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}
-input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:999px;background:#fff;border:3px solid #00BCB4;box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab}
+input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1 !important;transform:none !important;transition:none}}
 @media(max-width:1150px){.mani-lines{width:100% !important}}
 @media(max-width:1250px){[data-hero-bg]{-webkit-mask:linear-gradient(90deg,transparent 12%,#000 55%) !important;mask:linear-gradient(90deg,transparent 12%,#000 55%) !important}}
@@ -99,11 +191,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .navmenu{position:absolute;top:100%;left:-16px;padding-top:14px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
 .navmenu-right{left:auto;right:-16px}
 .navmenu-wrap:hover .navmenu,.navmenu-wrap:focus-within .navmenu{opacity:1;transform:translateY(0);pointer-events:auto}
-.navmenu-card{min-width:290px;background:rgba(255,255,255,0.95);backdrop-filter:blur(18px);border:1px solid rgba(0,59,113,0.09);border-radius:16px;box-shadow:0 20px 48px rgba(0,25,48,0.2);padding:9px}
-.navmenu-item{display:block;padding:10px 12px;border-radius:11px;transition:background .15s ease}
-.navmenu-item:hover{background:#E6F7F6}
-.navmenu-t{display:block;font-family:var(--font-display),sans-serif;font-weight:800;font-size:14px;color:#003B71;line-height:1.25}
-.navmenu-s{display:block;font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;line-height:1.4;margin-top:2px}
+.navmenu-card{min-width:290px;background:rgba(255,255,255,0.95);backdrop-filter:blur(18px);border:1px solid rgba(0,59,113,0.09);border-radius:var(--r-md);box-shadow:0 20px 48px rgba(0,25,48,0.2);padding:9px}
+.navmenu-item{display:block;padding:10px 12px;border-radius:var(--r-xs);transition:background .15s ease}
+.navmenu-item:hover{background:var(--sp-mint-bg)}
+.navmenu-t{display:block;font-family:var(--font-display),sans-serif;font-weight:800;font-size:14px;color:var(--sp-navy);line-height:1.25}
+.navmenu-s{display:block;font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);line-height:1.4;margin-top:2px}
 @media(prefers-reduced-motion:reduce){.navmenu,.navmenu-chev{transition:none}}
 @media(max-width:1199px){.nav-links-desktop{display:none !important}.nav-burger{display:flex !important}[data-nav]{padding:14px 20px !important}.urg-word{display:none !important}
 /* Touch targets ≥44px en móvil (QA integral: el 77% del tráfico entra por celular) */
@@ -147,10 +239,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    que los chips conservan su borde visible de siempre. */
 @media(hover:hover){
   .ubi-chip{border-color:transparent !important;background:transparent !important}
-  .ubi-chip:hover{border-color:#00BCB4 !important;background:#E6F7F6 !important;color:#003B71 !important}
+  .ubi-chip:hover{border-color:var(--sp-teal) !important;background:var(--sp-mint-bg) !important;color:var(--sp-navy) !important}
   .ubi-row{transition:background .18s cubic-bezier(.22,1,.36,1)}
-  .ubi-row:hover{background:#E6F7F6 !important}
-  .ubi-row:hover .ubi-row-title{color:#007d77 !important}
+  .ubi-row:hover{background:var(--sp-mint-bg) !important}
+  .ubi-row:hover .ubi-row-title{color:var(--sp-teal-deep) !important}
   .ubi-row .ubi-go{opacity:0;transform:translateX(-5px);transition:opacity .18s cubic-bezier(.22,1,.36,1),transform .18s cubic-bezier(.22,1,.36,1)}
   .ubi-row:hover .ubi-go{opacity:1;transform:none}
 }
@@ -172,39 +264,39 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    sólido pasa a navy. */
 .nav-guia-cta{color:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.08);transition:background .3s,color .3s,border-color .3s}
 .nav-guia-cta:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.8)}
-[data-nav].solid .nav-guia-cta{color:#003B71;border-color:rgba(0,59,113,0.4);background:rgba(0,59,113,0.05)}
+[data-nav].solid .nav-guia-cta{color:var(--sp-navy);border-color:rgba(0,59,113,0.4);background:rgba(0,59,113,0.05)}
 [data-nav].solid .nav-guia-cta:hover{background:rgba(0,59,113,0.12)}
 
 /* --------------------------------------------------------------------------
    Hover / focus utilities — replace the prototype's inline style-hover / style-focus.
    -------------------------------------------------------------------------- */
-/* El CTA teal pasó a #007d77 (jul 2026, decisión del usuario): el blanco sobre
-   #00BCB4 medía 2.37:1 en el botón más importante del sitio. El hover baja un
-   escalón más — #009690 daba 3.6:1 y tampoco alcanzaba para texto normal. */
+/* El CTA teal pasó a var(--sp-teal-deep) (jul 2026, decisión del usuario): el blanco sobre
+   var(--sp-teal) medía 2.37:1 en el botón más importante del sitio. El hover baja un
+   escalón más — var(--sp-teal-hover) daba 3.6:1 y tampoco alcanzaba para texto normal. */
 .btn-teal:hover{background:#00615C !important}
-.btn-navy:hover{background:#002A52 !important}
+.btn-navy:hover{background:var(--sp-navy-deep) !important}
 .btn-ghost-light:hover{background:rgba(255,255,255,0.18) !important}
 .btn-ghost-light2:hover{background:rgba(255,255,255,0.24) !important}
 .btn-white-teal:hover{background:#f0fbfa !important}
 /* Secundario sobre tarjeta teal: el relleno blanco translúcido aclaraba el teal
    DEBAJO del texto y hundía el contraste a 2.1:1 (medido, jul 2026). Sin relleno
-   el blanco apoya directo sobre #007d77 (≈5:1) y al hover invierte a sólido. */
+   el blanco apoya directo sobre var(--sp-teal-deep) (≈5:1) y al hover invierte a sólido. */
 .btn-onteal{background:transparent;border:1.5px solid rgba(255,255,255,0.75);color:#fff;transition:background .2s,color .2s,border-color .2s}
-.btn-onteal:hover{background:#fff;border-color:#fff;color:#007d77}
-.btn-wa-outline:hover{background:#E6F7F6 !important}
+.btn-onteal:hover{background:#fff;border-color:#fff;color:var(--sp-teal-deep)}
+.btn-wa-outline:hover{background:var(--sp-mint-bg) !important}
 /* Links de texto: el subrayado aparece al hover/focus (color transparente →
    currentColor, sin mover el layout). Antes solo cambiaban de color — señal
    débil. Pedido del usuario (jul 2026): que se sienta que estás tocando algo,
    como el subrayado de "Policy" en Anthropic. En todos los módulos. */
 .link-teal,.link-grey,.foot-link{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:color .2s ease,text-decoration-color .2s ease}
-.link-teal:hover,.link-teal:focus-visible{color:#009690 !important;text-decoration-color:currentColor}
-.link-grey:hover,.link-grey:focus-visible{color:#6B6B6B !important;text-decoration-color:currentColor}
+.link-teal:hover,.link-teal:focus-visible{color:var(--sp-teal-hover) !important;text-decoration-color:currentColor}
+.link-grey:hover,.link-grey:focus-visible{color:var(--sp-muted) !important;text-decoration-color:currentColor}
 .foot-link:hover,.foot-link:focus-visible{color:#fff !important;text-decoration-color:currentColor}
-.cart-match:hover{background:#F2FBFA !important}
-.sim-opt:hover{border-color:#00BCB4 !important;background:#E6F7F6 !important;color:#003B71 !important}
-.step-btn:hover{border-color:#00BCB4 !important}
-.inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
-.search-inp:focus{border-color:#00BCB4 !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
+.cart-match:hover{background:var(--sp-mint-soft) !important}
+.sim-opt:hover{border-color:var(--sp-teal) !important;background:var(--sp-mint-bg) !important;color:var(--sp-navy) !important}
+.step-btn:hover{border-color:var(--sp-teal) !important}
+.inp:focus{border-color:var(--sp-teal) !important;box-shadow:0 0 0 3px rgba(0,188,180,0.18) !important}
+.search-inp:focus{border-color:var(--sp-teal) !important;box-shadow:0 0 0 4px rgba(0,188,180,0.16) !important}
 .sim-mobile-progress{display:none}
 .sim-why summary{list-style:none}
 .sim-why summary::-webkit-details-marker{display:none}
@@ -217,11 +309,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    sitio (dec. 11u): la destacada levanta su título a teal claro, las filas del
    riel se tiñen y corren un pelo. Todo respeta prefers-reduced-motion. */
 .blog-hero h2{transition:color .18s}
-.blog-hero:hover h2{color:#80DDD8}
-.blog-ult{transition:background .18s,padding-left .18s;border-radius:10px}
+.blog-hero:hover h2{color:var(--sp-mint)}
+.blog-ult{transition:background .18s,padding-left .18s;border-radius:var(--r-xs)}
 .blog-ult:hover{background:rgba(255,255,255,0.06);padding-left:8px}
 .blog-ult-t{transition:color .18s}
-.blog-ult:hover .blog-ult-t{color:#80DDD8}
+.blog-ult:hover .blog-ult-t{color:var(--sp-mint)}
 @media(prefers-reduced-motion:reduce){.blog-hero h2,.blog-ult,.blog-ult-t{transition:none}.blog-ult:hover{padding-left:0}}
 /* Comparador "lo que cambia": en móvil la tabla scrollea horizontal (los planes
    no entran en 390px) — la columna de servicios queda PEGADA a la izquierda para
@@ -246,7 +338,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* "Ver todos los planes" ganó peso de CTA secundario (borde + más cuerpo);
    el hover rellena en teal muy suave — misma gramática que los demás botones. */
 .cmp-verplanes{transition:background .2s,border-color .2s}
-.cmp-verplanes:hover{background:#F2FBFA;border-color:#8fd9d3}
+.cmp-verplanes:hover{background:var(--sp-mint-soft);border-color:#8fd9d3}
 @media(max-width:1000px){.blog-top{grid-template-columns:1fr !important;gap:26px !important}}
 /* "Seguí leyendo": tres columnas dentro de la caja de 680px del artículo dan
    ~200px por nota — abajo de 640px eso deja títulos de dos palabras por línea,
@@ -257,13 +349,13 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .guia-item{transition:background .18s,border-color .18s}
 .guia-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(128,221,216,.35)}
 .guia-item-t{transition:color .18s}
-.guia-item:hover .guia-item-t{color:#80DDD8}
+.guia-item:hover .guia-item-t{color:var(--sp-mint)}
 @media(max-width:560px){.guia-item{grid-template-columns:34px 1fr !important;gap:12px !important}.guia-item>*:nth-child(2){display:none}}
 @media(prefers-reduced-motion:reduce){.guia-item,.guia-item-t{transition:none}}
 .guia-card{transition:background .18s,border-color .18s}
 .guia-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(128,221,216,.35)}
 .guia-card-t{transition:color .18s}
-.guia-card:hover .guia-card-t{color:#80DDD8}
+.guia-card:hover .guia-card-t{color:var(--sp-mint)}
 @media(max-width:860px){.guias-grid{grid-template-columns:1fr !important}}
 @media(prefers-reduced-motion:reduce){.guia-card,.guia-card-t{transition:none}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
@@ -305,22 +397,22 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    Replica los estilos de los componentes H2/P/B/Callout para que una nota
    en markdown se vea idéntica a las notas JSX originales.
    -------------------------------------------------------------------------- */
-.art-body h2{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:800;font-size:23px;line-height:1.25;letter-spacing:-0.01em;color:#003B71;margin:34px 0 12px}
-.art-body h3{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:#003B71;margin:26px 0 10px}
-.art-body p{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:17px;line-height:1.8;color:#3D3D3D;margin:0 0 18px}
-.art-body strong{color:#1D1D1B;font-weight:700}
-.art-body a{color:#007d77;font-weight:600;text-decoration:underline;text-decoration-color:rgba(0,188,180,0.45);text-underline-offset:3px}
-.art-body a:hover{color:#009690}
+.art-body h2{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:800;font-size:23px;line-height:1.25;letter-spacing:-0.01em;color:var(--sp-navy);margin:34px 0 12px}
+.art-body h3{font-family:var(--font-display),'Segoe UI',sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:var(--sp-navy);margin:26px 0 10px}
+.art-body p{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:17px;line-height:1.8;color:var(--sp-text);margin:0 0 18px}
+.art-body strong{color:var(--sp-ink);font-weight:700}
+.art-body a{color:var(--sp-teal-deep);font-weight:600;text-decoration:underline;text-decoration-color:rgba(0,188,180,0.45);text-underline-offset:3px}
+.art-body a:hover{color:var(--sp-teal-hover)}
 .art-body ul,.art-body ol{margin:0 0 16px;padding-left:24px}
-.art-body li{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:17px;line-height:1.75;color:#3D3D3D;margin-bottom:8px}
-.art-body blockquote{background:#F2FBFA;border-left:3px solid #00BCB4;border-radius:0 12px 12px 0;padding:16px 18px;margin:0 0 16px}
-.art-body blockquote p{font-size:16px;line-height:1.7;color:#00695f;margin:0}
+.art-body li{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:17px;line-height:1.75;color:var(--sp-text);margin-bottom:8px}
+.art-body blockquote{background:var(--sp-mint-soft);border-left:3px solid var(--sp-teal);border-radius:0 12px 12px 0;padding:16px 18px;margin:0 0 16px}
+.art-body blockquote p{font-size:16px;line-height:1.7;color:var(--sp-teal-ink);margin:0}
 .art-body blockquote p+p{margin-top:10px}
-.art-body hr{border:none;border-top:1px solid #F0F0F0;margin:30px 0}
+.art-body hr{border:none;border-top:1px solid var(--sp-line-2);margin:30px 0}
 .art-body img{max-width:100%;border-radius:14px}
 .art-body table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:15px}
-.art-body th,.art-body td{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;border:1px solid #E8E8E8;padding:10px 12px;text-align:left}
-.art-body th{background:#F7F7F7;color:#003B71}
+.art-body th,.art-body td{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;border:1px solid var(--sp-line);padding:10px 12px;text-align:left}
+.art-body th{background:#F7F7F7;color:var(--sp-navy)}
 
 /* --------------------------------------------------------------------------
    /que-cubre — la landing de los planes y su buscador ("¿Y esto, me lo
@@ -328,8 +420,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    dentro de su contenedor; acá van las grillas que tienen que apilarse y el
    hover de los chips de ejemplo.
    -------------------------------------------------------------------------- */
-.bus-chip:hover,.bus-chip:focus-visible{background:#E6F7F6;border-color:#00BCB4}
-#bus-q:focus{border-color:#00BCB4;box-shadow:0 0 0 4px rgba(0,188,180,0.16)}
+.bus-chip:hover,.bus-chip:focus-visible{background:var(--sp-mint-bg);border-color:var(--sp-teal)}
+#bus-q:focus{border-color:var(--sp-teal);box-shadow:0 0 0 4px rgba(0,188,180,0.16)}
 /* El aspa nativa del type=search en WebKit pisa el borde redondeado */
 #bus-q::-webkit-search-cancel-button{cursor:pointer}
 @media(max-width:900px){
@@ -343,7 +435,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 @media(max-width:620px){
   .planes-grid{grid-template-columns:1fr !important}
   .bus-celdas{grid-template-columns:1fr !important}
-  .bus-celdas>div{border-left:0 !important;border-top:1px solid #F0F0F0}
+  .bus-celdas>div{border-left:0 !important;border-top:1px solid var(--sp-line-2)}
   .bus-celdas>div:first-child{border-top:0}
   /* Con los ocho ejemplos, los chips ocupaban tres filas y dejaban el primer
      resultado abajo del pliegue. Quedan los cuatro primeros, que son uno de
@@ -355,4 +447,4 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    móvil son titulares de 34-44px; una versión en evaluación no puede gritar
    igual que "Cobertura" o "Planes". Más chica y en teal —el color de "esto es
    otra cosa"— sigue siendo tocable y honesta sobre su estado. */
-.menu-item-sec{font-size:clamp(20px,5.5vw,24px) !important;color:#007d77 !important}
+.menu-item-sec{font-size:clamp(20px,5.5vw,24px) !important;color:var(--sp-teal-deep) !important}

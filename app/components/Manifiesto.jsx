@@ -92,8 +92,8 @@ export default function Manifiesto() {
   }, []);
 
   return (
-    <section id="manifiesto" data-manifesto style={css('position:relative;height:720vh;background:#002A52')}>
-      <div data-mani-inner style={css('position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#002A52')}>
+    <section id="manifiesto" data-manifesto style={css('position:relative;height:720vh;background:var(--sp-navy-deep)')}>
+      <div data-mani-inner style={css('position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--sp-navy-deep)')}>
         <div style={css('position:absolute;inset:0;pointer-events:none;background:radial-gradient(85% 65% at 50% 50%,transparent 40%,rgba(0,16,32,.45) 100%)')}></div>
         <div data-mani-glow style={css('position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.16) 0%,rgba(0,188,180,0) 62%);pointer-events:none')}></div>
         <div className="mani-media" style={css('position:absolute;inset:0;overflow:hidden;z-index:0')}>
@@ -106,14 +106,14 @@ export default function Manifiesto() {
           <div className="mani-lines" style={css('position:relative;height:60vh;width:100%;text-align:center')}>
             <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.01em;color:#fff')}>En Paraguay, miles de familias creen que están protegidas.</div>
             <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.01em;color:#fff')}>La mayoría lo descubre recién cuando algo sale mal.</div>
-            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(28px,3.4vw,46px);line-height:1.12;letter-spacing:-0.02em;color:#fff')}>Nosotros creemos que la protección real se construye <span style={css('color:#00BCB4')}>antes</span>.</div>
+            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(28px,3.4vw,46px);line-height:1.12;letter-spacing:-0.02em;color:#fff')}>Nosotros creemos que la protección real se construye <span style={css('color:var(--sp-teal)')}>antes</span>.</div>
             <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes de la llamada de madrugada.</div>
             <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes del diagnóstico difícil.</div>
-            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes de la eterna pregunta:<br /><span style={css('color:#80DDD8')}>«¿esto lo cubre?»</span></div>
-            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(30px,3.7vw,50px);line-height:1.08;letter-spacing:-0.02em;color:#fff')}>Salud Protegida es<br />protección que <span style={css('color:#00BCB4')}>se siente</span>.</div>
+            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(26px,3.1vw,42px);line-height:1.14;letter-spacing:-0.02em;color:#fff')}>Antes de la eterna pregunta:<br /><span style={css('color:var(--sp-mint)')}>«¿esto lo cubre?»</span></div>
+            <div data-mline className="disp mani-line" style={css('position:absolute;left:0;right:0;top:50%;font-size:clamp(30px,3.7vw,50px);line-height:1.08;letter-spacing:-0.02em;color:#fff')}>Salud Protegida es<br />protección que <span style={css('color:var(--sp-teal)')}>se siente</span>.</div>
           </div>
         </div>
-        <div style={css('position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:160px;height:3px;border-radius:999px;background:rgba(255,255,255,0.14)')}><div data-mani-bar style={css('height:100%;width:0;border-radius:999px;background:#00BCB4')}></div></div>
+        <div style={css('position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:160px;height:3px;border-radius:var(--r-pill);background:rgba(255,255,255,0.14)')}><div data-mani-bar style={css('height:100%;width:0;border-radius:var(--r-pill);background:var(--sp-teal)')}></div></div>
       </div>
     </section>
   );

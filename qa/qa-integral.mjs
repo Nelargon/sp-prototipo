@@ -391,14 +391,22 @@ console.log('\n== 3. ACCESIBILIDAD ==');
       return out;
     });
     const vistos = new Set();
+    let fallas = 0, peor = { r: Infinity };
     for (const par of pares) {
       const key = par.fg.map(Math.round).join() + '|' + par.bg.map(Math.round).join();
       if (vistos.has(key)) continue; vistos.add(key);
       const r = ratio(par.fg, par.bg);
       const grande = par.size >= 24 || (par.size >= 18.66 && par.weight >= 700);
       const minimo = grande ? 3 : 4.5;
-      if (r < minimo) falla('accesibilidad', r < minimo - 1 ? 'confunde' : 'cosmetico', 'contraste ' + r.toFixed(2) + ':1 (mín ' + minimo + ':1) — "' + par.txt + '" ' + par.css + ' sobre rgb(' + par.bg.map(Math.round).join(',') + ')', p);
+      if (r - minimo < peor.r - (peor.minimo || 0)) peor = { r, minimo, txt: par.txt, css: par.css };
+      if (r < minimo) { fallas++; falla('accesibilidad', r < minimo - 1 ? 'confunde' : 'cosmetico', 'contraste ' + r.toFixed(2) + ':1 (mín ' + minimo + ':1) — "' + par.txt + '" ' + par.css + ' sobre rgb(' + par.bg.map(Math.round).join(',') + ')', p);
     }
+    }
+    /* Este chequeo solo hablaba cuando encontraba una falla, y un silencio se
+       lee igual que un verde: no se distingue "pasó" de "no corrió". Que diga
+       cuántos pares midió y cuál quedó más cerca del límite — un verde tiene
+       que ser tan verificable como un rojo. */
+    if (!fallas) ok('accesibilidad', 'contraste AA: ' + vistos.size + ' pares texto/fondo computados en ' + p + ', el más justo ' + peor.r.toFixed(2) + ':1 sobre un mínimo de ' + peor.minimo + ' ("' + peor.txt + '")');
   }
   // teclado: la home es navegable con Tab y el foco se mueve
   await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
@@ -583,32 +591,68 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
       else if (/\.(jsx?|css)$/.test(f)) archivos.push(full);
     }
   })(SRC);
+  /* ⚠ CÓMO CUENTA ESTE GUARDIÁN, Y POR QUÉ ASÍ (6 ago 2026).
+
+     La versión anterior contaba TODO hex del árbol contra un umbral de 200.
+     Eso medía mal en las dos direcciones: metía en la bolsa 174 `#fff`/`#000`
+     —que no son decisiones de marca y no se tokenizan— y a la vez daba por
+     buena una cifra global que puede bajar sin que nada mejore. Y un umbral
+     que el estado actual pasa raspando no es un guardián: es un adorno.
+
+     Lo que el criterio pregunta de verdad es "¿un rebrand sería un cambio de
+     variables o un rediseño?". Traducido a algo medible: un color usado TRES O
+     MÁS VECES es una decisión de diseño tomada — si no tiene nombre, es un
+     token no declarado, y el rebrand se lo va a saltear. Un tinte usado una o
+     dos veces en un solo componente es defendible y no se persigue.
+
+     Se excluyen, declarándolo: el blanco y el negro puros, los atributos de
+     presentación SVG (`fill="#..."` no acepta var()) y la paleta de
+     blog/Cover.jsx, que alimenta esos atributos por variable. */
+  const RAIZ_CSS = readFileSync(join(SRC, 'globals.css'), 'utf8');
+  const ESCALA_R = [...RAIZ_CSS.matchAll(/--r-[a-z]+:\s*(\d+)px/g)].map((m) => m[1]);
+  const bloqueRoot = RAIZ_CSS.slice(RAIZ_CSS.indexOf(':root{'), RAIZ_CSS.indexOf('}', RAIZ_CSS.indexOf(':root{')) + 1);
+
   const radios = new Map(), hexes = new Map();
+  let usosToken = 0, nNeutro = 0, nSvg = 0, nCover = 0;
   for (const f of archivos) {
     const t = readFileSync(f, 'utf8');
     for (const m of t.matchAll(/border-radius:\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
-    /* ⚠ Cuenta hex de 3, 4, 6 y 8 dígitos, no solo de 6 (lo marcó la revisión
-       del PR #91): el árbol ya tenía 173 `#fff`/`#000` que el patrón viejo no
-       veía. Un guardián de tokens ciego a la forma corta puede dar verde con
-       cientos de colores clavados a mano — que es exactamente lo que vino a
-       impedir. Se normaliza la forma corta a larga para no contar #fff y
-       #ffffff como dos colores distintos. */
-    for (const m of t.matchAll(/#([0-9A-Fa-f]{3,8})\b/g)) {
-      const h = m[1];
-      if (![3, 4, 6, 8].includes(h.length)) continue;
-      const largo = h.length <= 4 ? h.split('').map((c) => c + c).join('') : h;
-      const k = ('#' + largo.slice(0, 6)).toUpperCase();
-      hexes.set(k, (hexes.get(k) || 0) + 1);
+    usosToken += (t.match(/var\(--sp-|var\(--r-/g) || []).length;
+    // El bloque :root es la DECLARACIÓN de los tokens: sus hex son el sistema,
+    // no una fuga del sistema. Contarlos sería castigar al que define.
+    const cuerpo = /globals\.css$/.test(f) ? t.replace(bloqueRoot, '') : t;
+    for (const ln of cuerpo.split('\n')) {
+      for (const m of ln.matchAll(/#([0-9A-Fa-f]{3,8})\b/g)) {
+        const h = m[1];
+        if (![3, 4, 6, 8].includes(h.length)) continue;
+        const largo = h.length <= 4 ? h.split('').map((c) => c + c).join('') : h;
+        const k = ('#' + largo.slice(0, 6)).toUpperCase();
+        if (k === '#FFFFFF' || k === '#000000') { nNeutro++; continue; }
+        if (/(fill|stroke|stopColor|stop-color|floodColor)\s*=\s*["'{]\s*["']?\s*$/.test(ln.slice(Math.max(0, m.index - 40), m.index))) { nSvg++; continue; }
+        if (/Cover\.jsx$/.test(f)) { nCover++; continue; }
+        hexes.set(k, (hexes.get(k) || 0) + 1);
+      }
     }
   }
-  const nRadios = radios.size, nHex = hexes.size;
-  const totalHex = [...hexes.values()].reduce((a, b) => a + b, 0);
-  // Varas: una escala de radios sana tiene ~5 pasos; los hex deberían vivir en
-  // variables CSS, no repetidos cientos de veces en estilos inline.
-  if (nRadios > 6) falla('craft', 'confunde', 'escala de radios dispersa: ' + nRadios + ' valores distintos (' + [...radios.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => k + 'px×' + v).join(' · ') + ')', 'app/');
-  else ok('craft', 'escala de radios: ' + nRadios + ' valores');
-  if (totalHex > 200) falla('craft', 'confunde', 'colores clavados a mano: ' + totalHex + ' usos de ' + nHex + ' hex distintos, sin tokens — un refresh de marca sería un rediseño', 'app/');
-  else ok('craft', 'colores: ' + totalHex + ' usos de ' + nHex + ' hex');
+  const repetidos = [...hexes.entries()].filter(([, v]) => v >= 3).sort((a, b) => b[1] - a[1]);
+  const cola = [...hexes.entries()].filter(([, v]) => v < 3);
+  const usosRep = repetidos.reduce((a, [, v]) => a + v, 0);
+  console.log('    contexto: ' + usosToken + ' usos de token · ' + nNeutro + ' neutros puros · ' + (nSvg + nCover) + ' hex intocables en SVG · ' + cola.length + ' tintes de uso único');
+  if (repetidos.length) falla('craft', 'confunde', repetidos.length + ' colores se repiten 3+ veces sin token (' + usosRep + ' usos): ' + repetidos.slice(0, 6).map(([k, v]) => k + '×' + v).join(' · ') + ' — son decisiones de diseño que un rebrand se saltearía', 'app/');
+  else ok('craft', 'sin tokens implícitos: ningún color se repite 3+ veces fuera del sistema (' + usosToken + ' usos de token · ' + cola.length + ' tintes de uso único, admitidos)');
+
+  /* Radios: misma vara que los colores, para que el guardián sea uno solo y no
+     dos criterios distintos según qué se mire. Una fuga es escribir 20px a
+     mano teniendo --r-lg. Un valor fuera de escala repetido 3+ veces es un
+     paso del sistema que nadie declaró. Un valor fuera de escala usado una vez
+     es una excepción local, y se admite. */
+  const fugas = [...radios.entries()].filter(([k]) => ESCALA_R.includes(k));
+  const fuera = [...radios.entries()].filter(([k]) => !ESCALA_R.includes(k)).sort((a, b) => b[1] - a[1]);
+  const fueraRep = fuera.filter(([, v]) => v >= 3);
+  if (fugas.length) falla('craft', 'confunde', 'radios escritos a mano teniendo token: ' + fugas.map(([k, v]) => k + 'px×' + v).join(' · '), 'app/');
+  else ok('craft', 'radios: la escala declarada (' + ESCALA_R.map((r) => r + 'px').join('/') + ') se usa por token, sin valores duplicados a mano');
+  if (fueraRep.length) falla('craft', 'cosmetico', 'pasos de radio sin declarar: ' + fueraRep.map(([k, v]) => k + 'px×' + v).join(' · ') + ' — o entran a la escala con nombre, o se acercan al paso más próximo (decisión de diseño, no mecánica)', 'app/');
+  else ok('craft', 'radios fuera de escala: ' + fuera.length + ' excepciones locales, ninguna repetida');
 }
 
 await browser.close();

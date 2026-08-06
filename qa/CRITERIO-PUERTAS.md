@@ -28,7 +28,7 @@ que construye.
 |---|---|---|
 | **1 · Claridad** | A | **NO PASA** — 1.5 falla, 1.4 tiene hallazgos, 1.1 no se pudo correr |
 | **2 · Accesibilidad y rendimiento** | A | **Pasa lo medible**; una métrica no es medible en laboratorio |
-| **3 · Craft, marca y futuro** | B+ | **NO pasa** — el punto de tokens |
+| **3 · Craft, marca y futuro** | B+ | **Pasa 3.1 y 3.3**; 3.2 espera una decisión de marca (`₲` vs `Gs.`) |
 
 > ⚠️ **La primera versión de este resumen decía que la Puerta 1 "pasa, con una
 > salvedad de contenido del blog"** — mientras la tabla de abajo, en la misma
@@ -48,8 +48,11 @@ que construye.
 1. **La Puerta 1 no pasa.** El flujo que pide nombre y teléfono no nombra la
    carencia antes de pedirlos (1.5), y la prueba de las diez preguntas ni
    siquiera se pudo correr (1.1).
-2. **La Puerta 3 tampoco**, por tokens. Si se le va a exigir a alguien, conviene
-   saber que hoy no lo cumplimos nosotros.
+2. **La Puerta 3 pasa por tokens, y no era gratis.** Cuando este boletín se
+   escribió, no la pasábamos: 970 colores a mano. Se hizo la pasada (§3.1) y hoy
+   el guardián está verde con una vara más exigente que la que tenía. Lo que
+   queda de la puerta no es deuda técnica: es una decisión de marca sin tomar
+   (`₲` vs `Gs.`).
 
 ---
 
@@ -203,30 +206,52 @@ Nada esencial detrás de `hover` (el *hover reveal* del simulador está bajo
 
 ## Puerta 3 — Craft, marca y futuro
 
-### 3.1 Tokens, no valores clavados — ❌ **NO PASA**
+### 3.1 Tokens, no valores clavados — ✅ **PASA** (era el único ❌ de esta puerta)
 
-Medido sobre `app/`:
+El criterio lo decía con precisión: *"si los colores están escritos a mano en
+cada componente, esta entrega nos cuesta el doble el año que viene"*. Era
+exactamente nuestra situación: **970 usos de 100 colores distintos** y **17
+valores de `border-radius`**, deuda de haber construido con estilos inline para
+iterar rápido. Se hizo la pasada.
 
-| | Medido | Lectura |
+| | Antes | Ahora |
 |---|---|---|
-| Valores distintos de `border-radius` | **17** | Una escala sana tiene ~5 pasos |
-| Usos de color hex escritos a mano | **970** | De **100** colores distintos |
+| Usos de token (`var(--sp-*)`, `var(--r-*)`) | 0 | **830** |
+| Colores repetidos 3+ veces sin token | 20 (297 usos) | **0** |
+| Tintes de uso único fuera del sistema | — | 42 *(admitidos)* |
+| Radios escritos a mano teniendo token | 99 | **0** |
+| Pasos de radio sin declarar | 13 valores | **2** (14px ×19 · 18px ×11) |
 
-> ⚠️ **Antes decía 618 de 84, y estaba mal por debajo.** El contador solo veía
-> hex de 6 dígitos: los `#fff` y `#000` —173 en el árbol— no se contaban. Un
-> guardián de tokens ciego a la forma corta puede dar verde con cientos de
-> colores clavados a mano, que es justo lo que vino a impedir. Lo detectó la
-> revisión del PR #91.
+**Cómo se hizo, y qué NO se tokenizó.** Dos olas. La primera cambió los colores
+de marca ya nombrados: 611 reemplazos, **cero píxeles de diferencia** (13 de 16
+capturas quedaron byte a byte idénticas; las 3 restantes eran animaciones en
+curso). La segunda salió a buscar lo que el conteo dejaba ver: 20 colores que se
+repetían tres o más veces sin nombre, o sea decisiones de diseño tomadas y no
+declaradas. Los tres colores de plan estaban clavados por separado en
+`quote.js`, `Buscador` y `Landing` — cambiar el dorado en uno dejaba a los otros
+dos en desacuerdo y nada avisaba. Y había **cuatro azules distintos haciendo un
+solo trabajo** ("texto secundario sobre navy"): ahora son `--sp-blue-meta`.
 
-El criterio lo dice con precisión: *"si los colores están escritos a mano en cada
-componente, esta entrega nos cuesta el doble el año que viene"*. Es exactamente
-nuestra situación. Un refresh de marca hoy no sería cambiar variables — sería
-recorrer 618 lugares.
+Quedan afuera, y se declara por qué: el **blanco y el negro puros** (174 usos)
+no son decisiones de marca; los **hex en atributos SVG** (53) no pueden
+tokenizarse porque `fill="#..."` no acepta `var()`; y los **42 tintes de uso
+único** en un solo componente son excepciones locales defendibles.
 
-**Esto no es un defecto que apareció ayer:** es la deuda de haber construido con
-estilos inline para iterar rápido, que sirvió para llegar hasta acá y que ahora
-cobra. La salida es una pasada de tokens (variables CSS para color, radio y
-espaciado) — es trabajo mecánico, verificable y con esta misma suite como red.
+> **La vara del guardián cambió, y esa es media historia.** El chequeo viejo
+> contaba *todo* hex contra un umbral de 200 — metía en la bolsa los 174
+> `#fff`/`#000` que no se tokenizan, y a la vez daba por bueno un número global
+> que puede bajar sin que nada mejore. Peor: el estado actual lo habría pasado
+> **raspando, con 186**, y un umbral que se pasa raspando es un adorno, no un
+> guardián. Hoy mide lo que el criterio pregunta de verdad: *un color usado tres
+> o más veces es una decisión tomada; si no tiene nombre, es un token que nadie
+> declaró y que el rebrand se va a saltear.* Misma vara para los radios.
+
+**Lo que sigue abierto (a propósito).** Dos pasos de radio —14px en 19 lugares,
+18px en 11— caen a mitad de camino entre `--r-sm` (12) y `--r-md` (16), y entre
+`--r-md` y `--r-lg` (20). Los que estaban a 1-2px de un paso se acercaron (35
+casos, invisible). Correr 30 tarjetas 2px **no es una pasada mecánica: es una
+decisión de diseño**, y el QA la deja anotada en amarillo hasta que alguien la
+mire con ojos de diseño.
 
 ### 3.2 Adhesión al sistema de marca
 
@@ -257,8 +282,9 @@ espaciado) — es trabajo mecánico, verificable y con esta misma suite como red
 
 ## Lo que este boletín deja pedido
 
-1. **Pasada de tokens** (color, radio, espaciado) — es lo único que separa al
-   prototipo del B+ de la Puerta 3.
+1. ~~**Pasada de tokens** (color, radio, espaciado)~~ — **hecha** (§3.1, 6 ago
+   2026). Queda abierto un solo punto y es de diseño, no mecánico: los pasos de
+   radio de 14px y 18px, que caen a mitad de camino entre dos tokens.
 2. **Decidir `₲` vs `Gs.`** y aplicarlo en los dos lados.
 3. **Agregar `#007d77` a la tabla de contraste** del criterio, o cambiar la
    decisión del sitio. Una de las dos, no las dos.

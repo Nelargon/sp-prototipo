@@ -28,7 +28,7 @@ export default function Page() {
 
   // ===== pure data / helpers =====
   const iconEl = (path) =>
-    createElement('svg', { viewBox: '0 0 24 24', width: 20, height: 20, fill: 'none', stroke: '#80DDD8', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }, createElement('path', { d: path }));
+    createElement('svg', { viewBox: '0 0 24 24', width: 20, height: 20, fill: 'none', stroke: 'var(--sp-mint)', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }, createElement('path', { d: path }));
 
   const toggleMenu = () => setState((s) => ({ mobileMenuOpen: !s.mobileMenuOpen }));
   const closeMenu = () => patch({ mobileMenuOpen: false });
@@ -223,9 +223,9 @@ export default function Page() {
   // que REALMENTE tenemos y responden ahí mismo, sin redirección.
   const chips = cartArr.map((c) => ({
     name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'chip' }); setState({ sel: c.name }); },
-    // Chip activo en teal accesible #007d77 (blanco sobre #00BCB4 daba 2.37:1 —
+    // Chip activo en teal accesible var(--sp-teal-deep) (blanco sobre var(--sp-teal) daba 2.37:1 —
     // hallazgo QA; mismo arreglo que /agendar). El resto, borde gris neutro.
-    style: 'padding:9px 15px;border-radius:999px;border:1.5px solid ' + (state.sel === c.name ? '#007d77' : '#d9e4e2') + ';background:' + (state.sel === c.name ? '#007d77' : '#fff') + ';color:' + (state.sel === c.name ? '#fff' : '#3D3D3D') + ';font-size:13px;font-weight:' + (state.sel === c.name ? '700' : '500') + ';cursor:pointer;transition:all .15s',
+    style: 'padding:9px 15px;border-radius:var(--r-pill);border:1.5px solid ' + (state.sel === c.name ? 'var(--sp-teal-deep)' : '#d9e4e2') + ';background:' + (state.sel === c.name ? 'var(--sp-teal-deep)' : '#fff') + ';color:' + (state.sel === c.name ? '#fff' : 'var(--sp-text)') + ';font-size:13px;font-weight:' + (state.sel === c.name ? '700' : '500') + ';cursor:pointer;transition:all .15s',
   }));
   const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
   const selRows = sel.cov.map((cv, i) => {
@@ -235,8 +235,8 @@ export default function Page() {
     const wait = ok && sel.wait ? waitLabel(sel.wait[i]) : null;
     return {
       plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d, wait,
-      wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid #F0F0F0'),
-      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10'),
+      wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid var(--sp-line-2)'),
+      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);' + (ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)'),
     };
   });
 
@@ -351,7 +351,7 @@ export default function Page() {
 
   // ===== markup =====
   return (
-    <div data-page="viva" className="body" style={css('color:#3D3D3D;background:#fff')}>
+    <div data-page="viva" className="body" style={css('color:var(--sp-text);background:#fff')}>
 
       {/* NAV */}
       <nav data-nav className={v.mobileMenuOpen ? 'menu-open' : undefined} style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
@@ -360,7 +360,7 @@ export default function Page() {
           <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="" className="nlogo-w" style={css('height:56px;position:absolute;left:0;top:0;z-index:2;transition:opacity .3s')} />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
-          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
+          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
             <div className="navmenu-wrap">
               <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Cobertura <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
@@ -400,10 +400,10 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:12px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:12px;background:#007d77;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+            <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
           </div>
-          <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
+          <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:var(--r-xs);border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
             {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
             {v.mobileMenuOpen && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6 6 18" /></svg>}
           </button>
@@ -432,20 +432,20 @@ export default function Page() {
       )}
 
       {/* HERO */}
-      <section data-hero style={css('position:relative;height:100vh;min-height:640px;overflow:hidden;background:#002A52;display:flex;align-items:center')}>
+      <section data-hero style={css('position:relative;height:100vh;min-height:640px;overflow:hidden;background:var(--sp-navy-deep);display:flex;align-items:center')}>
         <div data-hero-bg style={css("position:absolute;top:-5%;right:0;bottom:-5%;width:56%;background:url('" + BP + "/assets/hero.webp') center 25%/cover no-repeat;-webkit-mask:linear-gradient(90deg,transparent 0%,#000 34%);mask:linear-gradient(90deg,transparent 0%,#000 34%);will-change:transform")}></div>
         <div style={css('position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,25,48,0.5) 0%,rgba(0,25,48,0.3) 45%,rgba(0,25,48,0) 72%,rgba(0,25,48,0.15) 100%)')}></div>
         <div style={css('position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,rgba(0,25,48,0) 0%,rgba(0,25,48,0.55) 100%)')}></div>
         <div data-hero-content style={css('position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 40px;color:#fff')}>
           <div style={css('max-width:720px')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
-            <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:#00BCB4')}>se siente</span>.</h1>
-            <p style={css('font-size:20px;line-height:1.6;color:#cfe0f0;max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill)')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
+            <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:var(--sp-teal)')}>se siente</span>.</h1>
+            <p style={css('font-size:20px;line-height:1.6;color:var(--sp-blue-pale);max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
             {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red.
                 Un solo verbo para la acción comercial en todo el sitio: "Simulá tu plan"
                 (auditoría de conversión, jul 2026 — cinco nombres eran cinco decisiones). */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
-              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:#007d77;color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
             </div>
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
@@ -467,7 +467,7 @@ export default function Page() {
           natural del hero — "protección que se siente" → probala — y todo lo que
           sigue pasa a RESPALDAR esa decisión en vez de ser el peaje para llegar. */}
       {/* ⚠ FONDO CLARO, A PROPÓSITO (6 ago 2026, observación del usuario: "todo
-          está en tono azul… cansa un poco"). Esta sección era #003B71 y quedaba
+          está en tono azul… cansa un poco"). Esta sección era var(--sp-navy) y quedaba
           entre el hero navy y "Por qué importa" navy: TRES bloques azules
           seguidos, ~3 pantallas de azul continuo. Lo causó el reordenamiento de
           hoy — antes el simulador caía sobre el comparador gris claro y había
@@ -477,19 +477,19 @@ export default function Page() {
           Regla que deja: al mover una sección hay que mirar de qué color quedan
           sus vecinas nuevas — el ritmo de la página es una propiedad de la
           secuencia, no de cada sección por separado. */}
-      <section className="sec" style={css('padding:80px 40px;background:#F2FBFA')}>
+      <section className="sec" style={css('padding:80px 40px;background:var(--sp-mint-soft)')}>
         <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
           <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
-            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h2>
-            <p style={css('font-size:17px;color:#B3C7DB;line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
+            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h2>
+            <p style={css('font-size:17px;color:var(--sp-blue-soft);line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
             <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;margin-bottom:34px')}>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>En 1 minuto</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#e6f0fa')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>En 1 minuto</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
             </div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:15px;background:#007d77;color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:var(--r-md);background:var(--sp-teal-deep);color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>
@@ -524,33 +524,33 @@ export default function Page() {
           ⚠ Conserva [data-mani-corto]: el evento manifesto_scroll sigue vivo,
           pero ahora se dispara arriba y ya no significa "atravesó la home"
           (anotado en ANEXO §2 para que nadie lo lea como antes). */}
-      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:#002A52')}>
+      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:var(--sp-navy-deep)')}>
         <div style={css('max-width:860px;margin:0 auto;text-align:center')}>
           <div data-rv>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;margin-bottom:16px')}>Por qué importa</div>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}>Por qué importa</div>
             <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 16px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal.</p>
-            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 auto 32px;max-width:600px')}>No es una impresión nuestra: es lo que pasa cuando la salud se paga recién en el momento de necesitarla.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:var(--sp-blue-soft);line-height:1.65;margin:0 auto 32px;max-width:600px')}>No es una impresión nuestra: es lo que pasa cuando la salud se paga recién en el momento de necesitarla.</p>
           </div>
 
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:left;margin-bottom:32px')}>
-            <div style={css('border-left:3px solid #00BCB4;padding-left:16px')}>
+            <div style={css('border-left:3px solid var(--sp-teal);padding-left:16px')}>
               <div className="disp num-tnum" style={css('font-size:clamp(28px,3.6vw,36px);font-weight:800;color:#fff;line-height:1')}>36<span style={css('font-size:.6em')}>%</span></div>
-              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#B3C7DB;line-height:1.55;margin-top:8px')}>de todo lo que se gasta en salud en Paraguay sale del bolsillo de alguien <b style={css('color:#fff')}>justo cuando se enferma</b>. La OMS recomienda que no pase del 20%.</div>
+              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-blue-soft);line-height:1.55;margin-top:8px')}>de todo lo que se gasta en salud en Paraguay sale del bolsillo de alguien <b style={css('color:#fff')}>justo cuando se enferma</b>. La OMS recomienda que no pase del 20%.</div>
             </div>
-            <div style={css('border-left:3px solid #00BCB4;padding-left:16px')}>
+            <div style={css('border-left:3px solid var(--sp-teal);padding-left:16px')}>
               <div className="disp num-tnum" style={css('font-size:clamp(28px,3.6vw,36px);font-weight:800;color:#fff;line-height:1')}>7<span style={css('font-size:.55em;font-weight:700')}> de cada 10</span></div>
-              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:#B3C7DB;line-height:1.55;margin-top:8px')}>paraguayos <b style={css('color:#fff')}>no tienen ningún seguro médico</b>. Cuando llega una internación, la cuenta llega entera y de una vez.</div>
+              <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-blue-soft);line-height:1.55;margin-top:8px')}>paraguayos <b style={css('color:#fff')}>no tienen ningún seguro médico</b>. Cuando llega una internación, la cuenta llega entera y de una vez.</div>
             </div>
           </div>
 
           <div data-rv>
-            <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un seguro no es un gasto: cambia una cuenta impredecible por <span style={css('color:#00BCB4')}>una cuota que conocés</span>.</p>
-            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:#B3C7DB;line-height:1.65;margin:0 auto 26px;max-width:620px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés. La protección real se construye <b style={css('color:#fff')}>antes</b> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
+            <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un seguro no es un gasto: cambia una cuenta impredecible por <span style={css('color:var(--sp-teal)')}>una cuota que conocés</span>.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:var(--sp-blue-soft);line-height:1.65;margin:0 auto 26px;max-width:620px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés. La protección real se construye <b style={css('color:#fff')}>antes</b> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
             <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 24px')}>
-              <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>
-              <a href={`${BP}/historia/`} style={css('color:#80DDD8;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>
+              <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>
+              <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>
             </div>
-            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#8fa8c0;margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
+            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-blue-meta);margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
           </div>
         </div>
       </section>
@@ -560,12 +560,12 @@ export default function Page() {
           los tres (Gold ya no se apaga); Silver resaltado como "la más elegida"
           (anclaje); una línea humana bajo cada plan; sin barras (ruido); lo común
           abajo como GARANTÍA positiva. BITACORA cap. 48. Detalle → /planes. */}
-      <section id="comparar" className="sec" style={css('padding:80px 40px;background:#F5F5F5')}>
+      <section id="comparar" className="sec" style={css('padding:80px 40px;background:var(--sp-surface)')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Bronze, Silver y Gold</div>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:#003B71;line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:#007d77')}>qué ponés vos</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:#6B6B6B;margin:0')}>Los tres cubren lo esencial y ninguno cubre el 100% — preferimos decírtelo a prometerte lo contrario. Acá está <b style={css('color:#007d77')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Bronze, Silver y Gold</div>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:var(--sp-teal-deep)')}>qué ponés vos</span>.</h2>
+            <p style={css('font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Los tres cubren lo esencial y ninguno cubre el 100% — preferimos decírtelo a prometerte lo contrario. Acá está <b style={css('color:var(--sp-teal-deep)')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
@@ -576,7 +576,7 @@ export default function Page() {
               aclaración legal. La FAQ conserva la respuesta larga. */}
           {/* ⚠ SIN CAJA, A PROPÓSITO (6 ago 2026, observación del usuario sobre la
               consistencia de esta zona). La primera versión de esta franja usaba
-              mint #F2FBFA con borde teal — exactamente el mismo tratamiento que la
+              mint var(--sp-mint-soft) con borde teal — exactamente el mismo tratamiento que la
               garantía "Todos los planes te garantizan" de abajo. Quedaban dos cajas
               gemelas bracketeando la tabla que hacen cosas distintas: una es un
               VEREDICTO (lo que los tres planes te aseguran) y la otra una ANOTACIÓN
@@ -589,53 +589,53 @@ export default function Page() {
           <div data-rv style={css('display:flex;justify-content:center;margin-bottom:22px')}>
             <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left;max-width:640px')}>
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
-              <span>Pagando con <b style={css('color:#003B71')}>débito automático o tarjeta de crédito</b>, los tres planes tienen <b style={css('color:#007d77')}>10% de descuento</b> todos los meses.</span>
+              <span>Pagando con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b>, los tres planes tienen <b style={css('color:var(--sp-teal-deep)')}>10% de descuento</b> todos los meses.</span>
             </span>
           </div>
 
           {/* Hint de scroll (solo móvil): en el teléfono la tabla se compara
               deslizando — decilo antes para que no se lea como algo cortado. */}
-          <div data-rv className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:#00736e')}>Deslizá para comparar los tres planes <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
+          <div data-rv className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para comparar los tres planes <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
 
           {/* ⚠ CONSERVA EL ANCLA #cartilla: el menú del header enlaza "Qué cubre
               tu plan" acá. Al fusionarse las dos secciones, #comparar quedó en la
               sección y #cartilla en la matriz, que es lo que esa entrada del menú
               promete mostrar. Si algún día se mueve la tabla, el ancla va con ella. */}
-          <div data-rv id="cartilla" style={css('background:#fff;border:1px solid #E8E8E8;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
+          <div data-rv id="cartilla" style={css('background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-lg);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
             <div className="cmp-inner">
               {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
               <div className="cmp-row">
                 <div className="cmp-lbl" style={css('padding:18px 22px;background:#fff')}></div>
                 {v.planHead.map((ph, i) => (
-                  <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid #F0F0F0;border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
+                  <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid var(--sp-line-2);border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
                     {/* Ranura de badge de altura fija en LAS TRES columnas: el badge de
                         Silver ya no empuja su título hacia abajo — nombres, precios y
                         CTAs quedan en la misma línea base (el resalte de Silver deja de
                         desbalancear la sección; feedback del usuario, jul 2026). */}
                     <div style={css('height:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center')}>
-                      {ph.recommended && <span style={css('font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#007d77;border-radius:999px;padding:3px 10px')}>La más elegida</span>}
+                      {ph.recommended && <span style={css('font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--sp-teal-deep);border-radius:var(--r-pill);padding:3px 10px')}>La más elegida</span>}
                     </div>
-                    <div className="disp" style={css('font-size:20px;font-weight:800;color:#003B71;line-height:1')}>{ph.short}</div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:#6B6B6B;margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:#1D1D1B')}>{ph.price}</span></div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
-                    <a href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;border-radius:9px;background:#007d77;color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transition:background .2s')}>Ver mi precio</a>
+                    <div className="disp" style={css('font-size:20px;font-weight:800;color:var(--sp-navy);line-height:1')}>{ph.short}</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:var(--sp-ink)')}>{ph.price}</span></div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
+                    <a href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transition:background .2s')}>Ver mi precio</a>
                   </div>
                 ))}
               </div>
               {/* Filas: "Al 100%" en teal en TODOS los planes que lo tienen (Gold no se
                   apaga); "Desde Silver"/"Copago" en dorado (oportunidad). Silver tenue. */}
               {v.cmp.map((row, r) => (
-                <div key={r} className="cmp-row" style={css('border-top:1px solid #F0F0F0')}>
+                <div key={r} className="cmp-row" style={css('border-top:1px solid var(--sp-line-2)')}>
                   <div className="cmp-lbl" style={css('padding:15px 22px;background:#fff;display:flex;flex-direction:column;justify-content:center')}>
-                    <span style={css('font-size:14px;font-weight:700;color:#003B71;line-height:1.2')}>{row.name}</span>
-                    {row.unit && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#6B6B6B;margin-top:2px')}>{row.unit}</span>}
+                    <span style={css('font-size:14px;font-weight:700;color:var(--sp-navy);line-height:1.2')}>{row.name}</span>
+                    {row.unit && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);margin-top:2px')}>{row.unit}</span>}
                   </div>
                   {row.cells.map((c, j) => (
-                    <div key={j} style={css('padding:14px 12px;border-left:1px solid #F0F0F0;display:flex;align-items:center;justify-content:center;text-align:center;' + (j === 1 ? 'background:#F1FAF9;' : ''))}>
+                    <div key={j} style={css('padding:14px 12px;border-left:1px solid var(--sp-line-2);display:flex;align-items:center;justify-content:center;text-align:center;' + (j === 1 ? 'background:#F1FAF9;' : ''))}>
                       {row.kind === 'num' ? (
-                        <span style={css('font-size:16px;font-weight:700;color:#1D1D1B;line-height:1.1')}>{c.t}</span>
+                        <span style={css('font-size:16px;font-weight:700;color:var(--sp-ink);line-height:1.1')}>{c.t}</span>
                       ) : (
-                        <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;' + (c.ok ? 'background:#E6F7F6;color:#007d77' : 'background:#F8F1DE;color:#7a5f10'))}>{c.t}</span>
+                        <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);' + (c.ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)'))}>{c.t}</span>
                       )}
                     </div>
                   ))}
@@ -646,23 +646,23 @@ export default function Page() {
 
           {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
               es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
-          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:#F7FBFB;border:1px solid #E8EFEE;border-radius:14px;margin-bottom:18px')}>
+          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);border-radius:14px;margin-bottom:18px')}>
             {[
-              { c: '#00BCB4', t: 'Cubierto', b: 'no ponés nada' },
-              { c: '#8a9997', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
-              { c: '#5f6d6c', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
+              { c: 'var(--sp-teal)', t: 'Cubierto', b: 'no ponés nada' },
+              { c: 'var(--sp-estado-punto)', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
+              { c: 'var(--sp-estado-ink)', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
             ].map((m, i) => (
               <span key={i} style={css('display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.5')}>
-                <span style={css('width:10px;height:10px;border-radius:999px;flex:none;transform:translateY(1px);background:' + m.c)}></span>
-                <span><b style={css('color:#003B71;font-weight:800')}>{m.t}</b> <span style={css('color:#6B6B6B')}>· {m.b}</span></span>
+                <span style={css('width:10px;height:10px;border-radius:var(--r-pill);flex:none;transform:translateY(1px);background:' + m.c)}></span>
+                <span><b style={css('color:var(--sp-navy);font-weight:800')}>{m.t}</b> <span style={css('color:var(--sp-muted)')}>· {m.b}</span></span>
               </span>
             ))}
           </div>
 
           {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
               de integridad sobre la que se construyen los tres planes. */}
-          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:16px;background:#F2FBFA')}>
-            <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:#007d77;white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#007d77;color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
+          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:var(--r-md);background:var(--sp-mint-soft)')}>
+            <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
             <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
           </div>
 
@@ -679,13 +679,13 @@ export default function Page() {
               La regla: cada puerta dice QUÉ PREGUNTA responde, no "ver más".
               El reparto completo de las cuatro superficies está en HANDOFF. */}
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto')}>
-            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;color:#007d77;text-align:left')}>
+            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
               <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
+              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
             </a>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;color:#007d77;text-align:left')}>
+            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
               <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>El detalle fila por fila <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;font-weight:400')}>Los tres planes comparados servicio por servicio, con sus esperas.</span>
+              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Los tres planes comparados servicio por servicio, con sus esperas.</span>
             </a>
           </div>
 
@@ -697,7 +697,7 @@ export default function Page() {
 
 
 
-            <div style={css('font-size:12.5px;color:#6B6B6B;margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
+            <div style={css('font-size:12.5px;color:var(--sp-muted);margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
             {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
                 Parto son 300 días en los tres planes y la cesárea baja a 150 en
                 Gold — el dato más caro de descubrir tarde de todo el sistema, y
@@ -710,8 +710,8 @@ export default function Page() {
             <div style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;border-radius:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
               <div>
-                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:#003B71;margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
-                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:#4A4A4A;line-height:1.55')}>
+                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
+                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
                   El parto tiene <strong>10 meses de <Term k="carencia">carencia</Term></strong> en los tres planes, y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
                 </div>
               </div>
@@ -748,32 +748,32 @@ export default function Page() {
               prepaga" sin relevamiento con fuente y fecha. Ver BITACORA cap. 57,
               HANDOFF 12c, y sp-interno/project/RELEVAMIENTO-competidores-2026-07-26.md
               (repo privado: el análisis de competidores nombrados no vive acá). */}
-          <div data-rv style={css('margin-top:18px;background:#F4F5F6;border:1px solid #e6e8ea;border-radius:16px;padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
-            <span style={css('width:28px;height:28px;border-radius:9px;flex:none;background:#e6e8ea;color:#5f6d6c;display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
+          <div data-rv style={css('margin-top:18px;background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);border-radius:var(--r-md);padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
+            <span style={css('width:28px;height:28px;border-radius:var(--r-xs);flex:none;background:var(--sp-line-3);color:var(--sp-estado-ink);display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
             <div>
-              <div className="disp" style={css('font-size:16px;font-weight:800;color:#333;margin-bottom:6px')}>Para que no haya sorpresas</div>
-              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:#333')}>nuestros planes no cubren</b>: {annotate('odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites — pasá el mouse o tocá cada una para ver qué incluye.</div>
-              <div style={css('font-size:14.5px;color:#4a4a4a;line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:#333')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
+              <div className="disp" style={css('font-size:16px;font-weight:800;color:var(--sp-text);margin-bottom:6px')}>Para que no haya sorpresas</div>
+              <div style={css('font-size:14.5px;color:var(--sp-text-2);line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:var(--sp-text)')}>nuestros planes no cubren</b>: {annotate('odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites — pasá el mouse o tocá cada una para ver qué incluye.</div>
+              <div style={css('font-size:14.5px;color:var(--sp-text-2);line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:var(--sp-text)')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
             </div>
           </div>
 
           {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia
               utilidad; acá una entrada honesta, no un buscador que finge. La
               búsqueda real (médicos, sanatorios, estudios) vive en la guía. */}
-          <div data-rv className="two-col" style={css('margin-top:18px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div style={css('width:52px;height:52px;border-radius:14px;background:#003B71;color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+          <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
             <div>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>¿Dónde atenderte?</div>
-              <div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>Buscá tu <b style={css('color:#003B71')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
+              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
+              <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
             </div>
-            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
 
 
-          <div data-rv className="two-col" style={css('margin-top:26px;background:#E6EDF4;border:0.5px solid #d4e0ee;border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div className="disp" style={css('background:#003B71;color:#fff;border-radius:12px;padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
-            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00736e;margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:#3D3D3D;line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:#003B71')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:12px;background:#003B71;color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+          <div data-rv className="two-col" style={css('margin-top:26px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div className="disp" style={css('background:var(--sp-navy);color:#fff;border-radius:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
+            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>
@@ -781,19 +781,19 @@ export default function Page() {
 
       {/* CÓMO FUNCIONA — el proceso después de decidir (el teaser del simulador
           subió al puesto 2; esta sección sigue explicando qué pasa al contratar) */}
-      <section className="sec" style={css('padding:72px 40px 64px;background:#F5F5F5')}>
+      <section className="sec" style={css('padding:72px 40px 64px;background:var(--sp-surface)')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>De la cotización a tu credencial</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>De la cotización a tu credencial</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
           </div>
           <div data-rv className="steps-flow" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:26px')}>
             {v.stepsHow.map((st, i) => (
               <div key={i} style={css('display:flex;gap:12px;align-items:flex-start')}>
-                <span className="disp" style={css('width:30px;height:30px;flex:none;border-radius:9px;background:#007d77;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
+                <span className="disp" style={css('width:30px;height:30px;flex:none;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
                 <div>
-                  <div style={css('font-size:15px;font-weight:700;color:#003B71;line-height:1.3;margin-bottom:3px')}>{st.title}</div>
-                  <div style={css('font-size:13.5px;color:#6B6B6B;line-height:1.5')}>{st.body}</div>
+                  <div style={css('font-size:15px;font-weight:700;color:var(--sp-navy);line-height:1.3;margin-bottom:3px')}>{st.title}</div>
+                  <div style={css('font-size:13.5px;color:var(--sp-muted);line-height:1.5')}>{st.body}</div>
                 </div>
               </div>
             ))}
@@ -807,19 +807,19 @@ export default function Page() {
           tiene que llegar antes de la elección de plan, no después. */}
 
       {/* DIFERENCIADORES */}
-      <section className="sec" style={css('padding:64px 40px;background:#E6F7F6')}>
+      <section className="sec" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Lo que ponemos por escrito</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:#007d77')}>garantiza</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#3D3D3D;margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:var(--sp-teal-deep)')}>garantiza</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
           </div>
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
             {v.difs.map((dz, i) => (
               <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-                <div style={css('width:46px;height:46px;border-radius:13px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
-                <div style={css('font-size:17px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
-                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
+                <div style={css('width:46px;height:46px;border-radius:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
+                <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
               </div>
             ))}
           </div>
@@ -828,17 +828,17 @@ export default function Page() {
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section className="sec-x" style={css('padding:72px 40px 64px;background:#fff')}>
-        <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:#E6EDF4;border-radius:20px;padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
+        <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:var(--sp-blue-bg);border-radius:var(--r-lg);padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
-            <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:#d4e0ee')}></div>
+            <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:var(--sp-blue-line)')}></div>
             <img src={`${BP}/assets/edificio.webp`} alt="Edificio administrativo de Salud Protegida" loading="lazy" style={css('position:relative;width:100%;max-width:340px;height:auto;display:block')} />
           </div>
           <div>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#00736e;margin-bottom:12px')}>Quiénes somos</div>
-            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:#003B71;line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de {YEARS_CARING} años.</h3>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:12px')}>Quiénes somos</div>
+            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:var(--sp-navy);line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de {YEARS_CARING} años.</h3>
             <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px 20px')}>
-              <div><div className="disp" style={css('font-size:32px;color:#003B71')}>2002</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Fundada en Asunción</div></div>
-              <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:#003B71')}>~19.000</div><div style={css('font-size:13px;color:#3D3D3D;margin-top:3px')}>Vidas aseguradas</div></div>
+              <div><div className="disp" style={css('font-size:32px;color:var(--sp-navy)')}>2002</div><div style={css('font-size:13px;color:var(--sp-text);margin-top:3px')}>Fundada en Asunción</div></div>
+              <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:var(--sp-navy)')}>~19.000</div><div style={css('font-size:13px;color:var(--sp-text);margin-top:3px')}>Vidas aseguradas</div></div>
             </div>
           </div>
         </div>
@@ -855,12 +855,12 @@ export default function Page() {
           El padding inferior que aportaba esta franja pasó a la sección de arriba. */}
 
       {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
-      <section style={css('padding:64px 0 68px;background:#F5F5F5;overflow:hidden')}>
+      <section style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:#007d77')}>de tu plan</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:#6B6B6B;margin:0')}>Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.</p>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
+            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.</p>
           </div>
         </div>
 
@@ -879,7 +879,7 @@ export default function Page() {
         <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:48s')}>
           <div className="mq-track">
             {[...v.prestadores, ...v.prestadores].map((pr, i) => (
-              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:#6B6B6B')}>
+              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:var(--sp-muted)')}>
                 <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
                 <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr}</span>
               </div>
@@ -887,25 +887,25 @@ export default function Page() {
           </div>
         </div>
 
-        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:#6B6B6B')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:#007d77')}>próximamente</b> con la red médica real.</div>
+        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:var(--sp-muted)')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:var(--sp-teal-deep)')}>próximamente</b> con la red médica real.</div>
       </section>
 
       {/* FAQ */}
       <section id="faq" className="sec" style={css('padding:80px 40px;background:#fff')}>
         <div style={css('max-width:820px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 12px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:14px')}>Antes de contratar</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0 0 14px')}>Preguntas frecuentes</h2>
-            <p style={css('font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 0 40px')}>Respuestas orientativas — tu asesor confirma los detalles exactos de tu contrato.</p>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Antes de contratar</div>
+            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 14px')}>Preguntas frecuentes</h2>
+            <p style={css('font-size:15px;color:var(--sp-muted);line-height:1.6;margin:0 0 40px')}>Respuestas orientativas — tu asesor confirma los detalles exactos de tu contrato.</p>
           </div>
           <div data-rv style={css('display:flex;flex-direction:column;gap:10px')}>
             {v.faqList.map((f, i) => (
-              <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:14px;overflow:hidden')}>
-                <button onClick={f.toggle} aria-expanded={f.open} style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:#003B71')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
+              <div key={i} style={css('background:#fff;border:1px solid var(--sp-line);border-radius:14px;overflow:hidden')}>
+                <button onClick={f.toggle} aria-expanded={f.open} style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:var(--sp-navy)')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
                 {f.open && (
-                  <div style={css('padding:0 20px 20px;font-size:14.5px;color:#3D3D3D;line-height:1.65')}>
+                  <div style={css('padding:0 20px 20px;font-size:14.5px;color:var(--sp-text);line-height:1.65')}>
                     {f.a}
-                    {f.cta && <a href={f.cta.href} onClick={f.cta.onClick} {...(f.cta.external ? { target: '_blank', rel: 'noopener' } : {})} className="link-teal" style={css('display:inline-block;margin-top:10px;color:#007d77;font-weight:700;font-size:14px')}>{f.cta.label}</a>}
+                    {f.cta && <a href={f.cta.href} onClick={f.cta.onClick} {...(f.cta.external ? { target: '_blank', rel: 'noopener' } : {})} className="link-teal" style={css('display:inline-block;margin-top:10px;color:var(--sp-teal-deep);font-weight:700;font-size:14px')}>{f.cta.label}</a>}
                   </div>
                 )}
               </div>
@@ -915,43 +915,43 @@ export default function Page() {
       </section>
 
       {/* CIERRE */}
-      <section className="sec" style={css('padding:64px 40px 84px;background:#003B71')}>
-        {/* Teal profundo (#007d77), no el brillante: el blanco sobre #00BCB4 medía
+      <section className="sec" style={css('padding:64px 40px 84px;background:var(--sp-navy)')}>
+        {/* Teal profundo (var(--sp-teal-deep)), no el brillante: el blanco sobre var(--sp-teal) medía
             2.37:1 (título) y 2.2:1 (bajada). El acento pasa de navy a menta porque
             sobre el teal profundo el navy cae a 2.25:1. Regla (jul 2026, decisión
-            del usuario): #00BCB4 decora, #007d77 carga texto blanco. */}
-        <div data-rv style={css('max-width:1100px;margin:0 auto;background:#007d77;border-radius:22px;padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
+            del usuario): var(--sp-teal) decora, var(--sp-teal-deep) carga texto blanco. */}
+        <div data-rv style={css('max-width:1100px;margin:0 auto;background:var(--sp-teal-deep);border-radius:var(--r-lg);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#A5EFEA')}>del otro lado</span>.</h2>
             <p style={css('font-size:17px;color:rgba(255,255,255,0.96);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
-            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:13px;background:#fff;color:#007d77;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
+            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
             {/* Sin relleno translúcido: aclaraba el teal debajo del texto (2.1:1 medido). */}
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-onteal" style={css('height:52px;padding:0 26px;border-radius:13px;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-onteal" style={css('height:52px;padding:0 26px;border-radius:var(--r-sm);font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan</a>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={css('background:#002A52;color:#fff;padding:56px 40px 30px')}>
+      <footer style={css('background:var(--sp-navy-deep);color:#fff;padding:56px 40px 30px')}>
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
             <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:52px;display:block;margin-bottom:14px')} />
-            <div style={css('font-size:14px;color:#9bb6d2;line-height:1.6')}>Protección que se siente · +{YEARS_CARING} años · Asunción, Paraguay</div>
+            <div style={css('font-size:14px;color:var(--sp-blue-meta);line-height:1.6')}>Protección que se siente · +{YEARS_CARING} años · Asunción, Paraguay</div>
           </div>
           <div>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Contacto</div>
-            <div style={css('font-size:14px;color:#cfe0f0;line-height:2')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Contacto</div>
+            <div style={css('font-size:14px;color:var(--sp-blue-pale);line-height:2')}>
               <div>Sede Administrativa · Perú 222 esq. Eligio Ayala, Asunción</div>
               <div>Centro Médico Lister · Paí Perez 630 c/ Azara, Asunción</div>
-              <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:#cfe0f0;font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
-              <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:#cfe0f0')}>hola@saludprotegida.com.py</a></div>
+              <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:var(--sp-blue-pale);font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
+              <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:var(--sp-blue-pale)')}>hola@saludprotegida.com.py</a></div>
             </div>
           </div>
           <div>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#80DDD8;margin-bottom:14px')}>Enlaces</div>
-            <div style={css('display:flex;flex-direction:column;gap:10px;font-size:14px;color:#cfe0f0')}>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Enlaces</div>
+            <div style={css('display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--sp-blue-pale)')}>
               <a href={v.guiaHome} className="foot-link" style={css('color:inherit')}>Guía Médica</a>
               <a href="#cartilla" className="foot-link" style={css('color:inherit')}>Qué cubre cada plan</a>
               <a href="#comparar" className="foot-link" style={css('color:inherit')}>Planes</a>
@@ -967,7 +967,7 @@ export default function Page() {
       </footer>
 
       {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
-      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:999px;background:#007d77;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
 
       {/* BARRA CTA MÓVIL (auditoría de conversión, jul 2026): en ≤820px los dos
           flotantes formaban una columna que tapaba texto en casi toda la página;
@@ -975,8 +975,8 @@ export default function Page() {
           porque el contenido termina encima de ella. Mismo umbral de scroll que
           el FAB de desktop. */}
       <div data-cta-bar className="cta-bar" role="group" aria-label="Acciones rápidas">
-        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal" style={css('flex:1;height:48px;border-radius:13px;background:#007d77;color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
-        <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;border-radius:13px;background:#fff;border:1.5px solid #00BCB4;color:#007d77;display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal" style={css('flex:1;height:48px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+        <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;border-radius:var(--r-sm);background:#fff;border:1.5px solid var(--sp-teal);color:var(--sp-teal-deep);display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
       </div>
 
     </div>

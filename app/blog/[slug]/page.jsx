@@ -35,11 +35,11 @@ export default async function BlogPost({ params }) {
 
   if (!post) {
     return (
-      <div className="body" style={css('min-height:100vh;display:flex;align-items:center;justify-content:center;background:#002A52;padding:24px')}>
+      <div className="body" style={css('min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--sp-navy-deep);padding:24px')}>
         <div style={css('background:#fff;border-radius:18px;padding:44px 32px;text-align:center;max-width:460px')}>
-          <h1 className="disp" style={css('font-size:26px;color:#003B71;margin:0 0 10px')}>Muy pronto</h1>
-          <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 0 22px')}>Todavía no hay notas publicadas en el blog.</p>
-          <a href={`${BP}/blog/`} className="btn-teal" style={css('display:inline-flex;align-items:center;height:46px;padding:0 24px;border-radius:12px;background:#007d77;color:#fff;font-size:14.5px;font-weight:800')}>Ir al blog</a>
+          <h1 className="disp" style={css('font-size:26px;color:var(--sp-navy);margin:0 0 10px')}>Muy pronto</h1>
+          <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;color:var(--sp-muted);line-height:1.6;margin:0 0 22px')}>Todavía no hay notas publicadas en el blog.</p>
+          <a href={`${BP}/blog/`} className="btn-teal" style={css('display:inline-flex;align-items:center;height:46px;padding:0 24px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:800')}>Ir al blog</a>
         </div>
       </div>
     );
@@ -69,11 +69,11 @@ export default async function BlogPost({ params }) {
       <A title={post.title} intro={post.intro} minutes={post.minutes} date={formatFecha(post.date)} categoria={post.categoria} slug={post.slug} cover={post.cover} dato={post.cover_dato} relacionadas={getRelacionadas(post.slug, 3, serie?.siguiente ? [serie.siguiente.slug] : [])} serie={serie}>
       <div dangerouslySetInnerHTML={{ __html: html }} />
       {post.sources.length > 0 && (
-        <div style={css('border-top:1px solid #F0F0F0;margin-top:30px;padding-top:18px')}>
+        <div style={css('border-top:1px solid var(--sp-line-2);margin-top:30px;padding-top:18px')}>
           <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#9A9A9A;margin-bottom:9px')}>Fuentes</div>
           <ul style={css('margin:0;padding-left:18px')}>
             {post.sources.map((s) => (
-              <li key={s} style={css('margin-bottom:5px')}><a href={s} target="_blank" rel="noopener" style={css('font-size:13px;color:#007d77;word-break:break-all')}>{s}</a></li>
+              <li key={s} style={css('margin-bottom:5px')}><a href={s} target="_blank" rel="noopener" style={css('font-size:13px;color:var(--sp-teal-deep);word-break:break-all')}>{s}</a></li>
             ))}
           </ul>
         </div>

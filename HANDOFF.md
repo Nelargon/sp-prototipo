@@ -1797,7 +1797,7 @@ contra las tres puertas, con números.
 | **LCP** en gama media (CPU 4×) sobre 4G | home 924 ms · simulador 668 ms · planes 324 ms (vara 2500) |
 | **CLS** | 0,000 · 0,001 · 0,000 (vara 0,1) |
 | **Foco visible** | 40/40 interactivos de la home cambian al recibir foco |
-| **Tokens** | ❌ **17 valores de radio distintos · 618 hex a mano de 84 colores** |
+| **Tokens** | ❌ **17 valores de radio distintos · 618 hex a mano de 84 colores** → ✅ desde el 6 ago, ver abajo |
 
 ⚠ **Dos trampas de medición que quedaron aprendidas y comentadas en el código:**
 - **LCP hay que OBSERVARLO, no consultarlo.** `getEntriesByType('largest-
@@ -1809,8 +1809,8 @@ contra las tres puertas, con números.
   verde reportado desde headless es un número inventado; sale de CrUX cuando
   haya tráfico. Quedó escrito para que nadie lo prometa.
 
-**Lo que el boletín deja pedido (y que esta sesión NO ejecutó):**
-1. **Pasada de tokens** — es lo único que separa al prototipo del B+ de Craft.
+**Lo que el boletín deja pedido:**
+1. ~~**Pasada de tokens**~~ — **hecha el 6 ago** (ver "La pasada de tokens" abajo).
 2. **`₲` vs `Gs.`**: el sitio renderiza `₲ 238.000`, el criterio fija
    `Gs. 1.250.000`. Hay que elegir uno y aplicarlo en los dos lados.
 3. **La tabla de contraste del criterio necesita `#007d77`**: propone resolver
@@ -1830,6 +1830,42 @@ hosting, no dueño del diseño. Cotizador, guía y blog ya existen y funcionan. 
 el alcance cambió, o el criterio está escrito sobre un supuesto vencido. **Es
 decisión de Arturo y toca la relación con un proveedor: se discute en
 `sp-interno`, no en este repo público.**
+
+### ⭐ LA PASADA DE TOKENS — el sistema de color y radio (6 ago 2026)
+
+**Qué era el problema.** El criterio: *"si los colores están escritos a mano en
+cada componente, esta entrega nos cuesta el doble el año que viene"*. Medido:
+**970 usos de 100 colores** y **17 valores de `border-radius`**, todo en estilos
+inline. Cambiar el navy no era editar una línea, era recorrer cientos de lugares.
+
+**Dónde vive ahora.** Bloque `:root` en `app/globals.css`, con un comentario
+largo que explica qué se tokenizó y qué no. **Al escribir estilo nuevo se usan
+los tokens** — un hex a mano que se repita tres veces vuelve a poner el QA en
+rojo, y esta vez con razón.
+
+| | Antes | Ahora |
+|---|---|---|
+| Usos de token | 0 | **830** |
+| Colores repetidos 3+ veces sin token | 20 (297 usos) | **0** |
+| Radios a mano teniendo token | 99 | **0** |
+
+**Lo que quedó afuera, declarado:** blanco y negro puros (174 usos — no son
+decisiones de marca); hex en atributos SVG (53 — `fill="#..."` no acepta
+`var()`, y la paleta de `blog/Cover.jsx` los alimenta por variable); 42 tintes
+de uso único en un solo componente.
+
+**Lo único abierto, y es de diseño:** dos pasos de radio (**14px ×19** y **18px
+×11**) caen a mitad de camino entre `--r-sm`/`--r-md` y `--r-md`/`--r-lg`. Los
+que estaban a 1-2px de un paso se acercaron (35 casos, invisible); mover 30
+tarjetas 2px es una decisión de diseño, no una pasada mecánica. El QA la deja
+anotada en amarillo.
+
+⚠ **Y cambió la vara del guardián, que es media historia.** El chequeo viejo
+contaba *todo* hex contra un umbral de 200: metía los `#fff` que no se
+tokenizan, y el estado post-pasada lo habría pasado **raspando con 186**. Un
+umbral que se pasa raspando es un adorno. Hoy la regla es la que el criterio
+pregunta de verdad: **un color usado tres o más veces es una decisión tomada; si
+no tiene nombre, es un token que nadie declaró.** Misma vara para los radios.
 
 ### ⭐ EL MAPA DE COBERTURA — qué superficie responde qué (6 ago 2026)
 
