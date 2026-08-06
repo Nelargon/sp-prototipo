@@ -199,46 +199,80 @@ console.log('\n== 1. FUNCIONAL ==');
    ("Landing v1"). Ningún merge puede ver eso: el defecto no vive en el diff,
    vive en el nav entero. Ver BITACORA cap. 67.
 
-   ⚠ La regla es DOS DESPLEGABLES, no "dos links". La primera versión contaba
-   links repetidos a secas y marcó tres cosas deliberadas: /simulador/ aparece
-   dos veces en el menú Planes MÁS el CTA principal; "Mi SP" es a la vez el
-   título del desplegable y una entrada adentro; y la Guía se enlaza al ancla
-   #mi-red y a su portada. Nada de eso es un error — y un chequeo que grita
-   sobre lo que está bien enseña a ignorarlo. Dos entradas dentro del MISMO
-   panel son un reparto de intenciones; la misma página en DOS paneles es un
-   descuido de coordinación. */
-{
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(400);
-  const nav = await page.evaluate(() => {
-    const paneles = [...document.querySelectorAll('.navmenu-card')];
-    const porDestino = {};
-    paneles.forEach((panel, iPanel) => {
-      panel.querySelectorAll('a[href]').forEach((a) => {
-        const u = a.getAttribute('href') || '';
-        if (u.startsWith('tel:') || u.startsWith('mailto:')) return;
-        // El ancla SÍ distingue: /guia#mi-red y /guia son destinos distintos.
-        const e = (porDestino[u] = porDestino[u] || { paneles: [], textos: [] });
-        if (!e.paneles.includes(iPanel)) e.paneles.push(iPanel);
-        e.textos.push((a.innerText || '').trim().split('\n')[0]);
-      });
-    });
-    return Object.entries(porDestino)
-      .filter(([, e]) => e.paneles.length > 1)
-      .map(([u, e]) => [u, e.textos]);
-  });
-  if (!nav.length) ok('funcional', 'nav: ninguna página aparece en dos desplegables distintos');
-  else for (const [dest, textos] of nav) falla('funcional', 'confunde', `nav: "${dest}" aparece en 2+ desplegables distintos (${textos.join(' / ')})`, '/');
+   ⚠ SE MIDEN LAS DOS IMPLEMENTACIONES Y LOS DOS TAMAÑOS, y no es un lujo:
+   el sitio tiene DOS headers —el inline de `app/page.jsx` (solo la home) y el
+   compartido de `app/Header.jsx` (los otros 8 módulos)— más un menú móvil
+   aparte en cada uno. La primera versión de este chequeo abría solo `/` en
+   escritorio: miraba el header inline y dejaba ciegos el compartido y los dos
+   menús móviles. Habría dado verde con el duplicado puesto en cualquiera de
+   esos tres lugares. **Un guardián que no cubre donde el bug puede esconderse
+   es el mismo error que vino a prevenir** — y acá el bug nació justamente de
+   que hay dos headers.
 
-  /* Jerga interna a la vista del cliente. La regla de lenguaje del CLAUDE.md
-     manda escribir en el idioma de una familia; un nombre de versión en un
-     menú es exactamente lo contrario. */
-  const cuerpo = await page.innerText('body');
-  const jerga = ['Landing v1', 'TODO:', 'lorem ipsum'].filter((j) => cuerpo.includes(j));
-  if (!jerga.length) ok('contenido', 'nav/home sin jerga interna ni nombres de versión a la vista');
-  else falla('contenido', 'confunde', 'jerga interna visible: ' + jerga.join(', '), '/');
-  await page.close();
+   ⚠ La regla es DOS DESPLEGABLES, no "dos links". Contar links repetidos a
+   secas marcaba tres cosas deliberadas: /simulador/ aparece dos veces en el
+   menú Planes MÁS el CTA principal; "Mi SP" es a la vez el título del
+   desplegable y una entrada adentro; y la Guía se enlaza al ancla #mi-red y a
+   su portada. Dos entradas dentro del MISMO panel son un reparto de
+   intenciones; la misma página en DOS paneles es un descuido de coordinación. */
+{
+  const JERGA = ['Landing v1', 'TODO:', 'lorem ipsum'];
+  // '/' usa el header inline de page.jsx; '/planes/' usa el Header compartido.
+  for (const [ruta, cual] of [['/', 'header inline (home)'], ['/planes/', 'Header compartido']]) {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await page.goto(BASE + ruta, { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(400);
+    const dup = await page.evaluate(() => {
+      const paneles = [...document.querySelectorAll('.navmenu-card')];
+      const porDestino = {};
+      paneles.forEach((panel, iPanel) => {
+        panel.querySelectorAll('a[href]').forEach((a) => {
+          const u = a.getAttribute('href') || '';
+          if (u.startsWith('tel:') || u.startsWith('mailto:')) return;
+          // El ancla SÍ distingue: /guia#mi-red y /guia son destinos distintos.
+          const e = (porDestino[u] = porDestino[u] || { paneles: [], textos: [] });
+          if (!e.paneles.includes(iPanel)) e.paneles.push(iPanel);
+          e.textos.push((a.innerText || '').trim().split('\n')[0]);
+        });
+      });
+      return Object.entries(porDestino).filter(([, e]) => e.paneles.length > 1).map(([u, e]) => [u, e.textos]);
+    });
+    if (!dup.length) ok('funcional', `nav ${cual}: ninguna página aparece en dos desplegables`);
+    else for (const [d, t] of dup) falla('funcional', 'confunde', `nav ${cual}: "${d}" en 2+ desplegables (${t.join(' / ')})`, ruta);
+
+    const cuerpo = await page.innerText('body');
+    const jerga = JERGA.filter((j) => cuerpo.includes(j));
+    if (!jerga.length) ok('contenido', `${cual}: sin jerga interna ni nombres de versión a la vista`);
+    else falla('contenido', 'confunde', `jerga interna visible en ${cual}: ` + jerga.join(', '), ruta);
+    await page.close();
+
+    /* El menú móvil es OTRO markup: plano, sin desplegables, y solo existe
+       abierto. Si no se abre acá, no lo mira nadie. */
+    const m = await browser.newPage({ viewport: { width: 390, height: 740 } });
+    await m.goto(BASE + ruta, { waitUntil: 'domcontentloaded' });
+    await m.waitForTimeout(300);
+    const burger = m.locator('.nav-burger').first();
+    if (await burger.count()) {
+      await burger.click();
+      await m.waitForTimeout(500);
+      const movil = await m.evaluate(() => {
+        const porDestino = {};
+        document.querySelectorAll('.menu-overlay a[href]').forEach((a) => {
+          const u = a.getAttribute('href') || '';
+          if (u.startsWith('tel:') || u.startsWith('mailto:')) return;
+          (porDestino[u] = porDestino[u] || []).push((a.innerText || '').trim());
+        });
+        const dups = Object.entries(porDestino).filter(([, t]) => t.length > 1);
+        return { dups, texto: document.querySelector('.menu-overlay').innerText };
+      });
+      if (!movil.dups.length) ok('funcional', `menú móvil ${cual}: sin destinos repetidos`);
+      else for (const [d, t] of movil.dups) falla('funcional', 'confunde', `menú móvil ${cual}: "${d}" repetido (${t.join(' / ')})`, ruta);
+      const jm = JERGA.filter((j) => movil.texto.includes(j));
+      if (!jm.length) ok('contenido', `menú móvil ${cual}: sin jerga interna`);
+      else falla('contenido', 'confunde', `jerga interna en el menú móvil de ${cual}: ` + jm.join(', '), ruta);
+    } else falla('funcional', 'roto', `no se encontró el botón del menú móvil`, ruta);
+    await m.close();
+  }
 }
 
 /* ============ 2. RESPONSIVE (77% del tráfico) ============ */

@@ -80,7 +80,12 @@ El menú móvil conserva su propia entrada **a propósito**: es plano y no tiene
 los desplegables donde vive la de escritorio. Sin ella, `/que-cubre` se quedaba
 sin puerta de menú justo para el 77% del tráfico.
 
-Evento: `nav_landing{destino:'que-cubre', origen:'nav_menu'|'menu_movil'}` — **las tres puertas emiten**, para que el embudo no pierda las visitas de escritorio.
+**Eventos — ojo, son DOS, no uno.** Las puertas de menú emiten
+`nav_landing{destino:'que-cubre', origen:'nav_menu'|'menu_movil'}`; la tarjeta
+del comparador emite `ver_que_cubre{origen:'comparador'}` (viene del PR #91 y
+se respeta). **Un embudo que consulte solo `nav_landing` va a perder a los que
+entran por el comparador** — hay que sumar los dos eventos para tener las tres
+puertas.
 
 ### Lo que una sesión futura tiene que saber (del buscador)
 
