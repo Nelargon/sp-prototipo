@@ -149,7 +149,7 @@ export function Term({ k, children }) {
         onBlur={() => setOpen(false)}
         // Subrayado punteado: la convención de "esto se puede consultar". No usa
         // color de link para no competir con los links reales de la página.
-        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted #007d77;text-underline-offset:2px')}
+        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px')}
       >
         {children || term.t}
       </button>
@@ -168,7 +168,7 @@ export function Term({ k, children }) {
           // descarta la declaración entera en silencio. El signo va en el
           // operador, no pegado al número.
           'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));bottom:calc(100% + 8px);z-index:40;'
-          + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:10px;background:#003B71;color:#fff;'
+          + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
           + 'box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;'
           + (open ? 'display:block' : 'display:none')

@@ -2443,6 +2443,109 @@ arreglado doce días antes. Otra verificó sobre un checkout tres merges atrás.
 
 ---
 
+## Capítulo 67 — Cambié el termómetro y leí la fiebre del paciente
+
+**Qué intentamos.** La pasada de tokens: sacar 970 colores escritos a mano de
+`app/` y ponerlos en variables. Trabajo mecánico, con una red clara — 16
+capturas de pantalla de antes, 16 de después, y la diferencia tiene que ser
+cero o explicable.
+
+**Qué pasó.** La primera ola salió limpia: 611 reemplazos, 13 de 16 capturas
+byte a byte idénticas. La segunda ola tocaba menos archivos. Corrí las capturas
+de después y el diff dio esto: **la home con el 26% de los píxeles cambiados, la
+página de historia con el 13%, y dos páginas móviles que habían cambiado de
+altura.** Un cambio de altura no lo produce un color: eso es layout. Algo se
+había roto feo.
+
+Fui a buscar qué. Recorté la zona de la home donde el diff era más grande y la
+miré: en el "antes" había blanco vacío, en el "después" estaba la tarjeta de
+"Quiénes somos". Contenido que aparecía de la nada. Eso no lo hace un token.
+
+Lo hacía **mi script**. Las capturas de línea de base las había sacado un
+`snap.mjs` que scrollea hasta el fondo de la página —despertando las
+animaciones de revelado y las imágenes lazy— y después vuelve arriba. Para las
+capturas de después escribí un script nuevo, más prolijo, que en vez de
+scrollear forzaba las clases del revelado a mano. Dos instrumentos distintos
+midiendo el mismo paciente. Volví a capturar con el script original y el
+resultado real fue: **todo por debajo del 0,5%, salvo el hero animado de
+`/historia`, y ninguna altura cambiada.**
+
+**Qué aprendimos.**
+
+1. **Una línea de base incluye el instrumento que la produjo.** Guardar las
+   imágenes no alcanza: el script que las sacó es parte del dato. Si se
+   reescribe, la comparación deja de comparar el cambio y pasa a comparar los
+   dos scripts. Y lo peor es que el resultado *parece* un hallazgo — grande,
+   alarmante y falso.
+2. **Es la misma familia de error que la verificación circular del cap. 63**,
+   por el otro lado. Allá el chequeo usaba la misma lógica que la función que
+   probaba, y daba verde siempre. Acá el chequeo usaba una lógica distinta de la
+   del original, y daba rojo siempre. En los dos casos la falla no está en el
+   sujeto: está en el que mide. **Antes de creerle a una medición sorprendente,
+   preguntar si el instrumento es el mismo de la vez anterior.**
+3. **La pista estaba en la dimensión, no en el porcentaje.** El 26% se podía
+   racionalizar ("serán los bordes, las sombras"). Que una página móvil midiera
+   56px menos de alto, no: los colores no cambian la altura. **En un diff, el
+   dato que no se puede explicar con la hipótesis es el que hay que perseguir**
+   — no el más grande.
+4. **Recortar y mirar cuesta dos minutos y termina la discusión.** Estuve varios
+   pasos armando teorías sobre gradientes desplazados y overlays con opacidad.
+   La respuesta estaba en abrir la imagen.
+
+## Capítulo 68 — Un umbral que se pasa raspando es un adorno
+
+**Qué intentamos.** Que el QA vigilara los tokens de verdad. El guardián
+existente contaba todos los hex del árbol y fallaba si pasaban de 200.
+
+**Qué pasó.** Terminada la primera ola, el conteo bajó de 970 a **186**. El
+guardián se ponía verde. Y era un verde vacío por dos motivos a la vez: de los
+389 hex que quedaban, 174 eran `#fff` y `#000` —que **no se tokenizan a
+propósito**, no son decisiones de marca— y 53 vivían en atributos SVG, donde
+`var()` no existe. O sea que el número que se comparaba contra el umbral mezclaba
+lo que había que arreglar con lo que nunca se iba a tocar. Y sobre todo:
+**pasaba por 14 puntos.** Un guardián que se aprueba raspando no está midiendo,
+está decorando.
+
+Lo reescribí para que midiera lo que el criterio pregunta de verdad. La
+traducción quedó así: *un color usado tres o más veces es una decisión de diseño
+tomada; si no tiene nombre, es un token que nadie declaró, y el rebrand se lo va
+a saltear.* Un tinte usado una sola vez en un componente es una excepción local
+y se admite.
+
+Con esa vara aparecieron **20 colores** que el conteo global escondía. Los tres
+colores de plan —Bronze, Silver, Gold— estaban clavados por separado en
+`quote.js`, en `Buscador` y en `Landing`: cambiar el dorado en uno dejaba a los
+otros dos en desacuerdo y nada avisaba. Y había **cuatro azules distintos
+haciendo un solo trabajo**: "texto secundario sobre navy", en el blog, en el
+footer, en el simulador y en mi-sp.
+
+**Qué aprendimos.**
+
+1. **Un umbral global sobre una población mezclada no mide nada.** 186 no
+   quería decir nada porque adentro había tres poblaciones con destinos
+   distintos. Antes de poner una vara, separar lo que se puede arreglar de lo
+   que se decidió no arreglar — y decir cuál es cuál en la salida del chequeo.
+2. **La forma correcta de la pregunta era "¿esto es una decisión?", no
+   "¿cuántos hay?".** Un color repetido tres veces es una decisión sin nombre.
+   Esa vara encontró el bug real —el dorado triplicado— que ningún conteo global
+   iba a encontrar nunca, porque tres usos entre 186 no mueven la aguja.
+3. **Cuatro valores para un trabajo es la enfermedad, no el síntoma.** Tokenizar
+   los cuatro azules por separado habría dado verde y habría dejado el problema
+   intacto, con nombres bonitos. Un token por *decisión*, no por *valor*: eso sí
+   mueve píxeles, y moverlos es exactamente el punto.
+4. **Lo que no es mecánico, no se hace mecánicamente.** Los radios que estaban a
+   1-2px de un paso de la escala se acercaron: 35 casos que nadie ve. Los de
+   14px (19 usos) y 18px (11) caen a mitad de camino entre dos pasos, y correr
+   30 tarjetas 2px es una decisión de diseño. Quedaron **anotados en amarillo en
+   el QA** en lugar de resueltos por mí. Un guardián también sirve para sostener
+   una pregunta abierta hasta que la conteste quien corresponde.
+5. **Un verde tiene que ser tan verificable como un rojo.** De paso apareció que
+   la auditoría de contraste solo hablaba cuando fallaba: su silencio se leía
+   igual que un aprobado, y no se distinguía de "no corrió". Ahora dice cuántos
+   pares midió y cuál quedó más justo (32 pares, el peor 4,52:1 sobre 4,5).
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

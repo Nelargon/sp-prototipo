@@ -28,7 +28,7 @@ export default function SimuladorPage() {
   ];
 
   return (
-    <div className="body" style={css('color:#3D3D3D;background:#fff;min-height:100vh')}>
+    <div className="body" style={css('color:var(--sp-text);background:#fff;min-height:100vh')}>
 
       <Header variant="dark" />
 
@@ -42,41 +42,41 @@ export default function SimuladorPage() {
           ocupaba lugar en el flujo), así que el hero arranca debajo de la nav:
           se le suma su alto al padding superior. 88px en escritorio, 84 en
           móvil — se usa el mayor más aire. */}
-      <section className="sim-hero" style={css('background:#003B71;color:#fff;padding:128px 24px 26px')}>
+      <section className="sim-hero" style={css('background:var(--sp-navy);color:#fff;padding:128px 24px 26px')}>
         <div style={css('max-width:720px;margin:0 auto;text-align:center')}>
-          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.025em;margin:0')}>Tu plan y tu precio, <span style={css('color:#00BCB4')}>en un minuto</span>.</h1>
+          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.025em;margin:0')}>Tu plan y tu precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h1>
         </div>
       </section>
 
       {/* SIMULADOR — el degradé continúa el navy del hero sin salto de color */}
-      <section style={css('background:linear-gradient(180deg,#003B71 0%,#00294f 100%);padding:0 24px 72px')}>
+      <section style={css('background:linear-gradient(180deg,var(--sp-navy) 0%,#00294f 100%);padding:0 24px 72px')}>
         <Simulador />
       </section>
 
       {/* TRUST STRIP */}
-      <section style={css('background:#fff;padding:40px 24px;border-bottom:1px solid #F0F0F0')}>
+      <section style={css('background:#fff;padding:40px 24px;border-bottom:1px solid var(--sp-line-2)')}>
         <div className="two-col" style={css('max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
           {trust.map((t, i) => (
             <div key={i} style={css('display:flex;align-items:center;gap:12px;justify-content:center;text-align:left')}>
-              <span style={css('width:42px;height:42px;border-radius:12px;background:#E6F7F6;color:#007d77;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon} /></svg></span>
-              <span style={css('font-size:14.5px;font-weight:700;color:#003B71;line-height:1.35')}>{t.text}</span>
+              <span style={css('width:42px;height:42px;border-radius:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon} /></svg></span>
+              <span style={css('font-size:14.5px;font-weight:700;color:var(--sp-navy);line-height:1.35')}>{t.text}</span>
             </div>
           ))}
         </div>
       </section>
 
       {/* MINI-OBJECIONES */}
-      <section style={css('background:#F5F5F5;padding:64px 24px')}>
+      <section style={css('background:var(--sp-surface);padding:64px 24px')}>
         <div style={css('max-width:960px;margin:0 auto')}>
           <div style={css('text-align:center;max-width:560px;margin:0 auto 36px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007d77;margin-bottom:12px')}>Sin letra chica</div>
-            <h2 className="disp" style={css('font-size:30px;font-weight:800;color:#003B71;line-height:1.16;letter-spacing:-0.02em;margin:0')}>Lo que te estarás preguntando</h2>
+            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:12px')}>Sin letra chica</div>
+            <h2 className="disp" style={css('font-size:30px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0')}>Lo que te estarás preguntando</h2>
           </div>
           <div className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:18px')}>
             {objeciones.map((o, i) => (
-              <div key={i} style={css('background:#fff;border:1px solid #E8E8E8;border-radius:16px;padding:24px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.05)')}>
-                <div style={css('font-size:16px;font-weight:800;color:#003B71;line-height:1.3;margin-bottom:8px')}>{o.q}</div>
-                <div style={css('font-size:14px;color:#6B6B6B;line-height:1.55')}>{o.a}</div>
+              <div key={i} style={css('background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);padding:24px 22px;box-shadow:0 1px 3px rgba(0,0,0,0.05)')}>
+                <div style={css('font-size:16px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:8px')}>{o.q}</div>
+                <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55')}>{o.a}</div>
               </div>
             ))}
           </div>
@@ -84,28 +84,28 @@ export default function SimuladorPage() {
       </section>
 
       {/* CIERRE WHATSAPP */}
-      <section style={css('background:#003B71;padding:56px 24px')}>
-        {/* Teal profundo: el blanco sobre #00BCB4 medía 2.37:1 en el título y 2.2:1
+      <section style={css('background:var(--sp-navy);padding:56px 24px')}>
+        {/* Teal profundo: el blanco sobre var(--sp-teal) medía 2.37:1 en el título y 2.2:1
             en la bajada (hallazgo del QA). Misma regla que la home. */}
-        <div style={css('max-width:820px;margin:0 auto;background:#007d77;border-radius:22px;padding:40px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap')}>
+        <div style={css('max-width:820px;margin:0 auto;background:var(--sp-teal-deep);border-radius:var(--r-lg);padding:40px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap')}>
           <div style={css('max-width:460px')}>
             <h2 className="disp" style={css('font-size:26px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px')}>¿Preferís hablarlo con alguien?</h2>
             <p style={css('font-size:16px;color:rgba(255,255,255,0.96);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
           </div>
           {/* Sin nowrap: Nunito Sans es más ancha que Gilroy y en 360px el
               rótulo desbordaba la pantalla (QA, jul 2026) — que quiebre línea. */}
-          <a href={waHref} target="_blank" rel="noopener" className="btn-white-teal" style={css('min-height:52px;padding:12px 24px;border-radius:13px;background:#fff;color:#007d77;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
+          <a href={waHref} target="_blank" rel="noopener" className="btn-white-teal" style={css('min-height:52px;padding:12px 24px;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>
         </div>
       </section>
 
       {/* FOOTER minimal */}
-      <footer style={css('background:#002A52;color:#fff;padding:36px 24px')}>
+      <footer style={css('background:var(--sp-navy-deep);color:#fff;padding:36px 24px')}>
         <div style={css('max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap')}>
           <div style={css('display:flex;align-items:center;gap:14px')}>
             <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:50px;display:block')} />
-            <span style={css('font-size:13.5px;color:#9bb6d2')}>Salud Protegida · Asunción, Paraguay</span>
+            <span style={css('font-size:13.5px;color:var(--sp-blue-meta)')}>Salud Protegida · Asunción, Paraguay</span>
           </div>
-          <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('font-size:14px;color:#cfe0f0;font-weight:700')}>Urgencias 24 h: {SP_PHONE_DISPLAY}</a>
+          <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('font-size:14px;color:var(--sp-blue-pale);font-weight:700')}>Urgencias 24 h: {SP_PHONE_DISPLAY}</a>
         </div>
       </footer>
 

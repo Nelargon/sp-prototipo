@@ -47,31 +47,31 @@ export default function Agendar() {
   };
 
   const chip = (label, active, onClick) =>
-    css('cursor:pointer;font-family:var(--font-display),sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:12px;transition:background .2s,border-color .2s,color .2s;border:1px solid ' +
-      (active ? '#007d77' : '#d7e2ea') + ';background:' + (active ? '#007d77' : '#fff') + ';color:' + (active ? '#fff' : '#1D1D1B'));
+    css('cursor:pointer;font-family:var(--font-display),sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:var(--r-sm);transition:background .2s,border-color .2s,color .2s;border:1px solid ' +
+      (active ? 'var(--sp-teal-deep)' : '#d7e2ea') + ';background:' + (active ? 'var(--sp-teal-deep)' : '#fff') + ';color:' + (active ? '#fff' : 'var(--sp-ink)'));
 
-  const inputStyle = css('width:100%;height:50px;border:1.5px solid #d7e2ea;border-radius:13px;padding:0 16px;font-size:16px;color:#1D1D1B;background:#fff;outline:none;font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif');
-  const labelStyle = css('font-size:13.5px;font-weight:800;color:#003B71;margin-bottom:10px;display:block');
+  const inputStyle = css('width:100%;height:50px;border:1.5px solid #d7e2ea;border-radius:var(--r-sm);padding:0 16px;font-size:16px;color:var(--sp-ink);background:#fff;outline:none;font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif');
+  const labelStyle = css('font-size:13.5px;font-weight:800;color:var(--sp-navy);margin-bottom:10px;display:block');
   const rowStyle = css('display:flex;flex-wrap:wrap;gap:9px');
 
   return (
-    <div className="body" style={css('min-height:100vh;background:#002A52;color:#fff;display:flex;flex-direction:column')}>
+    <div className="body" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
       <Header variant="dark" />
 
       <div style={css('flex:1;padding:34px 24px 80px')}>
         <div style={css('max-width:680px;margin:0 auto')}>
-          <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#80DDD8;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:999px;margin-bottom:20px')}>Agendá tu turno</div>
-          <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 14px')}>Pedí tu turno, <span style={css('color:#00BCB4')}>sin vueltas</span>.</h1>
-          <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.65;color:#B3C7DB;max-width:540px;margin:0 0 30px')}>Elegí qué necesitás y cuándo te queda cómodo. Un asesor te confirma día y hora — <b style={css('color:#e8f2fb')}>sin login ni vueltas</b>. Empezamos por el Centro Médico Lister, nuestro centro propio.</p>
+          <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px')}>Agendá tu turno</div>
+          <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 14px')}>Pedí tu turno, <span style={css('color:var(--sp-teal)')}>sin vueltas</span>.</h1>
+          <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.65;color:var(--sp-blue-soft);max-width:540px;margin:0 0 30px')}>Elegí qué necesitás y cuándo te queda cómodo. Un asesor te confirma día y hora — <b style={css('color:#e8f2fb')}>sin login ni vueltas</b>. Empezamos por el Centro Médico Lister, nuestro centro propio.</p>
 
-          <div style={css('background:#fff;color:#1D1D1B;border-radius:22px;padding:28px 26px;box-shadow:0 20px 50px rgba(0,15,35,0.28)')}>
+          <div style={css('background:#fff;color:var(--sp-ink);border-radius:var(--r-lg);padding:28px 26px;box-shadow:0 20px 50px rgba(0,15,35,0.28)')}>
             {/* Centro */}
             <div style={css('margin-bottom:22px')}>
               <label style={labelStyle}>¿Dónde querés atenderte?</label>
               <div style={rowStyle}>
                 {CENTROS.map((c) => <button key={c} type="button" onClick={() => setCentro(c)} style={chip(c, centro === c)}>{c}</button>)}
               </div>
-              {centro === 'Otro centro de la red' && <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#6B6B6B;margin-top:9px')}>Perfecto — nuestro asesor te ayuda a coordinar el turno en el prestador de la red que prefieras.</div>}
+              {centro === 'Otro centro de la red' && <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);margin-top:9px')}>Perfecto — nuestro asesor te ayuda a coordinar el turno en el prestador de la red que prefieras.</div>}
             </div>
 
             {/* Especialidad */}
@@ -103,20 +103,20 @@ export default function Agendar() {
             {/* Deshabilitado: antes era blanco sobre #c8d4dc (1.51:1 medido) — el
                 rótulo casi desaparecía y se leía "roto", no "todavía no". Gris
                 oscuro sobre gris claro dice deshabilitado Y se lee. */}
-            <button type="button" onClick={pedir} disabled={!listo} style={css('width:100%;height:56px;border:none;border-radius:15px;background:' + (listo ? '#007d77' : '#E4EAEF') + ';color:' + (listo ? '#fff' : '#4A5A66') + ';font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
+            <button type="button" onClick={pedir} disabled={!listo} style={css('width:100%;height:56px;border:none;border-radius:var(--r-md);background:' + (listo ? 'var(--sp-teal-deep)' : '#E4EAEF') + ';color:' + (listo ? '#fff' : '#4A5A66') + ';font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>
               Pedir turno por WhatsApp
             </button>
-            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:#6B6B6B;line-height:1.55;text-align:center;margin-top:12px')}>Te abrimos WhatsApp con tu pedido ya escrito. Un asesor confirma día y hora. {!listo && <span style={css('color:#6B6B6B')}>— completá qué necesitás y tu nombre.</span>}</div>
+            <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);line-height:1.55;text-align:center;margin-top:12px')}>Te abrimos WhatsApp con tu pedido ya escrito. Un asesor confirma día y hora. {!listo && <span style={css('color:var(--sp-muted)')}>— completá qué necesitás y tu nombre.</span>}</div>
           </div>
 
           {/* Alternativa: llamar */}
-          <div style={css('display:flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--font-inter),sans-serif;font-size:14.5px;color:#B3C7DB')}>
+          <div style={css('display:flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--font-inter),sans-serif;font-size:14.5px;color:var(--sp-blue-soft)')}>
             <span>¿Preferís hablar?</span>
-            <a href={`tel:${SP_TEL}`} onClick={() => track('agendar_llamar', { via: 'tel' })} style={css('color:#80DDD8;font-weight:700')}>Llamanos al {SP_PHONE_DISPLAY}</a>
+            <a href={`tel:${SP_TEL}`} onClick={() => track('agendar_llamar', { via: 'tel' })} style={css('color:var(--sp-mint);font-weight:700')}>Llamanos al {SP_PHONE_DISPLAY}</a>
           </div>
 
-          <p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:#7fa6cc;line-height:1.6;margin:26px 0 0;max-width:540px')}>¿Ya sos de Salud Protegida y querés ver tus turnos y tu red? <a href={`${BP}/mi-sp/`} style={css('color:#00BCB4;font-weight:700;text-decoration:underline;text-underline-offset:3px')}>Entrá a Mi SP</a>.</p>
+          <p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-blue-meta);line-height:1.6;margin:26px 0 0;max-width:540px')}>¿Ya sos de Salud Protegida y querés ver tus turnos y tu red? <a href={`${BP}/mi-sp/`} style={css('color:var(--sp-teal);font-weight:700;text-decoration:underline;text-underline-offset:3px')}>Entrá a Mi SP</a>.</p>
         </div>
       </div>
     </div>

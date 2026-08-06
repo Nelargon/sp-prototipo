@@ -63,11 +63,11 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // pública del `?plan=` del comparador. Ambas viven ACÁ (fuente única): el botón y
 // el simulador derivan de este mismo array, así el puente no se puede desincronizar.
 export const plans = () => [
-  { name: 'Plan Bronze', short: 'Bronze', nivel: 'esencial', price: TARIFAS.bronce.solo[0], color: '#A9724B', tag: 'Para empezar a cuidarte',
+  { name: 'Plan Bronze', short: 'Bronze', nivel: 'esencial', price: TARIFAS.bronce.solo[0], color: 'var(--sp-plan-bronze)', tag: 'Para empezar a cuidarte',
     lines: ['Urgencias 24 h al 100%, desde el día uno', 'Consultas con especialistas (hasta 3 al año por especialidad)', 'Radiografías y ecografías cubiertas', 'Internación semi-suite, hasta 20 días al año', 'Psicología: 3 sesiones al año'] },
-  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: '#66717E', tag: 'El que suma resonancia',
+  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'El que suma resonancia',
     lines: ['Todo lo de Bronze, con más consultas (5 al año)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
-  { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: '#B8860B', tag: 'La cobertura más amplia',
+  { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
     lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
 
@@ -126,7 +126,7 @@ export const engine = (d) => {
     bronce: { name: base[0].name, color: base[0].color, why: 'Cobertura real de entrada: urgencias, consultas y estudios del día a día, al precio más accesible.' },
     silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: suma tomografía y resonancia al 100%, más días de terapia intensiva y topes más altos.' },
     gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia del tarifario vigente: consultas sin tope, más días de internación y los topes más altos.' },
-    vital: { name: 'Plan Vital', color: '#003B71', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
+    vital: { name: 'Plan Vital', color: 'var(--sp-navy)', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
   let best;
   if (d.who === 'padres') best = 'vital';
