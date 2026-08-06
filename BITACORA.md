@@ -2443,7 +2443,7 @@ arreglado doce días antes. Otra verificó sobre un checkout tres merges atrás.
 
 ---
 
-## Capítulo 66 — Dos sesiones enlazaron la misma página y el merge no dijo nada
+## Capítulo 67 — Dos sesiones enlazaron la misma página y el merge no dijo nada
 
 **Qué intentamos.** Que la landing nueva tuviera una puerta. El usuario la pidió
 discreta: *"ponme en algún lugar medio escondidito… puedes poner justamente

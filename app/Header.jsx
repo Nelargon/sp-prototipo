@@ -85,7 +85,7 @@ export default function Header({ variant = 'dark' }) {
                     cobertura en HANDOFF). Un menú que promete una interacción
                     que ya no existe es peor que uno escueto. */}
                 <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Bronze, Silver y Gold, de un vistazo" />
-                <Item href={`${BP}/que-cubre/`} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
+                <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
                 <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Carencias, preexistencias, cambios de plan y más" />
               </div></div>

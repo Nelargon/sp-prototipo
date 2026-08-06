@@ -80,7 +80,7 @@ El menú móvil conserva su propia entrada **a propósito**: es plano y no tiene
 los desplegables donde vive la de escritorio. Sin ella, `/que-cubre` se quedaba
 sin puerta de menú justo para el 77% del tráfico.
 
-Evento: `nav_landing{destino:'que-cubre', origen:'menu_movil'}`.
+Evento: `nav_landing{destino:'que-cubre', origen:'nav_menu'|'menu_movil'}` — **las tres puertas emiten**, para que el embudo no pierda las visitas de escritorio.
 
 ### Lo que una sesión futura tiene que saber (del buscador)
 

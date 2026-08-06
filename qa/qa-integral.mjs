@@ -191,6 +191,40 @@ console.log('\n== 1. FUNCIONAL ==');
   await page.close();
 }
 
+/* Navegación: una puerta por destino, y sin jerga interna.
+   El 6/08 dos sesiones enlazaron /que-cubre por su cuenta el mismo día. Los dos
+   PRs tocaban partes distintas del archivo, así que git los fusionó SIN
+   CONFLICTO — y main quedó con la misma página dos veces en la misma barra,
+   bajo dos nombres distintos, uno de ellos jerga interna ("Landing v1").
+   Ningún merge puede ver eso: el defecto no vive en el diff, vive en el nav
+   entero. Por eso se mide acá. Ver BITACORA cap. 67. */
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(400);
+  const nav = await page.evaluate(() => {
+    const porDestino = {};
+    document.querySelectorAll('nav a[href], .nav-links-desktop a[href]').forEach((a) => {
+      const u = a.getAttribute('href') || '';
+      if (u.startsWith('#') || u.startsWith('tel:') || u.startsWith('mailto:')) return;
+      const destino = u.replace(/[?#].*$/, '');
+      (porDestino[destino] = porDestino[destino] || []).push(a.innerText.trim().split('\n')[0]);
+    });
+    return Object.entries(porDestino).filter(([, t]) => t.length > 1);
+  });
+  if (!nav.length) ok('funcional', 'nav: ninguna página se enlaza dos veces desde la misma barra');
+  else for (const [dest, textos] of nav) falla('funcional', 'confunde', `nav: "${dest}" aparece ${textos.length} veces en la misma barra (${textos.join(' / ')})`, '/');
+
+  /* Jerga interna a la vista del cliente. La regla de lenguaje del CLAUDE.md
+     manda escribir en el idioma de una familia; un nombre de versión o de
+     archivo en un menú es exactamente lo contrario. */
+  const cuerpo = await page.innerText('body');
+  const jerga = ['Landing v1', 'v1 ', 'TODO', 'lorem'].filter((j) => cuerpo.includes(j));
+  if (!jerga.length) ok('contenido', 'nav/home sin jerga interna ni nombres de versión a la vista');
+  else falla('contenido', 'confunde', 'jerga interna visible: ' + jerga.join(', '), '/');
+  await page.close();
+}
+
 /* ============ 2. RESPONSIVE (77% del tráfico) ============ */
 console.log('\n== 2. RESPONSIVE ==');
 for (const w of [360, 390, 430]) {
