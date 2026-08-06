@@ -53,22 +53,34 @@ forma aprobada de decir lo que el rubro llama "cartilla", y es lo que una
 familia escribe en un buscador. **No se usa "privilege" en la URL**: es nombre
 interno (dec. 11o).
 
-**Cómo se entra (6 ago 2026).** El usuario pidió una puerta *"en algún lugar
-medio escondidito"* con el nombre **"Landing v1"**: última entrada del
-desplegable **Planes** en desktop, y en el menú móvil en teal y a menor cuerpo
-que los títulos. El nombre es la etiqueta honesta de algo en evaluación —
-cuando deje de serlo, hay que renombrarla por lo que la página hace.
+**Cómo se entra (6 ago 2026, resuelto tras un choque de dos sesiones).**
+Una sola puerta de menú por superficie:
 
-> ⚠ **El link va DUPLICADO, y no es un descuido.** La home **no usa
-> `app/Header.jsx`**: tiene su propio header inline. Es el módulo que quedó
-> afuera de la unificación del PR #83 ("8 de 9"). Un link puesto solo en el
-> Header compartido **no existe en la home**, que es por donde entra casi todo
-> el mundo. Por eso está en los dos lugares, con comentario en ambos. **Cuando
-> la home migre al Header compartido, se borra la copia de `app/page.jsx`.**
-> Vale para cualquier sesión que agregue navegación: verificá en la home, no
-> solo en un módulo interno.
+| Superficie | Entrada |
+|---|---|
+| Desplegable **Cobertura** (escritorio) | "¿Está cubierto lo que me pidieron?" |
+| **Menú móvil** (es plano, no tiene desplegables) | "¿Está cubierto?" en cuerpo menor |
+| **Comparador** del home | tarjeta "¿Está cubierto lo que me pidieron?" |
 
-Evento: `nav_landing{destino:'que-cubre', origen:'nav_menu'|'menu_movil'}`.
+> ⚠ **Cómo se llegó acá — para no repetirlo.** El PR #92 puso una entrada
+> discreta llamada **"Landing v1"** en el desplegable *Planes* y en el menú
+> móvil, a pedido del usuario (*"en algún lugar medio escondidito"*). El PR #91,
+> de otra sesión y en paralelo, integró la misma página como entrada de primera
+> línea en *Cobertura* + tarjeta en el comparador, con el nombre en idioma de
+> cliente. Los dos se fusionaron el mismo día y `main` quedó con **la misma
+> página dos veces en la misma barra, bajo dos nombres distintos** — y uno de
+> ellos, "Landing v1", era **jerga interna delante del cliente**, contra la
+> regla de lenguaje del `CLAUDE.md`. Ganó el nombre del cliente; se eliminaron
+> las entradas "Landing v1". **Lección: cuando dos sesiones tocan navegación,
+> el conflicto no aparece en el `git merge` — los dos lados aplican limpio y el
+> defecto solo se ve mirando el nav entero.** Verificar la barra completa, no
+> el diff.
+
+El menú móvil conserva su propia entrada **a propósito**: es plano y no tiene
+los desplegables donde vive la de escritorio. Sin ella, `/que-cubre` se quedaba
+sin puerta de menú justo para el 77% del tráfico.
+
+Evento: `nav_landing{destino:'que-cubre', origen:'menu_movil'}`.
 
 ### Lo que una sesión futura tiene que saber (del buscador)
 
