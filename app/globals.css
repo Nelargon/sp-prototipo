@@ -212,6 +212,17 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 /* Mi SP y blog: las grillas colapsan por ancho, no por dispositivo */
 .blog-card{transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s}
 .blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}
+/* Portada editorial del blog (6 ago 2026): la destacada y el riel "Lo último".
+   Señal de toque en las dos, con el mismo vocabulario de hover del resto del
+   sitio (dec. 11u): la destacada levanta su título a teal claro, las filas del
+   riel se tiñen y corren un pelo. Todo respeta prefers-reduced-motion. */
+.blog-hero h2{transition:color .18s}
+.blog-hero:hover h2{color:#80DDD8}
+.blog-ult{transition:background .18s,padding-left .18s;border-radius:10px}
+.blog-ult:hover{background:rgba(255,255,255,0.06);padding-left:8px}
+.blog-ult-t{transition:color .18s}
+.blog-ult:hover .blog-ult-t{color:#80DDD8}
+@media(prefers-reduced-motion:reduce){.blog-hero h2,.blog-ult,.blog-ult-t{transition:none}.blog-ult:hover{padding-left:0}}
 /* Comparador "lo que cambia": en móvil la tabla scrollea horizontal (los planes
    no entran en 390px) — la columna de servicios queda PEGADA a la izquierda para
    no perder el contexto de qué fila estás mirando mientras corrés los planes. */
@@ -236,6 +247,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
    el hover rellena en teal muy suave — misma gramática que los demás botones. */
 .cmp-verplanes{transition:background .2s,border-color .2s}
 .cmp-verplanes:hover{background:#F2FBFA;border-color:#8fd9d3}
+@media(max-width:1000px){.blog-top{grid-template-columns:1fr !important;gap:26px !important}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}

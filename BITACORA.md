@@ -2121,6 +2121,64 @@ el bloque tenía los datos y ninguna emoción. Juntos leen como un solo pensamie
 
 ---
 
+## Capítulo 63 — Cuatro bugs que solo aparecen cuando hay veintidós notas
+
+**Qué intentamos.** Arturo pasó dos capturas sin una sola palabra de
+instrucción: la portada de **Men's Health** y el **newsletter de Arnold's Pump
+Club**. Antes de preguntarle qué quería, fuimos a mirar nuestro propio blog al
+lado de la referencia.
+
+**Qué pasó.** La comparación de diseño encontró lo que buscaba —Men's Health no
+tiene una grilla, tiene jerarquía— pero de paso destapó **cuatro cosas rotas**
+que llevaban semanas publicadas y que nadie había visto:
+
+1. Las 22 portadas eran prácticamente la misma imagen.
+2. Veintiuna de las veintidós notas decían *"4 min de lectura"*.
+3. El filtro del índice se apoyaba en un campo que **14 de 22 notas no tenían**,
+   así que la mayoría del blog vivía en una categoría llamada "General".
+4. El copete se repetía **textual** como primer párrafo del cuerpo. En las 22.
+
+Ninguna es un bug de código: las cuatro funcionaban perfecto el día que se
+escribieron. Lo que cambió fue **la cantidad**.
+
+**Qué aprendimos.**
+
+1. **Hay defectos que son función del volumen, no del código.** La portada
+   generada por código (cap. 40) resolvió un problema real: que ninguna nota
+   quedara sin imagen. Con tres notas, tres rectángulos azules parecidos son
+   "identidad de marca". Con veintidós, son **un depósito**. La decisión no fue
+   mala — **se venció**. Y una decisión vencida no avisa: sigue haciendo
+   exactamente lo que se le pidió.
+2. **Un default que nadie eligió se lee igual que un dato.** `minutes: 4` era el
+   valor de la plantilla. Como aparecía en cada tarjeta con el mismo aire que la
+   fecha, se leía como una medición. **Un campo con valor por defecto en todas
+   las filas no es información: es ruido con formato de información**, y encima
+   ocupa el lugar donde sí podría haber ido algo cierto.
+3. **Dos taxonomías siempre son cero taxonomías.** El `kicker` y `categoria`
+   convivieron desde julio sin que nadie notara que no se hablaban. El síntoma
+   visible era absurdo y aun así invisible: la tarjeta mostraba *"Decisiones"* y
+   el filtro de al lado ofrecía *"General"*. Cuando dos campos describen el
+   mismo eje, **el que se ve gana y el otro hay que jubilarlo** — mantener los
+   dos garantiza que se separen.
+4. **Copiar una referencia es elegir qué NO copiar.** Men's Health tiene un
+   "MOST READ" numerado del 1 al 5 y fechas relativas ("hace 17 horas"). Los dos
+   son buenos y **los dos quedaron afuera**: no tenemos analítica conectada, así
+   que un "lo más leído" sería inventado; y el sitio es estático, así que "hace
+   2 horas" se congelaría en el build y mentiría a los tres días. **Una
+   referencia se copia con sus condiciones de posibilidad, no solo con su
+   forma** — Men's Health puede mostrar esos módulos porque tiene tráfico medido
+   y un servidor que renderiza al pedido. Nosotros no. Copiarlos habría sido
+   traer la estética de la credibilidad sin la credibilidad.
+5. **Y el hallazgo que no era nuestro.** Al calcular el tiempo de lectura real
+   apareció que las 22 notas miden entre 370 y 676 palabras: **todas 2 o 3
+   minutos**. El metadato sigue siendo casi constante, pero ahora por una razón
+   distinta — no porque el campo mienta, sino porque el contenido realmente es
+   uniforme. Eso no se arregla desde la web: se anotó para `sp-contenido`. **Un
+   diagnóstico honesto a veces termina en la puerta de otro equipo, y hay que
+   dejarlo ahí en vez de disfrazarlo de arreglo.**
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

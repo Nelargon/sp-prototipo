@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-08-06T12:30:15.708Z",
+  "fecha": "2026-08-06T13:02:49.421Z",
   "oks": [
     {
       "frente": "funcional",
@@ -95,7 +95,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/simulador/: 174 KB gzip de contenido crítico (≤300)"
+      "detalle": "/simulador/: 175 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -107,7 +107,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "/blog/: 168 KB gzip de contenido crítico (≤300)"
+      "detalle": "/blog/: 169 KB gzip de contenido crítico (≤300)"
     },
     {
       "frente": "rendimiento",
@@ -115,7 +115,7 @@
     },
     {
       "frente": "rendimiento",
-      "detalle": "home en 3G rápido: contenido en 21 ms (< 3 s)"
+      "detalle": "home en 3G rápido: contenido en 22 ms (< 3 s)"
     },
     {
       "frente": "contenido",

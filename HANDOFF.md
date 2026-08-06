@@ -1548,6 +1548,73 @@ arriba, en el bloque que abre esta sección.
 `/sp-prototipo/`, y recorrer `document.querySelectorAll('section')` anotando
 `top` y `height` a 1280×900 y 390×844.*
 
+### ✔ El blog con jerarquía editorial (6 ago 2026, referencia del usuario: Men's Health)
+
+Arturo pasó dos capturas sin instrucción: la portada de **Men's Health** y el
+**newsletter de Arnold's Pump Club**. Eligió trabajar sobre la primera.
+
+**El diagnóstico de la referencia:** Men's Health no tiene una grilla, tiene
+**jerarquía** — una nota manda (foto grande, título enorme), un riel de "lo
+último" al costado, y las demás abajo. Cada pieza pesa distinto porque no todas
+valen lo mismo. Nuestro índice era una grilla plana de 3 columnas donde las 22
+notas pesaban igual: con 8 se leía, con 22 se leía como un depósito.
+
+**Cuatro cosas estaban rotas, y ninguna se veía hasta contar 22 notas:**
+
+1. **Las 22 portadas eran casi la misma.** `Cover.jsx` tenía dos temas
+   (Prevención, Entendé tu plan) y todo lo demás caía al default → mismo degradé
+   y mismo ícono para la mayoría. Ahora hay **un tema por sección** (7), sacado
+   del kicker, dentro del rango navy↔teal de la marca (el dorado es
+   "oportunidad" y el rojo solo urgencias: ninguno entra en una portada).
+2. **21 de 22 notas decían "4 min de lectura".** Era el default del frontmatter,
+   no una medición. Ahora **se calcula del cuerpo** (200 palabras/min): quedan
+   9 notas de 2 min y 13 de 3 min. El campo `minutes` se ignora.
+3. **Había DOS taxonomías que no se hablaban.** El `kicker` se muestra en cada
+   tarjeta y existe en las 22 notas (7 valores); `categoria` alimentaba el
+   filtro y solo estaba en 8 — las otras 14 caían en **"General"**. Y cruzaban
+   mal: "Decisiones" aparecía con Prevención, con Entendé tu plan y sin nada.
+   El lector veía una etiqueta buena en la tarjeta y un filtro que la ignoraba.
+   **El filtro ahora usa el kicker.** Secciones reales: Decisiones 6 · Salud
+   preventiva 6 · El dato 4 · Dónde te atendés 2 · Entendé tu cobertura 2 ·
+   Entendé el sistema 1 · Cuánto cuesta 1.
+4. **El copete se repetía textual como primer párrafo** en las 22 notas
+   publicadas: el frontmatter trae `intro`, que se rinde como bajada, y el
+   markdown arrancaba con el mismo texto. Se recorta en `lib/blog.js`
+   (comparación normalizada, solo ante coincidencia exacta) y **no** en el motor
+   de contenido: la duplicación es de presentación — el markdown, leído solo,
+   necesita su primer párrafo. Verificado: 22/22 sin duplicado.
+
+**Layout nuevo:** portada (destacada grande + riel "Lo último" con 5) → chips de
+sección → "Todas las notas" en grilla. Con un filtro activo **la portada se
+pliega** y todo pasa a grilla: un filtro que deja la destacada arriba se lee como
+un filtro roto. El ancho del índice subió de 860 a 1120px.
+
+⚠ **Lo que NO se copió de la referencia, a propósito:**
+- **"MOST READ" numerado.** No tenemos ese dato: `track()` todavía no está
+  conectado a ningún backend (ANEXO §2). Cualquier "lo más leído" sería
+  inventado, y este es el sitio que se construyó sobre no afirmar lo que no
+  puede probar. Cuando la analítica esté conectada, el módulo entra solo.
+- **Tiempo relativo ("hace 2 horas").** El sitio es estático: se congelaría en
+  el momento del build y a los tres días seguiría diciendo "hace 2 horas". El
+  riel usa fecha corta ("4 ago"), que siempre es cierta.
+
+📌 **Observación editorial que sale de esto (para `sp-contenido`, no para la
+web):** las 22 notas miden entre **370 y 676 palabras** — todas 2 o 3 minutos.
+Men's Health va de 2 a 30 min en la misma portada, y esa variedad de profundidad
+es parte de lo que hace que se lea como publicación. Hoy no la tenemos. Anotado
+también en `contenido/README.md`.
+
+**Pendiente que queda vivo:** el **newsletter de Arnold's Pump Club** —la otra
+referencia que pasó Arturo— no se ejecutó. Su formato (índice arriba, secciones
+cortas, y la declaración de proceso editorial al pie) encaja con el principio de
+honestidad del proyecto, pero es **producto nuevo**: necesita captura de email en
+la web (el formulario de HubSpot sigue sin crearse, dec. 11x) y acordar cadencia
+con el Master Orquestador en `sp-contenido`. No lo arranca una sesión de web sola.
+
+**Territorio:** `lib/blog.js`, `app/blog/BlogList.jsx`, `app/blog/Cover.jsx`,
+`app/blog/page.jsx`, `app/blog/[slug]/page.jsx`, `app/blog/Articulo.jsx`,
+`app/globals.css`, `contenido/README.md`.
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
