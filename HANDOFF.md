@@ -1404,6 +1404,61 @@ usuario).
 **Territorio:** `app/simulador/page.jsx`, `app/mi-sp/MiSP.jsx`,
 `app/historia/page.jsx`, `app/agendar/Agendar.jsx`, `app/globals.css`.
 
+### ⚠ PENDIENTE — Auditoría estratégica de la home (medida el 5 ago 2026)
+
+Arturo pidió mirar la home "de forma estratégica… la disposición de cada
+herramienta, y si hay mucho scroll". Se midió pero **todavía no se ejecutó
+nada**: la decisión de reordenar quedó abierta. Los números y los hallazgos,
+para que la próxima sesión no tenga que volver a medir.
+
+**Profundidad: 9,6 pantallas en escritorio (1280×900) · 14,8 en móvil (390×844).**
+
+| # | Sección | Móvil |
+|---|---|---|
+| 1 | Hero | 1,0 pant |
+| 2 | Simulador (precio) | 0,8 |
+| 3 | **Comparador de planes** | **2,6** |
+| 4 | **Qué cubre / qué ponés vos** | **3,0** |
+| 5 | Cómo funciona | 0,6 |
+| 6 | "Creés que estás protegido" | 0,7 |
+| 7 | "Lo que casi nadie te garantiza" | 1,2 |
+| 8 | Empresa familiar | 0,8 |
+| 9 | Lister + prestadores | 0,4 |
+| 10 | Aliados / SaludPro 360 | 0,7 |
+| 11 | **Preguntas frecuentes** | 1,3 |
+| 12 | Contacto | 0,7 |
+
+Las secciones 3 y 4 juntas son **el 38% de la página en móvil**.
+
+**Hallazgo 1 — tres de las siete preguntas más frecuentes están enterradas.**
+Cruzando contra el dato de los asesores (`sp-interno`,
+`PREGUNTAS-FRECUENTES-asesores-2026-07.md`): descuentos (2/4), "¿cubre en todo
+el país?" (2/4) y "¿está mi médico?" (2/4) viven en la FAQ, a **11,7 pantallas
+de 14,8 — el 79% de profundidad**. Se pusieron ahí *por* ese dato, pero quien
+las pregunta tiene que scrollear once pantallas o saber que hay una FAQ.
+
+**Hallazgo 2 — el argumento del "por qué un seguro" está partido en dos, y
+ninguna mitad está arriba.** El bloque *"Un seguro no es un gasto"* está a
+**3,0 pantallas**, *después* del comparador: el argumento que justifica la
+categoría llega después de pedirle a la persona que elija plan. Y la sección 6
+(*"Creés que estás protegido. La mayoría lo descubre recién cuando algo sale
+mal"*) dice esencialmente lo mismo, cinco pantallas más abajo.
+⚠ Esto choca con la dirección permanente que Arturo fijó el 26 jul: *"todo lo
+que tenga que ver con eso… es muy importante"*, porque en Paraguay 7 de cada 10
+no tienen seguro.
+
+**Hallazgo 3 — dos secciones seguidas hablan de la red** (9: Lister +
+prestadores · 10: Aliados / SaludPro 360). Juntas, ~1,1 pantallas móviles.
+Candidatas a consolidar.
+
+**Qué falta decidir (es de Arturo, altera el alcance):** si se reordena la home
+—subir el argumento del seguro, desenterrar las preguntas de alta frecuencia,
+consolidar lo repetido— o si se deja el orden actual y solo se pulen piezas.
+
+*Cómo se midió, por si hay que repetirlo: build local, servir `out/` bajo
+`/sp-prototipo/`, y recorrer `document.querySelectorAll('section')` anotando
+`top` y `height` a 1280×900 y 390×844.*
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
