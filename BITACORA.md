@@ -1958,6 +1958,61 @@ cobertura"*— seguía sin convencerlo:
 
 ---
 
+## Capítulo 60 — La migración que se detuvo a mitad, y el test que acusó al lugar equivocado
+
+**Qué intentamos.** Arturo pidió revisar que el header fuera el mismo en todos
+los módulos: *"a veces veo que en algunos lugares el header se simplifica y no
+es la misma cosa, tanto en móvil como en escritorio."*
+
+**Qué pasó.** No era una impresión: medido, había **cinco tratamientos
+distintos**. Home, planes, blog y nota llevaban el mapa completo (7-8 ítems); el
+simulador, tres; **Mi SP, historia y agendar, dos** —logo y "volver al inicio"—;
+y la guía, un header propio ni siquiera fijo. En **5 de 9 páginas no se podía
+llegar al resto del sitio**.
+
+Lo incómodo: **este problema ya estaba diagnosticado y resuelto en el papel.**
+El capítulo 42 lo nombró con las mismas palabras y el 43 documentó la solución
+—`Header.jsx` con tres variantes—. El HANDOFF incluso listaba los módulos que
+faltaban. **La migración llegó al blog y se detuvo.** Cuatro módulos quedaron
+esperando once días con la solución ya construida al lado.
+
+Y al migrar el simulador apareció un choque real: su CSS está calibrado al
+píxel para el **modo app** (*"la ideal es no escrollear, tener todo en una
+pantalla, casi como una app"*), con `.sim-card{height:calc(100dvh - 180px)}`
+donde 180 = header 76 + hero 74 + aire 28. El header compartido mide 88. Hubo
+que recalibrar a 192 y abrirle paso al hero con padding, porque `fixed` no
+ocupa lugar en el flujo y `sticky` sí.
+
+**El test, otra vez, acusó al lugar equivocado.** Escribí una verificación de
+"modo app" que exigía **cero scroll de página** y falló con 993px de exceso en
+los cuatro tamaños. Antes de tocar nada medí `origin/main`: **exactamente los
+mismos 993px**. No lo había roto yo — y peor, no estaba roto: abajo de la
+tarjeta hay tres secciones intencionales (confianza, mini-FAQ, contacto) más el
+footer. **"Modo app" nunca significó cero scroll: significa que la tarjeta entra
+en la primera pantalla.** Con esa métrica corregida, entra en los cuatro
+tamaños, antes y después.
+
+**Qué aprendimos.**
+
+1. **Una migración a medio camino es peor que no haberla empezado.** Antes, todo
+   era inconsistente por igual. Después, la mitad del sitio tiene el mapa
+   completo y la otra mitad no — y esa asimetría es más desconcertante, porque
+   el usuario aprende a esperar algo que a veces está.
+2. **"Pendiente" en un HANDOFF no se ejecuta solo.** La lista exacta de módulos
+   faltantes estaba escrita hacía once días. Documentar el pendiente evita
+   perderlo, pero no lo cierra: alguien tiene que volver a mirar la lista.
+3. **Antes de acusar a tu cambio, medí la línea de base.** Dos veces en dos
+   días un test falló y el reflejo fue "lo rompí yo". Las dos veces la medición
+   contra `main` dijo otra cosa. **Medir el antes cuesta un build; suponer
+   cuesta un arreglo innecesario** — o peor, romper algo bueno para "arreglar"
+   lo que no estaba mal.
+4. **Un test puede codificar mal la promesa que verifica.** El mío tradujo
+   "modo app" a "cero scroll", que nadie había prometido. Cuando un test falla
+   de forma total y uniforme —993px idénticos en todos los tamaños—, sospechar
+   del criterio antes que del código.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

@@ -1,4 +1,5 @@
 import { css } from '../css';
+import Header from '../Header';
 import { BP } from '../basePath';
 import Manifiesto from '../components/Manifiesto';
 
@@ -14,12 +15,7 @@ export const metadata = {
 export default function HistoriaPage() {
   return (
     <div className="body" style={css('background:#002A52;color:#fff')}>
-      <div style={css('position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:20px 40px')}>
-        <a href={`${BP}/`} aria-label="Ir al inicio de Salud Protegida">
-          <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" style={css('height:52px;display:block')} />
-        </a>
-        <a href={`${BP}/`} style={css('color:rgba(255,255,255,0.85);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:7px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>Volver al inicio</a>
-      </div>
+      <Header variant="dark" />
       <Manifiesto />
       <section style={css('padding:90px 24px 110px;text-align:center;background:#002A52')}>
         <div style={css('max-width:640px;margin:0 auto')}>
