@@ -359,7 +359,16 @@ export default function Planes() {
           y app/glossary.jsx). Rojo jamás: es solo para urgencias. */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Son las mismas cinco en Bronze, Silver y Gold.')}
+          {/* ⚠ Sin número en el copete, a propósito. El home habla de "cuatro
+              cosas que nuestros planes no cubren" (odontología, bariátrica,
+              oncológico, alta complejidad); acá va también **enfermería a
+              domicilio** (cláusula 2.9.2), porque el buscador tiene que
+              responderle a quien escribe "enfermera a domicilio" en vez de
+              dejarlo deducir del silencio. Las dos páginas dicen la verdad;
+              cantar "cinco" acá y "cuatro" allá sí sería una contradicción a
+              la vista. Si algún día se unifica, que sea sumando en el home —
+              no restando acá. Ver HANDOFF. */}
+          {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Son las mismas en Bronze, Silver y Gold.')}
           <div data-rv className="excl-grid" style={css('display:grid;grid-template-columns:1fr 1fr;gap:12px')}>
             {excluidos.map((e) => (
               <div key={e.n} style={css('background:#F4F5F6;border:1px solid #e6e8ea;border-radius:14px;padding:18px 20px')}>

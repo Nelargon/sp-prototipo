@@ -55,6 +55,14 @@ porcentajes.** Ver BITACORA cap. 65.
 - **Privacidad:** el evento `planes_buscar` lleva **solo el largo** del texto,
   nunca el texto. Lo que alguien escribe ahí ("quimio", "psiquiatra",
   "embarazo") es un dato de salud. No agregarle el término, por útil que suene.
+- **Pendiente chico, anotado para no perderlo:** el home dice *"cuatro cosas que
+  nuestros planes no cubren"* (odontología, bariátrica, oncológico, alta
+  complejidad). `/planes` lista además **enfermería a domicilio** (cláusula
+  2.9.2, confirmada en este mismo HANDOFF), porque el buscador tiene que
+  responderle a quien escribe "enfermera a domicilio". Ninguna de las dos miente
+  y ninguna canta el número, así que hoy no se contradicen a la vista. **Si se
+  unifica, que sea sumando la quinta en el home — no sacándola de `/planes`.**
+  El home está fuera del territorio de este PR.
 
 ### ⚠ Guarda — NO reponer el bloque 45/66/93 en ningún lado
 
