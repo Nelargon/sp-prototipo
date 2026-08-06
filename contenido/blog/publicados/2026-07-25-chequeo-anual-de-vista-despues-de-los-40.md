@@ -1,6 +1,7 @@
 ---
 title: "Después de los 40, sumá la vista a tu chequeo anual"
 slug: "chequeo-anual-de-vista-despues-de-los-40"
+categoria: "Prevención"
 kicker: "Salud preventiva"
 date: "2026-07-25"
 minutes: 4

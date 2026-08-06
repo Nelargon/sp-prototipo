@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { css } from '../css';
 import Cover from './Cover';
+import { CATEGORIAS } from '../../lib/categorias';
 
 // Filtro por categoría del índice del blog (reunión departamentos, jul 2026:
 // "separar los artículos en categorías, una de ellas prevención"). Cliente:
@@ -10,8 +11,12 @@ import Cover from './Cover';
 // y las pastillas filtran en el navegador. Recibe notas ya serializables
 // (con fechaFmt preformateada) para no arrastrar `fs` ni el markdown al bundle.
 export default function BlogList({ notas, basePath }) {
-  const cats = [];
-  for (const n of notas) if (n.categoria && !cats.includes(n.categoria)) cats.push(n.categoria);
+  // Los chips salen de la lista CANÓNICA (orden estable, definido por marca),
+  // filtrada a las que efectivamente tienen notas. Antes se armaban con lo que
+  // viniera en los datos, así que un typo en un frontmatter creaba una
+  // categoría pública nueva sin que nadie lo notara. lib/blog.js ya normaliza,
+  // esto es la segunda barrera.
+  const cats = CATEGORIAS.filter((c) => notas.some((n) => n.categoria === c));
   const chips = ['Todas', ...cats];
   const [active, setActive] = useState('Todas');
   const shown = active === 'Todas' ? notas : notas.filter((n) => n.categoria === active);

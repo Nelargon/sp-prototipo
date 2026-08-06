@@ -1,6 +1,7 @@
 ---
 title: "Qué hace que un hospital esté listo para una emergencia"
 slug: "que-hace-que-un-hospital-este-listo-para-una-emergencia"
+categoria: "Salud en Paraguay"
 kicker: "Dónde te atendés"
 date: "2026-07-29"
 minutes: 4

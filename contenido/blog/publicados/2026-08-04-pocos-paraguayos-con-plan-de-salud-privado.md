@@ -1,6 +1,7 @@
 ---
 title: "Por qué solo 7 de cada 100 paraguayos tiene un plan de salud privado"
 slug: "pocos-paraguayos-con-plan-de-salud-privado"
+categoria: "Salud en Paraguay"
 kicker: "Decisiones"
 date: "2026-08-04"
 minutes: 4

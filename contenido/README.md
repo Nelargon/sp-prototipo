@@ -10,8 +10,12 @@ generan cada lunes. Publicar una nota = copiar acá el markdown aprobado
 (con `status: "publicado"`) vía PR. Nada se publica sin revisión humana.
 
 Formato de archivo: `YYYY-MM-DD-slug.md` con frontmatter `title`, `slug`,
-`kicker`, `categoria` (para el filtro del índice — hoy **"Prevención"** o
-**"Entendé tu plan"**; sin `categoria` la nota cae en "General"), `date`,
+`kicker`, `categoria` (OBLIGATORIA, y exactamente una de estas cinco:
+**"Entendé tu plan"** · **"Salud en Paraguay"** · **"Prevención"** ·
+**"Primeros años"** · **"Vivir más años"**. Define el color y el ícono de la
+portada y el filtro del índice. La lista es cerrada: vive en `lib/categorias.js`
+y cada una tiene su tema en `app/blog/Cover.jsx`. Una categoría inexistente o
+ausente cae en "Entendé tu plan" y el build lo avisa por consola), `date`,
 `minutes`, `description` (para la tarjeta del índice y el SEO), `cover`
 (opcional — ruta a una foto en `/public`; si falta, el blog genera una portada
 de marca automática por código), `intro` (el
