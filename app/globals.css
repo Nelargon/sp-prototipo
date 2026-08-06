@@ -248,6 +248,24 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:99
 .cmp-verplanes{transition:background .2s,border-color .2s}
 .cmp-verplanes:hover{background:#F2FBFA;border-color:#8fd9d3}
 @media(max-width:1000px){.blog-top{grid-template-columns:1fr !important;gap:26px !important}}
+/* "Seguí leyendo": tres columnas dentro de la caja de 680px del artículo dan
+   ~200px por nota — abajo de 640px eso deja títulos de dos palabras por línea,
+   así que pasan a una sola columna. */
+@media(max-width:640px){.sl-grid{grid-template-columns:1fr !important;gap:26px !important}}
+/* Guías: la fila es número + miniatura + título. En móvil la miniatura se cae
+   (132px + 44px dejan al título en una tira de 100px) y queda número + texto. */
+.guia-item{transition:background .18s,border-color .18s}
+.guia-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(128,221,216,.35)}
+.guia-item-t{transition:color .18s}
+.guia-item:hover .guia-item-t{color:#80DDD8}
+@media(max-width:560px){.guia-item{grid-template-columns:34px 1fr !important;gap:12px !important}.guia-item>*:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){.guia-item,.guia-item-t{transition:none}}
+.guia-card{transition:background .18s,border-color .18s}
+.guia-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(128,221,216,.35)}
+.guia-card-t{transition:color .18s}
+.guia-card:hover .guia-card-t{color:#80DDD8}
+@media(max-width:860px){.guias-grid{grid-template-columns:1fr !important}}
+@media(prefers-reduced-motion:reduce){.guia-card,.guia-card-t{transition:none}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
