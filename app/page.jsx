@@ -534,9 +534,21 @@ export default function Page() {
               sección: estaba enunciada, no respondida. Ahora va donde están los
               precios, legible, y en positivo — es una razón para elegir, no una
               aclaración legal. La FAQ conserva la respuesta larga. */}
-          <div data-rv style={css('display:flex;justify-content:center;margin-bottom:24px')}>
-            <span style={css('display:inline-flex;align-items:flex-start;gap:11px;padding:13px 20px;border:1.5px solid #bfe8e4;background:#F2FBFA;border-radius:14px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left')}>
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
+          {/* ⚠ SIN CAJA, A PROPÓSITO (6 ago 2026, observación del usuario sobre la
+              consistencia de esta zona). La primera versión de esta franja usaba
+              mint #F2FBFA con borde teal — exactamente el mismo tratamiento que la
+              garantía "Todos los planes te garantizan" de abajo. Quedaban dos cajas
+              gemelas bracketeando la tabla que hacen cosas distintas: una es un
+              VEREDICTO (lo que los tres planes te aseguran) y la otra una ANOTACIÓN
+              sobre el precio. Misma ropa, distinto trabajo.
+              Ahora es una línea: sigue siendo legible (15px, texto oscuro, el número
+              en teal) —que era el punto, sacarla de la letra chica de 12,5px gris—
+              pero no compite con la garantía ni la duplica. Regla que deja: dos
+              elementos con el mismo tratamiento visual se leen como el mismo tipo de
+              cosa; si no lo son, uno de los dos tiene que ceder. */}
+          <div data-rv style={css('display:flex;justify-content:center;margin-bottom:22px')}>
+            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left;max-width:640px')}>
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
               <span>Pagando con <b style={css('color:#003B71')}>débito automático o tarjeta de crédito</b>, los tres planes tienen <b style={css('color:#007d77')}>10% de descuento</b> todos los meses.</span>
             </span>
           </div>
@@ -590,7 +602,7 @@ export default function Page() {
 
           {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
               de integridad sobre la que se construyen los tres planes. */}
-          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:18px;background:#F2FBFA')}>
+          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:16px;background:#F2FBFA')}>
             <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:#007d77;white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#007d77;color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
             <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
           </div>
@@ -599,7 +611,7 @@ export default function Page() {
               fila-por-fila (11 servicios × 3 planes) se fue a /planes: home =
               resumen completo, la profundidad a un click (HANDOFF 11t, cap. 46). */}
           <div data-rv style={css('text-align:center;margin-top:30px')}>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:13px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
 
           {/* ⚠ El bloque "Por qué importa" (36% de gasto de bolsillo · 7 de cada 10
