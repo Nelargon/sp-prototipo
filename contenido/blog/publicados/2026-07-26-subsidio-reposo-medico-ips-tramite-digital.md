@@ -1,6 +1,7 @@
 ---
 title: "Te atendiste afuera del IPS: así cobrás tu subsidio de reposo"
 slug: "subsidio-reposo-medico-ips-tramite-digital"
+categoria: "Salud en Paraguay"
 kicker: "Entendé el sistema"
 date: "2026-07-26"
 minutes: 4

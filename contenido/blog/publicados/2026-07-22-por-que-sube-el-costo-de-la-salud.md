@@ -1,6 +1,7 @@
 ---
 title: "Por qué la salud te cuesta más cada año (y qué mirar más allá de la cuota)"
 slug: "por-que-sube-el-costo-de-la-salud"
+categoria: "Salud en Paraguay"
 kicker: "El dato"
 date: "2026-07-22"
 minutes: 4
