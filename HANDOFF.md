@@ -1404,6 +1404,85 @@ usuario).
 **Territorio:** `app/simulador/page.jsx`, `app/mi-sp/MiSP.jsx`,
 `app/historia/page.jsx`, `app/agendar/Agendar.jsx`, `app/globals.css`.
 
+### ⚠ PENDIENTE — Auditoría estratégica de la home (medida el 5 ago 2026)
+
+Arturo pidió mirar la home "de forma estratégica… la disposición de cada
+herramienta, y si hay mucho scroll". Se midió pero **todavía no se ejecutó
+nada**: la decisión de reordenar quedó abierta. Los números y los hallazgos,
+para que la próxima sesión no tenga que volver a medir.
+
+**Profundidad: 9,6 pantallas en escritorio (1280×900) · 14,8 en móvil (390×844).**
+
+| # | Sección | Móvil |
+|---|---|---|
+| 1 | Hero | 1,0 pant |
+| 2 | Simulador (precio) | 0,8 |
+| 3 | **Comparador de planes** | **2,6** |
+| 4 | **Qué cubre / qué ponés vos** | **3,0** |
+| 5 | Cómo funciona | 0,6 |
+| 6 | "Creés que estás protegido" | 0,7 |
+| 7 | "Lo que casi nadie te garantiza" | 1,2 |
+| 8 | Empresa familiar | 0,8 |
+| 9 | Lister + prestadores | 0,4 |
+| 10 | Aliados / SaludPro 360 | 0,7 |
+| 11 | **Preguntas frecuentes** | 1,3 |
+| 12 | Contacto | 0,7 |
+
+Las secciones 3 y 4 juntas son **el 38% de la página en móvil**.
+
+**Hallazgo 1 — CORREGIDO. No es profundidad: es forma.**
+
+> ⚠ La primera versión de este hallazgo decía que descuentos, cobertura
+> geográfica y "¿está mi médico?" "viven en la FAQ, al 79% de profundidad".
+> **Era falso** y lo detectó la revisión automática del PR #84. Los tres
+> aparecen antes en la página. Se corrige acá para que nadie ejecute trabajo
+> sobre una premisa equivocada:
+
+| Pregunta | Dónde aparece antes | Qué falta realmente |
+|---|---|---|
+| **Descuentos** (2/4) | `page.jsx:628` — nota al pie gris bajo el comparador (~3 pant) | Está **enunciado**, no **respondido**: es letra chica de precios, no una respuesta a "¿hay descuento?" |
+| **¿Está mi médico?** (2/4) | `page.jsx:697` — *"Buscá tu médico, sanatorio o estudio…"* con puerta a la Guía (~5 pant) | **Nada. Está bien resuelto.** El hallazgo original era incorrecto. |
+| **¿Cubre en todo el país?** (2/4) | `page.jsx:697` y `:778` — *"en todo el país"* | Es una **afirmación**, no una verificación. No hay forma de responder "¿y en mi ciudad?" sin ir a la Guía |
+
+**Lo que queda en pie, más chico y más preciso:** el descuento vive en letra
+chica y la cobertura geográfica se afirma sin poder comprobarse. **No hay que
+"desenterrar" nada de la FAQ** — hay que decidir si esas dos merecen mejor
+forma arriba. "¿Está mi médico?" se saca de la lista.
+
+**Hallazgo 2 — el argumento del "por qué un seguro" está partido en dos, y
+ninguna mitad está arriba.** El bloque *"Un seguro no es un gasto"* está a
+**3,0 pantallas**, *después* del comparador: el argumento que justifica la
+categoría llega después de pedirle a la persona que elija plan. Y la sección 6
+(*"Creés que estás protegido. La mayoría lo descubre recién cuando algo sale
+mal"*) dice esencialmente lo mismo, cinco pantallas más abajo.
+⚠ Esto choca con la dirección permanente que Arturo fijó el 26 jul: *"todo lo
+que tenga que ver con eso… es muy importante"*, porque en Paraguay 7 de cada 10
+no tienen seguro.
+
+**Hallazgo 3 — CORREGIDO. La repetición es 4 ↔ 9, no 9 ↔ 10.**
+
+> ⚠ También detectado en la revisión del PR #84. Había emparejado las secciones
+> por vecindad, no por contenido.
+
+La duplicación real: **`page.jsx:697` (sección 4)** dice *"Lister, nuestro
+centro propio… más de 50 prestadores en todo el país"* y **`page.jsx:778`
+(sección 9)** repite *"Lister + más de 50 prestadores en todo el país"*. Es el
+mismo mensaje dos veces.
+
+La **sección 10 NO es lo mismo**: es el carrusel de **aliados comerciales**
+(SaludPro 360), y sus prestadores médicos están marcados como ejemplos y
+*"muy pronto"* / *"próximamente"* (`page.jsx:786-815`). Consolidar 9 con 10
+mezclaría lo que existe hoy con lo que todavía no existe — y dejaría intacta
+la repetición verdadera.
+
+**Qué falta decidir (es de Arturo, altera el alcance):** si se reordena la home
+—subir el argumento del seguro, desenterrar las preguntas de alta frecuencia,
+consolidar lo repetido— o si se deja el orden actual y solo se pulen piezas.
+
+*Cómo se midió, por si hay que repetirlo: build local, servir `out/` bajo
+`/sp-prototipo/`, y recorrer `document.querySelectorAll('section')` anotando
+`top` y `height` a 1280×900 y 390×844.*
+
 ### Preguntas abiertas (y quién responde)
 
 - ¿Qué campos guarda hoy el registro de búsquedas? → **el HTML que va a
