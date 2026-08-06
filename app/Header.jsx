@@ -85,7 +85,7 @@ export default function Header({ variant = 'dark' }) {
                     cobertura en HANDOFF). Un menú que promete una interacción
                     que ya no existe es peor que uno escueto. */}
                 <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Bronze, Silver y Gold, de un vistazo" />
-                <Item href={`${BP}/que-cubre/`} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
+                <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
                 <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Carencias, preexistencias, cambios de plan y más" />
               </div></div>
@@ -96,14 +96,6 @@ export default function Header({ variant = 'dark' }) {
                 <Item href={`${BP}/#comparar`} t="Bronze, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu precio" s="Unas preguntas y ves el precio, en 1 minuto" />
-                {/* Entrada discreta a /que-cubre (pedido del usuario, 6 ago 2026:
-                    "en algún lugar medio escondidito"). Va última del desplegable
-                    y se llama "Landing v1" a propósito: es la etiqueta honesta de
-                    algo que todavía se está mirando, no una sección del sitio.
-                    Cumple la regla de etiquetas — declara un ESTADO que la prosa
-                    no dice. Cuando deje de ser una versión en evaluación, el
-                    nombre tiene que cambiar por lo que la página hace. */}
-                <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="Landing v1" s="Buscá tu estudio y mirá qué hace cada plan con eso" />
               </div></div>
             </div>
             <a href={`${BP}/blog/`} className="nav-link" style={linkStyle}>Blog</a>
@@ -132,7 +124,13 @@ export default function Header({ variant = 'dark' }) {
             <a href={`${BP}/#cartilla`} onClick={close} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
             <a href={`${BP}/#comparar`} onClick={close} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href={`${BP}/#faq`} onClick={close} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
-            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); close(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>Landing v1</a>
+            {/* El menú móvil es plano: no tiene los desplegables donde vive
+                "¿Está cubierto lo que me pidieron?" en escritorio. Sin esta
+                entrada, /que-cubre queda sin puerta de menú justo para el 77%
+                del tráfico. Va con LA MISMA PREGUNTA que en escritorio —
+                acortada para el ancho— y a menor cuerpo que los títulos: la
+                discreción que pidió el usuario, sin jerga interna. */}
+            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); close(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
             <a href={`${BP}/blog/`} onClick={close} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
             <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
             <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); close(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>
