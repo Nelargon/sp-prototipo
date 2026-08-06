@@ -8,7 +8,6 @@ minutes: 4
 description: "Qué suele cubrir un plan de salud en medicamentos, cómo saber qué te toca a vos y qué hacer cuando la farmacia no tiene lo que buscás."
 intro: "Salís de la consulta con la receta en la mano y aparece la pregunta de siempre: ¿esto me lo cubre el plan? Acá va la respuesta general, en idioma de familia, y las preguntas exactas para conocer la tuya."
 tags: ["cobertura", "medicamentos", "clientes"]
-audiencia: "cliente actual · momento: uso del plan"
 nota: "Esta nota explica cómo funciona en general la cobertura de medicamentos en la medicina prepaga. Los detalles concretos dependen de tu plan y tu contrato: ante la duda, consultá a tu asesor. Y sobre qué medicamento tomar o sustituir, decide siempre tu médico."
 status: "publicado"
 author: "Equipo Salud Protegida"

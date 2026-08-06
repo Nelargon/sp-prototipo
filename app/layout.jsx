@@ -1,6 +1,7 @@
 import './globals.css';
 import { display, inter } from './fonts';
 import { BP } from './basePath';
+import Analytics from './Analytics';
 
 // Mientras el ecosistema sea prototipo, NO se indexa (defensa principal en
 // GitHub Pages, donde robots.txt no puede vivir en la raíz del dominio).
@@ -62,6 +63,7 @@ export default function RootLayout({ children }) {
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSONLD) }} />
         {children}
+        <Analytics />
       </body>
     </html>
   );

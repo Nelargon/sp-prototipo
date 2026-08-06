@@ -38,15 +38,49 @@ exigir a alguien, conviene saber que hoy no lo cumplimos nosotros.
 
 ## Puerta 1 — Claridad
 
+> ⚠️ **Dos de estas filas eran autoevaluación en prosa.** La primera versión de
+> este boletín se ponía ✅ en 1.2 y 1.3 sobre la base de que quien lo escribió
+> miró la página y le pareció que estaba. Eso es exactamente el hueco que el
+> criterio dice venir a cerrar. Abajo, cada fila declara **qué se verificó y
+> cómo**, y las que no tienen verificación automática lo dicen.
+
 | Criterio | Cómo se verificó | Resultado |
 |---|---|---|
-| **1.2** Lugar permanente para lo que NO cubrimos, sin PDF ni enlace externo | La sección de planes incluye exclusiones ("Para que no haya sorpresas"), carencias por servicio y el aviso de los 10 meses de parto, todo en la misma página | ✅ |
-| **1.3** Precio con piso real, no "consultanos" | El hero publica *"planes desde ₲ 238.000"* leído de `plans()`, y el simulador da precio **sin pedir datos** | ✅ |
-| **1.4** Lenguaje de paciente, cero jerga | Automatizado: la suite busca `cartilla`, `prestación` y `práctica` en el HTML publicado de las 9 páginas | ⚠️ **3 notas del blog** dicen "práctica"; 2 tienen placeholders "a confirmar" |
+| **1.2** Lugar permanente para lo que NO cubrimos, sin PDF ni enlace externo | **Inspección manual** de la sección de planes: contiene exclusiones ("Para que no haya sorpresas"), carencias por servicio y el aviso de los 10 meses de parto, en la misma página, sin abrir nada | ✅ *(no automatizado)* |
+| **1.3** Precio con piso real, no "consultanos" | **Automatizado** — la suite verifica que el "desde" del hero sale de `plans()` y no de un número a mano. El simulador da precio sin pedir datos | ✅ |
+| **1.4** Lenguaje de paciente, cero jerga | **Automatizado**: la suite busca `cartilla`, `prestación` y `práctica` en el HTML publicado de las 9 páginas | ⚠️ **3 notas del blog** dicen "práctica"; 2 tienen placeholders "a confirmar" |
+| **1.5** El flujo que pide datos avisa antes de pedirlos | **Inspección del simulador** | ❌ **NO PASA** — ver abajo |
 | **1.1** Prueba de las diez preguntas | **No se puede correr todavía**: la lista de las 10 preguntas reales no está cerrada. Existe material previo en `sp-interno` (`PREGUNTAS-FRECUENTES-asesores-2026-07.md`, 4 asesores) — no se arranca de cero | ⏸ Pendiente |
 
 **Sobre 1.4:** los hallazgos son de notas del blog publicadas por el motor de
 contenido, no de las páginas de producto. Se corrigen en `sp-contenido`.
+
+### 1.5 — la fila que faltaba, y no pasa
+
+El simulador entrega un precio y **después pide nombre y teléfono**. En ese
+tramo no nombra la carencia. Alguien puede dejar sus datos entusiasmado por un
+número sin saber que el servicio que le importa tiene meses de espera.
+
+⚠️ **Y acá hay un dato que corrige el instinto** — queda escrito porque ya se
+propuso una vez el arreglo equivocado. La encuesta a las cuatro asesoras
+(26/07/2026, en `app/page.jsx`) dice:
+
+| | Menciones |
+|---|---|
+| **Carencia** | **4 de 4** |
+| Preexistencias | **ninguna** |
+
+Lo que la gente pregunta es **carencia**, no preexistencias. Y la diferencia no
+es de matiz: la carencia es dato verificado, vive por plan en `app/coverage.js`,
+se puede personalizar con el plan que la persona acaba de elegir, y **resuelve**
+("el reloj arranca el día que firmás, no el día que lo necesitás"). De
+preexistencias hoy solo sabemos decir *"se evalúa caso por caso"*, que es
+**diferir**, no responder — y una frase que difiere, puesta en el momento de la
+conversión, agrega ansiedad sin agregar información.
+
+**No se arregló en este boletín** porque toca `app/components/Simulador.jsx`,
+que lleva la guarda ⚠ del "puente de venta" (HANDOFF 11w): ese archivo no se
+toca sin acordarlo. Queda como el hallazgo más accionable de la Puerta 1.
 
 ---
 

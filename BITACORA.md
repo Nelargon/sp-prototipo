@@ -2243,6 +2243,206 @@ la jerarquía del índice, el copete duplicado y el tiempo de lectura real.
 
 ---
 
+## Capítulo 65 — La grilla llevaba un mes en el repo sirviendo para tres porcentajes
+
+**Qué intentamos.** Construir "una super landing page para los planes
+Privilege" (pedido del usuario, 6 ago 2026). La reacción natural era la de
+siempre: tres tarjetas de precio más lindas, mejor jerarquía, mejor copy.
+
+**Qué pasó.** Antes de escribir nada, el inventario de datos. En
+`datos/planes-vigentes/` estaba la grilla oficial desde el 22 de julio: **935
+estudios, análisis y cirugías con su cobertura exacta en los tres planes**,
+con cantidad y carencia por ítem. Ingerida, verificada, commiteada — y usada
+para exactamente una cosa: calcular que Bronze cubre 45%, Silver 66%, Gold 93%.
+Un mes de datos finísimos comprimidos en tres números.
+
+La página cambió de idea ahí. No abre con precios: abre con un buscador.
+Escribís "resonancia" y ves que en Bronze la pagás al precio de convenio y en
+Silver está cubierta; escribís "muela" y te dice que no la cubre nadie.
+**Cualquiera puede copiar tres tarjetas de precio en una tarde; nadie puede
+copiar las 935 filas de su propia grilla, porque para publicarlas hay que
+estar dispuesto a que se lean.** El diferenciador no estaba en el diseño:
+estaba en el repo, sin usar.
+
+Cuatro golpes en el camino, todos con nombre y apellido:
+
+**1. Casi repongo algo que se había borrado a propósito.** El plan original
+tenía una sección con la barra apilada 45/66/93. Leyendo `app/page.jsx` para
+copiar el lenguaje visual, apareció el comentario que documentaba su
+eliminación el 25/07: *"la transparencia tiene que cumplir un propósito, no
+puede ser transparencia por ser transparencia"* — "45% cubierto" se lee como
+"55% NO cubierto", y la transparencia terminaba vendiendo en contra. La
+decisión no estaba en el `HANDOFF`: estaba en un comentario de código, en el
+lugar exacto donde iba a tropezar con ella. **Un `git rm` borra la línea pero
+no la razón; el comentario que explica una ausencia vale más que el que
+explica una presencia** — es el único que puede defenderse solo cuando llegue
+el próximo que quiera "agregar lo que falta".
+
+Lo que sobrevivió fue el dato, no la forma: los mismos números respondiendo
+otra pregunta. En vez de "Bronze cubre el 45%", **"de Bronze a Silver, 298
+cosas mejoran — 205 son cirugías"**. El primero informa cuán incompleto sos;
+el segundo dice qué comprás. Es el mismo archivo fuente y el argumento
+contrario.
+
+**2. El buscador andaba, y estaba roto.** Los sinónimos en idioma de familia
+("vesícula" → COLECIST) se probaban contra el nombre crudo de cada fila. Pero
+los cuadros no comparten convención: Laboratorio e Imágenes vienen en
+MAYÚSCULAS sin acentos, Cirugías en Tipo Oración con tildes — `/APENDIC/`
+nunca iba a tocar "Apendicetomía". **El cuadro entero de cirugías estaba
+ciego a los sinónimos y la búsqueda igual devolvía resultados**, porque los
+otros tres cuadros respondían. Lo que lo destapó no fue una prueba: fue el
+chequeo de sinónimos huérfanos que el generador imprime al final —
+`/HERNI/` y `/AMIGDAL/` no matcheaban nada. **Una búsqueda que devuelve algo
+parece que funciona; para saber si funciona hay que preguntarle qué NO
+encontró.**
+
+**3. El cero que miente.** "psicología" devolvía cero resultados. Técnicamente
+correcto: la psicología no está en los cuatro cuadros, está en la tabla de
+especialidades. Pero **en una página cuya promesa es la transparencia, un cero
+no se lee como "no lo tengo indexado": se lee como "no lo cubre"** — y la
+psicología está cubierta, 3/5/6 sesiones. El silencio no es neutral: dice lo
+peor. Se sumaron al índice las 43 especialidades y las 5 exclusiones reales, y
+el estado vacío se reescribió para aclarar que no encontrarlo no significa que
+no esté. La regla nueva: **si una página promete respuestas, cada pregunta
+razonable tiene que tener una — incluso "no", incluso "no sé".**
+
+**4. Un `&&` de más y la página desaparecía.** El revelado de secciones exige
+que el bloque llegue a la línea de scroll. Copiado del home, traía además
+`bottom > -80`: seguir en pantalla. Con un salto de scroll —un ancla, un "ir
+al final"— los bloques que quedaban ARRIBA del viewport no volvían a cumplirla
+nunca. Playwright lo midió: saltar al pie dejaba **12 secciones en blanco para
+siempre**. Y una segunda, de la misma familia: la clase `rvon` —la que esconde
+todo hasta revelarlo— se prende desde el efecto y jamás desde el JSX, porque
+en el markup un JS que no corre deja la página entera invisible.
+
+**Qué aprendimos.**
+
+1. **Antes de diseñar, inventariar lo que ya tenemos.** La mejor idea de esta
+   página no se le ocurrió a nadie: estaba en `datos/`, esperando. La pregunta
+   "¿qué construyo?" tiene que venir después de "¿qué tengo?".
+2. **Un dato no tiene un solo argumento adentro.** 45/66/93 vendía en contra;
+   los mismos ítems contados como saltos entre planes venden a favor, sin
+   mentir en ninguno de los dos casos. **Lo que decide no es el dato: es la
+   pregunta que le hacés.**
+3. **Escribí el chequeo que te dice qué falló en silencio.** El generador
+   avisa de sinónimos huérfanos, de códigos de cobertura desconocidos (corta
+   el build) y de los 10 ítems con celdas combinadas del `.xlsx`. Los tres
+   hallazgos que importaron salieron de ahí, no de mirar la pantalla.
+4. **Lo que se escribe en un buscador de salud es un dato de salud.** El
+   evento `planes_buscar` manda el largo del texto y nada más. La regla que
+   prohíbe nombre/teléfono/email se queda corta: "quimioterapia" escrito en un
+   campo dice más de una persona que su apellido.
+
+**Coda — "que sea un espacio aparte".** La primera versión puso todo esto en
+`/planes`, absorbiendo la tabla comparativa que ya vivía ahí. Parecía lo
+correcto: una sola página de planes, sin duplicados. El usuario lo corrigió en
+seis palabras. Y tenía razón por un motivo que no estaba en mi razonamiento:
+**yo estaba optimizando el sitio, y lo que se pidió fue una landing.** No son
+lo mismo. Una página del sitio existe dentro de un recorrido y puede delegar —
+"eso lo explica la otra sección". Una landing es la PRIMERA pantalla que
+alguien ve, le llegó por un link, y tiene que cerrar el argumento entero sola;
+además se mide sola, que es la mitad de para qué existe. Repetir la tabla de
+servicios en las dos no es duplicación: es que cumplen funciones distintas.
+`/planes` volvió byte a byte a como estaba y la landing se fue a `/que-cubre/`.
+**"No dupliques" es una buena regla para el código y una mala regla para las
+páginas** — y el que sabe cuál de las dos cosas está pidiendo es el que pide.
+
+**Segunda coda — un revisor automático encontró ocho cosas, y las ocho eran
+verdad.** Un bot dejó ocho comentarios en el PR. Verifiqué los cuatro
+empíricos corriendo las consultas: los cuatro se reprodujeron. Dos eran
+graves, y los dos golpeaban donde más dolía:
+
+- **`resonancia de rodilla`** —el ejemplo que yo mismo puse en el PR como
+  prueba de que esto funciona— devolvía primero la fila `RMN DE RODILLA` con
+  Bronze y Gold en **"Sin dato"**, mientras la fila hermana (la misma
+  resonancia, partida por una celda combinada del `.xlsx`) tenía los tres
+  planes declarados y quedaba segunda. **La consulta estrella escondía una
+  cobertura que el dato oficial sí tiene.**
+- **`cirugía de cerebro`** devolvía primero "Cirugía túnel carpiano ·
+  Cubierto en los tres planes", y la exclusión real —las cirugías de cerebro
+  **no las cubre ningún plan**— aparecía tercera. La causa: el master agrupa
+  el túnel carpiano bajo `NEUROCIRUGIA` (correcto, la opera un neurocirujano)
+  y mi generador convertía ese grupo en el alias "cerebro". **La respuesta
+  opuesta, arriba de todo, en la página cuyo argumento entero es la
+  honestidad.**
+
+Y una que me dejó sin defensa: escribí en el PR que el índice se commitea
+"porque el diff muestra ítem por ítem qué cobertura se movió", y lo serialicé
+con `JSON.stringify` a secas — **130 KB en una sola línea**. Cambiar una celda
+reemplazaba la línea entera. La red de seguridad que argumenté no atrapaba
+nada. Ahora va un ítem por línea.
+
+Qué aprendimos:
+
+1. **Mis propios tests pasaban.** El caso `resonancia de rodilla` estaba en la
+   suite y daba verde, porque yo había escrito la aserción "el primer
+   resultado contiene RODILLA" — y la fila rota también contiene RODILLA. **Un
+   test escrito por el mismo que escribió el código hereda sus puntos ciegos:
+   verifica lo que el autor pensó mirar.** Los casos nuevos ya no preguntan
+   "¿dice lo que espero?" sino "¿la fila que gané está completa?".
+2. **El error más caro no fue un bug: fue una frase.** Lo del JSON en una línea
+   no rompía nada; rompía un argumento que yo había escrito con confianza.
+   **Cuando el PR explica por qué algo es seguro, esa explicación también hay
+   que verificarla.**
+3. **La procedencia se declara partida.** El buscador decía "983 respuestas
+   salidas de la grilla oficial", pero 5 —las exclusiones— salen del contrato,
+   no de la grilla. Exagerar el respaldo justo de las afirmaciones NEGATIVAS,
+   que son las más fuertes que hace la página, en la página de la
+   transparencia. Ahora dice de dónde sale cada grupo.
+
+---
+
+## Capítulo 66 — El sitio respondía perfecto y hacía horas que no era el sitio
+
+**Qué intentamos.** Elegir el mejor próximo paso del proyecto. La lista de
+candidatos era razonable: la pasada de tokens (lo único que reprueba una puerta
+del criterio), terminar el 30% de scroll, cerrar un hueco en el simulador.
+
+**Qué pasó.** Ninguno de esos era el paso. Un panel de cuatro lentes
+independientes fue a verificar el estado real y encontró que **producción estaba
+tres commits atrás de `main` desde hacía horas**: los PRs #88, #90 y #89 se
+habían fusionado y ninguno disparó el deploy. La página `/que-cubre` entera —983
+respuestas de la grilla oficial, con dos bugs graves ya corregidos adentro— no
+existía para ningún visitante.
+
+La causa es una nota al pie de GitHub: **no encadena workflows cuando el push
+viene de una acción autenticada con el token de otra acción.** Los merges hechos
+desde una sesión disparaban el deploy; los hechos por otra vía, no.
+
+Y las cuatro lentes del panel, además, fallaron todas por el mismo motivo:
+argumentaron sobre un sistema que ya no existía. Una discutió contra un bug
+arreglado doce días antes. Otra verificó sobre un checkout tres merges atrás.
+
+**Qué aprendimos.**
+
+1. **Un sitio caído se nota. Un sitio viejo, no.** Si el deploy hubiera fallado
+   con error 500, alguien lo veía en un minuto. Como el sitio seguía
+   respondiendo —rápido, completo, sin un solo error— **nada indicaba que lo que
+   respondía tenía horas de atraso**. El modo de falla más peligroso no es el
+   que rompe: es el que sigue funcionando con datos de ayer.
+2. **La regla cero cubría la lectura del repo y dejaba afuera lo publicado.**
+   `CLAUDE.md` obliga a `git pull` antes de leer nada, precisamente porque una
+   sesión que lee documentos viejos reporta un proyecto que ya no existe. Pero
+   nadie tenía obligación de verificar **la URL pública**. En un proyecto donde
+   el repo es la única memoria compartida, que el repo deje de llegar a
+   producción es una falla de sistema, no una tarea de mantenimiento.
+3. **"Verificado" tiene que decir contra qué.** Todo lo que medí hoy —el scroll,
+   las puertas del criterio, los Core Web Vitals— lo medí sobre un build local.
+   Estaba bien medido y estaba certificando **un árbol que no era el que la
+   gente veía**. Un número sin su referente es decoración.
+4. **Yo mismo dije "ya está en vivo" y después dejé de mirar.** Era cierto
+   cuando lo dije. Dejó de serlo tres merges después. **Confirmar un deploy no
+   es un evento, es un estado** — y el estado hay que volver a mirarlo, sobre
+   todo cuando hay otras sesiones fusionando.
+5. **El arreglo correcto no fue el que parecía.** El instinto era "arreglar el
+   trigger". Pero no hay forma de garantizar que un evento llegue: la garantía
+   es no depender de que llegue. Por eso entró un `schedule` horario como red
+   —cuesta un build por hora como mucho— en vez de una condición más fina que
+   también podría fallar en silencio. **Ante un canal que puede romperse sin
+   avisar, la redundancia barata le gana a la precisión frágil.**
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

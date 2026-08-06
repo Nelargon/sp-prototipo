@@ -654,8 +654,24 @@ export default function Page() {
           {/* La comparación entera vive de un vistazo arriba; el detalle
               fila-por-fila (11 servicios × 3 planes) se fue a /planes: home =
               resumen completo, la profundidad a un click (HANDOFF 11t, cap. 46). */}
-          <div data-rv style={css('text-align:center;margin-top:30px')}>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;font-size:16px;font-weight:700;color:#007d77')}>¿Querés el detalle fila por fila? Ver todos los planes <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          {/* ⚠ DOS PUERTAS, PORQUE HAY DOS PREGUNTAS DISTINTAS (6 ago 2026).
+              Hasta hoy había una sola que decía "¿Querés el detalle fila por
+              fila?" y llevaba a /planes. Desde el 6/08 existe además
+              /que-cubre, con las 983 respuestas de la grilla oficial buscables.
+              Con una sola puerta genérica, la persona que llega con una orden
+              médica en la mano ("¿me cubre la resonancia de rodilla?") aterriza
+              en la comparación de planes, que no responde eso.
+              La regla: cada puerta dice QUÉ PREGUNTA responde, no "ver más".
+              El reparto completo de las cuatro superficies está en HANDOFF. */}
+          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto')}>
+            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;color:#007d77;text-align:left')}>
+              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
+            </a>
+            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:12px;background:#fff;color:#007d77;text-align:left')}>
+              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>El detalle fila por fila <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:#4a4a4a;line-height:1.5;font-weight:400')}>Los tres planes comparados servicio por servicio, con sus esperas.</span>
+            </a>
           </div>
 
           {/* ⚠ El bloque "Por qué importa" (36% de gasto de bolsillo · 7 de cada 10

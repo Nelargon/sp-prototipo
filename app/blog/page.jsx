@@ -1,6 +1,6 @@
 import { css } from '../css';
 import { BP } from '../basePath';
-import { getPublishedPosts, formatFecha, formatFechaCorta } from '../../lib/blog';
+import { getPublishedPosts, getGuias, formatFecha, formatFechaCorta } from '../../lib/blog';
 import BlogList from './BlogList';
 import Header from '../Header';
 
@@ -21,8 +21,18 @@ export default function BlogPage() {
   // componente cliente y no debe importar lib/blog (arrastraría `fs` al bundle).
   const notas = posts.map((n) => ({
     slug: n.slug, title: n.title, categoria: n.categoria,
-    cover: n.cover, description: n.description, minutes: n.minutes,
+    cover: n.cover, cover_dato: n.cover_dato, description: n.description, minutes: n.minutes,
     fechaFmt: formatFecha(n.date), fechaCorta: formatFechaCorta(n.date),
+  }));
+
+  // Solo lo que la tarjeta de guía necesita: BlogList es cliente.
+  // Sin notas publicadas no hay guías que resolver: getGuia TIRA si un slug de
+  // lib/series.js no existe, y esa falla ruidosa es a propósito — pero no debe
+  // romper el build del blog vacío, que es un estado legítimo y soportado.
+  const guias = (notas.length === 0 ? [] : getGuias()).map((g) => ({
+    slug: g.slug, titulo: g.titulo, promesa: g.promesa,
+    cantidad: g.notas.length,
+    minutos: g.notas.reduce((a, n) => a + (n.minutes || 0), 0),
   }));
 
   return (
@@ -38,7 +48,7 @@ export default function BlogPage() {
           {notas.length === 0 ? (
             <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;color:#B3C7DB')}>Las primeras notas están en camino.</p>
           ) : (
-            <BlogList notas={notas} basePath={BP} />
+            <BlogList notas={notas} basePath={BP} guias={guias} />
           )}
         </div>
       </div>
