@@ -68,7 +68,7 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 | `cta_agendar`         | origen (nav / menu_movil / …)            | intención de agendar un turno y desde dónde nace |
 | `agendar_envio`       | centro, cuando, horario, esp_dada, via   | qué turnos se piden (centro / urgencia / horario) — demanda de agendamiento, empezando por Lister; **sin PII** |
 | `agendar_llamar`      | via (tel)                                | prefirió llamar para agendar en vez del handoff por WhatsApp |
-| `manifesto_scroll`    | profundidad (25/50/75/100), pagina (home / historia) | cuánta gente atraviesa el manifiesto vs. lo abandona — el dato que decide su futuro |
+| `manifesto_scroll`    | profundidad (25/50/75/100), pagina (home / historia) | cuánta gente atraviesa el manifiesto vs. lo abandona — el dato que decide su futuro. ⚠ **En `home` cambió de significado el 6 ago 2026**: el manifiesto se fusionó con el bloque "por qué importa un seguro" y subió al puesto 3 (1,75 pantallas de móvil, antes ~7,7), así que ya **no** mide "atravesó la home" sino "llegó al argumento del seguro". La serie histórica **no es comparable** a partir de esa fecha. En `historia` no cambió. |
 | `guia_handoff`        | q (texto buscado, puede ser vacío), via (enter / dropdown / nav / menú / link) | cuánta demanda de la guía nace en la web |
 | `cartilla_select`     | práctica, via (chip / sugerencia)        | qué coberturas consulta la gente antes de comprar |
 | `comparador_plan`     | plan, via (slider / parada)              | qué nivel de plan explora cada visitante |

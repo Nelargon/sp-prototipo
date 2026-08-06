@@ -74,7 +74,7 @@ export default function Cover({ categoria, slug, cover, alt = '', aspect = '2 / 
 
   const t = THEMES[categoria] || DEFAULT_THEME;
   const icon = ICONS[categoria] || DEFAULT_ICON;
-  const sd = seed(String(slug || categoria || 'sp'));
+  const sd = seed(String(slug || categoria || "sp"));
   const j = (shift, span) => ((sd >> shift) % span) - (span >> 1); // jitter centrado
   const gid = 'cov' + (sd % 100000);
   const c1x = 330 + j(3, 40),  c1y = 168 + j(6, 40);   // círculo blanco, sangra abajo-derecha

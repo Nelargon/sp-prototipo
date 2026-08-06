@@ -16,12 +16,36 @@ Formato de archivo: `YYYY-MM-DD-slug.md` con frontmatter `title`, `slug`,
 portada y el filtro del índice. La lista es cerrada: vive en `lib/categorias.js`
 y cada una tiene su tema en `app/blog/Cover.jsx`. Una categoría inexistente o
 ausente cae en "Entendé tu plan" y el build lo avisa por consola), `date`,
-`minutes`, `description` (para la tarjeta del índice y el SEO), `cover`
+`description` (para la tarjeta del índice y el SEO), `cover`
 (opcional — ruta a una foto en `/public`; si falta, el blog genera una portada
 de marca automática por código), `intro` (el
 copete de la nota), `tags`, `sources` (opcional), `nota` (opcional, el
 recuadro gris final) y `author`. Referencia completa:
 `contenido/blog/PLANTILLA.md` del repo `sp-interno`.
+
+## Tres cosas que cambiaron el 6 ago 2026 — leer antes de escribir una nota
+
+1. **`categoria` es el ÚNICO eje de la UI, y el `kicker` ya no se muestra.**
+   Convivían dos etiquetas sobre la misma nota: el `kicker` se veía en cada
+   tarjeta y `categoria` alimentaba el filtro, y no coincidían — el lector veía
+   "El dato" en la tarjeta y "General" en el filtro de al lado. Hoy la
+   **categoría maneja todo**: color de portada, ícono, filtro y etiqueta
+   visible. El `kicker` sigue en el frontmatter como rúbrica editorial interna,
+   pero no llega a la pantalla. **Elegí bien la categoría: es lo que ordena el
+   blog** (y es obligatoria — ver arriba).
+2. **`minutes` ya no se usa: el tiempo de lectura se calcula** del cuerpo
+   (200 palabras/minuto). Las 22 notas declaraban "4" y era un default, no una
+   medición. Podés dejar el campo o sacarlo; el sitio lo ignora.
+3. **No repitas el `intro` como primer párrafo del cuerpo.** El sitio rinde
+   `intro` como copete, así que el markdown que arranca repitiéndolo se leía
+   dos veces. Hoy el sitio lo detecta y lo recorta solo — pero la nota queda
+   más limpia si no viene duplicado de origen.
+
+📌 **Observación editorial para el motor (no es un bug):** las 22 notas
+publicadas miden entre 370 y 676 palabras — todas 2 o 3 minutos de lectura. La
+variedad de profundidad es parte de lo que hace que un blog se lea como una
+publicación y no como un depósito; hoy no la hay. Es decisión de `sp-contenido`,
+no de la web.
 
 Regla de lenguaje (ver CLAUDE.md): idioma de familia, no jerga de seguros —
 nada de "cartilla", "práctica" ni "prestación" de cara al usuario.

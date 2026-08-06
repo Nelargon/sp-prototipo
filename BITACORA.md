@@ -2062,6 +2062,187 @@ y habría dejado intacta la duplicación verdadera.
 
 ---
 
+## Capítulo 62 — El argumento de la categoría llegaba después de la elección
+
+**Qué intentamos.** Ejecutar la auditoría del capítulo anterior, ya corregida.
+De los tres hallazgos originales, dos se habían caído; el que quedaba en pie era
+el más grande y el menos vistoso: *el argumento que justifica tener un seguro
+está partido en dos, y ninguna mitad está arriba*.
+
+**Qué pasó.** Al ir a moverlo apareció lo que la medición sola no mostraba: las
+dos mitades no solo estaban lejos del hero — **estaban en el lugar equivocado
+respecto de la decisión**. El bloque de datos (36% de gasto de bolsillo · 7 de
+cada 10 sin seguro) vivía *dentro del comparador*, o sea que la página razonaba
+así:
+
+> Elegí entre Bronze, Silver y Gold. ⟶ *(y después)* ⟶ Por cierto: acá está por
+> qué te conviene tener un seguro.
+
+Y el manifiesto —*"Creés que estás protegido. La mayoría lo descubre recién
+cuando algo sale mal"*— repetía la misma idea cinco pantallas más abajo, con
+otras palabras y sin los datos. **Un mismo argumento dicho dos veces, las dos
+tarde.**
+
+La fusión salió más limpia de lo esperado porque las dos piezas eran las dos
+mitades de un mismo párrafo: el manifiesto tenía el golpe humano y ningún dato;
+el bloque tenía los datos y ninguna emoción. Juntos leen como un solo pensamiento
+— pasa algo, esto lo prueba, así se resuelve.
+
+**Qué aprendimos.**
+
+1. **Un argumento no se ubica por su peso, se ubica por su lugar en el
+   razonamiento.** La pregunta no era "¿está muy abajo?" sino "¿llega antes o
+   después de la decisión que pretende justificar?". En Paraguay 7 de cada 10 no
+   tienen seguro: para la mayoría de quienes entran, la pregunta previa no es
+   *¿cuál plan?* sino *¿por qué un plan?*. Responder la segunda después de la
+   primera es contestar una pregunta que la persona ya dejó de hacerse.
+2. **Dos piezas que dicen lo mismo casi nunca sobran las dos: suelen ser una
+   partida.** El instinto fácil era borrar una. Pero el manifiesto sin datos era
+   una afirmación, y los datos sin el manifiesto eran una estadística. La
+   redundancia no estaba en el mensaje — estaba en haberlo dicho dos veces a
+   medias.
+3. **Mover una sección mueve su métrica, y eso hay que declararlo.** El evento
+   `manifesto_scroll` se dispara cuando la sección entra en pantalla. Estaba a
+   7,7 pantallas: medía *"atravesó la home"*. Ahora está a 1,75: mide *"llegó al
+   argumento"*, que es otra cosa. El número va a **subir muchísimo** y no
+   significa que la gente lea más. Quedó anotado en el ANEXO §2 con la fecha de
+   corte, porque una métrica que cambia de significado en silencio es peor que
+   una métrica que no existe: la primera se sigue leyendo con confianza.
+4. **Al reordenar, la poda aparece sola — y hay que hacerle caso.** *"Salud
+   Protegida. Protección que se siente."* cerraba el manifiesto sin molestar a
+   nadie a siete pantallas del hero. A dos pantallas repite el H1 palabra por
+   palabra. **La misma línea puede ganarse su lugar en una posición y perderlo
+   en otra**: la regla de etiquetas no evalúa el elemento, evalúa el vecindario.
+5. **Y lo que no se pudo arreglar con palabras se dijo en voz alta.** La
+   cobertura geográfica sigue siendo una afirmación —"en todo el país"— que
+   nadie puede verificar. Se podía maquillar con mejor copy; no se hizo. Hace
+   falta la base real de prestadores por ciudad, y hasta que llegue queda
+   escrito como pendiente en vez de resuelto como texto.
+
+---
+
+## Capítulo 63 — Cuatro bugs que solo aparecen cuando hay veintidós notas
+
+**Qué intentamos.** Arturo pasó dos capturas sin una sola palabra de
+instrucción: la portada de **Men's Health** y el **newsletter de Arnold's Pump
+Club**. Antes de preguntarle qué quería, fuimos a mirar nuestro propio blog al
+lado de la referencia.
+
+**Qué pasó.** La comparación de diseño encontró lo que buscaba —Men's Health no
+tiene una grilla, tiene jerarquía— pero de paso destapó **cuatro cosas rotas**
+que llevaban semanas publicadas y que nadie había visto:
+
+1. Las 22 portadas eran prácticamente la misma imagen.
+2. Veintiuna de las veintidós notas decían *"4 min de lectura"*.
+3. El filtro del índice se apoyaba en un campo que **14 de 22 notas no tenían**,
+   así que la mayoría del blog vivía en una categoría llamada "General".
+4. El copete se repetía **textual** como primer párrafo del cuerpo. En las 22.
+
+Ninguna es un bug de código: las cuatro funcionaban perfecto el día que se
+escribieron. Lo que cambió fue **la cantidad**.
+
+**Qué aprendimos.**
+
+1. **Hay defectos que son función del volumen, no del código.** La portada
+   generada por código (cap. 40) resolvió un problema real: que ninguna nota
+   quedara sin imagen. Con tres notas, tres rectángulos azules parecidos son
+   "identidad de marca". Con veintidós, son **un depósito**. La decisión no fue
+   mala — **se venció**. Y una decisión vencida no avisa: sigue haciendo
+   exactamente lo que se le pidió.
+2. **Un default que nadie eligió se lee igual que un dato.** `minutes: 4` era el
+   valor de la plantilla. Como aparecía en cada tarjeta con el mismo aire que la
+   fecha, se leía como una medición. **Un campo con valor por defecto en todas
+   las filas no es información: es ruido con formato de información**, y encima
+   ocupa el lugar donde sí podría haber ido algo cierto.
+3. **Dos taxonomías siempre son cero taxonomías.** El `kicker` y `categoria`
+   convivieron desde julio sin que nadie notara que no se hablaban. El síntoma
+   visible era absurdo y aun así invisible: la tarjeta mostraba *"Decisiones"* y
+   el filtro de al lado ofrecía *"General"*. Cuando dos campos describen el
+   mismo eje, **uno gana y el otro hay que jubilarlo** — mantener los dos
+   garantiza que se separen. (Cuál de los dos ganó lo decidió el capítulo
+   siguiente, y no fue el que esta sesión eligió.)
+4. **Copiar una referencia es elegir qué NO copiar.** Men's Health tiene un
+   "MOST READ" numerado del 1 al 5 y fechas relativas ("hace 17 horas"). Los dos
+   son buenos y **los dos quedaron afuera**: no tenemos analítica conectada, así
+   que un "lo más leído" sería inventado; y el sitio es estático, así que "hace
+   2 horas" se congelaría en el build y mentiría a los tres días. **Una
+   referencia se copia con sus condiciones de posibilidad, no solo con su
+   forma** — Men's Health puede mostrar esos módulos porque tiene tráfico medido
+   y un servidor que renderiza al pedido. Nosotros no. Copiarlos habría sido
+   traer la estética de la credibilidad sin la credibilidad.
+5. **Y el hallazgo que no era nuestro.** Al calcular el tiempo de lectura real
+   apareció que las 22 notas miden entre 370 y 676 palabras: **todas 2 o 3
+   minutos**. El metadato sigue siendo casi constante, pero ahora por una razón
+   distinta — no porque el campo mienta, sino porque el contenido realmente es
+   uniforme. Eso no se arregla desde la web: se anotó para `sp-contenido`. **Un
+   diagnóstico honesto a veces termina en la puerta de otro equipo, y hay que
+   dejarlo ahí en vez de disfrazarlo de arreglo.**
+
+---
+
+## Capítulo 64 — Dos sesiones, el mismo hallazgo, el mismo día (y la mía perdió)
+
+**Qué intentamos.** Fusionar el PR #86 con el "dale" de Arturo: *"encargate del
+pull y merge porfa. Automático."* Antes de apretar el botón, el protocolo de
+`CLAUDE.md` obliga a mirar los otros PRs abiertos.
+
+**Qué pasó.** Había uno, abierto cinco minutos después del mío por otra sesión
+que no me veía ni yo a ella: **#87, "Cinco categorías de blog, una por ancla de
+color de la marca"**. Su descripción abría con mi mismo diagnóstico, palabra por
+palabra en sustancia: *14 de 22 notas no tenían `categoria`, así que dos tercios
+del blog renderizaban el mismo degradé*.
+
+Dos sesiones, el mismo día, encontraron el mismo defecto. Y lo resolvieron
+distinto:
+
+| | Yo (#86) | La otra (#87) |
+|---|---|---|
+| Eje | el `kicker`, 7 secciones **sacadas de lo que ya había en los datos** | una lista **cerrada de 5**, decidida y después asignada a las 22 notas |
+| Colores | 7 degradés que **inventé** "dentro del rango navy↔teal" | los **colores-ancla del manual de marca**, Sage/Lavender/Terracota como territorios narrativos |
+| Los datos | **cambié de eje para esquivar** el campo vacío | **llenaron el campo** en los 16 markdown que faltaban |
+
+**La suya era mejor y la mía se resolvió a favor de la suya.** Se fusionó #87
+primero, después esta rama trajo `origin/main` y los conflictos se resolvieron
+adoptando su taxonomía entera, conservando de acá solo lo que ellos no tocaban:
+la jerarquía del índice, el copete duplicado y el tiempo de lectura real.
+
+**Qué aprendimos.**
+
+1. **Inventé una paleta que la marca ya tenía resuelta.** Escribí en el código,
+   con todas las letras, *"todo dentro del rango navy↔teal de la marca"*, y me
+   sentí prolijo por reservar el dorado y el rojo. Nunca se me ocurrió que
+   pudiera existir un documento de color con más anclas que las cuatro que yo
+   recordaba. La otra sesión abrió `references/colors.md` y encontró Sage,
+   Lavender y Terracota **definidos como territorios narrativos**. **Respetar
+   las reglas que uno recuerda no es lo mismo que ir a buscar las que hay** — y
+   la diferencia entre las dos es exactamente la distancia entre un color
+   inventado y uno que la marca ya decidió.
+2. **Esquivar un campo vacío no es arreglarlo.** Vi que `categoria` estaba en 8
+   de 22 notas y cambié el eje al campo que sí estaba lleno. Elegante, cero
+   archivos de contenido tocados, y **dejaba el problema exactamente donde
+   estaba**: el motor iba a seguir publicando sin categoría. Ellos editaron 16
+   markdown a mano y le pusieron una guarda al build. **La solución que no toca
+   los datos suele ser la que no arregla nada** — solo mueve la mirada.
+3. **Siete etiquetas encontradas le pierden a cinco decididas.** Mis secciones
+   salieron de contar lo que había: quedaron dos con una sola nota y dos casi
+   sinónimas ("Entendé el sistema" / "Entendé tu cobertura"). Las suyas salieron
+   de un criterio previo. **Una taxonomía derivada de los datos describe el
+   pasado; una decidida ordena lo que viene.**
+4. **El protocolo de sesiones paralelas se ganó el sueldo.** "Mirar los otros
+   PRs abiertos antes de fusionar" suena a burocracia hasta el día que evita
+   esto. Si mi rama entraba primero —y el merge estaba autorizado, iba a
+   entrar—, el blog quedaba con colores inventados encima de una paleta oficial,
+   y la otra sesión habría llegado a un `main` que le pisó el trabajo. **Un
+   protocolo se prueba el día en que cuesta obedecerlo**, y este costó una hora
+   de trabajo mío tirado. Valió.
+5. **Y una cosa que sí sobrevivió, por una razón:** los tres arreglos que
+   aporté —copete duplicado, lectura real, jerarquía del índice— no chocaron con
+   nada porque **no eran otra respuesta a la misma pregunta**, eran respuestas a
+   preguntas que la otra sesión no se hizo. Cuando dos trabajos se superponen,
+   lo que se conserva no es lo que llegó primero: es lo que no tiene rival.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

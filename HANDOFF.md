@@ -1404,7 +1404,72 @@ usuario).
 **Territorio:** `app/simulador/page.jsx`, `app/mi-sp/MiSP.jsx`,
 `app/historia/page.jsx`, `app/agendar/Agendar.jsx`, `app/globals.css`.
 
-### ⚠ PENDIENTE — Auditoría estratégica de la home (medida el 5 ago 2026)
+### ✔ EJECUTADA — Auditoría estratégica de la home (decisión de Arturo, 6 ago 2026)
+
+Arturo eligió **reordenar** (no "solo pulir"). Lo ejecutado, contra los hallazgos
+que sobrevivieron a la corrección del PR #84 — el detalle de la medición sigue
+abajo, sin tocar, porque es el insumo que justifica cada movimiento.
+
+**1. El argumento del seguro sube al puesto 3, fusionado.** Las dos piezas que
+decían lo mismo —el bloque de datos *"Un seguro no es un gasto"* (36% de gasto de
+bolsillo · 7 de cada 10 sin seguro), que vivía **dentro del comparador**, y el
+manifiesto corto *"Creés que estás protegido…"*, cinco pantallas más abajo— son
+ahora **una sola sección navy**, pegada al teaser del simulador.
+
+Orden nuevo: **Hero → Simulador → Por qué importa → Comparador → Qué cubre →
+Cómo funciona → Diferenciadores → Quiénes somos → Aliados → FAQ → Contacto.**
+
+El porqué: el argumento que justifica la **categoría** no puede llegar después de
+pedirle a la persona que elija plan. Para 7 de cada 10 paraguayos la pregunta
+previa no es *"¿cuál plan?"* sino *"¿por qué un plan?"*. El simulador **no se
+movió** del puesto 2 — eso se midió y se decidió en julio (dec. 12b) y no se
+re-litiga; el argumento entra como el primer respaldo, no como peaje.
+
+Estructura interna: golpe humano → los dos datos duros que lo prueban → el
+reencuadre (cuenta impredecible vs. cuota conocida) → qué hacemos al respecto
+(las cuatro preguntas) → las dos salidas (la nota del blog, la historia).
+
+⚠ **Dos efectos colaterales, anotados para que nadie se sorprenda:**
+- Se podó *"Salud Protegida. Protección que se siente."* del cierre del
+  manifiesto: a dos pantallas del hero repetía su propio H1. A siete no repetía;
+  acá sí (regla de etiquetas).
+- **`manifesto_scroll` cambió de significado en la home** y ya está anotado en el
+  ANEXO §2: se dispara a 1,75 pantallas en vez de ~7,7, así que mide "llegó al
+  argumento", no "atravesó la página". La serie histórica no es comparable a
+  partir del 6 ago 2026. `blog_open` pasó de `origen:'comparador'` a
+  `origen:'por_que_importa'` (el bloque se mudó; el nombre viejo mentía).
+
+**2. El descuento sale de la letra chica.** *"¿Hay descuento por la forma de
+pago?"* estaba **enunciado, no respondido**: gris de 12,5px al pie de otra
+sección. Ahora es una franja legible en el comparador, **donde están los
+precios**, y en positivo — una razón para elegir, no una aclaración legal. La FAQ
+conserva la respuesta larga; el pie de la sección "qué cubre" ya no la repite.
+
+**3. Consolidada la repetición real (hallazgo 3).** Se eliminó la franja navy
+*"Lister + más de 50 prestadores en todo el país"*: decía exactamente lo mismo
+que la puerta a la Guía Médica de la sección "Qué cubre", pero **sin la acción**
+que esa sí ofrece. El padding que aportaba pasó a la sección de arriba. La
+sección de aliados (SaludPro 360) **no se tocó** — la auditoría corregida ya
+había establecido que no es lo mismo, y consolidarla mezclaría lo que existe hoy
+con lo que todavía no.
+
+**Medido después (mismo método que el 5 ago):** escritorio **9,6 → 9,4**
+pantallas · móvil **14,8 → 14,5** · de 12 secciones a 11. El argumento del seguro
+pasó de arrancar a **3,0 pantallas** (y su gemelo a 7,7) a arrancar a **1,75**.
+El comparador bajó de 2,6 a **2,25** en móvil al soltar el bloque de datos.
+Verificado: build OK, QA integral **0 roto** (los 5 "confunde" son de notas del
+blog publicadas hoy por el bot, no de la home), y captura desktop+móvil de la
+sección nueva, del comparador y de la juntura donde estaba la franja.
+
+**Lo que NO se ejecutó, y por qué.** La **cobertura geográfica** sigue siendo una
+afirmación ("en todo el país") que nadie puede verificar sin ir a la Guía. La
+auditoría la dejaba a decisión junto con el descuento, pero **no se puede
+resolver con copy**: hace falta la base real de prestadores por ciudad
+(pendiente B) para que "¿y en mi ciudad?" tenga respuesta. Queda abierta,
+esperando ese dato. Territorio de este cambio: `app/page.jsx`,
+`guia/ANEXO-requisitos-backend.md`.
+
+### La medición que originó todo esto (5 ago 2026) — insumo, ya ejecutado
 
 Arturo pidió mirar la home "de forma estratégica… la disposición de cada
 herramienta, y si hay mucho scroll". Se midió pero **todavía no se ejecutó
@@ -1475,13 +1540,112 @@ La **sección 10 NO es lo mismo**: es el carrusel de **aliados comerciales**
 mezclaría lo que existe hoy con lo que todavía no existe — y dejaría intacta
 la repetición verdadera.
 
-**Qué falta decidir (es de Arturo, altera el alcance):** si se reordena la home
-—subir el argumento del seguro, desenterrar las preguntas de alta frecuencia,
-consolidar lo repetido— o si se deja el orden actual y solo se pulen piezas.
+~~**Qué falta decidir (es de Arturo, altera el alcance):**~~ ✔ **DECIDIDO el
+6 ago 2026: reordenar.** Arturo eligió mover, no solo pulir. Lo ejecutado está
+arriba, en el bloque que abre esta sección.
 
 *Cómo se midió, por si hay que repetirlo: build local, servir `out/` bajo
 `/sp-prototipo/`, y recorrer `document.querySelectorAll('section')` anotando
 `top` y `height` a 1280×900 y 390×844.*
+
+### ✔ El blog con jerarquía editorial (6 ago 2026, referencia del usuario: Men's Health)
+
+Arturo pasó dos capturas sin instrucción: la portada de **Men's Health** y el
+**newsletter de Arnold's Pump Club**. Eligió trabajar sobre la primera.
+
+**El diagnóstico de la referencia:** Men's Health no tiene una grilla, tiene
+**jerarquía** — una nota manda (foto grande, título enorme), un riel de "lo
+último" al costado, y las demás abajo. Cada pieza pesa distinto porque no todas
+valen lo mismo. Nuestro índice era una grilla plana de 3 columnas donde las 22
+notas pesaban igual: con 8 se leía, con 22 se leía como un depósito.
+
+**Cuatro cosas estaban rotas, y ninguna se veía hasta contar 22 notas:**
+
+1. **Las 22 portadas eran casi la misma.** `Cover.jsx` tenía dos temas
+   (Prevención, Entendé tu plan) y todo lo demás caía al default → mismo degradé
+   y mismo ícono para la mayoría. **Resuelto por el PR #87** (ver abajo): cinco
+   temas atados a los colores-ancla del manual de marca.
+2. **21 de 22 notas decían "4 min de lectura".** Era el default del frontmatter,
+   no una medición. Ahora **se calcula del cuerpo** (200 palabras/min): quedan
+   9 notas de 2 min y 13 de 3 min. El campo `minutes` se ignora.
+3. **Había DOS taxonomías que no se hablaban.** El `kicker` se muestra en cada
+   tarjeta y existe en las 22 notas; `categoria` alimentaba el filtro y solo
+   estaba en 8 — las otras 14 caían en **"General"**. El lector veía una
+   etiqueta buena en la tarjeta y un filtro que la ignoraba. **Resuelto por el
+   PR #87** con la lista cerrada de cinco; acá se cerró el último cabo: la
+   categoría es ahora **la única etiqueta visible** (tarjeta, destacada y
+   artículo), porque dejar el kicker en pantalla mantenía dos nombres para la
+   misma nota — justo el problema que veníamos a arreglar.
+4. **El copete se repetía textual como primer párrafo** en las 22 notas
+   publicadas: el frontmatter trae `intro`, que se rinde como bajada, y el
+   markdown arrancaba con el mismo texto. Se recorta en `lib/blog.js`
+   (comparación normalizada, solo ante coincidencia exacta) y **no** en el motor
+   de contenido: la duplicación es de presentación — el markdown, leído solo,
+   necesita su primer párrafo. Verificado: 22/22 sin duplicado.
+
+**Layout nuevo:** portada (destacada grande + riel "Lo último" con 5) → chips de
+sección → "Todas las notas" en grilla. Con un filtro activo **la portada se
+pliega** y todo pasa a grilla: un filtro que deja la destacada arriba se lee como
+un filtro roto. El ancho del índice subió de 860 a 1120px.
+
+### ⚠ DOS SESIONES, EL MISMO HALLAZGO, EL MISMO DÍA — cómo se integró
+
+Mientras esta sesión trabajaba, **otra abrió el PR #87** ("Cinco categorías de
+blog, una por ancla de color de la marca") con **exactamente el mismo
+diagnóstico**: 14 de 22 notas sin `categoria` → dos tercios del blog con la
+misma portada. Y lo resolvió **distinto y mejor**:
+
+| | Esta sesión (#86) | La otra (#87) |
+|---|---|---|
+| Eje | el `kicker` — 7 secciones sacadas de los datos que ya había | **lista CERRADA de 5 categorías**, asignadas a las 22 notas a mano |
+| Colores | 7 degradés **inventados** "dentro del rango navy↔teal" | **los colores-ancla del manual** (`references/colors.md`): Sage, Lavender y Terracota como territorios narrativos |
+| Datos | se cambió de eje para esquivar el campo vacío | **se llenó el campo** en los 16 markdown que faltaban |
+| Guardas | ninguna | `lib/categorias.js` como fuente única + aviso en el build ante un typo |
+
+**Ganó #87 y se fusionó primero** (protocolo de `CLAUDE.md`: los merges van de a
+uno). Después esta rama trajo `origin/main` y resolvió los conflictos **a favor
+de la taxonomía ajena**, conservando de acá solo lo que #87 no tocaba: la
+jerarquía editorial del índice, el copete duplicado y el tiempo de lectura real.
+
+**Una decisión de integración propia, para que quede escrita:** con las cinco
+categorías adentro, la etiqueta visible de tarjeta/destacada/artículo pasó de
+`kicker` a `categoria`. Si no, la portada Sage decía "Prevención" en el filtro y
+"Salud preventiva" en la tarjeta — dos nombres para la misma nota, que es el
+problema original con otra cara. El `kicker` sigue en el frontmatter para el
+motor de contenido; simplemente no llega a la pantalla.
+
+**La lección, que vale más que el cambio:** el protocolo de sesiones paralelas
+funcionó exactamente como estaba escrito — mirar los PRs abiertos ANTES de
+fusionar evitó que el merge automático pisara trabajo mejor fundado. Si esta
+rama entraba primero, el blog quedaba con colores inventados por encima de una
+paleta que el manual ya tenía resuelta, y la otra sesión habría tenido que
+rehacer lo suyo.
+
+⚠ **Lo que NO se copió de la referencia, a propósito:**
+- **"MOST READ" numerado.** No tenemos ese dato: `track()` todavía no está
+  conectado a ningún backend (ANEXO §2). Cualquier "lo más leído" sería
+  inventado, y este es el sitio que se construyó sobre no afirmar lo que no
+  puede probar. Cuando la analítica esté conectada, el módulo entra solo.
+- **Tiempo relativo ("hace 2 horas").** El sitio es estático: se congelaría en
+  el momento del build y a los tres días seguiría diciendo "hace 2 horas". El
+  riel usa fecha corta ("4 ago"), que siempre es cierta.
+
+📌 **Observación editorial que sale de esto (para `sp-contenido`, no para la
+web):** las 22 notas miden entre **370 y 676 palabras** — todas 2 o 3 minutos.
+Men's Health va de 2 a 30 min en la misma portada, y esa variedad de profundidad
+es parte de lo que hace que se lea como publicación. Hoy no la tenemos. Anotado
+también en `contenido/README.md`.
+
+**Pendiente que queda vivo:** el **newsletter de Arnold's Pump Club** —la otra
+referencia que pasó Arturo— no se ejecutó. Su formato (índice arriba, secciones
+cortas, y la declaración de proceso editorial al pie) encaja con el principio de
+honestidad del proyecto, pero es **producto nuevo**: necesita captura de email en
+la web (el formulario de HubSpot sigue sin crearse, dec. 11x) y acordar cadencia
+con el Master Orquestador en `sp-contenido`. No lo arranca una sesión de web sola.
+
+**Territorio:** `lib/blog.js`, `app/blog/BlogList.jsx`, `app/blog/Cover.jsx`,
+`app/blog/page.jsx`, `app/blog/[slug]/page.jsx`, `app/blog/Articulo.jsx`,
+`app/globals.css`, `contenido/README.md`.
 
 ### Preguntas abiertas (y quién responde)
 
