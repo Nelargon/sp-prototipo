@@ -72,7 +72,11 @@ function seed(s) {
 // Onda suave y logo al 85%: la marca pide serenidad, nada de degradés
 // agresivos ni sombras duras. Sobre foto se agrega un velo oscuro abajo para
 // que el isotipo blanco no se pierda en una imagen clara.
-function Firma({ sobreFoto = false }) {
+// `eager` se propaga desde la portada que esta firma acompaña. En la grilla
+// del índice hay 20+ tarjetas bajo el pliegue: una firma eager en cada una
+// son 20 descargas que nadie está mirando todavía, y la auditoría de
+// rendimiento (qa/qa-integral.mjs) lo marca como falla.
+function Firma({ sobreFoto = false, eager = false }) {
   return (
     <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
       <svg viewBox="0 0 400 200" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
@@ -94,6 +98,8 @@ function Firma({ sobreFoto = false }) {
       <img
         src={`${BP}/assets/brand/isotipo-sp-white.png`}
         alt=""
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
         style={{ position: 'absolute', right: '4%', bottom: '6%', height: '19%', width: 'auto', opacity: 0.78 }}
       />
     </div>
@@ -112,7 +118,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
     return (
       <div style={{ ...base, position: 'relative', overflow: 'hidden' }}>
         <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />
-        <Firma sobreFoto />
+        <Firma sobreFoto eager={eager} />
       </div>
     );
   }
@@ -183,7 +189,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
         </g>
       )}
     </svg>
-      <Firma />
+      <Firma eager={eager} />
     </div>
   );
 }
