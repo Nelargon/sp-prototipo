@@ -60,6 +60,46 @@ function seed(s) {
 // recortaría la ilustración 2:1. `alt=''` (o ausente) = decorativa: no la
 // anuncia el lector de pantalla (la tarjeta ya expone el título). `eager` para
 // el hero del artículo (probable LCP); las tarjetas quedan lazy.
+// LA FIRMA DE MARCA. Se superpone a TODA portada —ilustración generada, foto
+// real, lo que venga— y es lo que hace que materiales distintos se lean como
+// una sola cosa. La idea viene de mirar una publicación con 44 tarjetas donde
+// convivían fotos, ilustraciones y capturas de pantalla sin verse como un
+// rejunte: todas llevaban la misma ola y el mismo logo en la esquina.
+//
+// Es lo que nos permite sumar fotos más adelante sin rehacer nada: la foto
+// entra, la firma la integra.
+//
+// Onda suave y logo al 85%: la marca pide serenidad, nada de degradés
+// agresivos ni sombras duras. Sobre foto se agrega un velo oscuro abajo para
+// que el isotipo blanco no se pierda en una imagen clara.
+function Firma({ sobreFoto = false }) {
+  return (
+    <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      <svg viewBox="0 0 400 200" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        {sobreFoto && (
+          <>
+            <defs>
+              <linearGradient id="firmaVelo" x1="0" y1="0.55" x2="0" y2="1">
+                <stop offset="0" stopColor="#002A52" stopOpacity="0" />
+                <stop offset="1" stopColor="#002A52" stopOpacity="0.42" />
+              </linearGradient>
+            </defs>
+            <rect y="90" width="400" height="110" fill="url(#firmaVelo)" />
+          </>
+        )}
+        {/* Dos ondas: la de atrás más tenue, para dar profundidad sin ruido. */}
+        <path d="M0 176 C 90 158, 170 190, 260 172 S 360 150, 400 162 L400 200 L0 200 Z" fill="#ffffff" opacity="0.10" />
+        <path d="M0 186 C 100 170, 180 200, 268 182 S 362 162, 400 174 L400 200 L0 200 Z" fill="#ffffff" opacity="0.16" />
+      </svg>
+      <img
+        src={`${BP}/assets/brand/isotipo-sp-white.png`}
+        alt=""
+        style={{ position: 'absolute', right: '4%', bottom: '6%', height: '19%', width: 'auto', opacity: 0.78 }}
+      />
+    </div>
+  );
+}
+
 export default function Cover({ categoria, slug, cover, dato, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
   const base = { display: 'block', width: '100%', aspectRatio: aspect, borderRadius: radius };
   const decorative = !alt;
@@ -69,7 +109,12 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
   // se deja igual.
   if (cover) {
     const src = /^https?:\/\//.test(cover) ? cover : `${BP}${cover}`;
-    return <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ ...base, objectFit: 'cover' }} />;
+    return (
+      <div style={{ ...base, position: 'relative', overflow: 'hidden' }}>
+        <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />
+        <Firma sobreFoto />
+      </div>
+    );
   }
 
   const t = THEMES[categoria] || DEFAULT_THEME;
@@ -98,7 +143,8 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
     : { role: 'img', 'aria-label': alt };
 
   return (
-    <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio={encuadre} style={base}>
+    <div style={{ ...base, position: 'relative', overflow: 'hidden' }}>
+      <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio={encuadre} style={{ display: 'block', width: '100%', height: '100%' }}>
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0.85" y2="1">
           <stop offset="0" stopColor={t.g1} />
@@ -137,5 +183,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
         </g>
       )}
     </svg>
+      <Firma />
+    </div>
   );
 }
