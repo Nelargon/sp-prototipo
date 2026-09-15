@@ -6,6 +6,7 @@ import { css } from '../css';
 import { BP } from '../basePath';
 import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from '../quote';
 import { track } from '../track';
+import { CON_MI_SP } from '../edicion';
 
 // Espacio directo de agendamiento (pedido del usuario, jul 2026): pedir un
 // turno NO debe estar enterrado detrás del login de Mi SP. Regla de IA:
@@ -116,7 +117,8 @@ export default function Agendar() {
             <a href={`tel:${SP_TEL}`} onClick={() => track('agendar_llamar', { via: 'tel' })} style={css('color:var(--sp-mint);font-weight:700')}>Llamanos al {SP_PHONE_DISPLAY}</a>
           </div>
 
-          <p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-blue-meta);line-height:1.6;margin:26px 0 0;max-width:540px')}>¿Ya sos de Salud Protegida y querés ver tus turnos y tu red? <a href={`${BP}/mi-sp/`} style={css('color:var(--sp-teal);font-weight:700;text-decoration:underline;text-underline-offset:3px')}>Entrá a Mi SP</a>.</p>
+          {/* Sin Mi SP publicado, este pie mandaría a una página que no existe. */}
+          {CON_MI_SP && <p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-blue-meta);line-height:1.6;margin:26px 0 0;max-width:540px')}>¿Ya sos de Salud Protegida y querés ver tus turnos y tu red? <a href={`${BP}/mi-sp/`} style={css('color:var(--sp-teal);font-weight:700;text-decoration:underline;text-underline-offset:3px')}>Entrá a Mi SP</a>.</p>}
         </div>
       </div>
     </div>

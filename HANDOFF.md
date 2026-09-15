@@ -17,6 +17,116 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🚀 LA V1 QUE SE LANZA — dos ediciones del mismo código (15 sep 2026)
+
+**Empezá por acá si vas a tocar el sitio.** Desde hoy este repo produce **dos
+sitios**, no uno:
+
+| | Prototipo completo | **Edición de lanzamiento (v1)** |
+|---|---|---|
+| Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
+| Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar · historia |
+| Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
+
+**La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página
+web de SP. Quiero crear otra versión del prototipo para esto sin tocar el
+prototipo original. Porque todavía no lanzaremos la guía médica, o la sección
+mi SP, aunque sí la sección de agendamiento de turnos."* Y minutos después:
+*"El Blog tampoco saldría aun en esta version."*
+
+### Cómo funciona — `app/edicion.js`, no un repo aparte
+
+Un flag de build decide qué módulos entran:
+
+```bash
+# el prototipo, como siempre
+NEXT_PUBLIC_BASE_PATH=/sp-prototipo npm run build
+
+# la v1 pública
+NEXT_PUBLIC_BASE_PATH=/sp-prototipo/lanzamiento \
+NEXT_PUBLIC_EDICION=lanzamiento npm run build
+```
+
+`app/edicion.js` exporta `CON_GUIA`, `CON_MI_SP` y `CON_BLOG`. Cada link a uno
+de esos módulos vive detrás de su constante; cada ruta se poda del export en
+`scripts/podar-edicion.mjs` (hook `postbuild`). **Las dos cosas, siempre**: un
+link escondido con la página igual publicada es una página huérfana que Google
+puede encontrar, y una página podada con el link puesto es un 404 en la cara
+del cliente. El podador verifica lo segundo y **corta el build** si queda un
+`href` apuntando a lo podado — por eso el CI construye las dos ediciones.
+
+> ⚠ **Por qué un flag y no una copia del repo.** El motor de contenido publica
+> las notas del blog **dentro de este repositorio**. Una copia en otro repo se
+> queda sin ese flujo el día que el blog se lance, y obliga a arreglar cada bug
+> dos veces. Se evaluaron las tres opciones (flag / repo nuevo / rama larga) y
+> ganó el flag por eso. BITACORA cap. 73.
+
+### Lo que la v1 cambia en el home — no es "el prototipo menos dos links"
+
+Sacar la guía y Mi SP deja huecos que hay que **contestar**, no tapar:
+
+1. **La puerta del cliente en el hero.** Decía "Ya soy de SP · Mi SP" y llevaba
+   a un portal que no se lanza. Ahora dice **"Ya soy de SP · Pedí tu turno"** y
+   lleva a `/agendar/`. Es la única acción que un cliente puede resolver hoy en
+   la web. Decisión de Arturo, 15 sep.
+2. **El botón de la barra.** Era "Guía Médica". En la v1 es **"Agendar un
+   turno"** — la acción que hasta ahora vivía escondida bajo el desplegable de
+   Mi SP y que en esta edición gana primera línea.
+3. **Dos preguntas de la FAQ cambian de respuesta.** "¿La cobertura vale en
+   todo el país?" y "¿Está mi médico o mi sanatorio en la red?" se contestaban
+   mandando a la Guía Médica. En la v1 se contestan por WhatsApp, que es lo que
+   de verdad pasa hoy. Una respuesta no puede apuntar a un lugar que no existe.
+4. **El bloque "¿Dónde atenderte?"** prometía buscar médicos y sanatorios. En
+   la v1 dice dónde te atendés (Lister + más de 50 prestadores) y ofrece el
+   turno. No promete la búsqueda que no puede dar.
+
+### Cómo se lleva la v1 con el principio 12e (*la página vende el simulador*)
+
+Se verificó al integrar `main` el 15/09: **no lo contradice, y conviene saber
+por qué** antes de contar CTAs a ojo.
+
+- **El destino comercial sigue siendo uno solo.** El botón teal "Simulá tu
+  plan" no se movió, en el nav ni en el hero. Lo que cambia es la **puerta del
+  cliente**, que nunca fue comercial: antes iba a Mi SP, ahora va a agendar.
+  Sirve a quien ya compró; no vende un plan.
+- **La barra de la v1 queda más limpia con 12e, no menos.** El prototipo tiene
+  dos entradas no comerciales en la barra (el botón de la Guía Médica y el
+  desplegable de Mi SP); la v1 tiene una sola, agendar.
+- **Lo que sí cambia de verdad: dos respuestas de la FAQ pasan de una
+  herramienta a una persona.** "¿Vale en todo el país?" y "¿está mi médico en
+  la red?" contestaban mandando a la Guía Médica; en la v1 las contesta un
+  asesor por WhatsApp. Eso cae **dentro de la excepción con nombre de 12e**
+  (*el WhatsApp es el atajo, siempre abierto*), pero no es gratis: en la v1, la
+  cuarta de las cuatro preguntas del proyecto —*¿dónde me atiendo?*— **no la
+  resuelve el sitio solo**. Es costo de atención al cliente, y es el argumento
+  más concreto para priorizar la guía en la v2. El detalle, en
+  `sp-interno/BITACORA.md` cap. 10.
+
+**Eventos.** La puerta del hero emite `cta_agendar {origen:'hero'}`, no
+`puerta_home`, a propósito: el embudo de turnos se cuenta con **un solo
+evento**. Sumar dos eventos para un embudo ya nos costó caro con `/que-cubre`
+(`nav_landing` + `ver_que_cubre`, más arriba en este documento). Las puertas de
+agendar en la v1 son: `hero`, `nav`, `menu_movil`, `cobertura`.
+
+### Al agregar algo nuevo
+
+- **Texto o link nuevo**: preguntarse en qué edición vive. Si toca un módulo
+  que la v1 no lanza, va detrás de su `CON_…`.
+- **Módulo nuevo que no está listo para el público**: constante `CON_…` en
+  `app/edicion.js` + entrada en `PODAR` de `scripts/podar-edicion.mjs`.
+- **Verificación**: `qa/qa-lanzamiento.mjs` (cabecera con el cómo). Revisa lo
+  que el HTML estático no muestra — el menú móvil, que se arma al abrirlo, y
+  las respuestas de la FAQ, que se renderizan al desplegarlas.
+
+### Pendiente para lanzar de verdad
+
+La v1 sale **con `noindex`**: es una vista previa para revisarla entera. Lo que
+falta es el **dominio** (pendiente #9 de este documento): decidido el hostname,
+es un solo flip — `NEXT_PUBLIC_INDEXABLE=true` + `SITE_URL` en el workflow.
+
+---
+
 ## 🆕 `/que-cubre` — la landing de los planes, en espacio propio (6 ago 2026)
 
 Ruta nueva: **`/que-cubre/`** (`app/que-cubre/`). Es **la página donde la

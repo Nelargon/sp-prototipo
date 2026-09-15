@@ -7,6 +7,7 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
+import { CON_GUIA, CON_MI_SP, CON_BLOG } from './edicion';
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -51,8 +52,18 @@ export default function Page() {
     { q: '¿Cuál es la diferencia entre Bronze, Silver y Gold?', a: 'Cada plan incluye todo lo del anterior y suma lo suyo. Bronze cubre lo esencial: urgencias 24 h, consultas (hasta 3 al año por especialidad), radiografías, ecografías e internación. Silver es el salto más grande: agrega resonancia y tomografía al 100%, sube a 5 consultas y estira fisioterapia y terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     { q: '¿Qué es la carencia y cuánto dura?', a: 'Es el tiempo que esperás desde que te afiliás hasta poder usar una cobertura. Arranca el día que te afiliás, no el día que la necesitás. Los plazos reales de los planes vigentes: consultas y urgencias, sin espera; laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 7 meses en Bronze, 6 en Silver y 5 en Gold; y parto, 10 meses en los tres planes (la cesárea baja a 5 meses en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Mirá tu precio con el descuento →', sim: true } },
-    { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés disponible cerca depende de tu ciudad: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } },
-    { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, te mostramos alternativas cerca en vez de dejarte sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } },
+    // ⚠ Estas dos preguntas se contestan distinto en cada edición. En el
+    // prototipo la respuesta es "miralo vos mismo" y manda a la Guía Médica.
+    // En la v1 la guía no se publica todavía, y una respuesta no puede
+    // apuntar a un lugar que no existe: ahí se contesta por WhatsApp, que es
+    // lo que de verdad pasa hoy cuando alguien pregunta por su ciudad o su
+    // médico. El día que la guía salga, vuelven solas a su versión buena.
+    CON_GUIA
+      ? { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés disponible cerca depende de tu ciudad: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
+      : { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
+    CON_GUIA
+      ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, te mostramos alternativas cerca en vez de dejarte sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
+      : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma Lister más de 50 prestadores externos en todo el país, según el plan que elijas.' },
@@ -385,22 +396,30 @@ export default function Page() {
                                   </div>
               </div>
             </div>
-            <a href={`${BP}/blog/`} className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Blog</a>
+            {CON_BLOG && <a href={`${BP}/blog/`} className="nav-link" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s')}>Blog</a>}
             {/* Puerta persistente del afiliado en desktop (auditoría estratégica jul 2026,
                 problema D): "Mi SP" solo vivía en el hero y el menú móvil; apenas se
                 scrollea, el cliente actual se quedaba sin camino. Link discreto, no CTA,
                 para no competir con la acción comercial única. */}
-            <div className="navmenu-wrap">
-              <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav' })} className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Mi SP <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
-              <div className="navmenu navmenu-right">
-                <div className="navmenu-card">
-                  <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Agendar un turno</span><span className="navmenu-s">Pedí tu turno en Lister — directo, sin login</span></a>
-                  <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ver mi red</span><span className="navmenu-s">Con tu cédula, mirá qué entra en tu plan</span></a>
-                  <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ir a Mi SP</span><span className="navmenu-s">Tu espacio: credencial, turnos y más</span></a>
+            {CON_MI_SP && (
+              <div className="navmenu-wrap">
+                <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav' })} className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Mi SP <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
+                <div className="navmenu navmenu-right">
+                  <div className="navmenu-card">
+                    <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Agendar un turno</span><span className="navmenu-s">Pedí tu turno en Lister — directo, sin login</span></a>
+                    <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ver mi red</span><span className="navmenu-s">Con tu cédula, mirá qué entra en tu plan</span></a>
+                    <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ir a Mi SP</span><span className="navmenu-s">Tu espacio: credencial, turnos y más</span></a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+            )}
+            {/* El botón de la barra: en el prototipo abre la Guía Médica; en la v1
+                esa puerta todavía no existe y el lugar lo ocupa agendar, que hasta
+                ahora vivía escondido bajo el desplegable de Mi SP. Mismo espacio,
+                misma jerarquía: la acción que sí podemos cumplir hoy. */}
+            {CON_GUIA
+              ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+              : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
             <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
           </div>
           <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:var(--r-xs);border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
@@ -414,7 +433,7 @@ export default function Page() {
       {v.mobileMenuOpen && (
         <div id="mobile-menu" className="menu-overlay" role="dialog" aria-modal="true" aria-label="Menú">
           <nav style={css('display:flex;flex-direction:column')}>
-            <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '30ms' }}>Guía Médica</a>
+            {CON_GUIA && <a href={v.guiaHome} onClick={() => { track('guia_handoff', { q: '', via: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '30ms' }}>Guía Médica</a>}
             <a href="#cartilla" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
             <a href="#comparar" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
@@ -422,10 +441,10 @@ export default function Page() {
                 esta entrada /que-cubre pierde su puerta en móvil. Misma
                 pregunta que en escritorio, en cuerpo menor. */}
             <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
-            <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>
+            {CON_BLOG && <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
             <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
-            <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>
-            <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '290ms' }}>Agendar turno →</a>
+            {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
+            <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>
             <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>
           </nav>
         </div>
@@ -446,7 +465,18 @@ export default function Page() {
                 (auditoría de conversión, jul 2026 — cinco nombres eran cinco decisiones). */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
               <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-              <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
+              {/* La puerta del cliente cambia de destino según la edición. En el
+                  prototipo entra a Mi SP. En la v1, Mi SP y la guía no se lanzan:
+                  lo único que un cliente puede resolver hoy en la web es pedir un
+                  turno, así que la puerta lleva ahí. Decisión de Arturo, 15 sep
+                  2026. Una puerta que promete un espacio que no existe es peor
+                  que una puerta que hace una sola cosa y la hace.
+                  Evento: en esta edición emite cta_agendar (no puerta_home), para
+                  que el embudo de turnos se cuente con UN solo evento y no haya
+                  que sumar dos — el error que ya cometimos con /que-cubre. */}
+              {CON_MI_SP
+                ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
+                : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>}
             </div>
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
                 tocar el título del hero — el test de 5 segundos sigue vigente. */}
@@ -547,7 +577,10 @@ export default function Page() {
             <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un seguro no es un gasto: cambia una cuenta impredecible por <span style={css('color:var(--sp-teal)')}>una cuota que conocés</span>.</p>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:var(--sp-blue-soft);line-height:1.65;margin:0 auto 26px;max-width:620px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés. La protección real se construye <b style={css('color:#fff')}>antes</b> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
             <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 24px')}>
-              <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>
+              {/* La nota vive en el blog, que la v1 no publica todavía. El dato no
+                  se queda sin respaldo: la línea de fuentes de abajo (OPS e INE)
+                  sigue ahí en las dos ediciones. */}
+              {CON_BLOG && <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>}
               <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>
             </div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-blue-meta);margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
@@ -757,17 +790,30 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Puerta a la Guía Médica: "dónde/con quién atenderte" es su propia
-              utilidad; acá una entrada honesta, no un buscador que finge. La
-              búsqueda real (médicos, sanatorios, estudios) vive en la guía. */}
-          <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
-            <div>
-              <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
-              <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
+          {/* "Dónde/con quién atenderte" es su propia utilidad, y cada edición la
+              resuelve con lo que tiene: el prototipo abre la Guía Médica (una
+              entrada honesta, no un buscador que finge — la búsqueda real de
+              médicos y sanatorios vive allá); la v1 todavía no la publica, así
+              que no la promete y ofrece el turno, que sí funciona hoy. */}
+          {CON_GUIA ? (
+            <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+              <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+              <div>
+                <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
+                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), más de 50 prestadores en todo el país.</div>
+              </div>
+              <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
             </div>
-            <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-          </div>
+          ) : (
+            <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+              <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+              <div>
+                <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde te atendés?</div>
+                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}><b style={css('color:var(--sp-navy)')}>Lister</b> es nuestro centro médico propio en Asunción: consultas, laboratorio e imagen. La red suma más de 50 prestadores en el resto del país.</div>
+              </div>
+              <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'cobertura' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Pedí tu turno en Lister <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          )}
 
 
           <div data-rv className="two-col" style={css('margin-top:26px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
@@ -952,13 +998,15 @@ export default function Page() {
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Enlaces</div>
             <div style={css('display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--sp-blue-pale)')}>
-              <a href={v.guiaHome} className="foot-link" style={css('color:inherit')}>Guía Médica</a>
+              {CON_GUIA && <a href={v.guiaHome} className="foot-link" style={css('color:inherit')}>Guía Médica</a>}
               <a href="#cartilla" className="foot-link" style={css('color:inherit')}>Qué cubre cada plan</a>
               <a href="#comparar" className="foot-link" style={css('color:inherit')}>Planes</a>
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
-              <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>
+              {CON_BLOG && <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>}
               <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>
-              <a href={`${BP}/mi-sp/`} className="foot-link" style={css('color:inherit')}>Mi SP · ya soy cliente</a>
+              {CON_MI_SP
+                ? <a href={`${BP}/mi-sp/`} className="foot-link" style={css('color:inherit')}>Mi SP · ya soy cliente</a>
+                : <a href={`${BP}/agendar/`} className="foot-link" style={css('color:inherit')}>Agendar un turno</a>}
               <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simulá tu plan</a>
             </div>
           </div>

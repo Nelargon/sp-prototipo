@@ -22,3 +22,6 @@ next-env.d.ts
 # arbol que existia cuando alguien lo corrio, no el actual — un JSON viejo
 # commiteado se lee como evidencia y no lo es. La evidencia se genera corriendo.
 qa/qa-resultados.json
+
+# Salida del deploy de dos ediciones (se arma en el workflow, no es fuente).
+/_site

@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node scripts/sync-guia.mjs"
+    "prebuild": "node scripts/sync-guia.mjs",
+    "postbuild": "node scripts/podar-edicion.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
