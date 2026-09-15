@@ -2741,6 +2741,71 @@ FAQ. Y la regla quedó escrita en `CLAUDE.md`, con la frase del usuario.
 
 ---
 
+## Capítulo 73 — El export estático daba verde y dos respuestas mentían
+
+**Qué intentamos.** Arturo, 15 sep 2026: *"Tenemos que lanzar la v1 de la
+página web de SP. Quiero crear otra versión del prototipo para esto sin tocar
+el prototipo orginal. Porque todavía no lanzaremos la guía médica, o la
+sección mi SP, aunque sí la sección de agendamiento de turnos."* Y minutos
+después, con el trabajo empezado: *"EL Blog tampoco saldría aun en esta
+version. Perdon que no te lo dije antes."*
+
+Antes de tocar nada hubo que decidir **dónde vive la v1**: un flag de build en
+el mismo repo, una copia en un repo nuevo, o una rama larga. Ganó el flag, y
+no por elegancia: **el motor de contenido publica las notas del blog dentro de
+este repositorio**. Una copia en otro repo se queda sin ese flujo el día que
+el blog se lance. La rama larga choca de frente con el protocolo de sesiones
+paralelas. Quedó `app/edicion.js` con `CON_GUIA`, `CON_MI_SP` y `CON_BLOG`, y
+un podador (`scripts/podar-edicion.mjs`) que borra las rutas del export.
+
+**Qué pasó.** Dos cosas, y la segunda es la que enseña.
+
+La primera: **sacar un módulo no es sacar sus links.** La Guía Médica no
+estaba solo en el menú. Estaba en el botón principal de la barra, en dos
+respuestas de la FAQ, en un bloque entero de la sección de cobertura y en el
+pie. Y Mi SP era el destino de **una de las dos puertas del hero**. Esconder
+los links dejaba el home con un hueco: el cliente que ya es de SP entraba por
+una puerta que no llevaba a ningún lado. Hubo que **contestar** los huecos, no
+taparlos — la puerta del hero pasó a "Pedí tu turno", el botón de la barra a
+"Agendar un turno", las dos FAQ a WhatsApp, y el bloque "¿Dónde atenderte?" a
+decir dónde te atendés en vez de prometer una búsqueda que la v1 no tiene.
+
+La segunda: **el grep del HTML exportado dio verde con dos respuestas sin
+revisar.** Terminado el build de la v1, la verificación fue buscar en
+`out/index.html` las frases nuevas de la FAQ. No aparecían. Ni las nuevas ni
+las viejas: **las respuestas de la FAQ no están en el HTML estático** — el
+acordeón las renderiza al desplegarlas, en el cliente. El export decía lo que
+se ve antes de tocar nada, no lo que la página dice. Lo mismo el menú móvil,
+que se arma al abrirlo. Recién con el navegador, abriendo cada pregunta, se
+pudo ver que las dos respuestas nuevas estaban bien. Y una tercera trampa: el
+acordeón abre **de a una**, así que el primer test —que abría las dos y leía
+el texto— reportó dos fallas que no existían. La falla estaba en el test.
+
+**Qué aprendimos.**
+
+1. **El export estático no es el sitio.** Es el sitio *antes de que alguien lo
+   toque*. Todo lo que aparece al abrir, desplegar o scrollear no está ahí. Es
+   la versión de "verificá lo computado, no el código fuente" (cap. 29) para
+   el contenido: `grep` sobre `out/` prueba el HTML inicial y nada más. Lo que
+   se muestra con un click se verifica con un click.
+2. **Esconder la ruta y esconder el link son dos trabajos, y hay que hacer los
+   dos.** Un link escondido con la página igual publicada es una página
+   huérfana que Google encuentra; una página podada con el link puesto es un
+   404 en la cara del cliente. Por eso el podador **corta el build** si queda
+   un `href` apuntando a lo podado, y el CI construye las dos ediciones: el
+   error no aparece en el diff de una rama, igual que el nav duplicado del
+   cap. 67.
+3. **La pregunta que define la arquitectura no es de gusto, es de flujo.**
+   Flag contra copia se veía como una discusión de prolijidad hasta que
+   apareció el dato que la cerró: el blog se publica *acá*. Cuando una
+   decisión técnica parece empatada, falta un dato — casi siempre sobre quién
+   más escribe en el repo.
+4. **Un módulo que no se lanza deja huecos de producto, no de código.** El
+   trabajo no fue apagar tres flags: fue decidir qué le decimos al cliente que
+   entraba por la puerta que sacamos. Eso no lo resuelve un `CON_…`.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

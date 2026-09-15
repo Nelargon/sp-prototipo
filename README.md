@@ -6,11 +6,18 @@ prepaga, Paraguay): la web de planes, el simulador de cotización y la
 
 ## 🌐 Ver en vivo
 
+Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
+
 | Pieza | Link |
 |---|---|
-| Web de planes | https://nelargon.github.io/sp-prototipo/ |
+| **Edición de lanzamiento (v1)** — lo que sale al público | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
+| Prototipo completo — el laboratorio | https://nelargon.github.io/sp-prototipo/ |
 | Simulador | https://nelargon.github.io/sp-prototipo/simulador/ |
-| Guía Médica | https://nelargon.github.io/sp-prototipo/guia/guia_home.html |
+| Guía Médica *(no entra en la v1)* | https://nelargon.github.io/sp-prototipo/guia/guia_home.html |
+
+La v1 no publica todavía la **Guía Médica**, **Mi SP** ni el **blog**, y sí
+publica el **agendamiento de turnos** (decisión del 15 sep 2026). El detalle,
+en la primera sección del `HANDOFF.md`.
 
 ## 📖 Para entender el proyecto
 
@@ -30,22 +37,29 @@ npm run dev      # → http://localhost:3000
 # o el build estático completo (igual al publicado):
 npm run build
 cd out && python3 -m http.server 8080
+
+# la edición de lanzamiento (la v1 pública):
+NEXT_PUBLIC_BASE_PATH=/sp-prototipo/lanzamiento \
+NEXT_PUBLIC_EDICION=lanzamiento npm run build
 ```
 
 ## 🗂️ Estructura
 
 ```
 app/           # web de planes + simulador (Next.js)
+app/edicion.js # qué módulos entra cada edición (completa / lanzamiento)
 guia/          # Guía Médica — FUENTE (HTML + Tailwind, formato del proveedor)
 public/guia/   # copia publicada — se genera sola en cada build, NO editar
-scripts/       # sync-guia.mjs (corre automático en el prebuild)
+scripts/       # sync-guia.mjs (prebuild) y podar-edicion.mjs (postbuild)
+qa/            # suites de verificación con Playwright
 ```
 
 - La guía se edita **solo** en `guia/`; el build la sincroniza a `public/`.
 - Los datos de prestadores de la guía son **ilustrativos**: definen el molde
   al que debe llegar la base real.
-- Cada push a `main` publica automáticamente a GitHub Pages; cada PR corre
-  el chequeo de build (CI).
+- Cada push a `main` publica automáticamente a GitHub Pages **las dos
+  ediciones**; cada PR construye las dos en el CI. Si un link queda apuntando
+  a un módulo que la v1 no publica, el build corta.
 - El material interno del proyecto (briefs, plan estratégico, histórico)
   vive en el repositorio **privado** `sp-interno`.
 

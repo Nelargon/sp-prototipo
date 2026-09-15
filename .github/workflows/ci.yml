@@ -19,9 +19,26 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Build (incluye sincronización de la guía)
+      - name: Build del prototipo completo (incluye sincronización de la guía)
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /sp-prototipo
       - name: Verificar que la guía quedó en el export
         run: test -f out/guia/guia_home.html && echo "✓ guía presente en el build"
+      # La v1 pública se construye del mismo código (app/edicion.js). Si esta
+      # rama esconde un módulo pero deja un link apuntándole, el postbuild
+      # (scripts/podar-edicion.mjs) corta acá y el PR no se puede fusionar.
+      - name: Build de la edición de lanzamiento (v1)
+        run: rm -rf .next && npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /sp-prototipo/lanzamiento
+          NEXT_PUBLIC_EDICION: lanzamiento
+      - name: Verificar que la v1 publica lo que debe y nada más
+        run: |
+          for d in guia blog mi-sp v1; do
+            if [ -e "out/$d" ]; then echo "✗ out/$d quedó publicado en la v1"; exit 1; fi
+          done
+          for d in agendar simulador planes que-cubre historia; do
+            test -f "out/$d/index.html" || { echo "✗ falta out/$d/ en la v1"; exit 1; }
+          done
+          echo "✓ la v1 publica home, simulador, planes, qué cubre, agendar e historia — y nada de lo que no se lanza"
