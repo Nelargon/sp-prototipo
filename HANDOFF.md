@@ -81,6 +81,28 @@ Sacar la guía y Mi SP deja huecos que hay que **contestar**, no tapar:
    la v1 dice dónde te atendés (Lister + más de 50 prestadores) y ofrece el
    turno. No promete la búsqueda que no puede dar.
 
+### Cómo se lleva la v1 con el principio 12e (*la página vende el simulador*)
+
+Se verificó al integrar `main` el 15/09: **no lo contradice, y conviene saber
+por qué** antes de contar CTAs a ojo.
+
+- **El destino comercial sigue siendo uno solo.** El botón teal "Simulá tu
+  plan" no se movió, en el nav ni en el hero. Lo que cambia es la **puerta del
+  cliente**, que nunca fue comercial: antes iba a Mi SP, ahora va a agendar.
+  Sirve a quien ya compró; no vende un plan.
+- **La barra de la v1 queda más limpia con 12e, no menos.** El prototipo tiene
+  dos entradas no comerciales en la barra (el botón de la Guía Médica y el
+  desplegable de Mi SP); la v1 tiene una sola, agendar.
+- **Lo que sí cambia de verdad: dos respuestas de la FAQ pasan de una
+  herramienta a una persona.** "¿Vale en todo el país?" y "¿está mi médico en
+  la red?" contestaban mandando a la Guía Médica; en la v1 las contesta un
+  asesor por WhatsApp. Eso cae **dentro de la excepción con nombre de 12e**
+  (*el WhatsApp es el atajo, siempre abierto*), pero no es gratis: en la v1, la
+  cuarta de las cuatro preguntas del proyecto —*¿dónde me atiendo?*— **no la
+  resuelve el sitio solo**. Es costo de atención al cliente, y es el argumento
+  más concreto para priorizar la guía en la v2. El detalle, en
+  `sp-interno/BITACORA.md` cap. 10.
+
 **Eventos.** La puerta del hero emite `cta_agendar {origen:'hero'}`, no
 `puerta_home`, a propósito: el embudo de turnos se cuenta con **un solo
 evento**. Sumar dos eventos para un embudo ya nos costó caro con `/que-cubre`
