@@ -1148,6 +1148,73 @@ usa `npm ci`).
     `app/glossary.jsx` (`waitLabel` gana un modo corto), `app/page.jsx` (FAQ),
     `qa/`.
 
+12e. **⭐ LA PÁGINA VENDE EL SIMULADOR, NO EL PRODUCTO (15 sep 2026 — Arturo:
+    *"We need to sell our lead generator, not our product"*; y el alcance:
+    *"hoy por hoy el lead generator es solo el simulador. Esto es solo para el
+    concepto de la página por hoy, pero queremos permear a lo demás
+    después"*).** PRINCIPIO; sin cambios en el sitio todavía.
+    - **Qué dice:** cada pieza vende solo el paso siguiente. La página vende el
+      simulador; el simulador vende la conversación; la conversación vende el
+      plan. Ninguna sección de la home vende un plan por su cuenta: o lleva al
+      simulador, o lo respalda. Hoy el generador es el simulador, no el blog ni
+      la Guía Médica (esos respaldan).
+    - **Dónde ya está (verificado el 15 sep):** un solo **destino** comercial
+      en toda la home, el simulador: nav, hero, teaser del puesto 2, botones
+      del comparador, banda Vital, CTAs de la FAQ, cierre y barra móvil llevan
+      a `/simulador/`. La **etiqueta** no es una sola: "Simulá tu plan" en
+      nav, hero, teaser, cierre y barra móvil; "Ver mi precio" en el
+      comparador (`app/page.jsx:621`); "Simulá Plan Vital" en la banda Vital
+      (`:776`); "Mirá tu precio…" en la FAQ (`:53`, `:59`). Las variantes
+      nombran el resultado y no cambian el destino; unificarlas es el ajuste 5
+      de abajo. Además, la línea ancla del hero ("En 1 minuto ves tu precio…
+      sin dejar datos") y la promesa del teaser ("ves el precio antes de dejar
+      cualquier dato. Sin compromiso") prometen lo que da el simulador. El
+      espinazo de la home ya es el generador; la decisión de julio (un solo
+      verbo, dec. 12b) era este principio sin nombre, y en las etiquetas no
+      se cumplió del todo.
+    - **Dónde todavía vende producto por su cuenta:** (1) el **H1 del hero**
+      ("Protección que se siente") es la promesa de la marca, no la del
+      generador; todo lo demás del hero sí lo es. (2) Los **diferenciadores**
+      ("Lo que casi nadie te garantiza") no tienen salida al simulador. (3) La
+      **red de beneficios** vende perks, y su "próximamente" es una promesa
+      que la estrategia pide no publicar. El **comparador** vende producto,
+      pero responde "¿qué me cubre?" y cada botón lleva al simulador:
+      recomendación, dejarlo. El **cierre** ofrece primero WhatsApp y después
+      el simulador.
+    - **Excepción explícita: el camino directo a una persona se conserva.**
+      El WhatsApp flotante y el botón de WhatsApp del cierre venden la
+      conversación sin pasar por el simulador. Leída como regla absoluta, la
+      cadena "página → simulador → conversación" los contradice. No es
+      absoluta: hablar con una persona sin llenar ningún formulario es un acto
+      de la estrategia (A6, principio #5) y una promesa vigente del sitio. La
+      regla queda así: **el simulador es el camino principal y el único que
+      la página vende; el WhatsApp es el atajo, siempre abierto, para quien ya
+      sabe lo que quiere o no quiere simular.** No se quita. Lo que el
+      principio sí ordena es la jerarquía: en el cierre, el simulador primero
+      y el WhatsApp segundo (ajuste 2). Una sesión futura no lee acá dos
+      políticas incompatibles: lee una regla y su excepción, con nombre.
+    - **Ajustes posibles, a decisión de Arturo (ninguno hecho):** (1) el H1
+      del hero dice lo que el simulador da y "Protección que se siente" queda
+      como kicker; (2) el cierre ordena simulador primero y WhatsApp segundo;
+      (3) los diferenciadores cierran con una línea hacia el resultado del
+      simulador; (4) la **red de beneficios**: sacar "muy pronto" y
+      "próximamente" (`app/page.jsx:863`, `:890`), que es regla de la
+      estrategia aunque este principio no existiera, y darle una salida al
+      simulador o dejarla escrita como respaldo (los aliados son un beneficio
+      del plan, no una razón para elegirlo); (5) unificar las etiquetas de
+      los CTAs, si se decide que el verbo también sea uno solo. Los cuatro
+      primeros son copy, no estructura. El hero es visión: espera su "dale".
+      Completar esta lista no deja ninguna de las tres violaciones de arriba
+      sin destino.
+    - **Guarda para sesiones futuras:** una sección nueva en la home entra solo
+      si lleva al simulador o lo respalda. Un bloque que vende un plan sin
+      camino al simulador contradice este principio.
+    - **Alcance:** hoy gobierna el concepto de la página. La pauta, el feed y
+      los guiones vienen después ("permear a lo demás"), cuando Arturo lo
+      diga; el detalle vive en `sp-interno`
+      (`project/ESTRATEGIA-levantar-la-niebla-2026-09.md` §3c, privado).
+    Territorio: solo `HANDOFF.md`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
