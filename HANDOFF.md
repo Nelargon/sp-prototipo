@@ -17,6 +17,86 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## ⚠ LEER PRIMERO — `/lanzamiento/` ES UNA MAQUETA, NO NUESTRO SITIO (16 sep 2026)
+
+**Arturo, 16/09/2026, textual:**
+
+> *"Nuestro /lanzamiento/ es la maqueta que Buenavista tiene que implementar en
+> el sitio de ellos. Esta es la versión que nosotros queremos construir hasta
+> que estemos dispuestos a abrir los demás módulos. De una vista, lo que tiene
+> que hacer es literalmente copiar y lanzar esto como la página oficial,
+> limpiando cualquier problema técnico que haya en la página y asegurándose de
+> que funcione muy bien."*
+
+Esto cambia qué es "terminar" en este repo:
+
+| | Lo que creíamos el 15/09 | **Lo que es** |
+|---|---|---|
+| `/lanzamiento/` | el sitio público de SP | **la maqueta de referencia** |
+| Quién publica | nosotros, en Pages | **Buenavista, en su sitio** |
+| Dominio, hosting, indexación | pendiente nuestro (#9) | **de ellos** |
+| Qué entregamos | un sitio | **una página copiable, sin deuda técnica** |
+
+**Consecuencia de trabajo:** "copiable" pasa a ser un requisito de diseño, no
+un detalle. Arturo, en el directorio del 15/09: *"la empresa que me hace diseño
+web, ustedes tienen esto en mi GitHub, copien y peguen. Hasta eso les cuesta
+hacer eso porque hay muchas piezas envueltas."* Cada pieza que agregamos la
+tiene que poder reimplementar otro equipo, en otra tecnología, con apuro. Si
+una sección es difícil de copiar, es una sección que no va a llegar al cliente.
+
+---
+
+## 📌 LO QUE DECIDIÓ EL DIRECTORIO (reunión del 15 sep 2026 — afecta al sitio)
+
+Reunión de directorio con Crafting sobre MKT. Lo que toca a la web:
+
+1. **Bronze se dio de baja.** La línea pasa a ser **SP Esencial (reemplaza a
+   Bronze) · Silver · Gold**. Arturo: *"solo 3 productos necesitamos ofrecer"*;
+   y el 14/09 a Buenavista: *"voy a hablar para que en la página pongamos 3
+   productos y se acabó"*. El Vital sigue aparte, para 65+.
+2. **Fecha de lanzamiento: primera semana de octubre de 2026**, con los 3
+   planes, ocultando blog y guía si no llegan — que es exactamente la edición
+   de lanzamiento que ya está construida.
+3. **Orden de lo que se abre después: la guía médica en octubre, el blog en
+   noviembre** — *"entre blog y guía médica, le pondría un poco a guía médica,
+   que es lo que el cliente más necesita"*. Antes no teníamos este orden.
+4. **La reserva de turnos es prioritaria** (Arturo, textual). Ojo: ya existe
+   una reserva de turnos en el sitio actual, atada al sistema de SP y a su
+   programador. Nuestro `/agendar` es un handoff a WhatsApp. **Hay que decidir
+   si conviven o si uno reemplaza al otro** — no está resuelto.
+5. **La tira de logos se poda.** Arturo: *"es mucho ruido poner tantos colores,
+   tantos logotipos. Parece que entramos a una perfumería."*
+
+### ⚠ GUARDA DE DATOS — la grilla que usamos puede no ser la que vale
+
+Arturo, en esa reunión: *"yo no sé cuál del Bronze, Silver y Gold es el
+correcto porque hay 2 versiones... Quiero que alguien me diga esta es la
+versión oficial."* Y el porqué, en sus palabras: *"si la persona siente otra
+vez que se le mintió, nosotros vamos a pagar caro eso a la larga."*
+
+Todo lo que este sitio afirma sobre cobertura sale de
+`datos/planes-vigentes/grilla-coberturas-precios-jul2026.json` (tarifario
+Privilege). **Hasta que Arturo confirme cuál es la grilla oficial, `/que-cubre`
+es la parte más expuesta del sitio, no la más transparente:** 983 respuestas
+afirmativas apoyadas en una fuente sin confirmar.
+
+Dos contradicciones concretas, medidas el 16/09 contra el código:
+
+- **Bronze aparece 26 veces de cara al cliente** (`app/page.jsx` 8,
+  `app/coverage.js` 7, `app/quote.js` 5, `app/que-cubre/Landing.jsx` 4,
+  `app/planes/Planes.jsx` 1, `app/components/Simulador.jsx` 1) — un plan que
+  ya no se vende.
+- **El sitio dice 4 veces que el precio es el mismo en todo el país** (3 en el
+  home, 1 en el simulador) y `TARIFAS` en `app/quote.js` no tiene dimensión de
+  zona. El directorio habló de **3 precios por zona** para el Esencial. Una de
+  las dos afirmaciones es falsa y todavía no sabemos cuál.
+
+**No tocar los números de cobertura ni de precio hasta que llegue la grilla
+oficial.** Cambiar "Bronze" por "Esencial" a mano, sin la grilla, es
+inventar — y es justo el error que la guarda viene a evitar.
+
+---
+
 ## 🚀 LA V1 QUE SE LANZA — dos ediciones del mismo código (15 sep 2026)
 
 **Empezá por acá si vas a tocar el sitio.** Desde hoy este repo produce **dos
@@ -121,9 +201,12 @@ agendar en la v1 son: `hero`, `nav`, `menu_movil`, `cobertura`.
 
 ### Pendiente para lanzar de verdad
 
-La v1 sale **con `noindex`**: es una vista previa para revisarla entera. Lo que
-falta es el **dominio** (pendiente #9 de este documento): decidido el hostname,
-es un solo flip — `NEXT_PUBLIC_INDEXABLE=true` + `SITE_URL` en el workflow.
+> ⚠ **Corregido el 16/09/2026.** El 15 escribí acá que lo que faltaba era el
+> dominio. Era una suposición mía, y era falsa: **esta edición no se publica
+> desde este repo.** Ver la sección de arriba — `/lanzamiento/` es la maqueta
+> que implementa Buenavista. El dominio, el hosting y la indexación son de
+> ellos. El `noindex` de nuestra copia se queda como está: nuestra copia es
+> una referencia, no el sitio.
 
 ---
 
