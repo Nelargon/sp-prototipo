@@ -2862,6 +2862,43 @@ esto*.
 
 ---
 
+## Capítulo 75 — La guarda que escribí ayer me frenó a mí hoy
+
+**Qué intentamos.** Sacar `/historia/` de la edición de lanzamiento: cerrar sus
+tres puertas, sacarla del sitemap y podarla del export. Todo verificado en
+local — build verde, QA de lanzamiento verde en los cuatro anchos, el prototipo
+conservando la página entera.
+
+**Qué pasó.** El CI se puso rojo con un mensaje que yo mismo había escrito el
+día anterior: `✗ falta out/historia/ en la v1`. Al montar la edición de
+lanzamiento (cap. 73) había dejado en `ci.yml` dos listas — las rutas que la v1
+**no** puede publicar y las que **sí** tiene que publicar— y `historia` estaba
+en la segunda. Podarla la volvía, por definición, una falla.
+
+Arreglo de una línea: `historia` se muda de la lista de obligatorias a la de
+prohibidas. Pero el episodio deja algo mejor que el arreglo.
+
+**Qué aprendimos.**
+
+1. **Una guarda que no molesta a nadie no está guardando nada.** Escribí esa
+   lista pensando en una sesión futura que rompiera la v1 sin darse cuenta. La
+   primera a la que frenó fue a mí, veinticuatro horas después, y funcionó
+   exactamente como tenía que funcionar: el build no llegó a `main` con una
+   contradicción entre lo que el sitio publica y lo que el proyecto declara.
+2. **Cada ruta de la v1 vive declarada en tres lugares, y hay que moverlos
+   juntos**: la constante `CON_…` de `app/edicion.js` (esconde los links), la
+   lista de `scripts/podar-edicion.mjs` (saca la página del export) y las dos
+   listas de `ci.yml` (verifican el resultado). Si sacás un módulo y tocás dos
+   de los tres, el CI te lo dice — pero el que se olvida de los tres publica una
+   página huérfana en silencio. **Ese es el checklist para el próximo módulo que
+   entre o salga.**
+3. **"Verde en local" y "verde en CI" responden preguntas distintas.** El build
+   local contestaba "¿compila y se ve bien?"; el CI contestaba "¿sigue siendo
+   cierto lo que declaramos sobre esta edición?". Es la misma distinción del
+   cap. 74, esta vez a mi favor.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

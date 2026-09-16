@@ -35,10 +35,10 @@ jobs:
           NEXT_PUBLIC_EDICION: lanzamiento
       - name: Verificar que la v1 publica lo que debe y nada más
         run: |
-          for d in guia blog mi-sp v1; do
+          for d in guia blog mi-sp historia v1; do
             if [ -e "out/$d" ]; then echo "✗ out/$d quedó publicado en la v1"; exit 1; fi
           done
-          for d in agendar simulador planes que-cubre historia; do
+          for d in agendar simulador planes que-cubre; do
             test -f "out/$d/index.html" || { echo "✗ falta out/$d/ en la v1"; exit 1; }
           done
-          echo "✓ la v1 publica home, simulador, planes, qué cubre, agendar e historia — y nada de lo que no se lanza"
+          echo "✓ la v1 publica home, simulador, planes, qué cubre y agendar — y nada de lo que no se lanza"
