@@ -7,7 +7,7 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
-import { CON_GUIA, CON_MI_SP, CON_BLOG, ES_LANZAMIENTO } from './edicion';
+import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -442,7 +442,7 @@ export default function Page() {
                 pregunta que en escritorio, en cuerpo menor. */}
             <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
-            <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
+            {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
             <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>
             <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>
@@ -481,7 +481,7 @@ export default function Page() {
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
                 tocar el título del hero — el test de 5 segundos sigue vigente. */}
             <div style={css('margin-top:14px;font-size:13.5px;color:rgba(255,255,255,0.82);font-family:var(--font-inter),sans-serif')}>En 1 minuto ves tu precio — planes desde <span className="num-tnum">{fmt(plansArr[0].price)}</span> al mes, sin dejar datos.</div>
-            <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:2px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>
+            {CON_HISTORIA && <a href={`${BP}/historia/`} style={css('display:inline-block;margin-top:2px;padding:14px 8px 14px 0;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px')}>Conocé nuestra historia →</a>}
           </div>
         </div>
         <div style={css('position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:rgba(255,255,255,0.7);display:flex;flex-direction:column;align-items:center;gap:6px')}>
@@ -588,10 +588,10 @@ export default function Page() {
                   es de ubicación: mandar siete pantallas de marca desde la sección
                   que explica por qué necesitás un seguro interrumpe justo a quien
                   estaba entendiendo. En el prototipo se queda; en la v1 no.
-                  ⚠ Las otras dos puertas a /historia —el hero y el menú móvil—
-                  siguen abiertas: si /historia no entra en la v1, se cierran las
-                  tres juntas. Esa decisión es de Arturo y está pendiente. */}
-              {!ES_LANZAMIENTO && <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>}
+                  Resuelto el 16/09: /historia no entra en la v1, así que las
+                  tres puertas (esta, el hero y el menú móvil) se cierran juntas
+                  con CON_HISTORIA. Ver app/edicion.js. */}
+              {CON_HISTORIA && <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>}
             </div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-blue-meta);margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
           </div>
@@ -1028,7 +1028,7 @@ export default function Page() {
               <a href="#comparar" className="foot-link" style={css('color:inherit')}>Planes</a>
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
               {CON_BLOG && <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>}
-              <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>
+              {CON_HISTORIA && <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>}
               {CON_MI_SP
                 ? <a href={`${BP}/mi-sp/`} className="foot-link" style={css('color:inherit')}>Mi SP · ya soy cliente</a>
                 : <a href={`${BP}/agendar/`} className="foot-link" style={css('color:inherit')}>Agendar un turno</a>}

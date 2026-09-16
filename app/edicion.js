@@ -26,3 +26,12 @@ export const ES_LANZAMIENTO = EDICION === 'lanzamiento';
 export const CON_GUIA = !ES_LANZAMIENTO;
 export const CON_MI_SP = !ES_LANZAMIENTO;
 export const CON_BLOG = !ES_LANZAMIENTO;
+// /historia es el manifiesto en scrollytelling: 720vh = siete pantallas, con
+// sticky y parallax. Fuera de la v1 por tres razones que apuntan al mismo lado
+// (16 sep 2026, recomendación aceptada por Arturo): siete pantallas de marca
+// contradicen una v1 que estamos acortando; no sirve a ninguna de las cuatro
+// preguntas ni lleva al simulador (dec. 12e); y es lo más difícil de
+// reimplementar de todo el sitio, justo cuando el entregable es una maqueta
+// que Buenavista tiene que copiar. Arranca de su observación: "ver la historia
+// completa lleva a un espacio que no se ve muy práctico".
+export const CON_HISTORIA = !ES_LANZAMIENTO;

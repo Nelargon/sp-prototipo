@@ -23,7 +23,7 @@ const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo/lanzamiento';
-const PAGINAS = ['/', '/agendar/', '/planes/', '/que-cubre/', '/simulador/', '/historia/'];
+const PAGINAS = ['/', '/agendar/', '/planes/', '/que-cubre/', '/simulador/'];
 // 360/390/430: el piso de verificación móvil del proyecto (77% del tráfico).
 const ANCHOS = [['escritorio', 1440, 900], ['móvil 360', 360, 780], ['móvil 390', 390, 844], ['móvil 430', 430, 932]];
 
@@ -42,7 +42,7 @@ for (const [nombre, width, height] of ANCHOS) {
     const r = await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     if (!r || r.status() !== 200) { mal(ruta + ' → HTTP ' + (r && r.status())); continue; }
     const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href') || ''));
-    const podados = hrefs.filter((x) => /\/(mi-sp|blog|guia|v1)[/#]/.test(x));
+    const podados = hrefs.filter((x) => /\/(mi-sp|blog|guia|historia|v1)[/#]/.test(x));
     if (podados.length) mal(ruta + ' linkea a módulos podados: ' + podados.join(', '));
     const desborde = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     if (desborde > 1) mal(ruta + ' desborda ' + desborde + 'px a lo ancho');
@@ -61,8 +61,8 @@ console.log('\n── menú móvil');
   await page.waitForSelector('.menu-overlay');
   const items = await page.$$eval('.menu-overlay .menu-item', (as) => as.map((a) => a.textContent.trim()));
   console.log('    ' + items.join(' · '));
-  if (items.some((t) => /Guía Médica|Mi SP|^Blog$/.test(t))) mal('ofrece un módulo que la v1 no publica');
-  else bien('no ofrece guía, Mi SP ni blog');
+  if (items.some((t) => /Guía Médica|Mi SP|^Blog$|^Historia$/.test(t))) mal('ofrece un módulo que la v1 no publica');
+  else bien('no ofrece guía, Mi SP, blog ni historia');
   if (!items.some((t) => /Agendar turno/.test(t))) mal('falta "Agendar turno"');
   else bien('"Agendar turno" presente');
   await page.close();

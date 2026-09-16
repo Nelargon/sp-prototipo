@@ -5,7 +5,7 @@ import { css } from './css';
 import { BP } from './basePath';
 import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from './quote';
 import { track } from './track';
-import { CON_GUIA, CON_MI_SP, CON_BLOG } from './edicion';
+import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 
 // Header compartido del ecosistema (migración del header unificado, jul 2026).
 // Reemplaza el "logo + volver" que reimplementaba cada módulo por el nav real,
@@ -145,7 +145,7 @@ export default function Header({ variant = 'dark' }) {
                 discreción que pidió el usuario, sin jerga interna. */}
             <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); close(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={close} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
-            <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>
+            {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); close(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
             <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); close(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>
             <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); close(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>

@@ -62,8 +62,9 @@ adelgaza. Así ninguna decisión de meses se pierde por un lanzamiento.
 
 | | Antes | Después |
 |---|---|---|
-| Alto del home | 13,1 pantallas | **11,6 pantallas** |
-| Palabras | 1.356 | **1.153** |
+| Alto del home | 13,1 pantallas | **11,5 pantallas** |
+| Palabras | 1.356 | **1.147** |
+| Rutas publicadas | 9 | **8** |
 
 Qué salió de la v1: los **diferenciadores** ("Lo que casi nadie te garantiza"
 — Arturo en el directorio, mirando esa sección: *"esto voy a borrar, esto no
@@ -95,20 +96,28 @@ proponía la opción A — pero la mudanza del detalle de cobertura **no toca el
 simulador**, así que sigue disponible sin contradecir lo que Arturo pidió.
 Decisión pendiente de él.
 
-### Pendiente — `/historia/` en la v1
+### `/historia/` no entra en la v1 (resuelto el 16/09)
 
-Arturo, 16/09: *"el por qué importa, ver la historia completa lleva a un
-espacio que no se ve muy práctico."* Tiene razón: `/historia/` es el manifiesto
-en scrollytelling, **720vh = siete pantallas**, con sticky y parallax.
+Arranca de su observación: *"el por qué importa, ver la historia completa lleva
+a un espacio que no se ve muy práctico."* Tiene razón, y el problema es mayor
+que el link: `/historia/` es el manifiesto en scrollytelling, **720vh = siete
+pantallas**, con sticky y parallax.
 
-Se sacó **el link que él marcó**. Quedan abiertas las otras dos puertas (el
-hero y el menú móvil). **Recomendación: `/historia/` no entra en la v1**, por
-tres razones que apuntan al mismo lado — siete pantallas de marca contradicen
-una v1 que estamos acortando; no sirve a ninguna de las cuatro preguntas ni
-lleva al simulador (dec. 12e); y es, por lejos, **lo más difícil de
-reimplementar de todo el sitio** justo cuando el entregable es una maqueta que
-Buenavista tiene que copiar. **No se ejecutó: saca trabajo existente del
-lanzamiento y eso espera el "dale" de Arturo.**
+Se recomendó dejarlo fuera de la v1 por tres razones que apuntan al mismo lado
+— siete pantallas de marca contradicen una v1 que estamos acortando; no sirve a
+ninguna de las cuatro preguntas ni lleva al simulador (dec. 12e); y es, por
+lejos, **lo más difícil de reimplementar de todo el sitio**, justo cuando el
+entregable es una maqueta que Buenavista tiene que copiar. **Arturo aceptó**
+(*"seguimos tu sugerencia"*).
+
+Se cerraron **las tres puertas juntas** con `CON_HISTORIA` — el link de "Por
+qué importa", el del hero y el del menú móvil— más el pie, el sitemap y el
+export (`scripts/podar-edicion.mjs`). **El prototipo la conserva entera**, con
+sus tres puertas y su lugar en el sitemap: verificado en el build completo.
+
+⚠ Si el manifiesto se quiere recuperar para la v1 más adelante, el problema a
+resolver primero no es el contenido sino **la forma**: 720vh de scroll dirigido
+es lo que ningún otro equipo va a poder copiar sin rehacerlo.
 
 ---
 
@@ -172,7 +181,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar · historia |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página
