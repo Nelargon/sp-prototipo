@@ -3,7 +3,7 @@
 
 import { getPublishedPosts } from '../lib/blog';
 import { SERIES } from '../lib/series';
-import { CON_GUIA, CON_MI_SP, CON_BLOG } from './edicion';
+import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 
 const SITE = (process.env.SITE_URL || 'https://saludprotegida.com.py') + (process.env.NEXT_PUBLIC_BASE_PATH || '');
 
@@ -27,7 +27,7 @@ export default function sitemap() {
       u('/guia/guia_prestador.html', 0.7),
     ] : []),
     ...(CON_MI_SP ? [u('/mi-sp/', 0.7)] : []),
-    u('/historia/', 0.6, 'monthly'),
+    ...(CON_HISTORIA ? [u('/historia/', 0.6, 'monthly')] : []),
     ...(CON_BLOG ? [u('/blog/', 0.6, 'weekly')] : []),
     // Las guías son rutas públicas con canonical propio: si no entran acá, el
     // sitemap deja de enumerar el sitio completo, que es justo su trabajo.

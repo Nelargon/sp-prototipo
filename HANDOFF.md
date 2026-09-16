@@ -46,6 +46,81 @@ una sección es difícil de copiar, es una sección que no va a llegar al client
 
 ---
 
+## ✂️ LA PODA DEL HOME — opción B (16 sep 2026, elección de Arturo)
+
+Arturo eligió la **opción B** de las tres que se le presentaron, y dijo por qué:
+*"Quiero ir con la opción B, porque me gustaría el espacio propio para el
+simulador."* O sea: **el simulador NO se embebe en el home**; se queda en
+`/simulador/`, con ruta propia. Eso descarta la opción A, que lo subía a la
+primera pantalla.
+
+**Todo lo podado va detrás de `ES_LANZAMIENTO`, no se borra.** El prototipo
+completo conserva cada bloque con su comentario y su porqué; la v1 es la que
+adelgaza. Así ninguna decisión de meses se pierde por un lanzamiento.
+
+### Medido, no estimado (Chromium 390 × 844)
+
+| | Antes | Después |
+|---|---|---|
+| Alto del home | 13,1 pantallas | **11,5 pantallas** |
+| Palabras | 1.356 | **1.147** |
+| Rutas publicadas | 9 | **8** |
+
+Qué salió de la v1: los **diferenciadores** ("Lo que casi nadie te garantiza"
+— Arturo en el directorio, mirando esa sección: *"esto voy a borrar, esto no
+está, no está planeado"*, y la dec. 12e ya la marcaba como bloque que vende
+producto sin camino al simulador); la **caja del parto** (la FAQ contesta el
+mismo dato: se dice una vez en vez de dos); las **promesas "muy pronto" y
+"próximamente"** de la tira de aliados (regla de la estrategia); y el link
+**"Ver la historia completa"** de la sección "Por qué importa".
+
+### ⚠ El número que prometí era optimista — corregido
+
+Al presentar las tres opciones dije que la B llegaba a **8,3 pantallas**. Es
+falso, y conviene que quede escrito por qué: esa proyección suponía podar el
+comparador de 4,0 a 1,5 pantallas. Medido por dentro, el comparador no tiene
+1,5 pantallas de relleno — tiene las tres tarjetas de plan (1,12), la leyenda
+de copago, la garantía común, la puerta a `/que-cubre`, lo que no se cubre, la
+banda Vital y el bloque de dónde te atendés. **Podarlo a 1,5 no es podar: es
+sacar respuestas.**
+
+Y el aire tampoco era la explicación: en móvil las secciones ya están en 44px
+de padding, 1,2 pantallas en total sobre 13. **La longitud de este home es
+contenido, no espacio.**
+
+**El techo real de la opción B, respetando la guarda de datos, es ~11,5 hoy y
+~10 cuando llegue la grilla oficial** (recién ahí se puede reescribir el copy
+de coberturas, que es el bloque de texto más denso de la página). Para bajar
+de eso hay que **mudar** contenido a `/planes` y `/que-cubre`, que es lo que
+proponía la opción A — pero la mudanza del detalle de cobertura **no toca el
+simulador**, así que sigue disponible sin contradecir lo que Arturo pidió.
+Decisión pendiente de él.
+
+### `/historia/` no entra en la v1 (resuelto el 16/09)
+
+Arranca de su observación: *"el por qué importa, ver la historia completa lleva
+a un espacio que no se ve muy práctico."* Tiene razón, y el problema es mayor
+que el link: `/historia/` es el manifiesto en scrollytelling, **720vh = siete
+pantallas**, con sticky y parallax.
+
+Se recomendó dejarlo fuera de la v1 por tres razones que apuntan al mismo lado
+— siete pantallas de marca contradicen una v1 que estamos acortando; no sirve a
+ninguna de las cuatro preguntas ni lleva al simulador (dec. 12e); y es, por
+lejos, **lo más difícil de reimplementar de todo el sitio**, justo cuando el
+entregable es una maqueta que Buenavista tiene que copiar. **Arturo aceptó**
+(*"seguimos tu sugerencia"*).
+
+Se cerraron **las tres puertas juntas** con `CON_HISTORIA` — el link de "Por
+qué importa", el del hero y el del menú móvil— más el pie, el sitemap y el
+export (`scripts/podar-edicion.mjs`). **El prototipo la conserva entera**, con
+sus tres puertas y su lugar en el sitemap: verificado en el build completo.
+
+⚠ Si el manifiesto se quiere recuperar para la v1 más adelante, el problema a
+resolver primero no es el contenido sino **la forma**: 720vh de scroll dirigido
+es lo que ningún otro equipo va a poder copiar sin rehacerlo.
+
+---
+
 ## 📌 LO QUE DECIDIÓ EL DIRECTORIO (reunión del 15 sep 2026 — afecta al sitio)
 
 Reunión de directorio con Crafting sobre MKT. Lo que toca a la web:
@@ -106,7 +181,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar · historia |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página

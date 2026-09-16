@@ -25,6 +25,7 @@ const PODAR = [
   ['mi-sp', 'Mi SP — no se lanza en la v1'],
   ['blog', 'el blog — no se lanza en la v1'],
   ['guia', 'la Guía Médica — no se lanza en la v1'],
+  ['historia', 'el manifiesto en scrollytelling — 720vh, no entra en la v1'],
   ['v1', 'snapshot congelado del home viejo — referencia interna'],
 ];
 
