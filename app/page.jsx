@@ -7,7 +7,7 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
-import { CON_GUIA, CON_MI_SP, CON_BLOG } from './edicion';
+import { CON_GUIA, CON_MI_SP, CON_BLOG, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -581,7 +581,17 @@ export default function Page() {
                   se queda sin respaldo: la línea de fuentes de abajo (OPS e INE)
                   sigue ahí en las dos ediciones. */}
               {CON_BLOG && <a href={`${BP}/blog/gasto-de-bolsillo-salud-paraguay/`} onClick={() => track('blog_open', { origen: 'por_que_importa', nota: 'gasto-de-bolsillo' })} className="link-teal" style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Leé la nota completa →</a>}
-              <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>
+              {/* "Ver la historia completa" salía de acá hacia /historia, que es el
+                  manifiesto en scrollytelling: 720vh, siete pantallas. Arturo,
+                  16/09/2026: "el por qué importa, ver la historia completa lleva a
+                  un espacio que no se ve muy práctico". Tiene razón y el problema
+                  es de ubicación: mandar siete pantallas de marca desde la sección
+                  que explica por qué necesitás un seguro interrumpe justo a quien
+                  estaba entendiendo. En el prototipo se queda; en la v1 no.
+                  ⚠ Las otras dos puertas a /historia —el hero y el menú móvil—
+                  siguen abiertas: si /historia no entra en la v1, se cierran las
+                  tres juntas. Esa decisión es de Arturo y está pendiente. */}
+              {!ES_LANZAMIENTO && <a href={`${BP}/historia/`} style={css('color:var(--sp-mint);font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:6px 0')}>Ver la historia completa →</a>}
             </div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-blue-meta);margin-top:18px')}>Fuentes: OPS (Perfil de país, 2021) e INE.</div>
           </div>
@@ -731,6 +741,11 @@ export default function Page() {
 
 
             <div style={css('font-size:12.5px;color:var(--sp-muted);margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
+            {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
+                contesta "¿Qué es la carencia y cuánto dura?" con el mismo dato
+                (10 meses en los tres planes, 5 en Gold para cesárea). El dato NO
+                se pierde — se dice una vez en vez de dos, que es de lo que se
+                trata acortar. En el prototipo se queda, con su porqué intacto. */}
             {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
                 Parto son 300 días en los tres planes y la cesárea baja a 150 en
                 Gold — el dato más caro de descubrir tarde de todo el sistema, y
@@ -740,15 +755,17 @@ export default function Page() {
                 encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
                 una trampa escondida y pasa a ser una razón para afiliarse antes.
                 No se suaviza el número: se le da un destino. */}
-            <div style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;border-radius:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              <div>
-                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
-                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
-                  El parto tiene <strong>10 meses de <Term k="carencia">carencia</Term></strong> en los tres planes, y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
+            {!ES_LANZAMIENTO && (
+              <div style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;border-radius:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <div>
+                  <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
+                  <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
+                    El parto tiene <strong>10 meses de <Term k="carencia">carencia</Term></strong> en los tres planes, y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
           {/* LO QUE QUEDA AFUERA — reencuadre (25 jul 2026, observación del usuario:
               "la transparencia tiene que cumplir un propósito, no puede ser
@@ -852,25 +869,33 @@ export default function Page() {
           lo mismo con cinco pantallas de distancia, y el argumento de la categoría
           tiene que llegar antes de la elección de plan, no después. */}
 
-      {/* DIFERENCIADORES */}
-      <section className="sec" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
-        <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
-            <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:var(--sp-teal-deep)')}>garantiza</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
+      {/* DIFERENCIADORES — NO va en la edición de lanzamiento (16 sep 2026).
+          Dos razones que apuntan al mismo lado: Arturo dijo en el directorio
+          del 15/09, mirando esta sección, "esto voy a borrar, esto no está, no
+          está planeado"; y la decisión 12e ya la tenía marcada como uno de los
+          tres bloques que venden producto sin camino al simulador. Se conserva
+          en el prototipo: no está mal hecha, está de más en una v1 que tiene
+          que ser corta y copiable. */}
+      {!ES_LANZAMIENTO && (
+        <section className="sec" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
+          <div style={css('max-width:1080px;margin:0 auto')}>
+            <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
+              <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
+              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:var(--sp-teal-deep)')}>garantiza</span>.</h2>
+              <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
+            </div>
+            <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
+              {v.difs.map((dz, i) => (
+                <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+                  <div style={css('width:46px;height:46px;border-radius:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                  <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
+                  <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
-            {v.difs.map((dz, i) => (
-              <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-                <div style={css('width:46px;height:46px;border-radius:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
-                <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
-                <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section className="sec-x" style={css('padding:72px 40px 64px;background:#fff')}>
@@ -906,7 +931,7 @@ export default function Page() {
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.</p>
+            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>{ES_LANZAMIENTO ? 'Descuentos con nuestros aliados comerciales, incluidos en tu plan.' : 'Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.'}</p>
           </div>
         </div>
 
@@ -933,7 +958,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:var(--sp-muted)')}>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:var(--sp-teal-deep)')}>próximamente</b> con la red médica real.</div>
+        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : <>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:var(--sp-teal-deep)')}>próximamente</b> con la red médica real.</>}</div>
       </section>
 
       {/* FAQ */}
