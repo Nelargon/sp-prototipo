@@ -85,8 +85,11 @@ export const TERMS = {
   },
 };
 
-export function Term({ k, children }) {
-  const term = TERMS[k];
+// `dict` permite usar el mismo componente con otro diccionario — hoy el médico
+// (app/glosario-medico.js), que está en borrador y vive aparte a propósito: no
+// se mezcla lo validado con lo que todavía no lo está.
+export function Term({ k, children, dict }) {
+  const term = (dict || TERMS)[k];
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   // Con qué se tocó por última vez. Sin esto, en móvil el tap dispara PRIMERO
@@ -100,24 +103,50 @@ export function Term({ k, children }) {
   // mide al abrir y se corrige; no se puede resolver solo con CSS porque
   // depende de dónde cayó la palabra en la línea.
   const [shift, setShift] = useState(0);
+  // Arriba por defecto; abajo cuando arriba no hay lugar. Ver el efecto.
+  const [abajo, setAbajo] = useState(false);
   const id = useId();
 
   useEffect(() => {
-    if (!open) { setShift(0); return; }
+    if (!open) { setShift(0); setAbajo(false); return; }
     const el = bubbleRef.current;
-    if (el) {
-      const r = el.getBoundingClientRect();
-      const M = 8; // margen mínimo contra el borde
-      // clientWidth, NO innerWidth: en emulación móvil (y con barra de scroll)
-      // innerWidth se ensancha cuando algo ya desbordó — medimos 373 en un
-      // viewport de 360 y la corrección salía corta. clientWidth es el viewport
-      // de layout real. (Hallazgo QA /planes, 26 jul 2026.)
-      const vw = document.documentElement.clientWidth;
-      let s = 0;
-      if (r.left < M) s = M - r.left;
-      else if (r.right > vw - M) s = (vw - M) - r.right;
-      if (s) setShift(s);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const M = 8; // margen mínimo contra el borde
+
+    // El borde que importa NO siempre es el de la pantalla. Un ancestro con
+    // overflow:hidden recorta la burbuja sin avisar — es lo que hacen las
+    // fichas de /que-cubre, que usan overflow:hidden para redondear las
+    // esquinas. La burbuja salía cortada y el test de "¿aparece el texto?"
+    // pasaba igual, porque el texto vive en el span oculto para lectores de
+    // pantalla. Solo se vio midiendo la caja contra la del ancestro.
+    // (BITACORA cap. 76.) No se toca el overflow de la tarjeta: se acomoda
+    // la burbuja adentro.
+    let corta = null;
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (/hidden|clip/.test(cs.overflow + cs.overflowX + cs.overflowY)) { corta = a; break; }
     }
+    // clientWidth, NO innerWidth: en emulación móvil (y con barra de scroll)
+    // innerWidth se ensancha cuando algo ya desbordó — medimos 373 en un
+    // viewport de 360 y la corrección salía corta. (Hallazgo QA /planes,
+    // 26 jul 2026.)
+    const vw = document.documentElement.clientWidth;
+    let min = M, max = vw - M;
+    if (corta) {
+      const rc = corta.getBoundingClientRect();
+      min = Math.max(min, rc.left + 4);
+      max = Math.min(max, rc.right - 4);
+      // Si arriba no entra, se abre hacia abajo.
+      if (r.top < rc.top) setAbajo(true);
+    } else if (r.top < M) {
+      setAbajo(true);
+    }
+
+    let s = 0;
+    if (r.left < min) s = min - r.left;
+    else if (r.right > max) s = max - r.right;
+    if (s) setShift(s);
   }, [open]);
 
   useEffect(() => {
@@ -167,7 +196,7 @@ export function Term({ k, children }) {
           // OJO con el signo: calc(-50% + -20px) es CSS INVÁLIDO y el navegador
           // descarta la declaración entera en silencio. El signo va en el
           // operador, no pegado al número.
-          'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));bottom:calc(100% + 8px);z-index:40;'
+          'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);') + 'z-index:40;'
           + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
           + 'box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;'
@@ -232,5 +261,34 @@ export function annotate(text) {
     <Term key={`t-${best.i}`} k={best.key}>{best.word}</Term>,
     // El resto sigue procesándose: un texto puede tener dos términos distintos.
     annotate(after),
+  ];
+}
+
+// ── Marcar UNA sola palabra médica por ficha ──────────────────────────────
+// Los nombres del tarifario ("BIOPSIA POR PUNCION, PIEL") traen a veces tres o
+// cuatro palabras del diccionario. Subrayarlas todas es el ruido que Arturo
+// nombró mirando la tira de logos: "parece que entramos a una perfumería".
+// Se marca la PRIMERA que aparece y nada más: quien quiera la siguiente ya
+// entendió el mecanismo. El nombre NO se toca — sigue coincidiendo letra por
+// letra con la orden del médico, que es la decisión tomada en Buscador.jsx.
+export function marcarTerminoMedico(nombre, dict) {
+  if (typeof nombre !== 'string' || !nombre || !dict) return nombre;
+  const sinTilde = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const plano = sinTilde(nombre);
+  let mejor = null;
+  for (const k of Object.keys(dict)) {
+    // \b no sirve acá: los nombres vienen con comas y paréntesis pegados.
+    const rx = new RegExp('(^|[^a-z0-9])(' + k + ')([^a-z0-9]|$)');
+    const m = rx.exec(plano);
+    if (m) {
+      const i = m.index + m[1].length;
+      if (mejor === null || i < mejor.i) mejor = { i, len: k.length, k };
+    }
+  }
+  if (!mejor) return nombre;
+  return [
+    nombre.slice(0, mejor.i),
+    <Term key="tm" k={mejor.k} dict={dict}>{nombre.slice(mejor.i, mejor.i + mejor.len)}</Term>,
+    nombre.slice(mejor.i + mejor.len),
   ];
 }

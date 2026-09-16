@@ -35,3 +35,10 @@ export const CON_BLOG = !ES_LANZAMIENTO;
 // que Buenavista tiene que copiar. Arranca de su observación: "ver la historia
 // completa lleva a un espacio que no se ve muy práctico".
 export const CON_HISTORIA = !ES_LANZAMIENTO;
+// El glosario médico de `app/glosario-medico.js` es BORRADOR sin firma médica
+// (16 sep 2026). Se muestra en el prototipo para poder verlo y tocarlo, y NO
+// entra en la v1 que Buenavista copia: una definición médica sin validar es el
+// mismo error que una cobertura sin grilla, y pesa más. Cuando Lister devuelva
+// el Excel firmado (datos/glosario/), se corrigen los textos, se regenera con
+// scripts/build-glosario-web.py y esto pasa a `true` siempre.
+export const CON_GLOSARIO_MEDICO = !ES_LANZAMIENTO;

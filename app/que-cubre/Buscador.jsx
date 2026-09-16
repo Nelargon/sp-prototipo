@@ -3,7 +3,9 @@
 import { useMemo, useState, useRef, useEffect } from 'react';
 import { css } from '../css';
 import { track } from '../track';
-import { Term } from '../glossary';
+import { Term, marcarTerminoMedico } from '../glossary';
+import { MEDICOS } from '../glosario-medico';
+import { CON_GLOSARIO_MEDICO } from '../edicion';
 import datos from '../../lib/prestaciones.json';
 import { buscar, indexar, EJEMPLOS } from '../../lib/buscar-prestaciones';
 
@@ -122,7 +124,7 @@ function Ficha({ item, datos }) {
             "arregla" a Tipo Oración — es el nombre con el que aparece en la
             orden del médico, y esa coincidencia literal es la que deja
             reconocerlo. */}
-        <span className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy);line-height:1.3')}>{item.n}</span>
+        <span className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy);line-height:1.3')}>{CON_GLOSARIO_MEDICO ? marcarTerminoMedico(item.n, MEDICOS) : item.n}</span>
         <span className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sp-teal-900);white-space:nowrap')}>{familia}</span>
       </div>
       {item.d && (

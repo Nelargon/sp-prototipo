@@ -2899,6 +2899,61 @@ prohibidas. Pero el episodio deja algo mejor que el arreglo.
 
 ---
 
+## Capítulo 76 — El texto estaba ahí y no se veía: la burbuja cortada por una esquina redondeada
+
+**Qué intentamos.** Aplicar el borrador del glosario médico a las fichas de
+`/que-cubre`: marcar una palabra por ficha y que al tocarla se abra la
+definición.
+
+**Qué pasó.** Salió a la primera y el test dio verde en los tres anchos: la
+búsqueda devolvía fichas, había una sola marca por ficha, el subrayado punteado
+estaba en el estilo computado, no había desbordes ni errores de JS, y al tocar
+la palabra **el texto de la definición aparecía en `document.body.innerText`**.
+
+Pero en la captura de pantalla se veía una franja navy cortada arriba del
+título de la tarjeta. Esa franja era la burbuja, partida al medio.
+
+El culpable: la ficha usa `overflow:hidden` para redondearse las esquinas, y la
+burbuja se abre hacia arriba — o sea, hacia afuera de la tarjeta. La recortaba
+sin decir nada.
+
+**Y el test no podía verlo.** La comprobación era "¿aparece el texto de la
+definición?", y el texto aparece siempre: el componente guarda una copia en un
+span oculto para lectores de pantalla, presente aunque la burbuja esté cerrada.
+Justamente la decisión que hace accesible al componente es la que deja ciego al
+test.
+
+El arreglo no fue sacar el `overflow:hidden` —redondea la tarjeta, y quitarlo
+obliga a redondear cada hijo a mano—, sino enseñarle a la burbuja dónde está su
+borde real: si arriba no entra, se abre hacia abajo; y el corrimiento
+horizontal, que hasta hoy esquivaba el borde de la PANTALLA, ahora se acota al
+ancestro que recorta. Sin eso, la burbuja se corría para escaparse del viewport
+y se salía de la tarjeta por el costado — que fue exactamente el segundo bug,
+descubierto después de arreglar el primero.
+
+**Qué aprendimos.**
+
+1. **Un test que pregunta "¿está el texto?" no sabe si el texto se ve.** Es
+   pariente del cap. 74 y del blur fantasma del cap. 29, y es el que más
+   engaña: no falla, aprueba. Para cualquier cosa flotante —burbujas, menús,
+   avisos— la comprobación tiene que ser **geométrica**: la caja del elemento
+   contra la caja de lo que la puede tapar.
+2. **El borde que importa no siempre es el de la pantalla.** El corrimiento
+   llevaba desde julio midiendo contra el viewport, y estaba bien mientras las
+   burbujas vivieran en texto suelto. Adentro de una tarjeta con
+   `overflow:hidden`, el borde real es el de la tarjeta. Una función que
+   esquiva bordes tiene que preguntarse **cuál** borde.
+3. **Arreglar el primer recorte destapó el segundo.** Girar la burbuja hacia
+   abajo la sacó del recorte vertical y la dejó en el horizontal. Con
+   elementos flotantes conviene medir **los cuatro bordes** de una, no el que
+   uno sospecha: el probe que lo resolvió devuelve `cortaArriba`, `cortaAbajo`,
+   `cortaIzq` y `cortaDer` por separado.
+4. **Lo encontró una captura de pantalla, no un assert.** Vale la pena mirar la
+   imagen aunque los tests estén verdes — sobre todo cuando lo que se agrega es
+   visual.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
