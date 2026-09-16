@@ -2806,6 +2806,62 @@ el texto— reportó dos fallas que no existían. La falla estaba en el test.
 
 ---
 
+## Capítulo 74 — Verifiqué que la página funciona; nadie verificó que fuera verdad
+
+**Qué intentamos.** El 15/09 construir y publicar la edición de lanzamiento.
+Salió bien: 79 páginas del prototipo idénticas byte a byte, 6 rutas de la v1
+sin un solo link roto, 4 anchos sin desbordes, CI verde, deploy verde. Un
+trabajo prolijo.
+
+**Qué pasó.** Al día siguiente Arturo pidió leer las reuniones de tl;dv antes
+de simplificar el home. En dos reuniones —el 14 con Buenavista, el 15 con el
+directorio— aparecieron dos cosas que ninguna de mis verificaciones podía ver:
+
+1. **La página vende un plan que se dio de baja.** Bronze salió de la línea
+   comercial; la reemplaza SP Esencial. El sitio dice "Bronze" 26 veces de cara
+   al cliente y el comparador entero se llama "Bronze, Silver y Gold". Encima,
+   el home afirma cuatro veces que el precio es el mismo en todo el país, y el
+   directorio habló de tres precios por zona.
+2. **No era nuestro sitio.** `/lanzamiento/` es la maqueta que Buenavista copia
+   y publica. Yo había cerrado el trabajo del 15/09 diciendo que lo único que
+   faltaba para lanzar era decidir el dominio. El dominio no era nuestro.
+   Escribí una suposición mía en el HANDOFF con forma de pendiente del
+   proyecto, y ahí se habría quedado.
+
+Lo segundo duele más porque **sí pregunté**, y pregunté mal. Antes de escribir
+una línea hice tres preguntas: dónde vive el código, qué hace la puerta del
+afiliado, y si había dominio. Las tres eran buenas. Ninguna era *para quién es
+esto*.
+
+**Qué aprendimos.**
+
+1. **"¿Dónde vive?" no reemplaza a "¿quién lo recibe?".** Pregunté por la
+   arquitectura y me quedé tranquilo. El destinatario cambia el entregable:
+   sabiendo que otro equipo lo copia, "copiable" pasa a ser un requisito de
+   diseño y media página deja de ser un problema de scroll para ser un problema
+   de reimplementación. Una pregunta de arquitectura respondida a tiempo tapó
+   la pregunta de producto que faltaba.
+2. **Una verificación impecable puede no verificar nada que importe.** Mis
+   pruebas contestaban "¿la página funciona?" con rigor. La pregunta que estaba
+   fallando era "¿lo que la página dice sigue siendo cierto?", y para esa no
+   había ni un test ni un lugar donde mirar. **Un sitio comercial necesita una
+   comprobación de vigencia, no solo de funcionamiento**: qué se vende hoy, a
+   qué precio, en qué zona. Por eso la guarda de datos entra al HANDOFF y no a
+   una conversación.
+3. **La verdad del proyecto no vive toda en el repo.** El repo guarda
+   religiosamente lo que aprendimos construyendo; las decisiones de producto se
+   toman en reuniones que el repo no ve. Bronze se dio de baja "entre las 3
+   semanas de vacaciones" de Arturo y el sitio no se enteró. Cuando el trabajo
+   toca precios, planes o coberturas, **leer la última reunión es parte de la
+   regla cero**, igual que hacer `git pull`.
+4. **Un dato desactualizado es peor que un dato ausente.** Lo dijo él mejor que
+   yo, en el directorio: *"si la persona siente otra vez que se le mintió,
+   nosotros vamos a pagar caro eso a la larga."* Un sitio construido sobre la
+   transparencia es el que más caro paga por una cifra vieja — y `/que-cubre`,
+   con sus 983 respuestas, es la página que más expuesta queda.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
