@@ -170,6 +170,38 @@ sabe que hay que sacar la corrección. **Las próximas correcciones de SP van ah
 con la misma forma.** Una fila de la grilla vale para los tres planes, así que
 el cambio también alcanza a Silver y Gold.
 
+### La Guía Médica se publica con control (23/09/2026, acordado con Cowork)
+
+Había **dos conversores con reglas distintas**: el de Cowork
+(`validar_y_exportar_guia.py`, publicaba la Centralizada y no marcaba Lister) y
+`scripts/build-guia-medica.py`. Queda uno solo, el de acá, con los controles del
+de Cowork portados todos:
+- **Frenan:** ID fila vacío o repetido (el ID prestador se repite a propósito),
+  ID prestador, Estado y Tipo válidos, especialidad y departamento contra
+  Catálogos, ciudad coherente con su departamento, formato de teléfono, fila
+  marcada en al menos una guía, dirección/ciudad/departamento vacíos, columnas
+  de guías con algo distinto de «Sí».
+- **Solo avisan:** sin teléfono, profesional sin título, posible repetido,
+  ciudad o barrio fuera de Catálogos. Las filas «Aviso» no llevan teléfono ni
+  dirección y no frenan.
+- **Informa** las reglas que aplicó (qué guías, Centralizada afuera con sus
+  filas, «Revisar» adentro, Lister) y qué cambia contra la publicación anterior.
+- **Publica con el OK de Arturo:** el PR de datos no se fusiona solo.
+
+Con la planilla del 23/09: 0 errores, 4 avisos (los mismos que daba el de
+Cowork), 0 cambios contra lo publicado.
+
+**Dónde se edita:** solo el Excel del Drive de Arturo (fileId en
+`sp-interno/README.md`). Cowork no genera JSON ni copias.
+
+**Teléfonos de SP (Decisiones 23/09, n.º 1):** el (021) 319 0000 es línea y
+WhatsApp para todo. Se buscaron los seis WhatsApp viejos (0981 494 495,
+0986 605 500, 0981 494 435, 0982 797 800, 0985 380 515, 0986 422 274), con y sin
+espacios y con +595, en los tres repos y en la planilla: **no aparecen en
+ningún lado**. Sin decisión todavía, y sin tocar: el **(021) 220 199 de Lister**
+está en la tarjeta de Lister de la guía (`GuiaMedica.jsx`) y en 61 filas de la
+planilla; 0981 745 667 (teleconsulta) y 0983 593 439 (Encarnación) no aparecen.
+
 ### Lo que sigue esperando a SP (no se inventa)
 
 | Pendiente | Quién |

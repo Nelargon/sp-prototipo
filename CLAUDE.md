@@ -81,6 +81,14 @@ bitácora: …" del usuario entran con su voz.
   del prototipo. La **Guía Médica real** es `/guia-medica/` y sus datos,
   `lib/guia-medica.json`, **se regeneran desde la planilla maestra de SP** con
   `scripts/build-guia-medica.py`: nunca se editan a mano. La planilla manda.)
+- **Publicar la Guía Médica tiene control (23/09/2026).** La planilla original
+  es el Excel del Drive de Arturo (fileId en `sp-interno/README.md`). Se lee de
+  ahí, se copia a `sp-interno` y se corre `build-guia-medica.py`: si da
+  **errores, no se publica**. El informe que imprime (validación, reglas
+  aplicadas y altas/bajas/cambios contra lo publicado) va en la descripción del
+  PR. **Ese PR no se fusiona solo: espera el OK de Arturo** (excepción al merge
+  automático). En una guía médica, un teléfono mal escrito es un paciente que
+  no llega.
 - **No instalar dependencias dentro del repo** (rompe el lockfile y el
   deploy usa `npm ci`). Playwright-core se instala fuera del repo;
   Chromium en `/opt/pw-browsers/chromium`.
