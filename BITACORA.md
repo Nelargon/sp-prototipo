@@ -3023,6 +3023,30 @@ búsqueda tiene que coincidir con el comienzo de una palabra del prestador, y
 
 ---
 
+## Capítulo 79 — "Para: para vos": el mensaje que la persona firma se escribe con su voz (23/09/2026)
+
+**Qué intentamos.** Recorrer el simulador de punta a punta en el navegador,
+como parte de la revisión antes del lanzamiento, hasta el WhatsApp que abre al
+final.
+
+**Qué pasó.** El mensaje prellenado decía *"• Para: para 2 adultos + 1 hijo"*.
+Y si alguien cotizaba solo para sí, decía *"Para: para vos"*: la persona le
+escribía a SP hablándole de "vos" al asesor. El desglose del precio tenía el
+mismo error, a la vista de todos: *"Cobertura para para vos"*. Las dos frases
+salían de `groupLabel`, que está bien escrita para lo que lee la persona en
+pantalla, y se reusó en un texto que la persona **manda**.
+
+**Qué aprendimos.**
+
+1. **Un texto que la persona envía en su nombre es un texto suyo.** No es copy
+   del sitio: va en primera persona ("mi pareja y yo") y sin nuestro tono.
+   Reusar una frase de pantalla en un mensaje saliente cambia quién habla.
+2. **Ningún test lo iba a ver.** Todos pasaban: el link se armaba, el número
+   era el correcto. El error estaba en lo que decía el mensaje, y para verlo
+   hubo que leerlo como lo lee el asesor que lo recibe.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

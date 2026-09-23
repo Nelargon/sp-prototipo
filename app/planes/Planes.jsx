@@ -31,11 +31,16 @@ export default function Planes() {
       {/* Tabla completa: 11 servicios × 3 planes, con estado y detalle real de los
           cuadernillos. Scroll horizontal en pantallas chicas. */}
       <div style={css('max-width:1080px;margin:0 auto;padding:0 24px')}>
+        {/* En celular la tabla se desliza de costado y solo se ve el primer
+            plan: sin este aviso, la página que existe para comparar los tres
+            muestra uno y medio (revisión del 23/09/2026). El mismo aviso que
+            el comparador del home, con la misma clase. */}
+        <div className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para ver Silver y Gold <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
         <div style={css('border:1px solid var(--sp-line);border-radius:18px;overflow:hidden;overflow-x:auto')}>
-          <div style={css('min-width:720px')}>
+          <div className="pl-inner" style={css('min-width:720px')}>
             {/* Encabezado: servicio + los tres planes con precio y CTA */}
-            <div style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
-              <div style={css('padding:16px 18px;display:flex;align-items:flex-end;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>Servicio</div>
+            <div className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
+              <div className="pl-lbl" style={css('position:sticky;left:0;z-index:1;background:var(--sp-navy);padding:16px 18px;display:flex;align-items:flex-end;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>Servicio</div>
               {plansArr.map((pl, i) => (
                 <div key={i} style={css('padding:14px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>
                   <div style={css('display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:' + pl.color + ';margin-bottom:6px')}></div>
@@ -47,8 +52,8 @@ export default function Planes() {
             </div>
             {/* Filas */}
             {cov.map((item, r) => (
-              <div key={r} style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                <div style={css('padding:15px 18px;display:flex;flex-direction:column;justify-content:center')}>
+              <div key={r} className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                <div className="pl-lbl" style={css('position:sticky;left:0;z-index:1;background:inherit;padding:15px 18px;display:flex;flex-direction:column;justify-content:center')}>
                   <span style={css('font-size:14px;font-weight:700;color:var(--sp-navy)')}>{item.name}</span>
                   {item.waitNote && (
                     <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:4px')}>{item.waitNote}</span>

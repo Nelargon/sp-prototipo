@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import {
-  WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, titularAge, plans, planKeyToNivel,
+  WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
 } from '../quote';
 import { buscarCiudad, redNota, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { track } from '../track';
@@ -149,7 +149,7 @@ export default function Simulador() {
     L.push('Plan recomendado: ' + r.name);
     if (d.ubi) L.push('Vivís en: ' + (d.ubi.ciudad ? d.ubi.ciudad + ' (' + d.ubi.deptNombre + ')' : d.ubi.deptNombre) + ' · cobertura en todo el país');
     else L.push('Cobertura: ' + r.geoLabel);
-    L.push('Para: ' + groupLabel(d) + ' · titular de ' + titularAge(d));
+    L.push('Cotización ' + groupLabel(d) + ' · titular de ' + titularAge(d));
     L.push('');
     L.push('Cobertura para el grupo: ' + fmt(r.breakdown.personas));
     L.push('Zona: ' + (r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo — el precio es el mismo en todo el país'));
@@ -398,7 +398,7 @@ export default function Simulador() {
 
   // Result breakdown, built from the engine's rounded parts so it sums to the total.
   const resBreakdown = r ? (() => {
-    const items = [{ label: 'Cobertura para ' + groupLabel(d), amount: fmt(r.breakdown.personas) }];
+    const items = [{ label: 'Cobertura ' + groupLabel(d), amount: fmt(r.breakdown.personas) }];
     items.push({ label: d.ubi ? 'Tu zona: ' + (d.ubi.ciudad || d.ubi.deptNombre) : 'Zona ' + r.geoLabel, amount: r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'Sin recargo — precio nacional' });
     O.addons.filter((o) => (d.addons || []).includes(o.k)).forEach((o) => items.push({ label: o.label, amount: '+ ' + fmt(o.price) }));
     return items;
@@ -474,7 +474,7 @@ export default function Simulador() {
     // contacto va DENTRO del mensaje (así el asesor puede devolver la
     // llamada aunque escriban desde otro número); jamás en la analítica.
     waLeadHref: (r && waDigits) ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(
-      'Hola! Soy ' + d.nombre.trim() + ' y quiero mi cotización del simulador:\n• ' + r.name + ' — ' + fmt(r.price) + ' al mes\n• Para: ' + groupLabel(d) +
+      'Hola! Soy ' + d.nombre.trim() + ' y quiero mi cotización del simulador:\n• ' + r.name + ' — ' + fmt(r.price) + ' al mes\n• Para: ' + grupoPropio(d) +
       '\nMi número: ' + d.tel.trim() + (d.email.trim() ? '\nEmail: ' + d.email.trim() : '')
     )) : waHref,
     download: downloadQuote, share: shareQuote, shareMsg,
