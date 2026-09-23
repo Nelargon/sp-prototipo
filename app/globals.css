@@ -468,3 +468,5 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
 .gm-fila{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:-2px 0}
 .gm-fila::-webkit-scrollbar{display:none}
+/* El buscador ya tiene su «Borrar»: sin la cruz nativa del navegador, que lo duplicaba. */
+.gm input[type=search]::-webkit-search-cancel-button{display:none}
