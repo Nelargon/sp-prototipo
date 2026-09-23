@@ -64,7 +64,7 @@ export default async function Ficha({ params }) {
   };
 
   return (
-    <div className="body" style={css('min-height:100vh;background:var(--sp-mint-tint);color:var(--sp-ink)')}>
+    <div className="body gm" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <Header variant="solid" />
       <div style={css('max-width:760px;margin:0 auto;padding:100px 16px 70px')}>
@@ -72,7 +72,7 @@ export default async function Ficha({ params }) {
           <a href={`${BP}/guia-medica/`} style={css('color:var(--sp-teal-deep);font-weight:600')}>← Guía Médica</a>
         </nav>
 
-        <div style={css('background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-lg);padding:24px 20px')}>
+        <div className="sq" style={css('--sq:14px;background:#fff;border:1px solid var(--gm-linea);padding:24px 20px')}>
           <div className="disp" style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:10px')}>{inst ? 'Sanatorio, laboratorio o centro' : 'Profesional'}{p.l ? ' · En Lister, centro propio' : ''}</div>
           <h1 className="disp" style={css('font-size:clamp(26px,4.4vw,34px);line-height:1.15;color:var(--sp-navy);margin:0 0 18px;letter-spacing:-0.01em')}>
             {p.n}{filas.some((f) => f.rv) ? <PuntoRevisar /> : null}
@@ -88,11 +88,11 @@ export default async function Ficha({ params }) {
               {f.e === 'Odontología' && <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
               <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
                 {f.tel.map((t) => (
-                  <a key={t} href={telHref(t)} className="disp" style={css('height:42px;padding:0 16px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>
+                  <a key={t} href={telHref(t)} className="disp sq" style={css('--sq:10px;height:42px;padding:0 16px;background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>
                     Llamar <span className="num-tnum" style={css('margin-left:6px')}>{t}</span>
                   </a>
                 ))}
-                {f.d && <a href={mapaHref(f)} target="_blank" rel="noopener" className="disp" style={css('height:42px;padding:0 16px;border-radius:var(--r-sm);border:1.5px solid var(--sp-mint-line-strong);color:var(--sp-navy);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>Cómo llegar</a>}
+                {f.d && <a href={mapaHref(f)} target="_blank" rel="noopener" className="disp sq" style={css('--sq:10px;height:42px;padding:0 16px;border:1.5px solid var(--sp-mint-line-strong);color:var(--sp-navy);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>Cómo llegar</a>}
               </div>
             </section>
           ))}
