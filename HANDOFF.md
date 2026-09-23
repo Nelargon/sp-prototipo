@@ -135,7 +135,8 @@ el JSON nuevo. La planilla manda.
 
 Arturo, mirando el desplegable de 8 planes: *"Esta parte no se ve super bien,
 u ordenado."* Eligió, entre tres opciones, **botones en dos pasos**: SP
-Esencial · Silver, Gold o Bronze · Vital · Otro plan. Esencial abre una
+Esencial · Bronze, Silver, Gold · Vital · Otro plan (orden pedido por Arturo el
+23/09: *"que sea 'Bronze, Silver, Gold'"*). Esencial abre una
 segunda fila con la zona; "Otro plan" abre Bienestar, Superior, Integral,
 Primordial y Plan Estatal. 4 en fila en escritorio, 2×2 en celular
 (`.gm-planes`). La estructura vive en `GRUPOS_PLAN` (`lib/red-medica.js`).
