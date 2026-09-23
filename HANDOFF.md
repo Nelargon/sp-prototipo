@@ -154,6 +154,22 @@ hoja «Lister» de la planilla nombre la fila. Son 94 filas de Lister (antes, 89
 Además, el buscador indexa "lister" en toda fila marcada, así que el botón
 "Ver sus profesionales" las encuentra a todas.
 
+### Primera corrección oficial de la grilla: el ecocardiograma (18/09 → 23/09/2026)
+
+SP (correo del 18/09, "Corrección de nomenclatura – Cobertura Plan
+Bronze", pág. 27 del cuadernillo) marcó que el ecocardiograma estaba dos veces
+con nombres distintos. Quedó así en `/que-cubre`:
+- **Se borró** `ECOCARDIOGRAFIA` (Bronze con copago, 60 días).
+- **Queda** `ECOCARDIOGRAMA` (antes "ECOCARDIOGRAMA SIMPLE"): Bronze cubierto,
+  1 por año, 90 días de espera. Quien busca "ecocardiografía" lo encuentra igual.
+
+**Cómo se aplica:** la grilla JSON sigue siendo la copia fiel del master. La
+corrección vive en `CORRECCIONES` (`scripts/build-prestaciones.mjs`), con su
+fuente. Si el master se corrige y la fila desaparece, el script corta: así se
+sabe que hay que sacar la corrección. **Las próximas correcciones de SP van ahí,
+con la misma forma.** Una fila de la grilla vale para los tres planes, así que
+el cambio también alcanza a Silver y Gold.
+
 ### Lo que sigue esperando a SP (no se inventa)
 
 | Pendiente | Quién |
@@ -166,6 +182,7 @@ Además, el buscador indexa "lister" en toda fila marcada, así que el botón
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
 | Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |
+| Ecocardiograma, dos dudas: (1) ¿"ECOCARDIOGRAMA CON DOPPLER DE BASOS DE CUELLO" estaba en rojo? Sigue publicado. (2) En Gold, la fila borrada decía "Ilimitada" y la que queda dice "1 por año": ¿cuál vale? | SP (quien mandó la corrección) |
 | 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` | llegan así de la grilla: corregir con la grilla nueva |
 
 **Guardas que siguen valiendo:**

@@ -44,6 +44,22 @@ const COB = { CT: 0, COP: 1, CP: 2, 'CP-COP-CT*': 3, AD: 4, EXCL: 5 };
      cantidad y la misma carencia. Es tipeo, no una cobertura distinta. */
 const VARIANTES = { '100%': 'CT' };
 
+/* Correcciones de nomenclatura que pidió SP sobre la grilla. La grilla JSON
+   sigue siendo la transcripción fiel del master; la corrección se aplica acá,
+   a la vista y con su fuente, hasta que el master la traiga. Si la fila que
+   corrige ya no existe (porque el master se corrigió), el script CORTA: así
+   la corrección no queda viva de más sin que nadie se entere.
+   · 18/09/2026, correo de SP "Corrección de nomenclatura – Cobertura Plan
+     Bronze", cuadernillo pág. 27: el ecocardiograma aparecía dos veces
+     con nombres distintos. Se borra el duplicado (ECOCARDIOGRAFIA) y el que
+     queda pierde el "simple": "ECOCARDIOGRAMA". Como una fila de la grilla es
+     una sola para los tres planes, el cambio vale para Bronze, Silver y Gold. */
+const CORRECCIONES = {
+  borrar: ['ECOCARDIOGRAFIA'],
+  renombrar: { 'ECOCARDIOGRAMA SIMPLE': 'ECOCARDIOGRAMA' },
+};
+const aplicadas = new Set();
+
 /* Los cuatro cuadros del master, con el nombre que ve el usuario. "Estudio",
    "análisis", "cirugía" — nunca "prestación" (regla de lenguaje, CLAUDE.md). */
 const CUADROS = {
@@ -71,6 +87,7 @@ const SINONIMOS = [
   [/\bCENTELLOGRAFIA|\bCINTIGRAFIA/, 'centellografia medicina nuclear'],
   [/\bESPIROMETRIA|\bBRONCOSCOPIA/, 'pulmon respiracion soplido'],
   [/\bELECTROCARDIOGRAMA|\bECOCARDIOGRAMA|\bERGOMETRIA|\bHOLTER/, 'corazon electro'],
+  [/\bECOCARDIOGRAMA/, 'ecocardiografia ecocardiograma eco'],
   [/\bENDOSCOPIA|\bCOLONOSCOPIA|\bGASTROSCOPIA/, 'endoscopia camara estomago intestino'],
   // Órganos y motivos, en la palabra de la casa
   [/\bCOLECIST|VESICULA/, 'vesicula piedras'],
@@ -217,8 +234,11 @@ for (const [cuadro, rows] of Object.entries(grilla.cuadros)) {
   const meta = CUADROS[cuadro];
   if (!meta) throw new Error(`Cuadro inesperado en la grilla: ${cuadro}`);
   for (const r of rows) {
-    const nombre = (r.item || '').trim();
-    if (!nombre || norm(nombre) === 'item') continue;
+    const crudo = (r.item || '').trim();
+    if (!crudo || norm(crudo) === 'item') continue;
+    if (CORRECCIONES.borrar.includes(crudo)) { aplicadas.add(crudo); continue; }
+    const nombre = CORRECCIONES.renombrar[crudo] || crudo;
+    if (nombre !== crudo) aplicadas.add(crudo);
 
     const celdas = ['bronze', 'silver', 'gold'].map((p) => celda(r[p]));
     if (celdas.every((c) => c[0] === -1)) continue; // fila vacía del master
@@ -246,6 +266,9 @@ for (const [cuadro, rows] of Object.entries(grilla.cuadros)) {
     if (celdas.some((c) => c[0] === -1)) huecos.push(`${meta.k} · ${nombre}`);
   }
 }
+
+const faltan = [...CORRECCIONES.borrar, ...Object.keys(CORRECCIONES.renombrar)].filter((n) => !aplicadas.has(n));
+if (faltan.length) throw new Error(`Corrección sin fila en la grilla (¿el master ya la trae?): ${faltan.join(', ')}`);
 
 /* ---- (c) Las 43 consultas por especialidad ------------------------------- */
 /* El master las escribe como "3 /año", "Sin tope anual", "3 /año · Copago".
