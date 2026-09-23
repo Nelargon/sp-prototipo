@@ -5,7 +5,7 @@ import { css } from './css';
 import { BP } from './basePath';
 import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from './quote';
 import { track } from './track';
-import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
+import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 
 // Header compartido del ecosistema (migración del header unificado, jul 2026).
 // Reemplaza el "logo + volver" que reimplementaba cada módulo por el nav real,
@@ -21,10 +21,11 @@ import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 //     blanco el vidrio oscuro dejaría el texto ilegible.
 // Los anchors apuntan a la home (`${BP}/#…`) para funcionar desde cualquier
 // módulo; en la propia home el navegador hace scroll in-page sin recargar.
-// En la edición de lanzamiento la guía no se publica: cada link a esta
-// constante va detrás de CON_GUIA. La constante se queda porque el
-// prototipo completo la sigue usando (ver app/edicion.js).
-const GUIA = `${BP}/guia/guia_home.html`;
+// La Guía Médica real (/guia-medica/, desde el 23/09/2026) en las dos
+// ediciones. "Ver mi red" por cédula sigue apuntando al molde viejo de guia/,
+// que solo existe en el prototipo — igual que Mi SP, donde vive ese link.
+const GUIA = `${BP}${GUIA_HREF}`;
+const GUIA_DEMO_MI_RED = `${BP}/guia/guia_home.html#mi-red`;
 
 const chev = (
   <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
@@ -108,16 +109,15 @@ export default function Header({ variant = 'dark' }) {
                 <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav' })} className="nav-link nav-link-menu" style={menuTriggerStyle}>Mi SP {chev}</a>
                 <div className="navmenu navmenu-right"><div className="navmenu-card">
                   <Item href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav_misp' })} t="Agendar un turno" s="Pedí tu turno en Lister — directo, sin login" />
-                  <Item href={`${GUIA}#mi-red`} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} t="Ver mi red" s="Con tu cédula, mirá qué entra en tu plan" />
+                  <Item href={GUIA_DEMO_MI_RED} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} t="Ver mi red" s="Con tu cédula, mirá qué entra en tu plan" />
                   <Item href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav_misp' })} t="Ir a Mi SP" s="Tu espacio: credencial, turnos y más" />
                 </div></div>
               </div>
             )}
-            {/* El botón de la barra: en el prototipo abre la Guía Médica; en la
-                v1 esa puerta no existe todavía y el lugar lo ocupa agendar —
-                que hasta ahora vivía escondido bajo el desplegable de Mi SP.
-                Sin Mi SP y sin guía, pedir un turno es la única acción real
-                que le queda a quien ya es cliente (decisión de Arturo, 15 sep). */}
+            {/* El botón de la barra abre la Guía Médica, en las dos ediciones
+                desde el 23/09/2026. Entre el 15 y el 23/09 la v1 no tenía guía
+                y el lugar lo ocupaba agendar; la rama queda por si la guía
+                vuelve a apagarse alguna vez. */}
             {CON_GUIA
               ? <a href={GUIA} onClick={() => tGuia('nav')} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
               : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
@@ -147,8 +147,8 @@ export default function Header({ variant = 'dark' }) {
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={close} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
             {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); close(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
-            <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); close(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>
-            <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); close(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>
+            {CON_AGENDA && <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); close(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>}
+            <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); close(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms', marginTop: CON_MI_SP || CON_AGENDA ? undefined : '14px' }}>Simulá tu plan →</a>
           </nav>
         </div>
       )}

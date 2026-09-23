@@ -7,7 +7,7 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
-import { CON_GUIA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
+import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -52,17 +52,16 @@ export default function Page() {
     { q: '¿Cuál es la diferencia entre Bronze, Silver y Gold?', a: 'Cada plan incluye todo lo del anterior y suma lo suyo. Bronze cubre lo esencial: urgencias 24 h, consultas (hasta 3 al año por especialidad), radiografías, ecografías e internación. Silver es el salto más grande: agrega resonancia y tomografía al 100%, sube a 5 consultas y estira fisioterapia y terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     { q: '¿Qué es la carencia y cuánto dura?', a: 'Es el tiempo que esperás desde que te afiliás hasta poder usar una cobertura. Arranca el día que te afiliás, no el día que la necesitás. Los plazos reales de los planes vigentes: consultas y urgencias, sin espera; laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 7 meses en Bronze, 6 en Silver y 5 en Gold; y parto, 10 meses en los tres planes (la cesárea baja a 5 meses en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Mirá tu precio con el descuento →', sim: true } },
-    // ⚠ Estas dos preguntas se contestan distinto en cada edición. En el
-    // prototipo la respuesta es "miralo vos mismo" y manda a la Guía Médica.
-    // En la v1 la guía no se publica todavía, y una respuesta no puede
-    // apuntar a un lugar que no existe: ahí se contesta por WhatsApp, que es
-    // lo que de verdad pasa hoy cuando alguien pregunta por su ciudad o su
-    // médico. El día que la guía salga, vuelven solas a su versión buena.
+    // ⚠ Estas dos preguntas dependen de la guía. Entre el 15 y el 23/09 la v1
+    // no la tenía y se contestaban por WhatsApp (una respuesta no puede
+    // apuntar a un lugar que no existe). Desde el 23/09 la guía está en las
+    // dos ediciones y vuelven a "miralo vos mismo"; la rama de WhatsApp queda
+    // por si la guía vuelve a apagarse.
     CON_GUIA
       ? { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés disponible cerca depende de tu ciudad: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
       : { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— más de 50 prestadores en el resto del país. Cuánto tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
     CON_GUIA
-      ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, te mostramos alternativas cerca en vez de dejarte sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
+      ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, escribinos y te decimos dónde atenderte: no te dejamos sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
       : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
@@ -223,10 +222,10 @@ export default function Page() {
   const waMsg = (texto) => (waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(texto)) : '#');
   const waHref = waMsg('Hola! Quiero información sobre los planes de Salud Protegida.');
 
-  // Guía Médica (páginas estáticas en /guia). Es la puerta a "dónde/con quién
-  // atenderte" — la búsqueda de médicos/sanatorios vive allá, donde devuelve
-  // resultados; el home solo abre la puerta, no finge buscarla acá.
-  const guiaHome = `${BP}/guia/guia_home.html`;
+  // Guía Médica (/guia-medica/, la red real desde el 23/09/2026). Es la puerta
+  // a "dónde/con quién atenderte" — la búsqueda de médicos/sanatorios vive
+  // allá, donde devuelve resultados; el home solo abre la puerta.
+  const guiaHome = `${BP}${GUIA_HREF}`;
 
   // Qué cubre — explorador curado de coberturas (ex "buscador" que expulsaba a
   // la Guía Médica al no encontrar: BITACORA cap. 44). Con 11 coberturas reales
@@ -314,7 +313,7 @@ export default function Page() {
       label: f.cta.label,
       href: f.cta.sim ? `${BP}/simulador/`
         : f.cta.to === 'planes' ? `${BP}/planes/`
-        : f.cta.to === 'guia' ? `${BP}/guia/guia_home.html`
+        : f.cta.to === 'guia' ? `${BP}${GUIA_HREF}`
         : waMsg(f.cta.wa),
       external: !f.cta.sim && !f.cta.to,
       onClick: () => (
@@ -413,10 +412,9 @@ export default function Page() {
                 </div>
               </div>
             )}
-            {/* El botón de la barra: en el prototipo abre la Guía Médica; en la v1
-                esa puerta todavía no existe y el lugar lo ocupa agendar, que hasta
-                ahora vivía escondido bajo el desplegable de Mi SP. Mismo espacio,
-                misma jerarquía: la acción que sí podemos cumplir hoy. */}
+            {/* El botón de la barra abre la Guía Médica en las dos ediciones desde
+                el 23/09/2026. Entre el 15 y el 23/09 la v1 no tenía guía y el lugar
+                lo ocupaba agendar; la rama queda por si la guía se apaga. */}
             {CON_GUIA
               ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
               : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
@@ -444,8 +442,8 @@ export default function Page() {
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
             {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
-            <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>
-            <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms' }}>Simulá tu plan →</a>
+            {CON_AGENDA && <a href={`${BP}/agendar/`} onClick={() => { track('cta_agendar', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '290ms', marginTop: CON_MI_SP ? undefined : '14px' }}>Agendar turno →</a>}
+            <a href={`${BP}/simulador/`} onClick={() => { track('cta_simulador', { origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-cta" style={{ animationDelay: '310ms', marginTop: CON_MI_SP || CON_AGENDA ? undefined : '14px' }}>Simulá tu plan →</a>
           </nav>
         </div>
       )}
@@ -473,10 +471,16 @@ export default function Page() {
                   que una puerta que hace una sola cosa y la hace.
                   Evento: en esta edición emite cta_agendar (no puerta_home), para
                   que el embudo de turnos se cuente con UN solo evento y no haya
-                  que sumar dos — el error que ya cometimos con /que-cubre. */}
+                  que sumar dos — el error que ya cometimos con /que-cubre. 
+                  23/09/2026: agendar sale de la v1 y entra la guía, así que en
+                  la v1 la puerta lleva a la Guía Médica ("Buscá tu médico") y
+                  emite guia_handoff {via:'hero'}, el mismo evento que las otras
+                  puertas de la guía. */}
               {CON_MI_SP
                 ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
-                : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>}
+                : CON_AGENDA
+                  ? <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>
+                  : <a href={v.guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Buscá tu médico</a>}
             </div>
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
                 tocar el título del hero — el test de 5 segundos sigue vigente. */}
@@ -807,11 +811,10 @@ export default function Page() {
             </div>
           </div>
 
-          {/* "Dónde/con quién atenderte" es su propia utilidad, y cada edición la
-              resuelve con lo que tiene: el prototipo abre la Guía Médica (una
-              entrada honesta, no un buscador que finge — la búsqueda real de
-              médicos y sanatorios vive allá); la v1 todavía no la publica, así
-              que no la promete y ofrece el turno, que sí funciona hoy. */}
+          {/* "Dónde/con quién atenderte" es su propia utilidad: abre la Guía
+              Médica (una entrada honesta, no un buscador que finge — la búsqueda
+              real de médicos y sanatorios vive allá). La rama de agendar es la
+              que usó la v1 entre el 15 y el 23/09, cuando no tenía guía. */}
           {CON_GUIA ? (
             <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
               <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
@@ -1029,9 +1032,8 @@ export default function Page() {
               <a href="#faq" className="foot-link" style={css('color:inherit')}>Preguntas frecuentes</a>
               {CON_BLOG && <a href={`${BP}/blog/`} className="foot-link" style={css('color:inherit')}>Blog</a>}
               {CON_HISTORIA && <a href={`${BP}/historia/`} className="foot-link" style={css('color:inherit')}>Nuestra historia</a>}
-              {CON_MI_SP
-                ? <a href={`${BP}/mi-sp/`} className="foot-link" style={css('color:inherit')}>Mi SP · ya soy cliente</a>
-                : <a href={`${BP}/agendar/`} className="foot-link" style={css('color:inherit')}>Agendar un turno</a>}
+              {CON_MI_SP && <a href={`${BP}/mi-sp/`} className="foot-link" style={css('color:inherit')}>Mi SP · ya soy cliente</a>}
+              {!CON_MI_SP && CON_AGENDA && <a href={`${BP}/agendar/`} className="foot-link" style={css('color:inherit')}>Agendar un turno</a>}
               <a href={`${BP}/simulador/`} className="foot-link" style={css('color:inherit')}>Simulá tu plan</a>
             </div>
           </div>

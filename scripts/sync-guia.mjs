@@ -2,8 +2,10 @@
    Corre automáticamente antes de cada build (hook "prebuild" en package.json),
    así nunca más hay que acordarse de copiar a mano.
 
-   En la edición de lanzamiento la Guía Médica NO se publica todavía (ver
-   app/edicion.js): se borra la copia y no se sincroniza. Ojo con el orden —
+   En la edición de lanzamiento este molde NO se publica (ver app/edicion.js):
+   la v1 usa la Guía Médica real de /guia-medica/ (23/09/2026), y el molde de
+   guia/ —datos ilustrativos— queda solo en el prototipo como referencia. Se
+   borra la copia y no se sincroniza. Ojo con el orden —
    los dos builds del deploy comparten el mismo public/, así que esta línea
    tiene que borrar, no solo saltear: si el build completo corrió antes, la
    copia quedó ahí y se colaría en la v1. */

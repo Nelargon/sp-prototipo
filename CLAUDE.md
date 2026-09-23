@@ -77,7 +77,10 @@ bitácora: …" del usuario entran con su voz.
 ## Reglas técnicas (destiladas de golpes reales — ver BITACORA)
 
 - La guía se edita **solo en `guia/`**; `public/guia/` se genera en el
-  build y no está en git.
+  build y no está en git. (Desde el 23/09/2026 `guia/` es el molde viejo, solo
+  del prototipo. La **Guía Médica real** es `/guia-medica/` y sus datos,
+  `lib/guia-medica.json`, **se regeneran desde la planilla maestra de SP** con
+  `scripts/build-guia-medica.py`: nunca se editan a mano. La planilla manda.)
 - **No instalar dependencias dentro del repo** (rompe el lockfile y el
   deploy usa `npm ci`). Playwright-core se instala fuera del repo;
   Chromium en `/opt/pw-browsers/chromium`.

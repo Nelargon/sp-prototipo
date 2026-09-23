@@ -37,17 +37,48 @@ Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
 | Botón de la barra | "Agendar un turno" | vuelve a "Guía Médica" |
 | FAQ "¿vale en todo el país?" / "¿está mi médico?" | las contesta un asesor por WhatsApp | pueden volver a contestarse con la guía |
 
-**⚠ Esto todavía NO está aplicado en el código.** Se hace en un solo PR cuando
-llegue el archivo de la guía: prender la guía en la v1 con los datos
-ilustrativos actuales sería publicar prestadores inventados en la maqueta que
-copia Buenavista, y apagar agendar antes deja la puerta del cliente sin
-destino. Las dos cosas van juntas.
+**✔ Aplicado el mismo 23/09** (llegó la planilla maestra:
+`20260923_SP_Planilla_GuiaMedicaMaestra_v1.xlsx`, guardada en
+`sp-interno/project/guia-medica/` porque trae Observaciones internas).
 
-**Qué es "adaptar" la guía (decisión de Arturo):** convertir su listado actual
-en los datos de las páginas de `guia/` (hoy con datos ilustrativos, ver
-`guia/ANEXO-requisitos-backend.md`). Es **interino**: el destino final es
-integrarla con el sistema de SP. Lo que se construya tiene que poder
-reemplazarse por esa integración sin rehacer el front.
+### Cómo quedó la Guía Médica real
+
+| Pieza | Dónde |
+|---|---|
+| Datos públicos (sin Observaciones) | `lib/guia-medica.json` — **generado, no editar a mano** |
+| Cómo se generan | `scripts/build-guia-medica.py <planilla.xlsx>` (openpyxl fuera del repo) |
+| Búsqueda y filtros (puro, se prueba con node) | `lib/red-medica.js` |
+| Buscador + filtros + Lister | `/guia-medica/` (`app/guia-medica/GuiaMedica.jsx`) |
+| Ficha estática por prestador (674) | `/guia-medica/P-0001/` … (`app/guia-medica/[id]/page.jsx`) |
+| El molde viejo (datos ilustrativos, "Ver mi red" por CI) | `guia/`, **solo en el prototipo** (`CON_GUIA_DEMO`) |
+
+- **Números (planilla al 23/09/2026):** 847 filas → 839 publicadas, 674
+  prestadores, 79 ciudades, 17 departamentos. Quedan afuera 7 filas que solo
+  figuran en la Centralizada y la leyenda de Anestesiología (no es un
+  prestador: viaja como nota de la especialidad).
+- **El filtro es "¿Qué plan tenés?", no "desde qué plan".** Cada guía en PDF es
+  una red; Silver y Gold comparten la misma y lo que cambia es cuánto cubren.
+  El molde viejo suponía Gold ⊇ Silver ⊇ Bronze, y eso no es cierto para la
+  red. Opciones: SP Esencial en sus 3 zonas (= "Essential" de los PDF,
+  confirmado por Arturo el 23/09), Silver/Gold/Bronze, Vital, Bienestar/
+  Superior/Integral/Primordial (las 3 últimas usan la misma red) y Plan
+  Estatal. **La Centralizada no se publica** hasta saber qué planes cubre.
+- **"Revisar" (185 filas):** se publican como en el PDF. En el **prototipo**
+  llevan un **punto naranja** (pedido de Arturo: *"como señal para que veamos
+  que se debe revisar de forma interna"*); la v1 no lo muestra
+  (`CON_MARCA_REVISAR`).
+- **Odontología:** la red tiene odontólogos (incluido el centro de Lister) y
+  `/que-cubre` dice que el dentista no entra en Bronze/Silver/Gold. La guía no
+  afirma cobertura: en esas filas dice *"Antes de ir, preguntá a tu asesor qué
+  cubre tu plan en odontología"*. Falta que SP diga qué cubre cada plan.
+- **Teléfono de Lister:** la guía usa el **(021) 220 199**, el que figura en la
+  página de Lister de las 6 guías. El resto del sitio dice (021) 319 0000 para
+  todo. Decisión abierta en la planilla ("Para decidir").
+- **Privacidad:** el texto buscado no viaja a la analítica (solo el largo), igual
+  que en `/que-cubre`.
+
+**Para actualizar la red:** SP edita la planilla → se corre el script → PR con
+el JSON nuevo. La planilla manda.
 
 **Guardas que siguen valiendo:**
 - La **Guía Médica pública no incluye "Ver mi red" por cédula**: eso es Mi SP,
@@ -224,7 +255,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · agendar |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página

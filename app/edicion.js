@@ -23,7 +23,23 @@ export const EDICION = process.env.NEXT_PUBLIC_EDICION || 'completa';
 export const ES_LANZAMIENTO = EDICION === 'lanzamiento';
 
 // Módulos que la v1 todavía no lanza (decisión de Arturo, 15 sep 2026).
-export const CON_GUIA = !ES_LANZAMIENTO;
+//
+// La Guía Médica ENTRA a la v1 desde el 23 sep 2026 (Arturo: "volveremos a
+// incorporar la guía médica"), con la red real de la planilla maestra de SP,
+// en la ruta /guia-medica/. CON_GUIA quedó en `true` para las dos ediciones.
+// El molde viejo de guia/ (datos ilustrativos, "Ver mi red" por cédula) sigue
+// solo en el prototipo, como referencia: CON_GUIA_DEMO.
+export const CON_GUIA = true;
+export const GUIA_HREF = '/guia-medica/';
+export const CON_GUIA_DEMO = !ES_LANZAMIENTO;
+// Agendar SALE de la v1 el mismo día (Arturo: "la agenda de turnos aún no la
+// lanzaremos, pero podemos crear una versión preliminar"). Sigue en el
+// prototipo como versión preliminar. Salen juntas a propósito: la puerta del
+// cliente del hero pasa de agendar a la guía, y ninguna queda sin destino.
+export const CON_AGENDA = !ES_LANZAMIENTO;
+// Punto naranja en las filas de la guía que la planilla marca "Revisar":
+// marca interna, pedida por Arturo el 23/09. Solo en el prototipo.
+export const CON_MARCA_REVISAR = !ES_LANZAMIENTO;
 export const CON_MI_SP = !ES_LANZAMIENTO;
 export const CON_BLOG = !ES_LANZAMIENTO;
 // /historia es el manifiesto en scrollytelling: 720vh = siete pantallas, con
