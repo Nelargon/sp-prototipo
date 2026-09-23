@@ -456,5 +456,15 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 
 /* Guía Médica — "¿Qué plan tenés?" (23/09/2026): 4 botones en una fila en
    escritorio, 2×2 en celular. */
-.gm-planes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media(max-width:640px){.gm-planes{grid-template-columns:1fr 1fr}}
+/* Guía Médica (diseño del 23/09/2026, «síntesis con cápsulas»).
+   Fondo gris claro y ESQUINA DE CURVATURA CONTINUA (elección de Arturo, opción 2
+   del lienzo): la curva arranca de a poco, la forma se ve más cuadrada pero sin
+   punta. Cada elemento dice su radio con --sq. Donde el navegador todavía no
+   sabe dibujarla (Safari y Firefox, sep 2026) queda una esquina redondeada
+   común de ese mismo radio; donde sí (Chrome y Edge 139+), el radio se agranda
+   porque la curva continua "se come" menos esquina que un cuarto de círculo. */
+.gm{--gm-fondo:#F4F5F6;--gm-linea:#E6E8EA;--gm-borde:#D4E0EE}
+.sq{border-radius:var(--sq,10px)}
+@supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
+.gm-fila{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:-2px 0}
+.gm-fila::-webkit-scrollbar{display:none}

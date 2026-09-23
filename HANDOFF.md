@@ -17,6 +17,47 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🩺 LA GUÍA MÉDICA CAMBIA DE CARA: «SÍNTESIS CON CÁPSULAS» (23 sep 2026)
+
+Arturo eligió el diseño en un lienzo de diseño (claude.ai, «Guía Médica SP · 5
+caminos»: cinco caminos, cuatro variantes sobrias, dos síntesis y tres
+esquinas). Sus pedidos, textuales en la conversación del 23/09:
+- **Lo que cuenta es la especialidad y la zona.** El plan es un **filtro**, y la
+  tarjeta del prestador dice sola con qué planes se usa: con plan elegido,
+  «✓ Atiende con Silver»; sin plan, una línea gris «Planes: …».
+- **Sin totales de prestadores** en ningún lado ("Ver más" sin número).
+- **Fondo gris claro** (`--gm-fondo` #F4F5F6) y **cápsulas más chicas**.
+- «Lo que más se busca» (de la opción A) y la **tira de zonas** (Todo el país ·
+  Asunción · Central · Interior). Central abre sus ciudades; Interior abre los
+  departamentos y, elegido uno, sus ciudades.
+- **«Visar una orden»**: botón junto al título y enlace en las tarjetas de
+  laboratorios y estudios. Abre qué tiene que tener la orden (textos de la hoja
+  Contenido de la planilla) y el WhatsApp con el mensaje escrito.
+- **Esquina de curvatura continua** (opción 2 del lienzo): clase `.sq` con
+  `--sq` en `app/globals.css`, con `@supports (corner-shape: squircle)`.
+  ⚠ Hoy solo la dibujan **Chrome y Edge**; en **Safari (iPhone) y Firefox** se ve
+  una esquina redondeada común del mismo radio. Arturo lo sabía al elegirla.
+
+**El buscador entiende síntomas** (`interpretar()` en `lib/red-medica.js`):
+«me duele la cabeza» → Clínica Médica y Neurología, con una línea de por qué;
+«mi hijo tiene fiebre» → Pediatría; «dolor de pecho» → cartel rojo de
+emergencia con la ambulancia. Es un diccionario, no IA: previsible, sin costo,
+el texto no sale del teléfono y no va a la analítica.
+**⚠ GUARDA: antes de la v1 real lo tiene que revisar un médico** (idealmente la
+dirección médica de Lister). La guía orienta a quién ir; no diagnostica.
+
+**«Lo que más se busca» tiene un orden PROVISORIO** (no hay medición: `track()`
+no está conectado). Cuando lo esté, sale de `guia_filtro {campo:'esp'}` de la
+semana. Arturo pidió también «los profesionales más buscados»: **no se hizo**
+(manda más pacientes al médico ya lleno, genera reclamos de prestadores y se
+realimenta solo). Queda para decidir con él.
+
+**Qué se fue del diseño anterior:** la tarjeta azul de Lister (ahora es una
+fila en «Lo que más se busca»; sus horarios aparecen al buscar «lister»), los
+botones de tipo (Profesionales / Sanatorios) y los desplegables de
+especialidad y departamento. Los links viejos (`?plan&esp&dp&c`) siguen
+funcionando: el departamento se traduce a su zona.
+
 ## 🔄 LA V1 CAMBIA DE FORMA: ENTRA LA GUÍA, SALE AGENDAR (23 sep 2026)
 
 **Arturo, 23/09/2026, textual:**

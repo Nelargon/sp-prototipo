@@ -3127,3 +3127,26 @@ usa para llegar a un médico lleva tres pasos: validar (y frenar), mostrar qué
 cambia, y esperar el OK de una persona. Y "online" hay que decir cuál: la
 maqueta no es el sitio que el paciente ve.
 
+## Capítulo 83 — Diseñar en un lienzo, no en el sitio (23/09/2026)
+
+**Qué intentamos.** Arturo sentía la Guía Médica "todavía muy básica" y
+pidió una que se anticipe: que entienda «me duele la cabeza», que ponga
+adelante lo más buscado y que tenga los recursos que necesita quien va al
+médico. La costumbre del proyecto era construir en el sitio y ajustar sobre lo
+publicado.
+
+**Qué pasó.** Esta vez se diseñó afuera, en un lienzo de pantallas que
+funcionan, con datos reales de la red. Fueron cuatro rondas en una tarde:
+cinco caminos, cuatro variantes en el estilo sobrio que él trajo de otra
+maqueta, dos síntesis armadas con lo que eligió de cada una, y tres esquinas.
+Cada ronda achicó el problema con sus propias palabras: *"lo que cuenta es la
+especialidad y la zona"*, *"no mostrar números totales de prestadores"*, *"me
+gusta la idea de un botón para visar una orden"*. Recién con la síntesis
+elegida se tocó el código, y se construyó una sola vez.
+
+**Qué aprendimos.** Para una pantalla nueva, comparar varias versiones que
+funcionan cuesta menos que iterar sobre lo publicado, y la persona elige
+viendo, no imaginando. Dos cosas quedaron dichas antes de construir, no
+después: que la esquina de curvatura continua no se ve en el iPhone, y que el
+diccionario de síntomas necesita que lo revise un médico.
+
