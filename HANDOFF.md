@@ -17,6 +17,49 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🔄 LA V1 CAMBIA DE FORMA: ENTRA LA GUÍA, SALE AGENDAR (23 sep 2026)
+
+**Arturo, 23/09/2026, textual:**
+
+> *"La agenda de turnos aún no la lanzaremos, pero podemos crear una versión
+> preliminar. También volveremos a incorporar la guía médica. Lo que haré es
+> enviarte la guía médica actual, ya sea en PDF o Excel, y tú la adaptarás
+> hasta que podamos integrarla directamente en el sistema."*
+
+Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
+**dejarla fuera de la v1**.
+
+| | Hasta el 22/09 | **Desde el 23/09** |
+|---|---|---|
+| `/agendar/` en la v1 | publicada, puerta del cliente | **fuera de la v1**; sigue en el prototipo como versión preliminar |
+| Guía Médica en la v1 | fuera (`CON_GUIA` apagado) | **entra**, con la red real que manda Arturo (PDF o Excel) |
+| Puerta del cliente del hero | "Ya soy de SP · Pedí tu turno" → agendar | pasa a la Guía Médica |
+| Botón de la barra | "Agendar un turno" | vuelve a "Guía Médica" |
+| FAQ "¿vale en todo el país?" / "¿está mi médico?" | las contesta un asesor por WhatsApp | pueden volver a contestarse con la guía |
+
+**⚠ Esto todavía NO está aplicado en el código.** Se hace en un solo PR cuando
+llegue el archivo de la guía: prender la guía en la v1 con los datos
+ilustrativos actuales sería publicar prestadores inventados en la maqueta que
+copia Buenavista, y apagar agendar antes deja la puerta del cliente sin
+destino. Las dos cosas van juntas.
+
+**Qué es "adaptar" la guía (decisión de Arturo):** convertir su listado actual
+en los datos de las páginas de `guia/` (hoy con datos ilustrativos, ver
+`guia/ANEXO-requisitos-backend.md`). Es **interino**: el destino final es
+integrarla con el sistema de SP. Lo que se construya tiene que poder
+reemplazarse por esa integración sin rehacer el front.
+
+**Guardas que siguen valiendo:**
+- La **Guía Médica pública no incluye "Ver mi red" por cédula**: eso es Mi SP,
+  que sigue fuera de la v1.
+- Si el listado de la red viene **por plan**, choca con la guarda de datos de
+  abajo (Bronze dado de baja, grilla oficial pendiente). No renombrar planes a
+  mano.
+- La reserva de turnos por cédula de la web vieja (la que Buenavista está
+  migrando) no se toca desde acá.
+
+---
+
 ## ⚠ LEER PRIMERO — `/lanzamiento/` ES UNA MAQUETA, NO NUESTRO SITIO (16 sep 2026)
 
 **Arturo, 16/09/2026, textual:**

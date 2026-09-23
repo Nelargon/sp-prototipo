@@ -2954,6 +2954,33 @@ descubierto después de arreglar el primero.
 
 ---
 
+## Capítulo 77 — La guía vuelve y agendar sale: la v1 cambia una pregunta por otra (23/09/2026)
+
+**Qué intentamos.** Una revisión de la v1 antes del lanzamiento. Entre los
+pendientes aparecía una decisión abierta desde el directorio del 15/09: la
+reserva de turnos de la web vieja, por cédula, que Buenavista está migrando,
+¿convive con nuestro `/agendar` o lo reemplaza?
+
+**Qué pasó.** Arturo no eligió ninguna de las dos. Invirtió la v1: *"La
+agenda de turnos aún no la lanzaremos, pero podemos crear una versión
+preliminar. También volveremos a incorporar la guía médica."* Agendar sale de
+la v1 (queda en el prototipo) y la Guía Médica entra, con el listado real que
+él manda en PDF o Excel.
+
+**Qué aprendimos.**
+
+1. **La v1 del 15/09 dejaba sin contestar la cuarta pregunta**: *¿dónde me
+   atiendo?* (sp-interno, BITACORA cap. 10). Con la guía, el sitio la vuelve
+   a contestar solo. Lo que sale, agendar, era la única función que dependía
+   de una persona para cerrarse.
+2. **Prender y apagar van en el mismo PR.** Prender la guía hoy publicaría
+   los prestadores ilustrativos en la maqueta que copia Buenavista. Apagar
+   agendar hoy deja la puerta del cliente del hero sin destino. Por eso esta
+   decisión queda escrita en el HANDOFF y no se aplica todavía: el cambio
+   entra entero cuando llegue el archivo, no a medias.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
