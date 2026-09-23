@@ -333,6 +333,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp-row{grid-template-columns:104px 1fr 1fr 1fr}
   .cmp-lbl{padding-left:13px !important;padding-right:9px !important}
   .cmp-hint{display:flex}
+  /* /planes en celular: la columna del servicio se angosta y queda fija al
+     deslizar, así cada plan se lee al lado de su servicio (23/09/2026). */
+  .pl-inner{min-width:560px !important}
+  .pl-row{grid-template-columns:118px repeat(3,minmax(146px,1fr)) !important}
+  .pl-lbl{padding-left:12px !important;padding-right:8px !important;box-shadow:1px 0 0 var(--sp-line)}
   .cmp-garantia{padding:18px 18px !important;gap:10px 14px !important}
 }
 /* "Ver todos los planes" ganó peso de CTA secundario (borde + más cuerpo);

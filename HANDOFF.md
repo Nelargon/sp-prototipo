@@ -80,6 +80,43 @@ Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
 **Para actualizar la red:** SP edita la planilla → se corre el script → PR con
 el JSON nuevo. La planilla manda.
 
+### Arreglos de la revisión del 23/09 (lo que no dependía de un dato de SP)
+
+- **"Más de 50 prestadores" → "más de 600 médicos, sanatorios y laboratorios
+  en 79 ciudades"** en el home (cobertura, FAQ). Sale de la planilla: 615
+  prestadores en la red de Silver/Gold, 674 en total.
+- **"Odontología" salió de la tira de prestadores** del home: contradecía a
+  `/que-cubre` (el dentista no entra en Bronze/Silver/Gold).
+- **"Carencia" ya no va primero**: la FAQ pregunta "¿Cuánto tengo que esperar
+  para usar mi plan?", y las tablas de `/que-cubre` dicen "Tiempo de espera
+  para maternidad (carencia)". Mismos números; cambia solo cómo se muestran.
+- **Moneda única**: las tablas de `/que-cubre` pasan de "Gs." a "₲" al
+  mostrarse (el dato del master no se toca).
+- **Simulador**: el WhatsApp del contacto decía "Para: para vos" (la persona
+  hablándole a SP de "vos") y el desglose decía "Cobertura para para vos".
+  Ahora el mensaje va en primera persona (`grupoPropio` en `app/quote.js`).
+- **`/planes` en celular**: la columna del servicio es angosta y queda fija al
+  deslizar, y hay un aviso de "Deslizá para ver Silver y Gold".
+- **404 en español** (`app/not-found.jsx`), con salida al simulador, la guía y
+  el inicio. Antes era la de Next, en inglés y sin salida.
+- **`docs/IMPLEMENTAR-v1.md`**: cómo publicar la v1 sin reprogramarla (es HTML
+  estático), qué conectar (HubSpot, medición, privacidad, redirecciones, el
+  QR del carnet) y qué no tocar.
+
+### Lo que sigue esperando a SP (no se inventa)
+
+| Pendiente | Quién |
+|---|---|
+| Grilla oficial: Bronze → Esencial, precio por zona (guarda de datos) | SP |
+| Qué cubre cada plan en odontología | SP |
+| Teléfono de Lister: (021) 220 199 (las guías) o (021) 319 0000 (el sitio) | SP |
+| Qué planes usa la red Centralizada | SP |
+| Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
+| "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
+| "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
+| Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |
+| 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` | llegan así de la grilla: corregir con la grilla nueva |
+
 **Guardas que siguen valiendo:**
 - La **Guía Médica pública no incluye "Ver mi red" por cédula**: eso es Mi SP,
   que sigue fuera de la v1.
@@ -1697,7 +1734,11 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    `app/page.jsx`, mapas NIVEL/NOMBRE en la guía).
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
-8. ~~**Decisión de plataforma de la web pública**~~ ✔ **RESUELTO (23 jul 2026,
+8. ⚠ **Superado el 16/09/2026** — ver "LEER PRIMERO" arriba: la v1 la publica
+   **Buenavista**, en su sitio, a partir de nuestra maqueta. Lo de abajo es la
+   decisión de julio, que se conserva como historia. Guía de publicación para
+   ellos: `docs/IMPLEMENTAR-v1.md`.
+   ~~**Decisión de plataforma de la web pública**~~ ✔ **RESUELTO (23 jul 2026,
    dec. 11p): el prototipo Next.js ES la web.** Se descarta WordPress/BuenaVista
    como plataforma. Quedan quién hospeda y el dominio (#9); el backend (ANEXO)
    hace falta igual.

@@ -111,6 +111,16 @@ export default function Landing() {
   const { bs, so } = datos.saltos;
   const nombreCuadro = (k) => datos.meta.cuadros[k].toLowerCase();
 
+  /* Cómo se MUESTRA un parámetro del master, sin tocar el dato:
+     - "Carencia…" va después de lo que la persona entiende (regla del
+       8/09/2026: "carencia" no va primero; la palabra del contrato, detrás).
+     - El master escribe "Gs."; el resto del sitio, "₲". Una sola moneda. */
+  const etiquetaParam = (t) => {
+    const m = /^Carencia\s*(?:–|-|de)\s*(.+)$/i.exec(t);
+    return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
+  };
+  const valorParam = (v) => String(v).replace(/^Gs\.\s*/, '₲ ');
+
   /* Las secciones de parámetros vienen agrupadas del master (Internación,
      Topes…). Se respeta ese agrupamiento: es como lo lee quien vende. */
   const seccionesParam = [];
@@ -349,9 +359,9 @@ export default function Landing() {
                   </div>
                   {grupo.filas.map((f, r) => (
                     <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                      <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{f.p}</div>
+                      <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
                       {f.v.map((v, j) => (
-                        <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v || '—'}</div>
+                        <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v ? valorParam(v) : '—'}</div>
                       ))}
                     </div>
                   ))}

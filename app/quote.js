@@ -162,6 +162,20 @@ export const groupLabel = (d) => {
   return 'según tus respuestas';
 };
 
+// El mismo grupo, en la voz de quien escribe: va dentro del WhatsApp que la
+// persona le manda a SP. groupLabel habla de "vos" porque lo lee la persona;
+// en su propio mensaje decía "Para: para vos" (revisión del 23/09/2026).
+export const grupoPropio = (d) => {
+  const ppl = d.people || [];
+  const ad = ppl.filter((p) => p.kind !== 'kid').length;
+  const ki = ppl.filter((p) => p.kind === 'kid').length;
+  if (d.who === 'mi') return 'solo para mí';
+  if (d.who === 'pareja') return 'mi pareja y yo';
+  if (d.who === 'familia') return ad + ' adultos y ' + ki + ' ' + (ki === 1 ? 'hijo' : 'hijos');
+  if (d.who === 'padres') return ad > 1 ? 'dos adultos mayores' : 'un adulto mayor';
+  return '';
+};
+
 export const titularAge = (d) => { const a = (d.people || []).find((p) => p.kind !== 'kid'); return a ? ageTxt(a.age) : '—'; };
 
 export const opts = () => ({
