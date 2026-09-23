@@ -143,6 +143,17 @@ Primordial y Plan Estatal. 4 en fila en escritorio, 2×2 en celular
 Los links viejos (`?plan=otros`, `?plan=vital` del simulador) siguen
 funcionando y marcan su botón.
 
+### Lister: se detecta por la dirección, no solo por la palabra (23/09/2026)
+
+El code review encontró que `build-guia-medica.py` marcaba "En Lister,
+centro propio" solo si la fila decía "lister". Cinco filas en Pa'i Pérez 630
+dicen "C.M. Salud Protegida" y quedaban afuera: Dra. Penayo Aguilera
+(Dermatología), Dra. Caballero (Neumología) y tres nutricionistas. Ahora vale
+cualquiera de tres señales: la palabra, la dirección (Pa'i Pérez 630) o que la
+hoja «Lister» de la planilla nombre la fila. Son 94 filas de Lister (antes, 89).
+Además, el buscador indexa "lister" en toda fila marcada, así que el botón
+"Ver sus profesionales" las encuentra a todas.
+
 ### Lo que sigue esperando a SP (no se inventa)
 
 | Pendiente | Quién |

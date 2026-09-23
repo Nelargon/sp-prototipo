@@ -69,6 +69,21 @@ def telefonos(*vals):
     return out
 
 
+# Lister es Pa'i Pérez 630. Buscar solo la palabra "lister" no alcanzaba:
+# cinco filas en esa misma dirección dicen "C.M. Salud Protegida" y quedaban
+# sin la marca de centro propio (hallazgo del code review, 23/09/2026). Vale
+# cualquiera de tres señales: la palabra, la dirección, o que la hoja «Lister»
+# de la planilla nombre la fila.
+LISTER_DIR = re.compile(r"pa\W?i\s*p[eé]rez\s*(n[º°o]\.?\s*)?630\b", re.I)
+FILAS_LISTER = set()
+
+
+def en_lister(direccion, nombre, id_fila):
+    return ('lister' in (direccion + ' ' + nombre).lower()
+            or bool(LISTER_DIR.search(direccion))
+            or id_fila in FILAS_LISTER)
+
+
 def clave_orden(nombre):
     n = re.sub(r'^(Dra?\.|Lic\.|Prof\.|Od\.)\s*', '', nombre)
     return ''.join(c for c in unicodedata.normalize('NFD', n.lower()) if unicodedata.category(c) != 'Mn')
@@ -88,6 +103,12 @@ def main(ruta):
             grupo[txt(f[0])] = txt(f[1])
         if f[11]:
             guias[txt(f[11])] = {'nombre': txt(f[12]), 'fecha': txt(f[13]), 'planes': txt(f[14])}
+
+    # Filas que la hoja «Lister» cruza con la Red (columna "Fila en la Red").
+    for f in wb['Lister'].iter_rows(values_only=True):
+        for c in f:
+            if isinstance(c, str) and re.fullmatch(r'F-\d{4}', c.strip()):
+                FILAS_LISTER.add(c.strip())
 
     prestadores, notas = [], {}
     excluidas = {'baja': 0, 'solo_centralizada': 0}
@@ -120,7 +141,7 @@ def main(ruta):
         cond = sin_segun(txt(r['Condiciones']))
         if cond:
             p['k'] = cond
-        if 'lister' in (direccion + ' ' + nombre).lower():
+        if en_lister(direccion, nombre, txt(r['ID fila'])):
             p['l'] = 1
         if estado == 'Revisar':
             p['rv'] = 1
