@@ -119,6 +119,7 @@ export default function GuiaMedica() {
   }, [f]);
 
   const res = useMemo(() => filtrar(P, INDICE, f), [f]);
+  const distintos = useMemo(() => new Set(res.map((p) => p.id)).size, [res]);
   const sug = useMemo(() => (f.q && !res.length ? sugerir(P, f.q) : null), [f.q, res.length]);
 
   useEffect(() => {
@@ -225,7 +226,13 @@ export default function GuiaMedica() {
 
         {/* Resultados */}
         <div aria-live="polite" style={css('display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin:22px 2px 12px')}>
-          <span style={css(INTER + 'font-size:14.5px;color:var(--sp-text)')}><b className="num-tnum" style={css('color:var(--sp-navy)')}>{res.length}</b> {res.length === 1 ? 'resultado' : 'resultados'}</span>
+          <span style={css(INTER + 'font-size:14.5px;color:var(--sp-text)')}>
+            {/* Se cuentan médicos y centros distintos, igual que el simulador
+                ("en Luque tenés 12"): un mismo médico con dos especialidades o
+                dos sedes es una persona, aunque ocupe dos tarjetas. */}
+            <b className="num-tnum" style={css('color:var(--sp-navy)')}>{distintos}</b> {distintos === 1 ? 'médico o centro' : 'médicos y centros'}
+            {distintos !== res.length && <span style={css('color:var(--sp-muted)')}> · {res.length} resultados</span>}
+          </span>
           {hayFiltros && <button type="button" onClick={limpiar} className="disp" style={css('border:none;background:none;color:var(--sp-teal-deep);font-size:14px;font-weight:700;cursor:pointer;padding:6px 0')}>Limpiar filtros</button>}
         </div>
 
@@ -255,6 +262,17 @@ export default function GuiaMedica() {
         <div style={css(INTER + 'margin-top:28px;font-size:13px;line-height:1.6;color:var(--sp-muted)')}>
           <p style={css('margin:0 0 8px')}>La red cambia: antes de ir, llamá para pedir tu turno y confirmá que atiende con tu plan. ¿No encontrás a tu médico? <a href={waNoEncuentro} onClick={() => track('guia_whatsapp', { origen: 'pie' })} style={css('color:var(--sp-teal-deep);font-weight:700')}>Preguntanos por WhatsApp</a>.</p>
           <p style={css('margin:0')}>Datos de la Guía Médica de cada plan: Silver, Gold, Vital y otros al {fechaLarga(G.privilege && G.privilege.fecha)} · SP Esencial al {fechaLarga(G.ess_asucentral && G.ess_asucentral.fecha)} · Plan Estatal al {fechaLarga(G.estatal && G.estatal.fecha)}.</p>
+        </div>
+
+        {/* La otra mitad del puente con el simulador (dec. 12e: la página vende
+            el simulador). Quien llega buscando a su médico y todavía no es
+            cliente ya sabe dónde se atendería: le falta saber cuánto sale. */}
+        <div style={css('margin-top:26px;background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);padding:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px')}>
+          <div style={css('min-width:220px;flex:1')}>
+            <h2 className="disp" style={css('font-size:18px;color:var(--sp-navy);margin:0 0 4px')}>¿Todavía no tenés plan?</h2>
+            <p style={css(INTER + 'font-size:14.5px;line-height:1.5;color:var(--sp-text);margin:0')}>En un minuto ves cuál te conviene y cuánto sale, sin dejar tus datos.</p>
+          </div>
+          <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'guia' })} className="disp" style={css('height:46px;padding:0 20px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan →</a>
         </div>
 
         <div style={css('text-align:center;margin-top:30px')}>

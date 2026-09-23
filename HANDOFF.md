@@ -109,6 +109,28 @@ el JSON nuevo. La planilla manda.
   estático), qué conectar (HubSpot, medición, privacidad, redirecciones, el
   QR del carnet) y qué no tocar.
 
+### El puente simulador ↔ guía (23/09/2026, pedido de Arturo)
+
+- **Del simulador a la guía:** en el resultado, la nota de red dice cuántos
+  médicos y centros tiene ese plan en la ciudad elegida ("En Luque tenés 17
+  médicos y centros de la red de este plan") y abre la guía ya filtrada por
+  plan, departamento y ciudad. Si en la ciudad no hay, da el número del
+  departamento; si en el departamento tampoco, lo dice y manda al asesor.
+  Evento: `sim_guia {origen:'resultado'}`.
+- **Los números salen de `lib/red-resumen.json`** (conteos por red, depto y
+  ciudad), generado por el mismo `scripts/build-guia-medica.py`. El simulador
+  no carga la red entera. Lógica en `lib/red-zona.js` (incluye los dos nombres
+  de ciudad que `app/geo.js` escribe distinto que la planilla).
+- **La guía cuenta igual:** "N médicos y centros" (prestadores distintos), y
+  suma "· M resultados" cuando un mismo médico ocupa más de una tarjeta. Así
+  el número del simulador y el de la guía coinciden.
+- **De la guía al simulador:** al pie de la guía, "¿Todavía no tenés plan?"
+  con "Simulá tu plan" (`cta_simulador {origen:'guia'}`), y una línea igual en
+  cada ficha.
+- **Reemplaza a `redNota` de `app/geo.js`**, que decía "la red está creciendo"
+  fuera de Asunción/Central. La planilla la desmintió: hay red en 17
+  departamentos (BITACORA cap. 80). `redNota` ya no se usa.
+
 ### Lo que sigue esperando a SP (no se inventa)
 
 | Pendiente | Quién |

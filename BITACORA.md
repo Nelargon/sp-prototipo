@@ -3047,6 +3047,36 @@ pantalla, y se reusó en un texto que la persona **manda**.
 
 ---
 
+## Capítulo 80 — La frase honesta de ayer era falsa hoy: "la red está creciendo" (23/09/2026)
+
+**Qué intentamos.** Unir el simulador con la Guía Médica: que al ver su precio
+la persona vea también dónde se atendería. El resultado ya tenía una nota de
+red por zona, así que el plan era sumarle un link.
+
+**Qué pasó.** La nota decía, para todo lo que no fuera Asunción o Central:
+*"En Encarnación la red está creciendo — tu pedido nos ayuda a priorizarla"*.
+Se escribió en julio con cuidado: sin la base de prestadores no se podía
+afirmar nada fuera de Lister, y la frase no prometía lo que no sabíamos. Con
+la planilla maestra, la misma frase quedó al revés de la verdad. En
+Encarnación hay 37 médicos y centros de la red de Silver/Gold, y hay red en 17
+departamentos. La nota prudente le decía a la persona que no había casi nada
+justo donde sí había.
+
+Se reemplazó por el número real ("En Encarnación tenés 37 médicos y centros de
+la red de este plan") y un link a la guía ya filtrada.
+
+**Qué aprendimos.**
+
+1. **Un texto prudente escrito sin datos tiene fecha de vencimiento.** Nació
+   para no mentir y se vuelve mentira el día que llega el dato. Cuando entra
+   una fuente nueva, hay que buscar los textos que se escribieron *por falta*
+   de esa fuente, no solo los que la citan.
+2. **El número concreto vende mejor que la promesa, y además es verificable.**
+   "37 en tu ciudad" con un link para verlos es la transparencia practicada:
+   la persona lo comprueba en un toque.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie

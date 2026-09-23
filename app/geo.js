@@ -56,7 +56,9 @@ const ALIASES = {
    aplica sin retrabajo. */
 export const DEPT_AJUSTE = Object.fromEntries(DEPARTAMENTOS.map((d) => [d.id, 1]));
 
-/* Nota de red para el resultado. SOLO Asunción/Central tienen texto de zona
+/* ⚠ Sin uso desde el 23/09/2026: el resultado del simulador usa la red real
+   (lib/red-zona.js). Se conserva como historia — BITACORA cap. 80.
+   Nota de red para el resultado. SOLO Asunción/Central tienen texto de zona
    con red confirmada públicamente (Lister + sedes SP). El resto usa el texto
    honesto por defecto hasta que llegue la base real de prestadores
    (pendiente B del HANDOFF) — ahí se carga la nota por departamento.
