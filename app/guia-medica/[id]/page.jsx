@@ -4,7 +4,7 @@ import { WHATSAPP_NUMBER } from '../../quote';
 import Header from '../../Header';
 import PuntoRevisar from '../PuntoRevisar';
 import datos from '../../../lib/guia-medica.json';
-import { REDES, telHref, mapaHref } from '../../../lib/red-medica';
+import { REDES, telHref, mapaHref, condicionTexto } from '../../../lib/red-medica';
 
 /* Ficha de un prestador de la red (una por "ID prestador" de la planilla).
    Estática: se genera en el build, así cada médico tiene su página con
@@ -84,7 +84,7 @@ export default async function Ficha({ params }) {
               <p style={css(INTER + 'font-size:15.5px;line-height:1.55;color:var(--sp-text);margin:0')}>
                 {f.d}{f.b ? ` · ${f.b}` : ''}<br />{f.c}{f.dp && f.dp !== 'Capital' ? `, ${f.dp}` : ''}
               </p>
-              {f.k && <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{f.k}</p>}
+              {f.k && <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{condicionTexto(f.k)}</p>}
               {f.e === 'Odontología' && <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
               <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
                 {f.tel.map((t) => (

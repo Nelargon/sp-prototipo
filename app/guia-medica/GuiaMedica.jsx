@@ -8,7 +8,7 @@ import { WHATSAPP_NUMBER } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import datos from '../../lib/guia-medica.json';
-import { PLANES, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, iniciales } from '../../lib/red-medica';
+import { PLANES, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, iniciales, condicionTexto } from '../../lib/red-medica';
 
 /* /guia-medica — la cuarta pregunta del proyecto: ¿dónde me atiendo?
    ----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ function Tarjeta({ p, conRedes }) {
           {p.d}{p.b ? ` · ${p.b}` : ''}<br />
           <span style={css('color:var(--sp-muted)')}>{p.c}{p.dp && p.dp !== 'Capital' ? `, ${p.dp}` : ''}</span>
         </p>
-        {p.k && <p style={css(INTER + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{p.k}</p>}
+        {p.k && <p style={css(INTER + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{condicionTexto(p.k)}</p>}
         {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
         {conRedes && (
           <div style={css('display:flex;flex-wrap:wrap;gap:6px;margin-top:10px')} aria-label="Planes con los que lo usás">

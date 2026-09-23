@@ -97,6 +97,12 @@ el JSON nuevo. La planilla manda.
   Ahora el mensaje va en primera persona (`grupoPropio` en `app/quote.js`).
 - **`/planes` en celular**: la columna del servicio es angosta y queda fija al
   deslizar, y hay un aviso de "Deslizá para ver Silver y Gold".
+- **Condiciones de la guía, en idioma de cliente** (`condicionTexto` en
+  `lib/red-medica.js`): "Atiende desde los 12 años" se leía ambiguo (Arturo:
+  *"¿qué quiere decir que atiende desde los 12 años o 12 meses?"*) → "Atiende a
+  pacientes desde los 12 años de edad". Y las condiciones que listaban planes
+  internos ("Privilege", "essential", "centralizados") pasan a "Confirmá con tu
+  asesor si atiende con tu plan". La planilla no se toca.
 - **404 en español** (`app/not-found.jsx`), con salida al simulador, la guía y
   el inicio. Antes era la de Next, en inglés y sin salida.
 - **`docs/IMPLEMENTAR-v1.md`**: cómo publicar la v1 sin reprogramarla (es HTML
