@@ -131,6 +131,17 @@ el JSON nuevo. La planilla manda.
   fuera de Asunción/Central. La planilla la desmintió: hay red en 17
   departamentos (BITACORA cap. 80). `redNota` ya no se usa.
 
+### "¿Qué plan tenés?" en botones de dos pasos (23/09/2026)
+
+Arturo, mirando el desplegable de 8 planes: *"Esta parte no se ve super bien,
+u ordenado."* Eligió, entre tres opciones, **botones en dos pasos**: SP
+Esencial · Silver, Gold o Bronze · Vital · Otro plan. Esencial abre una
+segunda fila con la zona; "Otro plan" abre Bienestar, Superior, Integral,
+Primordial y Plan Estatal. 4 en fila en escritorio, 2×2 en celular
+(`.gm-planes`). La estructura vive en `GRUPOS_PLAN` (`lib/red-medica.js`).
+Los links viejos (`?plan=otros`, `?plan=vital` del simulador) siguen
+funcionando y marcan su botón.
+
 ### Lo que sigue esperando a SP (no se inventa)
 
 | Pendiente | Quién |
