@@ -3082,3 +3082,25 @@ siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
 lo pida; las observaciones del usuario entran dictadas ("anotá en la
 bitácora: …") con su propia voz.*
+
+## Capítulo 81 — La primera corrección de SP no se escribe encima de la copia fiel (23/09/2026)
+
+**Qué intentamos.** Aplicar la corrección que mandó SP sobre el ecocardiograma de
+Bronze. Estaba repetido con dos nombres, "ECOCARDIOGRAMA SIMPLE" y
+"ECOCARDIOGRAFÍA", y no decían lo mismo: uno cubierto con 90 días de espera, el
+otro con copago y 60 días. Una familia que buscaba "eco del corazón" veía dos
+respuestas distintas para el mismo estudio.
+
+**Qué pasó.** Lo rápido era editar `grilla-coberturas-precios-jul2026.json`.
+Pero ese archivo promete ser la transcripción fiel del master. Si se corrige a
+mano, la próxima re-ingesta pisa la corrección en silencio, o nadie sabe ya qué
+dice el master de verdad. Además, el PDF que llegó al repo no traía las marcas
+rojas y verdes del correo, así que un ítem (el doppler de vasos de cuello) quedó
+en duda.
+
+**Qué aprendimos.** Cuando SP corrige un dato, la corrección se escribe en un
+lugar propio (`CORRECCIONES` en `build-prestaciones.mjs`), con su fuente y su
+fecha. Esa capa se apaga sola: si la fila corregida deja de existir, el script
+corta. Y lo que no se pudo ver no se adivina: el doppler sigue publicado hasta
+que SP confirme.
+

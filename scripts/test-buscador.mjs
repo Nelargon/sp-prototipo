@@ -39,6 +39,9 @@ const CASOS = [
   ['apendice', 'APENDICE'],
   ['operacion de apendice', 'Apendicetomía'],
   ['ecografia', 'ECO'],
+  // Corrección de SP (18/09/2026): el ecocardiograma es uno solo, sin "simple".
+  ['ecocardiograma', 'ECOCARDIOGRAMA'],
+  ['ecocardiograma simple', 'ECOCARDIOGRAMA'],
   ['mamografia', 'MAMOGRAFIA'],
   // Consultas: el paciente nombra al médico, no a la especialidad
   ['psicologia', 'Psicología'],
