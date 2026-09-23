@@ -453,3 +453,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    igual que "Cobertura" o "Planes". Más chica y en teal —el color de "esto es
    otra cosa"— sigue siendo tocable y honesta sobre su estado. */
 .menu-item-sec{font-size:clamp(20px,5.5vw,24px) !important;color:var(--sp-teal-deep) !important}
+
+/* Guía Médica — "¿Qué plan tenés?" (23/09/2026): 4 botones en una fila en
+   escritorio, 2×2 en celular. */
+.gm-planes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:640px){.gm-planes{grid-template-columns:1fr 1fr}}

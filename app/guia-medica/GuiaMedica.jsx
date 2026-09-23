@@ -8,7 +8,7 @@ import { WHATSAPP_NUMBER } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import datos from '../../lib/guia-medica.json';
-import { PLANES, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, iniciales, condicionTexto } from '../../lib/red-medica';
+import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, iniciales, condicionTexto } from '../../lib/red-medica';
 
 /* /guia-medica — la cuarta pregunta del proyecto: ¿dónde me atiendo?
    ----------------------------------------------------------------------------
@@ -42,6 +42,7 @@ const fechaLarga = (dmy) => {
 
 const INTER = 'font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;';
 const ETIQUETA = 'display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sp-navy);margin-bottom:7px';
+const CHIP_PLAN = 'min-height:48px;padding:8px 12px;border-radius:var(--r-sm);font-size:15px;font-weight:800;line-height:1.2;cursor:pointer;border:1.5px solid;display:inline-flex;align-items:center;justify-content:center;text-align:center;';
 const SELECT = INTER + 'width:100%;height:46px;border:1.5px solid var(--sp-mint-line-strong);border-radius:var(--r-sm);padding:0 12px;font-size:15px;color:var(--sp-ink);background:#fff';
 
 function Tarjeta({ p, conRedes }) {
@@ -91,6 +92,7 @@ export default function GuiaMedica() {
   const [f, setF] = useState({ q: '', plan: '', esp: '', dp: '', c: '', tipo: '' });
   const [q, setQ] = useState('');
   const [n, setN] = useState(POR_PAGINA);
+  const [grupoAbierto, setGrupoAbierto] = useState('');
   const listo = useRef(false);
 
   // Estado inicial desde la URL (links compartidos, puertas del home).
@@ -130,8 +132,23 @@ export default function GuiaMedica() {
     track('guia_filtro', { campo: k });
     setF((x) => ({ ...x, [k]: v, ...(k === 'dp' ? { c: '' } : {}) }));
   };
-  const limpiar = () => { setQ(''); setF({ q: '', plan: '', esp: '', dp: '', c: '', tipo: '' }); };
+  const limpiar = () => { setQ(''); setGrupoAbierto(''); setF({ q: '', plan: '', esp: '', dp: '', c: '', tipo: '' }); };
   const hayFiltros = CAMPOS.some((k) => f[k]);
+  // El grupo que se ve marcado: el del plan elegido, o el que se abrió y
+  // todavía espera la segunda elección (la zona de Esencial, o cuál "otro").
+  const grupoActual = grupoAbierto || grupoDePlan(f.plan);
+  const grupoConOpciones = GRUPOS_PLAN.find((g) => g.k === grupoActual && g.opciones);
+  const elegirGrupo = (g) => {
+    if (g.opciones) {
+      // Tocar de nuevo el grupo abierto lo cierra; si no, lo abre y espera.
+      if (grupoActual === g.k) { setGrupoAbierto(''); set('plan', ''); return; }
+      setGrupoAbierto(g.k);
+      if (grupoDePlan(f.plan) !== g.k) set('plan', '');
+      return;
+    }
+    setGrupoAbierto('');
+    set('plan', f.plan === g.v ? '' : g.v);
+  };
   const ciudades = f.dp ? (CAT.departamentos.find((d) => d.d === f.dp) || { ciudades: [] }).ciudades : [];
   const G = datos.meta.guias;
   const waSinResultado = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Busqué «' + f.q + '» en la Guía Médica y no lo encontré. ¿Me ayudan?');
@@ -161,12 +178,37 @@ export default function GuiaMedica() {
 
         {/* Filtros */}
         <div style={css('display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px;background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);padding:16px')}>
-          <label>
-            <span style={css(ETIQUETA + ';color:var(--sp-teal-900)')}>¿Qué plan tenés?</span>
-            <select value={f.plan} onChange={(e) => set('plan', e.target.value)} style={css(SELECT + ';background:var(--sp-mint-soft);border-color:var(--sp-teal)')}>
-              {PLANES.map((p) => <option key={p.v} value={p.v}>{p.label}</option>)}
-            </select>
-          </label>
+          {/* ¿Qué plan tenés? — botones en dos pasos (ver GRUPOS_PLAN en
+              lib/red-medica.js). Ocupa toda la fila: es el filtro que decide
+              qué red se ve, y va antes que los demás. */}
+          <div style={css('grid-column:1/-1')} role="group" aria-label="¿Qué plan tenés?">
+            <div style={css('display:flex;justify-content:space-between;align-items:baseline;gap:10px')}>
+              <span style={css(ETIQUETA + ';color:var(--sp-teal-900)')}>¿Qué plan tenés?</span>
+              {(f.plan || grupoAbierto) && <button type="button" onClick={() => { setGrupoAbierto(''); set('plan', ''); }} className="disp" style={css('border:none;background:none;padding:0;color:var(--sp-teal-deep);font-size:13px;font-weight:700;cursor:pointer')}>Ver todos los planes</button>}
+            </div>
+            <div className="gm-planes">
+              {GRUPOS_PLAN.map((g) => {
+                const activo = grupoActual === g.k;
+                return (
+                  <button key={g.k} type="button" aria-pressed={activo} onClick={() => elegirGrupo(g)} className="disp" style={css(CHIP_PLAN + (activo ? 'border-color:var(--sp-teal-deep);background:var(--sp-teal-deep);color:#fff' : 'border-color:var(--sp-mint-line-strong);background:#fff;color:var(--sp-navy)'))}>
+                    {g.label}{g.opciones ? <span aria-hidden="true" style={css('margin-left:6px;font-size:12px;opacity:.8')}>{activo ? '▴' : '▾'}</span> : null}
+                  </button>
+                );
+              })}
+            </div>
+            {grupoConOpciones && (
+              <div style={css('margin-top:10px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);border-radius:var(--r-sm);padding:12px')}>
+                <span style={css(ETIQUETA + ';margin-bottom:9px')}>{grupoConOpciones.pregunta}</span>
+                <div style={css('display:flex;flex-wrap:wrap;gap:8px')}>
+                  {grupoConOpciones.opciones.map((o) => {
+                    const activo = f.plan === o.v;
+                    return <button key={o.v} type="button" aria-pressed={activo} onClick={() => set('plan', o.v)} className="disp" style={css('height:40px;padding:0 14px;border-radius:var(--r-sm);font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid ' + (activo ? 'var(--sp-teal-deep)' : 'var(--sp-mint-line-strong)') + ';background:' + (activo ? 'var(--sp-teal-deep)' : '#fff') + ';color:' + (activo ? '#fff' : 'var(--sp-navy)'))}>{o.label}</button>;
+                  })}
+                </div>
+              </div>
+            )}
+            {f.plan && <p aria-live="polite" style={css(INTER + 'font-size:13.5px;color:var(--sp-text);margin:10px 0 0')}>Te mostramos la red de <b style={css('color:var(--sp-navy)')}>{nombrePlan(f.plan)}</b>.</p>}
+          </div>
           <label>
             <span style={css(ETIQUETA)}>Especialidad</span>
             <select value={f.esp} onChange={(e) => set('esp', e.target.value)} style={css(SELECT)}>
