@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { track } from '../track';
-import { WHATSAPP_NUMBER } from '../quote';
+import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import datos from '../../lib/guia-medica.json';
@@ -248,7 +248,7 @@ export default function GuiaMedica() {
             <p style={css(INTER + 'font-size:14.5px;line-height:1.55;color:var(--sp-blue-soft);margin:0 0 14px')}>Pa&apos;i Pérez 630 c/ Azara. Consultas con especialistas, laboratorio, ecografías, radiografías y odontología, en un solo lugar.</p>
             <div style={css('display:flex;flex-wrap:wrap;gap:8px')}>
               <button type="button" onClick={() => { setQ('lister'); track('guia_filtro', { campo: 'lister' }); }} className="disp" style={css('height:42px;padding:0 16px;border-radius:var(--r-sm);border:none;background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;cursor:pointer')}>Ver sus profesionales</button>
-              <a href="tel:+59521220199" onClick={() => track('guia_llamar', { tipo: 'lister' })} className="disp" style={css('height:42px;padding:0 16px;border-radius:var(--r-sm);border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center')}>Llamar al (021) 220 199</a>
+              <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'lister' })} className="disp" style={css('height:42px;padding:0 16px;border-radius:var(--r-sm);border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center')}>Llamar al {SP_PHONE_DISPLAY}</a>
             </div>
             {datos.lister.length > 0 && (
               <details style={css('margin-top:14px')}>

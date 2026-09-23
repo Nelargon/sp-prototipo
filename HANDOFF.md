@@ -71,9 +71,8 @@ Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
   `/que-cubre` dice que el dentista no entra en Bronze/Silver/Gold. La guía no
   afirma cobertura: en esas filas dice *"Antes de ir, preguntá a tu asesor qué
   cubre tu plan en odontología"*. Falta que SP diga qué cubre cada plan.
-- **Teléfono de Lister:** la guía usa el **(021) 220 199**, el que figura en la
-  página de Lister de las 6 guías. El resto del sitio dice (021) 319 0000 para
-  todo. Decisión abierta en la planilla ("Para decidir").
+- **Teléfono de Lister:** ~~la guía usa el (021) 220 199~~ → **resuelto el
+  23/09: (021) 319 0000**, como todo SP (ver abajo, "Teléfonos de SP").
 - **Privacidad:** el texto buscado no viaja a la analítica (solo el largo), igual
   que en `/que-cubre`.
 
@@ -198,9 +197,15 @@ Cowork), 0 cambios contra lo publicado.
 WhatsApp para todo. Se buscaron los seis WhatsApp viejos (0981 494 495,
 0986 605 500, 0981 494 435, 0982 797 800, 0985 380 515, 0986 422 274), con y sin
 espacios y con +595, en los tres repos y en la planilla: **no aparecen en
-ningún lado**. Sin decisión todavía, y sin tocar: el **(021) 220 199 de Lister**
-está en la tarjeta de Lister de la guía (`GuiaMedica.jsx`) y en 61 filas de la
-planilla; 0981 745 667 (teleconsulta) y 0983 593 439 (Encarnación) no aparecen.
+ningún lado**.
+**Actualización (23/09, Arturo):** *"El número es para todo. Incluso
+teleconsulta y Encarnación"*, y **Lister también**. La tarjeta de Lister de la
+guía ya llama al (021) 319 0000 (usa `SP_TEL` de `app/quote.js`). Falta la
+planilla: las 61 filas de Lister con +595 21 220 199, la nota de la hoja
+«Lister» y el representante de Encarnación (0983 593 439, hoja Contenido) se
+cambian en el Excel del Drive; después se regenera la guía con su informe y
+el OK de Arturo. Teleconsulta (0981 745 667) no aparece ni en el sitio ni en la
+planilla.
 
 ### Lo que sigue esperando a SP (no se inventa)
 
@@ -208,7 +213,6 @@ planilla; 0981 745 667 (teleconsulta) y 0983 593 439 (Encarnación) no aparecen.
 |---|---|
 | Grilla oficial: Bronze → Esencial, precio por zona (guarda de datos) | SP |
 | Qué cubre cada plan en odontología | SP |
-| Teléfono de Lister: (021) 220 199 (las guías) o (021) 319 0000 (el sitio) | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
