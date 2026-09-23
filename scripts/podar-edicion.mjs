@@ -24,7 +24,8 @@ const OUT = 'out';
 const PODAR = [
   ['mi-sp', 'Mi SP — no se lanza en la v1'],
   ['blog', 'el blog — no se lanza en la v1'],
-  ['guia', 'la Guía Médica — no se lanza en la v1'],
+  ['guia', 'el molde viejo de la Guía Médica (datos ilustrativos) — la v1 usa /guia-medica/'],
+  ['agendar', 'agendar un turno — sale de la v1 el 23/09/2026 (versión preliminar, solo prototipo)'],
   ['historia', 'el manifiesto en scrollytelling — 720vh, no entra en la v1'],
   ['v1', 'snapshot congelado del home viejo — referencia interna'],
 ];

@@ -1,7 +1,7 @@
 /* QA de la EDICIÓN DE LANZAMIENTO (v1 pública). Ver app/edicion.js.
 
    Responde una sola pregunta, que es la que importa en esta edición:
-   ¿la v1 ofrece algo que no puede cumplir? Un link a la Guía Médica, a Mi SP
+   ¿la v1 ofrece algo que no puede cumplir? Un link a agendar, a Mi SP
    o al blog en un sitio donde esas páginas no existen no es un 404: es una
    promesa rota, que es lo contrario de lo que vende esta empresa.
 
@@ -23,7 +23,7 @@ const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo/lanzamiento';
-const PAGINAS = ['/', '/agendar/', '/planes/', '/que-cubre/', '/simulador/'];
+const PAGINAS = ['/', '/guia-medica/', '/guia-medica/P-0001/', '/planes/', '/que-cubre/', '/simulador/'];
 // 360/390/430: el piso de verificación móvil del proyecto (77% del tráfico).
 const ANCHOS = [['escritorio', 1440, 900], ['móvil 360', 360, 780], ['móvil 390', 390, 844], ['móvil 430', 430, 932]];
 
@@ -42,7 +42,7 @@ for (const [nombre, width, height] of ANCHOS) {
     const r = await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     if (!r || r.status() !== 200) { mal(ruta + ' → HTTP ' + (r && r.status())); continue; }
     const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href') || ''));
-    const podados = hrefs.filter((x) => /\/(mi-sp|blog|guia|historia|v1)[/#]/.test(x));
+    const podados = hrefs.filter((x) => /\/(mi-sp|blog|guia|historia|v1|agendar)[/#]/.test(x));
     if (podados.length) mal(ruta + ' linkea a módulos podados: ' + podados.join(', '));
     const desborde = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     if (desborde > 1) mal(ruta + ' desborda ' + desborde + 'px a lo ancho');
@@ -59,24 +59,24 @@ console.log('\n── menú móvil');
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   await page.click('.nav-burger');
   await page.waitForSelector('.menu-overlay');
-  const items = await page.$$eval('.menu-overlay .menu-item', (as) => as.map((a) => a.textContent.trim()));
-  console.log('    ' + items.join(' · '));
-  if (items.some((t) => /Guía Médica|Mi SP|^Blog$|^Historia$/.test(t))) mal('ofrece un módulo que la v1 no publica');
-  else bien('no ofrece guía, Mi SP, blog ni historia');
-  if (!items.some((t) => /Agendar turno/.test(t))) mal('falta "Agendar turno"');
-  else bien('"Agendar turno" presente');
+  const items = await page.$$eval('.menu-overlay .menu-item', (as) => as.map((a) => [a.textContent.trim(), a.getAttribute('href')]));
+  console.log('    ' + items.map(([t]) => t).join(' · '));
+  if (items.some(([t]) => /Mi SP|^Blog$|^Historia$|Agendar/.test(t))) mal('ofrece un módulo que la v1 no publica');
+  else bien('no ofrece Mi SP, blog, historia ni agendar');
+  if (!items.some(([t, h]) => /Guía Médica/.test(t) && /\/guia-medica\/$/.test(h))) mal('falta "Guía Médica" → /guia-medica/');
+  else bien('"Guía Médica" presente y lleva a /guia-medica/');
   await page.close();
 }
 
-// ── las FAQ que cambian de respuesta según la edición ────────────────────
+// ── las FAQ vuelven a contestar con la guía ───────────────────────────────
 console.log('\n── FAQ (las respuestas se renderizan al desplegar)');
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   // El acordeón abre de a UNA: cada pregunta se abre, se lee y se cierra.
   const casos = [
-    ['¿La cobertura vale en todo el país?', ['te pasamos los prestadores de tu zona', 'Preguntá por tu ciudad']],
-    ['¿Está mi médico o mi sanatorio en la red?', ['no te dejamos sin respuesta', 'Consultá por tu médico']],
+    ['¿La cobertura vale en todo el país?', ['lo podés ver vos mismo en la Guía Médica', 'Buscá en tu ciudad']],
+    ['¿Está mi médico o mi sanatorio en la red?', ['no te dejamos sin respuesta', 'Abrí la Guía Médica']],
   ];
   for (const [pregunta, frases] of casos) {
     const btn = page.locator('text=' + pregunta).first();
@@ -88,27 +88,55 @@ console.log('\n── FAQ (las respuestas se renderizan al desplegar)');
       if (txt.includes(frase)) bien('"' + frase + '"');
       else mal('la respuesta no dice: "' + frase + '"');
     }
-    if (/Guía Médica/.test(txt)) mal('nombra la Guía Médica al abrir: ' + pregunta);
     await btn.click();
     await page.waitForTimeout(250);
   }
   const txt = await page.evaluate(() => document.body.innerText);
-  if (/Guía Médica|Mi SP/.test(txt)) mal('el home de la v1 todavía nombra la guía o Mi SP');
-  else bien('el home de la v1 no nombra la Guía Médica ni Mi SP');
+  if (/Mi SP|Pedí tu turno|Agendar un turno/.test(txt)) mal('el home de la v1 todavía nombra Mi SP o agendar');
+  else bien('el home de la v1 no nombra Mi SP ni agendar');
   await page.close();
 }
 
-// ── las dos puertas de agendar que la v1 estrena ─────────────────────────
-console.log('\n── puertas de agendar');
+// ── las puertas de la guía que la v1 estrena el 23/09 ───────────────────────
+console.log('\n── puertas de la Guía Médica');
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   const hero = await page.$$eval('a.btn-ghost-light', (as) => as.map((a) => [a.textContent.trim(), a.getAttribute('href')]));
-  if (!hero.some(([t, h]) => /Pedí tu turno/.test(t) && /\/agendar\//.test(h))) mal('la puerta del hero no lleva a /agendar/');
-  else bien('hero: "Ya soy de SP · Pedí tu turno" → /agendar/');
+  if (!hero.some(([t, h]) => /Buscá tu médico/.test(t) && /\/guia-medica\/$/.test(h))) mal('la puerta del hero no lleva a /guia-medica/');
+  else bien('hero: "Ya soy de SP · Buscá tu médico" → /guia-medica/');
   const cta = await page.$$eval('a.nav-guia-cta', (as) => as.map((a) => [a.textContent.trim(), a.getAttribute('href')]));
-  if (!cta.some(([t, h]) => /Agendar un turno/.test(t) && /\/agendar\//.test(h))) mal('el botón de la barra no lleva a /agendar/');
-  else bien('barra: "Agendar un turno" → /agendar/');
+  if (!cta.some(([t, h]) => /Guía Médica/.test(t) && /\/guia-medica\/$/.test(h))) mal('el botón de la barra no lleva a /guia-medica/');
+  else bien('barra: "Guía Médica" → /guia-medica/');
+  await page.close();
+}
+
+// ── la guía funciona con la red real ─────────────────────────────────────
+console.log('\n── Guía Médica');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  const errores = [];
+  page.on('pageerror', (e) => errores.push(String(e)));
+  await page.goto(BASE + '/guia-medica/?q=pediatra&plan=esencial-interior', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(500);
+  const n1 = await page.locator('article').count();
+  if (!n1) mal(nombre + ': "pediatra" con SP Esencial Interior no devuelve nada');
+  else bien(nombre + ': pediatras con SP Esencial Interior desde la URL (' + n1 + ')');
+  const puntos = await page.locator('[aria-label="Dato a revisar, marca interna"]').count();
+  if (puntos) mal(nombre + ': la v1 muestra la marca interna de "Revisar"');
+  await page.fill('input[type=search]', 'rezonancia');
+  await page.waitForTimeout(600);
+  const txt = await page.evaluate(() => document.body.innerText);
+  if (!/No encontramos «rezonancia»/.test(txt) || !/Quisiste decir/.test(txt)) mal(nombre + ': sin resultados no sugiere nada');
+  else bien(nombre + ': "rezonancia" → ¿Quisiste decir…? + WhatsApp');
+  const desborde = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  if (desborde > 1) mal(nombre + ': la guía desborda ' + desborde + 'px');
+  const r = await page.goto(BASE + '/guia-medica/P-0001/', { waitUntil: 'networkidle' });
+  const ficha = await page.evaluate(() => document.body.innerText);
+  if (!r || r.status() !== 200 || !/Lo usás con estos planes/.test(ficha)) mal(nombre + ': la ficha P-0001 no carga');
+  else bien(nombre + ': ficha P-0001 con sus planes');
+  if (/Privilege|Essential/.test(txt + ficha)) mal(nombre + ': aparece un nombre interno (Privilege/Essential)');
+  if (errores.length) mal(nombre + ': errores de JS en la guía: ' + errores.slice(0, 2).join(' | '));
   await page.close();
 }
 

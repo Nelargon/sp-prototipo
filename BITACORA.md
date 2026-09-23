@@ -2981,6 +2981,48 @@ la v1 (queda en el prototipo) y la Guía Médica entra, con el listado real que
 
 ---
 
+## Capítulo 78 — La red no era una escalera: el molde de la guía suponía un orden que los datos no tienen (23/09/2026)
+
+**Qué intentamos.** Llevar a la web la planilla maestra de la Guía Médica que
+mandó Arturo (847 filas, 6 guías en PDF unificadas) usando el molde que la
+guía tenía desde julio en `guia/`.
+
+**Qué pasó.** El molde no aguantaba los datos, y no por el diseño. Toda su
+lógica de planes estaba construida sobre una suposición: *Gold ⊇ Silver ⊇
+Bronze*. Cada tarjeta tenía un `data-min-plan` ("desde Plan Silver",
+"Exclusivo Plan Gold") y una hoja de upsell para quien tuviera un plan "de
+abajo". La planilla real dice otra cosa: **cada guía es una red, y Bronze,
+Silver y Gold comparten la misma.** Lo que cambia entre ellos es cuánto
+cubren, no a quién podés ir. Las redes que sí son distintas son otras: SP
+Esencial (en tres zonas), el Plan Estatal. Ninguna contiene a la otra: hay
+prestadores que están en Esencial y no en Silver.
+
+El molde viejo, con datos reales adentro, habría mostrado "Exclusivo Plan
+Gold" en médicos que atienden a todos los clientes de Silver. Una etiqueta
+dorada que invita a subir de plan para ir a un médico al que ya podés ir.
+
+Se construyó la guía de nuevo, como página del sitio (`/guia-medica/`): el
+filtro es "¿Qué plan tenés?" y devuelve la red de ese plan. El molde de
+`guia/` queda en el prototipo como referencia, sin borrar.
+
+Un segundo golpe, más chico: buscar por pedazos de palabra devolvía 89
+resultados para "eco", la mayoría de ellos ruido. Ahora cada palabra de la
+búsqueda tiene que coincidir con el comienzo de una palabra del prestador, y
+"eco" devuelve 14.
+
+**Qué aprendimos.**
+
+1. **Un molde con datos ilustrativos no solo define el formato: también
+   esconde suposiciones sobre el negocio.** El formato del molde era bueno
+   (tarjeta, ficha, teléfono por acción). La relación entre planes que traía
+   escondida era falsa, y con datos inventados no había forma de verlo.
+2. **La pregunta que ordena una guía es la de la persona, no la del catálogo.**
+   "¿Desde qué plan está este médico?" es la pregunta del que vende. "Tengo
+   este plan, ¿a dónde voy?" es la del cliente, y es la única que la red real
+   puede contestar sin mentir.
+
+---
+
 *Próxima entrada: cuando fusionemos el siguiente cambio o aprendamos la
 siguiente lección — lo que ocurra primero. El ritual: cada PR fusionado
 deja su entrada si enseñó algo — detectado automáticamente, sin que nadie
