@@ -153,6 +153,21 @@ def main(ruta):
     }
     with open(SALIDA, 'w', encoding='utf-8') as fh:
         json.dump(out, fh, ensure_ascii=False, separators=(',', ':'))
+    # Resumen chico para el simulador: cuántos prestadores distintos tiene cada
+    # red por departamento y ciudad. El simulador no carga la red entera (250
+    # KB); le alcanza con esto para decir "en tu ciudad tenés N" y abrir la
+    # guía ya filtrada.
+    resumen = {}
+    for p in prestadores:
+        for r in p['r']:
+            d = resumen.setdefault(r, {}).setdefault(p['dp'] or '—', {'ids': set(), 'c': {}})
+            d['ids'].add(p['id'])
+            d['c'].setdefault(p['c'], set()).add(p['id'])
+    resumen = {r: {dp: {'n': len(v['ids']), 'c': {c: len(ids) for c, ids in v['c'].items()}} for dp, v in dps.items()}
+               for r, dps in resumen.items()}
+    with open(os.path.join(BASE, 'lib', 'red-resumen.json'), 'w', encoding='utf-8') as fh:
+        json.dump(resumen, fh, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+
     n_prest = len({p['id'] for p in prestadores})
     print(f'✓ {SALIDA}: {len(prestadores)} filas · {n_prest} prestadores · '
           f'{sum(1 for p in prestadores if p.get("rv"))} a revisar · excluidas {excluidas}')

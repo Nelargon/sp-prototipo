@@ -112,6 +112,7 @@ export default async function Ficha({ params }) {
         <div style={css(INTER + 'margin-top:20px;font-size:13.5px;line-height:1.6;color:var(--sp-muted)')}>
           <p style={css('margin:0 0 8px')}>Antes de ir, llamá para pedir tu turno y confirmá que atiende con tu plan. ¿Algún dato no coincide? <a href={waAviso} style={css('color:var(--sp-teal-deep);font-weight:700')}>Avisanos por WhatsApp</a> y lo corregimos.</p>
           {fechaDatos && <p style={css('margin:0')}>Datos de la Guía Médica al {fechaLarga(fechaDatos)}.</p>}
+          <p style={css('margin:14px 0 0')}>¿Todavía no tenés plan? <a href={`${BP}/simulador/`} style={css('color:var(--sp-teal-deep);font-weight:700')}>Simulá el tuyo en un minuto</a>.</p>
         </div>
       </div>
     </div>

@@ -6,7 +6,8 @@ import { BP } from '../basePath';
 import {
   WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
 } from '../quote';
-import { buscarCiudad, redNota, zonaConRed, DEPARTAMENTOS } from '../geo';
+import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
+import { redEnZona, guiaHref } from '../../lib/red-zona';
 import { track } from '../track';
 import { carencias, carenciasVital } from '../coverage';
 import { Term, waitLabel } from '../glossary';
@@ -36,6 +37,19 @@ const INITIAL_SIM = {
   // crmErr marca que el CRM falló y WhatsApp actuó de respaldo.
   nombre: '', tel: '', email: '', sent: false, sentVia: null, crmErr: false, sending: false, err: '', priceAnim: null,
 };
+
+/* "En Luque tenés 12 médicos y centros con este plan" — con números de la
+   planilla maestra, nunca "la red está creciendo" donde ya hay red. */
+const cuantos = (n) => n + (n === 1 ? ' médico o centro' : ' médicos y centros');
+function notaRed(ubi, planGuia) {
+  const z = redEnZona('privilege', ubi);
+  const lugar = z.dp === 'Capital' ? 'Asunción' : z.dp;
+  let texto;
+  if (z.nCiudad) texto = `En ${z.c} tenés ${cuantos(z.nCiudad)} de la red de este plan${z.dp === 'Capital' ? ', Lister incluido' : ''}.`;
+  else if (z.nDepto) texto = (z.ciudadPedida && z.ciudadPedida !== lugar ? `En ${z.ciudadPedida} todavía no hay prestadores de la red; en ` : 'En ') + `${lugar} tenés ${cuantos(z.nDepto)}.`;
+  else texto = `Todavía no tenemos prestadores en ${ubi.deptNombre}. Tu asesor te dice dónde atenderte más cerca.`;
+  return { texto, href: guiaHref(BP, planGuia, z) };
+}
 
 export default function Simulador() {
   const [simState, setSimState] = useState(INITIAL_SIM);
@@ -459,7 +473,11 @@ export default function Simulador() {
     restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [], sent: false, sentVia: null, crmErr: false, sending: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '',
     resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · cobertura en todo el país') : ('Cobertura ' + r.geoLabel)) : '',
-    resRedNota: r && r.ubi ? redNota(r.ubi) : '',
+    // La red REAL de este plan en tu zona (lib/red-zona.js), con la puerta a la
+    // guía ya filtrada: la cuarta pregunta ("¿dónde me atiendo?") contestada
+    // en el momento en que la persona decide. Bronze/Silver/Gold y Vital usan
+    // la misma red; lo que cambia entre ellos es cuánto cubren.
+    resRed: r && r.ubi ? notaRed(r.ubi, isPadres ? 'vital' : 'silver-gold') : null,
     resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resCarencias, resTotal: r ? fmt(r.price) : '',
@@ -713,7 +731,7 @@ export default function Simulador() {
                   {/* Nota de red honesta por zona (geo.js): confirma en
                       Asunción/Central, registra y acompaña en el resto —
                       nunca "no cubierto" (decisión #7). */}
-                  {sim.resRedNota && <div style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-tint);border:1px solid var(--sp-line);border-radius:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRedNota}</span></div>}
+                  {sim.resRed && <div style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-tint);border:1px solid var(--sp-line);border-radius:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRed.texto} <a href={sim.resRed.href} onClick={() => track('sim_guia', { origen: 'resultado' })} style={css('color:var(--sp-teal-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap')}>Ver en la Guía Médica →</a></span></div>}
                   <p style={css('font-size:14px;color:var(--sp-text);line-height:1.6;margin:0')}>{sim.resWhy}</p>
                   {sim.hasAddons && <div style={css('font-size:13px;color:var(--sp-navy);font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {sim.resAddonsText}</span></div>}
                 </div>
