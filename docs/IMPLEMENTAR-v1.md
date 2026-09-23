@@ -80,6 +80,9 @@ roto.
 - Los datos salen de la **planilla maestra de SP**. Para actualizar la red:
   SP edita la planilla, se corre `scripts/build-guia-medica.py` y se vuelve a
   construir. `lib/guia-medica.json` **nunca se edita a mano**.
+- El script valida la planilla antes de escribir: si hay errores (un teléfono
+  mal escrito, una ciudad en el departamento equivocado), no genera nada. Su
+  informe dice qué altas, bajas y cambios trae la publicación.
 - Es interina. El destino es leer la red del sistema de SP sin cambiar la
   pantalla. El formato de los datos está en el propio script.
 

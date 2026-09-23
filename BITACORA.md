@@ -3104,3 +3104,26 @@ fecha. Esa capa se apaga sola: si la fila corregida deja de existir, el script
 corta. Y lo que no se pudo ver no se adivina: el doppler sigue publicado hasta
 que SP confirme.
 
+## Capítulo 82 — Borrar el JSON no alcanzaba: había dos conversores con reglas distintas (23/09/2026)
+
+**Qué intentamos.** Tener un solo lugar para editar la Guía Médica. Arturo la
+trabajaba en dos espacios: Cowork generaba un `guia_medica.json` y Claude Code
+otro. La primera respuesta fue "el Excel es la fuente, el JSON de Cowork no se
+mantiene".
+
+**Qué pasó.** Cowork evaluó la propuesta con un 7/10 y encontró tres huecos.
+(1) El problema no era el JSON sino **dos conversores con reglas distintas**:
+uno publicaba la Centralizada y el otro no, y esa decisión no estaba escrita en
+el Project, solo en el código. (2) "Lo leo, lo convierto y publico" **no
+revisaba nada**: en palabras de Cowork, *"en una guía médica, un teléfono mal
+escrito es un paciente que no llega."* (3) "La guía online ya está al día" era
+cierto para la maqueta, no para lo que ve un paciente hoy: el QR del carnet
+sigue llevando a la guía de SIP.
+
+**Qué aprendimos.** Una fuente única necesita también un conversor único, y las
+reglas de publicación tienen que estar escritas donde las decisiones se leen
+(Decisiones del Project), no solo en el código. Publicar datos que un paciente
+usa para llegar a un médico lleva tres pasos: validar (y frenar), mostrar qué
+cambia, y esperar el OK de una persona. Y "online" hay que decir cuál: la
+maqueta no es el sitio que el paciente ve.
+

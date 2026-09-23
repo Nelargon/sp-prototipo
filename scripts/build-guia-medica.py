@@ -9,7 +9,22 @@ el destino final es leer la red directo del sistema de SP.
 
 Uso (openpyxl vive FUERA del repo, como playwright — regla del CLAUDE.md):
     python3 -m venv /tmp/venv && /tmp/venv/bin/pip install openpyxl
-    /tmp/venv/bin/python scripts/build-guia-medica.py <planilla.xlsx>
+    /tmp/venv/bin/python scripts/build-guia-medica.py <planilla.xlsx>                 # valida, informa y escribe
+    /tmp/venv/bin/python scripts/build-guia-medica.py <planilla.xlsx> --solo-validar  # valida e informa, no escribe
+    ... --informe informe.md   # además guarda el informe (va en la descripción del PR)
+
+Control antes de publicar (23/09/2026, acordado con Cowork):
+1. VALIDA la planilla. Los ERRORES frenan: no se escribe nada y sale con código
+   1. Los AVISOS no frenan. Los controles son los de `validar_y_exportar_guia.py`
+   (Cowork), portados todos — ver `validar()`.
+2. INFORMA qué cambió contra la última publicación (el `lib/guia-medica.json`
+   que está en git): altas, bajas y cambios de teléfono, dirección, nombre,
+   especialidad, ciudad, redes y estado «Revisar». Y dice qué reglas aplicó.
+3. PUBLICA recién con el OK de Arturo: el PR de datos de la guía NO se fusiona
+   solo (excepción al merge automático del CLAUDE.md). El informe va en el PR.
+
+La planilla original vive en el Drive de Arturo (ver sp-interno/README.md: se
+edita solo esa). La copia de sp-interno es la foto de la última publicación.
 
 Qué decide este script (y por qué):
 - Redes. Cada guía en PDF es una red. Se publican las que tienen planes
@@ -26,7 +41,8 @@ Qué decide este script (y por qué):
 - Condiciones: se quita la procedencia "(según …)", que nombra guías que la
   persona no conoce.
 """
-import sys, os, re, json, unicodedata
+import sys, os, re, json, unicodedata, argparse, subprocess, datetime
+from collections import Counter, defaultdict
 import openpyxl
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -89,20 +105,171 @@ def clave_orden(nombre):
     return ''.join(c for c in unicodedata.normalize('NFD', n.lower()) if unicodedata.category(c) != 'Mn')
 
 
-def main(ruta):
+# ---------------------------------------------------------------- validación
+# Portado de `validar_y_exportar_guia.py` (Cowork, 23/09/2026), control por
+# control. Busca las columnas por su título, no por su posición: si alguien
+# agrega o mueve una columna, la validación no se corre en silencio de lugar.
+COLS = ['ID fila', 'Estado', 'Especialidad', 'Nombre', 'Tipo', 'Dirección', 'Barrio', 'Ciudad', 'Departamento',
+        'Teléfono', 'Otros teléfonos', 'Condiciones', 'Observaciones', 'Fuente (guía y página)', 'ID prestador']
+ESTADOS = {'Activo', 'Revisar', 'Baja'}
+TIPOS = {'Profesional', 'Institución', 'Aviso'}
+TEL = re.compile(r'^\+595 (9\d\d \d{3} \d{3}|21 \d{3} (\d{3}|\d{2} \d{2})|\d{2,3} (\d{2} \d{3}|\d{3} \d{3}|\d{3} \d{2} \d{2}))$')
+
+
+def K(s):
+    s = unicodedata.normalize('NFKD', str(s or ''))
+    return re.sub(r'\s+', ' ', ''.join(c for c in s if not unicodedata.combining(c)).upper()).strip()
+
+
+def leer_catalogos(wb):
+    cat = list(wb['Catálogos'].iter_rows(values_only=True))
+    hdr = [txt(h) for h in cat[0]]
+
+    def col(nombre, n=1):
+        idx = [i for i, h in enumerate(hdr) if h == nombre]
+        if len(idx) < n:
+            sys.exit(f'✗ En Catálogos falta la columna «{nombre}».')
+        return idx[n - 1]
+    c_esp, c_gru, c_dep = col('Especialidad'), col('Grupo (guía online)'), col('Departamento', 1)
+    c_ciu, c_cdep, c_bar = col('Ciudad'), col('Departamento', 2), col('Barrio (Asunción)')
+    c_gid, c_gnom, c_gfec, c_gpla = col('Guía'), col('Nombre'), col('Fecha del PDF'), col('Planes')
+    esp, deptos, ciudades, barrios, guias = {}, set(), {}, set(), {}
+    for r in cat[1:]:
+        r = list(r) + [None] * (len(hdr) - len(r))
+        if txt(r[c_esp]): esp[txt(r[c_esp])] = txt(r[c_gru])
+        if txt(r[c_dep]): deptos.add(txt(r[c_dep]))
+        if txt(r[c_ciu]): ciudades[txt(r[c_ciu])] = txt(r[c_cdep])
+        if txt(r[c_bar]): barrios.add(txt(r[c_bar]))
+        if txt(r[c_gid]):
+            guias[txt(r[c_gid])] = {'nombre': txt(r[c_gnom]), 'fecha': txt(r[c_gfec]), 'planes': txt(r[c_gpla])}
+    return esp, deptos, ciudades, barrios, guias
+
+
+def validar(red, n_fila, esp, deptos, ciudades, barrios, guias):
+    """Devuelve (errores, avisos). Errores frenan la publicación."""
+    err, av = [], []
+    gcols = {g['nombre']: gid for gid, g in guias.items()}
+    ids = Counter(txt(r['ID fila']) for r in red)
+    vistos = defaultdict(list)
+    for r in red:
+        f = {c: txt(r.get(c)) for c in COLS}
+        n, fid = n_fila[id(r)], f['ID fila'] or f'(fila {n_fila[id(r)]})'
+        E = lambda m: err.append(f'Fila {n} · {fid}: {m}')
+        A = lambda m: av.append(f'Fila {n} · {fid}: {m}')
+        # ID de FILA único; el ID de PRESTADOR se repite a propósito (otra sede
+        # u otra especialidad del mismo prestador).
+        if not re.fullmatch(r'F-\d{4,}', f['ID fila']): E('ID fila vacío o con formato distinto de F-0000')
+        elif ids[f['ID fila']] > 1: E('ID fila repetido')
+        if not re.fullmatch(r'P-\d{4,}', f['ID prestador']): E('ID prestador vacío o con formato distinto de P-0000')
+        if f['Estado'] not in ESTADOS: E(f'Estado «{f["Estado"]}» no válido (Activo, Revisar o Baja)')
+        if f['Tipo'] not in TIPOS: E(f'Tipo «{f["Tipo"]}» no válido')
+        if f['Especialidad'] not in esp: E(f'Especialidad «{f["Especialidad"]}» no está en Catálogos')
+        if not f['Nombre']: E('Nombre vacío')
+        marcas = {g: txt(r.get(col)) for col, g in gcols.items()}
+        malas = [g for g, v in marcas.items() if v not in ('', 'Sí')]
+        if malas: E('En las columnas de guías solo va «Sí» o nada: ' + ', '.join(malas))
+        if f['Estado'] != 'Baja' and 'Sí' not in marcas.values(): E('No está marcada en ninguna guía')
+        # Un «Aviso» es una leyenda de la guía, no un prestador: no lleva
+        # dirección ni teléfono, y no frena.
+        if f['Tipo'] != 'Aviso':
+            for c in ('Dirección', 'Ciudad', 'Departamento'):
+                if not f[c]: E(f'{c} vacía')
+            if not f['Teléfono']: A('Sin teléfono')
+        if f['Departamento'] and f['Departamento'] not in deptos: E(f'Departamento «{f["Departamento"]}» no válido')
+        if f['Ciudad']:
+            if f['Ciudad'] not in ciudades: A(f'Ciudad «{f["Ciudad"]}» no está en Catálogos (sumala con su departamento)')
+            elif f['Departamento'] and ciudades[f['Ciudad']] != f['Departamento']:
+                E(f'{f["Ciudad"]} es de {ciudades[f["Ciudad"]]}, no de {f["Departamento"]}')
+        if f['Barrio']:
+            if f['Ciudad'] != 'Asunción': A('Tiene barrio pero la ciudad no es Asunción')
+            elif f['Barrio'] not in barrios: A(f'Barrio «{f["Barrio"]}» no está en Catálogos')
+        for t in [t for t in [f['Teléfono']] + [x.strip() for x in f['Otros teléfonos'].split('/')] if t]:
+            if not TEL.match(t): E(f'Teléfono «{t}» con formato no válido (ej.: +595 21 319 00 00 · +595 981 123 456)')
+        if f['Tipo'] == 'Profesional' and not re.match(r'(Dra?|Lic)\.\s', f['Nombre']): A('Profesional sin título (Dr., Dra., Lic.)')
+        if f['Estado'] != 'Baja':
+            vistos[(f['Especialidad'], K(re.sub(r'^(Dra?|Lic)\.\s*', '', f['Nombre'])), K(f['Dirección']))].append(fid)
+    for k, v in vistos.items():
+        if len(v) > 1: av.append(f'Posible repetido ({k[0]} · misma persona y dirección): ' + ', '.join(v))
+    return err, av
+
+
+# ------------------------------------------------ informe de cambios
+CAMPOS = [('n', 'nombre'), ('e', 'especialidad'), ('tel', 'teléfono'), ('d', 'dirección'),
+          ('c', 'ciudad'), ('r', 'redes'), ('rv', 'Revisar'), ('k', 'condiciones')]
+
+
+def publicado():
+    """El JSON de la última publicación: el que está en git (HEAD)."""
+    try:
+        crudo = subprocess.check_output(['git', 'show', 'HEAD:lib/guia-medica.json'], cwd=BASE, stderr=subprocess.DEVNULL)
+        return json.loads(crudo)
+    except Exception:
+        return None
+
+
+def informe_cambios(antes, ahora):
+    L = []
+    if not antes:
+        return ['No hay publicación anterior en git: todo es alta.']
+    A = {p['f']: p for p in antes['prestadores']}
+    B = {p['f']: p for p in ahora['prestadores']}
+    altas, bajas = sorted(B.keys() - A.keys()), sorted(A.keys() - B.keys())
+    cambios = []
+    for f in sorted(A.keys() & B.keys()):
+        for k, nom in CAMPOS:
+            va, vb = A[f].get(k), B[f].get(k)
+            if va != vb:
+                fmt = lambda v: ('sí' if v == 1 else 'no') if k == 'rv' else (' / '.join(v) if isinstance(v, list) else (v or '—'))
+                cambios.append(f'- {f} · {B[f]["n"]} · **{nom}**: {fmt(va)} → {fmt(vb)}')
+    L.append(f'**{len(altas)} altas · {len(bajas)} bajas · {len(cambios)} cambios** '
+             f'(contra la publicación anterior: {antes["meta"].get("generado_de", "?")}).')
+    if altas:
+        L.append('\n**Altas**')
+        L += [f'- {f} · {B[f]["n"]} · {B[f]["e"]} · {B[f]["c"]} · {" / ".join(B[f]["tel"]) or "sin teléfono"}' for f in altas]
+    if bajas:
+        L.append('\n**Bajas** (dejan de verse online)')
+        L += [f'- {f} · {A[f]["n"]} · {A[f]["e"]} · {A[f]["c"]}' for f in bajas]
+    if cambios:
+        L.append('\n**Cambios**')
+        L += cambios
+    na, nb = antes.get('notas', {}), ahora.get('notas', {})
+    if na != nb:
+        L.append('\n**Avisos de especialidad** cambiaron: ' + ', '.join(sorted(set(na) ^ set(nb) | {k for k in na.keys() & nb.keys() if na[k] != nb[k]})))
+    if antes.get('lister') != ahora.get('lister'):
+        L.append('\n**Horarios de Lister** cambiaron.')
+    return L
+
+
+def main(ruta, solo_validar=False, ruta_informe=None):
     wb = openpyxl.load_workbook(ruta, data_only=True)
+    for h in ('Red', 'Catálogos', 'Lister'):
+        if h not in wb.sheetnames:
+            sys.exit(f'✗ La planilla no tiene la hoja «{h}».')
 
     filas = list(wb['Red'].iter_rows(values_only=True))
-    H = filas[0]
-    red = [dict(zip(H, f)) for f in filas[1:] if f[0]]
+    H = [txt(h) for h in filas[0]]
+    faltan = [c for c in COLS + [col for col, _ in REDES] if c not in H]
+    if faltan:
+        sys.exit('✗ En Red faltan columnas: ' + ', '.join(faltan))
+    red, n_fila = [], {}
+    for n, f in enumerate(filas[1:], 2):
+        if not any(txt(v) for v in f):
+            continue
+        r = dict(zip(H, f))
+        n_fila[id(r)] = n
+        red.append(r)
 
-    grupo = {}
-    guias = {}
-    for f in wb['Catálogos'].iter_rows(min_row=2, values_only=True):
-        if f[0]:
-            grupo[txt(f[0])] = txt(f[1])
-        if f[11]:
-            guias[txt(f[11])] = {'nombre': txt(f[12]), 'fecha': txt(f[13]), 'planes': txt(f[14])}
+    grupo, deptos, ciudades, barrios, guias = leer_catalogos(wb)
+
+    errores, avisos = validar(red, n_fila, grupo, deptos, ciudades, barrios, guias)
+    est = Counter(txt(r['Estado']) for r in red)
+    rep = [f'## Informe de la Guía Médica · {os.path.basename(ruta)}', '',
+           f'{len(red)} filas en la planilla · Activo {est["Activo"]} · Revisar {est["Revisar"]} · Baja {est["Baja"]}', '',
+           f'### Validación: {len(errores)} errores · {len(avisos)} avisos']
+    rep += [f'- ✗ {m}' for m in errores] + [f'- · {m}' for m in avisos]
+    if errores:
+        rep += ['', '**No se publicó: corregí los errores en la planilla y volvé a correr.**']
+        salir(rep, ruta_informe, 1)
 
     # Filas que la hoja «Lister» cruza con la Red (columna "Fila en la Red").
     for f in wb['Lister'].iter_rows(values_only=True):
@@ -164,7 +331,7 @@ def main(ruta):
     out = {
         'meta': {
             'generado_de': re.sub(r'^[0-9a-f]{8}-', '', os.path.basename(ruta)),
-            'datos_al': '2026-09-23',
+            'datos_al': datetime.date.today().isoformat(),
             'guias': {GUIA_DE_RED[k]: guias.get(GUIA_DE_RED[k]) for _, k in REDES},
             'excluidas': excluidas,
         },
@@ -172,6 +339,20 @@ def main(ruta):
         'lister': lister,
         'prestadores': prestadores,
     }
+    solo_central = [txt(r['ID fila']) for r in red if txt(r['Estado']) != 'Baja' and txt(r['Tipo']) != 'Aviso'
+                    and not any(txt(r[c]) == 'Sí' for c, _ in REDES)]
+    rep += ['', '### Reglas que se aplicaron',
+            '- Guías publicadas: ' + ', '.join(f'{guias.get(GUIA_DE_RED[k], {}).get("nombre", k)} ({GUIA_DE_RED[k]})' for _, k in REDES) + '.',
+            f'- Centralizada: fuera de la guía online por ahora (Decisiones 23/09, n.º 4). '
+            f'{len(solo_central)} filas están solo ahí y no se publican: {", ".join(solo_central) or "ninguna"}.',
+            f'- «Revisar»: se publican, como en el PDF ({sum(1 for p in prestadores if p.get("rv"))} filas). '
+            'El punto naranja se ve solo en el prototipo, no en la v1.',
+            f'- «Baja»: no se publica ({excluidas["baja"]} filas).',
+            f'- Lister: hoja «Lister» de la planilla + dirección Pa\'i Pérez 630 ({sum(1 for p in prestadores if p.get("l"))} filas).',
+            '', '### Qué cambia online'] + informe_cambios(publicado(), out)
+    if solo_validar:
+        rep += ['', '_Solo validación: no se escribió nada._']
+        salir(rep, ruta_informe, 0)
     with open(SALIDA, 'w', encoding='utf-8') as fh:
         json.dump(out, fh, ensure_ascii=False, separators=(',', ':'))
     # Resumen chico para el simulador: cuántos prestadores distintos tiene cada
@@ -190,11 +371,24 @@ def main(ruta):
         json.dump(resumen, fh, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
 
     n_prest = len({p['id'] for p in prestadores})
-    print(f'✓ {SALIDA}: {len(prestadores)} filas · {n_prest} prestadores · '
-          f'{sum(1 for p in prestadores if p.get("rv"))} a revisar · excluidas {excluidas}')
+    rep += ['', f'✓ Escrito lib/guia-medica.json: {len(prestadores)} filas · {n_prest} prestadores. '
+            '**Se publica recién con el OK de Arturo** (el PR no se fusiona solo).']
+    salir(rep, ruta_informe, 0)
+
+
+def salir(rep, ruta_informe, codigo):
+    texto = '\n'.join(rep) + '\n'
+    print(texto)
+    if ruta_informe:
+        with open(ruta_informe, 'w', encoding='utf-8') as fh:
+            fh.write(texto)
+    sys.exit(codigo)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.exit('uso: build-guia-medica.py <planilla.xlsx>')
-    main(sys.argv[1])
+    ap = argparse.ArgumentParser(description='Valida la planilla de la Guía Médica, informa qué cambia y genera lib/guia-medica.json.')
+    ap.add_argument('planilla')
+    ap.add_argument('--solo-validar', action='store_true', help='valida e informa, no escribe nada')
+    ap.add_argument('--informe', help='guarda el informe en este archivo (markdown)')
+    a = ap.parse_args()
+    main(a.planilla, a.solo_validar, a.informe)
