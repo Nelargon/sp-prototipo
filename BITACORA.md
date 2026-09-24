@@ -3315,7 +3315,15 @@ tres links rotos a propósito antes de creerle el verde). Un verde también se
 verifica: mirar *qué* vio la prueba, no solo que pasó (el banner tenía que
 decir «Plan Silver», no solo existir). Y la misma suite corrida en dos
 entornos distintos es un control en sí: lo que da verde en uno y rojo en el
-otro está midiendo el entorno, no el sitio. Y el verde de una
+otro está midiendo el entorno, no el sitio.
+
+Y la lección alcanzó a la propia rutina el mismo día. El chequeo nuevo de
+«producción = main» le pedía a GitHub «el último deploy exitoso», y GitHub
+devolvió uno del 2 de septiembre. Pasó en verde solo porque `main` tenía
+menos de dos horas; a la mañana siguiente habría sido una falsa alarma de
+«producción vieja». Se leyó el log de la corrida antes de fusionar, no solo el
+tilde verde, y se cambió la pregunta: ¿el commit actual de `main` tiene un
+deploy exitoso? Contar no depende del orden en que GitHub devuelva la lista. Y el verde de una
 suite vale lo que cubre: las páginas que nadie abre no fallan, simplemente no
 aparecen. De ahí la puerta nueva, `qa/cobertura-rutas.mjs`: una página sin
 prueba ya no entra.

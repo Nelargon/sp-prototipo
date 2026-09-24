@@ -146,12 +146,19 @@ jobs:
         name: 5 · Producción = main
         continue-on-error: true
         run: |
-          main=$(git rev-parse HEAD)
-          edad=$(( ($(date +%s) - $(git log -1 --format=%ct HEAD)) / 3600 ))
-          publicado=$(gh run list --workflow deploy.yml --branch main --status success --limit 1 --json headSha -q '.[0].headSha')
-          echo "main:      $main (hace ${edad} h)"
-          echo "publicado: $publicado"
-          if [ "$main" = "$publicado" ]; then echo "✓ lo último de main está publicado"; exit 0; fi
+          # origin/main y no HEAD: en un PR, HEAD es el merge del PR.
+          main=$(git rev-parse origin/main)
+          edad=$(( ($(date +%s) - $(git log -1 --format=%ct "$main")) / 3600 ))
+          # Se pregunta «¿este commit tiene un deploy exitoso?», no «¿cuál es
+          # el último deploy exitoso?»: con el filtro --status success, GitHub
+          # devolvió el 24/09 uno del 02/09 como «el último». Contar no
+          # depende del orden en que vengan.
+          runs=$(gh run list --workflow deploy.yml --branch main --limit 40 --json headSha,conclusion,createdAt)
+          publicado=$(jq --arg s "$main" '[.[] | select(.conclusion=="success" and .headSha==$s)] | length' <<<"$runs")
+          ultimo=$(jq -r '[.[] | select(.conclusion=="success")] | sort_by(.createdAt) | last | "\(.headSha[0:9]) (\(.createdAt))"' <<<"$runs")
+          echo "main:                  ${main:0:9} (hace ${edad} h)"
+          echo "último deploy exitoso: $ultimo"
+          if [ "$publicado" -gt 0 ]; then echo "✓ lo último de main está publicado"; exit 0; fi
           # El deploy tiene red de seguridad cada hora (deploy.yml): con 2 h de
           # margen, una diferencia es una falla, no un deploy en camino.
           if [ "$edad" -lt 2 ]; then echo "· main tiene menos de 2 h: el deploy puede estar en camino"; exit 0; fi
