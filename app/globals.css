@@ -92,12 +92,16 @@
      ve y que saca 35 valores del camino. Los que están a mitad de camino entre
      dos pasos y se repiten mucho (14px ×19, 18px ×11) NO se movieron: correr
      30 tarjetas 2px es una decisión de diseño, no una pasada mecánica, y el QA
-     la deja anotada hasta que alguien la mire con ojos de diseño. */
+     la deja anotada hasta que alguien la mire con ojos de diseño.
+     Esa decisión se tomó el 24/09/2026 (Arturo, opción B): cada esquina toma el
+     paso de su FUNCIÓN, no el número más cercano. Los 18 fueron a --r-lg; los
+     14, a --r-md si eran tarjeta o aviso y a --r-sm si eran botón, campo o
+     ícono. Una esquina nueva se elige igual: por lo que es. */
   --r-pill:999px;
-  --r-lg:20px;              /* contenedor grande (tabla, tarjeta principal) */
-  --r-md:16px;              /* banda ancha */
-  --r-sm:12px;              /* botón */
-  --r-xs:10px;              /* chip, ícono, ítem de menú */
+  --r-lg:20px;              /* tarjeta grande, tabla, contenedor principal */
+  --r-md:16px;              /* banda ancha, aviso, tarjeta chica */
+  --r-sm:12px;              /* botón, campo, ícono */
+  --r-xs:10px;              /* chip, ícono chico, ítem de menú, miniatura */
   /* Sistema táctil (24/09/2026, nació en la Guía Médica; ver el bloque
      «Sistema táctil» al final). Dos alturas de relieve y una sola duración
      para el toque: todo el sitio responde igual. */
@@ -428,7 +432,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .art-body blockquote p{font-size:16px;line-height:1.7;color:var(--sp-teal-ink);margin:0}
 .art-body blockquote p+p{margin-top:10px}
 .art-body hr{border:none;border-top:1px solid var(--sp-line-2);margin:30px 0}
-.art-body img{max-width:100%;border-radius:14px}
+.art-body img{max-width:100%;border-radius:var(--r-md)}
 .art-body table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:15px}
 .art-body th,.art-body td{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;border:1px solid var(--sp-line);padding:10px 12px;text-align:left}
 .art-body th{background:#F7F7F7;color:var(--sp-navy)}
@@ -513,7 +517,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
       Cerrado queda inert: el lector de pantalla y el Tab no entran.
    5. .hoja: LO QUE SE ELIGE DE UNA LISTA LARGA SUBE EN UNA HOJA desde abajo
       («es temporal, volvés a donde estabas»; app/components/Hoja). Solo para
-      listas largas: no es un modal para cualquier cosa.
+      listas largas: no es un modal para cualquier cosa. Se cierra también
+      deslizándola hacia abajo desde el asa o el título (.hoja-tirador).
 
    Nada dura más de 1/3 de segundo y todo se apaga con «reducir movimiento».
    NO se extiende el fondo gris de la guía: es para pantallas donde se recorre
@@ -551,6 +556,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @supports (corner-shape:squircle){.hoja-panel{corner-shape:squircle;border-radius:36px 36px 0 0}}
 .hoja[data-abierta="1"] .hoja-panel{transform:none}
 .hoja-asa{width:40px;height:5px;border-radius:3px;background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
+/* El asa y el título arrastran la hoja hacia abajo (Hoja.jsx): ahí el navegador
+   no scrollea ni selecciona texto, así el gesto es de la hoja. */
+.hoja-tirador{flex-shrink:0;touch-action:none;user-select:none;cursor:grab}
+.hoja-tirador:active{cursor:grabbing}
 .hoja-cuerpo{overflow-y:auto;padding:4px 16px 20px;overscroll-behavior:contain}
 /* Reducir movimiento. ⚠ La regla que apaga tiene que pesar lo mismo que la que
    prende: hasta el 24/09 decía `.gm button:active` y perdía contra

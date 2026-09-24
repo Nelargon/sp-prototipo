@@ -787,7 +787,7 @@ export default function Simulador() {
 
               <div style={css('margin-top:18px')}>
                 {sim.formOpen && (
-                  <div className="sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:14px;padding:18px 18px 16px')}>
+                  <div className="sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:18px 18px 16px')}>
                     <div style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:3px')}>¿A dónde te enviamos tu cotización?</div>
                     <div style={css('font-size:12px;color:var(--sp-muted);margin-bottom:14px')}>{sim.whyContacto}</div>
                     <div style={css('display:flex;gap:10px;margin-bottom:10px')}>
@@ -801,14 +801,14 @@ export default function Simulador() {
                   </div>
                 )}
                 {sim.sentOpen && (
-                  <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:14px;padding:24px;text-align:center')}>
+                  <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
                     <div style={css('width:46px;height:46px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
                     <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}!</div>
                     <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
                   </div>
                 )}
                 {sim.waLeadOpen && (
-                  <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:14px;padding:24px;text-align:center')}>
+                  <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
                     <div style={css('width:46px;height:46px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
                     <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}! Falta un solo toque</div>
                     <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización ya está escrita, con tu plan y tu precio. Tocá el botón y nos llega entera por WhatsApp — queda por escrito y te responde un asesor, una persona de verdad.</div>

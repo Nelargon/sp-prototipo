@@ -36,7 +36,7 @@ export default async function BlogPost({ params }) {
   if (!post) {
     return (
       <div className="body tactil" style={css('min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--sp-navy-deep);padding:24px')}>
-        <div className="sq" style={css('background:#fff;--sq:18px;padding:44px 32px;text-align:center;max-width:460px')}>
+        <div className="sq" style={css('background:#fff;--sq:var(--r-lg);padding:44px 32px;text-align:center;max-width:460px')}>
           <h1 className="disp" style={css('font-size:26px;color:var(--sp-navy);margin:0 0 10px')}>Muy pronto</h1>
           <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;color:var(--sp-muted);line-height:1.6;margin:0 0 22px')}>Todavía no hay notas publicadas en el blog.</p>
           <a href={`${BP}/blog/`} className="btn-teal sq" style={css('display:inline-flex;align-items:center;height:46px;padding:0 24px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:800')}>Ir al blog</a>

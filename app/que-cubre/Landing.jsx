@@ -159,7 +159,7 @@ export default function Landing() {
           {seccionTitulo('Los tres planes', 'Cada uno incluye todo el anterior', 'y suma lo suyo.', 'El precio es nacional y ya tiene IVA. Con débito automático o tarjeta de crédito, 10% menos.')}
           <div className="planes-grid" style={css('display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px')}>
             {plansArr.map((pl, i) => (
-              <div key={pl.short} data-rv className="sq" style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;background:#fff;display:flex;flex-direction:column')}>
+              <div key={pl.short} data-rv className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;background:#fff;display:flex;flex-direction:column')}>
                 <div style={css('height:5px;background:' + pl.color)}></div>
                 <div style={css('padding:22px 22px 24px;display:flex;flex-direction:column;flex:1')}>
                   <div style={css('display:flex;align-items:center;gap:8px;margin-bottom:5px')}>
@@ -216,7 +216,7 @@ export default function Landing() {
               { de: 'Bronze', a: 'Silver', color: 'var(--sp-plan-silver)', d: bs },
               { de: 'Silver', a: 'Gold', color: 'var(--sp-plan-gold)', d: so },
             ].map((s) => (
-              <div key={s.a} data-rv className="rv sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:18px;padding:24px 26px')}>
+              <div key={s.a} data-rv className="rv sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-lg);padding:24px 26px')}>
                 <div className="disp" style={css('display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--sp-navy);margin-bottom:12px')}>
                   {s.de}
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#007d77" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -249,7 +249,7 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Servicio por servicio', 'Los once servicios', 'que más se preguntan.', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
-          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
+          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
             <div style={css('min-width:720px')}>
               <div style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
                 <div className="disp" style={css('padding:16px 18px;display:flex;align-items:flex-end;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>Servicio</div>
@@ -302,7 +302,7 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Con qué especialista', `Las ${especialidades.length} especialidades`, 'y cuántas veces al año.', 'Donde dice "sin tope" es sin tope de verdad: las que tienen número, lo tienen escrito acá.')}
-          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
+          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
             <div style={css('min-width:600px')}>
               <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
                 <div style={css('padding:13px 18px')}>Especialidad</div>
@@ -390,12 +390,12 @@ export default function Landing() {
           {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Son las mismas en Bronze, Silver y Gold.')}
           <div data-rv className="excl-grid" style={css('display:grid;grid-template-columns:1fr 1fr;gap:12px')}>
             {excluidos.map((e) => (
-              <div className="sq" key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:14px;padding:18px 20px')}>
+              <div className="sq" key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:var(--r-md);padding:18px 20px')}>
                 <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-text);margin-bottom:6px')}>{e.n}</div>
                 <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.6')}>{e.d}</div>
               </div>
             ))}
-            <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);--sq:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center')}>
+            <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);--sq:var(--r-md);padding:18px 20px;display:flex;flex-direction:column;justify-content:center')}>
               <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:6px')}>¿Te preocupa alguna?</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.6')}>Decíselo a tu asesor <b>antes de firmar</b>: te va a decir con qué contás y con qué no.</div>
             </div>

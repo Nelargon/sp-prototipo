@@ -295,6 +295,14 @@ casos, invisible). Correr 30 tarjetas 2px **no es una pasada mecánica: es una
 decisión de diseño**, y el QA la deja anotada en amarillo hasta que alguien la
 mire con ojos de diseño.
 
+> **Cerrado el 24/09/2026.** Para entonces eran 14px ×24 y 18px ×11 (el
+> guardián había quedado ciego a los radios del sistema táctil y se arregló
+> antes: BITACORA cap. 90). Arturo eligió la opción B: cada esquina va al paso
+> de su **función**, no al número más cercano (14 está justo a mitad de camino
+> y no tiene «más cercano»). Los 18 → `--r-lg`; los 14 → `--r-md` en tarjetas y
+> avisos, `--r-sm` en botones, campos e íconos. Quedan dos 14px en
+> `/historia/`, que no se toca: excepción local. El QA pasa a verde en radios.
+
 ### 3.2 Adhesión al sistema de marca
 
 | Punto | Estado |

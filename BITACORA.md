@@ -3384,3 +3384,26 @@ En las otras nueve páginas no marcó nada en ningún build.
 lo que uno supone, y un sistema de señales vale lo que su caso más raro. Y
 cuando el mismo error aparece dos veces y las dos lo encuentra una persona
 mirando, es la señal de que falta un control, no de que hay que mirar mejor.
+
+## Capítulo 92 — Una esquina se elige por lo que es (24/09/2026)
+
+**Qué intentamos.** Cerrar el hallazgo que el control integral arrastraba
+desde agosto: esquinas de 14 y 18px, repetidas decenas de veces, que no
+estaban en la escala (10, 12, 16 y 20). La pasada de agosto las había dejado
+quietas a propósito: moverlas era una decisión de diseño, no una tarea
+mecánica.
+
+**Qué pasó.** La salida mecánica («al número más cercano») no existía: 14 está
+justo en el medio entre 12 y 16. Sumarlas a la escala con nombre tampoco
+servía: siete tamaños de 2 en 2 que el ojo no distingue no ordenan nada. Se
+miró entonces qué era cada una: los 18 eran todos tarjetas grandes y tablas;
+de los 14, la mayoría eran tarjetas chicas y avisos, y siete eran botones, un
+campo e íconos. Cada una fue al paso de su función, y a la vista la diferencia
+es de 2px. Arturo eligió esa opción entre tres (*«Vamos con todas tus
+sugerencias entonces»*). El control pasó a verde, y esta vez porque se
+decidió algo, no porque dejó de ver (cap. 90).
+
+**Qué aprendimos.** Una escala sirve si cada paso quiere decir algo: «botón»,
+«tarjeta», no «14». Cuando un valor queda a mitad de camino, la pregunta no es
+a qué número está más cerca sino qué es la cosa. Y desde hoy una esquina nueva
+se elige así.

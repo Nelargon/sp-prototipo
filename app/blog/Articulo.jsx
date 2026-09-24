@@ -14,7 +14,7 @@ export function A({ title, intro, minutes, date, categoria, slug, cover, dato, r
         <a href={`${BP}/blog/`} style={css('display:inline-flex;align-items:center;gap:7px;color:var(--sp-navy);font-size:14px;font-weight:700;padding:104px 0 0')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>Volver al blog</a>
       </div>
       <article style={css('max-width:680px;margin:0 auto;padding:18px 24px 40px')}>
-        <Cover categoria={categoria} slug={slug} cover={cover} dato={dato} alt={title} radius={18} eager />
+        <Cover categoria={categoria} slug={slug} cover={cover} dato={dato} alt={title} radius="var(--r-lg)" eager />
         <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin:24px 0 12px')}>{categoria}</div>
         <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,42px);line-height:1.12;letter-spacing:-0.02em;color:var(--sp-navy);margin:0 0 14px')}>{title}</h1>
         <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:18px;line-height:1.65;color:var(--sp-text);margin:0 0 14px')}>{intro}</p>
@@ -45,7 +45,7 @@ export function A({ title, intro, minutes, date, categoria, slug, cover, dato, r
           seguir leyendo no tiene que pasar por encima de un CTA. */}
       <SeguiLeyendo notas={relacionadas} />
       <div style={css('max-width:680px;margin:0 auto;padding:26px 24px 70px')}>
-        <div className="sq" style={css('background:var(--sp-navy);--sq:18px;padding:28px 26px;color:#fff')}>
+        <div className="sq" style={css('background:var(--sp-navy);--sq:var(--r-lg);padding:28px 26px;color:#fff')}>
           <div style={css('font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px')}>¿Querés saber cuál es el plan para tu familia?</div>
           <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:14.5px;color:var(--sp-blue-soft);line-height:1.55;margin-bottom:18px')}>Contanos quiénes son y te mostramos el plan que va con ustedes, con precio estimado — en un minuto y sin dejar datos.</div>
           <a href={`${BP}/simulador/`} className="btn-teal sq" style={css('height:48px;padding:0 24px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;gap:8px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>

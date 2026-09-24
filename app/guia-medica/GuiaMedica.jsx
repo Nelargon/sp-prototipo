@@ -357,7 +357,7 @@ export default function GuiaMedica() {
 
         {/* Visar una orden */}
         <Plegable abierto={visar} enColumna>
-          <section ref={refVisar} aria-label="Visar una orden médica" className="sq" style={css('--sq:14px;scroll-margin-top:90px;background:#fff;border:1.5px solid var(--sp-teal-deep);padding:16px;display:flex;flex-direction:column;gap:10px')}>
+          <section ref={refVisar} aria-label="Visar una orden médica" className="sq" style={css('--sq:var(--r-md);scroll-margin-top:90px;background:#fff;border:1.5px solid var(--sp-teal-deep);padding:16px;display:flex;flex-direction:column;gap:10px')}>
             <div style={css('display:flex;justify-content:space-between;align-items:center')}>
               <h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2>
               <button type="button" onClick={() => setVisar(false)} aria-label="Cerrar" style={css('width:36px;height:36px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>

@@ -36,7 +36,7 @@ export default function Planes() {
             muestra uno y medio (revisión del 23/09/2026). El mismo aviso que
             el comparador del home, con la misma clase. */}
         <div className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para ver Silver y Gold <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
-        <div className="sq" style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
+        <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
           <div className="pl-inner" style={css('min-width:720px')}>
             {/* Encabezado: servicio + los tres planes con precio y CTA */}
             <div className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
