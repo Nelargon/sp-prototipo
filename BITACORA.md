@@ -3440,3 +3440,27 @@ transmite lo que uno supone. Si el dato se puede leer, en encabezados, DNS o
 configuración, primero se lee y después se pregunta. Y una lista de nombres
 dice más que el rótulo que le pusieron: antes de construir para «el equipo de
 marketing», fijate quiénes son.
+
+## Capítulo 94 — La prueba leía el encabezado ya traducido (24/09/2026)
+
+**Qué intentamos.** Que el correo del blog llevara el encabezado
+`List-Unsubscribe`, el que hace aparecer el botón «desuscribirse» en Gmail y
+Outlook. Tenía su prueba: `test_correo_blog.py` verificaba que empezara con
+`<mailto:`, y daba verde.
+
+**Qué pasó.** El primer correo real salió con el encabezado codificado,
+`=?utf-8?q?=3Cmailto=3Aarturo…`. El valor pasaba los 78 caracteres del renglón
+y el módulo `email` de Python, al no encontrar un espacio donde cortarlo, lo
+partió en palabras codificadas. Para Gmail eso no es un `List-Unsubscribe`. La
+prueba no lo vio porque leía el correo después de parsearlo, y el parser
+decodifica: ella veía `<mailto:…>`, Gmail veía `=?utf-8?q?…`. Se descubrió
+recién leyendo los encabezados crudos del correo recibido.
+
+**Qué aprendimos.** Una prueba tiene que leer lo mismo que lee el que
+consume: acá, los bytes crudos, no el valor interpretado. Es el mismo golpe que
+el del minificador (verificá lo computado, no el código) y el del cap. 90 (el
+guardián que leía la forma vieja). La prueba nueva mira el correo crudo y se
+comprobó que falla con el encabezado viejo. De paso se sacaron de git tres
+`.pyc` que se habían subido sin querer (dos de la Guía Médica y uno del correo)
+y `__pycache__/` quedó en `.gitignore`.
+

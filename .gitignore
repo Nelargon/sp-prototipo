@@ -25,3 +25,8 @@ qa/qa-resultados.json
 
 # Salida del deploy de dos ediciones (se arma en el workflow, no es fuente).
 /_site
+
+# Bytecode de Python: lo genera el intérprete al correr los scripts (build de la
+# Guía Médica, correo del blog). No es fuente y cambia en cada corrida.
+__pycache__/
+*.pyc
