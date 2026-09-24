@@ -33,6 +33,11 @@ jobs:
           node scripts/test-buscador.mjs
           node qa/cobertura-rutas.mjs
           node qa/links-internos.mjs out /sp-prototipo
+      # El correo del blog (correo-blog.yml) manda a personas reales: sus
+      # garantías —nada dos veces, ninguna dirección en los logs, línea de base
+      # sin envíos— se prueban acá con un servidor de mentira, sin red.
+      - name: Pruebas del correo del blog
+        run: python3 scripts/correo-blog/test_correo_blog.py
       # La v1 pública se construye del mismo código (app/edicion.js). Si esta
       # rama esconde un módulo pero deja un link apuntándole, el postbuild
       # (scripts/podar-edicion.mjs) corta acá y el PR no se puede fusionar.

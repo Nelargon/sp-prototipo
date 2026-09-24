@@ -3407,3 +3407,36 @@ decidió algo, no porque dejó de ver (cap. 90).
 «tarjeta», no «14». Cuando un valor queda a mitad de camino, la pregunta no es
 a qué número está más cerca sino qué es la cosa. Y desde hoy una esquina nueva
 se elige así.
+
+
+## Capítulo 93 — La pregunta tenía dos respuestas y ninguna era la buena (24/09/2026)
+
+**Qué intentamos.** Mandar cada nota nueva del blog por correo, con el texto
+entero, a Arturo y a su equipo. Para elegir desde qué cuenta, le pregunté a
+Arturo si el correo de SP era Google Workspace o Microsoft 365: de eso
+dependía cómo configurar el envío.
+
+**Qué pasó.** No era ninguno de los dos. Antes de que contestara, un
+investigador leyó los encabezados crudos de sus correos (no los asuntos: los
+`Received:` y los `X-Mailer`). El dominio vive en un hosting con cPanel. El
+«Outlook» que se veía por todos lados era el programa del equipo, no el
+servidor. La única señal de Google Workspace era un formulario comercial de
+marzo: SP averiguó y no lo contrató. Y la casilla de SP de Arturo se reenvía
+sola a su Gmail desde enero de 2025, por eso él siempre escribe desde Gmail.
+Con eso la decisión cambió de forma. Arturo planteó *«el mejor de los dos
+males»* entre su Gmail y su casilla de SP. Ganó la de SP: desde Gmail hacía
+falta una contraseña que abre su buzón personal entero.
+
+La misma búsqueda corrigió otra suposición. Él había dicho «el equipo de
+marketing», pero de las doce personas y cuentas que nombró, solo dos personas
+son de marketing, más la cuenta de redes. Las demás son líderes de área: gerencia, ventas, experiencia al cliente, Lister y
+gestión médica. Cuando se lo mostré no achicó la lista, la explicó: *«La idea
+es que las personas que veo que pueden ser partes interesadas vean el valor del
+blog primero.»* El correo dejó de ser un aviso para el equipo que produce el
+blog y pasó a ser una forma de mostrarle el blog a quienes pueden usarlo.
+
+**Qué aprendimos.** Una pregunta de opción múltiple sobre la infraestructura
+transmite lo que uno supone. Si el dato se puede leer, en encabezados, DNS o
+configuración, primero se lee y después se pregunta. Y una lista de nombres
+dice más que el rótulo que le pusieron: antes de construir para «el equipo de
+marketing», fijate quiénes son.
