@@ -130,9 +130,9 @@ pierde (BITACORA cap. 96).
   campo o ícono · `--r-md` aviso o tarjeta chica · `--r-lg` tarjeta grande o
   tabla. Nunca un radio a mano: el QA integral lo cuenta.
 - **Los íconos son propios y se ganan su lugar** (24 sep 2026, BITACORA caps.
-  95 y 97). Un ícono nuevo sale de `app/components/iconos-sp.js` y se pone con
-  `IconoSP`: trazo a mano siempre, y el fondo decide el color (claro → trazo
-  azul sin base; azul → trazo blanco sobre su mancha turquesa). No se suman
+  95, 97 y 98). Un ícono nuevo sale de `app/components/iconos-sp.js` y se pone con
+  `IconoSP`: trazo a mano, blanco y repasado, sobre su mancha turquesa, en
+  todos los fondos (Arturo: *«Hay algo humano y auténtico en eso»*). No se suman
   íconos de librería, y un botón que ya dice lo que hace no lleva ícono. Las
   señales de uso (flechas, «×», lupa, WhatsApp, urgencias) se quedan simples.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es

@@ -3549,3 +3549,34 @@ Y un ícono de estado se diseña para el estado que la gente ve de verdad, que n
 siempre es el que imaginamos: antes de dibujarlo, se lee qué rama toma el
 código hoy. Es la lección 2 del sistema táctil («cada movimiento avisa algo
 verdadero») llevada a un dibujo.
+
+## Capítulo 98 — «Lo que hablamos» no era lo que yo había propuesto (24/09/2026)
+
+**Qué intentamos.** Después de las pruebas de íconos había dos reglas sobre la
+mesa: la que propuso Claude (trazo azul sin base en los fondos claros y blanco
+sobre la mancha turquesa en el azul) y una más simple, la mancha turquesa en
+todas partes, que Claude mencionó y desaconsejó: una fila de círculos iguales
+sobre blanco podía volverse monótona. Arturo dijo *«ya podemos ir aplicando los
+cambios según lo que hablamos en la página»*, y Claude aplicó la de dos reglas.
+
+**Qué pasó.** Cuando el PR estaba por fusionarse, Arturo lo frenó: *«Espera, no
+era que íbamos a seleccionar todo A3?»*. Y enseguida: *«la idea era que también
+ese estilo gráfico de trazo a mano. Hay algo humano y auténtico en eso»*.
+«Lo que hablamos» era, para él, la mancha turquesa que le había gustado desde la
+primera lámina (*«con el circulito turquesa, el blanco interior queda muy
+bien»*), no la propuesta que se discutió al final. Se armó la comparación en
+siete lugares reales del sitio, y la monotonía que preocupaba no aparecía: los
+círculos caen en secciones distintas y nunca forman una fila. Quedó un detalle
+que sí importaba para lo humano que él pedía: dentro del círculo el dibujo se
+achica y pierde el trazo repasado, que es donde más se nota la mano. Se le
+devolvió el repasado.
+
+![A2 en claro y A3 en azul, o A3 en todas partes](docs/diseno/img/2026-09-24-iconos-a3-en-todas-partes.webp)
+
+**Qué aprendimos.** Cuando hay más de una opción sobre la mesa, «lo que
+hablamos» se confirma con el nombre de la opción antes de construir: una
+pregunta de una línea habría ahorrado un PR entero rehecho. Una preocupación
+que se formó mirando íconos sueltos se prueba en los lugares reales antes de
+convertirla en regla, como la lección 9 ya decía de los íconos mismos. Y ante
+dos reglas que funcionan, la más simple es más fácil de sostener: un ícono, un
+tratamiento, cualquier fondo.

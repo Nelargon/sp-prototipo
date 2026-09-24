@@ -37,9 +37,10 @@ const DEFAULT_THEME = { g1: '#006B66', g2: '#00BCB4', soft: '#80DDD8', ring: '#B
 // El ícono de cada categoría es de la misma mano que el resto del sitio
 // (app/components/iconos-sp.js, 24/09/2026): papel, edificio con cruz,
 // escudo, corazón y sol sobre el horizonte; sin categoría, el libro. Va en
-// trazo blanco sobre la base translúcida de la portada, no sobre la mancha
-// turquesa de A3: sobre Sage, Lavender o Terracota la mancha mezclaría dos
-// territorios, que la marca no permite.
+// trazo blanco repasado, como en todo el sitio, pero sobre la base
+// translúcida de la portada y no sobre la mancha turquesa: sobre Sage,
+// Lavender o Terracota la mancha mezclaría dos territorios, que la marca no
+// permite.
 const trazosDe = (categoria) => DIBUJOS[ICONO_CATEGORIA[categoria] || 'libro'];
 
 // Hash FNV-1a → variación determinística por slug (sin Math.random, que el
@@ -182,8 +183,9 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
       ) : (
         <g transform="translate(26,110)">
           <rect width="62" height="62" rx="17" fill="#ffffff" fillOpacity="0.15" stroke="#ffffff" strokeOpacity="0.32" />
-          <g transform="translate(7,7)" fill="none" stroke="#ffffff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-            {trazos.map((d) => <path key={d} d={d} />)}
+          <g transform="translate(7,7)" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round">
+            <g opacity="0.45" transform="translate(0.9 0.7) rotate(0.8 24 24)" strokeWidth="1.8">{trazos.map((d) => <path key={d} d={d} />)}</g>
+            <g strokeWidth="2.3">{trazos.map((d) => <path key={d} d={d} />)}</g>
           </g>
         </g>
       )}

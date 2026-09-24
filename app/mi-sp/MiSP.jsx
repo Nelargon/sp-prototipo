@@ -34,7 +34,7 @@ export default function MiSP() {
           <div className="misp-grid" style={css('display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:40px')}>
             <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => go('ver_red')} className="sq tarjeta-toque" style={css('display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:#fff;color:var(--sp-navy);--sq:var(--r-lg);padding:26px 24px;min-height:190px')}>
               <div>
-                <IconoSP nombre="red" size={52} style={{ marginLeft: -6, marginBottom: 10 }} />
+                <IconoSP nombre="red" size={52} style={{ marginBottom: 12 }} />
                 <div style={css('font-size:19px;font-weight:800;margin-bottom:5px')}>Ver mi red de atención</div>
                 <div style={css('font-size:14px;color:var(--sp-text);line-height:1.55')}>Con tu cédula y fecha de nacimiento, mirá los sanatorios, médicos y farmacias que entran en tu plan.</div>
               </div>
@@ -57,7 +57,7 @@ export default function MiSP() {
           <div className="misp-soon" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:14px')}>
             {PROXIMAMENTE.map((t, i) => (
               <div key={i} className="sq" style={css('background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.22);--sq:var(--r-md);padding:20px 18px')}>
-                <IconoSP nombre={t.icono} fondo="azul" size={46} style={{ marginBottom: 12 }} />
+                <IconoSP nombre={t.icono} size={46} style={{ marginBottom: 12 }} />
                 <div style={css('font-size:14.5px;font-weight:800;color:#fff;margin-bottom:5px')}>{t.title}</div>
                 <div style={css('font-size:12.5px;color:var(--sp-blue-meta);line-height:1.5')}>{t.body}</div>
               </div>

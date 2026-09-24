@@ -3,9 +3,9 @@
 // para verse de 20 a 60 px. El trazo no cierra perfecto a propósito: es lo que
 // hace que se lea «lo hizo una persona» (docs/diseno, lecciones 6 a 12).
 //
-// El color no vive acá: lo pone IconoSP según el fondo (claro → trazo azul
-// sin base; azul → trazo blanco sobre su mancha turquesa). Las portadas del
-// blog usan el trazo blanco sobre su propia base translúcida.
+// El color no vive acá: IconoSP los dibuja en trazo blanco repasado sobre su
+// mancha turquesa, en todos los fondos (A3). Las portadas del blog usan el
+// mismo trazo sobre su propia base translúcida.
 //
 // Un dibujo nuevo se hace simple: lo que limita el tamaño es el detalle, no el
 // estilo (lección 11). Y antes de sumarlo, la regla de Arturo: un ícono se gana

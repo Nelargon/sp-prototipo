@@ -359,7 +359,7 @@ export default function GuiaMedica() {
         <Plegable abierto={visar} enColumna>
           <section ref={refVisar} aria-label="Visar una orden médica" className="sq" style={css('--sq:var(--r-md);scroll-margin-top:90px;background:#fff;border:1.5px solid var(--sp-teal-deep);padding:16px;display:flex;flex-direction:column;gap:10px')}>
             <div style={css('display:flex;justify-content:space-between;align-items:center')}>
-              <div style={css('display:flex;align-items:center;gap:8px')}><IconoSP nombre="orden" size={40} style={{ marginLeft: -4 }} /><h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2></div>
+              <div style={css('display:flex;align-items:center;gap:8px')}><IconoSP nombre="orden" size={40} /><h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2></div>
               <button type="button" onClick={() => setVisar(false)} aria-label="Cerrar" style={css('width:36px;height:36px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>
             </div>
             <p style={css(INTER + 'margin:0;font-size:14px;line-height:1.5;color:var(--sp-text-2)')}>Mandá una foto de la orden y decinos dónde te vas a hacer el estudio. La visación vale 30 días.</p>

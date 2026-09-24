@@ -183,9 +183,9 @@ sobre el círculo turquesa (A3).
 
 **Después (24/09/2026):** Arturo dio el paso (*«ya podemos ir aplicando los
 cambios según lo que hablamos en la página»*) y la propuesta se aplicó al sitio.
-Lecciones 13 a 15.
+Al verla, la corrigió: todo A3 (lección 16). Lecciones 13 a 16.
 
-### 13 · Una sola mano, y el fondo elige el color
+### 13 · Una sola mano para todo el sitio
 
 ![El juego completo de íconos propios, en sus fondos y tamaños](img/2026-09-24-iconos-juego-completo.webp)
 
@@ -193,13 +193,12 @@ Lecciones 13 a 15.
 azul, y chicas a 24 y 32 px. Las del blog, además, sobre su portada.
 
 **Qué se decidió.** Todas salen de la misma mano: el trazo que no cierra
-perfecto y el repasado apenas corrido. El color no es del ícono, es del fondo:
-en claro, trazo azul sin base; en azul, trazo blanco sobre su mancha turquesa.
-Las portadas del blog son la excepción que confirma la regla: van en trazo
-blanco sobre la base translúcida de la portada, porque la mancha turquesa sobre
-Sage, Lavender o Terracota mezclaría dos territorios de color que la marca no
-deja mezclar. Los dibujos viven en `app/components/iconos-sp.js` y se ponen con
-`IconoSP`.
+perfecto, repasado y apenas corrido, blanco sobre su mancha turquesa. El mismo
+ícono sirve en cualquier fondo porque trae su propia base. Las portadas del blog
+llevan el mismo trazo sobre la base translúcida de la portada: la mancha
+turquesa sobre Sage, Lavender o Terracota mezclaría dos territorios de color que
+la marca no deja mezclar. Los dibujos viven en `app/components/iconos-sp.js` y
+se ponen con `IconoSP`.
 
 ### 14 · El dibujo dice lo que pasa de verdad
 
@@ -233,3 +232,24 @@ general. Las tres quedan dibujadas hasta que Arturo elija.
 **Qué se decidió.** Arturo: *«Vamos con la cabeza con el corazón»*. Dice mente y
 cuidado a la vez, y no se confunde con ningún otro ícono del sitio. Las otras dos
 salieron del archivo de dibujos; quedan en esta lámina.
+
+### 16 · La regla más simple, vista en su lugar
+
+![A2 en claro y A3 en azul, o A3 en todas partes, en los lugares reales](img/2026-09-24-iconos-a3-en-todas-partes.webp)
+
+![A3 con trazo único y con trazo repasado](img/2026-09-24-iconos-trazo-repasado.webp)
+
+**Qué muestra.** Arriba, siete lugares del sitio con las dos reglas que había
+sobre la mesa: trazo azul sin base en los fondos claros y A3 en el azul, o A3 en
+todas partes. Abajo, A3 con el trazo único, con el trazo repasado y con el
+dibujo más grande.
+
+**Qué se decidió.** A3 en todas partes. Arturo: *«no era que íbamos a
+seleccionar todo A3?»*, y del trazo, *«Hay algo humano y auténtico en eso»*. La
+propuesta de Claude había sido la de dos reglas, por miedo a que una fila de
+círculos turquesa iguales se volviera monótona sobre blanco. En los lugares
+reales ese miedo no se sostiene: los círculos quedan en secciones distintas y
+nunca forman una fila larga. Para que la mano se siga viendo dentro del círculo,
+el trazo va repasado (fila del medio). El dibujo más grande ya toca el borde de
+la mancha. La lección: una regla se juzga en su lugar, no en una lámina de íconos
+sueltos (como la lección 9), y ante dos reglas que funcionan gana la más simple.

@@ -1,41 +1,34 @@
 import { DIBUJOS, MANCHA } from './iconos-sp';
 
-/* IconoSP — los íconos propios de SP (24/09/2026). Trazo a mano siempre; el
-   color lo decide el fondo, no el ícono (Arturo: «La combinación de colores
-   depende del fondo; debemos elegir la aplicación correcta según el color de
-   fondo»). Medido en la prueba de fondos (docs/diseno, lección 10):
+/* IconoSP — los íconos propios de SP (24/09/2026). Trazo a mano, blanco, sobre
+   su mancha turquesa, en todos los fondos del sitio (A3). Es el único
+   tratamiento que funcionó en los cuatro fondos porque trae su propia base
+   (docs/diseno, lección 10), y el que eligió Arturo: *«no era que íbamos a
+   seleccionar todo A3?»*, y del trazo, *«Hay algo humano y auténtico en eso»*
+   (lección 16).
 
-   - fondo="claro" (blanco, gris de la guía, menta): trazo azul sin base, con
-     el trazo repasado apenas corrido (A2). Sobre azul desaparece (1,3 a 1).
-   - fondo="azul": trazo blanco sobre su mancha turquesa (A3), el único trazo a
-     mano que funciona en los cuatro fondos porque trae su propia base.
+   El trazo va repasado, apenas corrido, como un lápiz que pasó dos veces: es
+   lo que hace que se lea «lo hizo una persona» aunque el dibujo sea chico.
 
    Solo va donde un ícono hace algo que el texto solo no hace (lección 7): en
    un botón que ya dice «Guía Médica», no. Siempre acompaña a un texto, así que
-   el lector de pantalla no lo anuncia. Los dibujos están en ./iconos-sp.js. */
-export default function IconoSP({ nombre, fondo = 'claro', size = 48, style }) {
+   el lector de pantalla no lo anuncia. Los dibujos están en ./iconos-sp.js;
+   las portadas del blog los usan con su propia base (app/blog/Cover.jsx). */
+export default function IconoSP({ nombre, size = 48, style }) {
   const trazos = DIBUJOS[nombre];
   if (!trazos) return null;
-  const caja = { viewBox: '0 0 48 48', width: size, height: size, 'aria-hidden': true, focusable: 'false', style: { display: 'block', flex: 'none', overflow: 'visible', ...style } };
-  const linea = { fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
   const paths = trazos.map((d) => <path key={d} d={d} />);
-
-  if (fondo === 'azul') {
-    return (
-      <svg {...caja}>
-        <path d={MANCHA} fill="#007d77" />
-        <g transform="translate(24 24.5) scale(.66) translate(-24 -24)" {...linea} stroke="#fff" strokeWidth="3.2">{paths}</g>
-      </svg>
-    );
-  }
-
-  // Al achicarse, el trazo engorda en el dibujo para no bajar de ~1,3 px en
-  // pantalla: a 48 px va a 1,7; a 24 px, a 2,6.
-  const ancho = Math.max(1.7, 62 / size);
+  const linea = { fill: 'none', stroke: '#fff', strokeLinecap: 'round', strokeLinejoin: 'round' };
+  // Al achicarse, el trazo engorda en el dibujo para seguir leyéndose: a 48 px
+  // va a 2,8; a 24 px, a 3,2.
+  const ancho = Math.max(2.8, 76 / size);
   return (
-    <svg {...caja}>
-      <g opacity=".4" transform="translate(.8 .6) rotate(.8 24 24)" {...linea} stroke="#003B71" strokeWidth={+(ancho * 0.82).toFixed(2)}>{paths}</g>
-      <g {...linea} stroke="#003B71" strokeWidth={+ancho.toFixed(2)}>{paths}</g>
+    <svg viewBox="0 0 48 48" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: 'block', flex: 'none', overflow: 'visible', ...style }}>
+      <path d={MANCHA} fill="#007d77" />
+      <g transform="translate(24 24.5) scale(.66) translate(-24 -24)">
+        <g opacity=".45" transform="translate(1.1 .9) rotate(.8 24 24)" {...linea} strokeWidth={+(ancho * 0.78).toFixed(2)}>{paths}</g>
+        <g {...linea} strokeWidth={+ancho.toFixed(2)}>{paths}</g>
+      </g>
     </svg>
   );
 }

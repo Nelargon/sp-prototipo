@@ -21,18 +21,21 @@ que documenta la implementación técnica de la página de planes.
 
 Arturo, sobre los íconos del sitio: eran genéricos (librería Lucide, la usan
 miles de sitios), y quería íconos *«más creativos, más nuestros»*. Recorrido
-completo, con sus láminas, en `docs/diseno/` (lecciones 6 a 15). Después de las
+completo, con sus láminas, en `docs/diseno/` (lecciones 6 a 16). Después de las
 pruebas, el paso: *«ya podemos ir aplicando los cambios según lo que hablamos
-en la página»* (24/09/2026).
+en la página»* (24/09/2026). Y al ver la primera versión (azul sin base en los
+fondos claros), la corrección: *«no era que íbamos a seleccionar todo A3?»* y
+*«la idea era que también ese estilo gráfico de trazo a mano. Hay algo humano y
+auténtico en eso»* (BITACORA cap. 98).
 
 **La regla (no re-litigar sin motivo):**
-- **Trazo a mano siempre, una sola mano.** El color lo decide el fondo:
-  - **fondo claro** (blanco, gris de la guía, menta) → trazo azul sin base,
-    con el repasado apenas corrido (A2);
-  - **fondo azul** → trazo blanco sobre su mancha turquesa (A3);
-  - **portadas del blog** → trazo blanco sobre la base translúcida de la
-    portada. La mancha turquesa mezclaría territorios de color (Sage, Lavender,
-    Terracota) que la marca no deja mezclar.
+- **Trazo a mano, blanco y repasado, sobre su mancha turquesa, en todos los
+  fondos (A3).** Es el único tratamiento que funcionó en los cuatro fondos del
+  sitio, porque trae su propia base. El repasado (un segundo trazo al 45 %,
+  apenas corrido) es lo que mantiene la mano visible dentro del círculo.
+- **Portadas del blog:** el mismo trazo blanco repasado, sobre la base
+  translúcida de la portada. La mancha turquesa mezclaría territorios de color
+  (Sage, Lavender, Terracota) que la marca no deja mezclar.
 - **Un ícono se gana su lugar** (regla de Arturo): solo si hace algo que el
   texto solo no hace. En un botón que ya dice «Guía Médica», no va.
 - **Las señales de uso se quedan simples:** flechas, tildes, flechitas de menú,
@@ -41,18 +44,19 @@ en la página»* (24/09/2026).
 - **La «Línea SP» (sacada del isotipo) queda descartada.** Arturo: *«No se ve
   como un toque personal.»* Que ninguna sesión la retome.
 
-**Cómo se usa.** `IconoSP` (`app/components/IconoSP.jsx`) con `nombre`,
-`fondo` (`claro` o `azul`) y `size`. Los dibujos están en
-`app/components/iconos-sp.js`: 19 dibujos en un cuadro de 48×48. Un dibujo nuevo va ahí, en la misma mano y simple:
-lo que limita el tamaño es el detalle, no el estilo.
+**Cómo se usa.** `IconoSP` (`app/components/IconoSP.jsx`) con `nombre` y
+`size`; el mismo ícono sirve en cualquier fondo. Los dibujos están en
+`app/components/iconos-sp.js`: 19 dibujos en un cuadro de 48×48. Un dibujo
+nuevo va ahí, en la misma mano y simple: lo que limita el tamaño es el
+detalle, no el estilo.
 
 **Dónde se aplicó (9 lugares):**
 - Inicio: «Lo que casi nadie te garantiza» (papel con lupa, casa con la cruz,
   cabeza con un corazón, elegida por Arturo entre tres ideas: *«Vamos con la
   cabeza con el corazón»*), la banda de la Guía Médica (pin con la cruz; Lister
   en la rama sin guía) y el aviso de tiempo de espera (reloj).
-- Mi SP: «Ver mi red» (pin con la cruz, sobre blanco) y «En camino» (plan,
-  credencial, turnos y pagos, sobre azul).
+- Mi SP: «Ver mi red» (pin con la cruz) y «En camino» (plan, credencial,
+  turnos y pagos).
 - Simulador: el final. **Hoy siempre se ve «¡Listo! Falta un solo toque»**,
   porque `HUBSPOT_FORM_ID` está vacío y el lead va por WhatsApp: el dibujo es
   un globo con la flecha de enviar, no un tilde (todavía no se mandó nada). El

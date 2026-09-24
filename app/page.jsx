@@ -906,7 +906,7 @@ export default function Page() {
             <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
               {v.difs.map((dz, i) => (
                 <div className="sq" key={i} style={css('background:#fff;--sq:var(--r-lg);padding:28px 24px;border:1px solid var(--sp-line)')}>
-                  <IconoSP nombre={dz.icono} size={52} style={{ marginLeft: -6, marginBottom: 12 }} />
+                  <IconoSP nombre={dz.icono} size={52} style={{ marginBottom: 14 }} />
                   <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
                   <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
                 </div>
