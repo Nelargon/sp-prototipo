@@ -3227,3 +3227,25 @@ veces no hay que elegir entre las dos: se puede cambiar la pieza para que
 cumpla las dos. Y un código que lee cómo está *escrito* el estilo, en vez de
 llevar una clase con nombre, se rompe sin avisar el día que cambia cómo se
 escribe. Si un efecto importa, va en una clase que alguien puso a propósito.
+
+
+## Capítulo 87 — Lo que está escondido no es lo mismo que lo que no está (24/09/2026)
+
+**Qué intentamos.** Aplicar el sistema táctil al simulador y, antes de
+fusionar, correr `qa/qa-integral.mjs` dos veces: sobre `main` y sobre el
+cambio, para que la comparación dijera qué movió el cambio y qué ya estaba.
+
+**Qué pasó.** La corrida sobre `main` ya traía un hallazgo nuevo: «7 elementos
+sin cambio visible al recibir foco» en el inicio. Eran los links que viven
+dentro de las respuestas cerradas de la FAQ. Desde el paso 2 esas respuestas
+están en la página aunque estén cerradas, marcadas `inert`, y un elemento
+`inert` no recibe foco: el control lo enfocaba, no pasaba nada y lo anotaba
+como falla. Es el segundo control que cambió de significado el mismo día. El
+primero fue `qa-lanzamiento`, que buscaba el texto de las respuestas en la
+página y ahora lo iba a encontrar siempre.
+
+**Qué aprendimos.** Cuando algo pasa de *no estar* a *estar escondido*, cambia
+el significado de todo control que cuenta lo que hay en la página. Uno empieza
+a dar verde de más y otro, rojo de más. Correr los controles antes y después
+del cambio fue lo que separó un problema real de uno de medición. Sin esa
+corrida de referencia, el falso rojo se habría tomado por un error del paso 3.

@@ -598,8 +598,11 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
      tenerlo — certifica lo que no revisó. Ahora recorre TODOS los visibles. */
   const sinFoco = await page.evaluate(() => {
     const malos = [];
+    // Lo que está dentro de un bloque cerrado e inert (una respuesta plegada de
+    // la FAQ, sistema táctil 24/09) no lo alcanza el Tab: es a propósito, y
+    // contarlo daba falsos «sin foco visible».
     const els = Array.from(document.querySelectorAll('a[href],button,input,select,textarea'))
-      .filter((e) => e.offsetParent !== null);
+      .filter((e) => e.offsetParent !== null && !e.closest('[inert]'));
     window.__focoTotal = els.length;
     for (const el of els) {
       const antes = getComputedStyle(el);
