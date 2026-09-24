@@ -3323,7 +3323,11 @@ devolvió uno del 2 de septiembre. Pasó en verde solo porque `main` tenía
 menos de dos horas; a la mañana siguiente habría sido una falsa alarma de
 «producción vieja». Se leyó el log de la corrida antes de fusionar, no solo el
 tilde verde, y se cambió la pregunta: ¿el commit actual de `main` tiene un
-deploy exitoso? Contar no depende del orden en que GitHub devuelva la lista. Y el verde de una
+deploy exitoso? Contar no depende del orden en que GitHub devuelva la lista. Media
+hora después, la misma corrida marcó el sitio caído por un 503 suelto de
+GitHub Pages en `/lanzamiento/`, que antes y después respondía bien: un
+chequeo de disponibilidad de un solo intento confunde un hipo con una caída.
+Ahora prueba hasta tres veces y, si tuvo que reintentar, lo deja escrito. Y el verde de una
 suite vale lo que cubre: las páginas que nadie abre no fallan, simplemente no
 aparecen. De ahí la puerta nueva, `qa/cobertura-rutas.mjs`: una página sin
 prueba ya no entra.

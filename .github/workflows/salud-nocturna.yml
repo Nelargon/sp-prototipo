@@ -126,9 +126,24 @@ jobs:
         continue-on-error: true
         run: |
           fallas=0
+          # Hasta 3 intentos, 10 s entre uno y otro. El 24/09 GitHub Pages
+          # devolvió un 503 suelto en /lanzamiento/ que 5 minutos antes y
+          # después daba 200: con un solo intento, un hipo del servidor se lee
+          # como caída. Una caída real falla los tres. Si hizo falta
+          # reintentar, queda escrito: el Guardián cuenta esos hipos.
           mirar() { # ruta, código esperado
-            c=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 30 "$SITIO$1")
-            if [ "$c" = "$2" ]; then echo "✓ $1 → $c"; else echo "✗ $1 → $c (se esperaba $2)"; fallas=$((fallas+1)); fi
+            local c visto=""
+            for intento in 1 2 3; do
+              c=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 30 "$SITIO$1")
+              [ "$c" = "$2" ] && break
+              visto="$visto $c"
+              [ "$intento" -lt 3 ] && sleep 10
+            done
+            if [ "$c" = "$2" ]; then
+              if [ -n "$visto" ]; then echo "✓ $1 → $c (al intento $intento; antes:$visto)"; else echo "✓ $1 → $c"; fi
+            else
+              echo "✗ $1 → $c en los 3 intentos (se esperaba $2; vistos:$visto)"; fallas=$((fallas+1))
+            fi
           }
           for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ /guia/guia_home.html \
                    /lanzamiento/ /lanzamiento/simulador/ /lanzamiento/planes/ /lanzamiento/que-cubre/ \
