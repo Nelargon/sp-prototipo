@@ -8,9 +8,12 @@
    El build ya corta si queda un href a un módulo podado
    (scripts/podar-edicion.mjs, hook postbuild). Esto verifica lo que el HTML
    estático no muestra: el menú móvil, que se arma al abrirlo, y las dos
-   preguntas de la FAQ, cuyas respuestas se renderizan recién al desplegarlas.
+   preguntas de la FAQ, abiertas como las abre una persona.
    Es el hallazgo que dejó esta corrida: grepear el HTML del export daba verde
-   con las respuestas sin revisar.
+   con las respuestas sin revisar. Desde el 24/09/2026 las respuestas están en
+   el HTML aunque estén cerradas (Plegable, sistema táctil): por eso no alcanza
+   con buscar el texto en la página. Se mira la respuesta que se abrió, que
+   tenga alto y no esté inert, y que al cerrarse vuelva a quedar inert.
 
    Cómo correr (playwright-core vive FUERA del repo — regla de CLAUDE.md):
      1. build:  NEXT_PUBLIC_BASE_PATH=/sp-prototipo/lanzamiento \
@@ -69,7 +72,7 @@ console.log('\n── menú móvil');
 }
 
 // ── las FAQ vuelven a contestar con la guía ───────────────────────────────
-console.log('\n── FAQ (las respuestas se renderizan al desplegar)');
+console.log('\n── FAQ (se abren y dicen lo que tienen que decir)');
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
@@ -78,18 +81,26 @@ console.log('\n── FAQ (las respuestas se renderizan al desplegar)');
     ['¿La cobertura vale en todo el país?', ['lo podés ver vos mismo en la Guía Médica', 'Buscá en tu ciudad']],
     ['¿Está mi médico o mi sanatorio en la red?', ['no te dejamos sin respuesta', 'Abrí la Guía Médica']],
   ];
+  const respuesta = (btn) => btn.evaluate((b) => {
+    const r = document.getElementById(b.getAttribute('aria-controls'));
+    if (!r) return null;
+    return { abierta: r.dataset.abierto === '1' && !r.inert && r.getBoundingClientRect().height > 0, inert: !!r.inert, txt: r.innerText };
+  });
   for (const [pregunta, frases] of casos) {
-    const btn = page.locator('text=' + pregunta).first();
+    const btn = page.locator('button[aria-controls]', { hasText: pregunta }).first();
     await btn.scrollIntoViewIfNeeded();
     await btn.click();
     await page.waitForTimeout(400);
-    const txt = await page.evaluate(() => document.body.innerText);
+    const r = await respuesta(btn);
+    if (!r || !r.abierta) { mal('"' + pregunta + '" no se abre'); continue; }
     for (const frase of frases) {
-      if (txt.includes(frase)) bien('"' + frase + '"');
+      if (r.txt.includes(frase)) bien('"' + frase + '"');
       else mal('la respuesta no dice: "' + frase + '"');
     }
     await btn.click();
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(400);
+    const c = await respuesta(btn);
+    if (!c || !c.inert) mal('"' + pregunta + '" cerrada sigue recibiendo el foco (falta inert)');
   }
   const txt = await page.evaluate(() => document.body.innerText);
   if (/Mi SP|Pedí tu turno|Agendar un turno/.test(txt)) mal('el home de la v1 todavía nombra Mi SP o agendar');

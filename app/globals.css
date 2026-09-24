@@ -492,9 +492,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
       la página. Lo que solo informa NO lleva sombra: gana contraste con
       color, borde e ícono. Una sombra ahí lo haría parecer un botón.
    3. .tactil: EL TOQUE. Dentro de una página con .tactil, el botón se hunde
-      apenas al apretarlo («te escuché»). Las filas de lista (.fila) se
-      oscurecen en vez de achicarse: una fila que se achica despega sus bordes
-      de la lista.
+      apenas al apretarlo («te escuché»). Se hunden los <button> y los links
+      con forma de botón: a.sq, o a.boton si la forma es cápsula o círculo.
+      Tres excepciones con su porqué: las filas de lista (.fila) se oscurecen,
+      porque una fila que se achica despega sus bordes de la lista; una
+      palabra dentro de una frase (.txt, el glosario) se atenúa, porque una
+      palabra que se achica mueve la línea; y una tarjeta que se toca entera
+      (.tarjeta-toque, con su link .estirado sobre toda la tarjeta) se hunde
+      completa, no solo su botón.
    4. .pleg: LO QUE SE ABRE CRECE en vez de saltar (app/components/Plegable).
       Cerrado queda inert: el lector de pantalla y el Tab no entran.
    5. .hoja: LO QUE SE ELIGE DE UNA LISTA LARGA SUBE EN UNA HOJA desde abajo
@@ -510,9 +515,16 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .rel{box-shadow:var(--sombra-sup)}
 .rel-btn{box-shadow:var(--sombra-ctrl)}
 .rel-btn:active{box-shadow:var(--sombra-ctrl-apretado)}
-.tactil button,.tactil a.sq{transition:transform var(--mov-toque) ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow var(--mov-toque) ease}
-.tactil button:not(.fila):active,.tactil a.sq:active{transform:scale(.97)}
+.tactil button,.tactil a.sq,.tactil a.boton{transition:transform var(--mov-toque) ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow var(--mov-toque) ease}
+.tactil button:not(.fila):not(.txt):active,.tactil a.sq:active,.tactil a.boton:active{transform:scale(.97)}
 .tactil .fila:active{background:var(--toque-gris)!important}
+.tactil .txt{transition:opacity var(--mov-toque) ease}
+.tactil .txt:active{opacity:.55}
+.tarjeta-toque{position:relative}
+.tarjeta-toque .estirado::after{content:'';position:absolute;inset:0}
+.tactil .tarjeta-toque{transition:transform var(--mov-toque) ease}
+.tactil .tarjeta-toque:has(.estirado:active){transform:scale(.98)}
+.tactil .tarjeta-toque .estirado:active{transform:none}
 .pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
 .pleg[data-abierto="1"]{grid-template-rows:1fr;opacity:1}
 .pleg>div{overflow:hidden;min-height:0}
@@ -533,7 +545,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    movimiento» el botón se seguía achicando. Medido en el navegador, no en el
    código. La línea de .gm apaga además las transiciones propias de la guía. */
 @media (prefers-reduced-motion:reduce){
-  .tactil button,.tactil a.sq,.pleg,.hoja-fondo,.hoja-panel{transition:none!important}
-  .tactil button:not(.fila):active,.tactil a.sq:active{transform:none}
+  .tactil button,.tactil a.sq,.tactil a.boton,.tactil .txt,.tactil .tarjeta-toque,.pleg,.hoja-fondo,.hoja-panel{transition:none!important}
+  .tactil button:not(.fila):not(.txt):active,.tactil a.sq:active,.tactil a.boton:active,.tactil .tarjeta-toque:has(.estirado:active){transform:none}
   .gm *{transition:none!important}
 }

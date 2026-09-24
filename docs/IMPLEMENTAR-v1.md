@@ -98,7 +98,10 @@ en otra tecnología, es poco lo que hay que copiar, y está todo en el bloque
 | Tokens `--sombra-*`, `--toque-gris`, `--mov-toque` | Dos alturas de sombra y la duración del toque | Al principio de `app/globals.css` |
 | `.sq` + `--sq` | Esquina de curvatura continua | Cada elemento dice su radio con `--sq` |
 | `.rel` / `.rel-btn` | Sombra de superficie / de control | La sombra va **solo** en lo que se toca o se abre |
-| `.tactil` | El botón se hunde al apretarlo | Una clase en el contenedor de la página |
+| `.tactil` | El botón se hunde al apretarlo | Una clase en el contenedor de la página (y en la barra) |
+| `a.boton` | Link con forma de cápsula o círculo que se hunde | Como `a.sq`, sin cambiar la forma |
+| `.txt` | Una palabra del glosario se atenúa al tocarla | No se achica: movería la línea |
+| `.tarjeta-toque` + `.estirado` | La tarjeta entera es el link y se hunde completa | El `::after` del link cubre la tarjeta; necesita `:has()` |
 | `Plegable` (`app/components/`) | Lo que se abre crece en vez de saltar | Grilla `0fr → 1fr`; cerrado, `inert` |
 | `Hoja` (`app/components/`) | Hoja que sube desde abajo para elegir de una lista larga | Fondo, asa, «×», Escape y tocar afuera la cierran |
 
