@@ -108,6 +108,11 @@ bitácora: …" del usuario entran con su voz.
   BITACORA cap. 88). Inter entró como TTF completo (877 KB): llegaba tarde y
   hacía saltar `/que-cubre` (CLS 0,15). Recortada pesa 125 KB. Toda fuente
   nueva, igual: el comando está en `app/fonts.js`.
+- **Al cambiar cómo se escribe algo, revisar los guardianes que leían la
+  forma vieja** (sep 2026, BITACORA cap. 89). `qa-integral` contaba los
+  radios solo como `border-radius:Npx`; los `--sq:Npx` del sistema táctil le
+  quedaron invisibles y el hallazgo bajaba solo. Un hallazgo que se achica
+  sin que nadie haya decidido nada es sospechoso.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
   medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.

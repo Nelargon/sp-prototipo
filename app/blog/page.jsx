@@ -36,7 +36,7 @@ export default function BlogPage() {
   }));
 
   return (
-    <div className="body" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
+    <div className="body tactil oscuro" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
       <Header variant="dark" />
       {/* 1120px (antes 860): la portada editorial necesita ancho para que la
           destacada y el riel de "Lo último" convivan sin apretarse. */}

@@ -88,11 +88,11 @@ export default async function Ficha({ params }) {
               {f.e === 'Odontología' && <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
               <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
                 {f.tel.map((t) => (
-                  <a key={t} href={telHref(t)} className="disp sq" style={css('--sq:10px;height:42px;padding:0 16px;background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>
+                  <a key={t} href={telHref(t)} className="disp sq" style={css('--sq:var(--r-xs);height:42px;padding:0 16px;background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>
                     Llamar <span className="num-tnum" style={css('margin-left:6px')}>{t}</span>
                   </a>
                 ))}
-                {f.d && <a href={mapaHref(f)} target="_blank" rel="noopener" className="disp sq" style={css('--sq:10px;height:42px;padding:0 16px;border:1.5px solid var(--sp-mint-line-strong);color:var(--sp-navy);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>Cómo llegar</a>}
+                {f.d && <a href={mapaHref(f)} target="_blank" rel="noopener" className="disp sq" style={css('--sq:var(--r-xs);height:42px;padding:0 16px;border:1.5px solid var(--sp-mint-line-strong);color:var(--sp-navy);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>Cómo llegar</a>}
               </div>
             </section>
           ))}

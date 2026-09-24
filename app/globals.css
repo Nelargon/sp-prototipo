@@ -312,8 +312,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .sim-why summary::-webkit-details-marker{display:none}
 .sim-why summary::marker{content:''}
 /* Mi SP y blog: las grillas colapsan por ancho, no por dispositivo */
-.blog-card{transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s}
-.blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}
+/* .blog-card es .tarjeta-toque: la transición y el toque los pone el sistema táctil.
+   El levante es solo para mouse: en el celular el hover queda pegado después
+   del toque, y ahí la señal es el hundirse. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}}
 /* Portada editorial del blog (6 ago 2026): la destacada y el riel "Lo último".
    Señal de toque en las dos, con el mismo vocabulario de hover del resto del
    sitio (dec. 11u): la destacada levanta su título a teal claro, las filas del
@@ -361,18 +363,19 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @media(max-width:640px){.sl-grid{grid-template-columns:1fr !important;gap:26px !important}}
 /* Guías: la fila es número + miniatura + título. En móvil la miniatura se cae
    (132px + 44px dejan al título en una tira de 100px) y queda número + texto. */
-.guia-item{transition:background .18s,border-color .18s}
-.guia-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(128,221,216,.35)}
+/* .guia-item y .guia-card son .tarjeta-toque: su transición la pone el sistema táctil.
+   El fondo y el borde del hover van con !important: el estilo en línea de la
+   tarjeta les ganaba y hasta el 24/09 solo cambiaba el color del título. */
+.guia-item:hover{background:rgba(255,255,255,0.07)!important;border-color:rgba(128,221,216,.35)!important}
 .guia-item-t{transition:color .18s}
 .guia-item:hover .guia-item-t{color:var(--sp-mint)}
 @media(max-width:560px){.guia-item{grid-template-columns:34px 1fr !important;gap:12px !important}.guia-item>*:nth-child(2){display:none}}
-@media(prefers-reduced-motion:reduce){.guia-item,.guia-item-t{transition:none}}
-.guia-card{transition:background .18s,border-color .18s}
-.guia-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(128,221,216,.35)}
+@media(prefers-reduced-motion:reduce){.guia-item-t{transition:none}}
+.guia-card:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(128,221,216,.35)!important}
 .guia-card-t{transition:color .18s}
 .guia-card:hover .guia-card-t{color:var(--sp-mint)}
 @media(max-width:860px){.guias-grid{grid-template-columns:1fr !important}}
-@media(prefers-reduced-motion:reduce){.guia-card,.guia-card-t{transition:none}}
+@media(prefers-reduced-motion:reduce){.guia-card-t{transition:none}}
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
@@ -499,8 +502,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
       porque una fila que se achica despega sus bordes de la lista; una
       palabra dentro de una frase (.txt, el glosario) se atenúa, porque una
       palabra que se achica mueve la línea; y una tarjeta que se toca entera
-      (.tarjeta-toque, con su link .estirado sobre toda la tarjeta) se hunde
-      completa, no solo su botón.
+      (.tarjeta-toque) se hunde completa y un poco menos (.98): es más grande,
+      y .97 en una tarjeta de 700px se ve como un salto. Tiene dos formas: la
+      tarjeta ES el link (<a class="tarjeta-toque">, las notas del blog) o
+      tiene un link .estirado sobre toda ella (la del simulador en el inicio).
+      Sobre fondo azul (.oscuro, blog y Mi SP) la fila se aclara en vez de
+      oscurecerse, y no hay .rel: una sombra azul sobre azul no se ve.
    4. .pleg: LO QUE SE ABRE CRECE en vez de saltar (app/components/Plegable).
       Cerrado queda inert: el lector de pantalla y el Tab no entran.
    5. .hoja: LO QUE SE ELIGE DE UNA LISTA LARGA SUBE EN UNA HOJA desde abajo
@@ -517,15 +524,17 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .rel-btn{box-shadow:var(--sombra-ctrl)}
 .rel-btn:active{box-shadow:var(--sombra-ctrl-apretado)}
 .tactil button,.tactil a.sq,.tactil a.boton{transition:transform var(--mov-toque) ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow var(--mov-toque) ease}
-.tactil button:not(.fila):not(.txt):active,.tactil a.sq:active,.tactil a.boton:active{transform:scale(.97)}
+.tactil button:not(.fila):not(.txt):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active{transform:scale(.97)}
 .tactil .fila:active{background:var(--toque-gris)!important}
 .tactil .txt{transition:opacity var(--mov-toque) ease}
 .tactil .txt:active{opacity:.55}
 .tarjeta-toque{position:relative}
 .tarjeta-toque .estirado::after{content:'';position:absolute;inset:0}
-.tactil .tarjeta-toque{transition:transform var(--mov-toque) ease}
-.tactil .tarjeta-toque:has(.estirado:active){transform:scale(.98)}
+.tactil .tarjeta-toque{transition:transform var(--mov-toque) ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+.tactil .tarjeta-toque:has(.estirado:active),.tactil a.tarjeta-toque:active{transform:scale(.98)}
 .tactil .tarjeta-toque .estirado:active{transform:none}
+/* Fondo azul: el toque aclara. */
+.oscuro{--toque-gris:rgba(255,255,255,.1)}
 .pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
 .pleg[data-abierto="1"]{grid-template-rows:1fr;opacity:1}
 .pleg>div{overflow:hidden;min-height:0}
@@ -547,6 +556,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    código. La línea de .gm apaga además las transiciones propias de la guía. */
 @media (prefers-reduced-motion:reduce){
   .tactil button,.tactil a.sq,.tactil a.boton,.tactil .txt,.tactil .tarjeta-toque,.pleg,.hoja-fondo,.hoja-panel{transition:none!important}
-  .tactil button:not(.fila):not(.txt):active,.tactil a.sq:active,.tactil a.boton:active,.tactil .tarjeta-toque:has(.estirado:active){transform:none}
+  .tactil button:not(.fila):not(.txt):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active,.tactil .tarjeta-toque:has(.estirado:active),.tactil a.tarjeta-toque:active{transform:none}
   .gm *{transition:none!important}
 }

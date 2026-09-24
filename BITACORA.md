@@ -3274,3 +3274,26 @@ sin JavaScript descarta la mitad de las causas en un minuto. Y cuando una
 decisión se aplica a una pieza y no a su gemela («recortar la fuente»), la que
 quedó afuera no avisa: pesa en silencio en cada página, hasta que un control
 la señala.
+
+## Capítulo 89 — El guardián que dejó de ver las esquinas (24/09/2026)
+
+**Qué intentamos.** Arturo pidió llevar el sistema táctil al blog y a Mi SP.
+La receta es la de los pasos anteriores: cada `border-radius:18px` pasa a
+`.sq` con `--sq:18px`, para que la esquina sea continua. Antes de abrir el PR
+se corrió el control integral, como siempre.
+
+**Qué pasó.** El control daba mejor que antes: el hallazgo «pasos de radio sin
+declarar: 14px y 18px» bajaba a «14px×3» y el 18 desaparecía. Nadie había
+decidido nada sobre esos radios; solo habían cambiado de forma de escribirse.
+El guardián contaba `border-radius:Npx` y nada más, y desde la guía (23/09)
+los radios se escriben `--sq:Npx`. Cada esquina que pasaba al sistema se le
+volvía invisible. Contando las dos formas, el número real era 14px×24 y
+18px×11. Y apareció algo que llevaba un día escondido: 25 radios de 10 y 12px
+escritos a mano en la guía, que tenían token (`--r-xs`, `--r-sm`). Pasaron al
+token, sin un píxel de diferencia.
+
+**Qué aprendimos.** Cuando cambia la forma de escribir algo, el control que lo
+lee a la vieja usanza no falla: se queda callado, y callado se parece a
+«mejoró». Un hallazgo que se achica sin que nadie haya decidido nada es
+sospechoso, no una buena noticia. Al cambiar una convención, se revisa en el
+mismo PR qué guardianes leían la anterior.
