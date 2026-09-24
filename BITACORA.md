@@ -3249,3 +3249,28 @@ el significado de todo control que cuenta lo que hay en la página. Uno empieza
 a dar verde de más y otro, rojo de más. Correr los controles antes y después
 del cambio fue lo que separó un problema real de uno de medición. Sin esa
 corrida de referencia, el falso rojo se habría tomado por un error del paso 3.
+
+
+## Capítulo 88 — El salto venía de una fuente que pesaba 877 KB (24/09/2026)
+
+**Qué intentamos.** El control integral marcaba hacía rato un salto visual en
+`/que-cubre` (CLS 0,15, con la vara en 0,1), y lo veníamos dejando como
+«pendiente aparte». Arturo pidió arreglarlo. La tentación era adivinar: una
+imagen sin alto, el buscador que se arma tarde, la hidratación.
+
+**Qué pasó.** Antes de tocar nada se registró el salto con su causa: qué
+elemento se movió, cuánto y cuándo. Fue uno solo, a los 2 segundos: la bajada
+ganaba una línea y empujaba 27 px el buscador y todo lo de abajo. La página
+terminaba igual con JavaScript y sin él, así que no era la hidratación. Era la
+fuente. Inter se servía entera: 877 KB, con cirílico, griego y cientos de
+signos que el sitio no usa. Nunito Sans, la otra fuente, ya estaba recortada
+(49 KB). Se había decidido auto-hospedar las fuentes y la decisión se aplicó
+a una sola. Recortada al alfabeto latino, Inter pesa 125 KB y llega antes de
+que la página se dibuje: el salto pasó de 0,151 a 0,000.
+
+**Qué aprendimos.** Un salto visual no se arregla adivinando: el navegador
+dice qué se movió y cuándo, y eso se mide antes de tocar nada. Probar con y
+sin JavaScript descarta la mitad de las causas en un minuto. Y cuando una
+decisión se aplica a una pieza y no a su gemela («recortar la fuente»), la que
+quedó afuera no avisa: pesa en silencio en cada página, hasta que un control
+la señala.
