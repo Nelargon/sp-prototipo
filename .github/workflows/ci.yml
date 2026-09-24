@@ -25,6 +25,14 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /sp-prototipo
       - name: Verificar que la guía quedó en el export
         run: test -f out/guia/guia_home.html && echo "✓ guía presente en el build"
+      # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
+      # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
+      # cobertura-rutas: una página nueva sin prueba que la abra no entra.
+      - name: Pruebas rápidas (buscador, cobertura de páginas, links internos)
+        run: |
+          node scripts/test-buscador.mjs
+          node qa/cobertura-rutas.mjs
+          node qa/links-internos.mjs out /sp-prototipo
       # La v1 pública se construye del mismo código (app/edicion.js). Si esta
       # rama esconde un módulo pero deja un link apuntándole, el postbuild
       # (scripts/podar-edicion.mjs) corta acá y el PR no se puede fusionar.
@@ -43,3 +51,5 @@ jobs:
           done
           test -f out/guia-medica/P-0001/index.html || { echo "✗ faltan las fichas de la Guía Médica en la v1"; exit 1; }
           echo "✓ la v1 publica home, simulador, planes, qué cubre y la Guía Médica — y nada de lo que no se lanza"
+      - name: Links internos de la v1
+        run: node qa/links-internos.mjs out /sp-prototipo/lanzamiento

@@ -51,15 +51,15 @@ if (VACIAS.size) {
 }
 function MarcaEsp({ e }) {
   if (!CON_MARCA_REVISAR) return null;
-  if (VACIAS.has(e)) return <span title="Sin prestadores publicados (marca interna)" aria-label="sin prestadores, marca interna" style={css('flex:none;width:10px;height:10px;border-radius:var(--r-pill);border:2px solid #F28C28;margin-right:8px')} />;
+  if (VACIAS.has(e)) return <span title="Sin prestadores publicados (marca interna)" aria-label="sin prestadores, marca interna" style={css('flex:none;width:10px;height:10px;border-radius:var(--r-pill);border:2px solid var(--sp-marca-interna);margin-right:8px')} />;
   const n = REVISAR[e];
   if (!n) return null;
-  return <span title={n + (n === 1 ? ' fila' : ' filas') + ' en «Revisar» en la planilla (marca interna)'} aria-label={n + ' a revisar, marca interna'} style={css(INTER + 'flex:none;display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px;font-weight:700;color:#B45F06')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:#F28C28')} />{n}</span>;
+  return <span title={n + (n === 1 ? ' fila' : ' filas') + ' en «Revisar» en la planilla (marca interna)'} aria-label={n + ' a revisar, marca interna'} style={css(INTER + 'flex:none;display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px;font-weight:700;color:#B45F06')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:var(--sp-marca-interna)')} />{n}</span>;
 }
 const LeyendaMarcas = () => (CON_MARCA_REVISAR ? (
   <p style={css(INTER + 'margin:0 2px 8px;font-size:12.5px;line-height:1.5;color:#8A4B08;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center')}>
-    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:#F28C28')} />filas a revisar en la planilla</span>
-    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:10px;height:10px;border-radius:var(--r-pill);border:2px solid #F28C28')} />sin prestadores</span>
+    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:var(--sp-marca-interna)')} />filas a revisar en la planilla</span>
+    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:10px;height:10px;border-radius:var(--r-pill);border:2px solid var(--sp-marca-interna)')} />sin prestadores</span>
     <span style={css('color:var(--sp-muted)')}>Marca interna: no se ve en la v1.</span>
   </p>
 ) : null);
@@ -383,7 +383,7 @@ export default function GuiaMedica() {
         <div role="group" aria-label="Zona" className="sq" style={css('--sq:var(--r-sm);display:flex;gap:4px;background:var(--gm-linea);padding:4px')}>
           {ZONAS.map((z) => {
             const on = f.z === z.k;
-            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink)'))}>{z.n}</button>;
+            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{z.n}</button>;
           })}
         </div>
         <BuscaCiudad f={f} elegir={elegirLugar} limpiar={() => set({ c: '', dp: '' }, 'ciudad')} />

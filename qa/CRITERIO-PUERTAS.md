@@ -26,7 +26,7 @@ que construye.
 
 | Puerta | Objetivo | Estado del prototipo |
 |---|---|---|
-| **1 · Claridad** | A | **NO PASA todavía** — 1.5 pasa desde el 7 sep; 1.4 tiene hallazgos en el blog; 1.1 no se pudo correr |
+| **1 · Claridad** | A | **NO PASA todavía** — 1.5 pasa desde el 7 sep; 1.4 pasa desde el 24 sep (sus hallazgos eran falsos positivos del detector); 1.1 no se pudo correr |
 | **2 · Accesibilidad y rendimiento** | A | **Pasa lo medible**; una métrica no es medible en laboratorio |
 | **3 · Craft, marca y futuro** | B+ | **Pasa 3.1 y 3.3**; 3.2 espera una decisión de marca (`₲` vs `Gs.`) |
 
@@ -48,8 +48,9 @@ que construye.
 1. **La Puerta 1 no pasa todavía — pero ya no por lo que fallaba.** El flujo
    que pide nombre y teléfono **ahora nombra la carencia antes de pedirlos**
    (1.5, arreglado y automatizado el 7 sep). Lo que sigue abierto es la prueba
-   de las diez preguntas, que ni siquiera se pudo correr (1.1), y cinco notas
-   del blog con jerga (1.4).
+   de las diez preguntas, que ni siquiera se pudo correr (1.1). *(Hasta el
+   24/09 decía también «cinco notas del blog con jerga (1.4)»: eran falsos
+   positivos del detector, ver 1.4.)*
 2. **La Puerta 3 pasa por tokens, y no era gratis.** Cuando este boletín se
    escribió, no la pasábamos: 970 colores a mano. Se hizo la pasada (§3.1) y hoy
    el guardián está verde con una vara más exigente que la que tenía. Lo que
@@ -70,12 +71,23 @@ que construye.
 |---|---|---|
 | **1.2** Lugar permanente para lo que NO cubrimos, sin PDF ni enlace externo | **Inspección manual** de la sección de planes: contiene exclusiones ("Para que no haya sorpresas"), carencias por servicio y el aviso de los 10 meses de parto, en la misma página, sin abrir nada | ✅ *(no automatizado)* |
 | **1.3** Precio con piso real, no "consultanos" | **Inspección manual** del hero (publica "desde ₲ 238.000") + **automatizado** el recorrido del simulador hasta ver un precio sin dejar datos | ✅ *(el origen del "desde" NO está verificado — ver abajo)* |
-| **1.4** Lenguaje de paciente, cero jerga | **Automatizado**: la suite busca `cartilla`, `prestación` y `práctica` en el HTML publicado de las 9 páginas | ⚠️ **3 notas del blog** dicen "práctica"; 2 tienen placeholders "a confirmar" |
+| **1.4** Lenguaje de paciente, cero jerga | **Automatizado**: la suite busca `cartilla`, `prestación` y `práctica` (como sustantivo: «la práctica», «prácticas») en el HTML publicado de todo el export | ✅ **PASA** desde el 24/09/2026 — ver abajo. Antes decía: ⚠️ 3 notas del blog dicen "práctica"; 2 tienen placeholders "a confirmar" |
 | **1.5** El flujo que pide datos avisa antes de pedirlos | **Automatizado** (7 sep 2026): la suite llega al resultado del simulador y verifica sobre el DOM que el bloque de esperas existe, tiene tamaño, **precede al formulario** y trae la espera más cara de descubrir tarde (parto, 10 meses); en 390px, además, que entra sin desborde | ✅ **PASA** — ver abajo |
 | **1.1** Prueba de las diez preguntas | **No se puede correr todavía**: la lista de las 10 preguntas reales no está cerrada. Existe material previo en `sp-interno` (`PREGUNTAS-FRECUENTES-asesores-2026-07.md`, 4 asesores) — no se arranca de cero | ⏸ Pendiente |
 
 **Sobre 1.4:** los hallazgos son de notas del blog publicadas por el motor de
 contenido, no de las páginas de producto. Se corrigen en `sp-contenido`.
+
+> **24/09/2026 — los hallazgos de 1.4 eran del detector, no del blog.** Al
+> armar la salud nocturna (`.github/workflows/salud-nocturna.yml`) se leyó
+> cada hallazgo: los diez «práctica» eran el giro «en la práctica» (y un
+> adjetivo, «implicancia práctica»), que es castellano de familia, no jerga; los
+> dos «a confirmar» eran «para confirmarlo» y «vale la pena confirmar», que la
+> expresión encontraba adentro de otras palabras. Ninguno era la jerga que la
+> regla prohíbe. El detector ahora marca «práctica» solo como sustantivo
+> («la práctica», «una práctica», «prácticas») y «a confirmar» solo como
+> palabra suelta. **No hay nada que corregir en `sp-contenido`**: el párrafo de
+> arriba mandaba a cambiar textos que estaban bien. BITACORA cap. 89.
 
 **Sobre 1.3 — una afirmación que había que bajar de tono.** La versión anterior
 de esta fila decía *"la suite verifica que el 'desde' del hero sale de `plans()`

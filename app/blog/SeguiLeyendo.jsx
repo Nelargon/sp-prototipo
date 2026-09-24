@@ -18,7 +18,7 @@ export default function SeguiLeyendo({ notas }) {
   return (
     <div style={css('max-width:680px;margin:0 auto;padding:0 24px 8px')}>
       <div style={css('border-top:1px solid var(--sp-line-2);padding-top:30px')}>
-        <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9A9A9A;margin-bottom:18px')}>
+        <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-muted);margin-bottom:18px')}>
           Seguí leyendo
         </div>
 

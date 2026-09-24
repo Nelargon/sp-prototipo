@@ -70,7 +70,7 @@ export default async function BlogPost({ params }) {
       <div dangerouslySetInnerHTML={{ __html: html }} />
       {post.sources.length > 0 && (
         <div style={css('border-top:1px solid var(--sp-line-2);margin-top:30px;padding-top:18px')}>
-          <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#9A9A9A;margin-bottom:9px')}>Fuentes</div>
+          <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--sp-muted);margin-bottom:9px')}>Fuentes</div>
           <ul style={css('margin:0;padding-left:18px')}>
             {post.sources.map((s) => (
               <li key={s} style={css('margin-bottom:5px')}><a href={s} target="_blank" rel="noopener" style={css('font-size:13px;color:var(--sp-teal-deep);word-break:break-all')}>{s}</a></li>

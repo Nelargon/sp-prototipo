@@ -109,7 +109,7 @@ bitácora: …" del usuario entran con su voz.
   hacía saltar `/que-cubre` (CLS 0,15). Recortada pesa 125 KB. Toda fuente
   nueva, igual: el comando está en `app/fonts.js`.
 - **Al cambiar cómo se escribe algo, revisar los guardianes que leían la
-  forma vieja** (sep 2026, BITACORA cap. 89). `qa-integral` contaba los
+  forma vieja** (sep 2026, BITACORA cap. 90). `qa-integral` contaba los
   radios solo como `border-radius:Npx`; los `--sq:Npx` del sistema táctil le
   quedaron invisibles y el hallazgo bajaba solo. Un hallazgo que se achica
   sin que nadie haya decidido nada es sospechoso.
@@ -158,3 +158,11 @@ bitácora: …" del usuario entran con su voz.
   algo con una expresión que sirve, se anota ahí en el mismo PR, textual y
   con fecha. Nunca inventarle anécdotas u opiniones que no dijo.
 - Los eventos `track()` nunca llevan nombre/teléfono/email.
+- **Lo nuevo entra con su prueba (24 sep 2026, rutina de salud).** Toda
+  página nueva (`app/**/page.jsx`) se suma a una suite con navegador
+  (`PAGINAS_APP` de `qa/qa-integral.mjs`, o `qa/qa-lanzamiento.mjs` si sale en
+  la v1) en el mismo PR: `qa/cobertura-rutas.mjs` corta el CI si no. Y todo
+  detector que se agrega a la QA se prueba contra un caso que debe fallar y uno
+  que no: un detector que grita en falso manda a corregir lo que estaba bien
+  (BITACORA cap. 89). El sistema completo de salud diaria está en el HANDOFF
+  («🩺 LA RUTINA DIARIA DE SALUD») y su manual en `sp-interno/salud/GUARDIAN.md`.

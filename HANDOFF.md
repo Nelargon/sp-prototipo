@@ -13,7 +13,77 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: julio 2026.*
+*Última actualización: 24 sep 2026.*
+
+---
+
+## 🩺 LA RUTINA DIARIA DE SALUD — el Guardián (24 sep 2026)
+
+**Arturo, 24/09/2026:** *«Quiero crear una rutina que garantice que todos los
+repositorios de Salud Protegida funcionen correctamente, sean coherentes y estén
+actualizados […] a medida que añada nuevos elementos, se mantengan coherentes y
+actualizados.»* Y: *«la idea es que no me esperes. Sigue revisando y arreglando
+todo lo que puedas».*
+
+**Dos capas, cada una con lo que hace bien:**
+
+| Capa | Qué es | Cuándo | Qué mira |
+|---|---|---|---|
+| **1 · Salud nocturna** | `.github/workflows/salud-nocturna.yml` (GitHub Actions, sin IA) | 05:00 ASU | Build de las dos ediciones · buscador · cobertura de páginas · links internos · QA integral (cero «roto») · QA de la v1 · **el sitio en vivo** · producción = `main` · que el Guardián esté vivo |
+| **2 · El Guardián** | Routine de Claude, sesión nueva cada día | 06:00 ASU | Lee la capa 1, cruza los **tres repos** (docs contra realidad, PRs e issues trabados, rutinas que no produjeron, Guía Médica contra la planilla del Drive), arregla lo seguro, reporta lo demás en el tablero |
+
+- **El manual del Guardián** (rol, métricas, qué arregla solo y qué nunca toca,
+  cómo sumar algo nuevo a la vigilancia) vive en **`sp-interno/salud/GUARDIAN.md`**,
+  porque cruza los tres repos y dos son privados. La Routine solo lo apunta: lo
+  que cambia se cambia en el manual, por PR, no en el prompt.
+- **El tablero** es un issue fijo de este repo con la etiqueta `tablero-salud`:
+  el Guardián reescribe su cuerpo todos los días (semáforo + fecha). Si la
+  fecha envejece más de 30 h, la salud nocturna se pone en rojo: **las dos capas
+  se vigilan entre sí**, porque un vigilante que se cae en silencio se ve igual
+  que uno que no encontró nada. El tablero es público: nombra repos y estados,
+  nunca contenido privado.
+- **Lo que falla abre issue**: la capa 1 abre (o comenta) uno `salud-nocturna` y
+  lo cierra sola cuando vuelve a verde.
+- **Por qué el sitio en vivo lo mira la capa 1 y no el Guardián:** el
+  contenedor de las sesiones de Claude no llega a `github.io` (la red lo
+  bloquea: medido el 24/09). GitHub Actions sí.
+
+**La regla que protege lo que viene («lo nuevo entra con su prueba»):**
+`qa/cobertura-rutas.mjs` corta el CI de cualquier PR que agregue una página
+(`app/**/page.jsx`) que ninguna prueba abra. Se cumple sumándola a
+`PAGINAS_APP` de `qa/qa-integral.mjs` (o a `qa-lanzamiento.mjs` si sale en la
+v1), o anotándola en `EXENTAS` con el motivo. El mensaje de error dice cómo.
+
+**Pruebas nuevas, también en el CI de cada PR** (segundos, sin navegador):
+`scripts/test-buscador.mjs`, `qa/cobertura-rutas.mjs` y `qa/links-internos.mjs`
+(todo href/src interno y todo el sitemap de las dos ediciones resuelven a un
+archivo del export; hoy: 28.218 links en el prototipo, 21.192 en la v1, cero
+rotos).
+
+**Lo que encontró la corrida cero (24/09) y se arregló en el mismo PR:**
+- **13 de los 15 hallazgos del QA integral eran falsas alarmas** del detector
+  de jerga: «en la práctica» contaba como la jerga «práctica», y «para
+  confirmarlo» como el placeholder «a confirmar». Corregido el detector, no
+  los textos (BITACORA cap. 89). La fila 1.4 de `qa/CRITERIO-PUERTAS.md` pasa.
+- **Tres tipos de página que ninguna prueba abría**: `/mi-sp/`, las notas del
+  blog y las guías del blog; y `/que-cubre/` y `/guia-medica/` —las dos más
+  importantes de la v1— no estaban en el barrido de accesibilidad y
+  responsive del QA integral. Entraron las cinco. Destaparon dos errores de
+  contraste reales: «Seguí leyendo» y «Fuentes» del blog (2,81:1 → 5,33:1, pasan
+  a `--sp-muted`) y la zona no elegida del selector de la Guía Médica, que sale
+  en la v1 (4,39:1 → 5,67:1, pasa a `--sp-estado-ink-2`). Medido computado en
+  el navegador.
+- **Una prueba que daba verde por accidente:** la del modo personalizado de la
+  guía vieja pedía `?plan=integral`, un plan que ya no existe. Sin internet (en
+  las sesiones de Claude) el banner se veía vacío y pasaba; en GitHub fallaba.
+  Ahora pide `?plan=silver` y verifica que el banner diga «Plan Silver».
+- El naranja de la marca interna de la guía («Revisar», «sin prestadores»),
+  repetido 5 veces a mano, pasa a token: `--sp-marca-interna`. Sin cambio
+  visible; sigue apareciendo solo en el prototipo (98 puntos) y nunca en la v1
+  (0), medido.
+- QA integral después: **68 verificaciones OK · 2 hallazgos, los dos
+  cosméticos y ajenos al código** (testimonios reales pendientes de SP; dos
+  radios sin nombre, que son decisión de diseño).
 
 ---
 
@@ -170,7 +240,7 @@ píxel a píxel, y `qa-lanzamiento` sigue verde.
     el color del título: el estilo en línea de la tarjeta le ganaba a la regla.
     Ahora va con `!important`, como el resto de los hover del sitio.
 - **El guardián de radios de `qa-integral` estaba ciego a `--sq`** (BITACORA
-  cap. 89). Contaba solo `border-radius:14px`, y desde la guía los radios se
+  cap. 90). Contaba solo `border-radius:14px`, y desde la guía los radios se
   escriben `--sq:14px`. Con este paso el hallazgo de 14 y 18px habría
   **bajado solo** (a «14px×3», y el 18 desaparecía) sin que nadie decidiera
   nada. Ahora cuenta las dos formas: **14px×24 · 18px×11**, el número real. Y
