@@ -345,6 +345,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .cmp-inner{min-width:640px}
 .cmp-row{display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr}
 .cmp-hint{display:none}
+/* Las frases del bloque «Simulá tu plan» (inicio). Sin ícono desde el 24/09
+   (el texto ya lo dice): en una línea van separadas por un punto; en el
+   celular van una debajo de la otra, porque un punto al final de la línea
+   queda colgando. */
+.frases-sim{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px}
+@media (max-width:560px){.frases-sim{flex-direction:column;gap:8px}.frases-sim .punto{display:none}}
 @media(max-width:640px){
   .cmp-inner{min-width:520px}
   .cmp-row{grid-template-columns:104px 1fr 1fr 1fr}

@@ -17,45 +17,72 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
-## 🎨 ÍCONOS PROPIOS — EN EXPLORACIÓN (24 sep 2026)
+## 🎨 ÍCONOS PROPIOS — APLICADOS (24 sep 2026)
 
-> ⚠ **EN DISEÑO, no construir.** No se aplican íconos nuevos ni se sacan los de
-> hoy hasta que Arturo elija el estilo. Las láminas de todo el recorrido están en
-> `docs/diseno/` (lecciones 6 a 12).
+Arturo, sobre los íconos del sitio: eran genéricos (librería Lucide, la usan
+miles de sitios), y quería íconos *«más creativos, más nuestros»*. Recorrido
+completo, con sus láminas, en `docs/diseno/` (lecciones 6 a 16). Después de las
+pruebas, el paso: *«ya podemos ir aplicando los cambios según lo que hablamos
+en la página»* (24/09/2026). Y al ver la primera versión (azul sin base en los
+fondos claros), la corrección: *«no era que íbamos a seleccionar todo A3?»* y
+*«la idea era que también ese estilo gráfico de trazo a mano. Hay algo humano y
+auténtico en eso»* (BITACORA cap. 98).
 
-Arturo, sobre los íconos del sitio: son genéricos (librería Lucide, la usan
-miles de sitios), y quiere íconos *«más creativos, más nuestros»*.
+**La regla (no re-litigar sin motivo):**
+- **Trazo a mano, blanco y repasado, sobre su mancha turquesa, en todos los
+  fondos (A3).** Es el único tratamiento que funcionó en los cuatro fondos del
+  sitio, porque trae su propia base. El repasado (un segundo trazo al 45 %,
+  apenas corrido) es lo que mantiene la mano visible dentro del círculo.
+- **Portadas del blog:** el mismo trazo blanco repasado, sobre la base
+  translúcida de la portada. La mancha turquesa mezclaría territorios de color
+  (Sage, Lavender, Terracota) que la marca no deja mezclar.
+- **Un ícono se gana su lugar** (regla de Arturo): solo si hace algo que el
+  texto solo no hace. En un botón que ya dice «Guía Médica», no va.
+- **Las señales de uso se quedan simples:** flechas, tildes, flechitas de menú,
+  «×», lupa, WhatsApp, el teléfono de urgencias, los marcadores de las notas y
+  de las tarjetas de la guía («Cómo llegar», «Visar la orden»).
+- **La «Línea SP» (sacada del isotipo) queda descartada.** Arturo: *«No se ve
+  como un toque personal.»* Que ninguna sesión la retome.
 
-**Decidido:**
-- **La «Línea SP» (sacada del isotipo) queda descartada.** Arturo: *«No se ve como
-  un toque personal.»* Que ninguna sesión la retome.
-- **Un ícono se gana su lugar** (regla de Arturo): solo si hace algo que el texto
-  solo no hace. En un botón que ya dice «Guía Médica» o «Simulá tu plan», sobra.
-  Clasificación de los 111 íconos del código:
-  - **22 se van:** los de los botones de la barra y el hero, y el rayo y las
-    frases de confianza del bloque del simulador.
-  - **77 son señales de uso:** flechas, tildes, flechitas de menú, «×», lupa,
-    WhatsApp y el teléfono de urgencias. Se quedan simples.
-  - **12 lugares llevan ícono propio (unas 20 piezas):** «Lo que casi nadie te
-    garantiza», la banda de la Guía Médica, «Ver mi red» y «En camino» en Mi SP,
-    el «¡Listo!» del simulador, «Visar una orden» y el consejo de la guía, el
-    aviso de tiempo de espera y las portadas del blog.
-- **Lo que atrae es el trazo a mano**, y el color se elige según el fondo
-  (Arturo: *«La combinación de colores depende del fondo; debemos elegir la
-  aplicación correcta según el color de fondo»*).
+**Cómo se usa.** `IconoSP` (`app/components/IconoSP.jsx`) con `nombre` y
+`size`; el mismo ícono sirve en cualquier fondo. Los dibujos están en
+`app/components/iconos-sp.js`: 19 dibujos en un cuadro de 48×48. Un dibujo
+nuevo va ahí, en la misma mano y simple: lo que limita el tamaño es el
+detalle, no el estilo.
 
-**Medido en las pruebas:**
-- El trazo blanco sobre su círculo turquesa (A3) es el único que funciona en los
-  cuatro fondos del sitio.
-- El trazo azul sin base (A2) desaparece en el azul (1,3 a 1).
-- La mancha menta (A1) solo se distingue sobre blanco.
-- El tamaño lo limita el detalle, no el estilo: lo simple se lee a 24 px.
-- «Salud mental» con dos globos se confunde con «Escribinos»: necesita otra
-  metáfora.
+**Dónde se aplicó (9 lugares):**
+- Inicio: «Lo que casi nadie te garantiza» (papel con lupa, casa con la cruz,
+  cabeza con un corazón, elegida por Arturo entre tres ideas: *«Vamos con la
+  cabeza con el corazón»*), la banda de la Guía Médica (pin con la cruz; Lister
+  en la rama sin guía) y el aviso de tiempo de espera (reloj).
+- Mi SP: «Ver mi red» (pin con la cruz) y «En camino» (plan, credencial,
+  turnos y pagos).
+- Simulador: el final. **Hoy siempre se ve «¡Listo! Falta un solo toque»**,
+  porque `HUBSPOT_FORM_ID` está vacío y el lead va por WhatsApp: el dibujo es
+  un globo con la flecha de enviar, no un tilde (todavía no se mandó nada). El
+  «¡Listo!» con tilde está puesto para cuando el formulario del CRM se conecte;
+  ese estado no se pudo ver en el navegador.
+- Guía Médica (sale en la v1): el panel «Visá tu orden médica» (la orden con
+  su sello) y el consejo del buscador (bombilla).
+- Blog: las portadas, una por categoría (papel, edificio con la cruz, escudo,
+  corazón, sol sobre el horizonte; sin categoría, el libro).
 
-**Propuesta sobre la mesa, esperando a Arturo:** trazo a mano siempre; en fondos
-claros, A2; en azul, A3. Para el set final, un ilustrador podría redibujar el
-trazo de los momentos grandes («¡Listo!», estados vacíos).
+**Qué se fue (18 del inventario):** los íconos de los botones de la barra
+(Guía Médica, Agendar, Simulá tu plan, en `Header.jsx` y en el inicio), los del
+botón «Ya soy de SP» del hero, el rayo y los íconos de las tres frases del
+bloque «Simulá tu plan» (las frases quedan; en el celular, una debajo de la
+otra), el rayo de la barra de abajo del celular, las frases de confianza de
+`/simulador/` y su candado, el ícono de «Retomar mi simulación» y el de «Visar
+una orden» en el encabezado de la guía. **Se había estimado en 22:** la lista
+línea por línea no quedó guardada y, rehecha con la misma regla, da 18
+(BITACORA cap. 97).
+
+**Pendientes:**
+- Los momentos grandes («¡Listo!», estados vacíos) los podría redibujar un
+  ilustrador más adelante. Los dibujos de hoy son de Claude y se nota.
+- **Verificar el deck «Cómo diseñamos SP»** (las 12 lecciones en diapositivas,
+  un artefacto privado de Arturo en claude.ai): quedó publicado sin revisar
+  renderizado, a propósito, y Arturo lo dejó como pendiente el 24/09.
 
 ## 📬 EL BLOG LLEGA POR CORREO (24 sep 2026)
 

@@ -3515,3 +3515,68 @@ noche.
 una sesión futura lee «se eligió la B» y no puede ver por qué. Desde hoy, toda
 lámina que enseña algo se guarda en `docs/diseno/` con su lección: qué muestra,
 qué se decidió y por qué. Con esa forma sirve de diapositiva tal cual.
+
+## Capítulo 97 — Los 22 que eran 18, y el tilde que se adelantaba (24/09/2026)
+
+**Qué intentamos.** Aplicar los íconos propios al sitio, con la regla que había
+quedado sobre la mesa: trazo a mano siempre, azul sin base en fondo claro,
+blanco sobre su mancha turquesa en azul. Arturo dio el paso: *«ya podemos ir
+aplicando los cambios según lo que hablamos en la página»*. El plan decía «sacar
+los 22 íconos que sobran».
+
+**Qué pasó.** Dos cosas que no estaban en el plan.
+
+La primera: el 22 no se podía revisar. Yo había clasificado los 111 íconos del
+código y había guardado la cifra, no la lista. Al rehacer la clasificación con la
+misma regla (se va el que repite el texto de un botón o de una frase), dieron 18.
+Puede que el 22 contara algo que hoy no veo o que estuviera mal; no hay forma de
+saberlo, y eso es el problema.
+
+La segunda apareció al recorrer el simulador hasta el final. El código tiene dos
+finales: «¡Listo, Ana!» cuando el lead entra al CRM, y «¡Listo, Ana! Falta un
+solo toque» cuando hay que mandarlo por WhatsApp. Como `HUBSPOT_FORM_ID` está
+vacío, **todas las personas ven el segundo**. Y el ícono de ese final era un
+tilde, que dice «ya está», cuando todavía falta que la persona toque el botón.
+Ahora es un globo con la flecha de enviar; el tilde queda para el final que
+llegue cuando se conecte el CRM.
+
+![Mi SP, simulador, Guía Médica y blog, antes y ahora](docs/diseno/img/2026-09-24-iconos-antes-y-ahora-resto.webp)
+
+**Qué aprendimos.** Una cifra que resume una lista viaja con la lista, o no
+existe: es la regla de «sin fuente y fecha, un dato no existe» aplicada a
+nuestro propio trabajo. Esta vez la lista quedó en el HANDOFF, lugar por lugar.
+Y un ícono de estado se diseña para el estado que la gente ve de verdad, que no
+siempre es el que imaginamos: antes de dibujarlo, se lee qué rama toma el
+código hoy. Es la lección 2 del sistema táctil («cada movimiento avisa algo
+verdadero») llevada a un dibujo.
+
+## Capítulo 98 — «Lo que hablamos» no era lo que yo había propuesto (24/09/2026)
+
+**Qué intentamos.** Después de las pruebas de íconos había dos reglas sobre la
+mesa: la que propuso Claude (trazo azul sin base en los fondos claros y blanco
+sobre la mancha turquesa en el azul) y una más simple, la mancha turquesa en
+todas partes, que Claude mencionó y desaconsejó: una fila de círculos iguales
+sobre blanco podía volverse monótona. Arturo dijo *«ya podemos ir aplicando los
+cambios según lo que hablamos en la página»*, y Claude aplicó la de dos reglas.
+
+**Qué pasó.** Cuando el PR estaba por fusionarse, Arturo lo frenó: *«Espera, no
+era que íbamos a seleccionar todo A3?»*. Y enseguida: *«la idea era que también
+ese estilo gráfico de trazo a mano. Hay algo humano y auténtico en eso»*.
+«Lo que hablamos» era, para él, la mancha turquesa que le había gustado desde la
+primera lámina (*«con el circulito turquesa, el blanco interior queda muy
+bien»*), no la propuesta que se discutió al final. Se armó la comparación en
+siete lugares reales del sitio, y la monotonía que preocupaba no aparecía: los
+círculos caen en secciones distintas y nunca forman una fila. Quedó un detalle
+que sí importaba para lo humano que él pedía: dentro del círculo el dibujo se
+achica y pierde el trazo repasado, que es donde más se nota la mano. Se le
+devolvió el repasado.
+
+![A2 en claro y A3 en azul, o A3 en todas partes](docs/diseno/img/2026-09-24-iconos-a3-en-todas-partes.webp)
+
+**Qué aprendimos.** Cuando hay más de una opción sobre la mesa, «lo que
+hablamos» se confirma con el nombre de la opción antes de construir: una
+pregunta de una línea habría ahorrado un PR entero rehecho. Una preocupación
+que se formó mirando íconos sueltos se prueba en los lugares reales antes de
+convertirla en regla, como la lección 9 ya decía de los íconos mismos. Y ante
+dos reglas que funcionan, la más simple es más fácil de sostener: un ícono, un
+tratamiento, cualquier fondo.

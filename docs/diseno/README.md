@@ -85,7 +85,7 @@ tamaño pasó a querer decir algo (cap. 92).
 
 ---
 
-## Parte 2 · Íconos propios (24/09/2026, en exploración)
+## Parte 2 · Íconos propios (24/09/2026)
 
 Arturo, sobre los íconos de hoy: son genéricos, y quiere íconos *«más creativos,
 más nuestros»*, como los de Claude.
@@ -180,3 +180,76 @@ mental, se pueden leer como «Escribinos» por WhatsApp: hace falta otra idea.
 **Estado (24/09/2026):** propuesta sobre la mesa, esperando a Arturo: trazo a
 mano siempre; en fondos claros, trazo azul sin base (A2); en azul, trazo blanco
 sobre el círculo turquesa (A3).
+
+**Después (24/09/2026):** Arturo dio el paso (*«ya podemos ir aplicando los
+cambios según lo que hablamos en la página»*) y la propuesta se aplicó al sitio.
+Al verla, la corrigió: todo A3 (lección 16). Lecciones 13 a 16.
+
+### 13 · Una sola mano para todo el sitio
+
+![El juego completo de íconos propios, en sus fondos y tamaños](img/2026-09-24-iconos-juego-completo.webp)
+
+**Qué muestra.** Las 19 piezas que usa el sitio, cada una sobre blanco, menta y
+azul, y chicas a 24 y 32 px. Las del blog, además, sobre su portada.
+
+**Qué se decidió.** Todas salen de la misma mano: el trazo que no cierra
+perfecto, repasado y apenas corrido, blanco sobre su mancha turquesa. El mismo
+ícono sirve en cualquier fondo porque trae su propia base. Las portadas del blog
+llevan el mismo trazo sobre la base translúcida de la portada: la mancha
+turquesa sobre Sage, Lavender o Terracota mezclaría dos territorios de color que
+la marca no deja mezclar. Los dibujos viven en `app/components/iconos-sp.js` y
+se ponen con `IconoSP`.
+
+### 14 · El dibujo dice lo que pasa de verdad
+
+![El inicio, antes y ahora](img/2026-09-24-iconos-antes-y-ahora-inicio.webp)
+
+![Mi SP, simulador, Guía Médica y blog, antes y ahora](img/2026-09-24-iconos-antes-y-ahora-resto.webp)
+
+**Qué muestra.** Cada lugar tocado, en celular, antes y ahora: los botones que
+perdieron el ícono y los lugares que ganaron el dibujo propio.
+
+**Qué se vio.** El final que ve hoy quien usa el simulador es «¡Listo, Ana!
+Falta un solo toque»: todavía no se mandó nada, porque falta que toque el botón
+de WhatsApp. El ícono de antes era un tilde, que dice «ya está». Ahora es un
+globo con la flecha de enviar. Es la lección 2 aplicada a un dibujo: lo que se
+muestra tiene que avisar algo verdadero. Y los botones que ya decían «Guía
+Médica» o «Simulá tu plan» quedaron más limpios sin su ícono, como había dicho
+Arturo (lección 7).
+
+### 15 · Una metáfora nueva se elige entre varias
+
+![Salud mental: tres ideas](img/2026-09-24-iconos-salud-mental-tres-ideas.webp)
+
+**Qué muestra.** Tres ideas para «Salud mental incluida», grandes y en su
+tarjeta del inicio: una cabeza con un corazón, una cabeza con un brote y una
+mano que sostiene un corazón.
+
+**Estado (24/09/2026):** en el sitio va la cabeza con el corazón, que dice mente
+y cuidado a la vez. La mano no dice «mente» y se puede leer como cuidado en
+general. Las tres quedan dibujadas hasta que Arturo elija.
+
+**Qué se decidió.** Arturo: *«Vamos con la cabeza con el corazón»*. Dice mente y
+cuidado a la vez, y no se confunde con ningún otro ícono del sitio. Las otras dos
+salieron del archivo de dibujos; quedan en esta lámina.
+
+### 16 · La regla más simple, vista en su lugar
+
+![A2 en claro y A3 en azul, o A3 en todas partes, en los lugares reales](img/2026-09-24-iconos-a3-en-todas-partes.webp)
+
+![A3 con trazo único y con trazo repasado](img/2026-09-24-iconos-trazo-repasado.webp)
+
+**Qué muestra.** Arriba, siete lugares del sitio con las dos reglas que había
+sobre la mesa: trazo azul sin base en los fondos claros y A3 en el azul, o A3 en
+todas partes. Abajo, A3 con el trazo único, con el trazo repasado y con el
+dibujo más grande.
+
+**Qué se decidió.** A3 en todas partes. Arturo: *«no era que íbamos a
+seleccionar todo A3?»*, y del trazo, *«Hay algo humano y auténtico en eso»*. La
+propuesta de Claude había sido la de dos reglas, por miedo a que una fila de
+círculos turquesa iguales se volviera monótona sobre blanco. En los lugares
+reales ese miedo no se sostiene: los círculos quedan en secciones distintas y
+nunca forman una fila larga. Para que la mano se siga viendo dentro del círculo,
+el trazo va repasado (fila del medio). El dibujo más grande ya toca el borde de
+la mancha. La lección: una regla se juzga en su lugar, no en una lámina de íconos
+sueltos (como la lección 9), y ante dos reglas que funcionan gana la más simple.

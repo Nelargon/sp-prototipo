@@ -9,6 +9,7 @@ import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import Plegable from '../components/Plegable';
 import Hoja from '../components/Hoja';
+import IconoSP from '../components/IconoSP';
 import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
 import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
@@ -103,7 +104,6 @@ const Icono = {
   der: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>,
   x: <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>,
   check: <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>,
-  idea: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4" /><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z" /></svg>,
   pin: <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>,
   wa: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z" /></svg>,
 };
@@ -349,7 +349,7 @@ export default function GuiaMedica() {
         <div style={css('display:flex;flex-direction:column;gap:8px')}>
           <div style={css('display:flex;justify-content:space-between;align-items:flex-start;gap:12px')}>
             <h1 className="disp" style={css('margin:0;font-size:clamp(34px,6vw,44px);line-height:1.05;font-weight:900;color:var(--sp-navy);letter-spacing:-0.01em')}>Guía médica</h1>
-            <button type="button" onClick={() => abrirVisar('encabezado')} className="disp" style={css('flex-shrink:0;margin-top:4px;height:36px;padding:0 12px;border-radius:var(--r-pill);border:1.5px solid var(--sp-teal-deep);background:#fff;color:var(--sp-teal-deep);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer')}>{Icono.orden} Visar una orden</button>
+            <button type="button" onClick={() => abrirVisar('encabezado')} className="disp" style={css('flex-shrink:0;margin-top:4px;height:36px;padding:0 12px;border-radius:var(--r-pill);border:1.5px solid var(--sp-teal-deep);background:#fff;color:var(--sp-teal-deep);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer')}>Visar una orden</button>
           </div>
           <p style={css(INTER + 'margin:0;font-size:15px;line-height:1.45;color:var(--sp-text-2)')}>Médicos, sanatorios y laboratorios, con dirección y teléfono.</p>
           <div style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>Datos al <b style={css('color:var(--sp-navy)')}>{fecha}</b> · <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias' })} style={css('color:var(--sp-muted);text-decoration:underline;text-underline-offset:3px')}>Ambulancia y emergencias</a></div>
@@ -359,7 +359,7 @@ export default function GuiaMedica() {
         <Plegable abierto={visar} enColumna>
           <section ref={refVisar} aria-label="Visar una orden médica" className="sq" style={css('--sq:var(--r-md);scroll-margin-top:90px;background:#fff;border:1.5px solid var(--sp-teal-deep);padding:16px;display:flex;flex-direction:column;gap:10px')}>
             <div style={css('display:flex;justify-content:space-between;align-items:center')}>
-              <h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2>
+              <div style={css('display:flex;align-items:center;gap:8px')}><IconoSP nombre="orden" size={40} /><h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2></div>
               <button type="button" onClick={() => setVisar(false)} aria-label="Cerrar" style={css('width:36px;height:36px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>
             </div>
             <p style={css(INTER + 'margin:0;font-size:14px;line-height:1.5;color:var(--sp-text-2)')}>Mandá una foto de la orden y decinos dónde te vas a hacer el estudio. La visación vale 30 días.</p>
@@ -454,7 +454,7 @@ export default function GuiaMedica() {
                 <span>¿Es una emergencia? Llamá a la ambulancia, las 24 horas</span><span className="num-tnum" style={css('white-space:nowrap')}>(021) 319 0000</span>
               </a>
             )}
-            {sint.motivo && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:2px;color:var(--sp-teal-deep);display:flex')}>{Icono.idea}</span><span>{sint.motivo}</span></p>}
+            {sint.motivo && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:-1px;display:flex')}><IconoSP nombre="consejo" size={24} /></span><span>{sint.motivo}</span></p>}
             {f.esp && datos.notas[f.esp] && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14px;line-height:1.5;color:var(--sp-text);background:#fff;border:1px solid var(--gm-linea);padding:10px 12px')}>{datos.notas[f.esp]}.</p>}
             {f.q.toLowerCase().includes('lister') && datos.lister.length > 0 && (
               <details className="sq rel" style={css('--sq:var(--r-xs);background:#fff;border:1px solid var(--gm-linea);padding:10px 14px')}>
