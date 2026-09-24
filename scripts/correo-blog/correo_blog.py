@@ -204,7 +204,13 @@ def construir(correo, usuario, destinatario, logo):
     msg['Date'] = formatdate(localtime=False)
     msg['Message-ID'] = make_msgid(domain=usuario.split('@')[1])
     # Darse de baja con un clic en Gmail/Outlook: abre un correo a Arturo.
-    msg['List-Unsubscribe'] = f'<mailto:{usuario}?subject=No%20quiero%20recibir%20el%20blog>'
+    # ⚠ Tiene que entrar en un renglón: 78 menos «List-Unsubscribe: » = 60
+    # caracteres. Más largo, el módulo `email` lo parte en palabras codificadas
+    # (=?utf-8?q?…), Gmail no lo reconoce y no muestra el botón (así salió la
+    # primera prueba, 24/09/2026). Si la casilla es tan larga que ni con el
+    # asunto corto entra, va sin asunto.
+    baja = f'<mailto:{usuario}?subject=Baja>'
+    msg['List-Unsubscribe'] = baja if len(baja) <= 60 else f'<mailto:{usuario}>'
     # Que las respuestas automáticas (fuera de oficina) no contesten a esto.
     msg['Auto-Submitted'] = 'auto-generated'
     msg.set_content(correo['texto'])
