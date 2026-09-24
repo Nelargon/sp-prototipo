@@ -19,7 +19,7 @@
 const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 import { gzipSync } from 'node:zlib';
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,8 +33,26 @@ const falla = (frente, severidad, detalle, donde = '') => {
   console.log('  ✗ [' + severidad + '] ' + detalle + (donde ? ' — ' + donde : ''));
 };
 
+// Una página de cada ruta dinámica, elegida del export. El blog cambia todos
+// los días (el motor publica y retira notas): un slug fijo acá sería una
+// prueba que se rompe sola. qa/cobertura-rutas.mjs lee las marcas «cubre:».
+const primeraDe = (dir, excluir = []) => {
+  const d = join(OUT_DIR, dir);
+  if (!existsSync(d)) return null;
+  const hijos = readdirSync(d, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && !excluir.includes(e.name) && existsSync(join(d, e.name, 'index.html')))
+    .map((e) => e.name).sort();
+  return hijos.length ? `/${dir}/${hijos[0]}/` : null;
+};
+const NOTA_BLOG = primeraDe('blog', ['guia']); // cubre: /blog/[slug]/
+const GUIA_BLOG = primeraDe('blog/guia'); // cubre: /blog/guia/[slug]/
+
 const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/', '/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html'];
-const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/']; // con estilos propios (sin CDN)
+// Con estilos propios (sin CDN). Desde el 24/09/2026 entran las que la corrida
+// no visitaba: /que-cubre/ y /guia-medica/ (las dos más importantes de la v1),
+// /mi-sp/ y una nota y una guía del blog. Una página que ninguna prueba abre
+// puede estar rota sin que nadie se entere.
+const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/que-cubre/', '/guia-medica/', '/agendar/', '/blog/', '/historia/', '/mi-sp/', NOTA_BLOG, GUIA_BLOG].filter(Boolean);
 
 const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 
@@ -496,12 +514,18 @@ console.log('\n== 5. CONTENIDO ==');
   walk(OUT_DIR);
   const visible = (html) => html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ');
   const patrones = [
-    [/a confirmar/i, 'placeholder "a confirmar"'],
+    // \b: sin el borde de palabra, «para confirmarlo» y «vale la pena
+    // confirmar» contaban como placeholder (falsos rojos hasta el 24/09/2026).
+    [/\ba confirmar\b/i, 'placeholder "a confirmar"'],
     [/Nombre Apellido/, 'testimonio/nombre placeholder'],
     [/lorem/i, 'lorem ipsum'],
     [/\bcartilla\b/i, 'jerga: "cartilla"'],
     [/\bprestaci[oó]n\b/i, 'jerga: "prestación"'],
-    [/\bpr[aá]ctica\b/i, 'jerga: "práctica"'],
+    // «práctica» es jerga cuando nombra un estudio («la práctica está
+    // cubierta», «prácticas»). «En la práctica» es castellano de familia, no
+    // jerga: 9 de 10 hallazgos del blog eran eso (24/09/2026). Se marca el
+    // sustantivo con determinante o el plural; el giro y el adjetivo no.
+    [/(?<!\ben )\b(?:la|una|esta|esa|cada|toda|otra|qu[eé]|su|tu)\s+pr[aá]ctica\b|\bpr[aá]cticas\b/i, 'jerga: "práctica"'],
     [/9XX/, 'teléfono placeholder'],
   ];
   let limpio = true;

@@ -3274,3 +3274,37 @@ sin JavaScript descarta la mitad de las causas en un minuto. Y cuando una
 decisión se aplica a una pieza y no a su gemela («recortar la fuente»), la que
 quedó afuera no avisa: pesa en silencio en cada página, hasta que un control
 la señala.
+
+
+## Capítulo 89 — El detector que mandaba a corregir lo que estaba bien (24/09/2026)
+
+**Qué intentamos.** Arturo pidió una rutina diaria que garantice que los tres
+repos funcionen, sean coherentes y estén al día, y que no lo espere: que revise
+y arregle sola. Antes de automatizar nada se hizo una «corrida cero» a mano:
+todas las pruebas que existían, sobre los tres repos, para saber de qué punto
+partía la rutina.
+
+**Qué pasó.** Lo crítico estaba verde: los dos builds, el buscador, la QA de la
+v1, la Guía Médica igual a la planilla del Drive, el blog en sync con la
+cocina. Pero el QA integral daba 15 hallazgos y, leídos uno por uno, **13 eran
+falsos**. Diez «práctica» eran el giro «en la práctica», que es castellano de
+familia; dos «a confirmar» eran «para confirmarlo» y «vale la pena confirmar»,
+que la expresión encontraba dentro de otras palabras. Y lo grave no era el
+ruido: `qa/CRITERIO-PUERTAS.md` los había tomado como verdad y decía «se
+corrigen en `sp-contenido`». El boletín mandaba a reescribir notas que estaban
+bien escritas para dejar contento a un detector mal calibrado.
+
+La segunda sorpresa vino de lo que nadie miraba. `/mi-sp/`, las notas del blog
+y las guías del blog no las abría ninguna prueba, y `/que-cubre/` y
+`/guia-medica/` —las dos páginas más importantes de la v1— no estaban en el
+barrido de accesibilidad. Al sumarlas aparecieron dos errores de contraste
+reales, uno de ellos en la v1 que Buenavista va a copiar.
+
+**Qué aprendimos.** Un control tiene dos maneras de fallar y la segunda es la
+cara: además de callar lo que está mal, puede señalar lo que está bien, y
+alguien termina «arreglándolo». Por eso todo detector nuevo se prueba contra un
+caso que debe marcar y uno que no (el de links internos se probó metiéndole
+tres links rotos a propósito antes de creerle el verde). Y el verde de una
+suite vale lo que cubre: las páginas que nadie abre no fallan, simplemente no
+aparecen. De ahí la puerta nueva, `qa/cobertura-rutas.mjs`: una página sin
+prueba ya no entra.
