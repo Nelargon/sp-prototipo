@@ -328,12 +328,19 @@ def main(ruta, solo_validar=False, ruta_informe=None):
                 break
             lister.append({'s': a, 'h': b})
 
+    con_gente = {p['e'] for p in prestadores}
+    sin_prest = sorted([e, g] for e, g in grupo.items() if e not in con_gente)
     out = {
         'meta': {
             'generado_de': re.sub(r'^[0-9a-f]{8}-', '', os.path.basename(ruta)),
             'datos_al': datetime.date.today().isoformat(),
             'guias': {GUIA_DE_RED[k]: guias.get(GUIA_DE_RED[k]) for _, k in REDES},
             'excluidas': excluidas,
+            # Especialidades del catálogo que no quedaron con nadie publicado
+            # (24/09/2026, pedido de Arturo): el prototipo las muestra con un
+            # círculo naranja para decidir si se completan o se sacan. La v1
+            # no las muestra.
+            'sin_prestadores': sin_prest,
         },
         'notas': notas,
         'lister': lister,
@@ -348,6 +355,8 @@ def main(ruta, solo_validar=False, ruta_informe=None):
             f'- «Revisar»: se publican, como en el PDF ({sum(1 for p in prestadores if p.get("rv"))} filas). '
             'El punto naranja se ve solo en el prototipo, no en la v1.',
             f'- «Baja»: no se publica ({excluidas["baja"]} filas).',
+            f'- Especialidades del catálogo sin nadie publicado ({len(sin_prest)}): '
+            + (', '.join(e for e, _ in sin_prest) or 'ninguna') + '. En el prototipo llevan un círculo naranja; en la v1 no aparecen.',
             f'- Lister: hoja «Lister» de la planilla + dirección Pa\'i Pérez 630 ({sum(1 for p in prestadores if p.get("l"))} filas).',
             '', '### Qué cambia online'] + informe_cambios(publicado(), out)
     if solo_validar:

@@ -7,6 +7,7 @@ import { track } from '../track';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
+import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
 import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
 
@@ -28,6 +29,49 @@ import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, suge
 const P = datos.prestadores;
 const INDICE = indexar(P);
 const CAT = catalogos(P);
+
+/* Marca interna de especialidades (24/09/2026, pedido de Arturo: «mientras
+   probamos, ver qué falta completar o decidir si dejamos esa especialidad
+   vacía»). Solo en el prototipo (CON_MARCA_REVISAR); la v1 no ve nada de esto.
+   - Punto naranja + número: filas de esa especialidad en «Revisar» en la
+     planilla.
+   - Círculo naranja hueco: está en el catálogo de la planilla pero no quedó
+     nadie publicado (meta.sin_prestadores, lo escribe build-guia-medica.py). */
+const REVISAR = {};
+for (const p of P) if (p.rv) REVISAR[p.e] = (REVISAR[p.e] || 0) + 1;
+const VACIAS = new Set(CON_MARCA_REVISAR ? (datos.meta.sin_prestadores || []).map((x) => x[0]) : []);
+if (VACIAS.size) {
+  for (const [e, g] of datos.meta.sin_prestadores) {
+    let grupo = CAT.especialidades.find((x) => x.g === g);
+    if (!grupo) CAT.especialidades.push((grupo = { g, items: [] }));
+    grupo.items = [...grupo.items, e].sort((a, b) => a.localeCompare(b, 'es'));
+  }
+}
+function MarcaEsp({ e }) {
+  if (!CON_MARCA_REVISAR) return null;
+  if (VACIAS.has(e)) return <span title="Sin prestadores publicados (marca interna)" aria-label="sin prestadores, marca interna" style={css('flex:none;width:10px;height:10px;border-radius:var(--r-pill);border:2px solid #F28C28;margin-right:8px')} />;
+  const n = REVISAR[e];
+  if (!n) return null;
+  return <span title={n + (n === 1 ? ' fila' : ' filas') + ' en «Revisar» en la planilla (marca interna)'} aria-label={n + ' a revisar, marca interna'} style={css(INTER + 'flex:none;display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px;font-weight:700;color:#B45F06')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:#F28C28')} />{n}</span>;
+}
+const LeyendaMarcas = () => (CON_MARCA_REVISAR ? (
+  <p style={css(INTER + 'margin:0 2px 8px;font-size:12.5px;line-height:1.5;color:#8A4B08;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center')}>
+    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:#F28C28')} />filas a revisar en la planilla</span>
+    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:10px;height:10px;border-radius:var(--r-pill);border:2px solid #F28C28')} />sin prestadores</span>
+    <span style={css('color:var(--sp-muted)')}>Marca interna: no se ve en la v1.</span>
+  </p>
+) : null);
+
+/* Ciudades para el buscador de ciudad: solo las que tienen a alguien en la
+   red. Los departamentos del Interior también se pueden elegir enteros. */
+const CUANTOS_C = {};
+for (const p of P) CUANTOS_C[p.c + '|' + p.dp] = (CUANTOS_C[p.c + '|' + p.dp] || 0) + 1;
+const LUGARES = [
+  ...CAT.departamentos.flatMap((d) => d.ciudades.map((c) => ({ c, dp: d.d, k: norm(c), peso: CUANTOS_C[c + '|' + d.d] || 0 }))),
+  ...CAT.departamentos.filter((d) => d.d !== 'Capital' && d.d !== 'Central' && d.ciudades.length > 1).map((d) => ({ c: '', dp: d.d, k: norm(d.d), peso: 0 })),
+];
+// Cómo la gente escribe algunas ciudades.
+const ALIAS_CIUDAD = { cde: 'ciudad del este', asu: 'asuncion', fdo: 'fernando de la mora', mra: 'mariano roque alonso', pjc: 'pedro juan caballero', slo: 'san lorenzo' };
 const POR_PAGINA = 20;
 const CAMPOS = ['q', 'plan', 'esp', 'z', 'dp', 'c'];
 const VACIO = { q: '', plan: '', esp: '', z: '', dp: '', c: '' };
@@ -43,8 +87,6 @@ const MAS_BUSCADO = ['Ginecología y Obstetricia', 'Pediatría', 'Clínica Médi
 // Zonas: lo que una familia reconoce, no los 17 departamentos.
 const ZONAS = [{ k: '', n: 'Todo el país' }, { k: 'asu', n: 'Asunción' }, { k: 'central', n: 'Central' }, { k: 'interior', n: 'Interior' }];
 const zonaDeDepto = (dp) => (!dp ? '' : dp === 'Capital' ? 'asu' : dp === 'Central' ? 'central' : 'interior');
-const DEPTOS_INTERIOR = CAT.departamentos.filter((d) => d.d !== 'Capital' && d.d !== 'Central');
-const CIUDADES_CENTRAL = (CAT.departamentos.find((d) => d.d === 'Central') || { ciudades: [] }).ciudades;
 
 // Estudios que piden orden médica visada: su tarjeta ofrece "Visar la orden".
 const PIDE_ORDEN = new Set(['Laboratorio', 'Diagnóstico por Imagen', 'Ecografía', 'Radiografía', 'Anatomía Patológica', 'Ecocardiograma', 'Electrocardiograma', 'Holter y MAPA', 'Estudios Audiológicos', 'PAP y Colposcopía']);
@@ -146,6 +188,92 @@ function Hoja({ abierta, titulo, onCerrar, children }) {
   );
 }
 
+/* Buscador de ciudad (24/09/2026, pedido de Arturo: «un buscador que, al ir
+   tecleando, complete la ciudad y la muestre en una lista»). Reemplaza a la
+   pared de cápsulas de ciudades y departamentos. Al tocarlo sin escribir,
+   muestra las ciudades de la zona elegida; al escribir, busca en todo el país
+   (sin tildes, «lamba» → Lambaré, «cde» → Ciudad del Este) y elegir una ciudad
+   pone la zona sola. Patrón combobox de ARIA: flechas, Enter y Escape. */
+function BuscaCiudad({ f, elegir, limpiar }) {
+  const [texto, setTexto] = useState('');
+  const [abierto, setAbierto] = useState(false);
+  const [activo, setActivo] = useState(0);
+  const input = useRef(null);
+  const elegido = f.c ? f.c : (f.z === 'interior' && f.dp ? 'Todo ' + f.dp : '');
+  const t = norm(texto);
+  let lista;
+  if (!t) {
+    const enZona = (l) => (f.z === 'asu' ? l.dp === 'Capital' : f.z === 'central' ? l.dp === 'Central' : f.z === 'interior' ? l.dp !== 'Capital' && l.dp !== 'Central' : true);
+    lista = LUGARES.filter((l) => l.c && enZona(l)).sort((a, b) => b.peso - a.peso || a.c.localeCompare(b.c, 'es'));
+  } else {
+    const buscado = ALIAS_CIUDAD[t] || t;
+    const nota = (l) => (l.k.startsWith(buscado) ? 0 : l.k.split(' ').some((w) => w.startsWith(buscado)) ? 1 : l.k.includes(buscado) ? 2 : 9);
+    lista = LUGARES.map((l) => ({ ...l, n: nota(l) })).filter((l) => l.n < 9).sort((a, b) => a.n - b.n || (a.c ? 0 : 1) - (b.c ? 0 : 1) || b.peso - a.peso).slice(0, 8);
+  }
+  const pick = (l) => { elegir(l, texto ? 'buscador' : 'lista'); setTexto(''); setAbierto(false); input.current && input.current.blur(); };
+  const teclas = (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setAbierto(true); setActivo((a) => Math.min(a + 1, lista.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActivo((a) => Math.max(a - 1, 0)); }
+    else if (e.key === 'Enter' && abierto && lista[activo]) { e.preventDefault(); pick(lista[activo]); }
+    else if (e.key === 'Escape') { setAbierto(false); setTexto(''); }
+  };
+  const resaltar = (nombre) => {
+    if (!t || ALIAS_CIUDAD[t]) return nombre;
+    const i = norm(nombre).indexOf(t);
+    if (i < 0) return nombre;
+    return <>{nombre.slice(0, i)}<b style={css('font-weight:800')}>{nombre.slice(i, i + t.length)}</b>{nombre.slice(i + t.length)}</>;
+  };
+  return (
+    <div style={css('position:relative')}>
+      <label className="sq rel" style={css('--sq:10px;display:flex;align-items:center;gap:8px;height:44px;padding:0 6px 0 12px;background:#fff;border:1.5px solid ' + (abierto ? 'var(--sp-teal-deep)' : 'var(--gm-borde)') + ';color:var(--sp-blue-meta)')}>
+        {Icono.pin}
+        <input
+          ref={input}
+          role="combobox"
+          aria-expanded={abierto}
+          aria-controls="gm-lugares"
+          aria-autocomplete="list"
+          aria-activedescendant={abierto && lista[activo] ? 'gm-lugar-' + activo : undefined}
+          aria-label="Tu ciudad o localidad"
+          autoComplete="off"
+          value={abierto ? texto : elegido}
+          placeholder={abierto && elegido ? elegido : 'Tu ciudad o localidad'}
+          onFocus={() => { setAbierto(true); setActivo(0); setTexto(''); }}
+          onBlur={() => setTimeout(() => { setAbierto(false); setTexto(''); }, 150)}
+          onChange={(e) => { setTexto(e.target.value); setActivo(0); setAbierto(true); }}
+          onKeyDown={teclas}
+          style={css(INTER + 'flex:1;min-width:0;height:40px;border:none;outline:none;background:transparent;font-size:16px;color:var(--sp-navy);' + (elegido && !abierto ? 'font-weight:700' : ''))}
+        />
+        {elegido && !abierto && <span style={css(INTER + 'font-size:13px;color:var(--sp-muted);white-space:nowrap')}>{f.c && f.z === 'central' ? 'Central' : f.c && f.z === 'interior' ? f.dp : ''}</span>}
+        {elegido && !abierto
+          ? <button type="button" onClick={limpiar} aria-label="Quitar la ciudad" style={css('flex:none;width:30px;height:30px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>
+          : <span style={css('display:flex;padding:0 6px;color:var(--sp-blue-meta)')}>{Icono.abajo}</span>}
+      </label>
+      {abierto && (
+        <ul id="gm-lugares" role="listbox" aria-label="Ciudades" className="sq rel" style={css('--sq:10px;position:absolute;z-index:60;left:0;right:0;top:50px;margin:0;padding:4px 0;list-style:none;background:#fff;border:1px solid var(--gm-linea);max-height:296px;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 10px 30px rgba(0,27,52,.14)')}>
+          {lista.length ? lista.map((l, i) => (
+            <li
+              key={l.c + '|' + l.dp}
+              id={'gm-lugar-' + i}
+              role="option"
+              aria-selected={i === activo}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => pick(l)}
+              onMouseEnter={() => setActivo(i)}
+              style={css(INTER + 'min-height:44px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-size:15px;color:var(--sp-navy);' + (i === activo ? 'background:var(--sp-mint-bg)' : ''))}
+            >
+              <span>{l.c ? resaltar(l.c) : <>Todo {resaltar(l.dp)}</>}</span>
+              <span style={css('font-size:13px;color:var(--sp-muted);white-space:nowrap')}>{l.c ? (l.dp === 'Capital' ? '' : l.dp) : 'Departamento'}</span>
+            </li>
+          )) : (
+            <li role="option" aria-disabled="true" aria-selected="false" style={css(INTER + 'padding:12px 14px;font-size:14px;line-height:1.5;color:var(--sp-text-2)')}>Todavía no tenemos a nadie en «{texto}». Probá con una ciudad cercana.</li>
+          )}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export default function GuiaMedica() {
   const [f, setF] = useState(VACIO);
   const [q, setQ] = useState('');
@@ -236,16 +364,11 @@ export default function GuiaMedica() {
   // solo zona o plan, la pantalla de inicio (y los filtros ya puestos).
   const buscando = !!(f.q || f.esp || f.c);
 
-  // Segunda fila de la zona: ciudades de Central; departamentos del Interior
-  // y, elegido uno, sus ciudades.
-  let fila2 = null;
-  if (f.z === 'central') fila2 = { items: CIUDADES_CENTRAL.map((c) => ({ n: c, on: f.c === c, pick: () => set({ c: f.c === c ? '' : c }, 'ciudad') })), todas: () => set({ c: '' }, 'ciudad'), todasOn: !f.c };
-  if (f.z === 'interior') {
-    const dep = DEPTOS_INTERIOR.find((d) => d.d === f.dp);
-    fila2 = dep && dep.ciudades.length > 1
-      ? { atras: () => set({ dp: '', c: '' }, 'dp'), titulo: dep.d, items: dep.ciudades.map((c) => ({ n: c, on: f.c === c, pick: () => set({ c: f.c === c ? '' : c }, 'ciudad') })), todas: () => set({ c: '' }, 'ciudad'), todasOn: !f.c }
-      : { items: DEPTOS_INTERIOR.map((d) => ({ n: d.d, on: f.dp === d.d, pick: () => set({ dp: f.dp === d.d ? '' : d.d, c: '' }, 'dp') })), todas: () => set({ dp: '', c: '' }, 'dp'), todasOn: !f.dp };
-  }
+  const elegirLugar = (l, origen) => {
+    track('guia_filtro', { campo: 'ciudad', origen });
+    const z = zonaDeDepto(l.dp);
+    setF((x) => ({ ...x, z, dp: z === 'interior' ? l.dp : '', c: l.c }));
+  };
 
   const G = datos.meta.guias;
   const fecha = (G.privilege && G.privilege.fecha) || '';
@@ -298,13 +421,7 @@ export default function GuiaMedica() {
             return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink)'))}>{z.n}</button>;
           })}
         </div>
-        {fila2 && (
-          <div className="gm-fila" role="group" aria-label={f.z === 'interior' && !fila2.titulo ? 'Departamento' : 'Ciudad'}>
-            {fila2.atras && <button type="button" onClick={fila2.atras} style={css(chip(false))}>← {fila2.titulo}</button>}
-            <button type="button" onClick={fila2.todas} style={css(chip(fila2.todasOn))}>Todas</button>
-            {fila2.items.map((it) => <button key={it.n} type="button" aria-pressed={it.on} onClick={it.pick} style={css(chip(it.on))}>{it.n}</button>)}
-          </div>
-        )}
+        <BuscaCiudad f={f} elegir={elegirLugar} limpiar={() => set({ c: '', dp: '' }, 'ciudad')} />
 
         {/* Especialidad y plan, en dos cápsulas */}
         <div style={css('display:flex;gap:8px')}>
@@ -321,6 +438,7 @@ export default function GuiaMedica() {
         {!buscando && (
           <>
             <div className="disp" style={css(KICKER + ';margin-top:4px')}>Lo que más se busca</div>
+            <LeyendaMarcas />
             {/* Una sola lista agrupada, con filas finas y separadores: la misma
                 forma que la lista de especialidades (pedido de Arturo, 23/09). */}
             <div className="sq rel" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
@@ -328,6 +446,7 @@ export default function GuiaMedica() {
                 <button key={e} type="button" onClick={() => elegirEsp(e, 'mas_buscado')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
                   <span className="disp" style={css('width:16px;font-size:13.5px;font-weight:900;color:var(--sp-blue-meta)')}>{i + 1}</span>
                   <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
+                  <MarcaEsp e={e} />
                   <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
                 </button>
               ))}
@@ -350,6 +469,7 @@ export default function GuiaMedica() {
                     {g.items.map((e) => (
                       <button key={e} type="button" onClick={() => elegirEsp(e, 'lista')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
                         <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
+                        <MarcaEsp e={e} />
                         <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
                       </button>
                     ))}
@@ -418,6 +538,7 @@ export default function GuiaMedica() {
           {Icono.buscar}
           <input value={filtroEsp} onChange={(e) => setFiltroEsp(e.target.value)} aria-label="Buscar una especialidad" placeholder="Buscar una especialidad" style={css(INTER + 'flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:16px;color:var(--sp-ink)')} />
         </label>
+        <LeyendaMarcas />
         {f.esp && <button type="button" onClick={() => { set({ esp: '' }, 'esp'); setHoja(''); }} className="disp" style={css('height:40px;padding:0 2px;border:none;background:none;color:var(--sp-teal-deep);font-size:14.5px;font-weight:800;cursor:pointer;margin-bottom:4px')}>Todas las especialidades</button>}
         {CAT.especialidades.map((g) => {
           const items = g.items.filter((e) => !filtroEsp || norm(e).includes(norm(filtroEsp)));
@@ -429,6 +550,7 @@ export default function GuiaMedica() {
                 {items.map((e) => (
                   <button key={e} type="button" onClick={() => elegirEsp(e, 'hoja')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
                     <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy);' + (f.esp === e ? 'font-weight:700' : ''))}>{e}</span>
+                    <MarcaEsp e={e} />
                     <span style={css('color:' + (f.esp === e ? 'var(--sp-teal-deep)' : 'var(--sp-blue-meta)') + ';display:flex')}>{f.esp === e ? Icono.check : Icono.der}</span>
                   </button>
                 ))}

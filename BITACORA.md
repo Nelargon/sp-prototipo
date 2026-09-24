@@ -3150,3 +3150,25 @@ viendo, no imaginando. Dos cosas quedaron dichas antes de construir, no
 después: que la esquina de curvatura continua no se ve en el iPhone, y que el
 diccionario de síntomas necesita que lo revise un médico.
 
+
+## Capítulo 84 — Tres formas de elegir una ciudad en dos días (24/09/2026)
+
+**Qué intentamos.** La guía nueva pedía la zona en dos pasos: la tira de zonas
+y después las ciudades. Primero fueron cápsulas en una fila que se deslizaba
+de costado. Arturo: *"no permite encontrar mi ciudad fácilmente"*. Las
+pasamos a una pared de cápsulas en varias líneas, todas a la vista (PR #162).
+
+**Qué pasó.** La pared funcionaba en Central (15 ciudades), pero el Interior
+necesitaba dos saltos: departamento y después ciudad. Además, quien vive en
+Lambaré tenía que saber primero que Lambaré es «Central». Arturo pidió lo que
+la persona ya sabe hacer: *"un buscador que, al ir tecleando, complete
+automáticamente la ciudad o localidad y la muestre en una lista"*. Quedó un
+solo campo que al tocarlo muestra las ciudades de la zona y, al escribir,
+busca en todo el país sin tildes («lamba», «cde», «itap») y pone la zona sola.
+
+**Qué aprendimos.** La deslizable escondía las opciones y la pared las
+mostraba todas; la tercera forma no pide saber a qué zona pertenece tu ciudad.
+Ordenar por el mapa administrativo es la forma de pensar de la planilla, no la
+de la familia. Cuando una lista obliga a saber cómo está clasificada, el
+problema no es cómo se ve: la persona tendría que poder escribir lo que ya
+sabe.
