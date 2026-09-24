@@ -72,6 +72,15 @@ Todo dura menos de 1/3 de segundo y se apaga con «reducir movimiento» del
 sistema. CSS en `app/globals.css` (bloque «Movimiento»). La hoja todavía **no
 se arrastra con el dedo** para cerrarla: se cierra con la «×» o tocando afuera.
 
+**Relieve (24/09/2026, Arturo: «me gusta que le diste tridimensionalidad»,** por
+la zona elegida que flota sobre su riel). Regla: **el relieve dice «esto se toca
+o se abre»**. `.rel` (sombra suave) para superficies: tarjetas, listas, buscador.
+`.rel-btn` (sombra más marcada) para controles como Especialidad y Tu plan, que
+al apretarse se aplastan contra la página; las cápsulas de ciudad y plan también
+la llevan. Lo que solo informa (el «por qué» del síntoma) **no lleva sombra**:
+gana contraste con color, borde y un ícono de idea. Una sombra ahí lo haría
+parecer un botón.
+
 ## 🔄 LA V1 CAMBIA DE FORMA: ENTRA LA GUÍA, SALE AGENDAR (23 sep 2026)
 
 **Arturo, 23/09/2026, textual:**
