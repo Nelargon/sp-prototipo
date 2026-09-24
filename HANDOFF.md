@@ -30,7 +30,7 @@ todo lo que puedas».*
 | Capa | Qué es | Cuándo | Qué mira |
 |---|---|---|---|
 | **1 · Salud nocturna** | `.github/workflows/salud-nocturna.yml` (GitHub Actions, sin IA) | 05:00 ASU | Build de las dos ediciones · buscador · cobertura de páginas · links internos · QA integral (cero «roto») · QA de la v1 · **el sitio en vivo** · producción = `main` · que el Guardián esté vivo |
-| **2 · El Guardián** | Routine de Claude, sesión nueva cada día | 06:00 ASU | Lee la capa 1, cruza los **tres repos** (docs contra realidad, PRs e issues trabados, rutinas que no produjeron, Guía Médica contra la planilla del Drive), arregla lo seguro, reporta lo demás en el tablero |
+| **2 · El Guardián** | Routine de Claude (`trig_01S5miBGXNUUAfSQbBHKm3eU`) que dispara dentro de la sesión que la creó: una sesión nueva por día arrancaba sin repos ni GitHub (probado el 24/09; ver el manual §9) | 06:00 ASU | Lee la capa 1, cruza los **tres repos** (docs contra realidad, PRs e issues trabados, rutinas que no produjeron, Guía Médica contra la planilla del Drive), arregla lo seguro, reporta lo demás en el tablero |
 
 - **El manual del Guardián** (rol, métricas, qué arregla solo y qué nunca toca,
   cómo sumar algo nuevo a la vigilancia) vive en **`sp-interno/salud/GUARDIAN.md`**,
