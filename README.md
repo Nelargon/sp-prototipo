@@ -10,23 +10,46 @@ Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
 
 | Pieza | Link |
 |---|---|
-| **Edición de lanzamiento (v1)** — lo que sale al público | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
+| **Edición de lanzamiento (v1)** — la maqueta que Buenavista publica | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
+| Guía Médica de la v1 (red real, desde la planilla de SP) | https://nelargon.github.io/sp-prototipo/lanzamiento/guia-medica/ |
 | Prototipo completo — el laboratorio | https://nelargon.github.io/sp-prototipo/ |
 | Simulador | https://nelargon.github.io/sp-prototipo/simulador/ |
-| Guía Médica *(no entra en la v1)* | https://nelargon.github.io/sp-prototipo/guia/guia_home.html |
 
-La v1 no publica todavía la **Guía Médica**, **Mi SP** ni el **blog**, y sí
-publica el **agendamiento de turnos** (decisión del 15 sep 2026). El detalle,
-en la primera sección del `HANDOFF.md`.
+**La v1 publica** inicio, simulador, planes, qué cubre y la **Guía Médica**
+(desde el 23 sep 2026). **No publica** agendar turnos, Mi SP, el blog ni
+`/historia/`: siguen en el prototipo. El molde viejo de la guía
+(`/guia/guia_home.html`, datos ilustrativos) queda solo en el prototipo, como
+referencia. El detalle, en las primeras secciones del `HANDOFF.md`; lo que
+Buenavista tiene que hacer, en `docs/IMPLEMENTAR-v1.md`.
 
 ## 📖 Para entender el proyecto
 
 - **[`HANDOFF.md`](HANDOFF.md)** ← empezá acá: la dirección, las decisiones
   tomadas y los pendientes priorizados.
+- [`CLAUDE.md`](CLAUDE.md) — las reglas de trabajo permanentes (flujo git,
+  reglas técnicas, de lenguaje y de tipografía). Valen para personas y para IA.
+- [`BITACORA.md`](BITACORA.md) — el libro del proyecto: qué intentamos, qué
+  pasó y qué aprendimos, capítulo por capítulo.
+- [`docs/IMPLEMENTAR-v1.md`](docs/IMPLEMENTAR-v1.md) — **para Buenavista**:
+  cómo publicar la v1, en una página.
+- [`BRANDSCRIPT.md`](BRANDSCRIPT.md) — el argumento de venta central (SB7) que
+  dicta estructura y texto de toda pieza digital.
+- [`PLAN-home-v2.md`](PLAN-home-v2.md) — plan de la home v2. ⚠ Su ejecución
+  espera el «adelante» de Arturo.
 - [`guia/ANEXO-requisitos-backend.md`](guia/ANEXO-requisitos-backend.md) —
   requisitos técnicos para la implementación real (eventos de medición,
   seguridad, modelo de datos).
 - [`HANDOVER.md`](HANDOVER.md) — detalles técnicos de la página de planes.
+- [`docs/PREVIEW.md`](docs/PREVIEW.md) — previews por rama (Cloudflare Pages).
+
+## 🩺 Salud del sitio
+
+Todas las noches a las 05:00 (Asunción) `.github/workflows/salud-nocturna.yml`
+construye las dos ediciones, corre todas las pruebas y mira el sitio en vivo; a
+las 06:00 una rutina de Claude (el Guardián) cruza los repos y arregla lo que
+puede. El estado del día está en el issue fijo con la etiqueta
+[`tablero-salud`](https://github.com/Nelargon/sp-prototipo/issues?q=is%3Aissue+label%3Atablero-salud).
+Una página nueva sin prueba no pasa el CI (`qa/cobertura-rutas.mjs`).
 
 ## 🚀 Correr localmente
 
@@ -46,22 +69,26 @@ NEXT_PUBLIC_EDICION=lanzamiento npm run build
 ## 🗂️ Estructura
 
 ```
-app/           # web de planes + simulador (Next.js)
-app/edicion.js # qué módulos entra cada edición (completa / lanzamiento)
-guia/          # Guía Médica — FUENTE (HTML + Tailwind, formato del proveedor)
-public/guia/   # copia publicada — se genera sola en cada build, NO editar
-scripts/       # sync-guia.mjs (prebuild) y podar-edicion.mjs (postbuild)
-qa/            # suites de verificación con Playwright
+app/            # el sitio (Next.js, export estático)
+app/edicion.js  # qué módulos entran en cada edición (completa / lanzamiento)
+lib/            # datos y lógica compartida: Guía Médica (guia-medica.json, se
+                #   regenera desde la planilla), lo que cubre cada plan, buscador, blog
+datos/          # transcripciones versionadas de las grillas y el glosario
+contenido/blog/ # las notas publicadas del blog (las publica el motor de contenido)
+guia/           # molde viejo de la guía (HTML + Tailwind), solo prototipo
+public/guia/    # copia publicada del molde — se genera en cada build, NO editar
+scripts/        # generadores (guía médica, glosario, prestaciones) y los hooks del build
+qa/             # pruebas: qa-integral, qa-lanzamiento, cobertura-rutas, links-internos
+docs/           # instrucciones para terceros (implementar la v1, previews)
 ```
 
-- La guía se edita **solo** en `guia/`; el build la sincroniza a `public/`.
-- Los datos de prestadores de la guía son **ilustrativos**: definen el molde
-  al que debe llegar la base real.
+- La **Guía Médica real** se regenera desde la planilla maestra de SP con
+  `scripts/build-guia-medica.py`; nunca se edita a mano (regla de `CLAUDE.md`).
 - Cada push a `main` publica automáticamente a GitHub Pages **las dos
-  ediciones**; cada PR construye las dos en el CI. Si un link queda apuntando
-  a un módulo que la v1 no publica, el build corta.
-- El material interno del proyecto (briefs, plan estratégico, histórico)
-  vive en el repositorio **privado** `sp-interno`.
+  ediciones**; cada PR construye las dos en el CI, con las pruebas rápidas. Si
+  un link queda apuntando a un módulo que la v1 no publica, el build corta.
+- El material interno del proyecto (briefs, estrategia, histórico) vive en el
+  repositorio **privado** `sp-interno`.
 
 ## Analítica (apagada por defecto)
 
