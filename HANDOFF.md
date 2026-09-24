@@ -52,13 +52,27 @@ persona**, cuando termina el deploy que la publica. Lo hace
   (tiempo de lectura, copete repetido, fecha) se separaron para que el correo
   lea cada nota exactamente como la web.
 
-**⚠ Estado: construido, INERTE hasta que Arturo cargue los tres secretos**
-(`CORREO_BLOG_USUARIO`, `CORREO_BLOG_CLAVE`, `CORREO_BLOG_DESTINATARIOS`) y
-corra la prueba (Actions → Correo del blog → Run workflow → `prueba`). Sin la
-clave, la corrida automática no hace nada. **Pendiente de verificar en la
-primera prueba:** que el hosting acepte SMTP autenticado desde los servidores
-de GitHub (desde el sandbox de Claude no se pudo probar: la red sale solo por
-un proxy HTTPS).
+**✅ Estado: ACTIVO desde el 24/09/2026.** Arturo cargó los tres secretos
+(`CORREO_BLOG_USUARIO`, `CORREO_BLOG_CLAVE`, `CORREO_BLOG_DESTINATARIOS`). Una
+sesión lanzó la prueba (corrida 36030559037) y la verificó en los encabezados
+del correo recibido: runner de GitHub → Exim de SP (SMTP autenticado) → Gmail,
+con **SPF pass y DKIM pass** (`d=saludprotegida.com.py`). Llegó a la bandeja
+de entrada, no a spam. La línea de base se armó en la corrida 36030693358: 70
+notas anotadas, ninguna enviada. La primera nota real sale sola con la
+publicación del 25/09.
+
+**Para no pedirle nada a Arturo** (25/09, *«No quiero hacer nada manualmente…
+sin que tenga que mover un dedo»*): la prueba y el control de cada envío los
+hace una sesión, no él. Lo que solo él puede hacer es cambiar la contraseña o la
+lista en los secretos. Cuando cambie la lista, se le pasa la línea lista para
+pegar.
+
+**Detalle menor pendiente:** el encabezado `List-Unsubscribe` sale codificado
+en RFC 2047 (`=?utf-8?q?…`) porque la línea pasa los 78 caracteres y la
+política por defecto de `email` la dobla. Gmail no lo lee, así que no muestra
+el botón de «desuscribirse». El pie del correo igual explica cómo darse de
+baja. Se arregla serializando con `max_line_length` más alto o acortando el
+`mailto:`.
 
 ---
 
