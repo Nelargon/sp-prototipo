@@ -1,7 +1,7 @@
 # Cómo publicar la v1 del sitio de Salud Protegida
 
 **Para el equipo que la publica (Buenavista).** Una página, sin supuestos.
-Última revisión: 23/09/2026.
+Última revisión: 24/09/2026.
 
 ## 1. Qué es esto
 
@@ -86,7 +86,33 @@ roto.
 - Es interina. El destino es leer la red del sistema de SP sin cambiar la
   pantalla. El formato de los datos está en el propio script.
 
-## 6. Lo que no se toca sin SP
+## 6. El sistema táctil: esquinas, relieve y movimiento
+
+El sitio responde al toque con un solo lenguaje, que nació en la Guía Médica
+(24/09/2026). Si se construye desde este repo, viene solo. Si se reimplementa
+en otra tecnología, es poco lo que hay que copiar, y está todo en el bloque
+«Sistema táctil» de `app/globals.css`:
+
+| Pieza | Qué hace | Cómo se copia |
+|---|---|---|
+| Tokens `--sombra-*`, `--toque-gris`, `--mov-toque` | Dos alturas de sombra y la duración del toque | Al principio de `app/globals.css` |
+| `.sq` + `--sq` | Esquina de curvatura continua | Cada elemento dice su radio con `--sq` |
+| `.rel` / `.rel-btn` | Sombra de superficie / de control | La sombra va **solo** en lo que se toca o se abre |
+| `.tactil` | El botón se hunde al apretarlo | Una clase en el contenedor de la página |
+| `Plegable` (`app/components/`) | Lo que se abre crece en vez de saltar | Grilla `0fr → 1fr`; cerrado, `inert` |
+| `Hoja` (`app/components/`) | Hoja que sube desde abajo para elegir de una lista larga | Fondo, asa, «×», Escape y tocar afuera la cierran |
+
+Tres cosas que no se pueden perder al copiarlo:
+
+- **«Reducir movimiento» lo apaga todo.** Es una preferencia de accesibilidad
+  del teléfono; hay personas que se marean con el movimiento.
+- **Lo cerrado queda `inert`.** Un plegable cerrado o una hoja cerrada no
+  tienen que recibir el Tab ni el lector de pantalla.
+- **La esquina continua es una mejora progresiva.** Hoy solo la dibujan Chrome
+  y Edge; Safari y Firefox muestran una esquina redondeada común del mismo
+  radio. No hace falta hacer nada para que eso pase: sale del `@supports`.
+
+## 7. Lo que no se toca sin SP
 
 - Precios, coberturas y nombres de planes: esperan la **grilla oficial**
   (ver `HANDOFF.md`, guarda de datos).
@@ -94,7 +120,7 @@ roto.
   "tiempo de espera" antes que "carencia"). Si algo no entra en el diseño de
   ustedes, se consulta; no se reescribe.
 
-## 7. Cómo verificar que quedó bien
+## 8. Cómo verificar que quedó bien
 
 ```bash
 # con out/ servido en http://localhost:8080/

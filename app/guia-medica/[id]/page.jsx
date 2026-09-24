@@ -64,7 +64,7 @@ export default async function Ficha({ params }) {
   };
 
   return (
-    <div className="body gm" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
+    <div className="body gm tactil" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <Header variant="solid" />
       <div style={css('max-width:760px;margin:0 auto;padding:100px 16px 70px')}>

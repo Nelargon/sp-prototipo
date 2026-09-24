@@ -3172,3 +3172,31 @@ Ordenar por el mapa administrativo es la forma de pensar de la planilla, no la
 de la familia. Cuando una lista obliga a saber cómo está clasificada, el
 problema no es cómo se ve: la persona tendría que poder escribir lo que ya
 sabe.
+
+
+## Capítulo 85 — El documento decía que el movimiento se apagaba, y el navegador decía que no (24/09/2026)
+
+**Qué intentamos.** Arturo pidió llevar a todo el sitio lo que habíamos hecho en
+la Guía Médica: *«que todo lo que revisamos, el diseño inspirado en Apple y las
+mejoras realizadas, se extienda a toda la web»*. El primer paso era mudar las
+reglas de la guía (`.gm …`) a clases de todo el sitio sin que se moviera un
+píxel. Para probarlo, antes de tocar nada, se sacaron 48 capturas de `main` y
+se midieron en el navegador los estilos de cada pieza, también con «reducir
+movimiento» activado.
+
+**Qué pasó.** Las 48 capturas salieron idénticas después de la mudanza. Pero la
+medición de antes ya traía una sorpresa: con «reducir movimiento» activado, el
+botón **se seguía achicando** al apretarlo. El HANDOFF y el comentario del CSS
+decían que todo se apagaba. La regla que apagaba (`.gm button:active`) era más
+liviana que la que prendía (`.gm button:not(.fila):active`): el `:not()` suma
+peso, y estar dentro de un `@media` no le da prioridad a una regla. Nadie lo
+había visto porque la transición sí se apagaba: el botón ya no se hundía
+despacio, saltaba al 97% de golpe.
+
+**Qué aprendimos.** Dos cosas. La primera ya estaba escrita (*verificá lo
+computado*), y esta vez apareció en una regla de accesibilidad: una regla que
+anula a otra tiene que tener el mismo selector, porque ir después en el archivo
+o estar dentro de un `@media` no le da prioridad. La segunda es de método: la
+foto de antes no sirve solo para probar que no rompiste nada. También muestra
+lo que ya estaba roto, y se pudo arreglar sabiendo que era lo único que
+cambiaba.
