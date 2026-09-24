@@ -59,17 +59,18 @@ const Icono = {
   der: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>,
   x: <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>,
   check: <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>,
+  idea: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4" /><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z" /></svg>,
   pin: <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>,
   wa: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z" /></svg>,
 };
 
 // Una cápsula chica (filtro de segunda fila, plan, ciudad).
-const chip = (on) => 'height:34px;padding:0 13px;border-radius:var(--r-pill);font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;cursor:pointer;border:1.5px solid ' + (on ? 'var(--sp-navy);background:var(--sp-navy);color:#fff' : 'var(--gm-borde);background:#fff;color:var(--sp-navy)');
+const chip = (on) => (on ? '' : 'box-shadow:0 1px 2px rgba(0,27,52,.10);') + 'height:34px;padding:0 13px;border-radius:var(--r-pill);font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;cursor:pointer;border:1.5px solid ' + (on ? 'var(--sp-navy);background:var(--sp-navy);color:#fff' : 'var(--gm-borde);background:#fff;color:var(--sp-navy)');
 const KICKER = 'font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900)';
 
 function Tarjeta({ p, plan, abrirVisar }) {
   return (
-    <article className="sq" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:15px 16px;display:flex;flex-direction:column;gap:6px')}>
+    <article className="sq rel" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:15px 16px;display:flex;flex-direction:column;gap:6px')}>
       <div style={css('display:flex;justify-content:space-between;align-items:center;gap:8px')}>
         <span className="disp" style={css('font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900)')}>{p.e}</span>
         {p.l ? <span className="disp sq" style={css('--sq:5px;font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span> : null}
@@ -284,7 +285,7 @@ export default function GuiaMedica() {
         </Plegable>
 
         {/* Buscador */}
-        <label className="sq" style={css('--sq:12px;display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border:1.5px solid var(--sp-blue-pale);background:#fff;color:var(--sp-blue-meta)')}>
+        <label className="sq rel" style={css('--sq:12px;display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border:1.5px solid var(--sp-blue-pale);background:#fff;color:var(--sp-blue-meta)')}>
           {Icono.buscar}
           <input value={q} onChange={(e) => setQ(e.target.value)} type="search" autoComplete="off" aria-label="Buscar en la Guía Médica" placeholder="Nombre, especialidad o lo que sentís" style={css(INTER + 'flex:1;min-width:0;height:48px;border:none;outline:none;font-size:16.5px;background:transparent;color:var(--sp-ink)')} />
           {q && <button type="button" onClick={() => setQ('')} className="disp" style={css('border:none;background:none;color:var(--sp-muted);font-size:13px;font-weight:700;cursor:pointer;padding:0 8px')}>Borrar</button>}
@@ -307,10 +308,10 @@ export default function GuiaMedica() {
 
         {/* Especialidad y plan, en dos cápsulas */}
         <div style={css('display:flex;gap:8px')}>
-          <button type="button" onClick={() => { setFiltroEsp(''); setHoja('esp'); }} aria-haspopup="dialog" className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.esp ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid var(--gm-borde)'))}>
+          <button type="button" onClick={() => { setFiltroEsp(''); setHoja('esp'); }} aria-haspopup="dialog" className="disp sq rel-btn" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.esp ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid var(--gm-borde)'))}>
             <span style={css('overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{f.esp || 'Especialidad'}</span>{Icono.abajo}
           </button>
-          <button type="button" onClick={() => setHoja('plan')} aria-haspopup="dialog" className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.plan ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid ' + 'var(--gm-borde)'))}>
+          <button type="button" onClick={() => setHoja('plan')} aria-haspopup="dialog" className="disp sq rel-btn" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.plan ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid ' + 'var(--gm-borde)'))}>
             <span style={css('overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{f.plan ? nombrePlan(f.plan) : 'Tu plan'}</span>{Icono.abajo}
           </button>
         </div>
@@ -322,7 +323,7 @@ export default function GuiaMedica() {
             <div className="disp" style={css(KICKER + ';margin-top:4px')}>Lo que más se busca</div>
             {/* Una sola lista agrupada, con filas finas y separadores: la misma
                 forma que la lista de especialidades (pedido de Arturo, 23/09). */}
-            <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
+            <div className="sq rel" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
               {MAS_BUSCADO.map((e, i) => (
                 <button key={e} type="button" onClick={() => elegirEsp(e, 'mas_buscado')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
                   <span className="disp" style={css('width:16px;font-size:13.5px;font-weight:900;color:var(--sp-blue-meta)')}>{i + 1}</span>
@@ -345,7 +346,7 @@ export default function GuiaMedica() {
                   <span style={css('color:var(--sp-estado-punto);display:flex;transition:transform .2s;transform:' + (abiertos[g.g] ? 'rotate(180deg)' : 'none'))}>{Icono.abajo}</span>
                 </button>
                 <Plegable abierto={!!abiertos[g.g]}>
-                  <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
+                  <div className="sq rel" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
                     {g.items.map((e) => (
                       <button key={e} type="button" onClick={() => elegirEsp(e, 'lista')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
                         <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
@@ -368,10 +369,10 @@ export default function GuiaMedica() {
                 <span>¿Es una emergencia? Llamá a la ambulancia, las 24 horas</span><span className="num-tnum" style={css('white-space:nowrap')}>(021) 319 0000</span>
               </a>
             )}
-            {sint.motivo && <p className="sq" style={css(INTER + '--sq:10px;margin:0;font-size:14px;line-height:1.5;color:var(--sp-teal-ink);background:var(--sp-mint-bg);padding:10px 12px')}>{sint.motivo}</p>}
+            {sint.motivo && <p className="sq" style={css(INTER + '--sq:10px;margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:2px;color:var(--sp-teal-deep);display:flex')}>{Icono.idea}</span><span>{sint.motivo}</span></p>}
             {f.esp && datos.notas[f.esp] && <p className="sq" style={css(INTER + '--sq:10px;margin:0;font-size:14px;line-height:1.5;color:var(--sp-text);background:#fff;border:1px solid var(--gm-linea);padding:10px 12px')}>{datos.notas[f.esp]}.</p>}
             {f.q.toLowerCase().includes('lister') && datos.lister.length > 0 && (
-              <details className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);padding:10px 14px')}>
+              <details className="sq rel" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);padding:10px 14px')}>
                 <summary className="disp" style={css('cursor:pointer;font-size:14.5px;font-weight:800;color:var(--sp-navy)')}>Horarios de cada servicio de Lister</summary>
                 <dl style={css(INTER + 'margin:8px 0 0;font-size:13.5px;line-height:1.5')}>
                   {datos.lister.map((s) => <div key={s.s} style={css('padding:7px 0;border-top:1px solid var(--sp-line-2)')}><dt style={css('font-weight:700;color:var(--sp-navy)')}>{s.s}</dt><dd style={css('margin:2px 0 0;color:var(--sp-text-2)')}>{s.h}</dd></div>)}
@@ -386,7 +387,7 @@ export default function GuiaMedica() {
                 )}
               </>
             ) : (
-              <div className="sq" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:22px 18px;text-align:center')}>
+              <div className="sq rel" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:22px 18px;text-align:center')}>
                 <h2 className="disp" style={css('font-size:19px;color:var(--sp-navy);margin:0 0 8px')}>{f.q ? <>No encontramos «{f.q}» en la red.</> : 'No hay resultados con estos filtros.'}</h2>
                 {sug && <p style={css(INTER + 'font-size:15px;margin:0 0 6px;color:var(--sp-text)')}>¿Quisiste decir <button type="button" onClick={() => setQ(sug)} className="disp" style={css('border:none;background:none;padding:0;color:var(--sp-teal-deep);font-weight:800;font-size:15px;cursor:pointer;text-decoration:underline;text-underline-offset:3px')}>{sug}</button>?</p>}
                 <p style={css(INTER + 'font-size:14.5px;line-height:1.55;color:var(--sp-muted);margin:0 auto 14px;max-width:420px')}>Probá con otra zona u otra palabra. Si no aparece, escribinos y te decimos dónde atenderte.</p>
@@ -402,7 +403,7 @@ export default function GuiaMedica() {
         </p>
 
         {/* La otra mitad del puente con el simulador (dec. 12e). */}
-        <div className="sq" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px')}>
+        <div className="sq rel" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px')}>
           <div style={css('min-width:200px;flex:1')}>
             <h2 className="disp" style={css('font-size:17px;color:var(--sp-navy);margin:0 0 4px')}>¿Todavía no tenés plan?</h2>
             <p style={css(INTER + 'font-size:14px;line-height:1.5;color:var(--sp-text);margin:0')}>En un minuto ves cuál te conviene y cuánto sale, sin dejar tus datos.</p>
@@ -424,7 +425,7 @@ export default function GuiaMedica() {
           return (
             <div key={g.g} style={css('margin-bottom:12px')}>
               <div className="disp" style={css(KICKER + ';padding:6px 2px 8px')}>{g.g}</div>
-              <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
+              <div className="sq rel" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
                 {items.map((e) => (
                   <button key={e} type="button" onClick={() => elegirEsp(e, 'hoja')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
                     <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy);' + (f.esp === e ? 'font-weight:700' : ''))}>{e}</span>

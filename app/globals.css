@@ -478,7 +478,16 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    abre crece en vez de saltar; especialidad y plan suben en una hoja desde
    abajo («es temporal, volvés a donde estabas»). Nada dura más de 1/3 de
    segundo y todo se apaga con «reducir movimiento». */
-.gm button,.gm a.sq{transition:transform .12s ease,background-color .15s ease,color .15s ease,border-color .15s ease}
+.gm button,.gm a.sq{transition:transform .12s ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow .12s ease}
+/* Relieve (24/09/2026, Arturo: «me gusta que le diste tridimensionalidad»,
+   por la zona elegida que flota sobre su riel). Dos alturas, y el relieve
+   dice «esto se toca o se abre»: .rel para superficies (tarjetas, listas,
+   buscador), .rel-btn para controles, que al apretar se aplastan contra la
+   página. Lo que solo informa (el «por qué» del síntoma) no lleva sombra:
+   gana contraste con color e ícono, no con relieve. */
+.gm .rel{box-shadow:0 1px 2px rgba(0,27,52,.06),0 3px 10px rgba(0,27,52,.05)}
+.gm .rel-btn{box-shadow:0 1px 2px rgba(0,27,52,.12),0 2px 6px rgba(0,27,52,.05)}
+.gm .rel-btn:active{box-shadow:0 0 1px rgba(0,27,52,.14)}
 .gm button:not(.fila):active,.gm a.sq:active{transform:scale(.97)}
 .gm .fila:active{background:var(--gm-fondo)!important}
 .gm-pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
