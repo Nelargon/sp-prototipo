@@ -17,6 +17,51 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 📬 EL BLOG LLEGA POR CORREO (24 sep 2026)
+
+**Arturo, 24/09/2026:** *«Para mí, ese contenido tiene mucho valor y debe
+compartirse sin falta […] en lugar de incluir solo un enlace al blog, me
+gustaría que el texto del artículo apareciera directamente en el correo.»* Y
+sobre a quién: *«La idea es que las personas que veo que pueden ser partes
+interesadas vean el valor del blog primero.»*
+
+**Qué hace.** Cada nota nueva de `contenido/blog/publicados/` sale por correo,
+con el texto completo, el diseño de marca y un botón a la web, **uno por
+persona**, cuando termina el deploy que la publica. Lo hace
+`.github/workflows/correo-blog.yml`; manual completo en
+`scripts/correo-blog/README.md`.
+
+**Decisiones (no re-litigar sin motivo):**
+
+- **Remitente: `arturo.gonzalez@` por el servidor de SP**, elegido por Arturo.
+  El correo de SP **no está en Google Workspace ni en Microsoft 365**: es un
+  hosting con cPanel (se leyó en los encabezados de sus correos). Su casilla
+  de SP se reenvía sola a su Gmail desde ene 2025. Mandar desde Gmail exigía
+  una contraseña de aplicación que abre su buzón personal entero; la casilla de
+  SP expone solo esa casilla y pasa SPF/DKIM.
+- **Destinatarios: 12 líderes de área + Arturo**, confirmados por él el
+  24/09. **La lista no está en este repo (es público):** vive en el secreto
+  `CORREO_BLOG_DESTINATARIOS` y se documenta en
+  `sp-interno/contenido/correo-blog-destinatarios.md`.
+- **Un workflow de GitHub y no una rutina de Claude:** mandar es mecánico, y
+  las rutinas ya se trabaron esperando permisos. No suma obreras al motor de
+  `sp-contenido`: el correo lee lo que ya está publicado en la vitrina.
+- **El registro de lo enviado vive en la rama `estado/correo-blog`**, no en
+  main (escribir en main dispararía un deploy por envío).
+- `lib/blog-texto.mjs` nació de esto: las funciones puras de `lib/blog.js`
+  (tiempo de lectura, copete repetido, fecha) se separaron para que el correo
+  lea cada nota exactamente como la web.
+
+**⚠ Estado: construido, INERTE hasta que Arturo cargue los tres secretos**
+(`CORREO_BLOG_USUARIO`, `CORREO_BLOG_CLAVE`, `CORREO_BLOG_DESTINATARIOS`) y
+corra la prueba (Actions → Correo del blog → Run workflow → `prueba`). Sin la
+clave, la corrida automática no hace nada. **Pendiente de verificar en la
+primera prueba:** que el hosting acepte SMTP autenticado desde los servidores
+de GitHub (desde el sandbox de Claude no se pudo probar: la red sale solo por
+un proxy HTTPS).
+
+---
+
 ## 🩺 LA RUTINA DIARIA DE SALUD — el Guardián (24 sep 2026)
 
 **Arturo, 24/09/2026:** *«Quiero crear una rutina que garantice que todos los

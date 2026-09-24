@@ -1,0 +1,162 @@
+name: Correo del blog
+
+# Cada nota nueva del blog llega por correo, con el TEXTO COMPLETO, a Arturo y
+# a los líderes de área (24/09/2026, pedido de Arturo: «La idea es que las
+# personas que veo que pueden ser partes interesadas vean el valor del blog
+# primero»). Sale desde la casilla de SP de Arturo, por el servidor de correo
+# de SP. Manual completo: scripts/correo-blog/README.md.
+#
+# CUÁNDO CORRE: cuando un deploy a Pages termina bien. Así el botón «Leer en
+# el blog» ya funciona cuando el correo llega. El deploy corre con cada push a
+# main y, como paracaídas, una vez por hora (deploy.yml): este workflow se
+# entera de una nota nueva aunque el push no haya disparado nada.
+#
+# QUÉ NO SE REPITE: el registro de lo enviado vive en la rama
+# `estado/correo-blog` (enviados.tsv). Fuera de main a propósito: escribirlo
+# en main dispararía un deploy por cada envío y chocaría con las sesiones que
+# trabajan ahí. La primera corrida arma la línea de base y no envía nada.
+#
+# INERTE HASTA QUE SE CONFIGURE: sin el secreto CORREO_BLOG_CLAVE la corrida
+# automática no hace nada y queda en verde. Los secretos (usuario, clave y
+# lista de destinatarios) se cargan en Settings → Secrets and variables →
+# Actions; nunca van en el código, porque este repo es público.
+#
+# PRUEBA A MANO: Actions → «Correo del blog» → Run workflow → modo «prueba».
+# Manda una nota solo a la casilla que envía y no toca el registro.
+
+on:
+  workflow_run:
+    workflows: ['Deploy to GitHub Pages']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'prueba = una nota solo a la casilla que envía, sin tocar el registro · real = lo mismo que la corrida automática'
+        type: choice
+        options: [prueba, real]
+        default: prueba
+      archivo:
+        description: 'Solo en prueba: el .md de contenido/blog/publicados/ (vacío = el más nuevo)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write   # solo para escribir la rama estado/correo-blog
+
+concurrency:
+  group: correo-blog
+  cancel-in-progress: false
+
+jobs:
+  correo:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ESTADO_RAMA: estado/correo-blog
+      ESTADO: .estado/enviados.tsv
+      # Servidores a probar, en orden. El dominio de SP está en un hosting con
+      # cPanel; server.joseflores.com.py es el nombre del mismo servidor, por
+      # si el certificado de mail.saludprotegida.com.py no es válido.
+      CORREO_SMTP_HOSTS: mail.saludprotegida.com.py server.joseflores.com.py
+      CONFIGURADO: ${{ secrets.CORREO_BLOG_CLAVE != '' }}
+      PRUEBA: ${{ github.event_name == 'workflow_dispatch' && inputs.modo == 'prueba' }}
+    steps:
+      - name: ¿Está configurado?
+        if: env.CONFIGURADO != 'true'
+        run: |
+          echo "::notice::Correo del blog sin configurar (falta el secreto CORREO_BLOG_CLAVE). No se hace nada."
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "✗ Para correrlo a mano primero hay que cargar los secretos. Ver scripts/correo-blog/README.md."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        if: env.CONFIGURADO == 'true'
+        with:
+          # La versión que se acaba de publicar, no la punta de main: el correo
+          # habla de lo que ya está en la web.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Traer el registro de lo enviado
+        id: registro
+        if: env.CONFIGURADO == 'true' && env.PRUEBA != 'true'
+        run: |
+          mkdir -p .estado
+          if git fetch --depth=1 origin "$ESTADO_RAMA" 2>/dev/null; then
+            echo "padre=$(git rev-parse FETCH_HEAD)" >> "$GITHUB_OUTPUT"
+            git show FETCH_HEAD:enviados.tsv > "$ESTADO" || rm -f "$ESTADO"
+          else
+            echo "La rama $ESTADO_RAMA no existe todavía."
+          fi
+
+      - name: ¿Qué hay para enviar?
+        id: pend
+        if: env.CONFIGURADO == 'true' && env.PRUEBA != 'true'
+        run: python3 scripts/correo-blog/correo_blog.py pendientes --estado "$ESTADO"
+
+      - name: Primera vez — línea de base (no envía nada)
+        if: steps.pend.outputs.modo == 'base'
+        run: python3 scripts/correo-blog/correo_blog.py base --estado "$ESTADO"
+
+      - name: Elegir la nota de prueba
+        id: prueba
+        if: env.CONFIGURADO == 'true' && env.PRUEBA == 'true'
+        env:
+          ARCHIVO: ${{ inputs.archivo }}
+        run: |
+          a="${ARCHIVO:-$(ls contenido/blog/publicados/*.md | sort | tail -1 | xargs basename)}"
+          if ! [[ "$a" =~ ^[A-Za-z0-9._-]+\.md$ ]] || [ ! -f "contenido/blog/publicados/$a" ]; then
+            echo "✗ No existe contenido/blog/publicados/$a"; exit 1
+          fi
+          echo "archivos=$a" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.pend.outputs.modo == 'enviar' || steps.prueba.outputs.archivos != ''
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        if: steps.pend.outputs.modo == 'enviar' || steps.prueba.outputs.archivos != ''
+        run: npm ci
+
+      - name: Armar los correos
+        if: steps.pend.outputs.modo == 'enviar' || steps.prueba.outputs.archivos != ''
+        env:
+          ARCHIVOS: ${{ steps.pend.outputs.archivos || steps.prueba.outputs.archivos }}
+        run: node scripts/correo-blog/armar.mjs --salida .correo $ARCHIVOS
+
+      - name: Enviar
+        if: steps.pend.outputs.modo == 'enviar' || steps.prueba.outputs.archivos != ''
+        env:
+          CORREO_BLOG_USUARIO: ${{ secrets.CORREO_BLOG_USUARIO }}
+          CORREO_BLOG_CLAVE: ${{ secrets.CORREO_BLOG_CLAVE }}
+          CORREO_BLOG_DESTINATARIOS: ${{ secrets.CORREO_BLOG_DESTINATARIOS }}
+          OMITIDOS: ${{ steps.pend.outputs.omitidos }}
+        run: |
+          if [ "$PRUEBA" = "true" ]; then
+            python3 scripts/correo-blog/correo_blog.py enviar --correos .correo --estado "$ESTADO" --prueba
+          else
+            python3 scripts/correo-blog/correo_blog.py enviar --correos .correo --estado "$ESTADO" --omitidos "$OMITIDOS"
+          fi
+
+      # Corre aunque el envío haya fallado a mitad: lo que sí salió tiene que
+      # quedar anotado, o la próxima corrida lo repite.
+      - name: Guardar el registro
+        if: always() && (steps.pend.outputs.modo == 'base' || steps.pend.outputs.modo == 'enviar')
+        env:
+          PADRE: ${{ steps.registro.outputs.padre }}
+        run: |
+          [ -f "$ESTADO" ] || { echo "Sin registro que guardar."; exit 0; }
+          if [ -n "$PADRE" ] && git show "$PADRE:enviados.tsv" 2>/dev/null | cmp -s - "$ESTADO"; then
+            echo "El registro no cambió."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          blob=$(git hash-object -w "$ESTADO")
+          tree=$(printf '100644 blob %s\tenviados.tsv\n' "$blob" | git mktree)
+          commit=$(git commit-tree "$tree" ${PADRE:+-p "$PADRE"} -m "Correo del blog: registro de lo enviado")
+          git push origin "$commit:refs/heads/$ESTADO_RAMA"
+          echo "✓ Registro guardado en $ESTADO_RAMA."
