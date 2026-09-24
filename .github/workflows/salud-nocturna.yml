@@ -1,0 +1,263 @@
+name: Salud nocturna
+
+# LA RUTINA DIARIA DE SALUD, CAPA 1 (24 sep 2026, pedido de Arturo: «que todos
+# los repositorios funcionen correctamente, sean coherentes y estén
+# actualizados»). Lo que se puede medir sin criterio, todas las noches:
+#
+#   1. el sitio se construye (las dos ediciones)
+#   2. las pruebas rápidas: buscador, cobertura de páginas, links internos
+#   3. las pruebas con navegador: qa-integral (cero «roto») y qa-lanzamiento
+#   4. el sitio EN VIVO responde, y la v1 no publica lo que no se lanza
+#   5. producción = main: el último commit de main está publicado
+#   6. el Guardián (capa 2) está vivo: actualizó su tablero en las últimas 30 h
+#
+# Corre a las 05:00 de Asunción, cuando la cadena del motor de contenido ya
+# terminó (el Publicador arranca 04:30). A las 06:00 el Guardián —la rutina de
+# Claude— lee este resultado, cruza los tres repos y arregla lo que puede.
+# Manual completo del sistema: sp-interno/salud/GUARDIAN.md.
+#
+# Si algo falla abre UN issue `salud-nocturna` (o le suma un comentario si ya
+# está abierto) y la corrida queda en rojo. Cuando vuelve a verde, lo cierra
+# solo. Nunca toca el tablero del Guardián: si lo tocara, taparía su silencio.
+#
+# Los chequeos que no dependen del navegador también corren en el CI de cada
+# PR (ci.yml): la noche vuelve a mirar lo mismo sobre main, más lo que un PR
+# no puede ver (el sitio en vivo, el deploy, el paso del tiempo).
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 05:00 America/Asuncion (UTC-3)
+  workflow_dispatch:
+  # Un PR que cambia esta rutina la prueba entera antes de fusionarse (sin
+  # abrir issues: los avisos son solo de las corridas sobre main).
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/salud-nocturna.yml'
+      - 'qa/**'
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+
+concurrency:
+  group: salud-nocturna-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  salud:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SITIO: https://nelargon.github.io/sp-prototipo
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      # playwright-core vive FUERA del repo (regla de CLAUDE.md: instalar
+      # adentro rompe el lockfile). Chromium: el Chrome del runner.
+      - name: Navegador para las pruebas
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw" playwright-core@1 --no-save --silent
+          echo "PW_PATH=$RUNNER_TEMP/pw/node_modules/playwright-core/index.js" >> "$GITHUB_ENV"
+          if [ -x /usr/bin/google-chrome ]; then
+            echo "PW_CHROME=/usr/bin/google-chrome" >> "$GITHUB_ENV"
+          else
+            npx --prefix "$RUNNER_TEMP/pw" playwright-core install chromium
+            echo "PW_CHROME=$(find ~/.cache/ms-playwright -type f -name chrome -path '*chrome-linux*' | head -1)" >> "$GITHUB_ENV"
+          fi
+          mkdir -p "$RUNNER_TEMP/site"
+          (cd "$RUNNER_TEMP/site" && python3 -m http.server 8080 >/dev/null 2>&1 &)
+
+      - id: build
+        name: 1 · Build del prototipo completo
+        continue-on-error: true
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /sp-prototipo
+
+      - id: rapidas
+        name: 2 · Pruebas rápidas (buscador, cobertura, links)
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          node scripts/test-buscador.mjs
+          node qa/cobertura-rutas.mjs
+          node qa/links-internos.mjs out /sp-prototipo
+
+      - id: integral
+        name: 3a · QA integral con navegador (cero «roto»)
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          ln -sfn "$PWD/out" "$RUNNER_TEMP/site/sp-prototipo"
+          node qa/qa-integral.mjs http://localhost:8080/sp-prototipo | tee "$RUNNER_TEMP/qa-integral.log"
+
+      - id: build_v1
+        name: 1b · Build de la edición de lanzamiento (v1)
+        continue-on-error: true
+        run: |
+          rm -f "$RUNNER_TEMP/site/sp-prototipo"
+          if [ -d out ]; then mv out "$RUNNER_TEMP/site/sp-prototipo"; else mkdir -p "$RUNNER_TEMP/site/sp-prototipo"; fi
+          rm -rf .next
+          npm run build
+          node qa/links-internos.mjs out /sp-prototipo/lanzamiento
+          mv out "$RUNNER_TEMP/site/sp-prototipo/lanzamiento"
+        env:
+          NEXT_PUBLIC_BASE_PATH: /sp-prototipo/lanzamiento
+          NEXT_PUBLIC_EDICION: lanzamiento
+
+      - id: lanzamiento
+        name: 3b · QA de la v1 con navegador
+        if: steps.build_v1.outcome == 'success'
+        continue-on-error: true
+        run: node qa/qa-lanzamiento.mjs http://localhost:8080/sp-prototipo/lanzamiento
+
+      - id: vivo
+        name: 4 · El sitio en vivo responde
+        continue-on-error: true
+        run: |
+          fallas=0
+          # Hasta 3 intentos, 10 s entre uno y otro. El 24/09 GitHub Pages
+          # devolvió un 503 suelto en /lanzamiento/ que 5 minutos antes y
+          # después daba 200: con un solo intento, un hipo del servidor se lee
+          # como caída. Una caída real falla los tres. Si hizo falta
+          # reintentar, queda escrito: el Guardián cuenta esos hipos.
+          mirar() { # ruta, código esperado
+            local c visto=""
+            for intento in 1 2 3; do
+              c=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 30 "$SITIO$1")
+              [ "$c" = "$2" ] && break
+              visto="$visto $c"
+              [ "$intento" -lt 3 ] && sleep 10
+            done
+            if [ "$c" = "$2" ]; then
+              if [ -n "$visto" ]; then echo "✓ $1 → $c (al intento $intento; antes:$visto)"; else echo "✓ $1 → $c"; fi
+            else
+              echo "✗ $1 → $c en los 3 intentos (se esperaba $2; vistos:$visto)"; fallas=$((fallas+1))
+            fi
+          }
+          for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ /guia/guia_home.html \
+                   /lanzamiento/ /lanzamiento/simulador/ /lanzamiento/planes/ /lanzamiento/que-cubre/ \
+                   /lanzamiento/guia-medica/ /lanzamiento/guia-medica/P-0001/; do
+            mirar "$p" 200
+          done
+          # La v1 no publica lo que no se lanza (app/edicion.js): si responde,
+          # es una página huérfana que Google puede encontrar.
+          for p in /lanzamiento/blog/ /lanzamiento/mi-sp/ /lanzamiento/agendar/ /lanzamiento/historia/; do
+            mirar "$p" 404
+          done
+          exit $fallas
+
+      - id: fresco
+        name: 5 · Producción = main
+        continue-on-error: true
+        run: |
+          # origin/main y no HEAD: en un PR, HEAD es el merge del PR.
+          main=$(git rev-parse origin/main)
+          edad=$(( ($(date +%s) - $(git log -1 --format=%ct "$main")) / 3600 ))
+          # Se pregunta «¿este commit tiene un deploy exitoso?», no «¿cuál es
+          # el último deploy exitoso?»: con el filtro --status success, GitHub
+          # devolvió el 24/09 uno del 02/09 como «el último». Contar no
+          # depende del orden en que vengan.
+          runs=$(gh run list --workflow deploy.yml --branch main --limit 40 --json headSha,conclusion,createdAt)
+          publicado=$(jq --arg s "$main" '[.[] | select(.conclusion=="success" and .headSha==$s)] | length' <<<"$runs")
+          ultimo=$(jq -r '[.[] | select(.conclusion=="success")] | sort_by(.createdAt) | last | "\(.headSha[0:9]) (\(.createdAt))"' <<<"$runs")
+          echo "main:                  ${main:0:9} (hace ${edad} h)"
+          echo "último deploy exitoso: $ultimo"
+          if [ "$publicado" -gt 0 ]; then echo "✓ lo último de main está publicado"; exit 0; fi
+          # El deploy tiene red de seguridad cada hora (deploy.yml): con 2 h de
+          # margen, una diferencia es una falla, no un deploy en camino.
+          if [ "$edad" -lt 2 ]; then echo "· main tiene menos de 2 h: el deploy puede estar en camino"; exit 0; fi
+          echo "✗ main lleva ${edad} h sin publicarse: producción muestra una versión vieja"
+          exit 1
+
+      - id: guardian
+        name: 6 · El Guardián está vivo
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        run: |
+          upd=$(gh issue list --label tablero-salud --state open --limit 1 --json updatedAt -q '.[0].updatedAt')
+          if [ -z "$upd" ]; then echo "✗ no hay tablero abierto (issue con etiqueta tablero-salud)"; exit 1; fi
+          horas=$(( ($(date +%s) - $(date -d "$upd" +%s)) / 3600 ))
+          echo "tablero actualizado hace ${horas} h"
+          if [ "$horas" -gt 30 ]; then echo "✗ el Guardián no corrió: el tablero tiene ${horas} h"; exit 1; fi
+          echo "✓ el Guardián corrió en las últimas 30 h"
+
+      - name: Resultado
+        if: always()
+        run: |
+          fila() { # nombre, outcome
+            case "$2" in
+              success) echo "| $1 | 🟢 bien |" ;;
+              failure) echo "| $1 | 🔴 falló |" ;;
+              skipped) echo "| $1 | ⚪ no corrió (depende de un paso que falló, o no aplica a un PR) |" ;;
+              *)       echo "| $1 | ⚪ ${2:-no corrió} |" ;;
+            esac
+          }
+          {
+            echo "| Chequeo | Estado |"
+            echo "|---|---|"
+            fila "1 · Build del prototipo" "${{ steps.build.outcome }}"
+            fila "1b · Build de la v1 + links" "${{ steps.build_v1.outcome }}"
+            fila "2 · Buscador, cobertura y links" "${{ steps.rapidas.outcome }}"
+            fila "3a · QA integral (cero roto)" "${{ steps.integral.outcome }}"
+            fila "3b · QA de la v1" "${{ steps.lanzamiento.outcome }}"
+            fila "4 · Sitio en vivo" "${{ steps.vivo.outcome }}"
+            fila "5 · Producción = main" "${{ steps.fresco.outcome }}"
+            fila "6 · El Guardián está vivo" "${{ steps.guardian.outcome }}"
+          } > "$RUNNER_TEMP/tabla.md"
+          resumen=$(grep -E '^QA INTEGRAL|roto: ' "$RUNNER_TEMP/qa-integral.log" 2>/dev/null | tr '\n' ' ' || true)
+          { echo "### Salud nocturna"; echo; cat "$RUNNER_TEMP/tabla.md"; echo; [ -n "$resumen" ] && echo "QA integral: $resumen"; } >> "$GITHUB_STEP_SUMMARY"
+
+          # El Guardián solo cuenta si la corrida es sobre main (en un PR el
+          # tablero no se mira, a propósito).
+          rojo=0
+          grep -q '🔴' "$RUNNER_TEMP/tabla.md" && rojo=1
+          [ "${{ steps.build.outcome }}" = "success" ] || rojo=1
+          echo "ROJO=$rojo" >> "$GITHUB_ENV"
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then exit 0; fi
+
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh label create salud-nocturna --color B60205 --description "La salud nocturna encontró algo roto" 2>/dev/null || true
+          abierto=$(gh issue list --label salud-nocturna --state open --limit 1 --json number -q '.[0].number')
+          hoy=$(TZ=America/Asuncion date +%d/%m/%Y)
+          if [ "$rojo" = "1" ]; then
+            {
+              echo "La salud nocturna del $hoy encontró algo roto."
+              echo
+              cat "$RUNNER_TEMP/tabla.md"
+              echo
+              echo "Detalle y logs: $run_url"
+              echo
+              echo "El Guardián (rutina de las 06:00) lo toma desde acá: diagnostica, arregla si puede y, si no, deja escrito qué falla y qué necesita. Manual: \`sp-interno/salud/GUARDIAN.md\`."
+              echo
+              echo "---"
+              echo "_Generated by [Claude Code](https://claude.ai/code)_"
+            } > "$RUNNER_TEMP/aviso.md"
+            if [ -n "$abierto" ]; then
+              gh issue comment "$abierto" --body-file "$RUNNER_TEMP/aviso.md"
+            else
+              gh issue create --title "🔴 Salud nocturna: algo se rompió ($hoy)" --label salud-nocturna --body-file "$RUNNER_TEMP/aviso.md"
+            fi
+          elif [ -n "$abierto" ]; then
+            gh issue close "$abierto" --comment "✅ Volvió a verde en la corrida del $hoy: $run_url
+
+          ---
+          _Generated by [Claude Code](https://claude.ai/code)_"
+          fi
+
+      - name: La corrida queda en rojo si algo falló
+        if: always()
+        run: |
+          if [ "${ROJO:-1}" = "1" ]; then echo "Algo falló: ver la tabla del resumen."; exit 1; fi
+          echo "Todo verde."

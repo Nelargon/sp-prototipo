@@ -3274,3 +3274,60 @@ sin JavaScript descarta la mitad de las causas en un minuto. Y cuando una
 decisión se aplica a una pieza y no a su gemela («recortar la fuente»), la que
 quedó afuera no avisa: pesa en silencio en cada página, hasta que un control
 la señala.
+
+
+## Capítulo 89 — El detector que mandaba a corregir lo que estaba bien (24/09/2026)
+
+**Qué intentamos.** Arturo pidió una rutina diaria que garantice que los tres
+repos funcionen, sean coherentes y estén al día, y que no lo espere: que revise
+y arregle sola. Antes de automatizar nada se hizo una «corrida cero» a mano:
+todas las pruebas que existían, sobre los tres repos, para saber de qué punto
+partía la rutina.
+
+**Qué pasó.** Lo crítico estaba verde: los dos builds, el buscador, la QA de la
+v1, la Guía Médica igual a la planilla del Drive, el blog en sync con la
+cocina. Pero el QA integral daba 15 hallazgos y, leídos uno por uno, **13 eran
+falsos**. Diez «práctica» eran el giro «en la práctica», que es castellano de
+familia; dos «a confirmar» eran «para confirmarlo» y «vale la pena confirmar»,
+que la expresión encontraba dentro de otras palabras. Y lo grave no era el
+ruido: `qa/CRITERIO-PUERTAS.md` los había tomado como verdad y decía «se
+corrigen en `sp-contenido`». El boletín mandaba a reescribir notas que estaban
+bien escritas para dejar contento a un detector mal calibrado.
+
+La segunda sorpresa vino de lo que nadie miraba. `/mi-sp/`, las notas del blog
+y las guías del blog no las abría ninguna prueba, y `/que-cubre/` y
+`/guia-medica/` —las dos páginas más importantes de la v1— no estaban en el
+barrido de accesibilidad. Al sumarlas aparecieron dos errores de contraste
+reales, uno de ellos en la v1 que Buenavista va a copiar.
+
+La tercera la mostró la primera corrida en GitHub. La prueba del modo
+personalizado de la guía vieja pedía `?plan=integral`, un nombre de plan que la
+guía ya no conoce (hoy son bronce, silver y gold). En los contenedores de
+Claude daba verde: sin internet no carga el CDN de Tailwind, la clase `hidden`
+no esconde nada y el banner «se veía», vacío. En GitHub, con internet, daba
+rojo. Estuvo verde durante semanas por la razón equivocada.
+
+**Qué aprendimos.** Un control tiene dos maneras de fallar y la segunda es la
+cara: además de callar lo que está mal, puede señalar lo que está bien, y
+alguien termina «arreglándolo». Por eso todo detector nuevo se prueba contra un
+caso que debe marcar y uno que no (el de links internos se probó metiéndole
+tres links rotos a propósito antes de creerle el verde). Un verde también se
+verifica: mirar *qué* vio la prueba, no solo que pasó (el banner tenía que
+decir «Plan Silver», no solo existir). Y la misma suite corrida en dos
+entornos distintos es un control en sí: lo que da verde en uno y rojo en el
+otro está midiendo el entorno, no el sitio.
+
+Y la lección alcanzó a la propia rutina el mismo día. El chequeo nuevo de
+«producción = main» le pedía a GitHub «el último deploy exitoso», y GitHub
+devolvió uno del 2 de septiembre. Pasó en verde solo porque `main` tenía
+menos de dos horas; a la mañana siguiente habría sido una falsa alarma de
+«producción vieja». Se leyó el log de la corrida antes de fusionar, no solo el
+tilde verde, y se cambió la pregunta: ¿el commit actual de `main` tiene un
+deploy exitoso? Contar no depende del orden en que GitHub devuelva la lista. Media
+hora después, la misma corrida marcó el sitio caído por un 503 suelto de
+GitHub Pages en `/lanzamiento/`, que antes y después respondía bien: un
+chequeo de disponibilidad de un solo intento confunde un hipo con una caída.
+Ahora prueba hasta tres veces y, si tuvo que reintentar, lo deja escrito. Y el verde de una
+suite vale lo que cubre: las páginas que nadie abre no fallan, simplemente no
+aparecen. De ahí la puerta nueva, `qa/cobertura-rutas.mjs`: una página sin
+prueba ya no entra.

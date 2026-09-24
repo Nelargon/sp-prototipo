@@ -9,5 +9,5 @@ import { CON_MARCA_REVISAR } from '../edicion';
 // esos colores ya tienen significado de cara al cliente.
 export default function PuntoRevisar() {
   if (!CON_MARCA_REVISAR) return null;
-  return <span title="Revisar (marca interna): hay un dato para confirmar en la planilla" aria-label="Dato a revisar, marca interna" style={css('display:inline-block;width:10px;height:10px;border-radius:var(--r-pill);background:#F28C28;flex:none;margin-left:8px;vertical-align:middle')} />;
+  return <span title="Revisar (marca interna): hay un dato para confirmar en la planilla" aria-label="Dato a revisar, marca interna" style={css('display:inline-block;width:10px;height:10px;border-radius:var(--r-pill);background:var(--sp-marca-interna);flex:none;margin-left:8px;vertical-align:middle')} />;
 }

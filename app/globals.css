@@ -76,6 +76,7 @@
   --sp-estado-ink-2:#4F5C5B;
   --sp-estado-punto:#8A9997;
   --sp-estado-punto-2:#9AA3A2;
+  --sp-marca-interna:#F28C28; /* punto «Revisar» y «sin prestadores» de la guía — solo prototipo, nunca de cara al cliente */
   /* Neutros semánticos */
   --sp-ink:#1D1D1B;         /* texto más fuerte */
   --sp-text:#3D3D3D;        /* cuerpo */
