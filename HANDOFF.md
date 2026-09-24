@@ -17,6 +17,86 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 👆 EL LENGUAJE TÁCTIL DE LA GUÍA PASA A TODO EL SITIO (24 sep 2026)
+
+**Arturo, 24/09/2026, textual:** *«me gustaría que todo lo que revisamos, el
+diseño inspirado en Apple y las mejoras realizadas, se extienda a toda la
+web»*. Pidió el plan antes de construir y lo aprobó el mismo día
+(*«Adelante!»*). Alcance: **lo que sale en la v1** (inicio, simulador, planes,
+qué cubre, guía). Blog, agendar y Mi SP lo reciben cuando se lancen;
+`/historia/` no.
+
+**La idea que ordena el trabajo:** lo que hace que la guía se sienta Apple son
+las reglas detrás de cada efecto (cada movimiento avisa algo; la sombra va solo
+en lo que se toca). Extenderla es pasar esas reglas al resto del sitio, no
+pegar efectos en cada botón.
+
+### El plan, en cuatro PRs
+
+| Paso | Qué | Fusión | Estado |
+|---|---|---|---|
+| 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ este PR |
+| 2 | **Inicio, barra y 404**: tarjetas de planes y las dos puertas del hero con relieve, todos los botones se hunden, FAQ con `Plegable` | **espera el OK de Arturo**: antes de fusionar ve capturas de celular con 2 o 3 intensidades y elige | pendiente |
+| 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | pendiente |
+| 4 | **Planes, Qué cubre y la ficha del prestador** | automática | pendiente |
+
+Proyección (no compromiso): los cuatro entran antes del lanzamiento de la
+primera semana de octubre si el OK del paso 2 llega rápido; si se aprieta, el 4
+puede esperar sin dejar nada a medias.
+
+### Qué se extiende y qué no
+
+| De la guía | ¿A todo el sitio? |
+|---|---|
+| El botón se hunde al tocarlo (`.tactil`) | Sí, en todos |
+| Esquina continua (`.sq` + `--sq`) | Sí, en tarjetas, botones y buscadores. **Cápsulas y círculos quedan como están** |
+| Relieve (`.rel` superficies, `.rel-btn` controles) | Sí, con la misma regla: **lo que solo informa no lleva sombra** |
+| Lo que se abre crece (`Plegable`) | Sí: todo `{abierto && (…)}` que hoy aparece de golpe |
+| Hoja que sube (`Hoja`) | **Solo para elegir de una lista larga.** Fuera de la guía casi no hay casos; no se fuerza |
+| Fondo gris claro (`--gm-fondo`) | **No.** Es para pantallas donde se recorre una lista; el inicio tiene su ritmo blanco/menta/azul |
+
+### Cómo se aplica a una página (receta para los pasos 2 a 4)
+
+1. `tactil` en el contenedor raíz de la página: todos sus botones se hunden.
+2. `className="sq"` + `--sq:<radio>` en lugar de `border-radius` en tarjetas,
+   botones y buscadores. Nunca en `--r-pill` ni en `50%`.
+3. `rel` o `rel-btn` según la regla; borrar la sombra suelta que tuviera.
+4. Cada `{x && (<div>…</div>)}` que se despliega → `<Plegable abierto={x}>`.
+   Ojo: el contenido pasa a estar en el HTML aunque esté cerrado. En la FAQ
+   del inicio eso es bueno (Google lee las respuestas y Buenavista no tiene
+   que armar nada), pero `qa/qa-lanzamiento.mjs` hoy las revisa
+   desplegándolas: hay que ajustar esa verificación en el mismo PR.
+5. Verificar con capturas antes/después y estilos medidos en el navegador.
+
+### Lo medido para el paso 2 (en el código, 24/09)
+
+- Fuera de la guía, **ninguno de los 129 botones y links de la v1 responde al
+  toque** (solo el deslizador del simulador).
+- **26 sombras distintas** y **136 esquinas** escritas a mano en las páginas
+  de la v1.
+- **El `.lift` del inicio no funciona (medido en el navegador, 24/09):
+  0 de las 8 tarjetas con sombra lo recibe.** El script de `app/page.jsx`
+  busca `border-radius: 16|20|22px` en el `style`, y desde la tokenización del
+  6/08 las tarjetas dicen `var(--r-*)` o tienen radios que no están en la
+  lista (18px, 26px). Además, en celular (77% del tráfico) no hay mouse: el
+  toque es lo que se siente. En el paso 2 el script sale y la tarjeta que se
+  toca lleva su clase explícita.
+
+### Cómo se verificó el paso 1
+
+- **48 capturas idénticas píxel por píxel** (umbral 0) contra `main`: inicio,
+  simulador, planes, qué cubre, 404, ficha, guía con búsqueda, «Visar una
+  orden», «Ver todas las especialidades» y las dos hojas abiertas, a 360, 390,
+  430 y 1440 px.
+- Estilos medidos en el navegador iguales: sombras, esquinas, transiciones, el
+  toque (`scale(.97)` y la sombra aplastada), plegables y hojas cerradas `inert`.
+- **Se corrigió un error: «reducir movimiento» no apagaba el toque.** La regla
+  que lo apagaba (`.gm button:active`) pesaba menos que la que lo prende
+  (`.gm button:not(.fila):active`), así que el botón se seguía achicando. Este
+  documento decía que se apagaba; el navegador decía que no. BITACORA cap. 85.
+- Las clases funcionan fuera de la guía (probado en `/planes/` con elementos
+  de prueba). Las dos ediciones se construyen y `qa-lanzamiento` da todo verde.
+
 ## 🩺 LA GUÍA MÉDICA CAMBIA DE CARA: «SÍNTESIS CON CÁPSULAS» (23 sep 2026)
 
 Arturo eligió el diseño en un lienzo de diseño (claude.ai, «Guía Médica SP · 5
@@ -69,7 +149,8 @@ directo a la guía»).** Tres gestos, y cada uno avisa algo:
   (`Hoja`): fondo oscurecido, asa, «×», Escape o tocar afuera la cierran, y
   bloquea el scroll de atrás. La de especialidad trae buscador propio.
 Todo dura menos de 1/3 de segundo y se apaga con «reducir movimiento» del
-sistema. CSS en `app/globals.css` (bloque «Movimiento»). La hoja todavía **no
+sistema (el toque recién desde el 24/09: ver arriba). CSS en `app/globals.css`,
+bloque «Sistema táctil» desde el 24/09 (antes, «Movimiento», solo de la guía). La hoja todavía **no
 se arrastra con el dedo** para cerrarla: se cierra con la «×» o tocando afuera.
 
 **Relieve (24/09/2026, Arturo: «me gusta que le diste tridimensionalidad»,** por

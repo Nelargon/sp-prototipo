@@ -97,6 +97,15 @@
   --r-md:16px;              /* banda ancha */
   --r-sm:12px;              /* botón */
   --r-xs:10px;              /* chip, ícono, ítem de menú */
+  /* Sistema táctil (24/09/2026, nació en la Guía Médica; ver el bloque
+     «Sistema táctil» al final). Dos alturas de relieve y una sola duración
+     para el toque: todo el sitio responde igual. */
+  --sombra-sup:0 1px 2px rgba(0,27,52,.06),0 3px 10px rgba(0,27,52,.05);  /* superficie que se toca o se abre */
+  --sombra-ctrl:0 1px 2px rgba(0,27,52,.12),0 2px 6px rgba(0,27,52,.05);  /* control (botón que abre, selector) */
+  --sombra-ctrl-apretado:0 0 1px rgba(0,27,52,.14);                       /* el control aplastado contra la página */
+  --sombra-hoja:0 -10px 40px rgba(0,27,52,.18);
+  --toque-gris:#F4F5F6;     /* la fila apretada se oscurece hasta acá */
+  --mov-toque:.12s;         /* cuánto tarda el botón en hundirse */
 }
 html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
 body{margin:0;background:#fff}
@@ -456,46 +465,75 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 
 /* Guía Médica — "¿Qué plan tenés?" (23/09/2026): 4 botones en una fila en
    escritorio, 2×2 en celular. */
-/* Guía Médica (diseño del 23/09/2026, «síntesis con cápsulas»).
-   Fondo gris claro y ESQUINA DE CURVATURA CONTINUA (elección de Arturo, opción 2
-   del lienzo): la curva arranca de a poco, la forma se ve más cuadrada pero sin
-   punta. Cada elemento dice su radio con --sq. Donde el navegador todavía no
-   sabe dibujarla (Safari y Firefox, sep 2026) queda una esquina redondeada
-   común de ese mismo radio; donde sí (Chrome y Edge 139+), el radio se agranda
-   porque la curva continua "se come" menos esquina que un cuarto de círculo. */
+/* Guía Médica (diseño del 23/09/2026, «síntesis con cápsulas»): fondo gris
+   claro. La esquina, el relieve y el movimiento nacieron acá y desde el
+   24/09/2026 son de todo el sitio: ver «Sistema táctil», abajo. */
 .gm{--gm-fondo:#F4F5F6;--gm-linea:#E6E8EA;--gm-borde:#D4E0EE}
-.sq{border-radius:var(--sq,10px)}
-@supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
 /* El buscador ya tiene su «Borrar»: sin la cruz nativa del navegador, que lo duplicaba. */
 .gm input[type=search]::-webkit-search-cancel-button{display:none}
-/* Movimiento (23/09/2026, ver el comentario en GuiaMedica.jsx). Cada movimiento
-   avisa algo: al tocar, el botón se hunde apenas («te escuché»); lo que se
-   abre crece en vez de saltar; especialidad y plan suben en una hoja desde
-   abajo («es temporal, volvés a donde estabas»). Nada dura más de 1/3 de
-   segundo y todo se apaga con «reducir movimiento». */
-.gm button,.gm a.sq{transition:transform .12s ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow .12s ease}
-/* Relieve (24/09/2026, Arturo: «me gusta que le diste tridimensionalidad»,
-   por la zona elegida que flota sobre su riel). Dos alturas, y el relieve
-   dice «esto se toca o se abre»: .rel para superficies (tarjetas, listas,
-   buscador), .rel-btn para controles, que al apretar se aplastan contra la
-   página. Lo que solo informa (el «por qué» del síntoma) no lleva sombra:
-   gana contraste con color e ícono, no con relieve. */
-.gm .rel{box-shadow:0 1px 2px rgba(0,27,52,.06),0 3px 10px rgba(0,27,52,.05)}
-.gm .rel-btn{box-shadow:0 1px 2px rgba(0,27,52,.12),0 2px 6px rgba(0,27,52,.05)}
-.gm .rel-btn:active{box-shadow:0 0 1px rgba(0,27,52,.14)}
-.gm button:not(.fila):active,.gm a.sq:active{transform:scale(.97)}
-.gm .fila:active{background:var(--gm-fondo)!important}
-.gm-pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
-.gm-pleg[data-abierto="1"]{grid-template-rows:1fr;opacity:1}
-.gm-pleg>div{overflow:hidden;min-height:0}
-.gm-pleg-col[data-abierto="0"]{margin-top:calc(-1 * var(--gap,14px))}
-.gm-hoja{position:fixed;inset:0;z-index:200;pointer-events:none}
-.gm-hoja[data-abierta="1"]{pointer-events:auto}
-.gm-hoja-fondo{position:absolute;inset:0;background:rgba(0,27,52,.38);opacity:0;transition:opacity .25s ease}
-.gm-hoja[data-abierta="1"] .gm-hoja-fondo{opacity:1}
-.gm-hoja-panel{position:absolute;left:0;right:0;bottom:0;max-width:720px;margin:0 auto;max-height:82vh;display:flex;flex-direction:column;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,27,52,.18);transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,0,1);outline:none;padding-bottom:env(safe-area-inset-bottom)}
-@supports (corner-shape:squircle){.gm-hoja-panel{corner-shape:squircle;border-radius:36px 36px 0 0}}
-.gm-hoja[data-abierta="1"] .gm-hoja-panel{transform:none}
-.gm-hoja-asa{width:40px;height:5px;border-radius:3px;background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
-.gm-hoja-cuerpo{overflow-y:auto;padding:4px 16px 20px;overscroll-behavior:contain}
-@media (prefers-reduced-motion:reduce){.gm *{transition:none!important}.gm button:active,.gm a.sq:active{transform:none}}
+
+/* ==========================================================================
+   SISTEMA TÁCTIL (24/09/2026) — el lenguaje de la Guía Médica, para todo el
+   sitio. Arturo: «todo lo que revisamos, el diseño inspirado en Apple y las
+   mejoras realizadas, que se extienda a toda la web». Nació en la guía el
+   23-24/09; acá quedan las reglas, no efectos sueltos. Cinco piezas:
+
+   1. .sq: ESQUINA DE CURVATURA CONTINUA (elección de Arturo, opción 2 del
+      lienzo). La curva arranca de a poco: la forma se ve más cuadrada pero sin
+      punta. Cada elemento dice su radio con --sq. Donde el navegador todavía
+      no sabe dibujarla (Safari y Firefox, sep 2026) queda una esquina
+      redondeada común de ese mismo radio; donde sí (Chrome y Edge 139+), el
+      radio se agranda porque la curva continua "se come" menos esquina que un
+      cuarto de círculo. Las cápsulas (--r-pill) y los círculos NO llevan .sq:
+      una cápsula es una cápsula.
+   2. RELIEVE: la sombra dice «esto se toca o se abre» (Arturo: «me gusta que
+      le diste tridimensionalidad»). .rel para superficies (tarjetas, listas,
+      buscador); .rel-btn para controles, que al apretarse se aplastan contra
+      la página. Lo que solo informa NO lleva sombra: gana contraste con
+      color, borde e ícono. Una sombra ahí lo haría parecer un botón.
+   3. .tactil: EL TOQUE. Dentro de una página con .tactil, el botón se hunde
+      apenas al apretarlo («te escuché»). Las filas de lista (.fila) se
+      oscurecen en vez de achicarse: una fila que se achica despega sus bordes
+      de la lista.
+   4. .pleg: LO QUE SE ABRE CRECE en vez de saltar (app/components/Plegable).
+      Cerrado queda inert: el lector de pantalla y el Tab no entran.
+   5. .hoja: LO QUE SE ELIGE DE UNA LISTA LARGA SUBE EN UNA HOJA desde abajo
+      («es temporal, volvés a donde estabas»; app/components/Hoja). Solo para
+      listas largas: no es un modal para cualquier cosa.
+
+   Nada dura más de 1/3 de segundo y todo se apaga con «reducir movimiento».
+   NO se extiende el fondo gris de la guía: es para pantallas donde se recorre
+   una lista, y el inicio tiene su ritmo blanco/menta/azul.
+   ========================================================================== */
+.sq{border-radius:var(--sq,10px)}
+@supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
+.rel{box-shadow:var(--sombra-sup)}
+.rel-btn{box-shadow:var(--sombra-ctrl)}
+.rel-btn:active{box-shadow:var(--sombra-ctrl-apretado)}
+.tactil button,.tactil a.sq{transition:transform var(--mov-toque) ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow var(--mov-toque) ease}
+.tactil button:not(.fila):active,.tactil a.sq:active{transform:scale(.97)}
+.tactil .fila:active{background:var(--toque-gris)!important}
+.pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
+.pleg[data-abierto="1"]{grid-template-rows:1fr;opacity:1}
+.pleg>div{overflow:hidden;min-height:0}
+/* En una columna con gap, el plegable cerrado igual ocupa un gap: se lo devuelve. */
+.pleg-col[data-abierto="0"]{margin-top:calc(-1 * var(--gap,14px))}
+.hoja{position:fixed;inset:0;z-index:200;pointer-events:none}
+.hoja[data-abierta="1"]{pointer-events:auto}
+.hoja-fondo{position:absolute;inset:0;background:rgba(0,27,52,.38);opacity:0;transition:opacity .25s ease}
+.hoja[data-abierta="1"] .hoja-fondo{opacity:1}
+.hoja-panel{position:absolute;left:0;right:0;bottom:0;max-width:720px;margin:0 auto;max-height:82vh;display:flex;flex-direction:column;background:#fff;border-radius:22px 22px 0 0;box-shadow:var(--sombra-hoja);transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,0,1);outline:none;padding-bottom:env(safe-area-inset-bottom)}
+@supports (corner-shape:squircle){.hoja-panel{corner-shape:squircle;border-radius:36px 36px 0 0}}
+.hoja[data-abierta="1"] .hoja-panel{transform:none}
+.hoja-asa{width:40px;height:5px;border-radius:3px;background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
+.hoja-cuerpo{overflow-y:auto;padding:4px 16px 20px;overscroll-behavior:contain}
+/* Reducir movimiento. ⚠ La regla que apaga tiene que pesar lo mismo que la que
+   prende: hasta el 24/09 decía `.gm button:active` y perdía contra
+   `.gm button:not(.fila):active` (el :not suma peso), así que con «reducir
+   movimiento» el botón se seguía achicando. Medido en el navegador, no en el
+   código. La línea de .gm apaga además las transiciones propias de la guía. */
+@media (prefers-reduced-motion:reduce){
+  .tactil button,.tactil a.sq,.pleg,.hoja-fondo,.hoja-panel{transition:none!important}
+  .tactil button:not(.fila):active,.tactil a.sq:active{transform:none}
+  .gm *{transition:none!important}
+}

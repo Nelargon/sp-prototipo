@@ -7,6 +7,8 @@ import { track } from '../track';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
+import Plegable from '../components/Plegable';
+import Hoja from '../components/Hoja';
 import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
 import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
@@ -146,47 +148,10 @@ function Tarjeta({ p, plan, abrirVisar }) {
 
 /* Movimiento (23/09/2026, pedido de Arturo: «oportunidades de animación y
    forma de los botones», con la psicología del diseño de Apple). Cada
-   movimiento avisa algo, no decora:
-   - al tocar, el botón se hunde apenas: «te escuché» (CSS .gm button:active);
-   - lo que se abre crece suave en vez de saltar: Plegable;
-   - especialidad y plan se eligen en una hoja que sube desde abajo: «esto es
-     temporal, volvés a donde estabas». Hoja.
-   Todo dura menos de un tercio de segundo y se apaga con «reducir movimiento». */
-function Plegable({ abierto, enColumna, children }) {
-  return (
-    <div className={'gm-pleg' + (enColumna ? ' gm-pleg-col' : '')} data-abierto={abierto ? '1' : '0'} inert={abierto ? undefined : true} aria-hidden={abierto ? undefined : true}>
-      <div>{children}</div>
-    </div>
-  );
-}
-
-function Hoja({ abierta, titulo, onCerrar, children }) {
-  const panel = useRef(null);
-  const cerrar = useRef(onCerrar);
-  cerrar.current = onCerrar;
-  useEffect(() => {
-    if (!abierta) return undefined;
-    const antes = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const t = setTimeout(() => panel.current && panel.current.focus(), 60);
-    const esc = (e) => { if (e.key === 'Escape') cerrar.current(); };
-    window.addEventListener('keydown', esc);
-    return () => { document.body.style.overflow = antes; clearTimeout(t); window.removeEventListener('keydown', esc); };
-  }, [abierta]);
-  return (
-    <div className="gm-hoja" data-abierta={abierta ? '1' : '0'} inert={abierta ? undefined : true} aria-hidden={abierta ? undefined : true}>
-      <div className="gm-hoja-fondo" onClick={() => cerrar.current()} />
-      <div ref={panel} role="dialog" aria-modal="true" aria-label={titulo} tabIndex={-1} className="gm-hoja-panel">
-        <div className="gm-hoja-asa" aria-hidden="true" />
-        <div style={css('display:flex;justify-content:space-between;align-items:center;padding:6px 16px 10px')}>
-          <h2 className="disp" style={css('margin:0;font-size:19px;font-weight:900;color:var(--sp-navy)')}>{titulo}</h2>
-          <button type="button" onClick={() => cerrar.current()} aria-label="Cerrar" style={css('width:36px;height:36px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>
-        </div>
-        <div className="gm-hoja-cuerpo">{children}</div>
-      </div>
-    </div>
-  );
-}
+   movimiento avisa algo, no decora: al tocar, el botón se hunde apenas; lo que
+   se abre crece (Plegable); especialidad y plan suben en una hoja (Hoja).
+   Desde el 24/09/2026 es el sistema táctil de todo el sitio: las piezas viven
+   en app/components/ y las reglas en «Sistema táctil» de app/globals.css. */
 
 /* Buscador de ciudad (24/09/2026, pedido de Arturo: «un buscador que, al ir
    tecleando, complete la ciudad y la muestre en una lista»). Reemplaza a la
@@ -376,7 +341,7 @@ export default function GuiaMedica() {
   const waNoEncuentro = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero saber si un profesional está en la red de mi plan.');
 
   return (
-    <div className="body gm" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
+    <div className="body gm tactil" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
       <Header variant="solid" />
 
       <div style={css('max-width:720px;margin:0 auto;padding:96px 16px 70px;display:flex;flex-direction:column;gap:14px')}>
