@@ -81,6 +81,32 @@ la llevan. Lo que solo informa (el «por qué» del síntoma) **no lleva sombra*
 gana contraste con color, borde y un ícono de idea. Una sombra ahí lo haría
 parecer un botón.
 
+**Ciudad: un buscador que completa (24/09/2026, pedido de Arturo).** La pared
+de cápsulas de ciudades y departamentos se fue. Ahora hay un solo campo,
+«Tu ciudad o localidad» (`BuscaCiudad` en `GuiaMedica.jsx`, combobox ARIA):
+- al tocarlo sin escribir, lista las ciudades de la zona elegida, primero las
+  que tienen más red;
+- al escribir, busca en todo el país sin tildes y resalta lo que coincide;
+- tiene alias (`ALIAS_CIUDAD`): cde, asu, fdo, mra, pjc, slo;
+- el Interior ofrece «Todo Itapúa» y los demás departamentos;
+- elegir una ciudad pone la zona sola y la URL no cambia de forma (`z`, `dp`, `c`).
+
+Solo lista ciudades con alguien en la red. **Pendiente posible:** los barrios de
+Asunción (Villa Morra, Recoleta…), que la planilla ya tiene pero hoy no filtran.
+
+**Marcas internas de especialidades (24/09/2026, pedido de Arturo, solo en el
+prototipo).** Sirven para ver, mientras se prueba, qué falta completar:
+- **punto naranja con número**: filas de esa especialidad en «Revisar» en la
+  planilla;
+- **círculo naranja hueco**: está en el catálogo pero no quedó nadie publicado.
+  Hoy es solo **Anestesiología**, y hay que decidir si se completa o se saca del
+  catálogo.
+
+Las vacías viajan en `meta.sin_prestadores` del JSON (las escribe
+`build-guia-medica.py`). Con `CON_MARCA_REVISAR` apagado (la v1) no se ve
+ninguna marca ni aparece la especialidad vacía; está verificado en la edición de
+lanzamiento.
+
 ## 🔄 LA V1 CAMBIA DE FORMA: ENTRA LA GUÍA, SALE AGENDAR (23 sep 2026)
 
 **Arturo, 23/09/2026, textual:**
