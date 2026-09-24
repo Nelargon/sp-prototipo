@@ -81,7 +81,7 @@ bitácora»*). Toda lámina de comparación que se le muestra para decidir algo 
 diseño se guarda en `docs/diseno/img/` (WebP, con la fecha adelante) y entra en
 `docs/diseno/README.md` con su lección: qué muestra, qué se decidió y por qué.
 La carpeta temporal de la sesión se borra: lo que no se guarda en el repo se
-pierde (BITACORA cap. 95).
+pierde (BITACORA cap. 96).
 
 ## Reglas técnicas (destiladas de golpes reales — ver BITACORA)
 

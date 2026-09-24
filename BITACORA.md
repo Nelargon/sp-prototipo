@@ -3441,7 +3441,7 @@ configuración, primero se lee y después se pregunta. Y una lista de nombres
 dice más que el rótulo que le pusieron: antes de construir para «el equipo de
 marketing», fijate quiénes son.
 
-## Capítulo 94 — Un ícono se gana su lugar (24/09/2026)
+## Capítulo 95 — Un ícono se gana su lugar (24/09/2026)
 
 **Qué intentamos.** Arturo miró los íconos del sitio y dijo que no le gustaban:
 *«Son muy genéricos»*. Quería íconos *«más creativos, más nuestros»*, como los de
@@ -3474,7 +3474,7 @@ prueba al tamaño y sobre el fondo reales: sobre la mesa, la B parecía la mejor
 el límite era de 32 px; en pantalla, ninguna de las dos cosas era cierta. Las
 láminas de todo el recorrido están en `docs/diseno/`.
 
-## Capítulo 95 — Las láminas también son el libro (24/09/2026)
+## Capítulo 96 — Las láminas también son el libro (24/09/2026)
 
 **Qué intentamos.** Cada decisión de diseño de este mes se tomó mirando una
 lámina: tres intensidades lado a lado, esquinas ampliadas al triple, ocho estilos
