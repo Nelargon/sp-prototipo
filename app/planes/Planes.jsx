@@ -18,7 +18,7 @@ export default function Planes() {
   const badge = (c) => 'display:inline-flex;align-items:center;font-size:12px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);white-space:nowrap;' + (c.ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)');
 
   return (
-    <div className="body" style={css('min-height:100vh;background:#fff;color:var(--sp-ink)')}>
+    <div className="body tactil" style={css('min-height:100vh;background:#fff;color:var(--sp-ink)')}>
       <Header variant="solid" />
       <div style={css('max-width:1080px;margin:0 auto;padding:104px 24px 20px')}>
         <div style={css('text-align:center;max-width:680px;margin:0 auto 36px')}>
@@ -36,7 +36,7 @@ export default function Planes() {
             muestra uno y medio (revisión del 23/09/2026). El mismo aviso que
             el comparador del home, con la misma clase. */}
         <div className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para ver Silver y Gold <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
-        <div style={css('border:1px solid var(--sp-line);border-radius:18px;overflow:hidden;overflow-x:auto')}>
+        <div className="sq" style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
           <div className="pl-inner" style={css('min-width:720px')}>
             {/* Encabezado: servicio + los tres planes con precio y CTA */}
             <div className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
@@ -46,7 +46,7 @@ export default function Planes() {
                   <div style={css('display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:' + pl.color + ';margin-bottom:6px')}></div>
                   <div className="disp" style={css('font-size:18px;font-weight:800;line-height:1')}>{pl.short}</div>
                   <div style={css('font-size:12px;opacity:.85;margin-top:5px')}>desde <span className="num-tnum">{fmt(pl.price)}</span></div>
-                  <a href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'planes', plan: pl.name })} style={css('margin-top:9px;height:34px;padding:0 14px;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:background .2s')}>Ver mi precio</a>
+                  <a className="sq" href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'planes', plan: pl.name })} style={css('margin-top:9px;height:34px;padding:0 14px;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:background .2s')}>Ver mi precio</a>
                 </div>
               ))}
             </div>
@@ -89,10 +89,10 @@ export default function Planes() {
 
       {/* Banda senior + cierre */}
       <div style={css('max-width:1080px;margin:0 auto;padding:32px 24px 20px')}>
-        <div className="two-col" style={css('background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-          <div className="disp" style={css('background:var(--sp-navy);color:#fff;border-radius:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
+        <div className="two-col sq" style={css('background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+          <div className="disp sq" style={css('background:var(--sp-navy);color:#fff;--sq:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
           <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-          <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'planes_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+          <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'planes_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
         </div>
       </div>
 

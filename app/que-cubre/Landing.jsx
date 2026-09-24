@@ -131,7 +131,7 @@ export default function Landing() {
   }
 
   return (
-    <div ref={raiz} className="body" style={css('min-height:100vh;background:#fff;color:var(--sp-ink)')}>
+    <div ref={raiz} className="body tactil" style={css('min-height:100vh;background:#fff;color:var(--sp-ink)')}>
       <Header variant="solid" />
 
       {/* ---- 1. HERO + BUSCADOR ------------------------------------------
@@ -159,7 +159,7 @@ export default function Landing() {
           {seccionTitulo('Los tres planes', 'Cada uno incluye todo el anterior', 'y suma lo suyo.', 'El precio es nacional y ya tiene IVA. Con débito automático o tarjeta de crédito, 10% menos.')}
           <div className="planes-grid" style={css('display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px')}>
             {plansArr.map((pl, i) => (
-              <div key={pl.short} data-rv className="lift" style={css('border:1px solid var(--sp-line);border-radius:18px;overflow:hidden;background:#fff;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+              <div key={pl.short} data-rv className="sq" style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;background:#fff;display:flex;flex-direction:column')}>
                 <div style={css('height:5px;background:' + pl.color)}></div>
                 <div style={css('padding:22px 22px 24px;display:flex;flex-direction:column;flex:1')}>
                   <div style={css('display:flex;align-items:center;gap:8px;margin-bottom:5px')}>
@@ -188,8 +188,8 @@ export default function Landing() {
                   <a
                     href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`}
                     onClick={() => track('cta_simulador', { origen: 'quecubre_tarjeta', plan: pl.name })}
-                    className="btn-teal"
-                    style={css('margin-top:20px;height:46px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px')}
+                    className="btn-teal sq"
+                    style={css('margin-top:20px;height:46px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px')}
                   >
                     Ver mi precio real
                   </a>
@@ -216,7 +216,7 @@ export default function Landing() {
               { de: 'Bronze', a: 'Silver', color: 'var(--sp-plan-silver)', d: bs },
               { de: 'Silver', a: 'Gold', color: 'var(--sp-plan-gold)', d: so },
             ].map((s) => (
-              <div key={s.a} data-rv className="rv" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);border-radius:18px;padding:24px 26px')}>
+              <div key={s.a} data-rv className="rv sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:18px;padding:24px 26px')}>
                 <div className="disp" style={css('display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--sp-navy);margin-bottom:12px')}>
                   {s.de}
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#007d77" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -249,7 +249,7 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Servicio por servicio', 'Los once servicios', 'que más se preguntan.', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
-          <div data-rv style={css('border:1px solid var(--sp-line);border-radius:18px;overflow:hidden;overflow-x:auto')}>
+          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
             <div style={css('min-width:720px')}>
               <div style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
                 <div className="disp" style={css('padding:16px 18px;display:flex;align-items:flex-end;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>Servicio</div>
@@ -258,7 +258,7 @@ export default function Landing() {
                     <div style={css('display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:' + pl.color + ';margin-bottom:6px')}></div>
                     <div className="disp" style={css('font-size:18px;font-weight:800;line-height:1')}>{pl.short}</div>
                     <div style={css('font-size:12px;opacity:.85;margin-top:5px')}>desde <span className="num-tnum">{fmt(pl.price)}</span></div>
-                    <a href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'quecubre_tabla', plan: pl.name })} className="disp" style={css('margin-top:9px;height:34px;padding:0 14px;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:background .2s')}>Ver mi precio</a>
+                    <a href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'quecubre_tabla', plan: pl.name })} className="disp sq" style={css('margin-top:9px;height:34px;padding:0 14px;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:background .2s')}>Ver mi precio</a>
                   </div>
                 ))}
               </div>
@@ -302,7 +302,7 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Con qué especialista', `Las ${especialidades.length} especialidades`, 'y cuántas veces al año.', 'Donde dice "sin tope" es sin tope de verdad: las que tienen número, lo tienen escrito acá.')}
-          <div data-rv style={css('border:1px solid var(--sp-line);border-radius:18px;overflow:hidden;overflow-x:auto')}>
+          <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:18px;overflow:hidden;overflow-x:auto')}>
             <div style={css('min-width:600px')}>
               <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
                 <div style={css('padding:13px 18px')}>Especialidad</div>
@@ -333,8 +333,8 @@ export default function Landing() {
               <button
                 type="button"
                 onClick={() => { setVerTodas(true); track('quecubre_ver_especialidades'); }}
-                className="disp"
-                style={css('height:44px;padding:0 22px;border-radius:var(--r-sm);border:1px solid var(--sp-mint-line-strong);background:#fff;color:var(--sp-teal-deep);font-size:14px;font-weight:700;cursor:pointer')}
+                className="disp sq"
+                style={css('height:44px;padding:0 22px;--sq:var(--r-sm);border:1px solid var(--sp-mint-line-strong);background:#fff;color:var(--sp-teal-deep);font-size:14px;font-weight:700;cursor:pointer')}
               >
                 Ver las {especialidades.length} especialidades
               </button>
@@ -349,7 +349,7 @@ export default function Landing() {
           {seccionTitulo('La letra chica, en letra grande', 'Los números que deciden', 'cuando ya estás internado.', 'Días de terapia intensiva, topes de medicamentos, esperas de maternidad. Es lo que casi nadie publica y lo que más se extraña el día que hace falta.')}
           <div data-rv style={css('display:flex;flex-direction:column;gap:14px')}>
             {seccionesParam.map((grupo) => (
-              <div key={grupo.sec} style={css('border:1px solid var(--sp-line);border-radius:var(--r-md);overflow:hidden;overflow-x:auto')}>
+              <div className="sq" key={grupo.sec} style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
                 <div style={css('min-width:600px')}>
                   <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
                     <div style={css('padding:12px 18px')}>{grupo.sec}</div>
@@ -390,12 +390,12 @@ export default function Landing() {
           {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Son las mismas en Bronze, Silver y Gold.')}
           <div data-rv className="excl-grid" style={css('display:grid;grid-template-columns:1fr 1fr;gap:12px')}>
             {excluidos.map((e) => (
-              <div key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);border-radius:14px;padding:18px 20px')}>
+              <div className="sq" key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:14px;padding:18px 20px')}>
                 <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-text);margin-bottom:6px')}>{e.n}</div>
                 <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.6')}>{e.d}</div>
               </div>
             ))}
-            <div style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center')}>
+            <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);--sq:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center')}>
               <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:6px')}>¿Te preocupa alguna?</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.6')}>Decíselo a tu asesor <b>antes de firmar</b>: te va a decir con qué contás y con qué no.</div>
             </div>
@@ -406,25 +406,25 @@ export default function Landing() {
       {/* ---- 8. VITAL + CIERRE ------------------------------------------- */}
       <section style={css('padding:60px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv className="two-col" style={css('background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div className="disp" style={css('background:var(--sp-navy);color:#fff;border-radius:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
+          <div data-rv className="two-col sq" style={css('background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div className="disp sq" style={css('background:var(--sp-navy);color:#fff;--sq:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div>
               <div className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div>
             </div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'quecubre_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'quecubre_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>
 
       <section style={css('padding:44px 24px 80px')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div data-rv style={css('background:var(--sp-navy);border-radius:var(--r-lg);padding:44px 32px;text-align:center')}>
+          <div className="sq" data-rv style={css('background:var(--sp-navy);--sq:var(--r-lg);padding:44px 32px;text-align:center')}>
             <h2 className="disp" style={css('font-size:clamp(24px,3.2vw,33px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.02em;margin:0 0 12px')}>Ya sabés qué cubre. Falta lo tuyo.</h2>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-blue-soft);margin:0 auto 24px;max-width:520px')}>
               Unas preguntas y ves el precio real de tu grupo en los tres planes. Sin dejar el teléfono, sin que te llame nadie.
             </p>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'quecubre_cierre' })} className="btn-teal disp" style={css('height:52px;padding:0 30px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px')}>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'quecubre_cierre' })} className="btn-teal disp sq" style={css('height:52px;padding:0 30px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px')}>
               Simulá tu plan
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>

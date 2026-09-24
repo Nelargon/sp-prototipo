@@ -144,8 +144,9 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 [data-nav].menu-open{background:transparent;box-shadow:none;backdrop-filter:none}
 [data-nav].menu-open .nlogo-w{opacity:0}
 [data-nav].menu-open .nav-burger{background:rgba(0,59,113,0.08) !important;color:var(--sp-navy) !important}
-.lift{transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s cubic-bezier(.22,1,.36,1)}
-.lift:hover{transform:translateY(-5px);box-shadow:0 14px 34px rgba(0,59,113,0.14) !important}
+/* .lift (la tarjeta que se levantaba al pasar el mouse) salió el 24/09/2026 con
+   el sistema táctil: levantaba tarjetas y tablas que no se tocan, y en el
+   celular no hay mouse. El relieve va en la clase de lo que se toca. */
 @keyframes cue{0%{transform:translateY(0);opacity:.4}50%{transform:translateY(8px);opacity:1}100%{transform:translateY(0);opacity:.4}}
 .mframe{position:absolute;inset:0;overflow:hidden;opacity:0;will-change:opacity}
 .mframe img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform}

@@ -37,12 +37,12 @@ pegar efectos en cada botón.
 |---|---|---|---|
 | 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ PR #167 |
 | 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
-| 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | ✔ este PR |
-| 4 | **Planes, Qué cubre y la ficha del prestador** | automática | pendiente |
+| 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | ✔ PR #169 |
+| 4 | **Planes, Qué cubre y la ficha del prestador** | automática | ✔ este PR |
 
-Proyección (no compromiso): los cuatro entran antes del lanzamiento de la
-primera semana de octubre si el OK del paso 2 llega rápido; si se aprieta, el 4
-puede esperar sin dejar nada a medias.
+**✔ Completo el 24/09/2026**, los cuatro pasos el mismo día: toda la v1
+(inicio, simulador, planes, qué cubre, guía, ficha y 404) habla el mismo
+lenguaje táctil. Blog, agendar y Mi SP lo reciben cuando se lancen.
 
 ### Paso 2 (24/09): la intensidad la eligió Arturo, B
 
@@ -83,7 +83,7 @@ Lo que hizo el paso 2:
   página, porque ahora estaría siempre: mira que la respuesta abierta tenga
   alto y no esté `inert`, y que al cerrarse vuelva a `inert`.
 - **Salió el script del `.lift`** del inicio (no encontraba a nadie). La clase
-  `.lift` sigue en `globals.css` porque la usa `/que-cubre` (paso 4).
+  `.lift` salió de `globals.css` en el paso 4, cuando dejó de usarla `/que-cubre`.
 
 ### Paso 3 (24/09): el simulador
 
@@ -107,6 +107,25 @@ Lo que hizo el paso 2:
   respuestas cerradas de la FAQ (efecto del paso 2). Antes/después del paso 3:
   mismos hallazgos, menos ese. BITACORA cap. 87.
 
+### Paso 4 (24/09): Planes, Qué cubre y la ficha
+
+- **`/planes/` y `/que-cubre/` llevan `tactil`.** La ficha del prestador ya
+  era del sistema desde la guía.
+- **Las tablas informan**: sin sombra, con esquina continua.
+- **Las tres tarjetas de plan de `/que-cubre` pierden la sombra y el `.lift`**
+  (se levantaban al pasar el mouse). No se hicieron tarjetas que se tocan
+  enteras porque tienen palabras del glosario adentro: el link estirado las
+  taparía. Regla: una tarjeta se toca entera solo si lo único que se toca
+  adentro es su link.
+- **El buscador de `/que-cubre` lleva `rel`** y su panel pierde la sombra: el
+  relieve va en el campo, que es lo que se toca. Las cápsulas de búsqueda
+  («Resonancia», «Hemograma»…) son controles: `rel-btn`, y se les sacó la
+  transición suelta que le pisaba el toque.
+- **Sale la clase `.lift`** de `globals.css`: ya no la usa nadie.
+- `qa-integral` antes y después: mismos hallazgos. El CLS de `/que-cubre`
+  (0,15, sobre la vara de 0,1) **ya estaba antes** del sistema táctil y sigue
+  igual: queda como pendiente aparte.
+
 ### Qué se extiende y qué no
 
 | De la guía | ¿A todo el sitio? |
@@ -125,7 +144,8 @@ Lo que hizo el paso 2:
    Una palabra que abre algo dentro de una frase, `txt`. Una tarjeta cuyo
    único destino es un link: `tarjeta-toque` en la tarjeta y `estirado` en el
    link (el `data-rv` va en un envoltorio, no en la tarjeta: su transición le
-   pisaría la del reveal).
+   pisaría la del reveal). Solo si lo único que se toca adentro es ese link:
+   una palabra del glosario dentro de la tarjeta quedaría tapada.
 2. `className="sq"` + `--sq:<radio>` en lugar de `border-radius` en tarjetas,
    botones y buscadores. Nunca en `--r-pill` ni en `50%`.
 3. `rel` o `rel-btn` según la regla; borrar la sombra suelta que tuviera.
