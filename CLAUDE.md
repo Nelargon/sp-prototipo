@@ -74,6 +74,15 @@ Formato: *qué intentamos / qué pasó / qué aprendimos*. Los errores con
 nombre y apellido. Nunca reescribir entradas viejas. Los "anotá en la
 bitácora: …" del usuario entran con su voz.
 
+**Las láminas de diseño se guardan** (24/09/2026, pedido de Arturo: *«Todas
+las imágenes que me envías son ejemplos que vale la pena conservar como
+material de aprendizaje, tanto para una diapositiva como para la
+bitácora»*). Toda lámina de comparación que se le muestra para decidir algo de
+diseño se guarda en `docs/diseno/img/` (WebP, con la fecha adelante) y entra en
+`docs/diseno/README.md` con su lección: qué muestra, qué se decidió y por qué.
+La carpeta temporal de la sesión se borra: lo que no se guarda en el repo se
+pierde (BITACORA cap. 96).
+
 ## Reglas técnicas (destiladas de golpes reales — ver BITACORA)
 
 - La guía se edita **solo en `guia/`**; `public/guia/` se genera en el

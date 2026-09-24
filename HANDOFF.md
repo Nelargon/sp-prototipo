@@ -17,6 +17,46 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🎨 ÍCONOS PROPIOS — EN EXPLORACIÓN (24 sep 2026)
+
+> ⚠ **EN DISEÑO, no construir.** No se aplican íconos nuevos ni se sacan los de
+> hoy hasta que Arturo elija el estilo. Las láminas de todo el recorrido están en
+> `docs/diseno/` (lecciones 6 a 12).
+
+Arturo, sobre los íconos del sitio: son genéricos (librería Lucide, la usan
+miles de sitios), y quiere íconos *«más creativos, más nuestros»*.
+
+**Decidido:**
+- **La «Línea SP» (sacada del isotipo) queda descartada.** Arturo: *«No se ve como
+  un toque personal.»* Que ninguna sesión la retome.
+- **Un ícono se gana su lugar** (regla de Arturo): solo si hace algo que el texto
+  solo no hace. En un botón que ya dice «Guía Médica» o «Simulá tu plan», sobra.
+  Clasificación de los 111 íconos del código:
+  - **22 se van:** los de los botones de la barra y el hero, y el rayo y las
+    frases de confianza del bloque del simulador.
+  - **77 son señales de uso:** flechas, tildes, flechitas de menú, «×», lupa,
+    WhatsApp y el teléfono de urgencias. Se quedan simples.
+  - **12 lugares llevan ícono propio (unas 20 piezas):** «Lo que casi nadie te
+    garantiza», la banda de la Guía Médica, «Ver mi red» y «En camino» en Mi SP,
+    el «¡Listo!» del simulador, «Visar una orden» y el consejo de la guía, el
+    aviso de tiempo de espera y las portadas del blog.
+- **Lo que atrae es el trazo a mano**, y el color se elige según el fondo
+  (Arturo: *«La combinación de colores depende del fondo; debemos elegir la
+  aplicación correcta según el color de fondo»*).
+
+**Medido en las pruebas:**
+- El trazo blanco sobre su círculo turquesa (A3) es el único que funciona en los
+  cuatro fondos del sitio.
+- El trazo azul sin base (A2) desaparece en el azul (1,3 a 1).
+- La mancha menta (A1) solo se distingue sobre blanco.
+- El tamaño lo limita el detalle, no el estilo: lo simple se lee a 24 px.
+- «Salud mental» con dos globos se confunde con «Escribinos»: necesita otra
+  metáfora.
+
+**Propuesta sobre la mesa, esperando a Arturo:** trazo a mano siempre; en fondos
+claros, A2; en azul, A3. Para el set final, un ilustrador podría redibujar el
+trazo de los momentos grandes («¡Listo!», estados vacíos).
+
 ## 📬 EL BLOG LLEGA POR CORREO (24 sep 2026)
 
 **Arturo, 24/09/2026:** *«Para mí, ese contenido tiene mucho valor y debe
@@ -159,6 +199,9 @@ qué cubre, guía). Blog, agendar y Mi SP lo reciben cuando se lancen;
 sistema al blog y a Mi SP»*): es el paso 5. Y después agendar (*«Extendé el
 sistema a agendar también»*): paso 6. **Ya no queda ninguna página afuera**
 salvo `/historia/`, que no se toca.
+
+**Las láminas de estas decisiones** (intensidades, cámara lenta, blog y Mi SP,
+agendar, esquinas) están en `docs/diseno/`, lecciones 1 a 5.
 
 **La idea que ordena el trabajo:** lo que hace que la guía se sienta Apple son
 las reglas detrás de cada efecto (cada movimiento avisa algo; la sombra va solo
