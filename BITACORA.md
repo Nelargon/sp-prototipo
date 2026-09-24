@@ -3300,11 +3300,22 @@ y las guías del blog no las abría ninguna prueba, y `/que-cubre/` y
 barrido de accesibilidad. Al sumarlas aparecieron dos errores de contraste
 reales, uno de ellos en la v1 que Buenavista va a copiar.
 
+La tercera la mostró la primera corrida en GitHub. La prueba del modo
+personalizado de la guía vieja pedía `?plan=integral`, un nombre de plan que la
+guía ya no conoce (hoy son bronce, silver y gold). En los contenedores de
+Claude daba verde: sin internet no carga el CDN de Tailwind, la clase `hidden`
+no esconde nada y el banner «se veía», vacío. En GitHub, con internet, daba
+rojo. Estuvo verde durante semanas por la razón equivocada.
+
 **Qué aprendimos.** Un control tiene dos maneras de fallar y la segunda es la
 cara: además de callar lo que está mal, puede señalar lo que está bien, y
 alguien termina «arreglándolo». Por eso todo detector nuevo se prueba contra un
 caso que debe marcar y uno que no (el de links internos se probó metiéndole
-tres links rotos a propósito antes de creerle el verde). Y el verde de una
+tres links rotos a propósito antes de creerle el verde). Un verde también se
+verifica: mirar *qué* vio la prueba, no solo que pasó (el banner tenía que
+decir «Plan Silver», no solo existir). Y la misma suite corrida en dos
+entornos distintos es un control en sí: lo que da verde en uno y rojo en el
+otro está midiendo el entorno, no el sitio. Y el verde de una
 suite vale lo que cubre: las páginas que nadie abre no fallan, simplemente no
 aparecen. De ahí la puerta nueva, `qa/cobertura-rutas.mjs`: una página sin
 prueba ya no entra.

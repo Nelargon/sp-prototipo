@@ -73,6 +73,10 @@ rotos).
   a `--sp-muted`) y la zona no elegida del selector de la Guía Médica, que sale
   en la v1 (4,39:1 → 5,67:1, pasa a `--sp-estado-ink-2`). Medido computado en
   el navegador.
+- **Una prueba que daba verde por accidente:** la del modo personalizado de la
+  guía vieja pedía `?plan=integral`, un plan que ya no existe. Sin internet (en
+  las sesiones de Claude) el banner se veía vacío y pasaba; en GitHub fallaba.
+  Ahora pide `?plan=silver` y verifica que el banner diga «Plan Silver».
 - El naranja de la marca interna de la guía («Revisar», «sin prestadores»),
   repetido 5 veces a mano, pasa a token: `--sp-marca-interna`. Sin cambio
   visible; sigue apareciendo solo en el prototipo (98 puntos) y nunca en la v1

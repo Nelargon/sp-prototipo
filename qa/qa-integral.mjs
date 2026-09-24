@@ -222,10 +222,16 @@ console.log('\n== 1. FUNCIONAL ==');
   const rescate = await page.locator('a[href*="wa.me"]:visible').count();
   if (rescate > 0) ok('funcional', 'guía: cero resultados ofrece rescate por WhatsApp (no es callejón)');
   else falla('funcional', 'roto', 'cero resultados sin rescate visible', 'guia_resultados');
-  await page.goto(BASE + '/guia/guia_resultados.html?plan=integral', { waitUntil: 'domcontentloaded' });
+  // ?plan=silver, un plan que la guía conoce (bronce/silver/gold). Hasta el
+  // 24/09/2026 decía ?plan=integral, un nombre viejo que la guía ignora: sin
+  // internet (sin el CDN de Tailwind, la clase `hidden` no esconde nada) el
+  // banner se veía igual y esto daba verde por accidente; con internet, rojo.
+  // Por eso se mira también que el banner diga el plan pedido.
+  await page.goto(BASE + '/guia/guia_resultados.html?plan=silver', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1200);
-  if (await page.locator('#banner-plan:visible').count()) ok('funcional', 'guía: modo personalizado muestra el banner del plan');
-  else falla('funcional', 'confunde', 'modo personalizado sin banner visible', '?plan=integral');
+  const banner = page.locator('#banner-plan:visible');
+  if ((await banner.count()) && /Plan Silver/.test(await banner.innerText())) ok('funcional', 'guía: modo personalizado muestra el banner con el plan pedido (Plan Silver)');
+  else falla('funcional', 'confunde', 'modo personalizado sin banner visible con el nombre del plan', '?plan=silver');
   // upsell: etiqueta dorada abre hoja, Escape la cierra
   const dorada = page.locator('button:visible', { hasText: /Desde SP|Exclusivo/ }).first();
   if (await dorada.count()) {
@@ -235,7 +241,7 @@ console.log('\n== 1. FUNCIONAL ==');
       await page.keyboard.press('Escape');
       await page.waitForTimeout(300);
       if (!(await page.locator('#upsell-hoja:visible').count())) ok('funcional', 'guía: hoja de upsell abre y cierra con Escape');
-      else falla('funcional', 'confunde', 'la hoja de upsell no cierra con Escape', '?plan=integral');
+      else falla('funcional', 'confunde', 'la hoja de upsell no cierra con Escape', '?plan=silver');
     }
   }
   // 1d. Ficha de prestador: acciones de contacto presentes (tel: solo presencia)
