@@ -229,3 +229,7 @@ mano que sostiene un corazón.
 **Estado (24/09/2026):** en el sitio va la cabeza con el corazón, que dice mente
 y cuidado a la vez. La mano no dice «mente» y se puede leer como cuidado en
 general. Las tres quedan dibujadas hasta que Arturo elija.
+
+**Qué se decidió.** Arturo: *«Vamos con la cabeza con el corazón»*. Dice mente y
+cuidado a la vez, y no se confunde con ningún otro ícono del sitio. Las otras dos
+salieron del archivo de dibujos; quedan en esta lámina.

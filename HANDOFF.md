@@ -43,13 +43,13 @@ en la página»* (24/09/2026).
 
 **Cómo se usa.** `IconoSP` (`app/components/IconoSP.jsx`) con `nombre`,
 `fondo` (`claro` o `azul`) y `size`. Los dibujos están en
-`app/components/iconos-sp.js`: 21 dibujos en un cuadro de 48×48 (19 en uso y
-dos ideas de Salud mental). Un dibujo nuevo va ahí, en la misma mano y simple:
+`app/components/iconos-sp.js`: 19 dibujos en un cuadro de 48×48. Un dibujo nuevo va ahí, en la misma mano y simple:
 lo que limita el tamaño es el detalle, no el estilo.
 
 **Dónde se aplicó (9 lugares):**
 - Inicio: «Lo que casi nadie te garantiza» (papel con lupa, casa con la cruz,
-  cabeza con un corazón), la banda de la Guía Médica (pin con la cruz; Lister
+  cabeza con un corazón, elegida por Arturo entre tres ideas: *«Vamos con la
+  cabeza con el corazón»*), la banda de la Guía Médica (pin con la cruz; Lister
   en la rama sin guía) y el aviso de tiempo de espera (reloj).
 - Mi SP: «Ver mi red» (pin con la cruz, sobre blanco) y «En camino» (plan,
   credencial, turnos y pagos, sobre azul).
@@ -74,10 +74,6 @@ línea por línea no quedó guardada y, rehecha con la misma regla, da 18
 (BITACORA cap. 97).
 
 **Pendientes:**
-- ⚠ **Arturo elige la idea de Salud mental** (lámina
-  `docs/diseno/img/2026-09-24-iconos-salud-mental-tres-ideas.webp`). En el
-  sitio va la cabeza con el corazón; cuando elija, se borran del archivo las
-  dos que no van.
 - Los momentos grandes («¡Listo!», estados vacíos) los podría redibujar un
   ilustrador más adelante. Los dibujos de hoy son de Claude y se nota.
 - **Verificar el deck «Cómo diseñamos SP»** (las 12 lecciones en diapositivas,
