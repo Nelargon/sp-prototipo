@@ -37,7 +37,7 @@ pegar efectos en cada botón.
 |---|---|---|---|
 | 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ PR #167 |
 | 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
-| 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | pendiente |
+| 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | ✔ este PR |
 | 4 | **Planes, Qué cubre y la ficha del prestador** | automática | pendiente |
 
 Proyección (no compromiso): los cuatro entran antes del lanzamiento de la
@@ -84,6 +84,28 @@ Lo que hizo el paso 2:
   alto y no esté `inert`, y que al cerrarse vuelva a `inert`.
 - **Salió el script del `.lift`** del inicio (no encontraba a nadie). La clase
   `.lift` sigue en `globals.css` porque la usa `/que-cubre` (paso 4).
+
+### Paso 3 (24/09): el simulador
+
+- **`/simulador/` lleva `tactil`**: todo botón se hunde, «Empecemos» y los
+  «Continuar» incluidos (se les sacó la `transition:background` suelta, que le
+  pisaba el toque).
+- **Controles con `rel-btn`**: las opciones de cada paso (`sim-opt`), los
+  botones de ± de edades y personas, las cápsulas de ciudad y los planes del
+  mini-comparador. **Lo elegido va plano** (como en la guía): el plan del
+  resultado y una cobertura adicional marcada pierden el relieve, se ven
+  «apretados». Las coberturas adicionales hoy no se muestran (los planes
+  vigentes no tienen), pero ya siguen la regla.
+- **Superficies con `rel`**: el buscador de ciudad y su lista (que perdió su
+  sombra suelta de 34px). Las filas de ciudad y de departamento son `.fila`.
+- **Crecen en vez de saltar**: «¿Preferís elegir tu departamento?» y «¿Cómo
+  calculamos esto?» (`Plegable`, con `aria-controls`).
+- **«Lo que te estarás preguntando»** solo informa: sus tarjetas pierden la
+  sombra (ya tenían borde).
+- **`qa/qa-integral.mjs`** ya no cuenta lo que está dentro de un bloque `inert`
+  en el control de foco visible: daba 7 falsos «sin foco» por los links de las
+  respuestas cerradas de la FAQ (efecto del paso 2). Antes/después del paso 3:
+  mismos hallazgos, menos ese. BITACORA cap. 87.
 
 ### Qué se extiende y qué no
 
