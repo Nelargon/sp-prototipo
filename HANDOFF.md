@@ -36,7 +36,7 @@ pegar efectos en cada botón.
 | Paso | Qué | Fusión | Estado |
 |---|---|---|---|
 | 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ PR #167 |
-| 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | **espera el OK de Arturo**: antes de fusionar ve capturas de celular con 3 intensidades y elige | construida la B; **esperando la elección de Arturo** (A, B o C) |
+| 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
 | 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | pendiente |
 | 4 | **Planes, Qué cubre y la ficha del prestador** | automática | pendiente |
 
@@ -44,10 +44,11 @@ Proyección (no compromiso): los cuatro entran antes del lanzamiento de la
 primera semana de octubre si el OK del paso 2 llega rápido; si se aprieta, el 4
 puede esperar sin dejar nada a medias.
 
-### Paso 2 (24/09): lo construido y lo que espera a Arturo
+### Paso 2 (24/09): la intensidad la eligió Arturo, B
 
-**Construida la intensidad B («como la guía»)**. Se le mostraron tres, en
-capturas de celular lado a lado y un video en cámara lenta:
+Se le mostraron tres intensidades en capturas de celular lado a lado y un
+video en cámara lenta. Eligió la recomendada: *«Vamos con la B»*. **La B es la
+intensidad del sitio**: los pasos 3 y 4 la aplican sin volver a preguntar.
 
 | | Qué cambia |
 |---|---|
@@ -55,11 +56,13 @@ capturas de celular lado a lado y un video en cámara lenta:
 | **B · Como la guía** (recomendada) | A + la regla del relieve: las dos puertas (Qué cubre / Planes) y las preguntas llevan relieve; la tabla del comparador, que solo informa, pierde la sombra |
 | **C · Más relieve** | B + los botones principales también flotan (`rel-btn`) |
 
-Si elige A o C, el cambio es chico: A saca `rel` de las puertas y las
-preguntas y le devuelve la sombra a `#cartilla`; C suma `rel-btn` a los `a.sq`
-de botón. **No se fusiona hasta que elija.**
+Por qué la B y no las otras: es la regla que ya estaba aprobada en la guía, así
+que el sitio habla un solo idioma. La C pone sombra en casi todo, y cuando todo
+flota nada se destaca. La A dejaba la sombra en la tabla, que no se toca: lo
+contrario de la regla. **Los botones principales (CTA) van planos**, como en
+la guía.
 
-Lo que ya quedó hecho, sea cual sea la elección:
+Lo que hizo el paso 2:
 - **El inicio y la 404 llevan `tactil`; la barra compartida (`Header.jsx`)
   también**, así que responde al toque en todas las páginas desde este paso.
   Fuera del inicio y la 404, lo único que cambia a la vista es la franja de la
