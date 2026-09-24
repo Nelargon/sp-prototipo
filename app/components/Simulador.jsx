@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { css } from '../css';
+import IconoSP from './IconoSP';
 import { BP } from '../basePath';
 import {
   WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
@@ -537,7 +538,7 @@ export default function Simulador() {
             ))}
           </div>
           {sim.enc && <div className="sim-side-enc" style={css('font-size:12px;color:var(--sp-mint);font-weight:600;line-height:1.4;margin-top:16px')}>{sim.enc}</div>}
-          <div className="sim-trust" style={css('font-size:12px;color:var(--sp-blue-soft);display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles · menos de 1 minuto</div>
+          <div className="sim-trust" style={css('font-size:12px;color:var(--sp-blue-soft);display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4')}>Sin datos sensibles · menos de 1 minuto</div>
         </div>
 
         <div ref={bodyRef} className="sim-body" style={css('flex:1;min-width:0;background:#fff;padding:34px 34px;min-height:560px;display:flex;flex-direction:column;justify-content:center')}>
@@ -570,7 +571,7 @@ export default function Simulador() {
               </div>
               <div style={css('display:flex;align-items:center;gap:16px;flex-wrap:wrap')}>
                 <button onClick={sim.start} className="btn-teal sq" style={css('height:52px;padding:0 28px;border:none;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px')}>Empecemos <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
-                {sim.resumeAvailable && <button onClick={sim.resume} className="link-teal" style={css('background:none;border:none;color:var(--sp-teal-deep);font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>Retomar mi simulación</button>}
+                {sim.resumeAvailable && <button onClick={sim.resume} className="link-teal" style={css('background:none;border:none;color:var(--sp-teal-deep);font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0')}>Retomar mi simulación</button>}
               </div>
             </div>
           )}
@@ -802,14 +803,14 @@ export default function Simulador() {
                 )}
                 {sim.sentOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
-                    <div style={css('width:46px;height:46px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
+                    <IconoSP nombre="listo" size={60} style={{ margin: '0 auto' }} />
                     <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}!</div>
                     <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
                   </div>
                 )}
                 {sim.waLeadOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
-                    <div style={css('width:46px;height:46px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto')}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></div>
+                    <IconoSP nombre="enviar" size={60} style={{ margin: '0 auto' }} />
                     <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}! Falta un solo toque</div>
                     <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización ya está escrita, con tu plan y tu precio. Tocá el botón y nos llega entera por WhatsApp — queda por escrito y te responde un asesor, una persona de verdad.</div>
                     {sim.crmErr && <div style={css('font-size:12px;color:var(--sp-muted);margin-top:8px;line-height:1.4')}>El envío automático no funcionó esta vez — por WhatsApp llega igual, no se pierde nada.</div>}

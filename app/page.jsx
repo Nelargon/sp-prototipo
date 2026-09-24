@@ -8,6 +8,7 @@ import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
 import Plegable from './components/Plegable';
+import IconoSP from './components/IconoSP';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
@@ -78,9 +79,9 @@ export default function Page() {
   // puede sobreprometer). Números de médico a domicilio y salud mental salen
   // de las secciones 2.9.1.5 y consultas de los cuadernillos Bronze/Silver/Gold.
   const difsData = () => [
-    { icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M16 13H8M16 17H8M10 9H8', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
-    { icon: 'M3 11l9-8 9 8M5 9.5V20h14V9.5M12 12v5M9.5 14.5h5', title: 'Médico a domicilio', body: 'El médico va a tu casa: hasta 2, 3 o 4 consultas a domicilio al año según tu plan, más urgencias y ambulancia sin cargo.' },
-    { icon: 'M20.8 5.6a5 5 0 0 0-8-1.3L12 5l-.8-.7a5 5 0 1 0-7 7.1l7.8 7.6 7.8-7.6a5 5 0 0 0 1-6.4Z', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronze, Silver y Gold, no como un extra aparte.' },
+    { icono: 'letra', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
+    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: hasta 2, 3 o 4 consultas a domicilio al año según tu plan, más urgencias y ambulancia sin cargo.' },
+    { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronze, Silver y Gold, no como un extra aparte.' },
   ];
 
   // Count-up for the trust stats when they scroll into view (once).
@@ -422,9 +423,9 @@ export default function Page() {
                 el 23/09/2026. Entre el 15 y el 23/09 la v1 no tenía guía y el lugar
                 lo ocupaba agendar; la rama queda por si la guía se apaga. */}
             {CON_GUIA
-              ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
-              : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal sq" style={css('height:40px;padding:0 20px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+              ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}>Guía Médica</a>
+              : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}>Agendar un turno</a>}
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal sq" style={css('height:40px;padding:0 20px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}>Simulá tu plan</a>
           </div>
           <button className="nav-burger sq" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;--sq:var(--r-xs);border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
             {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
@@ -483,10 +484,10 @@ export default function Page() {
                   emite guia_handoff {via:'hero'}, el mismo evento que las otras
                   puertas de la guía. */}
               {CON_MI_SP
-                ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
+                ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}>Ya soy de SP · Mi SP</a>
                 : CON_AGENDA
-                  ? <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>
-                  : <a href={v.guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Buscá tu médico</a>}
+                  ? <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}>Ya soy de SP · Pedí tu turno</a>
+                  : <a href={v.guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:var(--r-sm);background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}>Ya soy de SP · Buscá tu médico</a>}
             </div>
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
                 tocar el título del hero — el test de 5 segundos sigue vigente. */}
@@ -527,13 +528,15 @@ export default function Page() {
         <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
           <div style={css('position:absolute;z-index:-1;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('max-width:640px;margin:0 auto')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
+            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}>Simulá tu plan</div>
             <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h2>
             <p style={css('font-size:17px;color:var(--sp-blue-soft);line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
-            <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;margin-bottom:34px')}>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>En 1 minuto</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
-              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
+            <div className="frases-sim" style={css('margin-bottom:34px')}>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}>En 1 minuto</span>
+              <span aria-hidden="true" className="punto" style={css('color:var(--sp-teal);font-weight:800')}>·</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}>Sin datos sensibles</span>
+              <span aria-hidden="true" className="punto" style={css('color:var(--sp-teal);font-weight:800')}>·</span>
+              <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}>Ves el precio antes de dejar datos</span>
             </div>
             <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal sq estirado" style={css('height:56px;padding:0 34px;--sq:var(--r-md);background:var(--sp-teal-deep);color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
@@ -774,7 +777,7 @@ export default function Page() {
                 No se suaviza el número: se le da un destino. */}
             {!ES_LANZAMIENTO && (
               <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:var(--r-md);padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <IconoSP nombre="espera" size={32} style={{ marginTop: -5 }} />
                 <div>
                   <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
                   <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
@@ -830,7 +833,7 @@ export default function Page() {
               que usó la v1 entre el 15 y el 23/09, cuando no tenía guía. */}
           {CON_GUIA ? (
             <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <div className="sq" style={css('width:52px;height:52px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+              <IconoSP nombre="red" size={56} />
               <div>
                 <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
                 <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), y más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
@@ -839,7 +842,7 @@ export default function Page() {
             </div>
           ) : (
             <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <div className="sq" style={css('width:52px;height:52px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+              <IconoSP nombre="hospital" size={56} />
               <div>
                 <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde te atendés?</div>
                 <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}><b style={css('color:var(--sp-navy)')}>Lister</b> es nuestro centro médico propio en Asunción: consultas, laboratorio e imagen. La red suma más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
@@ -903,7 +906,7 @@ export default function Page() {
             <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
               {v.difs.map((dz, i) => (
                 <div className="sq" key={i} style={css('background:#fff;--sq:var(--r-lg);padding:28px 24px;border:1px solid var(--sp-line)')}>
-                  <div className="sq" style={css('width:46px;height:46px;--sq:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                  <IconoSP nombre={dz.icono} size={52} style={{ marginLeft: -6, marginBottom: 12 }} />
                   <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
                   <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
                 </div>
@@ -1066,7 +1069,7 @@ export default function Page() {
           porque el contenido termina encima de ella. Mismo umbral de scroll que
           el FAB de desktop. */}
       <div data-cta-bar className="cta-bar" role="group" aria-label="Acciones rápidas">
-        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal sq" style={css('flex:1;height:48px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal sq" style={css('flex:1;height:48px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}>Simulá tu plan</a>
         <a className="sq" href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;--sq:var(--r-sm);background:#fff;border:1.5px solid var(--sp-teal);color:var(--sp-teal-deep);display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
       </div>
 

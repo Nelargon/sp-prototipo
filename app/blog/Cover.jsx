@@ -1,4 +1,5 @@
 import { BP } from '../basePath';
+import { DIBUJOS, ICONO_CATEGORIA } from '../components/iconos-sp';
 
 // Portada de marca generada por código para las notas del blog.
 // Sin foto, sin costo, sin conector: cada nota recibe una ilustración
@@ -33,19 +34,13 @@ const THEMES = {
 // Turquesa: si una nota llega sin categoría, cae al color primario de marca.
 const DEFAULT_THEME = { g1: '#006B66', g2: '#00BCB4', soft: '#80DDD8', ring: '#B3EAE7' };
 
-const ICONS = {
-  // file-text — leer la letra chica sin vueltas
-  'Entendé tu plan':   'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8ZM14 3v5h5M9 13h6M9 17h4',
-  // edificio con cruz — el sistema de salud, hospitales, trámites
-  'Salud en Paraguay': 'M3 21h18M5 21V8l7-4 7 4v13M10 12h4M12 10v4M9 21v-4h6v4',
-  // escudo + check — cuidarte antes de que pase
-  'Prevención':        'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 11.5l2 2 4-4',
-  // corazón — primera infancia, maternidad
-  'Primeros años':     'M12 20.5s-7-4.6-7-9.2A3.9 3.9 0 0 1 12 8.6a3.9 3.9 0 0 1 7 2.7c0 4.6-7 9.2-7 9.2z',
-  // sol sobre el horizonte — los años que vienen
-  'Vivir más años':    'M12 3.5v3M6.2 6.2l2.1 2.1M3.5 14h3M17.5 14h3M15.7 8.3l2.1-2.1M8 14a4 4 0 0 1 8 0M3 18.5h18',
-};
-const DEFAULT_ICON = 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z';
+// El ícono de cada categoría es de la misma mano que el resto del sitio
+// (app/components/iconos-sp.js, 24/09/2026): papel, edificio con cruz,
+// escudo, corazón y sol sobre el horizonte; sin categoría, el libro. Va en
+// trazo blanco sobre la base translúcida de la portada, no sobre la mancha
+// turquesa de A3: sobre Sage, Lavender o Terracota la mancha mezclaría dos
+// territorios, que la marca no permite.
+const trazosDe = (categoria) => DIBUJOS[ICONO_CATEGORIA[categoria] || 'libro'];
 
 // Hash FNV-1a → variación determinística por slug (sin Math.random, que el
 // harness bloquea y rompería el prerender estable).
@@ -128,7 +123,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
   }
 
   const t = THEMES[categoria] || DEFAULT_THEME;
-  const icon = ICONS[categoria] || DEFAULT_ICON;
+  const trazos = trazosDe(categoria);
   const sd = seed(String(slug || categoria || "sp"));
   const j = (shift, span) => ((sd >> shift) % span) - (span >> 1); // jitter centrado
   const gid = 'cov' + (sd % 100000);
@@ -187,8 +182,8 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
       ) : (
         <g transform="translate(26,110)">
           <rect width="62" height="62" rx="17" fill="#ffffff" fillOpacity="0.15" stroke="#ffffff" strokeOpacity="0.32" />
-          <g transform="translate(15,15) scale(1.33)" fill="none" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d={icon} />
+          <g transform="translate(7,7)" fill="none" stroke="#ffffff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+            {trazos.map((d) => <path key={d} d={d} />)}
           </g>
         </g>
       )}

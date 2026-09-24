@@ -5,13 +5,14 @@ import Header from '../Header';
 import { BP } from '../basePath';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import { track } from '../track';
+import IconoSP from '../components/IconoSP';
 
 // Lo que ya funciona hoy vs. lo que está en camino: el portal no finge.
 const PROXIMAMENTE = [
-  { icon: 'M4 6h16v12H4zM8 6v12', title: 'Mi plan y cobertura', body: 'Qué cubre tu plan, tus copagos y tus topes — en tu idioma, siempre a mano.' },
-  { icon: 'M3 8h18v11H3zM8 8V5h8v3M12 11v5M9.5 13.5h5', title: 'Credencial digital', body: 'Tu credencial en el teléfono, para vos y tu familia. Sin plastiquito que se pierde.' },
-  { icon: 'M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z', title: 'Mis turnos', body: 'Agendá consultas y estudios desde acá, empezando por el Centro Médico Lister.' },
-  { icon: 'M12 2v20M17 7H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H6', title: 'Pagos y facturas', body: 'Tus cuotas, comprobantes y medios de pago, sin llamar a nadie.' },
+  { icono: 'plan', title: 'Mi plan y cobertura', body: 'Qué cubre tu plan, tus copagos y tus topes — en tu idioma, siempre a mano.' },
+  { icono: 'credencial', title: 'Credencial digital', body: 'Tu credencial en el teléfono, para vos y tu familia. Sin plastiquito que se pierde.' },
+  { icono: 'turnos', title: 'Mis turnos', body: 'Agendá consultas y estudios desde acá, empezando por el Centro Médico Lister.' },
+  { icono: 'pagos', title: 'Pagos y facturas', body: 'Tus cuotas, comprobantes y medios de pago, sin llamar a nadie.' },
 ];
 
 export default function MiSP() {
@@ -33,7 +34,7 @@ export default function MiSP() {
           <div className="misp-grid" style={css('display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:40px')}>
             <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => go('ver_red')} className="sq tarjeta-toque" style={css('display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:#fff;color:var(--sp-navy);--sq:var(--r-lg);padding:26px 24px;min-height:190px')}>
               <div>
-                <div className="sq" style={css('width:44px;height:44px;--sq:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:14px')}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+                <IconoSP nombre="red" size={52} style={{ marginLeft: -6, marginBottom: 10 }} />
                 <div style={css('font-size:19px;font-weight:800;margin-bottom:5px')}>Ver mi red de atención</div>
                 <div style={css('font-size:14px;color:var(--sp-text);line-height:1.55')}>Con tu cédula y fecha de nacimiento, mirá los sanatorios, médicos y farmacias que entran en tu plan.</div>
               </div>
@@ -56,7 +57,7 @@ export default function MiSP() {
           <div className="misp-soon" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:14px')}>
             {PROXIMAMENTE.map((t, i) => (
               <div key={i} className="sq" style={css('background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.22);--sq:var(--r-md);padding:20px 18px')}>
-                <div className="sq" style={css('width:38px;height:38px;--sq:var(--r-xs);background:rgba(255,255,255,0.08);color:var(--sp-mint);display:flex;align-items:center;justify-content:center;margin-bottom:12px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon} /></svg></div>
+                <IconoSP nombre={t.icono} fondo="azul" size={46} style={{ marginBottom: 12 }} />
                 <div style={css('font-size:14.5px;font-weight:800;color:#fff;margin-bottom:5px')}>{t.title}</div>
                 <div style={css('font-size:12.5px;color:var(--sp-blue-meta);line-height:1.5')}>{t.body}</div>
               </div>
