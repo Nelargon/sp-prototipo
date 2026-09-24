@@ -118,7 +118,7 @@ function Celda({ item, plan, indice, datos }) {
 function Ficha({ item, datos }) {
   const familia = datos.meta.cuadros[item.c];
   return (
-    <div style={css('border:1px solid var(--sp-line);border-radius:14px;overflow:hidden;background:#fff')}>
+    <div className="sq" style={css('border:1px solid var(--sp-line);--sq:14px;overflow:hidden;background:#fff')}>
       <div style={css('padding:12px 16px;background:var(--sp-surface-2);border-bottom:1px solid var(--sp-line-2);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 14px')}>
         {/* Nombre del estudio: viene del tarifario en MAYÚSCULAS. No se
             "arregla" a Tipo Oración — es el nombre con el que aparece en la
@@ -166,7 +166,7 @@ export default function Buscador() {
   }, [q, buscando, total, aproximado]);
 
   return (
-    <div style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);border-radius:var(--r-lg);padding:24px 22px 26px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
+    <div className="sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-lg);padding:24px 22px 26px')}>
       <label htmlFor="bus-q" className="disp" style={css('display:block;font-size:13px;font-weight:800;color:var(--sp-navy);margin-bottom:9px')}>
         Escribí lo que te pidió el doctor:
       </label>
@@ -181,7 +181,8 @@ export default function Buscador() {
           onChange={(e) => escribir(e.target.value)}
           placeholder="Resonancia, hemograma, cesárea, psicólogo…"
           autoComplete="off"
-          style={css('width:100%;height:56px;padding:0 16px 0 46px;border:1.5px solid var(--sp-mint-line-strong);border-radius:14px;background:#fff;font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-ink);outline:none')}
+          className="sq rel"
+          style={css('width:100%;height:56px;padding:0 16px 0 46px;border:1.5px solid var(--sp-mint-line-strong);--sq:14px;background:#fff;font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-ink);outline:none')}
         />
       </div>
 
@@ -194,8 +195,8 @@ export default function Buscador() {
             key={e}
             type="button"
             onClick={() => escribir(e)}
-            className="disp bus-chip"
-            style={css('height:31px;padding:0 13px;border-radius:var(--r-pill);border:1px solid var(--sp-mint-line-strong);background:#fff;color:var(--sp-teal-deep);font-size:12.5px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s')}
+            className="disp bus-chip rel-btn"
+            style={css('height:31px;padding:0 13px;border-radius:var(--r-pill);border:1px solid var(--sp-mint-line-strong);background:#fff;color:var(--sp-teal-deep);font-size:12.5px;font-weight:700;cursor:pointer')}
           >
             {e}
           </button>
@@ -247,7 +248,7 @@ export default function Buscador() {
           /* Un vacío en una página de transparencia se lee como "no lo cubre".
              Por eso el estado vacío dice lo que sí sabemos y a dónde ir — nunca
              deja a alguien deduciendo del silencio. */
-          <div style={css('background:#fff;border:1px solid var(--sp-line);border-radius:14px;padding:20px 22px')}>
+          <div className="sq" style={css('background:#fff;border:1px solid var(--sp-line);--sq:14px;padding:20px 22px')}>
             <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:7px')}>No lo encontramos con ese nombre.</div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.6')}>
               Que no aparezca acá <b>no quiere decir que no esté cubierto</b>: la grilla usa el nombre técnico del estudio. Probá con una palabra más corta ("rodilla", "sangre", "cirugía") o con el nombre del especialista. Si no aparece, preguntale a tu asesor antes de firmar — te va a decir con qué contás y con qué no.
