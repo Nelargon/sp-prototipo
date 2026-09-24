@@ -118,7 +118,7 @@ function Celda({ item, plan, indice, datos }) {
 function Ficha({ item, datos }) {
   const familia = datos.meta.cuadros[item.c];
   return (
-    <div className="sq" style={css('border:1px solid var(--sp-line);--sq:14px;overflow:hidden;background:#fff')}>
+    <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;background:#fff')}>
       <div style={css('padding:12px 16px;background:var(--sp-surface-2);border-bottom:1px solid var(--sp-line-2);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 14px')}>
         {/* Nombre del estudio: viene del tarifario en MAYÚSCULAS. No se
             "arregla" a Tipo Oración — es el nombre con el que aparece en la
@@ -182,7 +182,7 @@ export default function Buscador() {
           placeholder="Resonancia, hemograma, cesárea, psicólogo…"
           autoComplete="off"
           className="sq rel"
-          style={css('width:100%;height:56px;padding:0 16px 0 46px;border:1.5px solid var(--sp-mint-line-strong);--sq:14px;background:#fff;font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-ink);outline:none')}
+          style={css('width:100%;height:56px;padding:0 16px 0 46px;border:1.5px solid var(--sp-mint-line-strong);--sq:var(--r-sm);background:#fff;font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-ink);outline:none')}
         />
       </div>
 
@@ -248,7 +248,7 @@ export default function Buscador() {
           /* Un vacío en una página de transparencia se lee como "no lo cubre".
              Por eso el estado vacío dice lo que sí sabemos y a dónde ir — nunca
              deja a alguien deduciendo del silencio. */
-          <div className="sq" style={css('background:#fff;border:1px solid var(--sp-line);--sq:14px;padding:20px 22px')}>
+          <div className="sq" style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-md);padding:20px 22px')}>
             <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:7px')}>No lo encontramos con ese nombre.</div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.6')}>
               Que no aparezca acá <b>no quiere decir que no esté cubierto</b>: la grilla usa el nombre técnico del estudio. Probá con una palabra más corta ("rodilla", "sangre", "cirugía") o con el nombre del especialista. Si no aparece, preguntale a tu asesor antes de firmar — te va a decir con qué contás y con qué no.

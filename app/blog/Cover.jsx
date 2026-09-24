@@ -108,8 +108,9 @@ function Firma({ sobreFoto = false, eager = false }) {
 
 // `radius` es el radio de la esquina continua del sistema táctil (.sq, ver
 // globals.css): la portada lleva la misma esquina que las tarjetas del sitio.
+// Se pasa el token de su función («var(--r-lg)»); un número se toma en px.
 export default function Cover({ categoria, slug, cover, dato, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
-  const base = { display: 'block', width: '100%', aspectRatio: aspect, ...(radius ? { '--sq': radius + 'px' } : {}) };
+  const base = { display: 'block', width: '100%', aspectRatio: aspect, ...(radius ? { '--sq': typeof radius === 'number' ? radius + 'px' : radius } : {}) };
   const esquina = radius ? 'sq' : undefined;
   const decorative = !alt;
 

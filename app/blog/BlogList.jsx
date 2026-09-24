@@ -55,7 +55,7 @@ export default function BlogList({ notas, basePath, guias }) {
       {destacada && (
         <div className="blog-top" style={css('display:grid;grid-template-columns:1.62fr 1fr;gap:34px;align-items:start;margin-bottom:44px')}>
           <a href={`${basePath}/blog/${destacada.slug}/`} className="blog-hero tarjeta-toque" style={css('display:block;color:#fff')}>
-            <Cover categoria={destacada.categoria} slug={destacada.slug} cover={destacada.cover} dato={destacada.cover_dato} alt="" aspect="16 / 9" radius={18} eager />
+            <Cover categoria={destacada.categoria} slug={destacada.slug} cover={destacada.cover} dato={destacada.cover_dato} alt="" aspect="16 / 9" radius="var(--r-lg)" eager />
             <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin:20px 0 10px')}>{destacada.categoria}</div>
             <h2 className="disp" style={css('font-size:clamp(26px,3.2vw,38px);line-height:1.13;letter-spacing:-0.02em;margin:0 0 12px')}>{destacada.title}</h2>
             <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:16.5px;line-height:1.6;color:var(--sp-blue-soft);margin:0 0 12px;max-width:60ch')}>{destacada.description}</p>
@@ -66,7 +66,7 @@ export default function BlogList({ notas, basePath, guias }) {
             <div className="disp" style={css('font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--sp-mint);padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.18);margin-bottom:6px')}>Lo último</div>
             {ultimas.map((n) => (
               <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-ult fila" style={css('display:grid;grid-template-columns:64px 1fr;gap:13px;align-items:start;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.10);color:#fff')}>
-                <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" aspect="1 / 1" radius={10} />
+                <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} alt="" aspect="1 / 1" radius="var(--r-xs)" />
                 <div>
                   <div className="disp blog-ult-t" style={css('font-size:15px;line-height:1.28;margin-bottom:5px')}>{n.title}</div>
                   <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:var(--sp-blue-meta)')}>{n.fechaCorta} · {n.minutes} min</div>
@@ -87,7 +87,7 @@ export default function BlogList({ notas, basePath, guias }) {
           <div style={css('font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin:14px 0 14px')}>Guías para empezar</div>
           <div className="guias-grid" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:14px')}>
             {guias.map((g) => (
-              <a key={g.slug} href={`${basePath}/blog/guia/${g.slug}/`} className="guia-card sq tarjeta-toque" style={css('display:block;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);--sq:14px;padding:18px 19px;color:inherit')}>
+              <a key={g.slug} href={`${basePath}/blog/guia/${g.slug}/`} className="guia-card sq tarjeta-toque" style={css('display:block;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);--sq:var(--r-md);padding:18px 19px;color:inherit')}>
                 <div className="guia-card-t disp" style={css('font-size:18px;line-height:1.25;letter-spacing:-0.01em;margin:0 0 7px')}>{g.titulo}</div>
                 <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.55;color:var(--sp-blue-soft);margin:0 0 10px')}>{g.promesa}</div>
                 <div style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;color:var(--sp-blue-meta)')}>{g.cantidad} notas · {g.minutos} min</div>
@@ -131,7 +131,7 @@ export default function BlogList({ notas, basePath, guias }) {
 
       <div className="blog-list" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
         {grilla.map((n) => (
-          <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-card sq tarjeta-toque" style={css('display:flex;flex-direction:column;background:#fff;--sq:18px;overflow:hidden;color:var(--sp-ink);min-height:300px')}>
+          <a key={n.slug} href={`${basePath}/blog/${n.slug}/`} className="blog-card sq tarjeta-toque" style={css('display:flex;flex-direction:column;background:#fff;--sq:var(--r-lg);overflow:hidden;color:var(--sp-ink);min-height:300px')}>
             <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" />
             <div style={css('display:flex;flex-direction:column;flex:1;padding:22px 22px')}>
               <div style={css('font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:10px')}>{n.categoria}</div>

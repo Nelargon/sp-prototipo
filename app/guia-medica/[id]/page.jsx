@@ -72,7 +72,7 @@ export default async function Ficha({ params }) {
           <a href={`${BP}/guia-medica/`} style={css('color:var(--sp-teal-deep);font-weight:600')}>← Guía Médica</a>
         </nav>
 
-        <div className="sq" style={css('--sq:14px;background:#fff;border:1px solid var(--gm-linea);padding:24px 20px')}>
+        <div className="sq" style={css('--sq:var(--r-md);background:#fff;border:1px solid var(--gm-linea);padding:24px 20px')}>
           <div className="disp" style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:10px')}>{inst ? 'Sanatorio, laboratorio o centro' : 'Profesional'}{p.l ? ' · En Lister, centro propio' : ''}</div>
           <h1 className="disp" style={css('font-size:clamp(26px,4.4vw,34px);line-height:1.15;color:var(--sp-navy);margin:0 0 18px;letter-spacing:-0.01em')}>
             {p.n}{filas.some((f) => f.rv) ? <PuntoRevisar /> : null}

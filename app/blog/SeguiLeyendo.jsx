@@ -32,7 +32,7 @@ export default function SeguiLeyendo({ notas }) {
               className="tarjeta-toque"
               style={css('display:block;color:inherit;text-decoration:none')}
             >
-              <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius={12} />
+              <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius="var(--r-sm)" />
               <div style={css('font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--sp-teal-deep);margin:12px 0 6px')}>
                 {n.categoria}
               </div>

@@ -291,6 +291,45 @@ dan idénticas.
 - `qa-integral`: 69 OK · 2 hallazgos (los mismos de antes: testimonios y
   radios de 14/18px). `qa-lanzamiento` verde.
 
+### Lo que quedó abierto, cerrado (24/09)
+
+Al terminar el paso 6 quedaban tres cosas. Se le propuso a Arturo cómo
+resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
+
+- **La Hoja se cierra deslizándola hacia abajo.** Se arrastra desde el asa o
+  el título (`.hoja-tirador`), no desde la lista, que tiene su propio scroll.
+  Sigue al dedo y el fondo se aclara con ella. Al soltarla se cierra si bajó
+  más de un cuarto de su alto o si el movimiento fue rápido; si no, vuelve. Al
+  cerrarse termina de bajar desde donde la dejó el dedo (medido: nunca vuelve a
+  subir). Teclado y lector de pantalla, igual que antes: Escape y la «×».
+  Vive en la Guía Médica, así que **sale en la v1**. Medido con mouse y con
+  toque simulado, con y sin «reducir movimiento»: 24 mediciones.
+- **Las esquinas de 14 y 18px van al paso de su función** (opción B). 14 está
+  justo a mitad de camino entre 12 y 16: no tiene «más cercano». Por eso se
+  miró qué es cada cosa:
+
+  | Antes | Qué es | Ahora |
+  |---|---|---|
+  | 18px (11) | Tarjeta grande o tabla | `--r-lg` (20) |
+  | 14px (15) | Tarjeta chica o aviso | `--r-md` (16) |
+  | 14px (7) | Botón, campo o ícono | `--r-sm` (12) |
+
+  Las portadas del blog también reciben el token (`Cover` acepta
+  `radius="var(--r-lg)"`). Quedan dos 14px en `/historia/`, que no se toca:
+  excepción local. A la vista son 2px, casi invisibles (capturas ampliadas en
+  el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
+  esperan a SP); el de radios pasó a verde porque se decidió, no porque se
+  escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que
+  es** (CLAUDE.md).
+- **La esquina continua en iPhone: no se dibuja a mano, a propósito.** Safari
+  todavía no la sabe dibujar y muestra una esquina redondeada común del mismo
+  radio. Dibujarla a mano (recortando cada elemento con una forma) también
+  recortaría las sombras y los bordes: rompería el relieve, que es lo principal
+  del sistema, y le pesaría a los teléfonos viejos. Cuando Safari la soporte,
+  se enciende sola por el `@supports`. **Pendiente de Arturo:** mirar el sitio
+  en su iPhone; acá solo hay motor de Chrome y no se puede ver cómo lo muestra
+  Safari.
+
 ### Qué se extiende y qué no
 
 | De la guía | ¿A todo el sitio? |
