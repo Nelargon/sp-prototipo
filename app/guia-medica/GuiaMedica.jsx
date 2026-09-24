@@ -8,7 +8,7 @@ import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import datos from '../../lib/guia-medica.json';
-import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar } from '../../lib/red-medica';
+import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
 
 /* /guia-medica — ¿dónde me atiendo?
    ----------------------------------------------------------------------------
@@ -101,11 +101,56 @@ function Tarjeta({ p, plan, abrirVisar }) {
   );
 }
 
+/* Movimiento (23/09/2026, pedido de Arturo: «oportunidades de animación y
+   forma de los botones», con la psicología del diseño de Apple). Cada
+   movimiento avisa algo, no decora:
+   - al tocar, el botón se hunde apenas: «te escuché» (CSS .gm button:active);
+   - lo que se abre crece suave en vez de saltar: Plegable;
+   - especialidad y plan se eligen en una hoja que sube desde abajo: «esto es
+     temporal, volvés a donde estabas». Hoja.
+   Todo dura menos de un tercio de segundo y se apaga con «reducir movimiento». */
+function Plegable({ abierto, enColumna, children }) {
+  return (
+    <div className={'gm-pleg' + (enColumna ? ' gm-pleg-col' : '')} data-abierto={abierto ? '1' : '0'} inert={abierto ? undefined : true} aria-hidden={abierto ? undefined : true}>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function Hoja({ abierta, titulo, onCerrar, children }) {
+  const panel = useRef(null);
+  const cerrar = useRef(onCerrar);
+  cerrar.current = onCerrar;
+  useEffect(() => {
+    if (!abierta) return undefined;
+    const antes = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const t = setTimeout(() => panel.current && panel.current.focus(), 60);
+    const esc = (e) => { if (e.key === 'Escape') cerrar.current(); };
+    window.addEventListener('keydown', esc);
+    return () => { document.body.style.overflow = antes; clearTimeout(t); window.removeEventListener('keydown', esc); };
+  }, [abierta]);
+  return (
+    <div className="gm-hoja" data-abierta={abierta ? '1' : '0'} inert={abierta ? undefined : true} aria-hidden={abierta ? undefined : true}>
+      <div className="gm-hoja-fondo" onClick={() => cerrar.current()} />
+      <div ref={panel} role="dialog" aria-modal="true" aria-label={titulo} tabIndex={-1} className="gm-hoja-panel">
+        <div className="gm-hoja-asa" aria-hidden="true" />
+        <div style={css('display:flex;justify-content:space-between;align-items:center;padding:6px 16px 10px')}>
+          <h2 className="disp" style={css('margin:0;font-size:19px;font-weight:900;color:var(--sp-navy)')}>{titulo}</h2>
+          <button type="button" onClick={() => cerrar.current()} aria-label="Cerrar" style={css('width:36px;height:36px;border-radius:var(--r-pill);border:none;background:var(--gm-fondo);color:var(--sp-text-2);display:flex;align-items:center;justify-content:center;cursor:pointer')}>{Icono.x}</button>
+        </div>
+        <div className="gm-hoja-cuerpo">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function GuiaMedica() {
   const [f, setF] = useState(VACIO);
   const [q, setQ] = useState('');
   const [n, setN] = useState(POR_PAGINA);
-  const [panel, setPanel] = useState(''); // '' | 'plan'
+  const [hoja, setHoja] = useState(''); // '' | 'esp' | 'plan'
+  const [filtroEsp, setFiltroEsp] = useState('');
   const [todas, setTodas] = useState(false);
   const [abiertos, setAbiertos] = useState({});
   const [grupoAbierto, setGrupoAbierto] = useState('');
@@ -164,7 +209,7 @@ export default function GuiaMedica() {
     track('guia_filtro', { campo });
     setF((x) => ({ ...x, ...cambios }));
   };
-  const elegirEsp = (e, origen) => { setQ(''); setTodas(false); track('guia_filtro', { campo: 'esp', origen }); setF((x) => ({ ...x, q: '', esp: e })); };
+  const elegirEsp = (e, origen) => { setQ(''); setTodas(false); setHoja(''); track('guia_filtro', { campo: 'esp', origen }); setF((x) => ({ ...x, q: '', esp: e })); };
   const abrirVisar = (origen) => {
     setVisar(true);
     track('guia_visar', { origen });
@@ -183,7 +228,7 @@ export default function GuiaMedica() {
     }
     setGrupoAbierto('');
     set({ plan: f.plan === g.v ? '' : g.v }, 'plan');
-    if (f.plan !== g.v) setPanel('');
+    if (f.plan !== g.v) setHoja('');
   };
 
   // Con una especialidad, un texto o una ciudad elegida se ven resultados; con
@@ -222,7 +267,7 @@ export default function GuiaMedica() {
         </div>
 
         {/* Visar una orden */}
-        {visar && (
+        <Plegable abierto={visar} enColumna>
           <section ref={refVisar} aria-label="Visar una orden médica" className="sq" style={css('--sq:14px;scroll-margin-top:90px;background:#fff;border:1.5px solid var(--sp-teal-deep);padding:16px;display:flex;flex-direction:column;gap:10px')}>
             <div style={css('display:flex;justify-content:space-between;align-items:center')}>
               <h2 className="disp" style={css('margin:0;font-size:18px;font-weight:900;color:var(--sp-navy)')}>Visá tu orden médica</h2>
@@ -236,7 +281,7 @@ export default function GuiaMedica() {
             <a href={WA_VISAR} target="_blank" rel="noopener" onClick={() => track('guia_whatsapp', { origen: 'visar' })} className="disp sq" style={css('--sq:10px;height:46px;background:var(--sp-teal-deep);color:#fff;font-size:15.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px')}>{Icono.wa} Enviar mi orden por WhatsApp</a>
             <div style={css(INTER + 'font-size:12.5px;color:var(--sp-muted);text-align:center')}>También podés visarla desde la App de Salud Protegida.</div>
           </section>
-        )}
+        </Plegable>
 
         {/* Buscador */}
         <label className="sq" style={css('--sq:12px;display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border:1.5px solid var(--sp-blue-pale);background:#fff;color:var(--sp-blue-meta)')}>
@@ -262,32 +307,13 @@ export default function GuiaMedica() {
 
         {/* Especialidad y plan, en dos cápsulas */}
         <div style={css('display:flex;gap:8px')}>
-          <button type="button" onClick={() => (f.esp ? set({ esp: '' }, 'esp') : setTodas(true))} aria-expanded={!f.esp && todas} className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.esp ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid var(--gm-borde)'))}>
-            <span style={css('overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{f.esp || 'Especialidad'}</span>{f.esp ? Icono.x : Icono.abajo}
+          <button type="button" onClick={() => { setFiltroEsp(''); setHoja('esp'); }} aria-haspopup="dialog" className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.esp ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid var(--gm-borde)'))}>
+            <span style={css('overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{f.esp || 'Especialidad'}</span>{Icono.abajo}
           </button>
-          <button type="button" onClick={() => setPanel(panel === 'plan' ? '' : 'plan')} aria-expanded={panel === 'plan'} className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.plan ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid ' + (panel === 'plan' ? 'var(--sp-navy)' : 'var(--gm-borde)')))}>
+          <button type="button" onClick={() => setHoja('plan')} aria-haspopup="dialog" className="disp sq" style={css('--sq:10px;flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;' + (f.plan ? 'background:var(--sp-navy);color:#fff;border:1.5px solid var(--sp-navy)' : 'background:#fff;color:var(--sp-navy);border:1.5px solid ' + 'var(--gm-borde)'))}>
             <span style={css('overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{f.plan ? nombrePlan(f.plan) : 'Tu plan'}</span>{Icono.abajo}
           </button>
         </div>
-        {panel === 'plan' && (
-          <div role="group" aria-label="¿Qué plan tenés?" className="sq" style={css('--sq:12px;background:#fff;border:1px solid var(--gm-linea);padding:12px;display:flex;flex-direction:column;gap:10px')}>
-            <div style={css('display:flex;justify-content:space-between;align-items:baseline')}>
-              <span style={css(INTER + 'font-size:13.5px;color:var(--sp-text-2)')}>¿Qué plan tenés? Te mostramos solo quién te atiende con él.</span>
-            </div>
-            <div style={css('display:flex;flex-wrap:wrap;gap:6px')}>
-              <button type="button" onClick={() => { setGrupoAbierto(''); set({ plan: '' }, 'plan'); setPanel(''); }} style={css(chip(!f.plan && !grupoAbierto))}>Todos</button>
-              {GRUPOS_PLAN.map((g) => <button key={g.k} type="button" aria-pressed={grupoActual === g.k} onClick={() => elegirGrupo(g)} style={css(chip(grupoActual === g.k))}>{g.label}{g.opciones ? ' ▾' : ''}</button>)}
-            </div>
-            {grupoConOpciones && (
-              <div style={css('display:flex;flex-direction:column;gap:6px')}>
-                <span style={css(INTER + 'font-size:13px;color:var(--sp-muted)')}>{grupoConOpciones.pregunta}</span>
-                <div style={css('display:flex;flex-wrap:wrap;gap:6px')}>
-                  {grupoConOpciones.opciones.map((o) => <button key={o.v} type="button" aria-pressed={f.plan === o.v} onClick={() => { set({ plan: o.v }, 'plan'); setPanel(''); }} style={css(chip(f.plan === o.v))}>{o.label}</button>)}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
 
 
         {/* Inicio: lo que más se busca y todas las especialidades */}
@@ -298,37 +324,39 @@ export default function GuiaMedica() {
                 forma que la lista de especialidades (pedido de Arturo, 23/09). */}
             <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
               {MAS_BUSCADO.map((e, i) => (
-                <button key={e} type="button" onClick={() => elegirEsp(e, 'mas_buscado')} style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
+                <button key={e} type="button" onClick={() => elegirEsp(e, 'mas_buscado')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
                   <span className="disp" style={css('width:16px;font-size:13.5px;font-weight:900;color:var(--sp-blue-meta)')}>{i + 1}</span>
                   <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
                   <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
                 </button>
               ))}
-              <button type="button" onClick={() => { setQ('lister'); track('guia_filtro', { campo: 'lister' }); }} style={css('width:100%;height:44px;padding:0 14px;border:none;background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
+              <button type="button" onClick={() => { setQ('lister'); track('guia_filtro', { campo: 'lister' }); }} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
                 <span className="disp sq" style={css('--sq:5px;font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span>
                 <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>Nuestro centro médico</span>
                 <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
               </button>
             </div>
             <button type="button" onClick={() => setTodas(!todas)} aria-expanded={todas} className="disp" style={css('align-self:flex-start;height:36px;padding:0 2px;border:none;background:transparent;color:var(--sp-teal-deep);font-size:14.5px;font-weight:800;cursor:pointer')}>{todas ? 'Ocultar la lista completa' : 'Ver todas las especialidades'}</button>
-            {todas && CAT.especialidades.map((g) => (
+            <Plegable abierto={todas} enColumna>
+            {CAT.especialidades.map((g) => (
               <div key={g.g} style={css('display:flex;flex-direction:column')}>
                 <button type="button" onClick={() => setAbiertos({ ...abiertos, [g.g]: !abiertos[g.g] })} aria-expanded={!!abiertos[g.g]} style={css('height:42px;border:none;background:transparent;padding:0 2px;display:flex;align-items:center;justify-content:space-between;cursor:pointer')}>
                   <span className="disp" style={css(KICKER)}>{g.g}</span>
                   <span style={css('color:var(--sp-estado-punto);display:flex;transition:transform .2s;transform:' + (abiertos[g.g] ? 'rotate(180deg)' : 'none'))}>{Icono.abajo}</span>
                 </button>
-                {abiertos[g.g] && (
+                <Plegable abierto={!!abiertos[g.g]}>
                   <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
                     {g.items.map((e) => (
-                      <button key={e} type="button" onClick={() => elegirEsp(e, 'lista')} style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
+                      <button key={e} type="button" onClick={() => elegirEsp(e, 'lista')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
                         <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
                         <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
                       </button>
                     ))}
                   </div>
-                )}
+                </Plegable>
               </div>
             ))}
+            </Plegable>
           </>
         )}
 
@@ -382,6 +410,49 @@ export default function GuiaMedica() {
           <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'guia' })} className="disp sq" style={css('--sq:10px;height:44px;padding:0 18px;background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan →</a>
         </div>
       </div>
+
+      {/* Hojas: especialidad y plan */}
+      <Hoja abierta={hoja === 'esp'} titulo="Especialidad" onCerrar={() => setHoja('')}>
+        <label className="sq" style={css('--sq:10px;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border:1.5px solid var(--gm-borde);background:var(--gm-fondo);color:var(--sp-blue-meta);margin-bottom:10px')}>
+          {Icono.buscar}
+          <input value={filtroEsp} onChange={(e) => setFiltroEsp(e.target.value)} aria-label="Buscar una especialidad" placeholder="Buscar una especialidad" style={css(INTER + 'flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:16px;color:var(--sp-ink)')} />
+        </label>
+        {f.esp && <button type="button" onClick={() => { set({ esp: '' }, 'esp'); setHoja(''); }} className="disp" style={css('height:40px;padding:0 2px;border:none;background:none;color:var(--sp-teal-deep);font-size:14.5px;font-weight:800;cursor:pointer;margin-bottom:4px')}>Todas las especialidades</button>}
+        {CAT.especialidades.map((g) => {
+          const items = g.items.filter((e) => !filtroEsp || norm(e).includes(norm(filtroEsp)));
+          if (!items.length) return null;
+          return (
+            <div key={g.g} style={css('margin-bottom:12px')}>
+              <div className="disp" style={css(KICKER + ';padding:6px 2px 8px')}>{g.g}</div>
+              <div className="sq" style={css('--sq:10px;background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
+                {items.map((e) => (
+                  <button key={e} type="button" onClick={() => elegirEsp(e, 'hoja')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;cursor:pointer;text-align:left')}>
+                    <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy);' + (f.esp === e ? 'font-weight:700' : ''))}>{e}</span>
+                    <span style={css('color:' + (f.esp === e ? 'var(--sp-teal-deep)' : 'var(--sp-blue-meta)') + ';display:flex')}>{f.esp === e ? Icono.check : Icono.der}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </Hoja>
+      <Hoja abierta={hoja === 'plan'} titulo="¿Qué plan tenés?" onCerrar={() => setHoja('')}>
+        <div role="group" aria-label="¿Qué plan tenés?" style={css('display:flex;flex-direction:column;gap:12px;padding-bottom:4px')}>
+          <p style={css(INTER + 'margin:0;font-size:14px;line-height:1.5;color:var(--sp-text-2)')}>Te mostramos solo quién te atiende con él.</p>
+          <div style={css('display:flex;flex-wrap:wrap;gap:6px')}>
+            <button type="button" onClick={() => { setGrupoAbierto(''); set({ plan: '' }, 'plan'); setHoja(''); }} style={css(chip(!f.plan && !grupoAbierto))}>Todos</button>
+            {GRUPOS_PLAN.map((g) => <button key={g.k} type="button" aria-pressed={grupoActual === g.k} onClick={() => elegirGrupo(g)} style={css(chip(grupoActual === g.k))}>{g.label}{g.opciones ? ' ▾' : ''}</button>)}
+          </div>
+          {grupoConOpciones && (
+            <div style={css('display:flex;flex-direction:column;gap:6px')}>
+              <span style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>{grupoConOpciones.pregunta}</span>
+              <div style={css('display:flex;flex-wrap:wrap;gap:6px')}>
+                {grupoConOpciones.opciones.map((o) => <button key={o.v} type="button" aria-pressed={f.plan === o.v} onClick={() => { set({ plan: o.v }, 'plan'); setHoja(''); }} style={css(chip(f.plan === o.v))}>{o.label}</button>)}
+              </div>
+            </div>
+          )}
+        </div>
+      </Hoja>
     </div>
   );
 }

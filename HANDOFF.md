@@ -58,6 +58,20 @@ botones de tipo (Profesionales / Sanatorios) y los desplegables de
 especialidad y departamento. Los links viejos (`?plan&esp&dp&c`) siguen
 funcionando: el departamento se traduce a su zona.
 
+**Movimiento, a la manera de Apple (24/09/2026, pedido de Arturo: «aplicalos
+directo a la guía»).** Tres gestos, y cada uno avisa algo:
+- **Al apretar, el botón se hunde** (`scale(.97)`, 0,12 s). Las filas de lista
+  se oscurecen en vez de achicarse.
+- **Lo que se abre crece** en vez de saltar: `Plegable` en `GuiaMedica.jsx`
+  (grid `0fr → 1fr`), usado en «Visar una orden», «Ver todas las especialidades»
+  y cada grupo. Cerrado queda `inert` (el lector de pantalla y el Tab no entran).
+- **Especialidad y plan se eligen en una hoja que sube desde abajo**
+  (`Hoja`): fondo oscurecido, asa, «×», Escape o tocar afuera la cierran, y
+  bloquea el scroll de atrás. La de especialidad trae buscador propio.
+Todo dura menos de 1/3 de segundo y se apaga con «reducir movimiento» del
+sistema. CSS en `app/globals.css` (bloque «Movimiento»). La hoja todavía **no
+se arrastra con el dedo** para cerrarla: se cierra con la «×» o tocando afuera.
+
 ## 🔄 LA V1 CAMBIA DE FORMA: ENTRA LA GUÍA, SALE AGENDAR (23 sep 2026)
 
 **Arturo, 23/09/2026, textual:**

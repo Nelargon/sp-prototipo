@@ -473,3 +473,25 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .gm-fila button{height:32px!important;padding:0 11px!important;font-size:13.5px!important}
 /* El buscador ya tiene su «Borrar»: sin la cruz nativa del navegador, que lo duplicaba. */
 .gm input[type=search]::-webkit-search-cancel-button{display:none}
+/* Movimiento (23/09/2026, ver el comentario en GuiaMedica.jsx). Cada movimiento
+   avisa algo: al tocar, el botón se hunde apenas («te escuché»); lo que se
+   abre crece en vez de saltar; especialidad y plan suben en una hoja desde
+   abajo («es temporal, volvés a donde estabas»). Nada dura más de 1/3 de
+   segundo y todo se apaga con «reducir movimiento». */
+.gm button,.gm a.sq{transition:transform .12s ease,background-color .15s ease,color .15s ease,border-color .15s ease}
+.gm button:not(.fila):active,.gm a.sq:active{transform:scale(.97)}
+.gm .fila:active{background:var(--gm-fondo)!important}
+.gm-pleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .24s ease,opacity .2s ease,margin .24s ease}
+.gm-pleg[data-abierto="1"]{grid-template-rows:1fr;opacity:1}
+.gm-pleg>div{overflow:hidden;min-height:0}
+.gm-pleg-col[data-abierto="0"]{margin-top:calc(-1 * var(--gap,14px))}
+.gm-hoja{position:fixed;inset:0;z-index:200;pointer-events:none}
+.gm-hoja[data-abierta="1"]{pointer-events:auto}
+.gm-hoja-fondo{position:absolute;inset:0;background:rgba(0,27,52,.38);opacity:0;transition:opacity .25s ease}
+.gm-hoja[data-abierta="1"] .gm-hoja-fondo{opacity:1}
+.gm-hoja-panel{position:absolute;left:0;right:0;bottom:0;max-width:720px;margin:0 auto;max-height:82vh;display:flex;flex-direction:column;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,27,52,.18);transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,0,1);outline:none;padding-bottom:env(safe-area-inset-bottom)}
+@supports (corner-shape:squircle){.gm-hoja-panel{corner-shape:squircle;border-radius:36px 36px 0 0}}
+.gm-hoja[data-abierta="1"] .gm-hoja-panel{transform:none}
+.gm-hoja-asa{width:40px;height:5px;border-radius:3px;background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
+.gm-hoja-cuerpo{overflow-y:auto;padding:4px 16px 20px;overscroll-behavior:contain}
+@media (prefers-reduced-motion:reduce){.gm *{transition:none!important}.gm button:active,.gm a.sq:active{transform:none}}
