@@ -3440,3 +3440,55 @@ transmite lo que uno supone. Si el dato se puede leer, en encabezados, DNS o
 configuración, primero se lee y después se pregunta. Y una lista de nombres
 dice más que el rótulo que le pusieron: antes de construir para «el equipo de
 marketing», fijate quiénes son.
+
+## Capítulo 94 — Un ícono se gana su lugar (24/09/2026)
+
+**Qué intentamos.** Arturo miró los íconos del sitio y dijo que no le gustaban:
+*«Son muy genéricos»*. Quería íconos *«más creativos, más nuestros»*, como los de
+Claude. La primera propuesta fueron tres estilos, y la recomendada era la **Línea
+SP**: sacada del isotipo, la única que ninguna otra marca podía tener.
+
+**Qué pasó.** Arturo la descartó entera: *«El B no me gusta para nada. No se ve
+como un toque personal.»* Tenía razón en algo que el razonamiento no veía: una
+línea que nadie más tiene no alcanza si no tiene mano. Y agregó una regla que no
+estaba en la propuesta: *«los íconos en los botones de guía médica o simulador no
+son muy grandes. Y la verdad es que no aplicarían en esos casos […] La
+aplicación creo que sería en otras instancias más prácticas y donde tiene más
+sentido.»* Con esa regla, de los 111 íconos del código 22 se van, 77 son señales
+de uso que se quedan simples y solo 12 lugares merecen uno propio.
+
+Después vinieron las pruebas, y una de ellas corrigió una afirmación mía. Yo
+había dicho que el trazo a mano se perdía por debajo de 32 px. Medido a la
+densidad de un celular, lo que se pierde es el detalle, no el estilo: un
+calendario se lee a 24 px en cualquier estilo, y dos globos con un corazón se
+empastan a 24 px en todos, el dúo incluido. La prueba de fondos dio la otra
+sorpresa: el trazo blanco sobre su círculo turquesa es el único que funciona en
+los cuatro fondos del sitio, porque trae su propia base.
+
+![El mismo ícono sobre los cuatro fondos del sitio](docs/diseno/img/2026-09-24-iconos-prueba-fondos.webp)
+
+**Qué aprendimos.** Un ícono se gana su lugar como una etiqueta: si repite lo que
+dice el texto de al lado, sobra. Lo «nuestro» de un ícono no sale de la
+geometría sino de la mano que lo dibujó. Y una hipótesis sobre cómo se ve algo se
+prueba al tamaño y sobre el fondo reales: sobre la mesa, la B parecía la mejor y
+el límite era de 32 px; en pantalla, ninguna de las dos cosas era cierta. Las
+láminas de todo el recorrido están en `docs/diseno/`.
+
+## Capítulo 95 — Las láminas también son el libro (24/09/2026)
+
+**Qué intentamos.** Cada decisión de diseño de este mes se tomó mirando una
+lámina: tres intensidades lado a lado, esquinas ampliadas al triple, ocho estilos
+de íconos. Las láminas se armaban en una carpeta temporal, se le mandaban a
+Arturo y, una vez decidido, quedaba solo el texto: la bitácora contaba la
+decisión sin la imagen que la hizo posible.
+
+**Qué pasó.** Arturo lo marcó: *«Todas las imágenes que me envías son ejemplos
+que vale la pena conservar como material de aprendizaje, tanto para una
+diapositiva como para la bitácora.»* La carpeta temporal se borra cuando termina
+la sesión: sin su pedido, las doce láminas del 24/09 se habrían perdido esa misma
+noche.
+
+**Qué aprendimos.** En diseño, la lámina es la prueba de la decisión. Sin ella,
+una sesión futura lee «se eligió la B» y no puede ver por qué. Desde hoy, toda
+lámina que enseña algo se guarda en `docs/diseno/` con su lección: qué muestra,
+qué se decidió y por qué. Con esa forma sirve de diapositiva tal cual.
