@@ -184,6 +184,24 @@ class Enviar(Base):
         self.assertEqual(logo['Content-ID'], '<logo-sp>')
         self.assertEqual(cb.leer_estado(self.estado), {'2026-09-22-c.md': 'enviado'})
 
+    def test_baja_en_texto_plano(self):
+        # Se mira el correo CRUDO, como lo lee Gmail. La prueba de arriba lee el
+        # encabezado ya decodificado y por eso dio verde aunque salía como
+        # =?utf-8?q?…, que Gmail no reconoce (primera prueba real, 24/09/2026).
+        # La segunda casilla tiene el largo exacto de la real (37 caracteres).
+        casillas = (USUARIO, 'nombre.apellido@saludprotegida.com.py',
+                    'una.casilla.muy.larga.de.verdad.para.probar@saludprotegida.com.py')
+        for usuario in casillas:
+            msg = cb.construir({'asunto': 'x', 'texto': 't', 'html': '<p>h</p>'}, usuario, 'a@b.com', b'png')
+            crudo = msg.as_bytes().decode('ascii')
+            linea = crudo.split('List-Unsubscribe:')[1].split('\n', 2)
+            valor = (linea[0] + linea[1]).strip() if not linea[0].strip() else linea[0].strip()
+            self.assertNotIn('=?', valor, usuario)
+            self.assertTrue(valor.startswith(f'<mailto:{usuario}'), valor)
+            if usuario != casillas[-1]:
+                # Las de largo normal, en un solo renglón y con el asunto de baja.
+                self.assertTrue(linea[0].strip().endswith('?subject=Baja>'), linea[0])
+
     def test_nunca_imprime_una_direccion(self):
         FakeSMTP.rechazar = {DESTINOS[1]}
         d = self.correos('2026-09-22-c.md')

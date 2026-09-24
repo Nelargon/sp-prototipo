@@ -107,12 +107,14 @@ hace una sesión, no él. Lo que solo él puede hacer es cambiar la contraseña 
 lista en los secretos. Cuando cambie la lista, se le pasa la línea lista para
 pegar.
 
-**Detalle menor pendiente:** el encabezado `List-Unsubscribe` sale codificado
-en RFC 2047 (`=?utf-8?q?…`) porque la línea pasa los 78 caracteres y la
-política por defecto de `email` la dobla. Gmail no lo lee, así que no muestra
-el botón de «desuscribirse». El pie del correo igual explica cómo darse de
-baja. Se arregla serializando con `max_line_length` más alto o acortando el
-`mailto:`.
+**El botón de «desuscribirse» (arreglado el 24/09/2026):** en la primera
+prueba, el encabezado `List-Unsubscribe` salía codificado en RFC 2047
+(`=?utf-8?q?…`), porque pasaba los 78 caracteres y el módulo `email` lo partía.
+Gmail no lo reconoce codificado. Ahora es `<mailto:casilla?subject=Baja>`,
+entra en un renglón (tope: 60 caracteres) y tiene una prueba que mira el correo
+crudo (BITACORA cap. 94). Que el botón aparezca lo decide cada cliente de
+correo: Gmail suele mostrarlo solo a remitentes con volumen, así que puede no
+verse. El pie del correo explica cómo darse de baja en cualquier caso.
 
 ---
 
