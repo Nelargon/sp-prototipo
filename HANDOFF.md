@@ -95,14 +95,16 @@ web»*. Pidió el plan antes de construir y lo aprobó el mismo día
 (*«Adelante!»*). Alcance: **lo que sale en la v1** (inicio, simulador, planes,
 qué cubre, guía). Blog, agendar y Mi SP lo reciben cuando se lancen;
 `/historia/` no. **Ese mismo día Arturo sumó blog y Mi SP** (*«Extendé el
-sistema al blog y a Mi SP»*): es el paso 5. Agendar sigue esperando.
+sistema al blog y a Mi SP»*): es el paso 5. Y después agendar (*«Extendé el
+sistema a agendar también»*): paso 6. **Ya no queda ninguna página afuera**
+salvo `/historia/`, que no se toca.
 
 **La idea que ordena el trabajo:** lo que hace que la guía se sienta Apple son
 las reglas detrás de cada efecto (cada movimiento avisa algo; la sombra va solo
 en lo que se toca). Extenderla es pasar esas reglas al resto del sitio, no
 pegar efectos en cada botón.
 
-### El plan, en cuatro PRs (y un quinto, pedido después)
+### El plan, en cuatro PRs (y dos más, pedidos después)
 
 | Paso | Qué | Fusión | Estado |
 |---|---|---|---|
@@ -110,12 +112,14 @@ pegar efectos en cada botón.
 | 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
 | 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | ✔ PR #169 |
 | 4 | **Planes, Qué cubre y la ficha del prestador** | automática | ✔ PR #170 |
-| 5 | **Blog y Mi SP** (pedido de Arturo el mismo 24/09) | automática (aplica la B) | ✔ este PR |
+| 5 | **Blog y Mi SP** (pedido de Arturo el mismo 24/09) | automática (aplica la B) | ✔ PR #174 |
+| 6 | **Agendar** (pedido de Arturo el mismo 24/09) | automática (aplica la B) | ✔ este PR |
 
 **✔ Completo el 24/09/2026**, los cuatro pasos el mismo día: toda la v1
 (inicio, simulador, planes, qué cubre, guía, ficha y 404) habla el mismo
 lenguaje táctil. Con el paso 5 se suman el blog (índice, notas y guías) y Mi
-SP. Queda afuera agendar, que lo recibe cuando se lance.
+SP, y con el paso 6, agendar: **todo el sitio habla el mismo lenguaje táctil**
+(menos `/historia/`, a propósito).
 
 ### Paso 2 (24/09): la intensidad la eligió Arturo, B
 
@@ -250,6 +254,43 @@ píxel a píxel, y `qa-lanzamiento` sigue verde.
   hay listas largas para elegir.
 - `qa-integral` antes y después: los mismos 15 hallazgos.
 
+### Paso 6 (24/09): agendar
+
+Página del prototipo, como el blog y Mi SP (`CON_AGENDA` apagado en la v1).
+Medido: fuera de `/agendar/`, las 48 capturas del sitio y las del blog y Mi SP
+dan idénticas.
+
+- **`tactil oscuro`** en la raíz: fondo azul con la tarjeta blanca del
+  formulario.
+- **Las opciones son controles** (`rel-btn`), como en el simulador: la elegida
+  va **plana**, «apretada», y ahora lo dice también `aria-pressed` (antes el
+  lector de pantalla no sabía cuál estaba elegida). Perdieron la transición
+  suelta que pisaba el toque.
+- **Los campos llevan relieve** (`rel`) y la clase `inp` del simulador: antes
+  no cambiaban al escribir en ellos (sin foco visible); ahora el borde se pone
+  menta con su halo.
+- **La tarjeta del formulario pierde su sombra**: es superficie, no se toca. El
+  relieve va en los campos y las opciones, como en el buscador de Qué cubre.
+  Sobre azul, además, la sombra casi no se veía. Regla afinada: **en una página
+  azul no va `rel` sobre el azul; dentro de una tarjeta blanca, sí**.
+- **«Otro centro de la red» crece** (`Plegable`) en vez de aparecer de golpe.
+- **La etiqueta «Agendá tu turno» estaba tapada por la barra fija**, igual que
+  la de Mi SP en el paso 5 (arrancaba a 34px). Ahora a 118px.
+- **Arreglo del sistema, para todo el sitio: un botón deshabilitado ya no se
+  hunde.** Chrome le aplica `:active` igual, así que el «Pedir turno» gris se
+  hundía sin hacer nada: decía «te escuché» y no escuchaba. Pasaba también en
+  el botón de enviar del simulador mientras manda los datos (ese está en la
+  v1). Las reglas del toque y del relieve excluyen `:disabled`, y la de
+  «reducir movimiento» con el mismo peso (cap. 85).
+- **Control nuevo en `qa-integral`: texto tapado por la barra fija al cargar.**
+  Mi SP y agendar tenían el mismo error y lo encontró el ojo, no una prueba.
+  Probado contra tres builds: el de antes del paso 5 marca Mi SP y agendar;
+  `main` antes de este paso marca solo agendar; este no marca nada. En las
+  otras 9 páginas no marcó nada en ninguno (sin falsos avisos). BITACORA
+  cap. 91.
+- `qa-integral`: 69 OK · 2 hallazgos (los mismos de antes: testimonios y
+  radios de 14/18px). `qa-lanzamiento` verde.
+
 ### Qué se extiende y qué no
 
 | De la guía | ¿A todo el sitio? |
@@ -260,7 +301,7 @@ píxel a píxel, y `qa-lanzamiento` sigue verde.
 | Lo que se abre crece (`Plegable`) | Sí: todo `{abierto && (…)}` que hoy aparece de golpe |
 | Hoja que sube (`Hoja`) | **Solo para elegir de una lista larga.** Fuera de la guía casi no hay casos; no se fuerza |
 | Fondo gris claro (`--gm-fondo`) | **No.** Es para pantallas donde se recorre una lista; el inicio tiene su ritmo blanco/menta/azul |
-| Relieve sobre fondo azul | **No** (paso 5): la sombra no se ve. Lo que se toca se distingue por superficie y borde; la fila tocada se aclara (`.oscuro`) |
+| Relieve sobre fondo azul | **No** (paso 5): la sombra no se ve. Lo que se toca se distingue por superficie y borde; la fila tocada se aclara (`.oscuro`). Dentro de una tarjeta blanca sobre el azul, **sí** (paso 6, el formulario de agendar) |
 
 ### Cómo se aplica a una página (receta para los pasos 2 a 4)
 
@@ -272,7 +313,9 @@ píxel a píxel, y `qa-lanzamiento` sigue verde.
    pisaría la del reveal). Solo si lo único que se toca adentro es ese link:
    una palabra del glosario dentro de la tarjeta quedaría tapada. Si la
    tarjeta ya **es** el `<a>`, alcanza con `tarjeta-toque` en ese `<a>`.
-   Página con fondo azul: `oscuro` junto a `tactil`, y sin `rel`.
+   Página con fondo azul: `oscuro` junto a `tactil`, y sin `rel` sobre el azul
+   (dentro de una tarjeta blanca, sí). Si la etiqueta de arriba queda debajo
+   de la barra fija, el control de `qa-integral` lo marca.
 2. `className="sq"` + `--sq:<radio>` en lugar de `border-radius` en tarjetas,
    botones y buscadores. Nunca en `--r-pill` ni en `50%`.
 3. `rel` o `rel-btn` según la regla; borrar la sombra suelta que tuviera.

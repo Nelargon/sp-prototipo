@@ -339,6 +339,7 @@ console.log('\n== 1. FUNCIONAL ==');
 
 /* ============ 2. RESPONSIVE (77% del tráfico) ============ */
 console.log('\n== 2. RESPONSIVE ==');
+const tapadoPorBarra = new Map();
 for (const w of [360, 390, 430]) {
   const page = await browser.newPage({ viewport: { width: w, height: 800 } });
   for (const p of PAGINAS_APP) {
@@ -346,6 +347,33 @@ for (const w of [360, 390, 430]) {
     await page.waitForTimeout(500);
     const hs = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     if (hs > 1) falla('responsive', 'confunde', 'scroll horizontal de ' + hs + 'px en ' + w + 'px', p);
+    // Texto tapado por la barra fija, al cargar (24/09/2026). Mi SP y agendar
+    // arrancaban a 34px con una barra de 84px: su etiqueta de arriba quedaba
+    // escondida y ninguna prueba lo veía (se encontró mirando capturas).
+    // Probado contra un build con el error (marca /mi-sp/ y /agendar/, y nada
+    // más) y uno sin él (no marca nada). BITACORA cap. 91.
+    const tapado = await page.evaluate(() => {
+      const nav = document.querySelector('nav[data-nav]');
+      if (!nav) return '';
+      const piso = nav.getBoundingClientRect().bottom;
+      const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let n = tw.nextNode(); n; n = tw.nextNode()) {
+        if (!n.textContent.trim() || !n.parentElement || n.parentElement.closest('nav[data-nav]')) continue;
+        const rg = document.createRange(); rg.selectNodeContents(n);
+        const b = rg.getBoundingClientRect();
+        if (b.width < 2 || b.height < 2 || b.bottom <= 0 || b.top >= piso) continue;
+        // No cuenta lo que vive en una capa fija (avisos flotantes) ni lo que
+        // está escondido a propósito (texto solo para lector de pantalla).
+        let fuera = false;
+        for (let a = n.parentElement; a && !fuera; a = a.parentElement) {
+          const cs = getComputedStyle(a), r = a.getBoundingClientRect();
+          if (cs.position === 'fixed' || cs.position === 'sticky' || cs.visibility === 'hidden' || +cs.opacity === 0 || r.width <= 1 || r.height <= 1) fuera = true;
+        }
+        if (!fuera) return n.textContent.trim().slice(0, 40);
+      }
+      return '';
+    });
+    if (tapado) tapadoPorBarra.set(p, [...(tapadoPorBarra.get(p) || []), w + 'px «' + tapado + '»']);
   }
   // touch targets de los CTAs del hero + urgencias (vara 44px de Apple)
   await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
@@ -357,6 +385,8 @@ for (const w of [360, 390, 430]) {
   await page.close();
 }
 ok('responsive', 'barrido 360/390/430 completado en ' + PAGINAS_APP.length + ' páginas');
+for (const [p, dónde] of tapadoPorBarra) falla('responsive', 'confunde', 'texto tapado por la barra fija al cargar: ' + dónde.join(' · '), p);
+if (!tapadoPorBarra.size) ok('responsive', 'nada queda tapado por la barra fija al cargar, en las ' + PAGINAS_APP.length + ' páginas');
 
 // 2b. Barra CTA móvil (jul 2026): en ≤820px reemplaza a los dos flotantes que
 // tapaban texto (banda Senior, manifiesto, diferenciadores, FAQ, footer).

@@ -523,9 +523,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
 .rel{box-shadow:var(--sombra-sup)}
 .rel-btn{box-shadow:var(--sombra-ctrl)}
-.rel-btn:active{box-shadow:var(--sombra-ctrl-apretado)}
+/* Un botón deshabilitado no responde al toque: hundirse sería decir «te
+   escuché» y no hacer nada (Chrome le aplica :active igual; medido 24/09). */
+.rel-btn:not(:disabled):active{box-shadow:var(--sombra-ctrl-apretado)}
 .tactil button,.tactil a.sq,.tactil a.boton{transition:transform var(--mov-toque) ease,background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow var(--mov-toque) ease}
-.tactil button:not(.fila):not(.txt):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active{transform:scale(.97)}
+.tactil button:not(.fila):not(.txt):not(:disabled):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active{transform:scale(.97)}
 .tactil .fila:active{background:var(--toque-gris)!important}
 .tactil .txt{transition:opacity var(--mov-toque) ease}
 .tactil .txt:active{opacity:.55}
@@ -557,6 +559,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    código. La línea de .gm apaga además las transiciones propias de la guía. */
 @media (prefers-reduced-motion:reduce){
   .tactil button,.tactil a.sq,.tactil a.boton,.tactil .txt,.tactil .tarjeta-toque,.pleg,.hoja-fondo,.hoja-panel{transition:none!important}
-  .tactil button:not(.fila):not(.txt):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active,.tactil .tarjeta-toque:has(.estirado:active),.tactil a.tarjeta-toque:active{transform:none}
+  .tactil button:not(.fila):not(.txt):not(:disabled):active,.tactil a.sq:not(.tarjeta-toque):active,.tactil a.boton:active,.tactil .tarjeta-toque:has(.estirado:active),.tactil a.tarjeta-toque:active{transform:none}
   .gm *{transition:none!important}
 }

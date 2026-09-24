@@ -113,6 +113,9 @@ bitácora: …" del usuario entran con su voz.
   radios solo como `border-radius:Npx`; los `--sq:Npx` del sistema táctil le
   quedaron invisibles y el hallazgo bajaba solo. Un hallazgo que se achica
   sin que nadie haya decidido nada es sospechoso.
+- **Chrome le aplica `:active` a un botón deshabilitado** (sep 2026, BITACORA
+  cap. 91): toda regla de «al apretar» lleva `:not(:disabled)`, o el botón gris
+  se hunde sin hacer nada.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
   medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.

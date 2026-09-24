@@ -7,6 +7,7 @@ import { BP } from '../basePath';
 import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from '../quote';
 import { track } from '../track';
 import { CON_MI_SP } from '../edicion';
+import Plegable from '../components/Plegable';
 
 // Espacio directo de agendamiento (pedido del usuario, jul 2026): pedir un
 // turno NO debe estar enterrado detrás del login de Mi SP. Regla de IA:
@@ -47,40 +48,42 @@ export default function Agendar() {
     window.open('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   };
 
+  // Sistema táctil: cada opción es un control (.rel-btn) y la elegida va plana,
+  // «apretada», como en el simulador. aria-pressed dice cuál está elegida.
   const chip = (label, active, onClick) =>
-    css('cursor:pointer;font-family:var(--font-display),sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:var(--r-sm);transition:background .2s,border-color .2s,color .2s;border:1px solid ' +
+    css('cursor:pointer;font-family:var(--font-display),sans-serif;font-weight:700;font-size:13.5px;padding:10px 15px;--sq:var(--r-sm);border:1px solid ' +
       (active ? 'var(--sp-teal-deep)' : '#d7e2ea') + ';background:' + (active ? 'var(--sp-teal-deep)' : '#fff') + ';color:' + (active ? '#fff' : 'var(--sp-ink)'));
 
-  const inputStyle = css('width:100%;height:50px;border:1.5px solid #d7e2ea;border-radius:var(--r-sm);padding:0 16px;font-size:16px;color:var(--sp-ink);background:#fff;outline:none;font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif');
+  const inputStyle = css('width:100%;height:50px;border:1.5px solid #d7e2ea;--sq:var(--r-sm);padding:0 16px;font-size:16px;color:var(--sp-ink);background:#fff;outline:none;font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif');
   const labelStyle = css('font-size:13.5px;font-weight:800;color:var(--sp-navy);margin-bottom:10px;display:block');
   const rowStyle = css('display:flex;flex-wrap:wrap;gap:9px');
 
   return (
-    <div className="body" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
+    <div className="body tactil oscuro" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
       <Header variant="dark" />
 
-      <div style={css('flex:1;padding:34px 24px 80px')}>
+      <div style={css('flex:1;padding:118px 24px 80px')}>
         <div style={css('max-width:680px;margin:0 auto')}>
           <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px')}>Agendá tu turno</div>
           <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 14px')}>Pedí tu turno, <span style={css('color:var(--sp-teal)')}>sin vueltas</span>.</h1>
           <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.65;color:var(--sp-blue-soft);max-width:540px;margin:0 0 30px')}>Elegí qué necesitás y cuándo te queda cómodo. Un asesor te confirma día y hora — <b style={css('color:#e8f2fb')}>sin login ni vueltas</b>. Empezamos por el Centro Médico Lister, nuestro centro propio.</p>
 
-          <div style={css('background:#fff;color:var(--sp-ink);border-radius:var(--r-lg);padding:28px 26px;box-shadow:0 20px 50px rgba(0,15,35,0.28)')}>
+          <div className="sq" style={css('background:#fff;color:var(--sp-ink);--sq:var(--r-lg);padding:28px 26px')}>
             {/* Centro */}
             <div style={css('margin-bottom:22px')}>
               <label style={labelStyle}>¿Dónde querés atenderte?</label>
               <div style={rowStyle}>
-                {CENTROS.map((c) => <button key={c} type="button" onClick={() => setCentro(c)} style={chip(c, centro === c)}>{c}</button>)}
+                {CENTROS.map((c) => <button key={c} type="button" aria-pressed={centro === c} className={'sq' + (centro === c ? '' : ' rel-btn')} onClick={() => setCentro(c)} style={chip(c, centro === c)}>{c}</button>)}
               </div>
-              {centro === 'Otro centro de la red' && <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);margin-top:9px')}>Perfecto — nuestro asesor te ayuda a coordinar el turno en el prestador de la red que prefieras.</div>}
+              <Plegable abierto={centro === 'Otro centro de la red'}><div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);padding-top:9px')}>Perfecto — nuestro asesor te ayuda a coordinar el turno en el prestador de la red que prefieras.</div></Plegable>
             </div>
 
             {/* Especialidad */}
             <div style={css('margin-bottom:22px')}>
               <label style={labelStyle}>¿Qué necesitás?</label>
-              <input type="text" value={esp} onChange={(e) => setEsp(e.target.value)} placeholder="Ej: pediatría, un control, laboratorio…" aria-label="Especialidad o motivo del turno" style={inputStyle} />
+              <input type="text" value={esp} onChange={(e) => setEsp(e.target.value)} placeholder="Ej: pediatría, un control, laboratorio…" aria-label="Especialidad o motivo del turno" className="inp sq rel" style={inputStyle} />
               <div style={{ ...rowStyle, marginTop: '10px' }}>
-                {ESPECIALIDADES.map((s) => <button key={s} type="button" onClick={() => setEsp(s)} style={chip(s, esp === s)}>{s}</button>)}
+                {ESPECIALIDADES.map((s) => <button key={s} type="button" aria-pressed={esp === s} className={'sq' + (esp === s ? '' : ' rel-btn')} onClick={() => setEsp(s)} style={chip(s, esp === s)}>{s}</button>)}
               </div>
             </div>
 
@@ -88,23 +91,23 @@ export default function Agendar() {
             <div style={css('margin-bottom:22px')}>
               <label style={labelStyle}>¿Cuándo te queda cómodo?</label>
               <div style={rowStyle}>
-                {CUANDO.map((c) => <button key={c} type="button" onClick={() => setCuando(c)} style={chip(c, cuando === c)}>{c}</button>)}
+                {CUANDO.map((c) => <button key={c} type="button" aria-pressed={cuando === c} className={'sq' + (cuando === c ? '' : ' rel-btn')} onClick={() => setCuando(c)} style={chip(c, cuando === c)}>{c}</button>)}
               </div>
               <div style={{ ...rowStyle, marginTop: '9px' }}>
-                {HORARIO.map((h) => <button key={h} type="button" onClick={() => setHorario(h)} style={chip(h, horario === h)}>{h}</button>)}
+                {HORARIO.map((h) => <button key={h} type="button" aria-pressed={horario === h} className={'sq' + (horario === h ? '' : ' rel-btn')} onClick={() => setHorario(h)} style={chip(h, horario === h)}>{h}</button>)}
               </div>
             </div>
 
             {/* Nombre */}
             <div style={css('margin-bottom:24px')}>
               <label style={labelStyle}>Tu nombre</label>
-              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Cómo te llamás" aria-label="Tu nombre" style={inputStyle} />
+              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Cómo te llamás" aria-label="Tu nombre" className="inp sq rel" style={inputStyle} />
             </div>
 
             {/* Deshabilitado: antes era blanco sobre #c8d4dc (1.51:1 medido) — el
                 rótulo casi desaparecía y se leía "roto", no "todavía no". Gris
                 oscuro sobre gris claro dice deshabilitado Y se lee. */}
-            <button type="button" onClick={pedir} disabled={!listo} style={css('width:100%;height:56px;border:none;border-radius:var(--r-md);background:' + (listo ? 'var(--sp-teal-deep)' : '#E4EAEF') + ';color:' + (listo ? '#fff' : '#4A5A66') + ';font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
+            <button type="button" onClick={pedir} disabled={!listo} className="sq" style={css('width:100%;height:56px;border:none;--sq:var(--r-md);background:' + (listo ? 'var(--sp-teal-deep)' : '#E4EAEF') + ';color:' + (listo ? '#fff' : '#4A5A66') + ';font-size:16px;font-weight:800;cursor:' + (listo ? 'pointer' : 'not-allowed') + ';display:inline-flex;align-items:center;justify-content:center;gap:9px')}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>
               Pedir turno por WhatsApp
             </button>

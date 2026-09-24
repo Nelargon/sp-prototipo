@@ -98,7 +98,7 @@ en otra tecnología, es poco lo que hay que copiar, y está todo en el bloque
 | Tokens `--sombra-*`, `--toque-gris`, `--mov-toque` | Dos alturas de sombra y la duración del toque | Al principio de `app/globals.css` |
 | `.sq` + `--sq` | Esquina de curvatura continua | Cada elemento dice su radio con `--sq` |
 | `.rel` / `.rel-btn` | Sombra de superficie / de control | La sombra va **solo** en lo que se toca o se abre |
-| `.tactil` | El botón se hunde al apretarlo | Una clase en el contenedor de la página (y en la barra) |
+| `.tactil` | El botón se hunde al apretarlo; **uno deshabilitado, no** | Una clase en el contenedor de la página (y en la barra). Chrome le aplica `:active` a un botón deshabilitado: la regla lo excluye con `:not(:disabled)` |
 | `a.boton` | Link con forma de cápsula o círculo que se hunde | Como `a.sq`, sin cambiar la forma |
 | `.txt` | Una palabra del glosario se atenúa al tocarla | No se achica: movería la línea |
 | `.tarjeta-toque` | La tarjeta entera se toca y se hunde completa (un poco menos que un botón: `.98`) | Dos formas: la tarjeta **es** el link (`<a class="tarjeta-toque">`), o tiene un link `.estirado` cuyo `::after` la cubre (necesita `:has()`) |

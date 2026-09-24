@@ -3354,3 +3354,33 @@ lee a la vieja usanza no falla: se queda callado, y callado se parece a
 «mejoró». Un hallazgo que se achica sin que nadie haya decidido nada es
 sospechoso, no una buena noticia. Al cambiar una convención, se revisa en el
 mismo PR qué guardianes leían la anterior.
+
+## Capítulo 91 — El botón que decía «te escuché» sin escuchar (24/09/2026)
+
+**Qué intentamos.** Llevar el sistema táctil a agendar, la última página que
+faltaba. Se midió en el navegador cada pieza, incluido un caso que parecía
+obvio: el botón «Pedir turno por WhatsApp» está gris y deshabilitado hasta
+que la persona completa qué necesita y su nombre. Se daba por hecho que un
+botón deshabilitado no se hunde.
+
+**Qué pasó.** Se hundía. Chrome le aplica el estado «apretado» (`:active`) a
+un botón deshabilitado igual que a uno activo, y la regla del toque no lo
+excluía. El botón decía «te escuché» y después no hacía nada, que es
+exactamente lo que el sistema promete no hacer: cada movimiento avisa algo
+verdadero. No era solo de agendar: el botón de enviar del simulador, que se
+deshabilita mientras manda los datos, hacía lo mismo, y ese está en la v1. Se
+arregló en el sistema, una vez para todo el sitio.
+
+En la misma página apareció por segunda vez en el día un error que ninguna
+prueba veía: la etiqueta de arriba («Agendá tu turno») escondida debajo de la
+barra fija, igual que la de Mi SP en el paso anterior. Las dos páginas
+arrancaban a 34px con una barra de 84. Las dos veces lo encontró el ojo, en
+una captura. Se sumó un control a `qa-integral` y, como pide la regla del
+cap. 89, se lo probó antes de creerle: contra un build con los dos errores
+(marca los dos), uno con uno solo (marca ese) y el arreglado (no marca nada).
+En las otras nueve páginas no marcó nada en ningún build.
+
+**Qué aprendimos.** Lo «obvio» también se mide: el navegador no siempre hace
+lo que uno supone, y un sistema de señales vale lo que su caso más raro. Y
+cuando el mismo error aparece dos veces y las dos lo encuentra una persona
+mirando, es la señal de que falta un control, no de que hay que mirar mejor.
