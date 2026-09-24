@@ -124,7 +124,8 @@ Lo que hizo el paso 2:
 - **Sale la clase `.lift`** de `globals.css`: ya no la usa nadie.
 - `qa-integral` antes y después: mismos hallazgos. El CLS de `/que-cubre`
   (0,15, sobre la vara de 0,1) **ya estaba antes** del sistema táctil y sigue
-  igual: queda como pendiente aparte.
+  igual: queda como pendiente aparte. → **✔ Resuelto el mismo 24/09** (ver
+  «Inter recortada», abajo).
 
 ### Qué se extiende y qué no
 
@@ -184,6 +185,37 @@ Lo que hizo el paso 2:
   documento decía que se apagaba; el navegador decía que no. BITACORA cap. 85.
 - Las clases funcionan fuera de la guía (probado en `/planes/` con elementos
   de prueba). Las dos ediciones se construyen y `qa-lanzamiento` da todo verde.
+
+## 🔤 INTER RECORTADA: SE FUE EL SALTO DE QUÉ CUBRE (24 sep 2026)
+
+Pedido de Arturo, el mismo día: *«Arreglá el salto visual de Qué cubre»*.
+
+**La causa (medida, no supuesta).** Al cargar `/que-cubre` en un celular con
+4G, a los ~2 s todo lo que está debajo de la bajada bajaba 27 px (CLS 0,151,
+un solo salto). Con y sin JavaScript la página terminaba igual, así que no era
+la hidratación: era **la fuente**. Inter se servía como el TTF completo, **877
+KB** con todos los alfabetos del mundo. Llegaba después de dibujada la página y,
+al pasar de la fuente de reemplazo a Inter, la bajada ganaba una línea. Nunito
+Sans, en cambio, ya estaba recortada (49 KB).
+
+**El arreglo.** Inter se sirve recortada a latin en woff2:
+`public/fonts/Inter-Variable-latin.woff2`, **125 KB (−86 %)**. Conserva los dos
+ejes (peso y tamaño óptico), las métricas y los rasgos, incluidos los números
+tabulares de los precios. El comando para regenerarla está en `app/fonts.js`.
+
+| | Antes | Después |
+|---|---|---|
+| CLS `/que-cubre` (390 px, CPU ×4, 4G) | 0,151 | **0,000** (3 de 3 mediciones, y en la v1) |
+| Fuente de lectura que baja cada página nueva | 877 KB | **125 KB** |
+| `qa-integral` | 16 hallazgos | **15** (se fue el CLS; ninguno nuevo) |
+
+**Se ve igual.** 22 capturas (11 páginas × 390 y 1440 px): 20 idénticas píxel
+por píxel. La ficha del prestador difiere en 31 píxeles del suavizado de la
+«º» de «Nº»; aumentada 4 veces no se distingue, y no cambia ninguna medida.
+
+**Regla que queda (en CLAUDE.md):** toda fuente del sitio se sirve recortada
+a latin y en woff2. Un carácter fuera del recorte cae a la fuente del sistema,
+como ya pasaba con el ₲ en Nunito Sans.
 
 ## 🩺 LA GUÍA MÉDICA CAMBIA DE CARA: «SÍNTESIS CON CÁPSULAS» (23 sep 2026)
 

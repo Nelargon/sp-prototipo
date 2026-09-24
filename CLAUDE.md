@@ -104,6 +104,10 @@ bitácora: …" del usuario entran con su voz.
   29): la métrica de la fuente participa de todos los anchos; un
   `white-space:nowrap` que "entraba justo" puede desbordar con la fuente
   nueva. Tras cambiar una tipografía, correr el QA responsive completo.
+- **Las fuentes se sirven recortadas a latin y en woff2** (sep 2026,
+  BITACORA cap. 88). Inter entró como TTF completo (877 KB): llegaba tarde y
+  hacía saltar `/que-cubre` (CLS 0,15). Recortada pesa 125 KB. Toda fuente
+  nueva, igual: el comando está en `app/fonts.js`.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
   medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
