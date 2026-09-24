@@ -74,11 +74,13 @@ puede esperar sin dejar nada a medias.
   toque** (solo el deslizador del simulador).
 - **26 sombras distintas** y **136 esquinas** escritas a mano en las páginas
   de la v1.
-- **El `.lift` del inicio probablemente no funciona desde el 6/08**: el script
-  de `app/page.jsx` busca `border-radius: 16|20|22px` en el `style`, y la
-  tokenización pasó casi todas las tarjetas a `var(--r-*)`. Deducido del
-  código; **confirmarlo en el navegador** antes de arreglarlo. Además, en
-  celular (77% del tráfico) no hay mouse: el toque es lo que se siente.
+- **El `.lift` del inicio no funciona (medido en el navegador, 24/09):
+  0 de las 8 tarjetas con sombra lo recibe.** El script de `app/page.jsx`
+  busca `border-radius: 16|20|22px` en el `style`, y desde la tokenización del
+  6/08 las tarjetas dicen `var(--r-*)` o tienen radios que no están en la
+  lista (18px, 26px). Además, en celular (77% del tráfico) no hay mouse: el
+  toque es lo que se siente. En el paso 2 el script sale y la tarjeta que se
+  toca lleva su clase explícita.
 
 ### Cómo se verificó el paso 1
 
