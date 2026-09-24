@@ -101,7 +101,8 @@ en otra tecnología, es poco lo que hay que copiar, y está todo en el bloque
 | `.tactil` | El botón se hunde al apretarlo | Una clase en el contenedor de la página (y en la barra) |
 | `a.boton` | Link con forma de cápsula o círculo que se hunde | Como `a.sq`, sin cambiar la forma |
 | `.txt` | Una palabra del glosario se atenúa al tocarla | No se achica: movería la línea |
-| `.tarjeta-toque` + `.estirado` | La tarjeta entera es el link y se hunde completa | El `::after` del link cubre la tarjeta; necesita `:has()` |
+| `.tarjeta-toque` | La tarjeta entera se toca y se hunde completa (un poco menos que un botón: `.98`) | Dos formas: la tarjeta **es** el link (`<a class="tarjeta-toque">`), o tiene un link `.estirado` cuyo `::after` la cubre (necesita `:has()`) |
+| `.oscuro` | Sobre fondo azul, la fila tocada se aclara en vez de oscurecerse (hoy, blog y Mi SP: fuera de la v1) | Redefine `--toque-gris`. Sobre azul no va `.rel`: la sombra no se ve |
 | `Plegable` (`app/components/`) | Lo que se abre crece en vez de saltar | Grilla `0fr → 1fr`; cerrado, `inert` |
 | `Hoja` (`app/components/`) | Hoja que sube desde abajo para elegir de una lista larga | Fondo, asa, «×», Escape y tocar afuera la cierran |
 

@@ -57,7 +57,7 @@ export default async function GuiaPage({ params }) {
   const totalMin = guia.notas.reduce((a, n) => a + (n.minutes || 0), 0);
 
   return (
-    <div className="body" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
+    <div className="body tactil oscuro" style={css('min-height:100vh;background:var(--sp-navy-deep);color:#fff;display:flex;flex-direction:column')}>
       <Header variant="dark" />
       <div style={css('flex:1;padding:118px 24px 80px')}>
         <div style={css('max-width:820px;margin:0 auto')}>
@@ -80,7 +80,7 @@ export default async function GuiaPage({ params }) {
           <ol style={css('list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px')}>
             {guia.notas.map((n, i) => (
               <li key={n.slug}>
-                <a href={`${BP}/blog/${n.slug}/`} className="guia-item" style={css('display:grid;grid-template-columns:44px 132px 1fr;gap:18px;align-items:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 18px 14px 14px;color:inherit')}>
+                <a href={`${BP}/blog/${n.slug}/`} className="guia-item sq tarjeta-toque" style={css('display:grid;grid-template-columns:44px 132px 1fr;gap:18px;align-items:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);--sq:14px;padding:14px 18px 14px 14px;color:inherit')}>
                   <div className="disp" style={css('font-size:22px;color:var(--sp-mint);text-align:center')}>{i + 1}</div>
                   <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius={9} />
                   <div>

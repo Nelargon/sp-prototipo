@@ -106,8 +106,11 @@ function Firma({ sobreFoto = false, eager = false }) {
   );
 }
 
+// `radius` es el radio de la esquina continua del sistema táctil (.sq, ver
+// globals.css): la portada lleva la misma esquina que las tarjetas del sitio.
 export default function Cover({ categoria, slug, cover, dato, alt = '', aspect = '2 / 1', radius = 0, eager = false }) {
-  const base = { display: 'block', width: '100%', aspectRatio: aspect, borderRadius: radius };
+  const base = { display: 'block', width: '100%', aspectRatio: aspect, ...(radius ? { '--sq': radius + 'px' } : {}) };
+  const esquina = radius ? 'sq' : undefined;
   const decorative = !alt;
 
   // Foto real: manda sobre la ilustración generada. Ruta local (root-relative)
@@ -116,7 +119,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
   if (cover) {
     const src = /^https?:\/\//.test(cover) ? cover : `${BP}${cover}`;
     return (
-      <div style={{ ...base, position: 'relative', overflow: 'hidden' }}>
+      <div className={esquina} style={{ ...base, position: 'relative', overflow: 'hidden' }}>
         <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />
         <Firma sobreFoto eager={eager} />
       </div>
@@ -149,7 +152,7 @@ export default function Cover({ categoria, slug, cover, dato, alt = '', aspect =
     : { role: 'img', 'aria-label': alt };
 
   return (
-    <div style={{ ...base, position: 'relative', overflow: 'hidden' }}>
+    <div className={esquina} style={{ ...base, position: 'relative', overflow: 'hidden' }}>
       <svg viewBox="0 0 400 200" {...a11y} preserveAspectRatio={encuadre} style={{ display: 'block', width: '100%', height: '100%' }}>
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0.85" y2="1">

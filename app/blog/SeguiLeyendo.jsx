@@ -29,6 +29,7 @@ export default function SeguiLeyendo({ notas }) {
             <a
               key={n.slug}
               href={`${BP}/blog/${n.slug}/`}
+              className="tarjeta-toque"
               style={css('display:block;color:inherit;text-decoration:none')}
             >
               <Cover categoria={n.categoria} slug={n.slug} cover={n.cover} dato={n.cover_dato} alt="" aspect="16 / 10" radius={12} />

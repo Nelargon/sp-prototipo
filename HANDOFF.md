@@ -94,25 +94,28 @@ diseño inspirado en Apple y las mejoras realizadas, se extienda a toda la
 web»*. Pidió el plan antes de construir y lo aprobó el mismo día
 (*«Adelante!»*). Alcance: **lo que sale en la v1** (inicio, simulador, planes,
 qué cubre, guía). Blog, agendar y Mi SP lo reciben cuando se lancen;
-`/historia/` no.
+`/historia/` no. **Ese mismo día Arturo sumó blog y Mi SP** (*«Extendé el
+sistema al blog y a Mi SP»*): es el paso 5. Agendar sigue esperando.
 
 **La idea que ordena el trabajo:** lo que hace que la guía se sienta Apple son
 las reglas detrás de cada efecto (cada movimiento avisa algo; la sombra va solo
 en lo que se toca). Extenderla es pasar esas reglas al resto del sitio, no
 pegar efectos en cada botón.
 
-### El plan, en cuatro PRs
+### El plan, en cuatro PRs (y un quinto, pedido después)
 
 | Paso | Qué | Fusión | Estado |
 |---|---|---|---|
 | 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ PR #167 |
 | 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
 | 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | ✔ PR #169 |
-| 4 | **Planes, Qué cubre y la ficha del prestador** | automática | ✔ este PR |
+| 4 | **Planes, Qué cubre y la ficha del prestador** | automática | ✔ PR #170 |
+| 5 | **Blog y Mi SP** (pedido de Arturo el mismo 24/09) | automática (aplica la B) | ✔ este PR |
 
 **✔ Completo el 24/09/2026**, los cuatro pasos el mismo día: toda la v1
 (inicio, simulador, planes, qué cubre, guía, ficha y 404) habla el mismo
-lenguaje táctil. Blog, agendar y Mi SP lo reciben cuando se lancen.
+lenguaje táctil. Con el paso 5 se suman el blog (índice, notas y guías) y Mi
+SP. Queda afuera agendar, que lo recibe cuando se lance.
 
 ### Paso 2 (24/09): la intensidad la eligió Arturo, B
 
@@ -197,6 +200,56 @@ Lo que hizo el paso 2:
   igual: queda como pendiente aparte. → **✔ Resuelto el mismo 24/09** (ver
   «Inter recortada», abajo).
 
+### Paso 5 (24/09): blog y Mi SP
+
+Las dos son páginas del prototipo: la v1 no las publica (`CON_BLOG` y
+`CON_MI_SP` apagados en lanzamiento), así que este paso no cambia nada de lo
+que va a salir. Medido: las 48 capturas del resto del sitio dan idénticas
+píxel a píxel, y `qa-lanzamiento` sigue verde.
+
+- **`tactil` en el índice del blog, cada nota, cada guía y Mi SP.**
+- **Las notas se tocan enteras.** En el blog la tarjeta ya **es** el link (no
+  hay una palabra del glosario adentro que tapar), así que no hace falta el
+  link `.estirado`: `a.tarjeta-toque` se hunde completa. Van así la destacada,
+  las guías, la grilla, «Seguí leyendo», los pasos de una guía, el aviso
+  «Parte 2 de 7», «Siguiente en la guía» y las tres tarjetas de Mi SP (ver mi
+  red, WhatsApp, urgencias). **Una tarjeta se hunde a `.98`, un botón a
+  `.97`**: en una tarjeta de 700px, `.97` se ve como un salto.
+- **«Lo último» son filas** (`.fila`): se tiñen al tocarlas, no se achican.
+- **Las secciones del blog** (cápsulas) perdieron su transición suelta, que
+  le pisaba el toque (lo mismo que en el simulador).
+- **Las portadas llevan la esquina continua** (`Cover` pone `.sq` con su
+  `radius`).
+- **«En camino» de Mi SP solo informa**: esquina continua, sin toque.
+- **Sobre fondo azul hay dos reglas nuevas** (`.oscuro`, en el índice del
+  blog, las guías y Mi SP):
+  1. La fila tocada **se aclara** (`--toque-gris` pasa a blanco al 10%): el
+     gris claro de la guía, sobre azul, era un destello.
+  2. **No va `.rel`.** Una sombra azul oscura sobre azul oscuro no se ve: ahí
+     lo que se toca se distingue por la superficie más clara y el borde. En
+     las notas (fondo blanco) sí: el aviso de la guía y «Siguiente en la guía»
+     llevan relieve porque se tocan.
+- **El levante de las tarjetas del blog al pasar el mouse queda solo para
+  mouse** (`hover:hover`) y se apaga con «reducir movimiento» (antes no se
+  apagaba). En el celular, un hover queda pegado después del toque.
+- **Dos arreglos que aparecieron al mirar:**
+  - Mi SP tenía **«Mi SP · tu espacio» escondida debajo de la barra fija**
+    (arrancaba a 34px y la barra mide 84-88). Ahora arranca a 118px, como el
+    blog.
+  - **El hover de las tarjetas de guía no cambiaba el fondo ni el borde**, solo
+    el color del título: el estilo en línea de la tarjeta le ganaba a la regla.
+    Ahora va con `!important`, como el resto de los hover del sitio.
+- **El guardián de radios de `qa-integral` estaba ciego a `--sq`** (BITACORA
+  cap. 90). Contaba solo `border-radius:14px`, y desde la guía los radios se
+  escriben `--sq:14px`. Con este paso el hallazgo de 14 y 18px habría
+  **bajado solo** (a «14px×3», y el 18 desaparecía) sin que nadie decidiera
+  nada. Ahora cuenta las dos formas: **14px×24 · 18px×11**, el número real. Y
+  destapó 25 radios de 10 y 12px escritos a mano en la guía, que ya tenían
+  token (`--r-xs`, `--r-sm`): pasaron al token, sin cambio visible (medido).
+- **Plegable y Hoja no aplican**: en el blog y Mi SP nada se despliega y no
+  hay listas largas para elegir.
+- `qa-integral` antes y después: los mismos 15 hallazgos.
+
 ### Qué se extiende y qué no
 
 | De la guía | ¿A todo el sitio? |
@@ -207,6 +260,7 @@ Lo que hizo el paso 2:
 | Lo que se abre crece (`Plegable`) | Sí: todo `{abierto && (…)}` que hoy aparece de golpe |
 | Hoja que sube (`Hoja`) | **Solo para elegir de una lista larga.** Fuera de la guía casi no hay casos; no se fuerza |
 | Fondo gris claro (`--gm-fondo`) | **No.** Es para pantallas donde se recorre una lista; el inicio tiene su ritmo blanco/menta/azul |
+| Relieve sobre fondo azul | **No** (paso 5): la sombra no se ve. Lo que se toca se distingue por superficie y borde; la fila tocada se aclara (`.oscuro`) |
 
 ### Cómo se aplica a una página (receta para los pasos 2 a 4)
 
@@ -216,7 +270,9 @@ Lo que hizo el paso 2:
    único destino es un link: `tarjeta-toque` en la tarjeta y `estirado` en el
    link (el `data-rv` va en un envoltorio, no en la tarjeta: su transición le
    pisaría la del reveal). Solo si lo único que se toca adentro es ese link:
-   una palabra del glosario dentro de la tarjeta quedaría tapada.
+   una palabra del glosario dentro de la tarjeta quedaría tapada. Si la
+   tarjeta ya **es** el `<a>`, alcanza con `tarjeta-toque` en ese `<a>`.
+   Página con fondo azul: `oscuro` junto a `tactil`, y sin `rel`.
 2. `className="sq"` + `--sq:<radio>` en lugar de `border-radius` en tarjetas,
    botones y buscadores. Nunca en `--r-pill` ni en `50%`.
 3. `rel` o `rel-btn` según la regla; borrar la sombra suelta que tuviera.

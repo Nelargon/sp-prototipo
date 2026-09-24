@@ -687,7 +687,12 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
   let usosToken = 0, nNeutro = 0, nSvg = 0, nCover = 0;
   for (const f of archivos) {
     const t = readFileSync(f, 'utf8');
-    for (const m of t.matchAll(/border-radius:\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
+    // Un radio se escribe de dos maneras: `border-radius:14px` o, desde el
+    // sistema táctil (23-24/09/2026), `--sq:14px` en un elemento .sq. Contar
+    // solo la primera dejó ciego al guardián: cada esquina que pasaba al
+    // sistema desaparecía del conteo sin que nadie decidiera nada (BITACORA
+    // cap. 90).
+    for (const m of t.matchAll(/(?:border-radius|--sq):\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
     usosToken += (t.match(/var\(--sp-|var\(--r-/g) || []).length;
     // El bloque :root es la DECLARACIÓN de los tokens: sus hex son el sistema,
     // no una fuga del sistema. Contarlos sería castigar al que define.
