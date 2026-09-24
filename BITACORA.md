@@ -3200,3 +3200,30 @@ o estar dentro de un `@media` no le da prioridad. La segunda es de método: la
 foto de antes no sirve solo para probar que no rompiste nada. También muestra
 lo que ya estaba roto, y se pudo arreglar sabiendo que era lo único que
 cambiaba.
+
+
+## Capítulo 86 — Una sombra que no se tocaba y un efecto que no encontraba a nadie (24/09/2026)
+
+**Qué intentamos.** Llevar el lenguaje de la guía al inicio: el toque, la
+esquina continua y la regla del relieve (*la sombra dice «esto se toca o se
+abre»*). Antes de tocar nada se hizo el inventario en el navegador: 37
+elementos que se tocan en el inicio de la v1 y solo dos superficies con sombra.
+
+**Qué pasó.** Las dos sombras rompían la regla. Una era la de la tabla del
+comparador, que solo informa: con la regla nueva la pierde. La otra, la de la
+tarjeta oscura del simulador, flota a propósito desde el 6/08 para cortar la
+racha de azul, y sacársela era perder esa decisión. Se resolvió al revés: en
+vez de quitarle la sombra a la tarjeta, **la tarjeta pasó a tocarse entera**.
+Así la sombra dice la verdad. En el camino apareció otra cosa: el efecto de
+«tarjeta que se levanta» del inicio no le llegaba a ninguna tarjeta (0 de 8,
+medido). Un script buscaba `border-radius: 16|20|22px` escrito en el estilo, y
+desde la tokenización del 6/08 las tarjetas dicen `var(--r-lg)`. Nadie lo
+notó en siete semanas porque un efecto que falta no da error. Además, cuando
+funcionaba levantaba la tabla, que no se toca. Arturo vio tres intensidades y
+eligió la que aplica la regla sin excepciones: *«Vamos con la B»*.
+
+**Qué aprendimos.** Cuando una regla nueva choca con una decisión vieja, a
+veces no hay que elegir entre las dos: se puede cambiar la pieza para que
+cumpla las dos. Y un código que lee cómo está *escrito* el estilo, en vez de
+llevar una clase con nombre, se rompe sin avisar el día que cambia cómo se
+escribe. Si un efecto importa, va en una clase que alguien puso a propósito.

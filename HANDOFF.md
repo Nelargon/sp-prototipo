@@ -35,14 +35,55 @@ pegar efectos en cada botón.
 
 | Paso | Qué | Fusión | Estado |
 |---|---|---|---|
-| 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ este PR |
-| 2 | **Inicio, barra y 404**: tarjetas de planes y las dos puertas del hero con relieve, todos los botones se hunden, FAQ con `Plegable` | **espera el OK de Arturo**: antes de fusionar ve capturas de celular con 2 o 3 intensidades y elige | pendiente |
+| 1 | **El sistema, sin cambio visible**: las reglas salen de `.gm` a clases de todo el sitio; `Plegable` y `Hoja` a `app/components/` | automática | ✔ PR #167 |
+| 2 | **Inicio, barra y 404**: todos los botones se hunden, esquina continua, FAQ con `Plegable`, la tarjeta del simulador se toca entera, relieve según la regla | con el OK de Arturo: vio capturas de celular con 3 intensidades y eligió | ✔ PR #168, **B elegida por Arturo** (24/09) |
 | 3 | **Simulador**: opciones de cada paso con relieve, «¿Preferís elegir tu departamento?» y «¿Cómo calculamos esto?» con `Plegable`, tarjeta del resultado con relieve | automática (aplica lo aprobado en el 2) | pendiente |
 | 4 | **Planes, Qué cubre y la ficha del prestador** | automática | pendiente |
 
 Proyección (no compromiso): los cuatro entran antes del lanzamiento de la
 primera semana de octubre si el OK del paso 2 llega rápido; si se aprieta, el 4
 puede esperar sin dejar nada a medias.
+
+### Paso 2 (24/09): la intensidad la eligió Arturo, B
+
+Se le mostraron tres intensidades en capturas de celular lado a lado y un
+video en cámara lenta. Eligió la recomendada: *«Vamos con la B»*. **La B es la
+intensidad del sitio**: los pasos 3 y 4 la aplican sin volver a preguntar.
+
+| | Qué cambia |
+|---|---|
+| **A · Sutil** | El toque, la esquina continua y las preguntas que crecen. Las sombras quedan como hoy |
+| **B · Como la guía** (recomendada) | A + la regla del relieve: las dos puertas (Qué cubre / Planes) y las preguntas llevan relieve; la tabla del comparador, que solo informa, pierde la sombra |
+| **C · Más relieve** | B + los botones principales también flotan (`rel-btn`) |
+
+Por qué la B y no las otras: es la regla que ya estaba aprobada en la guía, así
+que el sitio habla un solo idioma. La C pone sombra en casi todo, y cuando todo
+flota nada se destaca. La A dejaba la sombra en la tabla, que no se toca: lo
+contrario de la regla. **Los botones principales (CTA) van planos**, como en
+la guía.
+
+Lo que hizo el paso 2:
+- **El inicio y la 404 llevan `tactil`; la barra compartida (`Header.jsx`)
+  también**, así que responde al toque en todas las páginas desde este paso.
+  Fuera del inicio y la 404, lo único que cambia a la vista es la franja de la
+  barra (medido con capturas: las diferencias caen solo en esa franja).
+- **La tarjeta del simulador se toca entera** (`.tarjeta-toque` + `.estirado`):
+  el link «Simulá tu plan» se estira sobre la tarjeta y la tarjeta se hunde
+  completa, como las tarjetas de Apple. Resuelve un choque: la regla dice que la
+  sombra va en lo que se toca, y esa tarjeta flota a propósito desde el 6/08
+  (el fondo menta que corta la racha de azul). Ahora se toca, así que la sombra
+  dice la verdad. El nombre para el lector de pantalla sigue siendo el del
+  botón y el evento sigue siendo `cta_simulador {origen:'teaser'}`.
+- **Tres piezas nuevas del sistema**, cada una con su porqué: `a.boton` (link
+  con forma de cápsula o círculo que se hunde, como el WhatsApp flotante),
+  `.txt` (una palabra del glosario se atenúa en vez de achicarse: una palabra
+  que se achica mueve la línea) y la tarjeta que se toca entera.
+- **Las respuestas de la FAQ están en el HTML aunque estén cerradas**
+  (`Plegable`, `inert`). `qa/qa-lanzamiento.mjs` ya no busca el texto en la
+  página, porque ahora estaría siempre: mira que la respuesta abierta tenga
+  alto y no esté `inert`, y que al cerrarse vuelva a `inert`.
+- **Salió el script del `.lift`** del inicio (no encontraba a nadie). La clase
+  `.lift` sigue en `globals.css` porque la usa `/que-cubre` (paso 4).
 
 ### Qué se extiende y qué no
 
@@ -58,6 +99,11 @@ puede esperar sin dejar nada a medias.
 ### Cómo se aplica a una página (receta para los pasos 2 a 4)
 
 1. `tactil` en el contenedor raíz de la página: todos sus botones se hunden.
+   Un link con forma de botón lleva `sq`; si es cápsula o círculo, `boton`.
+   Una palabra que abre algo dentro de una frase, `txt`. Una tarjeta cuyo
+   único destino es un link: `tarjeta-toque` en la tarjeta y `estirado` en el
+   link (el `data-rv` va en un envoltorio, no en la tarjeta: su transición le
+   pisaría la del reveal).
 2. `className="sq"` + `--sq:<radio>` en lugar de `border-radius` en tarjetas,
    botones y buscadores. Nunca en `--r-pill` ni en `50%`.
 3. `rel` o `rel-btn` según la regla; borrar la sombra suelta que tuviera.

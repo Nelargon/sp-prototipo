@@ -7,6 +7,7 @@ import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } f
 import { track } from './track';
 import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
+import Plegable from './components/Plegable';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
@@ -124,10 +125,11 @@ export default function Page() {
       const ctaBar = root.querySelector('[data-cta-bar]');
       const heroBg = root.querySelector('[data-hero-bg]');
       const heroContent = root.querySelector('[data-hero-content]');
-      Array.prototype.forEach.call(root.querySelectorAll('div'), (c) => {
-        const st = c.getAttribute('style') || '';
-        if (/border-radius:\s*(16|20|22)px/i.test(st) && /box-shadow/i.test(st)) c.classList.add('lift');
-      });
+      // Acá había un script que agregaba .lift (la tarjeta se levanta al pasar
+      // el mouse) a todo div con border-radius 16/20/22px y sombra. Desde la
+      // tokenización del 6/08 no encontraba a ninguno (medido el 24/09: 0 de 8)
+      // y levantaba tablas que no se tocan. Salió con el sistema táctil: el
+      // relieve va en la clase de lo que se toca (ver app/globals.css).
       const targets = [];
       root.classList.add('rvon');
       root.querySelectorAll('[data-rv]').forEach((n) => { n.classList.add('rv'); targets.push(n); });
@@ -365,7 +367,7 @@ export default function Page() {
 
   // ===== markup =====
   return (
-    <div data-page="viva" className="body" style={css('color:var(--sp-text);background:#fff')}>
+    <div data-page="viva" className="body tactil" style={css('color:var(--sp-text);background:#fff')}>
 
       {/* NAV */}
       <nav data-nav className={v.mobileMenuOpen ? 'menu-open' : undefined} style={css('position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px')}>
@@ -374,7 +376,7 @@ export default function Page() {
           <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="" className="nlogo-w" style={css('height:56px;position:absolute;left:0;top:0;z-index:2;transition:opacity .3s')} />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
-          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;border-radius:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
+          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill sq" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;--sq:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
             <div className="navmenu-wrap">
               <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Cobertura <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
@@ -420,11 +422,11 @@ export default function Page() {
                 el 23/09/2026. Entre el 15 y el 23/09 la v1 no tenía guía y el lugar
                 lo ocupaba agendar; la rama queda por si la guía se apaga. */}
             {CON_GUIA
-              ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
-              : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta" style={css('height:40px;padding:0 18px;border-radius:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal" style={css('height:40px;padding:0 20px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+              ? <a href={guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Guía Médica</a>
+              : <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav' })} className="nav-guia-cta sq" style={css('height:40px;padding:0 18px;--sq:var(--r-sm);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Agendar un turno</a>}
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav' })} className="btn-teal sq" style={css('height:40px;padding:0 20px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;white-space:nowrap')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
           </div>
-          <button className="nav-burger" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;border-radius:var(--r-xs);border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
+          <button className="nav-burger sq" onClick={v.toggleMenu} aria-expanded={v.mobileMenuOpen} aria-controls="mobile-menu" aria-label="Abrir menú" style={css('display:none;width:40px;height:40px;--sq:var(--r-xs);border:none;background:rgba(255,255,255,0.16);color:#fff;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
             {v.mobileMenuClosed && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
             {v.mobileMenuOpen && <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6 6 18" /></svg>}
           </button>
@@ -466,7 +468,7 @@ export default function Page() {
                 Un solo verbo para la acción comercial en todo el sitio: "Simulá tu plan"
                 (auditoría de conversión, jul 2026 — cinco nombres eran cinco decisiones). */}
             <div style={css('display:flex;gap:14px;flex-wrap:wrap')}>
-              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal" style={css('height:54px;padding:0 30px;border-radius:14px;background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/simulador/`} onClick={() => track('puerta_home', { puerta: 'plan' })} className="btn-teal sq" style={css('height:54px;padding:0 30px;--sq:14px;background:var(--sp-teal-deep);color:#fff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               {/* La puerta del cliente cambia de destino según la edición. En el
                   prototipo entra a Mi SP. En la v1, Mi SP y la guía no se lanzan:
                   lo único que un cliente puede resolver hoy en la web es pedir un
@@ -481,10 +483,10 @@ export default function Page() {
                   emite guia_handoff {via:'hero'}, el mismo evento que las otras
                   puertas de la guía. */}
               {CON_MI_SP
-                ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
+                ? <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Ya soy de SP · Mi SP</a>
                 : CON_AGENDA
-                  ? <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>
-                  : <a href={v.guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'hero' })} className="btn-ghost-light" style={css('height:54px;padding:0 28px;border-radius:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Buscá tu médico</a>}
+                  ? <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg>Ya soy de SP · Pedí tu turno</a>
+                  : <a href={v.guiaHome} onClick={() => track('guia_handoff', { q: '', via: 'hero' })} className="btn-ghost-light sq" style={css('height:54px;padding:0 28px;--sq:14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.5);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>Ya soy de SP · Buscá tu médico</a>}
             </div>
             {/* Ancla de la pregunta 2 ("¿cuánto me cuesta?") en la pantalla 1, sin
                 tocar el título del hero — el test de 5 segundos sigue vigente. */}
@@ -516,9 +518,15 @@ export default function Page() {
           sus vecinas nuevas — el ritmo de la página es una propiedad de la
           secuencia, no de cada sección por separado. */}
       <section className="sec" style={css('padding:80px 40px;background:var(--sp-mint-soft)')}>
-        <div data-rv style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);border-radius:26px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
-          <div style={css('position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
-          <div style={css('position:relative;z-index:1;max-width:640px;margin:0 auto')}>
+        {/* La tarjeta se toca entera (sistema táctil, 24/09/2026): su link
+            "Simulá tu plan" se estira sobre toda la tarjeta (.estirado) y la
+            tarjeta se hunde al apretarla, como una tarjeta de Apple. Así su
+            sombra dice la verdad: está en algo que se toca. El nombre para el
+            lector de pantalla sigue siendo el del botón. */}
+        <div data-rv>
+        <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
+          <div style={css('position:absolute;z-index:-1;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
+          <div style={css('max-width:640px;margin:0 auto')}>
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</div>
             <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h2>
             <p style={css('font-size:17px;color:var(--sp-blue-soft);line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
@@ -527,8 +535,9 @@ export default function Page() {
               <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>Sin datos sensibles</span>
               <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>Ves el precio antes de dejar datos</span>
             </div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal" style={css('height:56px;padding:0 34px;border-radius:var(--r-md);background:var(--sp-teal-deep);color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'teaser' })} className="btn-teal sq estirado" style={css('height:56px;padding:0 34px;--sq:var(--r-md);background:var(--sp-teal-deep);color:#fff;font-size:17px;font-weight:800;display:inline-flex;align-items:center;gap:10px')}>Simulá tu plan <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
+        </div>
         </div>
       </section>
 
@@ -652,7 +661,7 @@ export default function Page() {
               tu plan" acá. Al fusionarse las dos secciones, #comparar quedó en la
               sección y #cartilla en la matriz, que es lo que esa entrada del menú
               promete mostrar. Si algún día se mueve la tabla, el ancla va con ella. */}
-          <div data-rv id="cartilla" style={css('background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-lg);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 18px 50px rgba(0,59,113,0.06);overflow:hidden;overflow-x:auto')}>
+          <div className="sq" data-rv id="cartilla" style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
             <div className="cmp-inner">
               {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
               <div className="cmp-row">
@@ -669,7 +678,7 @@ export default function Page() {
                     <div className="disp" style={css('font-size:20px;font-weight:800;color:var(--sp-navy);line-height:1')}>{ph.short}</div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:var(--sp-ink)')}>{ph.price}</span></div>
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
-                    <a href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transition:background .2s')}>Ver mi precio</a>
+                    <a className="sq" href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center')}>Ver mi precio</a>
                   </div>
                 ))}
               </div>
@@ -697,7 +706,7 @@ export default function Page() {
 
           {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
               es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
-          <div data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);border-radius:14px;margin-bottom:18px')}>
+          <div className="sq" data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:14px;margin-bottom:18px')}>
             {[
               { c: 'var(--sp-teal)', t: 'Cubierto', b: 'no ponés nada' },
               { c: 'var(--sp-estado-punto)', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
@@ -712,7 +721,7 @@ export default function Page() {
 
           {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
               de integridad sobre la que se construyen los tres planes. */}
-          <div data-rv className="cmp-garantia" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;border-radius:var(--r-md);background:var(--sp-mint-soft)')}>
+          <div data-rv className="cmp-garantia sq" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;--sq:var(--r-md);background:var(--sp-mint-soft)')}>
             <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
             <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
           </div>
@@ -730,11 +739,11 @@ export default function Page() {
               La regla: cada puerta dice QUÉ PREGUNTA responde, no "ver más".
               El reparto completo de las cuatro superficies está en HANDOFF. */}
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto')}>
-            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
+            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
               <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
               <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
             </a>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
+            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
               <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>El detalle fila por fila <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
               <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Los tres planes comparados servicio por servicio, con sus esperas.</span>
             </a>
@@ -764,7 +773,7 @@ export default function Page() {
                 una trampa escondida y pasa a ser una razón para afiliarse antes.
                 No se suaviza el número: se le da un destino. */}
             {!ES_LANZAMIENTO && (
-              <div style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;border-radius:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
+              <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:14px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7a5f10" strokeWidth="2" strokeLinecap="round" style={css('flex:0 0 auto;margin-top:1px')} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
                 <div>
                   <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
@@ -806,8 +815,8 @@ export default function Page() {
               prepaga" sin relevamiento con fuente y fecha. Ver BITACORA cap. 57,
               HANDOFF 12c, y sp-interno/project/RELEVAMIENTO-competidores-2026-07-26.md
               (repo privado: el análisis de competidores nombrados no vive acá). */}
-          <div data-rv style={css('margin-top:18px;background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);border-radius:var(--r-md);padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
-            <span style={css('width:28px;height:28px;border-radius:var(--r-xs);flex:none;background:var(--sp-line-3);color:var(--sp-estado-ink);display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
+          <div className="sq" data-rv style={css('margin-top:18px;background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:var(--r-md);padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
+            <span className="sq" style={css('width:28px;height:28px;--sq:var(--r-xs);flex:none;background:var(--sp-line-3);color:var(--sp-estado-ink);display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
             <div>
               <div className="disp" style={css('font-size:16px;font-weight:800;color:var(--sp-text);margin-bottom:6px')}>Para que no haya sorpresas</div>
               <div style={css('font-size:14.5px;color:var(--sp-text-2);line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:var(--sp-text)')}>nuestros planes no cubren</b>: {annotate('odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites — pasá el mouse o tocá cada una para ver qué incluye.</div>
@@ -820,30 +829,30 @@ export default function Page() {
               real de médicos y sanatorios vive allá). La rama de agendar es la
               que usó la v1 entre el 15 y el 23/09, cuando no tenía guía. */}
           {CON_GUIA ? (
-            <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+            <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+              <div className="sq" style={css('width:52px;height:52px;--sq:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
               <div>
                 <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
                 <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), y más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
               </div>
-              <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
             </div>
           ) : (
-            <div data-rv className="two-col" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <div style={css('width:52px;height:52px;border-radius:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
+            <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+              <div className="sq" style={css('width:52px;height:52px;--sq:14px;background:var(--sp-navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></div>
               <div>
                 <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde te atendés?</div>
                 <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}><b style={css('color:var(--sp-navy)')}>Lister</b> es nuestro centro médico propio en Asunción: consultas, laboratorio e imagen. La red suma más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
               </div>
-              <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'cobertura' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Pedí tu turno en Lister <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'cobertura' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Pedí tu turno en Lister <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
             </div>
           )}
 
 
-          <div data-rv className="two-col" style={css('margin-top:26px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);border-radius:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div className="disp" style={css('background:var(--sp-navy);color:#fff;border-radius:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
+          <div data-rv className="two-col sq" style={css('margin-top:26px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
+            <div className="disp sq" style={css('background:var(--sp-navy);color:#fff;--sq:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
             <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy" style={css('height:46px;padding:0 22px;border-radius:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>
@@ -860,7 +869,7 @@ export default function Page() {
           <div data-rv className="steps-flow" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:26px')}>
             {v.stepsHow.map((st, i) => (
               <div key={i} style={css('display:flex;gap:12px;align-items:flex-start')}>
-                <span className="disp" style={css('width:30px;height:30px;flex:none;border-radius:var(--r-xs);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
+                <span className="disp sq" style={css('width:30px;height:30px;flex:none;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
                 <div>
                   <div style={css('font-size:15px;font-weight:700;color:var(--sp-navy);line-height:1.3;margin-bottom:3px')}>{st.title}</div>
                   <div style={css('font-size:13.5px;color:var(--sp-muted);line-height:1.5')}>{st.body}</div>
@@ -893,8 +902,8 @@ export default function Page() {
             </div>
             <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
               {v.difs.map((dz, i) => (
-                <div key={i} style={css('background:#fff;border-radius:18px;padding:28px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)')}>
-                  <div style={css('width:46px;height:46px;border-radius:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
+                <div className="sq" key={i} style={css('background:#fff;--sq:18px;padding:28px 24px;border:1px solid var(--sp-line)')}>
+                  <div className="sq" style={css('width:46px;height:46px;--sq:var(--r-sm);background:var(--sp-mint-bg);color:var(--sp-teal-deep);display:flex;align-items:center;justify-content:center;margin-bottom:16px')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={dz.icon} /></svg></div>
                   <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
                   <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
                 </div>
@@ -906,7 +915,7 @@ export default function Page() {
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section className="sec-x" style={css('padding:72px 40px 64px;background:#fff')}>
-        <div data-rv className="two-col" style={css('max-width:1080px;margin:0 auto;background:var(--sp-blue-bg);border-radius:var(--r-lg);padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
+        <div data-rv className="two-col sq" style={css('max-width:1080px;margin:0 auto;background:var(--sp-blue-bg);--sq:var(--r-lg);padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
             <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:var(--sp-blue-line)')}></div>
             <img src={`${BP}/assets/edificio.webp`} alt="Edificio administrativo de Salud Protegida" loading="lazy" style={css('position:relative;width:100%;max-width:340px;height:auto;display:block')} />
@@ -978,14 +987,17 @@ export default function Page() {
           </div>
           <div data-rv style={css('display:flex;flex-direction:column;gap:10px')}>
             {v.faqList.map((f, i) => (
-              <div key={i} style={css('background:#fff;border:1px solid var(--sp-line);border-radius:14px;overflow:hidden')}>
-                <button onClick={f.toggle} aria-expanded={f.open} style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:var(--sp-navy)')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
-                {f.open && (
+              <div className="sq rel" key={i} style={css('background:#fff;border:1px solid var(--sp-line);--sq:14px;overflow:hidden')}>
+                <button onClick={f.toggle} aria-expanded={f.open} aria-controls={'faq-r-' + i} className="fila" style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:var(--sp-navy)')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
+                {/* La respuesta crece en vez de aparecer de golpe (sistema táctil).
+                    Cerrada sigue en la página, inert: Google la lee y quien copia
+                    el sitio no tiene que armar nada para mostrarla. */}
+                <Plegable id={'faq-r-' + i} abierto={f.open}>
                   <div style={css('padding:0 20px 20px;font-size:14.5px;color:var(--sp-text);line-height:1.65')}>
                     {f.a}
                     {f.cta && <a href={f.cta.href} onClick={f.cta.onClick} {...(f.cta.external ? { target: '_blank', rel: 'noopener' } : {})} className="link-teal" style={css('display:inline-block;margin-top:10px;color:var(--sp-teal-deep);font-weight:700;font-size:14px')}>{f.cta.label}</a>}
                   </div>
-                )}
+                </Plegable>
               </div>
             ))}
           </div>
@@ -998,15 +1010,15 @@ export default function Page() {
             2.37:1 (título) y 2.2:1 (bajada). El acento pasa de navy a menta porque
             sobre el teal profundo el navy cae a 2.25:1. Regla (jul 2026, decisión
             del usuario): var(--sp-teal) decora, var(--sp-teal-deep) carga texto blanco. */}
-        <div data-rv style={css('max-width:1100px;margin:0 auto;background:var(--sp-teal-deep);border-radius:var(--r-lg);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
+        <div className="sq" data-rv style={css('max-width:1100px;margin:0 auto;background:var(--sp-teal-deep);--sq:var(--r-lg);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#A5EFEA')}>del otro lado</span>.</h2>
             <p style={css('font-size:17px;color:rgba(255,255,255,0.96);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
-            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal" style={css('height:52px;padding:0 26px;border-radius:var(--r-sm);background:#fff;color:var(--sp-teal-deep);font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
+            <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal sq" style={css('height:52px;padding:0 26px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>
             {/* Sin relleno translúcido: aclaraba el teal debajo del texto (2.1:1 medido). */}
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-onteal" style={css('height:52px;padding:0 26px;border-radius:var(--r-sm);font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan</a>
+            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'cierre' })} className="btn-onteal sq" style={css('height:52px;padding:0 26px;--sq:var(--r-sm);font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Simulá tu plan</a>
           </div>
         </div>
       </section>
@@ -1046,7 +1058,7 @@ export default function Page() {
       </footer>
 
       {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
-      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab boton" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
 
       {/* BARRA CTA MÓVIL (auditoría de conversión, jul 2026): en ≤820px los dos
           flotantes formaban una columna que tapaba texto en casi toda la página;
@@ -1054,8 +1066,8 @@ export default function Page() {
           porque el contenido termina encima de ella. Mismo umbral de scroll que
           el FAB de desktop. */}
       <div data-cta-bar className="cta-bar" role="group" aria-label="Acciones rápidas">
-        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal" style={css('flex:1;height:48px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
-        <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;border-radius:var(--r-sm);background:#fff;border:1.5px solid var(--sp-teal);color:var(--sp-teal-deep);display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+        <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'barra_movil' })} className="btn-teal sq" style={css('flex:1;height:48px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>Simulá tu plan</a>
+        <a className="sq" href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'barra_movil' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style={css('width:48px;height:48px;--sq:var(--r-sm);background:#fff;border:1.5px solid var(--sp-teal);color:var(--sp-teal-deep);display:inline-flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
       </div>
 
     </div>

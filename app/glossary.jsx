@@ -164,6 +164,9 @@ export function Term({ k, children, dict }) {
     <span ref={ref} style={css('position:relative;display:inline-block')}>
       <button
         type="button"
+        // .txt: una palabra dentro de una frase se atenúa al tocarla, no se
+        // achica como un botón (sistema táctil, app/globals.css).
+        className="txt"
         aria-describedby={id}
         aria-expanded={open}
         onPointerDown={(e) => { lastPointer.current = e.pointerType || 'mouse'; }}
