@@ -28,8 +28,9 @@ edita solo esa). La copia de sp-interno es la foto de la última publicación.
 
 Qué decide este script (y por qué):
 - Redes. Cada guía en PDF es una red. Se publican las que tienen planes
-  conocidos: Privilege y su familia, SP Esencial (= "Essential" en los PDF,
-  confirmado por Arturo el 23/09) en sus tres zonas, y el Seguro Estatal. La
+  conocidos: Privilege y su familia, Essential en sus tres zonas (plan
+  vigente; NO es el "SP Esencial" de la gama nueva, que todavía no existe —
+  Arturo, 25/09/2026, corrigiendo lo anotado el 23/09), y el Seguro Estatal. La
   Centralizada NO: el PDF no dice qué planes cubre, y una red que no se puede
   asociar a un plan no le contesta nada a nadie. Las filas que solo están en
   la Centralizada quedan afuera.

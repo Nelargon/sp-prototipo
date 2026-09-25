@@ -51,8 +51,11 @@ export default function Page() {
   // ⚠ Antes de sacar o reordenar una de estas, mirar la frecuencia: no las
   // elegimos nosotros. El detalle está en sp-interno (repo privado).
   const faqs = () => [
-    { q: '¿Cuál es la diferencia entre Bronze, Silver y Gold?', a: 'Cada plan incluye todo lo del anterior y suma lo suyo. Bronze cubre lo esencial: urgencias 24 h, consultas (hasta 3 al año por especialidad), radiografías, ecografías e internación. Silver es el salto más grande: agrega resonancia y tomografía al 100%, sube a 5 consultas y estira fisioterapia y terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
-    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Los plazos reales de los planes vigentes: consultas y urgencias, sin espera; laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 7 meses en Bronze, 6 en Silver y 5 en Gold; y parto, 10 meses en los tres planes (la cesárea baja a 5 meses en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
+    // incluye todo lo del anterior": Essential tiene otra red y otros topes
+    // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías y ecografías, y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía al 100%, 5 consultas al año por especialidad y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Mirá tu precio con el descuento →', sim: true } },
     // ⚠ Estas dos preguntas dependen de la guía. Entre el 15 y el 23/09 la v1
     // no la tenía y se contestaban por WhatsApp (una respuesta no puede
@@ -60,8 +63,8 @@ export default function Page() {
     // dos ediciones y vuelven a "miralo vos mismo"; la rama de WhatsApp queda
     // por si la guía vuelve a apagarse.
     CON_GUIA
-      ? { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad y de tu plan: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
-      : { q: '¿La cobertura vale en todo el país?', a: 'El precio del plan es el mismo en todo el país, y la red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
+      ? { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad y de tu plan: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
+      : { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
     CON_GUIA
       ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, escribinos y te decimos dónde atenderte: no te dejamos sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
       : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
@@ -79,10 +82,14 @@ export default function Page() {
     //   no el del producto: habla solo de SP. NO volver a afirmar nada sobre lo
     //   que cubre "la medicina prepaga" sin relevamiento con fuente y fecha
     //   (BITACORA cap. 57, HANDOFF 12c; el relevamiento vive en sp-interno).
-    { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('odontología, cirugía bariátrica, tratamiento oncológico ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
+    // ⚠ Odontología (24/09/2026): Essential cubre lo básico en Lister (su
+    // cuadernillo, 1.6). Por eso sale de la lista de exclusiones y va aparte,
+    // sin el glosario: la definición de "odontología" dice limpiezas y
+    // extracciones, justo lo que Essential sí cubre.
+    { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('cirugía bariátrica, tratamiento oncológico ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Del dentista, Essential cubre lo básico en Lister (consulta, controles, extracciones simples y limpieza); Silver y Gold no lo cubren. Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma a Lister más de 600 médicos, sanatorios y laboratorios en todo el país; cuáles te tocan depende del plan que elijas.' },
-    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
+    { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas; en Essential, también de tu zona. Siempre con IVA incluido.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
 
@@ -91,11 +98,13 @@ export default function Page() {
   // "laboratorio a domicilio" NO figuran en ningún plan — se quitaron para
   // no prometer lo que el contrato no respalda (el bloque "por escrito" no
   // puede sobreprometer). Números de médico a domicilio y salud mental salen
-  // de las secciones 2.9.1.5 y consultas de los cuadernillos Bronze/Silver/Gold.
+  // de las secciones 2.9.1.5 y consultas de los cuadernillos Silver/Gold.
+  // Essential (24/09/2026) no trae médico a domicilio ni psiquiatría en su
+  // cuadernillo: psicología sí, en el cupo de subespecialidades.
   const difsData = () => [
     { icono: 'letra', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
-    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: hasta 2, 3 o 4 consultas a domicilio al año según tu plan, más urgencias y ambulancia sin cargo.' },
-    { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología y psiquiatría con sesiones cubiertas en los planes Bronze, Silver y Gold, no como un extra aparte.' },
+    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo.' },
+    { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología cubierta en los tres planes, y psiquiatría en Silver y Gold, no como un extra aparte.' },
   ];
 
   // Count-up for the trust stats when they scroll into view (once).
@@ -274,7 +283,7 @@ export default function Page() {
   // elegida" (anclaje); una línea humana bajo cada plan (para quién es); sin
   // barras (eran ruido); y lo común, abajo, como GARANTÍA positiva, no letra chica.
   const FORWHOM = [
-    'Lo esencial para quienes cuidan su prevención.',
+    'Lo importante cubierto, al precio de tu zona.',
     'La más elegida. Cobertura equilibrada para tu familia.',
     'Tranquilidad total, sin preocupaciones.',
   ];
@@ -295,16 +304,21 @@ export default function Page() {
   // Las dos nuevas respecto del comparador viejo salen de coverage(): terapia
   // intensiva y el tope de remedios de urgencias, que sí cambian por plan y
   // hasta hoy solo se veían dentro del explorador.
+  // ESSENTIAL (24/09/2026) en la primera columna, desde su cuadernillo
+  // (datos/planes-vigentes/essential.json). Muchos de sus topes son POR FAMILIA
+  // y no por persona: eso va en `n`, debajo del número, porque "5" por familia
+  // y "15" por persona no se comparan a ojo. Donde el cuadernillo no declara
+  // el dato (remedios en urgencias) se dice eso, no se completa.
   const cmp = [
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: 'Desde Silver', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: 'Copago 50%', ok: false }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
-    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: 'Sin tope' }] },
-    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
-    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '10' }, { t: '15' }, { t: '20' }] },
-    { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20' }, { t: '20' }, { t: '25' }] },
-    { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '3' }, { t: '5' }, { t: '6' }] },
-    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲500 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
-    { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲100 mil' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
+    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
+    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: '5' }, { t: 'Sin tope' }] },
+    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }] },
+    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }] },
+    { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }] },
+    { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }] },
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
+    { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero
@@ -374,7 +388,8 @@ export default function Page() {
       { name: 'Assist Card', file: 'assistcard.webp' },
     ],
     // Sin "Odontología" (23/09/2026): la tira decía que el dentista era parte
-    // de la red del plan y /que-cubre dice que no entra en Bronze/Silver/Gold.
+    // de la red del plan y /que-cubre dice que no entra en Silver/Gold
+    // (Essential cubre lo básico, solo en Lister).
     // Las cifras de la red (600+ en 79 ciudades) salen de lib/guia-medica.json:
     // 615 prestadores en la red de Silver/Gold, 674 en total, al 23/09/2026.
     prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Oftalmología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
@@ -399,7 +414,7 @@ export default function Page() {
                 <div className="navmenu-card">
                   {/* Ver la nota del mismo ítem en app/Header.jsx: el subtítulo
                       prometía un selector que ya no existe. */}
-                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Lo que cambia entre Bronze, Silver y Gold, de un vistazo</span></a>
+                  <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Lo que cambia entre Essential, Silver y Gold, de un vistazo</span></a>
                   <a href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">¿Está cubierto lo que me pidieron?</span><span className="navmenu-s">Buscá el estudio, análisis o cirugía por su nombre</span></a>
                   <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Copago, precio de convenio y lo que no cubre ningún plan</span></a>
                   <a href="#faq" className="navmenu-item"><span className="navmenu-t">Preguntas frecuentes</span><span className="navmenu-s">Tiempos de espera, preexistencias, cambios de plan y más</span></a>
@@ -410,7 +425,7 @@ export default function Page() {
               <a href="#comparar" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Planes <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
               <div className="navmenu">
                 <div className="navmenu-card">
-                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Bronze, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
+                  <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Essential, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Simulá tu precio</span><span className="navmenu-s">Unas preguntas y ves el precio, en 1 minuto</span></a>
                                   </div>
@@ -669,7 +684,7 @@ export default function Page() {
               elementos con el mismo tratamiento visual se leen como el mismo tipo de
               cosa; si no lo son, uno de los dos tiene que ceder. */}
           <div data-rv style={css('display:flex;justify-content:center;margin-bottom:22px')}>
-            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left;max-width:640px')}>
+            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:640px')}>
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
               {/* Del dato a lo que significa (Arturo, 24/09/2026: más persuasiva).
                   "10% de descuento" es un porcentaje; "más de una cuota al año" es
@@ -718,16 +733,31 @@ export default function Page() {
                   </div>
                   {row.cells.map((c, j) => (
                     <div key={j} style={css('padding:14px 12px;border-left:1px solid var(--sp-line-2);display:flex;align-items:center;justify-content:center;text-align:center;' + (j === 1 ? 'background:#F1FAF9;' : ''))}>
+                      <span style={css('display:flex;flex-direction:column;align-items:center;gap:4px')}>
                       {row.kind === 'num' ? (
                         <span style={css('font-size:16px;font-weight:700;color:var(--sp-ink);line-height:1.1')}>{c.t}</span>
                       ) : (
                         <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);' + (c.ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)'))}>{c.t}</span>
                       )}
+                      {c.n && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.3')}>{c.n}</span>}
+                      </span>
                     </div>
                   ))}
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* LA ESPERA DE ESSENTIAL, A LA VISTA (24/09/2026). La tabla muestra
+              topes, no esperas; y en Essential la internación, las cirugías, la
+              terapia intensiva, la resonancia y el parto esperan un año. Es lo
+              más caro de descubrir tarde para quien lo elige por precio, así
+              que va acá, legible, y no solo en la FAQ o en el simulador. */}
+          <div data-rv style={css('display:flex;justify-content:center;margin:16px 0 18px')}>
+            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:14.5px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:680px')}>
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+              <span>En <b style={css('color:var(--sp-navy)')}>Essential</b>, la internación, las cirugías, la terapia intensiva, la resonancia y el parto se cubren <b style={css('color:var(--sp-navy)')}>al año de afiliarte</b>. En Silver y Gold esas esperas van de 2 a 10 meses.</span>
+            </span>
           </div>
 
           {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
@@ -749,7 +779,7 @@ export default function Page() {
               de integridad sobre la que se construyen los tres planes. */}
           <div data-rv className="cmp-garantia sq" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;--sq:var(--r-md);background:var(--sp-mint-soft)')}>
             <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
-            <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
+            <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
           </div>
 
           {/* La comparación entera vive de un vistazo arriba; el detalle
@@ -791,12 +821,12 @@ export default function Page() {
             <div style={css('font-size:12.5px;color:var(--sp-muted);margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
             {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
                 contesta "¿Qué es la carencia y cuánto dura?" con el mismo dato
-                (10 meses en los tres planes, 5 en Gold para cesárea). El dato NO
+                (1 año en Essential, 10 meses en Silver y Gold, 5 en Gold para cesárea). El dato NO
                 se pierde — se dice una vez en vez de dos, que es de lo que se
                 trata acortar. En el prototipo se queda, con su porqué intacto. */}
             {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
-                Parto son 300 días en los tres planes y la cesárea baja a 150 en
-                Gold — el dato más caro de descubrir tarde de todo el sistema, y
+                Parto son 300 días en Silver y Gold (365 en Essential, desde el
+                24/09/2026) y la cesárea baja a 150 en Gold — el dato más caro de descubrir tarde de todo el sistema, y
                 que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
                 al asesor). Va en dorado, no en rojo: la regla de color reserva
                 el rojo para urgencias, y el dorado es "oportunidad". Y el
@@ -809,7 +839,7 @@ export default function Page() {
                 <div>
                   <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
                   <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
-                    El parto tiene <strong>10 meses de <Term k="carencia">carencia</Term></strong> en los tres planes, y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
+                    El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>), y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
                   </div>
                 </div>
               </div>

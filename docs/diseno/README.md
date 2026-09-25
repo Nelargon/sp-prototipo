@@ -355,3 +355,29 @@ tarjeta. Y la guampa vista desde arriba se puede confundir con un blanco de tiro
 
 **Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Los dibujos
 están en `fuentes/2026-09-24-portadas-maneras-de-dibujar.mjs`.
+
+---
+
+## Parte 5 · Essential reemplaza a Bronze (24/09/2026)
+
+### 21 · Si el número no se compara igual, se dice debajo
+
+![La tabla del home con Bronze y con Essential, y el resultado del simulador con la zona](img/2026-09-24-essential-reemplaza-bronze.webp)
+
+**Qué muestra.** La tabla del home antes (Bronze) y después (Essential), y el
+resultado del simulador en celular para alguien de Ciudad del Este, con la
+opción de todo el país.
+
+**Qué se decidió.** Arturo eligió que la ciudad ponga el precio y que Nacional
+quede a un toque. En la tabla, Essential no tiene los topes de Bronze: varios
+son **por familia** y no por persona. Un «5» por familia al lado de un «15» por
+persona se lee como una comparación que no es; por eso cada número de Essential
+dice debajo qué cuenta. Donde el cuadernillo no trae el dato, la celda lo dice
+(«Consultalo con tu asesor») en vez de rellenarla. Y como la tabla muestra topes
+y no esperas, la espera de un año de Essential va en una línea propia, a la
+vista, debajo de la tabla.
+
+**La lección.** Una tabla compara solo si cada celda mide lo mismo. Cuando un
+plan cuenta distinto, la diferencia se escribe junto al número; y lo que la
+tabla no puede mostrar (la espera) se dice al lado, no se deja para la letra
+chica.

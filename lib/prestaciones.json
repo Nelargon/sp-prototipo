@@ -15,7 +15,7 @@
   "cir": "Cirugías e internación",
   "fis": "Fisioterapia",
   "esp": "Consultas con especialista",
-  "exc": "No lo cubre ningún plan"
+  "exc": "Antes de firmar"
  },
  "modos": [
   {
@@ -39,8 +39,8 @@
    "d": "Este plan no lo cubre, pero lo pagás a la tarifa negociada de SP, no a la de la calle."
   },
   {
-   "k": "No lo cubre ningún plan",
-   "d": "No entra en Bronze, Silver ni Gold."
+   "k": "No entra en este plan",
+   "d": "Este plan no lo cubre."
   }
  ]
 },
@@ -1165,11 +1165,11 @@
 {"t":"c","n":"Reumatología","c":"esp","b":[1,29,null],"s":[1,30,null],"o":[0,31,null],"a":98},
 {"t":"c","n":"Traumatología","c":"esp","b":[0,28,null],"s":[0,28,null],"o":[0,28,null],"a":99},
 {"t":"c","n":"Urología","c":"esp","b":[0,28,null],"s":[0,28,null],"o":[0,28,null],"a":100},
-{"t":"x","n":"Odontología","c":"exc","d":"La atención del dentista no entra en ningún plan. Las radiografías dentales sí, porque son un estudio de imagen.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":101},
+{"t":"x","n":"Odontología","c":"exc","d":"En Silver y Gold la atención del dentista no entra; las radiografías dentales sí, porque son un estudio de imagen. Essential cubre lo básico, solo en Lister: consulta, controles, extracciones simples y limpieza.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":101},
 {"t":"x","n":"Tratamiento oncológico","c":"exc","d":"La quimioterapia, la radioterapia y las cirugías para tratar el cáncer no entran. La consulta con el oncólogo sí está cubierta.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":102},
 {"t":"x","n":"Cirugía bariátrica","c":"exc","d":"La operación para bajar de peso no entra en ningún plan.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":103},
 {"t":"x","n":"Cirugías de alta complejidad","c":"exc","d":"Las cirugías del corazón, del cerebro y de los vasos principales no entran. Las consultas con esos especialistas sí, y sin tope.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":104},
-{"t":"x","n":"Enfermería a domicilio","c":"exc","d":"No está cubierta (cláusula 2.9.2). La consulta médica a domicilio sí: 2 al año en Bronze, 3 en Silver, 4 en Gold.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":105}
+{"t":"x","n":"Enfermería a domicilio","c":"exc","d":"No está cubierta (cláusula 2.9.2). La consulta médica a domicilio sí: 3 al año en Silver y 4 en Gold.","b":[5,-1,null],"s":[5,-1,null],"o":[5,-1,null],"a":105}
 ],
 "parametros":[
 {"sec":"Internación","p":"Habitación de internación","v":["Semi-suite","Semi-suite","Semi-suite"]},

@@ -65,7 +65,9 @@
   /* Planes: la identidad de cada nivel. Vivía clavada por separado en
      quote.js, Buscador y Landing — cambiar el dorado en uno dejaba a los
      otros dos en desacuerdo, sin que nada avisara. */
-  --sp-plan-bronze:#A9724B;
+  /* Essential heredó el tono de Bronze, el plan que reemplazó (24/09/2026):
+     mismo lugar en la escalera, mismo color. */
+  --sp-plan-essential:#A9724B;
   --sp-plan-silver:#66717E;
   --sp-plan-gold:#B8860B;
   /* Estados de cobertura: la escala gris del proyecto (gris = estado neutro;
@@ -80,6 +82,7 @@
   /* Neutros semánticos */
   --sp-ink:#1D1D1B;         /* texto más fuerte */
   --sp-text:#3D3D3D;        /* cuerpo */
+  --sp-text-fuerte:#2A2A28; /* línea que tiene que leerse sí o sí: descuento, espera de Essential, garantía */
   --sp-text-2:#4A4A4A;
   --sp-muted:#6B6B6B;       /* metadatos, notas al pie */
   --sp-line:#E8E8E8;        /* borde de tarjeta */

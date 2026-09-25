@@ -81,7 +81,8 @@ export const TERMS = {
   },
   odontologia: {
     t: 'Odontología',
-    d: 'La atención del dentista: limpiezas, arreglos, extracciones, tratamientos. Las radiografías dentales sí están cubiertas, porque son un estudio de imagen.',
+    // Essential (24/09/2026) cubre lo básico en Lister (cuadernillo, 1.6).
+    d: 'La atención del dentista: limpiezas, arreglos, extracciones, tratamientos. Essential cubre lo básico, solo en Lister: consulta, controles, extracciones simples y limpieza. En Silver y Gold no entra, salvo las radiografías dentales, que son un estudio de imagen.',
   },
 };
 
@@ -224,6 +225,9 @@ export function waitLabel(days, corto = false) {
   const suf = corto ? '' : ' de espera';
   if (days < 60) return `${days} días${suf}`;
   const m = Math.round(days / 30);
+  // 365 días son "1 año", no "12 meses": así lo dice una familia (Essential
+  // espera un año para internación, cirugías y parto).
+  if (m === 12) return `1 año${suf}`;
   return `${m} meses${suf}`;
 }
 

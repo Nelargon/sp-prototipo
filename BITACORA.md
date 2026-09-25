@@ -3679,3 +3679,60 @@ quieto, para que la comparación diga algo. «Estilo» puede ser el dibujo o el
 acabado; como el cap. 98 ya decía de «lo que hablamos», una palabra que admite
 dos lecturas se confirma antes de construir. Y confirmar lo entendido con un
 «significa / no significa» costó un mensaje y ahorró una vuelta entera.
+
+## Capítulo 102 — Tres fuentes para un precio, y un guardián que esperaba 10 meses (24/09/2026)
+
+**Qué intentamos.** Aplicar Essential en lugar de Bronze, con lo que había dejado
+escrito el capítulo 99. Faltaban dos respuestas de Arturo. Sobre el nombre dijo
+*«Ve "Essential"»*, y con eso se revirtió lo del 23/09, cuando la Guía Médica
+había pasado a decir «SP Esencial». Sobre los precios, en vez de elegir él,
+preguntó *«¿Cuál es la más actualizada?»*.
+
+**Qué pasó.** Por fecha, la más nueva era la tabla editable (15/09). Pero esa
+fecha es la del archivo entero, que guarda las tablas de todos los planes, y la
+suya para Essential tiene dos zonas cuando el plan tiene tres. El PDF del 21/08
+coincidía con otras dos fuentes independientes: la minuta del 18/08 (*«Gs.
+265.000 (Asunción), Gs. 305.000 (nacional), Gs. 220.000 (interior)»*) y el
+anexo del Interior de 2025. La tabla editable tenía el rótulo equivocado. Arturo
+eligió después cómo se arma el precio (por ciudad, con Nacional como opción) y
+que `/que-cubre` se haga en dos pasos.
+
+Con el cambio hecho aparecieron dos cosas. El QA integral esperaba «parto de 10
+meses» en cualquier resultado del simulador; con Essential el resultado dice
+«1 año», y el guardián habría gritado en falso. Es la regla del capítulo 90:
+cambió cómo se dice algo, así que hay que revisar a quien leía la forma vieja.
+Ahora espera la del plan que salió, y se probó con casos que pasan y casos que
+fallan. La otra la mostró la captura de la tabla: Essential tiene internación,
+resonancia y parto al año de afiliarse, y la tabla, que muestra topes, no lo
+decía en ningún lado. Se sumó una línea visible debajo.
+
+**Qué aprendimos.** La fecha de modificación de un archivo no es la fecha de
+cada dato que tiene adentro. Cuando dos fuentes chocan, gana la que coincide con
+otras independientes, y la que perdió se anota para corregirla, no se tira. Y lo
+más caro de descubrir tarde tiene que estar donde la gente compara, aunque la
+FAQ y el simulador ya lo digan: quien elige Essential por precio mira la tabla,
+no la pregunta 2 de la FAQ.
+
+## Capítulo 103 — Essential no era SP Esencial (25/09/2026)
+
+**Qué intentamos.** El 23/09 una sesión dio por hecho que el «Essential» de los
+PDF de SP era el «SP Esencial» del que se hablaba en el directorio, y la Guía
+Médica pasó a decir «SP Esencial». El capítulo 99 y el PR de Essential
+heredaron esa equivalencia sin revisarla.
+
+**Qué pasó.** Con el PR esperando su OK, Arturo lo corrigió: *«El plan
+"Esencial" será parte de la nueva gama de planes que aún no está lista. El
+"Essential" es un plan separado que ya viene hace un par de años. No es la
+versión nueva aún.»* Son dos productos. El sitio ya mostraba lo correcto
+(Essential, con su tarifa y su cuadernillo), así que no hubo que tocar ninguna
+pantalla. Lo que estaba mal era la historia escrita en el HANDOFF, en los
+comentarios de la guía, en el JSON de datos y en la lectura de la minuta del
+18/08. La minuta usa los dos nombres para el mismo plan, y su «costeo
+pendiente» era muy probablemente del plan nuevo.
+
+**Qué aprendimos.** Un nombre que parece la traducción de otro puede ser otro
+producto. Antes de igualar dos nombres hay que preguntar si son lo mismo, y
+cuando la respuesta llega, se escribe en el HANDOFF con un aviso visible,
+porque la confusión ya estaba repartida en cinco lugares. También quedó a la
+vista un costo de las claves internas: `esencial_*` sigue queriendo decir
+Essential. Se dejó así para no romper links, pero con el aviso al lado.

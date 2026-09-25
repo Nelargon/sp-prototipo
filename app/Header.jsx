@@ -89,7 +89,7 @@ export default function Header({ variant = 'dark' }) {
                     la búsqueda por nombre en /que-cubre (ver el mapa de
                     cobertura en HANDOFF). Un menú que promete una interacción
                     que ya no existe es peor que uno escueto. */}
-                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Bronze, Silver y Gold, de un vistazo" />
+                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Essential, Silver y Gold, de un vistazo" />
                 <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
                 <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Tiempos de espera, preexistencias, cambios de plan y más" />
@@ -98,7 +98,7 @@ export default function Header({ variant = 'dark' }) {
             <div className="navmenu-wrap">
               <a href={`${BP}/#comparar`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Planes {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
-                <Item href={`${BP}/#comparar`} t="Bronze, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
+                <Item href={`${BP}/#comparar`} t="Essential, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu precio" s="Unas preguntas y ves el precio, en 1 minuto" />
               </div></div>
