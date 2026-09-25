@@ -17,65 +17,64 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
-## 🏥 LA TIRA DE PRESTADORES DICE NOMBRES REALES: DOS VERSIONES, ESPERA A ARTURO (25 sep 2026)
+## 🏥 «DÓNDE TE ATENDÉS»: LA RED MÉDICA EN EL HOME, Y EL MAPA EN LA GUÍA (25 sep 2026)
 
-La segunda tira de la sección «Aliados y prestadores de tu plan» del home
-decía categorías de ejemplo («Sanatorio», «Laboratorio», «Clínica»). Arturo
-pidió los **logos** de los prestadores y después: *«Igual podemos probar una
-versión con y una versión sin logos»*. Las dos están construidas; las elige
-una constante al principio de `app/page.jsx`, `TIRA_PRESTADORES_CON_LOGOS`.
-Lámina de comparación: `docs/diseno/img/2026-09-25-tira-prestadores-con-y-sin-logos.webp`.
+La tira de prestadores en movimiento del home **se reemplazó**. Camino (BITACORA
+caps. 114–116, láminas en docs/diseno n.º 31–35): Arturo pidió logos de los
+prestadores → con y sin logos → *«¿qué pasa si, en vez de que sea una tira
+dinámica… no es algo más original?»* → cinco versiones → eligió tres ideas
+combinadas → muro gris → **home opción 1 y mapa opción 2** (*«Dale, construí
+home opción 1 y mapa opción 2»*).
 
-- **A · sin logos (`false`, la que queda por defecto):** 11 prestadores reales,
-  cada uno con su ciudad (Asunción, Ciudad del Este, Encarnación, Luque,
-  Fernando de la Mora).
-- **B · con logos (`true`):** los 6 que tienen un logo publicable, en
-  `public/assets/prestadores/`: Adventista, Iribas, Metropolitano, San Lucas,
-  San Martín y Santa Lucía. Salen de los sitios oficiales o de la foto de
-  perfil de Facebook, con el fondo quitado. **San Lucas va sin la franja
-  «medicina pre paga»** (es su prepaga, competencia); **Iribas sin «IRM»**
-  (en la planilla, IRM está solo en Essential); Adventista pasado a gris (el
-  del sitio es blanco). Central, Itapúa y Medicis solo tienen fotos de campaña
-  o miniaturas de 100 px; Unimedic y Oxades, nada usable (el dominio
-  oxades.com.py hoy muestra otro sitio). **Nunca se mezclan** logo y texto en
-  la tira.
-- En las dos, la nota al pie lleva a la Guía Médica: *«La red médica cambia
-  según tu plan y tu ciudad: buscá la tuya en la Guía Médica.»*
-- **⚠ Criterio que no se negocia sin Arturo:** en la tira solo van
-  prestadores que están en la red de Silver/Gold **y** en la de Essential
-  (`lib/guia-medica.json`). Sanatorio Italiano, Español, Americano, Díaz Gill,
-  Meyer Lab y Codas Thompson están **solo** en Silver/Gold: el título dice
-  «de tu plan», y quien compra Essential no los tiene.
-- **Sanatorio Da Vinci salió** de la tira: tuvo una clausura temporal del
-  Ministerio de Salud en diciembre de 2021 (falta de documentación; ABC Color y
-  Hoy, 16/12/2021). Sigue en la Guía Médica, que manda la planilla; la vidriera
-  del home no lo muestra.
-- **Sigue abierto:** qué aliados quedan en la primera tira (el directorio
-  pidió podarla, «perfumería»).
-- **Y la tira puede irse (25/09, noche).** Arturo: *«¿Qué pasa si, en vez de
-  que sea una tira dinámica, algo que se ve muchísimo, no es algo más
-  original?»*. Hay cinco versiones de una sección «Dónde te atendés», en
-  láminas (`docs/diseno/img/2026-09-25-red-v1…v5`, docs/diseno n.º 33): el
-  mapa, la línea, el muro de nombres, las fichas y «tu ciudad primero». Todas
-  funcionan con o sin logos. Recomendada: la 5, con el mapa de la 1 en
-  escritorio. **Si elige una, el PR #204 cambia de alcance:** la segunda tira
-  se reemplaza por esa sección, y la tira de aliados queda sola, esperando la
-  poda del directorio.
-- **Lo que eligió Arturo (25/09, noche): tres de las cinco, combinadas.**
-  Lámina `docs/diseno/img/2026-09-25-red-home-desglose-muro.webp` y
-  `…-red-guia-mapa.webp` (docs/diseno n.º 34). **Home:** sección «Dónde te
-  atendés» con el desglose (130 sanatorios y clínicas · 107 laboratorios ·
-  363 médicos de 47 especialidades · 9 centros de imágenes, más Lister), el
-  «¿Dónde vivís?» por ciudad y el muro de nombres **sin logos, de fondo**
-  (56 sanatorios y clínicas de todos los planes, `aria-hidden`). **Sin el 615
-  suelto**: Arturo, *«ese número grande, 615, a veces se puede comparar con
-  otras prepagas… que tienen un número mayor»*. **Guía Médica:** el mapa
-  debajo de «Tu ciudad o localidad»; tocar un punto elige la ciudad. Toca
-  territorio de la guía: declararlo en el PR. Pendiente del OK para construir.
-- **Iteración (25/09, noche):** el muro pasa a **gris claro y sin velo**
-  (Arturo). Dos opciones de home (muro de fondo con todo en una tarjeta / muro
-  en un bloque al costado) y dos de mapa (selector en el home / panel de
-  resultados en la Guía con «Lista | Mapa» en el celular). docs/diseno n.º 35.
+**Home — sección «Dónde te atendés»** (`app/components/DondeTeAtendes.jsx`,
+estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
+- **Desglose, no el total**: sanatorios y clínicas · laboratorios · médicos (de
+  N especialidades) · centros de imágenes, y «Entre los médicos: 53 ginecólogos
+  y obstetras, 44 pediatras…». Arturo: el 615 suelto *«a veces se puede
+  comparar con otras prepagas… que tienen un número mayor»*.
+- **«¿Dónde vivís?»**: «Todo el país» + las 8 ciudades con más red + «Otra
+  ciudad» (a la guía). Al elegir una, cambian los números, aparecen los nombres
+  que están en todos los planes y el botón lleva a la guía con la ciudad puesta
+  (`?c=…&dp=…`). Especialidades con 1 solo médico no se nombran; cuadros en 0 no
+  se muestran.
+- **El muro de fondo**: los 56 sanatorios y clínicas que están en Silver/Gold
+  **y** en Essential, en gris muy claro (`--sp-muro`, `--sp-muro-2`) y sin velo
+  (pedido de Arturo). `aria-hidden`, sin puntero.
+- **Sin kicker**: el título solo alcanza (regla de etiquetas).
+- **Los datos**: `scripts/red-home.mjs` los saca de `lib/guia-medica.json`
+  antes de cada build y dev (`prebuild`/`predev`) → `lib/red-home.json`, que
+  **no está en git**. Ninguna cifra escrita a mano. ⚠ **No confundir con
+  `lib/red-resumen.json`**: ese lo escribe `build-guia-medica.py` y lo usa el
+  puente simulador ↔ guía (cap. 116).
+- **Criterios que no se negocian sin Arturo**: cifras de la red de Silver/Gold
+  (la nota al pie lo dice); nombres solo de los que están en todos los planes
+  (Italiano, Español, Americano, Díaz Gill, Meyer Lab no aparecen); **Sanatorio
+  Da Vinci fuera del home** (clausura temporal en dic. 2021; sigue en la guía).
+- La tira de **aliados** quedó sola, en su sección («Aliados de tu plan»),
+  esperando la poda del directorio.
+
+**Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
+`lib/mapa-paraguay.js`):
+- Muestra **dónde están los resultados** de lo elegido (especialidad, búsqueda,
+  plan), en todo el país: un punto por ciudad, más grande donde hay más. Tocar
+  un punto (o la ciudad en la lista) elige esa ciudad; tocarla de nuevo, la
+  saca. Usa la misma función de búsqueda que la lista (`buscar()`).
+- **Sin números**: la guía no muestra totales de prestadores (regla del
+  23/09). El tamaño del punto y el orden de la lista dicen dónde hay más.
+- **Desde 1400 px, al costado** de la lista y acompañando el scroll; en menos,
+  detrás de un «Lista | Mapa» que aparece con resultados.
+- Contorno de Natural Earth (dominio público) y ciudades de OpenStreetMap
+  (ODbL: el pie del mapa lo dice). **Ciudad nueva en la planilla → su línea en
+  `lib/mapa-paraguay.js`**: `qa/mapa-ciudades.mjs` corta el CI y dice cuál.
+
+**Pruebas nuevas**: `qa/mapa-ciudades.mjs` (en el CI) y un bloque en
+`qa/qa-lanzamiento.mjs` que elige una ciudad en el home y toca una ciudad en el
+mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
+
+**Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
+(«Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
+corrigen en la planilla, no en el sitio. Los logos de 6 prestadores que se
+bajaron quedaron en `docs/diseno/fuentes/logos-prestadores/` (no se publican).
 
 ## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
 
@@ -1384,7 +1383,7 @@ planilla.
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
-| Tira de prestadores: ¿con logos o sin logos? ¿Entran los que están solo en Silver/Gold? (ver «La tira de prestadores dice nombres reales») | Arturo |
+| Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
 | Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |

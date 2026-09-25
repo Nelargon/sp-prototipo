@@ -10,13 +10,8 @@ import { Term, waitLabel, annotate } from './glossary';
 import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
+import DondeTeAtendes from './components/DondeTeAtendes';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
-
-// Tira de prestadores del home (25/09/2026): Arturo compara la versión con
-// logos (6 prestadores, `true`) y la sin logos (11 nombres con su ciudad,
-// `false`). Pendiente de su elección; ver HANDOFF, «La tira de prestadores
-// dice nombres reales», y la lámina docs/diseno (parte 10, n.º 32).
-const TIRA_PRESTADORES_CON_LOGOS = false;
 
 const INITIAL = {
   sel: 'Resonancia (RM)',
@@ -397,46 +392,7 @@ export default function Page() {
       { name: 'Upalala', file: 'upalala.webp' },
       { name: 'Assist Card', file: 'assistcard.webp' },
     ],
-    // Tira 2 — prestadores REALES de la planilla maestra (25/09/2026). Antes
-    // decía categorías de ejemplo ("Sanatorio", "Laboratorio"…). Criterio: solo
-    // los que están en la red de Silver/Gold Y en la de Essential
-    // (lib/guia-medica.json, datos al 24/09/2026). Los nombres más conocidos de
-    // Asunción (Italiano, Español, Americano, Díaz Gill, Meyer Lab) quedan
-    // afuera a propósito: están solo en Silver/Gold, y el título dice "de tu
-    // plan". Quien compra Essential no puede ver en la home un sanatorio que su
-    // plan no tiene.
-    // Dos versiones, a elegir por Arturo (TIRA_PRESTADORES_CON_LOGOS, arriba):
-    // con logos muestra solo los que tienen `file` (public/assets/prestadores/),
-    // en gris como los aliados; sin logos, todos los nombres en texto con su
-    // ciudad. Nunca mezcladas: logo y texto en la misma tira se ven desparejos.
-    // Sin "Odontología" desde el 23/09/2026 (contradecía a /que-cubre).
-    // Logos (25/09/2026): bajados de los sitios oficiales o de la foto de
-    // perfil de Facebook de cada prestador, con el fondo quitado. San Lucas
-    // sin la franja "medicina pre paga" (es su prepaga); Iribas sin "IRM", que
-    // en la planilla está solo en Essential; Adventista pasado a gris (el del
-    // sitio es blanco, para fondo oscuro). Central, Itapúa, Medicis, Unimedic y
-    // Oxades no tienen un logo publicable (fotos de campaña o miniaturas de
-    // 100 px). Da Vinci salió de la tira: clausura temporal en dic. 2021.
-    prestadores: [
-      { name: 'Sanatorio Adventista', city: 'Asunción', file: 'adventista.webp' },
-      { name: 'Sanatorio Central', city: 'Ciudad del Este' },
-      { name: 'Sanatorio Medicis', city: 'Asunción' },
-      { name: 'Instituto Radiológico Iribas', city: 'Asunción', file: 'iribas.webp' },
-      { name: 'Sanatorio Itapúa', city: 'Encarnación' },
-      { name: 'Sanatorio Metropolitano', city: 'Fernando de la Mora', file: 'metropolitano.webp' },
-      { name: 'Sanatorio San Lucas', city: 'Asunción', file: 'sanlucas.webp' },
-      { name: 'Sanatorio Santa Lucía', city: 'Ciudad del Este', file: 'santalucia.webp' },
-      { name: 'Sanatorio San Martín', city: 'Asunción', file: 'sanmartin.webp' },
-      { name: 'Sanatorio Unimedic', city: 'Luque' },
-      { name: 'Centro de Diagnóstico Oxades', city: 'Asunción' },
-    ],
   };
-
-  // Tira de prestadores: con logos solo van los que tienen logo, repetidos
-  // para que una vuelta cubra pantallas anchas (la animación corre el 50%).
-  const conLogo = v.prestadores.filter((pr) => pr.file);
-  const tiraBase = TIRA_PRESTADORES_CON_LOGOS ? [...conLogo, ...conLogo] : v.prestadores;
-  const tiraPrestadores = [...tiraBase, ...tiraBase];
 
   // ===== markup =====
   return (
@@ -1017,17 +973,23 @@ export default function Page() {
           un destino o un momento que otro no cubre; este repetía y no sumaba.
           El padding inferior que aportaba esta franja pasó a la sección de arriba. */}
 
-      {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
+      {/* DÓNDE TE ATENDÉS — la red médica (25/09/2026). Reemplaza a la tira de
+          prestadores en movimiento: desglose, «¿Dónde vivís?» y el muro de
+          sanatorios de fondo. Ver app/components/DondeTeAtendes.jsx. */}
+      <DondeTeAtendes />
+
+      {/* RED DE BENEFICIOS — la tira de aliados, sola desde el 25/09/2026 (los
+          prestadores pasaron a «Dónde te atendés», arriba). Sigue pendiente la
+          poda que pidió el directorio («perfumería», HANDOFF). */}
       <section style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
-            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados y algunos de los sanatorios donde te atendés.</p>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados comerciales, incluidos en tu plan.</p>
           </div>
         </div>
 
-        {/* Tira 1 — aliados · derecha → izquierda */}
         <div data-rv className="mq" style={css('margin-top:42px;--mq-dur:54s')}>
           <div className="mq-track">
             {[...v.aliados, ...v.aliados].map((a, i) => (
@@ -1038,24 +1000,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Tira 2 — prestadores reales · izquierda → derecha */}
-        <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:64s')}>
-          <div className="mq-track">
-            {tiraPrestadores.map((pr, i) => TIRA_PRESTADORES_CON_LOGOS ? (
-              <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
-                <img src={`${BP}/assets/prestadores/${pr.file}`} alt={pr.name} loading="lazy" className="ally-logo" />
-              </div>
-            ) : (
-              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:var(--sp-muted)')}>
-                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
-                <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr.name}</span>
-                <span style={css('font-family:var(--font-inter),sans-serif;font-size:13px;white-space:nowrap;opacity:.8')}>{pr.city}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={css('font-family:var(--font-inter),sans-serif;max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;line-height:1.6;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Los descuentos vienen incluidos en tu plan.' : 'Aliados reales: pasá el cursor para verlos a color.'} La red médica cambia según tu plan y tu ciudad: <a href={v.guiaHome} onClick={() => v.trackGuia('tira_red')} style={css('color:var(--sp-teal-deep);font-weight:600;text-decoration:underline;text-underline-offset:2px')}>buscá la tuya en la Guía Médica</a>.</div>
+        <div style={css('font-family:var(--font-inter),sans-serif;max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;line-height:1.6;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : 'Aliados reales: pasá el cursor para verlos a color.'}</div>
       </section>
 
       {/* FAQ */}

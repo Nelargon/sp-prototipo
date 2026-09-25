@@ -78,6 +78,11 @@
   --sp-estado-ink-2:#4F5C5B;
   --sp-estado-punto:#8A9997;
   --sp-estado-punto-2:#9AA3A2;
+  /* El muro de nombres de «Dónde te atendés» (25/09/2026): gris apenas más
+     oscuro que su fondo (--sp-estado-bg). Es textura, no texto: Arturo lo pidió
+     gris y claro, sin velo, para que la tarjeta blanca resalte sola. */
+  --sp-muro:#EAECEE;
+  --sp-muro-2:#E2E5E8;
   --sp-marca-interna:#F28C28; /* punto «Revisar» y «sin prestadores» de la guía — solo prototipo, nunca de cara al cliente */
   /* Neutros semánticos */
   --sp-ink:#1D1D1B;         /* texto más fuerte */
@@ -451,6 +456,55 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 /* Logos flotan sobre fondo transparente — sin tarjeta */
 .ally-logo{max-height:40px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.62;transition:filter .3s,opacity .3s}
 .mq:hover .ally-logo{filter:grayscale(0);opacity:1}
+
+/* «Dónde te atendés» — la red médica en el home (25/09/2026, app/components/
+   DondeTeAtendes.jsx). El muro va detrás, a sangre; todo lo que se lee va
+   adentro de la tarjeta blanca. */
+.dta{position:relative;overflow:hidden;padding:96px 40px 72px;background:var(--sp-estado-bg)}
+.dta-muro{position:absolute;inset:-18px -40px auto;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:40px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none}
+.dta-muro .m2{color:var(--sp-muro-2)}
+.dta-muro i{font-style:normal;color:var(--sp-muro)}
+.dta-tarjeta{position:relative;max-width:960px;margin:0 auto;background:#fff;border-radius:var(--r-lg);padding:40px 44px 34px;box-shadow:var(--sombra-sup),0 24px 60px rgba(0,27,52,.07)}
+.dta-titulo{font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 10px}
+.dta-titulo span{color:var(--sp-teal-deep)}
+.dta-bajada{font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0}
+.dta-pregunta{font-size:15px;font-weight:800;color:var(--sp-navy);margin:24px 0 10px}
+.dta-ciudades{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.dta-ciudad{min-height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:var(--r-xs);border:1px solid var(--sp-mint-line-strong);background:#fff;color:var(--sp-navy);font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer}
+.dta-ciudad:hover{border-color:var(--sp-teal-deep)}
+.dta-ciudad[aria-pressed="true"]{background:var(--sp-teal-deep);border-color:var(--sp-teal-deep);color:#fff}
+.dta-otra{border-style:dashed;background:transparent;color:var(--sp-teal-deep)}
+.dta-panel-tit{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:16px}
+.dta-panel-tit b{font-size:26px;font-weight:900;color:var(--sp-navy)}
+.dta-panel-tit span{font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted)}
+.dta-cuadros{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dta-cuadros.n3{grid-template-columns:repeat(3,1fr)}.dta-cuadros.n2{grid-template-columns:repeat(2,1fr)}.dta-cuadros.n1{grid-template-columns:1fr}
+.dta-cuadro{background:var(--sp-mint-soft);border-radius:var(--r-sm);padding:14px 14px 12px}
+.dta-cuadro b{display:block;font-size:34px;font-weight:900;color:var(--sp-navy);line-height:1}
+.dta-cuadro span{display:block;font-family:var(--font-inter),sans-serif;font-size:13px;line-height:1.35;color:var(--sp-text);margin-top:6px}
+.dta-cuadro small{display:block;font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-top:2px}
+.dta-oficios{font-family:var(--font-inter),sans-serif;font-size:14px;line-height:1.6;color:var(--sp-text);margin:16px 0 0}
+.dta-oficios b,.dta-pie b{font-weight:800;color:var(--sp-navy)}
+.dta-pie{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:20px;padding-top:18px;border-top:1px solid var(--sp-line)}
+.dta-pie p{flex:1;font-family:var(--font-inter),sans-serif;font-size:14px;line-height:1.5;color:var(--sp-text);margin:0}
+.dta-cta{flex:none;min-height:46px;padding:0 20px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;white-space:nowrap}
+.dta-cta:hover{background:var(--sp-teal-hover)}
+.dta-nota{position:relative;max-width:960px;margin:16px auto 0;text-align:center;font-family:var(--font-inter),sans-serif;font-size:12px;line-height:1.6;color:var(--sp-muted)}
+@media(max-width:600px){
+  .dta{padding:64px 12px 48px}
+  .dta-muro{font-size:28px;inset:-10px -30px auto}
+  .dta-tarjeta{padding:26px 18px 22px}
+  .dta-titulo{font-size:28px}
+  .dta-ciudades{flex-wrap:nowrap;overflow-x:auto;margin-right:-18px;padding-right:18px;scrollbar-width:none;scroll-snap-type:x proximity}
+  .dta-ciudades::-webkit-scrollbar{display:none}
+  .dta-ciudad{scroll-snap-align:start}
+  .dta-panel-tit{flex-direction:column;gap:2px}
+  .dta-cuadros,.dta-cuadros.n3{grid-template-columns:1fr 1fr}
+  .dta-cuadros.n3 .dta-cuadro:last-child{grid-column:span 2}
+  .dta-cuadro b{font-size:28px}
+  .dta-pie{flex-direction:column;align-items:stretch}
+  .dta-cta{white-space:normal;text-align:center;padding:12px 18px}
+}
 .num-tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
 
 /* --------------------------------------------------------------------------
@@ -516,6 +570,13 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    claro. La esquina, el relieve y el movimiento nacieron acá y desde el
    24/09/2026 son de todo el sitio: ver «Sistema táctil», abajo. */
 .gm{--gm-fondo:#F4F5F6;--gm-linea:#E6E8EA;--gm-borde:#D4E0EE}
+/* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
+   la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
+.gm-mapa-lado{display:none;position:absolute;top:96px;bottom:70px;left:calc(100% + 28px);width:300px}
+.gm-mapa-pegado{position:sticky;top:88px}
+.gm-mapa-conmutador{display:flex}
+@media(min-width:1400px){.gm-mapa-lado{display:block}.gm-mapa-conmutador,.gm-mapa-flujo{display:none}}
+@media(max-width:1399px){.gm-lista-oculta{display:none!important}}
 /* El buscador ya tiene su «Borrar»: sin la cruz nativa del navegador, que lo duplicaba. */
 .gm input[type=search]::-webkit-search-cancel-button{display:none}
 

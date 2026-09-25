@@ -874,7 +874,8 @@ padding y margen negativo: en reposo, el header quedó idéntico píxel por píx
 prestadores reales de la planilla, cada uno con su ciudad, y una nota al pie
 con link a la Guía Médica. A la derecha, a 390 px.
 
-**Qué se decidió.** Pendiente. Arturo pidió los logos; no se pudieron bajar
+**Qué se decidió.** Quedó atrás: la tira se reemplazó por «Dónde te atendés»
+(n.º 33 a 35). En su momento: Arturo pidió los logos; no se pudieron bajar
 (BITACORA cap. 114) y propuso comparar una versión con logos y otra sin. Esta
 es la sin logos. La elección de los nombres no es estética: solo entran los
 que están en Silver/Gold **y** en Essential, porque el título dice «de tu
@@ -892,8 +893,9 @@ planilla al lado, no con la fama.
 A: 11 prestadores reales en texto, con su ciudad. B: los 6 que tienen un logo
 publicable, en gris como los aliados.
 
-**Qué se decidió.** Pendiente de Arturo (*«Igual podemos probar una versión
-con y una versión sin logos»*). La recomendación fue A: B deja afuera a
+**Qué se decidió.** Ni una ni otra: la tira entera se reemplazó por «Dónde te
+atendés» (n.º 33 a 35). Arturo había pedido comparar (*«Igual podemos probar
+una versión con y una versión sin logos»*). La recomendación fue A: B deja afuera a
 Encarnación y Luque, de Ciudad del Este queda solo Santa Lucía, y pegada a la
 tira de aliados no se distingue un sanatorio de una farmacia con descuento.
 
@@ -924,7 +926,8 @@ recorrido. 3, el muro: la cifra grande y los nombres como un texto. 4, las
 fichas: una tarjeta por prestador, con logo o con iniciales. 5, tu ciudad
 primero: «¿Dónde vivís?» y la respuesta con números y nombres.
 
-**Qué se decidió.** Pendiente de Arturo. La recomendación fue la 5, con el mapa
+**Qué se decidió.** Arturo se quedó con tres —el muro, el mapa y «tu ciudad
+primero»— y las combinó (n.º 34 y 35). La recomendación había sido la 5, con el mapa
 de la 1 como compañía en escritorio: es la única que contesta la pregunta que
 trae la persona (*¿tengo algo cerca?*) en lugar de repetir la puerta a la Guía
 Médica, que es por lo que se sacó la franja «Lister + más de 50 prestadores»
@@ -953,7 +956,7 @@ otras prepagas que son la competencia y tienen un número mayor»*. Por eso el
 615 ya no aparece solo: 130 sanatorios y clínicas, 107 laboratorios, 363
 médicos de 47 especialidades, 9 centros de imágenes. El muro va de fondo, como
 propuso él; el mapa, donde es útil (la Guía, que ya filtra por ciudad).
-Pendiente de su OK para construir.
+Construido después de la n.º 35.
 
 **La lección.** Un número total invita a comparar con el total de otro; un
 número con nombre («44 pediatras») se compara con lo que la persona necesita.
@@ -979,7 +982,11 @@ bloque al costado, donde nada se lee encima. Y dos lugares más para el mapa:
 que muestra dónde están los resultados de lo que buscaste (ginecología: 11
 ciudades), con un «Lista | Mapa» en el celular.
 
-**Qué se decidió.** Pendiente de Arturo.
+**Qué se decidió.** Arturo: *«Dale, construí home opción 1 y mapa opción
+2»*. Construido el mismo día: la sección del home con el muro gris a sangre y
+todo en la tarjeta, y el mapa en la guía, al costado desde 1400 px y con
+«Lista | Mapa» en el resto. En la guía, el mapa va **sin números**: la guía no
+muestra totales de prestadores desde el 23/09 (la lámina los tenía).
 
 **La lección.** Un fondo de texto no necesita velo si es suficientemente
 claro: el velo es un parche para un fondo que grita. Y un mapa sirve más donde

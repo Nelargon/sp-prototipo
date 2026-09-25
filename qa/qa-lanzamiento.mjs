@@ -153,6 +153,50 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.close();
 }
 
+// ── «Dónde te atendés» del home y el mapa de la guía (25/09/2026) ───────────
+// El desglose sale de la planilla (scripts/red-home.mjs): se prueba que los
+// números existan y cambien con la ciudad, no un valor fijo que envejece.
+console.log('\n── Dónde te atendés y el mapa de la guía');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const sec = page.locator('section.dta');
+  if (!(await sec.count())) { mal(nombre + ': el home no tiene «Dónde te atendés»'); await page.close(); continue; }
+  await sec.scrollIntoViewIfNeeded();
+  const muro = await page.$eval('section.dta .dta-muro', (m) => ({ aria: m.getAttribute('aria-hidden'), n: m.children.length }));
+  if (muro.aria !== 'true' || muro.n < 10) mal(nombre + ': el muro de nombres falta o lo leen los lectores de pantalla');
+  const pais = await page.$$eval('section.dta .dta-cuadro b', (bs) => bs.map((b) => b.textContent).join('/'));
+  const segunda = page.locator('section.dta .dta-ciudad').nth(2);
+  const ciudad = (await segunda.textContent()).trim();
+  await segunda.click();
+  await page.waitForTimeout(200);
+  const enCiudad = await page.$$eval('section.dta .dta-cuadro b', (bs) => bs.map((b) => b.textContent).join('/'));
+  const href = await page.$eval('section.dta .dta-cta', (a) => a.getAttribute('href'));
+  if (!/^\d/.test(pais) || pais === enCiudad || !href.includes('c=' + encodeURIComponent(ciudad))) mal(nombre + ': elegir «' + ciudad + '» no cambia el desglose o el link a la guía');
+  else bien(nombre + ': desglose ' + pais + ' → ' + ciudad + ' ' + enCiudad + ', y el link lleva la ciudad');
+  // El mapa: al costado en escritorio; detrás de «Lista | Mapa» en el celular.
+  await page.goto(BASE + '/guia-medica/?esp=Pediatr%C3%ADa', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(500);
+  if (width < 1400) {
+    await page.locator('.gm-mapa-conmutador button', { hasText: 'Mapa' }).click();
+    await page.waitForTimeout(300);
+  }
+  const zona = width < 1400 ? '.gm-mapa-flujo' : '.gm-mapa-lado';
+  const puntos = await page.locator(zona + ' svg circle[fill="transparent"]').count();
+  const lista = await page.locator(zona + ' button[aria-pressed]');
+  if (!puntos || !(await lista.count())) { mal(nombre + ': el mapa de la guía no dibuja ciudades'); await page.close(); continue; }
+  const primera = (await lista.first().textContent()).split('·')[0].trim();
+  const textoMapa = await page.$eval(zona, (z) => z.innerText.replace(/©.*$/s, ''));
+  if (/\d/.test(textoMapa.split('\n').slice(2).join(' '))) mal(nombre + ': el mapa muestra números (la guía no muestra totales)');
+  await lista.first().click();
+  await page.waitForTimeout(500);
+  const u = page.url();
+  const tarjetas = await page.$$eval('.gm-lista article', (as) => as.map((a) => a.innerText));
+  if (!u.includes('c=' + encodeURIComponent(primera)) || !tarjetas.length || !tarjetas.every((t) => t.includes(primera))) mal(nombre + ': tocar «' + primera + '» en el mapa no filtra la lista');
+  else bien(nombre + ': mapa con ' + puntos + ' ciudades; tocar «' + primera + '» deja ' + tarjetas.length + ' tarjetas de ahí');
+  await page.close();
+}
+
 await browser.close();
 console.log('\n' + (fallas ? '✗ ' + fallas + ' falla(s)' : '✓ todo verde'));
 process.exit(fallas ? 1 : 0);

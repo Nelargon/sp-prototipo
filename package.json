@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node scripts/sync-guia.mjs",
+    "prebuild": "node scripts/sync-guia.mjs && node scripts/red-home.mjs",
+    "predev": "node scripts/red-home.mjs",
     "postbuild": "node scripts/podar-edicion.mjs"
   },
   "dependencies": {

@@ -4074,3 +4074,20 @@ número mayor»*. El total pasó a ser un desglose: 130 sanatorios y clínicas,
 107 laboratorios, 363 médicos. Un total se compara con otro total; «44
 pediatras» se compara con lo que la persona necesita.
 
+## Capítulo 116 — El archivo que ya existía (25/09/2026)
+
+**Qué intentamos.** Para que el home no cargara la planilla entera (258 KB),
+un script nuevo saca de ella solo lo que muestra «Dónde te atendés» y lo
+escribe en `lib/red-resumen.json`, un nombre que parecía obvio.
+
+**Qué pasó.** `git status` lo marcó como **modificado**, no como nuevo. Ese
+archivo ya existía: lo escribe `build-guia-medica.py` con los conteos por red y
+zona, y lo usa el puente entre el simulador y la guía. El script nuevo lo había
+pisado con otra forma de datos; el build habría pasado y el simulador habría
+dejado de mostrar la red de tu ciudad. Se restauró, el nuevo pasó a llamarse
+`lib/red-home.json`, y los dos scripts se nombran mutuamente en un comentario.
+
+**Qué aprendimos.** Antes de escribir un archivo generado, fijarse si el
+nombre ya existe. Un «M» en `git status` donde esperabas un «??» es una alarma:
+estás tocando algo que otro hizo.
+

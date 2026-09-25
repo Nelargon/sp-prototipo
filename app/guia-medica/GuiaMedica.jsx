@@ -7,6 +7,7 @@ import { track } from '../track';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
+import MapaRed from './MapaRed';
 import Plegable from '../components/Plegable';
 import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
@@ -93,6 +94,22 @@ const zonaDeDepto = (dp) => (!dp ? '' : dp === 'Capital' ? 'asu' : dp === 'Centr
 
 // Estudios que piden orden médica visada: su tarjeta ofrece "Visar la orden".
 const PIDE_ORDEN = new Set(['Laboratorio', 'Diagnóstico por Imagen', 'Ecografía', 'Radiografía', 'Anatomía Patológica', 'Ecocardiograma', 'Electrocardiograma', 'Holter y MAPA', 'Estudios Audiológicos', 'PAP y Colposcopía']);
+
+/* La búsqueda, en una función: la usan la lista y el mapa (MapaRed), así los
+   dos nunca pueden decir cosas distintas. El mapa la llama sin ciudad ni zona:
+   muestra el país entero para lo que se eligió, con la ciudad marcada. */
+function buscar(f, sint) {
+  const base = { plan: f.plan, esp: f.esp, dp: f.z === 'interior' ? f.dp : (f.z === 'asu' ? 'Capital' : f.z === 'central' ? 'Central' : ''), c: f.c };
+  let lista = filtrar(P, INDICE, { ...base, q: f.q });
+  // Si lo escrito es un síntoma, suman los especialistas que lo ven,
+  // en el orden de "a quién ir primero".
+  if (sint.esp.length) {
+    const ya = new Set(lista.map((p) => p.f));
+    for (const e of sint.esp) for (const p of filtrar(P, INDICE, { ...base, esp: e })) if (!ya.has(p.f)) { ya.add(p.f); lista.push(p); }
+  }
+  if (f.z === 'interior' && !f.dp) lista = lista.filter((p) => p.dp !== 'Capital' && p.dp !== 'Central');
+  return lista;
+}
 
 const REQUISITOS = ['Nombre del paciente y fecha', 'Estudios pedidos y diagnóstico presuntivo', 'Firma y sello del médico, con su registro profesional', 'Dónde te vas a hacer el estudio'];
 const WA_VISAR = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola, quiero visar una orden médica. Te mando la foto.');
@@ -249,6 +266,7 @@ export default function GuiaMedica() {
   const [abiertos, setAbiertos] = useState({});
   const [grupoAbierto, setGrupoAbierto] = useState('');
   const [visar, setVisar] = useState(false);
+  const [vista, setVista] = useState('lista'); // 'lista' | 'mapa' (solo donde el mapa no entra al costado)
   const listo = useRef(false);
   const refVisar = useRef(null);
 
@@ -281,18 +299,9 @@ export default function GuiaMedica() {
   // Lo que la persona siente («me duele la cabeza») → a quién ir.
   const sint = useMemo(() => (f.q ? interpretar(f.q) : { urg: false, esp: [], motivo: '' }), [f.q]);
 
-  const res = useMemo(() => {
-    const base = { plan: f.plan, esp: f.esp, dp: f.z === 'interior' ? f.dp : (f.z === 'asu' ? 'Capital' : f.z === 'central' ? 'Central' : ''), c: f.c };
-    let lista = filtrar(P, INDICE, { ...base, q: f.q });
-    // Si lo escrito es un síntoma, suman los especialistas que lo ven,
-    // en el orden de "a quién ir primero".
-    if (sint.esp.length) {
-      const ya = new Set(lista.map((p) => p.f));
-      for (const e of sint.esp) for (const p of filtrar(P, INDICE, { ...base, esp: e })) if (!ya.has(p.f)) { ya.add(p.f); lista.push(p); }
-    }
-    if (f.z === 'interior' && !f.dp) lista = lista.filter((p) => p.dp !== 'Capital' && p.dp !== 'Central');
-    return lista;
-  }, [f, sint]);
+  const res = useMemo(() => buscar(f, sint), [f, sint]);
+  // El mapa: lo mismo, en todo el país (la ciudad elegida va marcada).
+  const resMapa = useMemo(() => buscar({ ...f, z: '', dp: '', c: '' }, sint), [f.q, f.esp, f.plan, sint]); // eslint-disable-line react-hooks/exhaustive-deps
   const sug = useMemo(() => (f.q && !res.length ? sugerir(P, f.q) : null), [f.q, res.length]);
 
   useEffect(() => {
@@ -335,6 +344,10 @@ export default function GuiaMedica() {
     setF((x) => ({ ...x, z, dp: z === 'interior' ? l.dp : '', c: l.c }));
   };
 
+  const queMapa = (f.esp || (f.q ? 'Lo que buscaste' : 'Toda la red')) + (f.plan ? ' · ' + nombrePlan(f.plan) : '');
+  const elegirDesdeMapa = (l, origen) => { elegirLugar(l, origen); setVista('lista'); };
+  const verVista = (v) => { setVista(v); track('guia_vista', { vista: v }); };
+
   const G = datos.meta.guias;
   const fecha = (G.privilege && G.privilege.fecha) || '';
   const waSinResultado = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Busqué «' + f.q + '» en la Guía Médica y no lo encontré. ¿Me ayudan?');
@@ -344,7 +357,14 @@ export default function GuiaMedica() {
     <div className="body gm tactil" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
       <Header variant="solid" />
 
-      <div style={css('max-width:720px;margin:0 auto;padding:96px 16px 70px;display:flex;flex-direction:column;gap:14px')}>
+      <div style={css('position:relative;max-width:720px;margin:0 auto;padding:96px 16px 70px;display:flex;flex-direction:column;gap:14px')}>
+        {/* El mapa al costado de la lista, en pantallas anchas (≥1400 px: en
+            menos no entra sin correr la columna). Acompaña el scroll. */}
+        <aside className="gm-mapa-lado" aria-label="Dónde están los resultados">
+          <div className="gm-mapa-pegado">
+            <MapaRed lista={resMapa} que={queMapa} sel={f.c} elegir={elegirLugar} limpiar={() => set({ c: '', dp: '' }, 'ciudad')} />
+          </div>
+        </aside>
         {/* Encabezado */}
         <div style={css('display:flex;flex-direction:column;gap:8px')}>
           <div style={css('display:flex;justify-content:space-between;align-items:flex-start;gap:12px')}>
@@ -464,13 +484,25 @@ export default function GuiaMedica() {
                 </dl>
               </details>
             )}
+            {res.length > 0 && (
+              <div role="group" aria-label="Ver los resultados en" className="gm-mapa-conmutador sq" style={css('--sq:var(--r-sm);gap:4px;background:var(--gm-linea);padding:4px')}>
+                {[['lista', 'Lista'], ['mapa', 'Mapa']].map(([k, t]) => (
+                  <button key={k} type="button" aria-pressed={vista === k} onClick={() => verVista(k)} className="disp sq" style={css('--sq:9px;flex:1;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;' + (vista === k ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{t}</button>
+                ))}
+              </div>
+            )}
+            {res.length > 0 && vista === 'mapa' && (
+              <div className="gm-mapa-flujo">
+                <MapaRed lista={resMapa} que={queMapa} sel={f.c} elegir={elegirDesdeMapa} limpiar={() => { set({ c: '', dp: '' }, 'ciudad'); setVista('lista'); }} />
+              </div>
+            )}
             {res.length ? (
-              <>
+              <div className={vista === 'mapa' ? 'gm-lista gm-lista-oculta' : 'gm-lista'} style={css('display:flex;flex-direction:column;gap:10px')}>
                 {res.slice(0, n).map((p) => <Tarjeta key={p.f} p={p} plan={f.plan} abrirVisar={abrirVisar} />)}
                 {res.length > n && (
                   <button type="button" onClick={() => { setN(n + POR_PAGINA); track('guia_mas', {}); }} className="disp sq" style={css('--sq:var(--r-xs);height:48px;border:1.5px solid var(--sp-navy);background:#fff;color:var(--sp-navy);font-size:15px;font-weight:800;cursor:pointer')}>Ver más</button>
                 )}
-              </>
+              </div>
             ) : (
               <div className="sq rel" style={css('--sq:var(--r-sm);background:#fff;border:1px solid var(--gm-linea);padding:22px 18px;text-align:center')}>
                 <h2 className="disp" style={css('font-size:19px;color:var(--sp-navy);margin:0 0 8px')}>{f.q ? <>No encontramos «{f.q}» en la red.</> : 'No hay resultados con estos filtros.'}</h2>
