@@ -884,3 +884,19 @@ plan».
 está. Un nombre sí, y por eso también puede prometer de más: se elige con la
 planilla al lado, no con la fama.
 
+### 32 · Con logos o sin logos
+
+![La tira de prestadores: hoy, la versión A con 11 nombres reales y su ciudad, y la versión B con los logos de 6 prestadores, en escritorio y a 390 px](img/2026-09-25-tira-prestadores-con-y-sin-logos.webp)
+
+**Qué muestra.** Tres estados de la misma sección. Hoy: categorías de ejemplo.
+A: 11 prestadores reales en texto, con su ciudad. B: los 6 que tienen un logo
+publicable, en gris como los aliados.
+
+**Qué se decidió.** Pendiente de Arturo (*«Igual podemos probar una versión
+con y una versión sin logos»*). La recomendación fue A: B deja afuera a
+Encarnación y Luque, de Ciudad del Este queda solo Santa Lucía, y pegada a la
+tira de aliados no se distingue un sanatorio de una farmacia con descuento.
+
+**La lección.** Dos tiras de logos en gris, una arriba de la otra, se leen
+como una sola. Si la segunda dice otra cosa, tiene que verse distinta.
+

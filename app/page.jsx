@@ -12,6 +12,12 @@ import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
+// Tira de prestadores del home (25/09/2026): Arturo compara la versión con
+// logos (6 prestadores, `true`) y la sin logos (11 nombres con su ciudad,
+// `false`). Pendiente de su elección; ver HANDOFF, «La tira de prestadores
+// dice nombres reales», y la lámina docs/diseno (parte 10, n.º 32).
+const TIRA_PRESTADORES_CON_LOGOS = false;
+
 const INITIAL = {
   sel: 'Resonancia (RM)',
   mobileMenuOpen: false,
@@ -399,24 +405,38 @@ export default function Page() {
     // afuera a propósito: están solo en Silver/Gold, y el título dice "de tu
     // plan". Quien compra Essential no puede ver en la home un sanatorio que su
     // plan no tiene.
-    // `file` (opcional): logo en public/assets/prestadores/. Si está, la tira lo
-    // muestra en gris como a los aliados; si no, el nombre en texto.
+    // Dos versiones, a elegir por Arturo (TIRA_PRESTADORES_CON_LOGOS, arriba):
+    // con logos muestra solo los que tienen `file` (public/assets/prestadores/),
+    // en gris como los aliados; sin logos, todos los nombres en texto con su
+    // ciudad. Nunca mezcladas: logo y texto en la misma tira se ven desparejos.
     // Sin "Odontología" desde el 23/09/2026 (contradecía a /que-cubre).
+    // Logos (25/09/2026): bajados de los sitios oficiales o de la foto de
+    // perfil de Facebook de cada prestador, con el fondo quitado. San Lucas
+    // sin la franja "medicina pre paga" (es su prepaga); Iribas sin "IRM", que
+    // en la planilla está solo en Essential; Adventista pasado a gris (el del
+    // sitio es blanco, para fondo oscuro). Central, Itapúa, Medicis, Unimedic y
+    // Oxades no tienen un logo publicable (fotos de campaña o miniaturas de
+    // 100 px). Da Vinci salió de la tira: clausura temporal en dic. 2021.
     prestadores: [
-      { name: 'Sanatorio Adventista', city: 'Asunción' },
+      { name: 'Sanatorio Adventista', city: 'Asunción', file: 'adventista.webp' },
       { name: 'Sanatorio Central', city: 'Ciudad del Este' },
       { name: 'Sanatorio Medicis', city: 'Asunción' },
+      { name: 'Instituto Radiológico Iribas', city: 'Asunción', file: 'iribas.webp' },
       { name: 'Sanatorio Itapúa', city: 'Encarnación' },
-      { name: 'Instituto Radiológico Iribas', city: 'Asunción' },
-      { name: 'Sanatorio Metropolitano', city: 'Fernando de la Mora' },
-      { name: 'Sanatorio San Lucas', city: 'Asunción' },
-      { name: 'Sanatorio Santa Lucía', city: 'Ciudad del Este' },
-      { name: 'Sanatorio San Martín', city: 'Asunción' },
+      { name: 'Sanatorio Metropolitano', city: 'Fernando de la Mora', file: 'metropolitano.webp' },
+      { name: 'Sanatorio San Lucas', city: 'Asunción', file: 'sanlucas.webp' },
+      { name: 'Sanatorio Santa Lucía', city: 'Ciudad del Este', file: 'santalucia.webp' },
+      { name: 'Sanatorio San Martín', city: 'Asunción', file: 'sanmartin.webp' },
       { name: 'Sanatorio Unimedic', city: 'Luque' },
       { name: 'Centro de Diagnóstico Oxades', city: 'Asunción' },
-      { name: 'Sanatorio Da Vinci', city: 'Fernando de la Mora' },
     ],
   };
+
+  // Tira de prestadores: con logos solo van los que tienen logo, repetidos
+  // para que una vuelta cubra pantallas anchas (la animación corre el 50%).
+  const conLogo = v.prestadores.filter((pr) => pr.file);
+  const tiraBase = TIRA_PRESTADORES_CON_LOGOS ? [...conLogo, ...conLogo] : v.prestadores;
+  const tiraPrestadores = [...tiraBase, ...tiraBase];
 
   // ===== markup =====
   return (
@@ -1021,7 +1041,7 @@ export default function Page() {
         {/* Tira 2 — prestadores reales · izquierda → derecha */}
         <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:64s')}>
           <div className="mq-track">
-            {[...v.prestadores, ...v.prestadores].map((pr, i) => pr.file ? (
+            {tiraPrestadores.map((pr, i) => TIRA_PRESTADORES_CON_LOGOS ? (
               <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
                 <img src={`${BP}/assets/prestadores/${pr.file}`} alt={pr.name} loading="lazy" className="ally-logo" />
               </div>

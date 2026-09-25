@@ -17,31 +17,41 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
-## 🏥 LA TIRA DE PRESTADORES DICE NOMBRES REALES — PR EN BORRADOR, ESPERA A ARTURO (25 sep 2026)
+## 🏥 LA TIRA DE PRESTADORES DICE NOMBRES REALES: DOS VERSIONES, ESPERA A ARTURO (25 sep 2026)
 
 La segunda tira de la sección «Aliados y prestadores de tu plan» del home
 decía categorías de ejemplo («Sanatorio», «Laboratorio», «Clínica»). Arturo
-pidió los **logos** de los prestadores. No se pudieron traer (BITACORA cap.
-114): la red de esta sesión bloquea los sitios de los sanatorios, y en el Drive
-las carpetas «LOGO DE SANATORIOS» y «PRESTADORES/SANATORIOS» están vacías.
-Arturo: *«Igual podemos probar una versión con y una versión sin logos»*.
+pidió los **logos** de los prestadores y después: *«Igual podemos probar una
+versión con y una versión sin logos»*. Las dos están construidas; las elige
+una constante al principio de `app/page.jsx`, `TIRA_PRESTADORES_CON_LOGOS`.
+Lámina de comparación: `docs/diseno/img/2026-09-25-tira-prestadores-con-y-sin-logos.webp`.
 
-- **Versión sin logos (hecha, en este PR):** 12 prestadores reales con su
-  ciudad, en texto, y un link a la Guía Médica en la nota al pie. Lámina:
-  `docs/diseno/img/2026-09-25-tira-prestadores-nombres-reales.webp`.
-- **Versión con logos (pendiente de los archivos):** la tira ya los acepta.
-  Cada prestador lleva un `file` opcional (`public/assets/prestadores/`); si
-  está, se muestra el logo en gris como los aliados; si no, el nombre. Los
-  logos llegan de una de dos formas: se abre la red de la sesión, o Arturo
-  los pega en el chat.
+- **A · sin logos (`false`, la que queda por defecto):** 11 prestadores reales,
+  cada uno con su ciudad (Asunción, Ciudad del Este, Encarnación, Luque,
+  Fernando de la Mora).
+- **B · con logos (`true`):** los 6 que tienen un logo publicable, en
+  `public/assets/prestadores/`: Adventista, Iribas, Metropolitano, San Lucas,
+  San Martín y Santa Lucía. Salen de los sitios oficiales o de la foto de
+  perfil de Facebook, con el fondo quitado. **San Lucas va sin la franja
+  «medicina pre paga»** (es su prepaga, competencia); **Iribas sin «IRM»**
+  (en la planilla, IRM está solo en Essential); Adventista pasado a gris (el
+  del sitio es blanco). Central, Itapúa y Medicis solo tienen fotos de campaña
+  o miniaturas de 100 px; Unimedic y Oxades, nada usable (el dominio
+  oxades.com.py hoy muestra otro sitio). **Nunca se mezclan** logo y texto en
+  la tira.
+- En las dos, la nota al pie lleva a la Guía Médica: *«La red médica cambia
+  según tu plan y tu ciudad: buscá la tuya en la Guía Médica.»*
 - **⚠ Criterio que no se negocia sin Arturo:** en la tira solo van
   prestadores que están en la red de Silver/Gold **y** en la de Essential
   (`lib/guia-medica.json`). Sanatorio Italiano, Español, Americano, Díaz Gill,
   Meyer Lab y Codas Thompson están **solo** en Silver/Gold: el título dice
   «de tu plan», y quien compra Essential no los tiene.
+- **Sanatorio Da Vinci salió** de la tira: tuvo una clausura temporal del
+  Ministerio de Salud en diciembre de 2021 (falta de documentación; ABC Color y
+  Hoy, 16/12/2021). Sigue en la Guía Médica, que manda la planilla; la vidriera
+  del home no lo muestra.
 - **Sigue abierto:** qué aliados quedan en la primera tira (el directorio
-  pidió podarla, «perfumería»). Esta tira no suma colores: los nombres van en
-  gris, como antes.
+  pidió podarla, «perfumería»).
 
 ## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
 

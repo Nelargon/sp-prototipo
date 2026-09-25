@@ -4039,3 +4039,14 @@ que más promete de más. Y cuando una pieza depende de algo que no se puede
 conseguir hoy, se construye el lugar donde va a ir y se publica lo que sí es
 verdad.
 
+**Después, el mismo día.** Arturo abrió la red de la sesión y los logos
+aparecieron en una hora. De los 11 prestadores, 6 tenían uno publicable. Dos
+traían sorpresa. El de San Lucas tenía abajo la franja «medicina pre paga»:
+su propia prepaga, en la home de otra prepaga. El de Iribas sumaba «IRM», una
+marca que en la planilla está solo en Essential. Se recortaron las dos. Y el
+buscador, al resumir, fechó en «julio de 2026» una clausura de Sanatorio Da
+Vinci que la nota original fecha en diciembre de 2021. Se leyó la nota
+original antes de decidir. Da Vinci igual salió de la vidriera: un nombre con
+clausura en su historia no va en la home, aunque siga en la guía. Un logo
+ajeno no se pega tal cual: se mira qué más dice además del nombre.
+
