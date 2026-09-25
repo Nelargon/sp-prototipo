@@ -298,7 +298,11 @@ personalidad 5/10). La corrida de Arturo, otro lector a ciegas: 1 de 10; solo el
 dengue lo aciertan los dos, y **un cuadrante con aguja se lee como hora, y la
 hora como espera** (3 de 4 lecturas). Su evaluación con la referencia llegó al
 mismo diagnóstico (filosofía 4/10; lección 29), y la prueba se calibró: lo que
-falla a ciegas no se aprueba en el contrapeso. **Ningún arreglo lleva una mano**: el evaluador las propuso y
+falla a ciegas no se aprueba en el contrapeso. Con el OK de Arturo la tanda se
+rehizo como emblema (lección 30): a ciegas, 6 de 10. Arturo pidió **contraste: no
+todo en blanco** y otro concepto para el precio; hay cuatro tratamientos de color
+(recomendado: la idea en menta sobre el fondo oscuro de la categoría, con la línea
+blanca) y tres conceptos para el precio, **esperando su elección**. **Ningún arreglo lleva una mano**: el evaluador las propuso y
 es la firma de la referencia (lección 20); el gesto lo hacen la gente del logo,
 el objeto que se mueve o una flecha. Qué hacer con la tanda lo decide Arturo
 (BITACORA cap. 110).

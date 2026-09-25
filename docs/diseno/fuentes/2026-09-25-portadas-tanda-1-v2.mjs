@@ -10,7 +10,9 @@
 //
 // Piezas nuevas: banda (cinta de ancho fijo), lazo, andamio, escalón, moneda,
 // sobre, valija-carpeta, consultorio, lupa, promesa, sube y baja, lámpara de
-// quirófano, corazón, pin, microscopio, pila de libros, birrete.
+// quirófano, corazón, pin, microscopio, pila de libros, birrete; y para el precio
+// (PRECIO_OPC, tres conceptos para elegir): etiqueta, campanita, flecha que sube
+// y megáfono.
 
 // Tanda 1, segunda versión: un objeto y un gesto por nota (lecciones 28 y 29).
 // La mano del chico, la gramática del emblema: sin suelo, sin sol, sin manos,
@@ -115,6 +117,23 @@ const pilaLibros = (cx, base, anchos) => { const ll = []; let y = base; anchos.f
 const birrete = (cx, y) => P({ llenos: [{ d: suave([[cx - 24, y], [cx, y - 9], [cx + 24, y], [cx, y + 9]], 0.1, true), lineas: [] }], trazos: [suave([[cx - 12, y + 5], [cx - 12, y + 14], [cx, y + 18], [cx + 12, y + 14], [cx + 12, y + 5]], 0.6), suave([[cx + 1, y], [cx + 16, y + 3], [cx + 20, y + 16]], 0.7), circulo(cx + 20, y + 19, 2.4)] });
 const hospitalChico = (x, base, w, h) => P({ formas: [`M${x} ${base - h} L${x + w} ${base - h} L${x + w} ${base} L${x} ${base}Z`], trazos: [caja(x, base - h, w, h, 3), ...cruz(x + w / 2, base - h * 0.66, Math.min(w, h) * 0.16), caja(x + w * 0.36, base - h * 0.3, w * 0.28, h * 0.3, 2, 0.2)] });
 
+// ── 2 · Precio: tres conceptos para elegir ──
+const etiqueta = (cx, cy, w, h, rot) => { const a = (rot * Math.PI) / 180, R = ([x, y]) => [cx + x * Math.cos(a) - y * Math.sin(a), cy + x * Math.sin(a) + y * Math.cos(a)];
+  const pts = [[-w / 2, 0], [-w / 2 + h * 0.5, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2 + h * 0.5, h / 2]].map(R);
+  const agujero = R([-w / 2 + h * 0.42, 0]);
+  return { d: suave(pts, 0.25, true), lineas: [circulo(agujero[0], agujero[1], h * 0.11, 0.03), linea(...R([-w * 0.04, -h * 0.14]), ...R([w * 0.34, -h * 0.14]), 0.05), linea(...R([-w * 0.04, h * 0.16]), ...R([w * 0.2, h * 0.16]), 0.05)], agujero }; };
+const campana = (cx, cy, s) => P({ trazos: [suave([[cx - 11 * s, cy + 8 * s], [cx - 8 * s, cy + 2 * s], [cx - 8 * s, cy - 6 * s], [cx, cy - 12 * s], [cx + 8 * s, cy - 6 * s], [cx + 8 * s, cy + 2 * s], [cx + 11 * s, cy + 8 * s], [cx - 11 * s, cy + 8 * s]], 0.6), circulo(cx, cy + 11 * s, 2.4 * s), ...rayitas(cx, cy, 16 * s, 22 * s, [-20, 0, 20, 160, 180, 200])] });
+const flechaSube = (x1, y1, x2, y2, cx, cy) => { const c = curva([x1, y1], [cx, cy], [x2, y2]); const [a, b] = [c[c.length - 3], c[c.length - 1]]; return P({ trazos: [suave(c.filter((_, i) => i % 3 === 0 || i === c.length - 1), 1), flechita(b[0], b[1], (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI, 10)] }); };
+const megafono = (x, y, s) => P({ formas: [], trazos: [suave([[x, y - 8 * s], [x + 30 * s, y - 20 * s], [x + 30 * s, y + 20 * s], [x, y + 8 * s], [x, y - 8 * s]], 0.2), caja(x - 10 * s, y - 8 * s, 10 * s, 16 * s, 2, 0.1), linea(x - 4 * s, y + 8 * s, x - 2 * s, y + 20 * s, 0.1), ...rayitas(x + 30 * s, y, 8 * s, 16 * s, [-25, 0, 25])] });
+export const PRECIO_OPC = [
+  { nombre: 'La etiqueta suena antes de subir', nota: 'La etiqueta del precio sube colgada de un hilo, y en el hilo suena una campanita: el aviso llega con ella.',
+    dib: () => { const e = etiqueta(212, 114, 74, 36, -18); return juntar(P({ llenos: [{ d: e.d, lineas: e.lineas }] }), P({ trazos: [suave([e.agujero, [190, 76], [196, 20]], 0.8), linea(172, 152, 180, 138, 0.1), linea(188, 158, 194, 144, 0.1), linea(204, 160, 208, 148, 0.1)] }), campana(194, 50, 0.95)); } },
+  { nombre: 'La fecha, antes que la suba', nota: 'Una hoja del almanaque con la etiqueta prendida en un día, y la flecha que sube desde ahí: sabés cuándo, antes de que pase.',
+    dib: () => { const e = etiqueta(222, 104, 60, 30, -14); return juntar(P({ formas: [cajaRelleno(144, 44, 100, 104, 8)], trazos: [caja(144, 44, 100, 104, 8), linea(146, 70, 242, 69, 0.2), linea(170, 36, 170, 52, 0.1), linea(218, 36, 218, 52, 0.1), ...[0, 1, 2].flatMap((r) => [0, 1, 2].map((c) => (r === 1 && c === 2) ? '' : caja(156 + c * 26 - (r % 2) * 0.6, 80 + r * 22 + (c % 2) * 0.5, 12, 10, 2, 0.2))).filter(Boolean)] }), P({ llenos: [{ d: e.d, lineas: e.lineas }] }), flechaSube(262, 96, 290, 34, 292, 74)); } },
+  { nombre: 'Se anuncia', nota: 'Un megáfono anuncia a la etiqueta que va a subir: lo avisan fuerte y antes.',
+    dib: () => { const e = etiqueta(250, 110, 64, 32, -12); return juntar(megafono(142, 100, 1.4), P({ llenos: [{ d: e.d, lineas: e.lineas }] }), flechaSube(262, 84, 280, 30, 286, 62)); } },
+];
+
 // ── las diez (mismo orden que la tanda 1) ──
 export const TANDA1B = [
   { slug: 'que-una-aseguradora-cumpla-lo-que-promete-no-lo-dice-ella-sola', cat: 'Entendé tu plan', idea: 'La promesa, bajo la lupa de otro.',
@@ -138,7 +157,7 @@ export const TANDA1B = [
   { slug: 'cuando-cambias-de-medico-la-informacion-no-viaja-sola', cat: 'Prevención', idea: 'La carpeta viaja con vos, de un consultorio al otro.',
     dib: () => juntar(consultorio(128, 70, 16), consultorio(284, 70, 16), punteada(curva([146, 92], [206, 176], [266, 92]), 7, 3.5), P({ trazos: [flechita(266, 92, -55)] }), persona(196, 140, 86, { brazos: [['d', 10, 20, 0.5, 0.5]], inclina: 3 }), valija(206, 100, 40, 32)) },
   { slug: 'mas-gente-con-seguro-medico-no-significa-atenderla-mas-barato', cat: 'Entendé tu plan', idea: 'Se suben todos y la moneda no se levanta.',
-    dib: () => { const sb = subeybaja(206, 158, 196, 14); const [[x1, y1], [x2, y2]] = sb.tabla; const gente = [0.1, 0.24, 0.38].map((k, i) => { const x = x1 + (x2 - x1) * k, y = y1 + (y2 - y1) * k; return persona(x, y - 2, [54, 58, 52][i]); });
+    dib: () => { const sb = subeybaja(206, 158, 196, 14); const [[x1, y1], [x2, y2]] = sb.tabla; const gente = [0.06, 0.15, 0.24, 0.33, 0.42].map((k, i) => { const x = x1 + (x2 - x1) * k, y = y1 + (y2 - y1) * k; return persona(x, y - 2, [44, 45, 43, 45, 44][i]); });
       return juntar(sb.pieza, ...gente, P({ llenos: [moneda(x2 - 18, y2 - 26, 24)] })); } },
 ];
 export function dibujosTanda() { semilla(61); temblor(1.4); return TANDA1B.map((t) => ({ ...t, il: t.dib() })); }
