@@ -50,7 +50,7 @@ const ORG_JSONLD = {
     telephone: '+595213190000',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Paí Perez 630 c/ Azara',
+      streetAddress: "Pa'í Pérez 630 c/ Azara",
       addressLocality: 'Asunción',
       addressCountry: 'PY',
     },

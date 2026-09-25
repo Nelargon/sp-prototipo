@@ -16,6 +16,13 @@
  * en una página de transparencia se lee como "no lo cubre" — que en el caso de
  * psicología sería falso (está cubierta: 3/5/6 sesiones). El silencio miente.
  *
+ * COLUMNAS (desde el 25/09/2026): e = Essential · s = Silver · o = Gold.
+ * Silver y Gold salen de la grilla Privilege. Essential NO está en esa grilla:
+ * tiene su propio cuadernillo (lista cerrada), y la columna `e` sale de cruzar
+ * cada fila de la grilla con las reglas de
+ * `datos/planes-vigentes/essential-cobertura.json`. Bronze salió de la venta el
+ * 24/09/2026 y su columna ya no se publica (sigue en la grilla, como historia).
+ *
  * Se corre a mano cuando cambia la grilla (ver datos/planes-vigentes/README.md)
  * y el resultado SE COMMITEA: es diffeable, así una re-ingesta muestra en el PR
  * exactamente qué cobertura se movió. No se corre en el build para que un
@@ -29,6 +36,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'datos/planes-vigentes/grilla-coberturas-precios-jul2026.json');
+const SRC_ESS = join(ROOT, 'datos/planes-vigentes/essential-cobertura.json');
 const OUT = join(ROOT, 'lib/prestaciones.json');
 
 /* Códigos de cobertura, ordenados por "cuánto pone el socio": de nada (0) a
@@ -133,11 +141,15 @@ const EXCLUIDOS = [
     // Essential (24/09/2026) cubre lo básico en Lister: su cuadernillo, 1.6.
     d: 'En Silver y Gold la atención del dentista no entra; las radiografías dentales sí, porque son un estudio de imagen. Essential cubre lo básico, solo en Lister: consulta, controles, extracciones simples y limpieza.' },
   { n: 'Tratamiento oncológico', a: 'cancer quimioterapia radioterapia tumor oncologia quimio',
-    d: 'La quimioterapia, la radioterapia y las cirugías para tratar el cáncer no entran. La consulta con el oncólogo sí está cubierta.' },
+    d: 'La quimioterapia, la radioterapia y las cirugías para tratar el cáncer no entran. La consulta con el oncólogo sí: en Silver y Gold pagás la mitad.' },
   { n: 'Cirugía bariátrica', a: 'obesidad bajar de peso manga gastrica bypass balon',
     d: 'La operación para bajar de peso no entra en ningún plan.' },
   { n: 'Cirugías de alta complejidad', a: 'corazon cerebro trasplante neurocirugia cardiocirugia vascular',
-    d: 'Las cirugías del corazón, del cerebro y de los vasos principales no entran. Las consultas con esos especialistas sí, y sin tope.' },
+    d: 'Las cirugías del corazón, del cerebro y de los vasos principales no entran. Las consultas con esos especialistas sí entran en Silver y Gold.' },
+  // Hemodinamia (25/09/2026): sin cobertura en Silver y Gold según su resumen
+  // de coberturas (silver.json / gold.json), y fuera de la lista de Essential.
+  { n: 'Hemodinamia', a: 'cateterismo cateter angioplastia stent coronarias arterias corazon',
+    d: 'El cateterismo cardíaco y la angioplastia no entran en ningún plan. La consulta con el cardiólogo sí.' },
   { n: 'Enfermería a domicilio', a: 'enfermera enfermero domicilio casa curaciones',
     d: 'No está cubierta (cláusula 2.9.2). La consulta médica a domicilio sí: 3 al año en Silver y 4 en Gold.' },
 ];
@@ -191,6 +203,26 @@ const aliasIdx = (set) => {
   return i;
 };
 
+/* Cómo se MUESTRA una cantidad del master, sin cambiar lo que dice (auditoría
+   del 25/09/2026). El master trae tipeos ("Hasta1", "ao", "d contrato",
+   "bene- ficiario"), abreviaturas que una familia no lee ("H.M." = honorarios
+   médicos, "ses."), la moneda en "Gs." (el sitio usa ₲) y referencias a un
+   "Cuadro 3" que el cliente nunca vio. Se corrige la forma, a la vista; si
+   mañana aparece otra variante, se suma acá. */
+const LIMPIEZA = [
+  [/^Hasta1\b/, 'Hasta 1'],
+  [/\bao de contrato/, 'año de contrato'],
+  [/\bd contrato/, 'de contrato'],
+  [/bene-\s*ficiario/, 'beneficiario'],
+  [/\bses\. /, 'sesiones '],
+  [/^Hasta el 50% de H\.M\.$/, 'Hasta el 50% de los honorarios médicos'],
+  [/^H\.M\. hasta Gs\. /, 'Honorarios médicos hasta ₲ '],
+  [/^\*Según detalle de cirugías( Cuadro 3)?$/, 'Según la cirugía: buscala por su nombre'],
+  // El sitio dice «sin tope» en todos lados; la grilla, «Ilimitada».
+  [/^Ilimitada$/, 'Sin tope'],
+];
+const limpiarCantidad = (t) => LIMPIEZA.reduce((acc, [re, por]) => acc.replace(re, por), String(t).trim());
+
 function celda(v) {
   if (!v || typeof v !== 'object' || v.cob == null) return [-1, -1, null];
   const raw = VARIANTES[v.cob] || v.cob;
@@ -198,7 +230,7 @@ function celda(v) {
   if (cob == null) throw new Error(`Código de cobertura desconocido: ${v.cob}`);
   // AD = sin cobertura: cantidad y carencia no significan nada ahí.
   if (raw === 'AD') return [cob, -1, null];
-  return [cob, cantIdx(v.cantidad), carencia(v.carencia)];
+  return [cob, cantIdx(v.cantidad ? limpiarCantidad(v.cantidad) : v.cantidad), carencia(v.carencia)];
 }
 
 /* ⚠ Los sinónimos se prueban SOLO contra el nombre del ítem, NUNCA contra su
@@ -226,6 +258,33 @@ const sinonimosDe = (nombre) => {
 };
 
 const grilla = JSON.parse(readFileSync(SRC, 'utf8'));
+
+/* ---- Essential: la columna `e`, cruzando la grilla con su cuadernillo ----- */
+/* El cuadernillo de Essential es una LISTA CERRADA («Las determinaciones no
+   citadas serán a cargo del asegurado», 2.1): lo que no coincide con ninguna
+   regla es NO (no entra en Essential). Lo que podría ser lo mismo pero no se
+   puede saber por el nombre es "?" → -1: el sitio dice «preguntale a tu
+   asesor». Nunca se completa por inferencia. Cada regla que no encuentra
+   ninguna fila CORTA el script: o la grilla cambió, o la regla está mal. */
+const ESS = JSON.parse(readFileSync(SRC_ESS, 'utf8'));
+const COB_ESS = { CT: 0, CP: 2, NO: 5, '?': -1 };
+const reglasEss = ESS.reglas.map((r) => ({ ...r, res: r.patrones.map((p) => new RegExp(p)), usos: 0, usosPatron: r.patrones.map(() => 0) }));
+const celdaEss = (cob, cantidad, dias) => {
+  const c = COB_ESS[cob];
+  if (c == null) throw new Error(`Essential: cobertura desconocida "${cob}"`);
+  if (c === -1 || c === COB.EXCL) return [c, -1, null];
+  return [c, cantidadEss(cantidad), dias == null ? null : dias];
+};
+const cantidadEss = (t) => (t ? cantIdx(t) : -1);
+const essencialDe = (cuadro, nombre) => {
+  const M = paraMatch(nombre);
+  for (const r of reglasEss) {
+    if (r.cuadro !== cuadro) continue;
+    const j = r.res.findIndex((re) => re.test(M));
+    if (j !== -1) { r.usos++; r.usosPatron[j]++; return celdaEss(r.cob, r.cantidad, r.carencia); }
+  }
+  return celdaEss('NO');
+};
 const items = [];
 const huecos = [];
 const usados = new Set();
@@ -258,13 +317,13 @@ for (const [cuadro, rows] of Object.entries(grilla.cuadros)) {
       alias.add('radiografia').add('placa').add('rayos x');
     }
 
-    const fila = { t: 'e', n: nombre, c: meta.k, b: celdas[0], s: celdas[1], o: celdas[2] };
+    const fila = { t: 'e', n: nombre, c: meta.k, e: essencialDe(meta.k, nombre), s: celdas[1], o: celdas[2] };
     if (r.grupo) fila.g = r.grupo;
     const ai = aliasIdx(alias);
     if (ai !== -1) fila.a = ai;
     items.push(fila);
 
-    if (celdas.some((c) => c[0] === -1)) huecos.push(`${meta.k} · ${nombre}`);
+    if (celdas.slice(1).some((c) => c[0] === -1)) huecos.push(`${meta.k} · ${nombre}`);
   }
 }
 
@@ -314,7 +373,10 @@ for (const r of grilla.consultas_por_especialidad) {
   const alias = sinonimosDe(esp);
   for (const w of formasDePaciente(esp)) alias.add(w);
   alias.add('consulta').add('especialista').add('medico').add('doctor');
-  const fila = { t: 'c', n: esp, c: 'esp', b: tope(r.bronze), s: tope(r.silver), o: tope(r.gold) };
+  const tipoEss = ESS.especialidades.mapeo[esp];
+  if (!tipoEss) throw new Error(`Essential: especialidad sin mapeo en essential-cobertura.json: ${esp}`);
+  const e = tipoEss === 'NO' ? celdaEss('NO') : celdaEss('CT', ESS.especialidades.textos[tipoEss], null);
+  const fila = { t: 'c', n: esp, c: 'esp', e, s: tope(r.silver), o: tope(r.gold) };
   const ai = aliasIdx(alias);
   if (ai !== -1) fila.a = ai;
   items.push(fila);
@@ -324,7 +386,9 @@ for (const r of grilla.consultas_por_especialidad) {
 for (const e of EXCLUIDOS) {
   const alias = new Set(e.a.split(' '));
   const cel = [COB.EXCL, -1, null];
-  items.push({ t: 'x', n: e.n, c: 'exc', d: e.d, b: cel, s: cel, o: cel, a: aliasIdx(alias) });
+  const x = ESS.excluidos[e.n];
+  if (!x) throw new Error(`Essential: exclusión sin dato en essential-cobertura.json: ${e.n}`);
+  items.push({ t: 'x', n: e.n, c: 'exc', d: e.d, e: celdaEss(x.cob, x.cantidad, null), s: cel, o: cel, a: aliasIdx(alias) });
 }
 
 /* ---- Los parámetros clave (topes, días, montos) -------------------------- */
@@ -333,7 +397,11 @@ for (const e of EXCLUIDOS) {
    no son cosas que se busquen: son la letra chica que se lee de corrido. */
 const parametros = grilla.parametros_clave
   .filter((r) => r.parametro && norm(r.parametro) !== 'parametro')
-  .map((r) => ({ sec: r.seccion || '', p: r.parametro.trim(), v: [r.bronze, r.silver, r.gold] }));
+  .map((r) => {
+    const p = r.parametro.trim();
+    if (!(p in ESS.parametros)) throw new Error(`Essential: parámetro sin dato en essential-cobertura.json: ${p}`);
+    return { sec: r.seccion || '', p, v: [ESS.parametros[p], r.silver, r.gold] };
+  });
 
 /* ---- Qué gana el socio al subir de plan ---------------------------------- */
 /* ⚠ POR QUÉ ESTO Y NO "45% / 66% / 93%".
@@ -356,17 +424,26 @@ const saltoEntre = (de, a) => {
     total: mejoran.length,
     // El cuadro donde más se mueve la aguja: es lo que hay que decir primero.
     donde: Object.entries(porCuadro).sort((x, y) => y[1] - x[1]).map(([k, n]) => ({ c: k, n })),
-    // Los que pasan de "lo pagás entero" a tener alguna cobertura.
-    desdeConvenio: mejoran.filter((i) => i[de][0] === COB.AD).length,
+    // Los que pasan de "lo pagás entero" (o de no entrar en el plan) a tener
+    // alguna cobertura.
+    desdeConvenio: mejoran.filter((i) => i[de][0] === COB.AD || i[de][0] === COB.EXCL).length,
   };
 };
-const saltos = { bs: saltoEntre('b', 's'), so: saltoEntre('s', 'o'), bo: saltoEntre('b', 'o') };
+const saltos = { es: saltoEntre('e', 's'), so: saltoEntre('s', 'o') };
+// Un patrón que no coincide con ninguna fila es un error de tipeo o una grilla
+// que cambió: en los dos casos, un estudio que Essential cubre quedaría como
+// "no entra". Por eso corta, patrón por patrón.
+const patronesSinUso = reglasEss.flatMap((r) => r.patrones.filter((_, j) => !r.usosPatron[j]).map((p) => `${r.id}: ${p}`));
+if (patronesSinUso.length) throw new Error(`Essential: patrones que no coinciden con ninguna fila de la grilla:\n  ${patronesSinUso.join('\n  ')}`);
 
 const out = {
   meta: {
-    _: 'GENERADO por scripts/build-prestaciones.mjs — no editar a mano. Fuente: datos/planes-vigentes/grilla-coberturas-precios-jul2026.json.',
+    _: 'GENERADO por scripts/build-prestaciones.mjs — no editar a mano. Fuentes: datos/planes-vigentes/grilla-coberturas-precios-jul2026.json (Silver y Gold) y essential-cobertura.json (Essential). Columnas: e = Essential, s = Silver, o = Gold.',
     vigencia: grilla.meta.vigencia,
     fuente: grilla.meta.archivo_fuente,
+    // Essential sale de otro documento, con otra fecha: la nota del buscador
+    // nombra las dos.
+    vigenciaEss: 'marzo 2026',
     total: items.length,
     porTipo: { e: items.filter((i) => i.t === 'e').length, c: items.filter((i) => i.t === 'c').length, x: items.filter((i) => i.t === 'x').length },
     cuadros: { ...Object.fromEntries(Object.values(CUADROS).map((c) => [c.k, c.label])), esp: 'Consultas con especialista', exc: 'Antes de firmar' },
@@ -413,7 +490,11 @@ writeFileSync(OUT, texto);
 
 const size = Buffer.byteLength(texto);
 console.log(`✔ lib/prestaciones.json — ${items.length} ítems (${out.meta.porTipo.e} estudios · ${out.meta.porTipo.c} especialidades · ${out.meta.porTipo.x} exclusiones), ${parametros.length} parámetros, ${(size / 1024).toFixed(1)} KB`);
-console.log(`  Salto de plan: Bronze→Silver ${saltos.bs.total} mejoran · Silver→Gold ${saltos.so.total} · Bronze→Gold ${saltos.bo.total}`);
+console.log(`  Salto de plan: Essential→Silver ${saltos.es.total} mejoran · Silver→Gold ${saltos.so.total}`);
+const porCob = {};
+for (const i of items) { const k = i.e[0]; porCob[k] = (porCob[k] || 0) + 1; }
+console.log(`  Essential: ${porCob[0] || 0} cubiertos · ${porCob[2] || 0} en parte · ${porCob[5] || 0} no entran · ${porCob[-1] || 0} a confirmar con el asesor`);
+for (const r of reglasEss) console.log(`   · ${r.id}: ${r.usos}`);
 if (huecos.length) {
   console.log(`\n⚠ ${huecos.length} ítems con al menos un plan sin declarar en el master (celdas combinadas del .xlsx).`);
   console.log('  Se muestran como "Sin dato" en la web — nunca se infiere cobertura.');

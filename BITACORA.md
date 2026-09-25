@@ -3736,3 +3736,44 @@ cuando la respuesta llega, se escribe en el HANDOFF con un aviso visible,
 porque la confusión ya estaba repartida en cinco lugares. También quedó a la
 vista un costo de las claves internas: `esencial_*` sigue queriendo decir
 Essential. Se dejó así para no romper links, pero con el aviso al lado.
+
+## Capítulo 104 — La tomografía que era una placa dental (25/09/2026)
+
+**Qué intentamos.** Cargar Essential estudio por estudio en `/que-cubre` (el
+paso 2 que Arturo había dejado pendiente: *«Dale. Eso está pendiente»*) y, en
+el mismo recorrido, buscar inconsistencias en todo el sitio (*«Sigue buscando
+por inconsistencias que arreglar porfa»*). El cuadernillo de Essential no usa
+los nombres de la grilla de Silver y Gold, así que la carga se hizo con reglas:
+un patrón por grupo del cuadernillo, aplicado a cada fila de la grilla.
+
+**Qué pasó.** Tres cosas enseñaron algo.
+
+La primera la encontró la auditoría, no la carga. El sitio decía hace meses que
+la tomografía espera 60 días en Silver y 30 en Gold. Todas las filas de
+tomografía de la grilla dicen 120 y 90. El 60/30 venía de la
+ORTOPANTOMOGRAFIA, una placa dental, que tiene «TOMOGRAFIA» adentro del nombre.
+Alguien buscó por el nombre, encontró la primera fila que lo contenía y la dio
+por buena. El HANDOFF de julio lo repetía como dato.
+
+La segunda es de la misma familia, en el motor de precios. El simulador deja
+cargar hijos hasta los 25 años; el tarifario tiene una tarifa para hijos de
+hasta 20 y otra de 21 a 54. El motor conocía solo la primera, así que un hijo de
+23 pagaba como uno de 9. El control y la tarifa tenían rangos distintos y nadie
+los había puesto uno al lado del otro.
+
+La tercera fue una decisión. Muchas filas de la grilla no se parecen a nada del
+cuadernillo. Adivinar habría llenado la tabla, pero el cuadernillo es una lista
+cerrada: lo que no nombra, no entra. Quedaron tres estados: cubierto (o en
+parte), «No entra en este plan», y para los 26 nombres que podrían ser lo mismo
+con otra palabra, «Confirmalo con tu asesor». Y como las reglas son patrones de
+texto, el build ahora se corta si un patrón no encuentra ninguna fila: una regla
+que no calza con nada es una regla que dejó de funcionar sin avisar. Se probó
+con un patrón falso (corta) y con el archivo sano (pasa).
+
+**Qué aprendimos.** Buscar por una parte del nombre encuentra también a los
+parientes. Cuando un dato sale de una búsqueda por texto, hay que mirar qué
+fila lo dio, no solo que haya dado algo. Un rango que la persona puede elegir en
+pantalla tiene que salir de la misma fuente que el precio, o el precio queda
+mal justo en el borde. Y ante una lista cerrada, «no sé» dicho con honestidad
+vale más que una tabla completa: la columna de Essential tiene 26 casilleros que
+dicen «preguntá», y cada regla de las demás anota la cláusula de la que salió.

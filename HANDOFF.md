@@ -13,11 +13,131 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 24 sep 2026.*
+*Última actualización: 25 sep 2026.*
 
 ---
 
-## 🔁 ESSENTIAL REEMPLAZA A BRONZE — ESPERA EL OK DE ARTURO (24 sep 2026)
+## 🔎 ESSENTIAL ESTUDIO POR ESTUDIO + AUDITORÍA — ESPERA EL OK DE ARTURO (25 sep 2026)
+
+Arturo: *«Dale. Eso está pendiente»* (el paso 2 de Essential) y *«Sigue buscando
+por inconsistencias que arreglar porfa»*. Este PR publica datos de cobertura:
+**no se fusiona sin su OK**. El camino, en BITACORA cap. 104; la lámina,
+`docs/diseno/img/2026-09-25-essential-estudio-por-estudio.webp` (lección 22).
+
+**Paso 2 hecho: `/que-cubre` tiene la columna de Essential.** El buscador, la
+tabla de especialidades (4 columnas otra vez), los números finos y «Subir un
+escalón» (ahora Essential → Silver y Silver → Gold) muestran Essential.
+- **De dónde sale:** `datos/planes-vigentes/essential-cobertura.json`, reglas
+  transcriptas del `CUADERNILLO PLAN ESSENTIAL.pdf` (25/03/2026), con la
+  cláusula de cada una. `scripts/build-prestaciones.mjs` las cruza con las filas
+  de la grilla de Privilege: regex sobre el nombre en mayúsculas y sin tildes,
+  **gana la primera regla que calza** y las dudosas («?») van primero.
+- **Lo que el cuadernillo no nombra, no entra.** Es una lista cerrada: el
+  default es «No entra en este plan». Si un nombre de la grilla no se parece a
+  ninguno del cuadernillo, no se adivina: la regla dudosa lo marca y el sitio
+  dice **«Confirmalo con tu asesor»**.
+- **Guardián nuevo:** si un patrón del JSON no calza con ninguna fila, el build
+  se corta (probado con un patrón falso → sale con error; con el archivo sano →
+  pasa). Una regla que no encuentra nada es una regla que dejó de funcionar sin
+  avisar.
+- **Números del índice:** 983 ítems (934 estudios · 43 especialidades · 6
+  exclusiones). Essential: **350 cubiertos · 30 en parte · 577 no entran · 26 a
+  confirmar**. De Essential a Silver mejoran 594; de Silver a Gold, 275.
+- `lib/buscar-prestaciones.js`: un ítem se castiga en el orden como
+  «incompleto» solo si le falta el dato a Silver o a Gold. El «a confirmar» de
+  Essential es una respuesta honesta, no un hueco.
+- Las especialidades de Essential (43) van por el mapeo de su cuadernillo:
+  Lister sin tope y la red con 3 por mes, o el cupo de 3 al año por familia,
+  según la especialidad.
+
+**Los 26 «a confirmar» (SP tiene que decir si entran):** creatinina/depuración,
+factor reumatoideo cualitativo, fósforo en orina, PTGO 2 determinaciones, urea ·
+apéndice, árbol urinario, dental oclusal, dental semiseriada,
+ortopantomografía, telerradiografía · ecocardiograma con doppler de vasos del
+cuello, ecografía de hígado y vías biliares, mamografía + eco doppler · TAC de
+peñascos y de órbitas · RMN de partes blandas · honorarios del terapista
+coordinador · cesárea más histerectomía, dos colporrafias, quiste de ovario
+complicado, tumorectomía, facoemulsificación, litiasis coraliforme,
+quistectomía renal. Cuando SP responda, se cambia la regla dudosa del JSON por
+una firme y se regenera.
+
+**Inconsistencias que encontró la auditoría y se arreglaron:**
+- **Tomografía: la espera estuvo mal meses.** Decía 60 días en Silver y 30 en
+  Gold: eran los de la ORTOPANTOMOGRAFIA (una placa dental), que contiene
+  «TOMOGRAFIA». Todas las filas TAC-TCMS dicen **120 en Silver y 90 en Gold**
+  (Essential, 180). Corregido en `coverage.js`, las esperas del home y la FAQ.
+- **Hijos de 21 a 25 pagaban como de hasta 20.** El simulador deja cargar hijos
+  hasta 25 y el motor solo conocía la tarifa 0-20. Ahora pagan la de adherente
+  21-54 (Silver ₲ 226.000, Gold ₲ 324.000) y no cuentan para la prima de grupo
+  familiar. Los 14 ejemplos oficiales de grupos siguen dando exacto.
+- **Consultas de Silver decía «5 al año».** Es sin tope en la mitad de las
+  especialidades y 5 o 6 en el resto. Corregido en home, `/planes`, simulador.
+- **Gold decía «consultas sin tope anual»** sin el «casi todas». Corregido.
+- **Glosario de oncológico y alta complejidad:** decían cosas que no son (la
+  consulta con el oncólogo sí entra; en Silver y Gold pagás la mitad).
+- **Hemodinamia** (cateterismo, angioplastia) no estaba en las exclusiones: ahora
+  sí, en el buscador, el glosario y la FAQ.
+- **Ambulancia:** en Essential es hasta 3 veces al año por familia, en Asunción
+  y alrededores; el diferenciador del home lo dice.
+- **Plan Vital dejaba cargar menores de 65.** El simulador ya no baja de 65.
+- **Desde los 70, Silver y Gold solo se renuevan** (el tarifario lo marca). El
+  resultado ahora lo avisa y apunta a Plan Vital.
+- **Promesas sin respaldo en las tarjetas «para quién»:** Silver decía «La más
+  elegida» (no hay dato publicado que lo sostenga) y Gold, «Tranquilidad total,
+  sin preocupaciones» (ningún plan cubre todo). Ahora: «Cobertura equilibrada
+  para tu familia» y «La cobertura más amplia, con los topes más altos». Si SP
+  tiene el dato de ventas, «la más elegida» puede volver con su fuente.
+- El paso 4 de «cómo funciona» prometía usar todo «desde el día uno»; ahora:
+  consultas y urgencias desde el día uno, lo demás según su espera.
+- Menor: el título de la Guía Médica decía «Guía médica» (el nombre propio va
+  con mayúscula, como en el resto del sitio); «Papanicolaou»;
+  «Pa'í Pérez» en la dirección; esperas de 365 días dichas «1 año»; respuestas
+  de la FAQ, bajada del hero y pasos en Inter (regla tipográfica); «Ilimitada»
+  de la grilla se dice «Sin tope», como en el resto del sitio; la nota del
+  buscador nombra las dos fuentes (Silver y Gold, grilla de julio 2026;
+  Essential, condiciones de marzo 2026).
+
+**Territorio (sale de `/que-cubre`):** `app/quote.js` (tarifa 21-54, aviso de
+70+, textos de planes), `app/components/Simulador.jsx` (piso de Vital, textos),
+`app/guia-medica/GuiaMedica.jsx` (solo el H1), `app/glossary.jsx`,
+`app/coverage.js`, `app/page.jsx`, `app/Header.jsx`, `app/layout.jsx`.
+
+**Preguntas abiertas para Arturo / SP (no se inventan):**
+- **Fisioterapia en Gold: ¿20 + 5 respiratorias, o 10 + 3?** La cláusula del
+  contrato dice 20 + 5; el Cuadro 4 del anexo, 10 + 3. El home dice 20; el
+  buscador y los números finos de `/que-cubre`, 10. Silver tiene 15 + 5, así
+  que con 10 + 3 Gold daría menos que Silver: eso sugiere que el anexo está
+  mal (inferencia, no confirmada). No se tocó hasta saber.
+- Los 26 «a confirmar» de arriba.
+- La tabla editable de precios 2026 (Drive de SP, carpeta TABLA DE PRECIOS)
+  rotula «Interior» la columna de Nacional de Essential, y la fila del titular
+  está corrida una columna. Hay que avisarle a quien la mantiene.
+
+**Encontrado y NO arreglado (necesita decisión o es de otro territorio):**
+- `/que-cubre` tiene dos nombres en el sitio; conviene uno solo.
+- «Para mis padres» no preselecciona Vital con `?plan=vital`.
+- Los CTA al simulador no están unificados («Simulá tu plan», «Simulá tu
+  precio», «Ver mi precio», «Simulá el tuyo en un minuto»).
+- Quedan oraciones en Nunito Sans dentro del simulador.
+- Nombres de especialidades: salen de la planilla y algunos no son Tipo Oración.
+- Radios escritos a mano en algunos componentes, y la regex del QA no los ve
+  todos.
+- Botones que dicen lo que hacen y además llevan ícono.
+- **Blog (territorio de `sp-contenido`, se coordina, no se edita):** define
+  alta complejidad y copago distinto que el glosario, y pone «carencia» primero.
+- Silver y Gold: «máximo 3 al mes por especialidad, después copago» no está
+  publicado en ningún lado.
+- Silver «al 100%» tiene excepciones con copago (URO-TAC, colangiorresonancia).
+- La fecha de la Guía Médica dice siempre 17/09.
+- `track('sim_zona_sin_lista')` manda el texto libre que escribió la persona
+  (no es nombre ni teléfono, pero podría serlo).
+- La guía vieja del prototipo (`guia/`) sigue con Bronze.
+- «SP SENIOR» en documentos de SP vs «Plan Vital» en el sitio (pendiente de
+  antes).
+
+---
+
+## 🔁 ESSENTIAL REEMPLAZA A BRONZE — FUSIONADO EN #186 (24 sep 2026)
 
 Arturo: *«El plan Bronze ha quedado obsoleto; ya no se comercializa. El plan
 Essential lo reemplaza.»* Este PR es el **paso 1 de 2** (lo eligió él). Toca
@@ -98,11 +218,10 @@ probablemente el del SP Esencial nuevo, no el de Essential, que ya se vendía
 - QA: la Puerta 1.5 esperaba «parto de 10 meses» siempre; ahora espera la del
   plan que salió (1 año en Essential), probada contra casos que pasan y fallan.
 
-**Paso 2 (pendiente, PR aparte):** cargar Essential estudio por estudio en
-`/que-cubre` (las 106 determinaciones de laboratorio, las listas de ecografías,
-tomografías, resonancias y las 26 cirugías del cuadernillo), las 43
-especialidades y los números finos. Hasta entonces, nada de datos de Bronze con
-el nombre de Essential.
+**Paso 2 (hecho el 25/09, ver la sección de arriba):** Essential estudio por
+estudio en `/que-cubre`. Lo que este apartado dice del buscador con «Confirmalo
+con tu asesor» para todo Essential, y de «Subir un escalón» solo Silver → Gold,
+era el estado del paso 1.
 
 **Datos que faltan o no cierran (no se inventan):**
 - Remedios en la consulta de urgencia: el cuadernillo no trae tope → la tabla
@@ -2794,7 +2913,9 @@ dato que ya estaba estructurado en las 935 filas de
 **Los datos** (grilla de julio 2026, verificada por el usuario): parto
 **300 días en los tres planes**; cesárea 300/300 y **150 en Gold**;
 cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
-cubre); fisioterapia 90; tomografía 60/60/30; ecografía y laboratorio ~60;
+cubre); fisioterapia 90; tomografía 60/60/30 *(⚠ corregido el 25/09/2026:
+ese 60/30 era de la ortopantomografía; la tomografía es 120 en Silver y 90 en
+Gold — BITACORA cap. 104)*; ecografía y laboratorio ~60;
 consultas y urgencias sin espera declarada.
 
 ⚠ **Regla crítica al leer carencias de la grilla — no borrar.** Las filas

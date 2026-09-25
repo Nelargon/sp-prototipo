@@ -22,9 +22,12 @@ const no = (s, d) => ({ s, ok: false, d });
 // null = la grilla no declara carencia para ese servicio → no se muestra nada.
 
 export const coverage = () => [
-  { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Sin tope en Lister; en la red, hasta 3 por mes'), yes('Hasta 5 al año por especialidad'), yes('Sin tope anual en casi todas')] },
+  { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Sin tope en Lister; en la red, hasta 3 por mes'), yes('Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto'), yes('Sin tope anual en casi todas')] },
   { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', wait: [90, 60, 60], cov: [yes('Hasta 4 al año por familia'), yes('Al 100%, la mayoría sin tope'), yes('Al 100%, la mayoría sin tope')] },
-  { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', wait: [180, 60, 30], cov: [yes('Hasta 2 al año por familia, junto con ecocardiograma y ergometría'), yes('Al 100%, hasta 2 al año'), yes('Al 100%, hasta 2 al año y menos espera')] },
+  // Tomografía: 120 días en Silver y 90 en Gold, como TODAS las filas TAC-TCMS
+  // de la grilla. Decía 60/30: eran los de ORTOPANTOMOGRAFIA (una placa dental)
+  // leída como "tomografía" por la subcadena (auditoría del 25/09/2026).
+  { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', wait: [180, 120, 90], cov: [yes('Hasta 2 al año por familia, junto con ecocardiograma y ergometría'), yes('Al 100%, hasta 2 al año'), yes('Al 100%, hasta 2 al año y menos espera')] },
   { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', wait: [365, 150, 150], cov: [yes('1 al año por familia, sin contraste'), yes('Al 100%, 1 al año'), yes('Al 100%, 1 al año')] },
   { name: 'Sesión de psicología', icon: 'M12 3a7 7 0 0 0-4 12.7V19l2-1 2 1 2-1 2 1v-3.3A7 7 0 0 0 12 3Z', cov: [yes('Hasta 3 al año por familia, en el mismo cupo que otras especialidades'), yes('5 sesiones al año'), yes('6 sesiones al año')] },
   { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', wait: [365, null, null], waitNote: 'En Silver y Gold, 2 meses si es por algo agudo.', cov: [yes('Habitación privada, hasta 20 días al año por familia'), yes('Semi-suite, hasta 20 días al año'), yes('Semi-suite, hasta 25 días al año')] },
@@ -32,7 +35,7 @@ export const coverage = () => [
   // Parto: 365 días en Essential y 300 en Silver y Gold. Cesárea: 150 en Gold.
   // Es la espera más larga y la que más caro sale descubrir tarde; por eso
   // además tiene aviso propio en el home.
-  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], waitNote: 'La cesárea espera 150 días en Gold.', cov: [yes('Con el bebé en nursery · medicamentos hasta ₲ 350 mil'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1 millón'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1,5 millones')] },
+  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], waitNote: 'La cesárea espera 5 meses en Gold.', cov: [yes('Con el bebé en nursery · medicamentos hasta ₲ 350 mil'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1 millón'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1,5 millones')] },
   { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Al 100% · remedios hasta ₲ 150 mil'), yes('Al 100% · remedios hasta ₲ 200 mil')] },
   { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes('20 sesiones al año')] },
   { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta ₲ 350 mil por evento'), yes('Hasta ₲ 1 millón por evento'), yes('Hasta ₲ 1,5 millones por evento')] },
@@ -58,7 +61,7 @@ export const carencias = () => [
   // En Essential: rutina sin espera, especializados a los 90 días.
   { que: 'Análisis de laboratorio', dias: [90, 60, 60], nota: 'la mayoría', notaPlan: ['los de rutina, sin espera', null, null] },
   { que: 'Ecografías', dias: [90, 60, 60] },
-  { que: 'Tomografía', dias: [180, 60, 30] },
+  { que: 'Tomografía', dias: [180, 120, 90] },
   // Parámetros clave: "Carencia – internación clínica por evento agudo: 60 días".
   // Essential no distingue: toda internación, a los 365 días.
   { que: 'Internación por algo agudo', dias: [365, 60, 60] },
@@ -80,7 +83,7 @@ export const carenciasVital = () => [
   { que: 'Consultas, urgencias y ambulancia a domicilio', dias: 0 },
   { que: 'Laboratorio de rutina, radiografías y electrocardiograma', dias: 0 },
   { que: 'Fisioterapia', dias: 0 },
-  { que: 'Análisis complementarios, ecografías y Papanicolau', dias: 90 },
+  { que: 'Análisis complementarios, ecografías y Papanicolaou', dias: 90 },
   { que: 'Cirugías menores y procedimientos ambulatorios', dias: 180 },
   { que: 'Internación, cirugías y terapia intensiva', dias: 365 },
 ];

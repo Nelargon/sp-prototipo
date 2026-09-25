@@ -75,7 +75,7 @@ const CASOS_ESPECIALES = [
   {
     q: 'resonancia de rodilla',
     porque: 'la fila COMPLETA gana a la que tiene huecos de celda combinada',
-    ok: (hits) => hits[0] && hits[0].b[0] !== -1 && hits[0].s[0] !== -1 && hits[0].o[0] !== -1,
+    ok: (hits) => hits[0] && hits[0].e[0] !== -1 && hits[0].s[0] !== -1 && hits[0].o[0] !== -1,
   },
   {
     q: 'muela',
@@ -105,7 +105,7 @@ for (const c of CASOS_ESPECIALES) {
   } else {
     fallos++;
     console.log(`✘ "${c.q}" — ${c.porque}`);
-    hits.slice(0, 3).forEach((h) => console.log(`     · [${h.t}] ${h.n}  ${JSON.stringify([h.b[0], h.s[0], h.o[0]])}`));
+    hits.slice(0, 3).forEach((h) => console.log(`     · [${h.t}] ${h.n}  ${JSON.stringify([h.e[0], h.s[0], h.o[0]])}`));
   }
 }
 

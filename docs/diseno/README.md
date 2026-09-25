@@ -381,3 +381,25 @@ vista, debajo de la tabla.
 plan cuenta distinto, la diferencia se escribe junto al número; y lo que la
 tabla no puede mostrar (la espera) se dice al lado, no se deja para la letra
 chica.
+
+### 22 · «No sé» también es una respuesta de la tabla
+
+![El buscador de «¿Está cubierto?» en celular con la columna de Essential: cubierto, confirmalo con tu asesor, exclusión y especialidades](img/2026-09-25-essential-estudio-por-estudio.webp)
+
+**Qué muestra.** El buscador de `/que-cubre` en celular después de cargar
+Essential estudio por estudio: un estudio cubierto con su tope y su espera, uno
+que el cuadernillo no nombra igual («Confirmalo con tu asesor»), la exclusión
+de hemodinamia que faltaba y la tabla de especialidades con cuatro columnas.
+
+**Qué se decidió.** El cuadernillo de Essential es una lista cerrada, así que
+lo que no nombra queda como «No entra en este plan». Cuando un nombre de la
+grilla podría ser el mismo estudio con otra palabra, no se adivina: se muestra
+en gris neutro, con una línea que dice por qué y a quién preguntar. La nota del
+pie nombra las dos fuentes con su fecha, porque Essential y Silver/Gold salen
+de documentos distintos.
+
+**La lección.** Un casillero que dice «preguntá» es más honesto que uno
+rellenado por parecido, siempre que diga por qué no sabe y a quién preguntar:
+sin esa línea, «Confirmalo» se lee como una evasiva. Y cuando dos columnas
+salen de dos fuentes, la nota lo dice; si no, la persona cree que todo viene
+del mismo papel.
