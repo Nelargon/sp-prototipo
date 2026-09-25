@@ -11,10 +11,19 @@ name: Salud nocturna
 #   5. producción = main: el último commit de main está publicado
 #   6. el Guardián (capa 2) está vivo: actualizó su tablero en las últimas 30 h
 #
-# Corre a las 05:00 de Asunción, cuando la cadena del motor de contenido ya
-# terminó (el Publicador arranca 04:30). A las 06:00 el Guardián —la rutina de
-# Claude— lee este resultado, cruza los tres repos y arregla lo que puede.
+# Corre a las 05:23 de Asunción, cuando la cadena del motor de contenido ya
+# terminó (el Publicador arranca 04:30), y otra vez a las 17:23. A las 06:00 el
+# Guardián —la rutina de Claude— lee este resultado, cruza los tres repos y
+# arregla lo que puede; si esta corrida no apareció, la dispara él.
 # Manual completo del sistema: sp-interno/salud/GUARDIAN.md.
+#
+# ⚠ POR QUÉ :23 Y DOS VECES (25 sep 2026). La primera corrida programada, a las
+# 08:00 UTC en punto, no apareció nunca. Medido ese día: el cron horario del
+# deploy (deploy.yml, ':17') corrió 8 veces en ~33 horas, con 30-50 minutos de
+# atraso. GitHub avisa que en momentos de carga demora los horarios y puede
+# descartarlos, y que la carga pico es el comienzo de cada hora. Por eso: un
+# minuto lejos del :00, y un segundo turno a la tarde para que un horario
+# descartado no deje al Guardián sin quien lo vigile (paso 6).
 #
 # Si algo falla abre UN issue `salud-nocturna` (o le suma un comentario si ya
 # está abierto) y la corrida queda en rojo. Cuando vuelve a verde, lo cierra
@@ -26,7 +35,8 @@ name: Salud nocturna
 
 on:
   schedule:
-    - cron: '0 8 * * *'   # 05:00 America/Asuncion (UTC-3)
+    - cron: '23 8 * * *'    # 05:23 America/Asuncion (UTC-3)
+    - cron: '23 20 * * *'   # 17:23, segundo turno
   workflow_dispatch:
   # Un PR que cambia esta rutina la prueba entera antes de fusionarse (sin
   # abrir issues: los avisos son solo de las corridas sobre main).
