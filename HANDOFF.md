@@ -71,6 +71,12 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 `qa/qa-lanzamiento.mjs` que elige una ciudad en el home y toca una ciudad en el
 mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
 
+**En diseño (25/09, noche), pendiente de Arturo:** (1) el muro como **tapiz de
+la Guía Médica**, tres maneras (docs/diseno n.º 36); (2) **compactar el tramo
+de abajo del comparador** del home, dos maneras (n.º 37). En las dos del
+tramo, la banda «¿Dónde atenderte?» pasa a ser una puerta: repetía a «Dónde
+te atendés».
+
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
 corrigen en la planilla, no en el sitio. Los logos de 6 prestadores que se

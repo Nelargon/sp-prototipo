@@ -993,3 +993,58 @@ claro: el velo es un parche para un fondo que grita. Y un mapa sirve más donde
 responde a lo que la persona ya hizo (buscó una especialidad) que donde solo
 muestra la red.
 
+---
+
+## Parte 11 · El muro como tapiz de la Guía Médica (25/09/2026)
+
+### 36 · Tres maneras de poner el muro detrás de la guía
+
+![Tapiz 1: el muro grande detrás del título y el buscador de la guía, que se apaga antes de la lista](img/2026-09-25-guia-tapiz-1-encabezado.webp)
+
+![Tapiz 2: el muro fijo, visible solo a los costados de la columna de resultados](img/2026-09-25-guia-tapiz-2-margenes.webp)
+
+![Tapiz 3: los nombres chicos en mayúscula cubren todo el fondo como un tejido](img/2026-09-25-guia-tapiz-3-trama.webp)
+
+**Qué muestra.** Arturo, con «Dónde te atendés» publicado: el muro *«también
+puede estar detrás de la guía médica… más sutil, más fade… como un lindo tapiz
+de atrás»*. Tres maneras, sobre la guía real: **1**, en el encabezado, que se
+apaga antes de la lista (con el centro más claro detrás del texto); **2**, en
+los márgenes, fijo y visible solo a los costados de la columna; **3**, la
+trama fina: nombres chicos en mayúscula, como un tejido, en todo el fondo.
+
+**Qué se decidió.** Pendiente de Arturo.
+
+**La lección.** La guía es una herramienta: se leen direcciones y teléfonos.
+El tapiz tiene que vivir donde no se lee. En el celular no hay márgenes, así
+que el 2 se vuelve el 1: la misma idea necesita otro lugar en otra pantalla.
+
+---
+
+## Parte 12 · El tramo de abajo del comparador (25/09/2026)
+
+### 37 · Siete piezas apiladas, compactadas en dos maneras
+
+![El tramo debajo de la tabla del home, hoy (697 px), en la opción 1 (426 px) y en la opción 2 (403 px)](img/2026-09-25-home-tramo-compacto-escritorio.webp)
+
+![El mismo tramo a 390 px: hoy 1506 px, opción 1 890 px, opción 2 907 px](img/2026-09-25-home-tramo-compacto-celular.webp)
+
+**Qué muestra.** Arturo: *«esta parte de aquí no me gusta tanto cómo está
+diseñada… podemos cram it a little bit more while maintaining very good
+aesthetic design»*. Hoy son siete piezas, cada una con su caja: la espera de
+Essential, la leyenda, la garantía, dos puertas, la nota de precios, la banda
+«¿Dónde atenderte?» y la banda de SP Senior. **Opción 1**: la leyenda y la
+espera en una sola caja, la garantía en una línea, tres puertas iguales y SP
+Senior en una tira. **Opción 2**: todo en un solo panel —leyenda, espera,
+garantía en cápsulas— con las tres puertas como su pie, y SP Senior en una
+tira. Las dos bajan el tramo un 40%.
+
+**Qué se decidió.** Pendiente de Arturo. En las dos, la banda «¿Dónde
+atenderte?» pasa a ser la tercera puerta («¿Dónde me atiendo?»): desde el
+25/09 el home tiene «Dónde te atendés», y la banda repetía lo mismo con más
+texto (la misma razón por la que se sacó la franja de Lister el 6/08).
+
+**La lección.** Una pila de cajas iguales no ordena: cada caja pide la misma
+atención. Juntar lo que se lee junto (leyenda y espera explican la tabla) y
+alinear lo que es del mismo tipo (tres preguntas, tres puertas iguales)
+achica sin sacar nada.
+
