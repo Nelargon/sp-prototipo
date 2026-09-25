@@ -621,6 +621,15 @@ todo lo que puedas».*
   contenedor de las sesiones de Claude no llega a `github.io` (la red lo
   bloquea: medido el 24/09). GitHub Actions sí.
 
+**Herramientas al día (25/09/2026, OK de Arturo).** Los cuatro workflows pasan a
+`actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-pages-artifact@v5`
+y `actions/deploy-pages@v5` (las anteriores corrían sobre Node 20, que GitHub
+retira), y construyen con **Node 22**, el mismo que usan las sesiones para
+verificar (Node 20 dejó de recibir parches de seguridad en abril de 2026). Si
+cambia uno, cambia el otro. Ojo: desde la v4, `upload-pages-artifact` deja
+afuera los archivos que empiezan con punto; hoy el sitio no tiene ninguno (nota
+en `deploy.yml`).
+
 **La regla que protege lo que viene («lo nuevo entra con su prueba»):**
 `qa/cobertura-rutas.mjs` corta el CI de cualquier PR que agregue una página
 (`app/**/page.jsx`) que ninguna prueba abra. Se cumple sumándola a

@@ -28,10 +28,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       # DOS EDICIONES, UN SOLO ARTEFACTO (sep 2026). El mismo código se
@@ -55,7 +55,11 @@ jobs:
           NEXT_PUBLIC_EDICION: lanzamiento
       - name: Montar la v1 bajo /lanzamiento/
         run: mv out _site/lanzamiento
-      - uses: actions/upload-pages-artifact@v3
+      # ⚠ Desde la v4, esta acción deja AFUERA los archivos y carpetas que
+      # empiezan con punto (.well-known/, .nojekyll…), sin avisar. El 25/09/2026
+      # el sitio no tenía ninguno (verificado en las dos ediciones). Si algún
+      # día hace falta publicar uno, sumar `include-hidden-files: true` acá.
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./_site
 
@@ -67,4 +71,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
