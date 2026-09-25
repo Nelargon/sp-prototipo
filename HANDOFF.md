@@ -17,6 +17,48 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🖼 PORTADAS DIBUJADAS DEL BLOG — EN PRUEBA, ESPERANDO A ARTURO (24 sep 2026)
+
+Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
+lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo
+más al estilo SP?»*. Y mientras se armaba la prueba: *«Acordate de que no tienen
+que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Recorrido y
+láminas en `docs/diseno/` (lecciones 18 y 19); el camino, en BITACORA cap. 100.
+
+**Qué se busca:** un dibujo por nota que diga lo que dice la nota. Hoy 61 de las
+70 notas comparten 5 dibujos, uno por categoría (las otras 9 llevan su cifra).
+
+**Estado:** cinco estilos sobre la mesa (trazo blanco, línea y acento, dos
+tintas, rayado, tiza), probados en tres notas reales y en el índice del blog en
+celular. **Arturo elige. En el sitio no cambió nada.** Los dibujos y las
+técnicas están en `docs/diseno/fuentes/` (no es código del sitio).
+
+**Lo que ya vale (no re-litigar sin motivo):**
+- **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
+  blanco) ni sus dibujos. Cambiar solo la paleta no alcanza: es el mismo estilo
+  (lección 18).
+- **La mano es la de los íconos**: trazo a mano, que no cierra perfecto.
+- **La composición vive entre x 110 y 300** del cuadro de 400×200: en el riel
+  «Lo último» la portada se recorta en cuadrado. Medido: hoy esas miniaturas no
+  muestran el ícono de la categoría, que queda afuera del recorte.
+- **El temblor del trazo va en el dibujo, no en un filtro** (cap. 100).
+
+**Pendiente, cuando elija:**
+1. Llevar el estilo a `app/blog/Cover.jsx`, con las 70 portadas verificadas en
+   el navegador (tarjeta, destacada, riel, «Seguí leyendo» y el artículo).
+2. **Qué dibujo lleva cada nota se acuerda con el Orquestador de
+   `sp-contenido`**, que escribe las notas: la propuesta es una biblioteca de
+   25 a 30 metáforas que se reusan por tema, y un campo en el frontmatter que
+   la nota elige. No lo implementa una sesión de web sola.
+3. Las 9 portadas con cifra (`cover_dato`) se quedan como están: recomendación
+   de Claude, falta que Arturo la confirme.
+4. Si gana un estilo de fondo claro, sumar el isotipo navy a
+   `public/assets/brand/` (el blanco se pierde).
+5. Los dibujos son de Claude: la mano cuesta (cap. 100). Un ilustrador podría
+   redibujar la biblioteca más adelante sin cambiar el sistema.
+
+---
+
 ## ✂️ EL COMPARADOR DEL HOME, MÁS LIVIANO (24 sep 2026)
 
 Pedido de Arturo, cinco puntos. Cuatro entraron; el quinto (Bronze → Essential)
