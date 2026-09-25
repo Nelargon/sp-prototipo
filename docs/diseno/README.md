@@ -698,3 +698,58 @@ Claude, sin decidir: quedarse con el dengue, rehacer las otras nueve como emblem
 (sin manos, sin relojes ni cuadrantes, sin «!», sin una fila de gente que se lea
 como familia) y gastar la prueba de pasillo en la versión nueva, no en esta, que
 dos lectores ya marcaron.
+
+### 29 · Dos evaluadores, un diagnóstico, y la prueba se calibra
+
+**Qué pasó.** Arturo corrió el mensaje 2 en su ventana, sobre su propia ronda a
+ciegas. Aprobó 3 (cambiar de médico, dengue y más gente, las tres en el
+contrapeso) y mandó a rehacer 7. Filosofía 4/10, personalidad 6/10, familia no.
+
+**Lo que dicen los dos evaluadores, sin haberse visto.**
+- **El mismo diagnóstico.** Filosofía 4/10 en las dos corridas, familia «no» en
+  las dos, y en las dos falta lo mismo: el emblema y la picardía. *«La mayoría
+  recurre a escenas literales en lugar de crear emblemas conceptuales
+  aislados.»* Solo el dengue lo aprueban los dos.
+- **El mosquito dice lo contrario.** Queríamos que se fuera. Los dos lo leyeron
+  llegando: *«un mosquito volando hacia dos personas»* y *«el recorrido del
+  mosquito hacia las figuras explica bien el contagio»*. Una línea punteada no
+  dice hacia dónde va.
+- **El precio es una moneda que sube.** Para el aviso de precio, los dos
+  propusieron lo mismo: *«una moneda sube la escalera»* y *«una flecha subiendo
+  sobre una moneda»*.
+- **Lo repetido parece de máquina.** Las quince tildes iguales, las monedas
+  apiladas, los escalones: *«parece el ícono de calendario de una app»*, y
+  *«vectores geométricos y proporciones rígidas»* en la 1, la 2, la 6 y la 7. La
+  mano del chico se pierde cuando el mismo trazo se copia.
+- **El tensiómetro volvió a ser reloj**: uno de los arreglos pedía *«reemplazar
+  reloj por tensiómetro»*, y era un tensiómetro.
+
+**Cómo se calibró la prueba** (detalle en `prueba-de-portadas.md`). El
+contrapeso cambió cinco veredictos en las dos corridas y cuatro fueron para
+aprobar: ahora lo que falla a ciegas no se aprueba en el contrapeso. «A ciegas»
+pasó a ser una pregunta que se puede tildar: *¿alguien que lea solo la
+adivinanza elegiría este título entre los diez?* Y el rojo y el logo entraron en
+lo que no se propone, porque un arreglo pedía un lazo rojo tocando el logo.
+
+**Ideas para la versión nueva** (de los dos evaluadores, pasadas por nuestras
+reglas: sin manos, sin relojes ni cuadrantes, sin «!», sin rojo). Sin decidir:
+1. VIH: un lazo blanco, lleno, sobre una pila de almanaques, uno por año.
+2. Precio: la moneda que sube la escalera, con el aviso (un sobre) un escalón
+   antes.
+3. Cambiar de médico: la carpeta llena viaja con la persona entre dos
+   consultorios, sin sol ni suelo.
+4. Dengue: el mosquito que se va sin duda, hacia afuera del cuadro; la curita
+   más grande; sin pasto.
+5. Aseguradora: un globo grande con tilde (los de afuera) frente a uno chico (la
+   empresa), sin edificio.
+6. Más gente: una fila de adultos que crece y la pila de monedas que no baja,
+   cada moneda a mano.
+7. Cirugía: la lámpara del quirófano en el medio del ida y vuelta.
+8. Presión: el corazón con el brazalete del tensiómetro puesto, sin cuadrante.
+9. Cuello uterino: el microscopio, grande, en la puerta del centro de salud; sin
+   reloj ni sol.
+10. Hospital y quien estudia: la pila de libros más alta que el hospital
+    terminado.
+
+**Estado (25/09/2026):** esperando el OK de Arturo para rehacer las nueve y
+probarlas igual, con la prueba de pasillo para la versión nueva.
