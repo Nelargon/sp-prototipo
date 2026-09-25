@@ -438,3 +438,24 @@ también cumplir otra regla suya: la cabeza mira hacia lo que atiende.
 dibujo maestro en vector; si estas portadas salen, conviene que las revise quien
 hizo el original.
 
+### 24 · La gente, con otra mano
+
+![La gente de hasta ahora y cinco variaciones del muñeco](img/2026-09-24-portadas-gente-otra-mano.webp)
+
+![Las cinco variaciones en el índice del blog, en celular](img/2026-09-24-portadas-gente-en-su-lugar.webp)
+
+**Qué muestra.** Arturo pasó una referencia para dibujar a las personas: cabeza
+grande y redonda con dos puntitos, cuerpo como una papa, brazos y piernas de
+palito, poses con movimiento. La referencia no se guarda acá, porque no es
+nuestra. Se tomó la manera de dibujar, no el personaje. La lámina muestra la gente
+de hasta ahora y cinco variaciones del muñeco sobre las mismas tres notas:
+cabeza blanca, solo línea, cuerpo de color, con caras y con pelo y detalles.
+
+**Lo que se vio.** Con cabeza, cuerpo y palitos, la gente se mueve: el que no
+entiende se rasca la cabeza, el que explica abre el brazo, la familia camina. El
+primer intento de pelo y lentes fue en blanco sobre la cabeza blanca, y no se
+veía. Lo que va en la cara va en el color del fondo, que cumple el papel de la
+línea oscura de la referencia con la paleta de SP.
+
+**Estado (24/09/2026):** esperando a Arturo.
+

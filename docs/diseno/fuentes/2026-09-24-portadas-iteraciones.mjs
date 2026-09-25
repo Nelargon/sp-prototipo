@@ -135,3 +135,4 @@ export function iteraciones() {
   };
   return I;
 }
+export { P, juntar, persona, casa, hospital, globo, sol, lapacho, lista, suelo, pasto, colinas, mancha };

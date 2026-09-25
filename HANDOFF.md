@@ -143,6 +143,12 @@ del círculo, con paisaje, un detalle lleno y gente con gestos. **En el sitio no
 cambió nada.** Los dibujos están en `docs/diseno/fuentes/` (no es código del
 sitio).
 
+**La gente, con otra mano (24/09/2026, referencia de Arturo):** para las
+personas pidió variaciones de un muñeco de cabeza grande y redonda, cuerpo de
+papa y palitos, con movimiento. Hay cinco variaciones en la lección 24,
+esperando su elección. Lo que va en la cara (ojos, boca, pelo, lentes) va en el
+color del fondo sobre la cabeza blanca: en blanco no se ve.
+
 **Tranquibara en las portadas (24/09/2026, pedido de Arturo):** *«Podemos usar
 versiones de Tranquibara también.»* Dibujado a mano en trazo blanco, con cinco
 estados y tres portadas de prueba (lección 23). Sigue las reglas del personaje,
