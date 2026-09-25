@@ -611,6 +611,25 @@ El cuello uterino es la lección chica: el reloj quería decir «quince minutos�
 se leyó *«cuánto esperás para que te atiendan»*. En salud, un reloj se lee como
 espera.
 
+**Los errores que la referencia evita** (Arturo: *«¿Qué errores pensás que evita
+cometer?»*). Entre paréntesis, la tanda 1:
+1. **Dibujar la oración entera** en lugar de un objeto y un gesto (la comete: la
+   aseguradora lleva edificio, globo, dos personas y dos tildes).
+2. **La escena genérica de salud**: ni un hospital, ni un guardapolvo, ni un
+   estetoscopio en doce dibujos (la comete: cuatro llevan sanatorio o hospital, y
+   las dos de «persona + sanatorio» se leyeron como «clínicas» y «horarios»).
+3. **Las caras**, que traen edad, género y emoción, y dejan a alguien afuera (la
+   evita: la cabeza en anillo no tiene cara).
+4. **El adorno** (la comete: suelo en nueve, sol o pasto en tres).
+5. **Que todo pese igual** (la comete: todo con el mismo contorno, el papel como
+   sombra).
+6. **Los símbolos con dos lecturas** (la comete: el reloj y el cartel «!»).
+7. **El dibujo quieto** (la comete: casi todo parado sobre una horizontal; la
+   excepción, el mosquito que se va, fue de las dos que se acertaron).
+
+Tres preguntas antes de dibujar cada portada: ¿cuál es el objeto?, ¿cuál es el
+gesto?, ¿qué sobra?
+
 **Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo, ahora con la
 prueba de pasillo. Propuesta de Claude, sin decidir: la mano del chico con la
 gramática del emblema; rehacer como emblema las cinco que fallaron y probarlas
