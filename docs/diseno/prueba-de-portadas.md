@@ -247,4 +247,5 @@ en `<avoid>`.
 | Tanda | Prueba | Fecha | Pasan a ciegas | Veredicto | Dónde |
 |---|---|---|---|---|---|
 | 1 | IA sin contexto (variante B) | 25/09/2026 | 2 de 10 (3 cerca) | 2 aprobadas, 8 a rehacer · filosofía 4/10 · personalidad 5/10 | `README.md`, lección 28 |
+| 1 | IA sin contexto, ronda a ciegas (corrida de Arturo) | 25/09/2026 | 1 de 10 (4 cerca) | — | `README.md`, lección 28 |
 | 1 | Pasillo, 5 personas | — | — | — | pendiente (Arturo) |
