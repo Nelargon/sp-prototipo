@@ -278,6 +278,12 @@ similitud con la mano que se usa para Claude.»* Recorrido y láminas en
   vuelva a dibujar a Tranquibara por código**: si aparece en el blog, va con su
   arte oficial.
 
+**La biblioteca, en tandas de 10 (25/09/2026):** *«Vamos a cubrir todas en tandas
+de 10.»* 62 notas sin cifra, de la más nueva a la más vieja; cada tanda se
+aprueba antes de la siguiente. **Tanda 1: lista, esperando a Arturo** (lección
+27; dibujos en `docs/diseno/fuentes/2026-09-25-portadas-tanda-1.mjs`, que ya es
+el registro slug → dibujo para cuando se lleve a `Cover.jsx`).
+
 **En el sitio no cambió nada todavía.** Los dibujos y las piezas están en
 `docs/diseno/fuentes/` (no es código del sitio); el estilo elegido sale de
 `2026-09-24-portadas-iteraciones.mjs`, iteraciones 1 y 4.
