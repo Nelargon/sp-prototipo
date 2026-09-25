@@ -53,8 +53,9 @@ Antes de elegir, hay datos de la empresa que se pueden pedir o buscar
 con la misma calma que se compara un precio:
 
 - Hace cuántos años opera en el país.
-- Si está registrada y supervisada por la Superintendencia de Seguros
-  del Banco Central del Paraguay.
+- Ante qué organismo está registrada: la Superintendencia de Salud si
+  es medicina prepaga, o la Superintendencia de Seguros del Banco
+  Central del Paraguay si es una compañía de seguros.
 - Si publica sus resultados o balances de forma pública.
 
 **Antes de fijarte en el precio de un plan, fijate en quién está
