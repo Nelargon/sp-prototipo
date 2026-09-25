@@ -3777,3 +3777,22 @@ pantalla tiene que salir de la misma fuente que el precio, o el precio queda
 mal justo en el borde. Y ante una lista cerrada, «no sé» dicho con honestidad
 vale más que una tabla completa: la columna de Essential tiene 26 casilleros que
 dicen «preguntá», y cada regla de las demás anota la cláusula de la que salió.
+
+## Capítulo 107 — La transparencia no implica sobreexplicar (25/09/2026)
+
+**Qué intentamos.** Encabezar la tabla que compara los planes con un título en
+dos partes («Qué te cubre cada plan y qué ponés vos») y una bajada que
+anunciaba lo que venía («Acá está todo lo que cambia entre los tres, de un
+vistazo»). La idea era prometer claridad antes de darla.
+
+**Qué pasó.** Arturo lo leyó y lo frenó: *«Esta frase no es muy clara y no se
+dirige directamente a la persona. Al leerla, me confunde un poco. Debemos ser
+más directos y claros. Solo hace falta poner un título, sin demasiados detalles
+adicionales. La transparencia no implica sobreexplicar.»* Quedó «Qué te cubre
+cada plan.», sin bajada. En el celular, la tabla subió unos 100 px.
+
+**Qué aprendimos.** El proyecto se apoya en la honestidad, y eso empuja a
+agregar una línea más que explique. Pero la honestidad está en
+lo que la tabla dice, no en un texto que anuncia que la tabla es honesta. Una
+bajada que repite lo que el bloque de abajo ya muestra no informa: hace leer
+más. Antes de sumar una línea, preguntarse qué dice que la pantalla no diga ya.

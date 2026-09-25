@@ -82,11 +82,18 @@ una firme y se regenera.
 - **Plan Vital dejaba cargar menores de 65.** El simulador ya no baja de 65.
 - **Desde los 70, Silver y Gold solo se renuevan** (el tarifario lo marca). El
   resultado ahora lo avisa y apunta a Plan Vital.
-- **Promesas sin respaldo en las tarjetas «para quién»:** Silver decía «La más
-  elegida» (no hay dato publicado que lo sostenga) y Gold, «Tranquilidad total,
-  sin preocupaciones» (ningún plan cubre todo). Ahora: «Cobertura equilibrada
-  para tu familia» y «La cobertura más amplia, con los topes más altos». Si SP
-  tiene el dato de ventas, «la más elegida» puede volver con su fuente.
+- **Tarjetas «para quién» de la tabla del home:** Gold decía «Tranquilidad total,
+  sin preocupaciones», una promesa absoluta (ningún plan cubre todo); ahora dice
+  «La cobertura más amplia, con los topes más altos». Silver decía «La más
+  elegida. Cobertura equilibrada…» justo debajo del badge «La más elegida»: se
+  quitó la repetición (regla de etiquetas). **El badge queda**; sigue abierta la
+  pregunta de siempre para Comercial (¿hay dato de ventas que lo sostenga?, ver
+  la tabla de pendientes).
+- **Título de la tabla del home** (Arturo, 25/09: *«La transparencia no implica
+  sobreexplicar»*): de «Qué te cubre cada plan y qué ponés vos» + bajada a solo
+  **«Qué te cubre cada plan.»**, sin bajada. Lámina: lección 26 de
+  `docs/diseno`; BITACORA cap. 107. Vale como criterio para los demás títulos:
+  una bajada que repite lo que el bloque muestra, se saca.
 - El paso 4 de «cómo funciona» prometía usar todo «desde el día uno»; ahora:
   consultas y urgencias desde el día uno, lo demás según su espera.
 - Menor: el título de la Guía Médica decía «Guía médica» (el nombre propio va

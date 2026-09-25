@@ -664,8 +664,11 @@ export default function Page() {
               repetía los nombres que la tabla muestra dos líneas más abajo, y
               Bronze ya no se vende. */}
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:var(--sp-teal-deep)')}>qué ponés vos</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Acá está <b style={css('color:var(--sp-teal-deep)')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
+            {/* Solo el título (Arturo, 25/09/2026: «La transparencia no implica
+                sobreexplicar»). Antes: «Qué te cubre cada plan y qué ponés vos»
+                + «Acá está todo lo que cambia entre los tres, de un vistazo». Son
+                las mismas palabras del menú que trae hasta acá. */}
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0')}>Qué te cubre <span style={css('color:var(--sp-teal-deep)')}>cada plan</span>.</h2>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).

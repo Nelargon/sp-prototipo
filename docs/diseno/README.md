@@ -403,3 +403,21 @@ rellenado por parecido, siempre que diga por qué no sabe y a quién preguntar:
 sin esa línea, «Confirmalo» se lee como una evasiva. Y cuando dos columnas
 salen de dos fuentes, la nota lo dice; si no, la persona cree que todo viene
 del mismo papel.
+
+### 26 · La transparencia no implica sobreexplicar
+
+![El título de la tabla del home antes (dos partes y una bajada) y después (solo «Qué te cubre cada plan.»)](img/2026-09-25-titulo-tabla-solo-titulo.webp)
+
+**Qué muestra.** El encabezado de la tabla que compara los planes en el home,
+antes y después, en celular y en escritorio.
+
+**Qué se decidió.** Arturo: *«Esta frase no es muy clara y no se dirige
+directamente a la persona. Debemos ser más directos y claros. Solo hace falta
+poner un título, sin demasiados detalles adicionales. La transparencia no
+implica sobreexplicar.»* Quedó «Qué te cubre cada plan.», casi las mismas
+palabras del menú que trae hasta ahí, y sin bajada. La tabla sube unos 100 px
+en el celular.
+
+**La lección.** Una bajada que anuncia lo que el bloque de abajo ya muestra
+(«todo lo que cambia, de un vistazo») no agrega información: agrega lectura. Lo
+honesto está en la tabla, no en explicar que la tabla es honesta.
