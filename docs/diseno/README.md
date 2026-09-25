@@ -960,3 +960,29 @@ número con nombre («44 pediatras») se compara con lo que la persona necesita.
 Y un fondo de texto funciona si es textura: casi del color del fondo, con un
 velo claro donde está lo que se lee, y oculto para los lectores de pantalla.
 
+### 35 · Muro gris, y dos opciones más para el home y para el mapa
+
+![Home, opción 1: el muro gris claro de fondo, sin velo, y todo el contenido dentro de una tarjeta blanca](img/2026-09-25-red-home-op1-muro-gris.webp)
+
+![Home, opción 2: el muro en un bloque gris al costado con el 56, y el contenido al lado](img/2026-09-25-red-home-op2-muro-bloque.webp)
+
+![Mapa, opción 1: en el home, el mapa elige la ciudad y la tarjeta de al lado cambia](img/2026-09-25-red-mapa-op1-home.webp)
+
+![Mapa, opción 2: en la Guía Médica, un panel al costado de la lista marca las ciudades donde hay resultados; en el celular, «Lista | Mapa»](img/2026-09-25-red-mapa-op2-guia-lateral.webp)
+
+**Qué muestra.** Arturo sobre la n.º 34: el muro *«puede ser de color gris.
+Puede ser más claro»*, sin el velo blanco de atrás, para que lo de adelante
+tenga contraste propio. Con ese muro, dos maneras de ponerlo en el home: **1**,
+de fondo a sangre con todo adentro de una tarjeta blanca; **2**, en su propio
+bloque al costado, donde nada se lee encima. Y dos lugares más para el mapa:
+**1**, en el home como selector de ciudad; **2**, en la Guía Médica como panel
+que muestra dónde están los resultados de lo que buscaste (ginecología: 11
+ciudades), con un «Lista | Mapa» en el celular.
+
+**Qué se decidió.** Pendiente de Arturo.
+
+**La lección.** Un fondo de texto no necesita velo si es suficientemente
+claro: el velo es un parche para un fondo que grita. Y un mapa sirve más donde
+responde a lo que la persona ya hizo (buscó una especialidad) que donde solo
+muestra la red.
+

@@ -72,6 +72,10 @@ Lámina de comparación: `docs/diseno/img/2026-09-25-tira-prestadores-con-y-sin-
   otras prepagas… que tienen un número mayor»*. **Guía Médica:** el mapa
   debajo de «Tu ciudad o localidad»; tocar un punto elige la ciudad. Toca
   territorio de la guía: declararlo en el PR. Pendiente del OK para construir.
+- **Iteración (25/09, noche):** el muro pasa a **gris claro y sin velo**
+  (Arturo). Dos opciones de home (muro de fondo con todo en una tarjeta / muro
+  en un bloque al costado) y dos de mapa (selector en el home / panel de
+  resultados en la Guía con «Lista | Mapa» en el celular). docs/diseno n.º 35.
 
 ## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
 
