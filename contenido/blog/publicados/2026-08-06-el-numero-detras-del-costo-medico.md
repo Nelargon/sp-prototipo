@@ -84,8 +84,9 @@ otro lado.
 
 ## El mismo cálculo, en un mercado que todavía es chico
 
-En Paraguay, el mercado de seguros de salud sigue siendo pequeño frente a
-la región: las primas equivalen apenas al 1,3% del PIB, contra un promedio
+En Paraguay, el mercado de seguros en su conjunto sigue siendo pequeño
+frente a la región: las primas de todos los seguros equivalen apenas al
+1,3% del PIB, contra un promedio
 de 3,2% en América Latina y el Caribe
 ([Superintendencia de Seguros del BCP](https://www.bcp.gov.py/web/institucional/w/superintendencia-de-seguros-cumple-30-anhos-y-renueva-su-compromiso-con-el-fortalecimiento-del-sistema-asegurador-en-paraguay),
 2026).
