@@ -3805,7 +3805,28 @@ tiene un techo de complejidad, y conviene elegir un estilo que viva debajo de es
 techo. Y volver a una lámina anterior no fue perder dos vueltas: esas vueltas
 mostraron dónde estaba el techo.
 
-## Capítulo 107 — La tomografía que era una placa dental (25/09/2026)
+
+## Capítulo 107 — El reloj de GitHub no es un reloj (25/09/2026)
+
+**Qué intentamos.** La salud nocturna se programó a las 08:00 UTC en punto
+(05:00 de Asunción), para que a las 06:00 el Guardián encontrara su resultado.
+
+**Qué pasó.** A las 06:00 del primer día no había resultado: la corrida
+programada no apareció nunca. El Guardián fue a mirar los horarios del repo y
+encontró que no era un caso aislado. El deploy de «red de seguridad», que
+`deploy.yml` programa cada hora, corrió 8 veces en unas 33 horas, con 30 a 50
+minutos de atraso. GitHub lo tiene escrito: en momentos de carga demora los
+horarios y puede descartarlos, y el pico de carga es el comienzo de cada hora.
+Programar a las 08:00 en punto era elegir el peor minuto del día.
+
+**Qué aprendimos.** Un horario de GitHub es un pedido, no una garantía. La
+corrida pasó a un minuto tranquilo (:23) y a dos turnos por día, y el Guardián
+tiene una regla nueva: si la corrida de la mañana no está, la dispara él y
+espera su resultado. Queda además una lectura para `deploy.yml`: su «red de
+seguridad cada hora» es, medida, una red cada tres o cuatro horas. Sirve igual
+(el camino normal es el push), pero ya no se puede leer como hora.
+
+## Capítulo 108 — La tomografía que era una placa dental (25/09/2026)
 
 **Qué intentamos.** Cargar Essential estudio por estudio en `/que-cubre` (el
 paso 2 que Arturo había dejado pendiente: *«Dale. Eso está pendiente»*) y, en
@@ -3846,7 +3867,7 @@ mal justo en el borde. Y ante una lista cerrada, «no sé» dicho con honestidad
 vale más que una tabla completa: la columna de Essential tiene 26 casilleros que
 dicen «preguntá», y cada regla de las demás anota la cláusula de la que salió.
 
-## Capítulo 108 — La transparencia no implica sobreexplicar (25/09/2026)
+## Capítulo 109 — La transparencia no implica sobreexplicar (25/09/2026)
 
 **Qué intentamos.** Encabezar la tabla que compara los planes con un título en
 dos partes («Qué te cubre cada plan y qué ponés vos») y una bajada que

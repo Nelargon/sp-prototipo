@@ -175,10 +175,11 @@ pierde (BITACORA cap. 96).
   que la persona lee; un tooltip no arregla el orden. Ante una palabra nueva,
   preguntarse: ¿la dice una familia en su casa? Si no, buscar la que sí.
   **Y la voz es la de Arturo** (10 sep 2026): el registro de sus palabras,
-  expresiones y creencias vive en `sp-interno/contenido/VOZ-de-arturo.md`
-  (privado) y se lee antes de escribir copy nuevo. Cuando el usuario diga
-  algo con una expresión que sirve, se anota ahí en el mismo PR, textual y
-  con fecha. Nunca inventarle anécdotas u opiniones que no dijo.
+  expresiones y creencias vive en `sp-contenido/knowledge/voz-de-arturo.md`
+  (privado; ahí también lo leen los bots del blog) y se lee antes de escribir
+  copy nuevo. Cuando el usuario diga algo con una expresión que sirve, se
+  anota ahí, textual y con fecha, con un PR a `sp-contenido` en la misma tanda
+  de trabajo. Nunca inventarle anécdotas u opiniones que no dijo.
 - Los eventos `track()` nunca llevan nombre/teléfono/email.
 - **Lo nuevo entra con su prueba (24 sep 2026, rutina de salud).** Toda
   página nueva (`app/**/page.jsx`) se suma a una suite con navegador

@@ -17,11 +17,11 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
-## 🔎 ESSENTIAL ESTUDIO POR ESTUDIO + AUDITORÍA — ESPERA EL OK DE ARTURO (25 sep 2026)
+## 🔎 ESSENTIAL ESTUDIO POR ESTUDIO + AUDITORÍA — FUSIONADO CON EL OK DE ARTURO (25 sep 2026)
 
 Arturo: *«Dale. Eso está pendiente»* (el paso 2 de Essential) y *«Sigue buscando
-por inconsistencias que arreglar porfa»*. Este PR publica datos de cobertura:
-**no se fusiona sin su OK**. El camino, en BITACORA cap. 107; la lámina,
+por inconsistencias que arreglar porfa»*. Publica datos de cobertura: se
+fusionó con su OK del 25/09. El camino, en BITACORA cap. 108; la lámina,
 `docs/diseno/img/2026-09-25-essential-estudio-por-estudio.webp` (lección 25).
 
 **Paso 2 hecho: `/que-cubre` tiene la columna de Essential.** El buscador, la
@@ -92,7 +92,7 @@ una firme y se regenera.
 - **Título de la tabla del home** (Arturo, 25/09: *«La transparencia no implica
   sobreexplicar»*): de «Qué te cubre cada plan y qué ponés vos» + bajada a solo
   **«Qué te cubre cada plan.»**, sin bajada. Lámina: lección 26 de
-  `docs/diseno`; BITACORA cap. 108. Vale como criterio para los demás títulos:
+  `docs/diseno`; BITACORA cap. 109. Vale como criterio para los demás títulos:
   una bajada que repite lo que el bloque muestra, se saca.
 - El paso 4 de «cómo funciona» prometía usar todo «desde el día uno»; ahora:
   consultas y urgencias desde el día uno, lo demás según su espera.
@@ -513,7 +513,7 @@ todo lo que puedas».*
 
 | Capa | Qué es | Cuándo | Qué mira |
 |---|---|---|---|
-| **1 · Salud nocturna** | `.github/workflows/salud-nocturna.yml` (GitHub Actions, sin IA) | 05:00 ASU | Build de las dos ediciones · buscador · cobertura de páginas · links internos · QA integral (cero «roto») · QA de la v1 · **el sitio en vivo** · producción = `main` · que el Guardián esté vivo |
+| **1 · Salud nocturna** | `.github/workflows/salud-nocturna.yml` (GitHub Actions, sin IA) | 05:23 y 17:23 ASU (el horario de las 05:00 en punto no disparó el 25/09: ver BITACORA cap. 107) | Build de las dos ediciones · buscador · cobertura de páginas · links internos · QA integral (cero «roto») · QA de la v1 · **el sitio en vivo** · producción = `main` · que el Guardián esté vivo |
 | **2 · El Guardián** | Routine de Claude (`trig_01S5miBGXNUUAfSQbBHKm3eU`) que dispara dentro de la sesión que la creó: una sesión nueva por día arrancaba sin repos ni GitHub (probado el 24/09; ver el manual §9) | 06:00 ASU | Lee la capa 1, cruza los **tres repos** (docs contra realidad, PRs e issues trabados, rutinas que no produjeron, Guía Médica contra la planilla del Drive), arregla lo seguro, reporta lo demás en el tablero |
 
 - **El manual del Guardián** (rol, métricas, qué arregla solo y qué nunca toca,
@@ -2604,6 +2604,16 @@ usa `npm ci`).
       (`project/ESTRATEGIA-levantar-la-niebla-2026-09.md` §3c, privado).
     Territorio: solo `HANDOFF.md`.
 
+12f. **La voz de Arturo, en un solo lugar (25 sep 2026).** El registro de su
+    voz vivía en `sp-interno` y el bot que escribe el blog cada noche nunca
+    lo leyó: escribía con el destilado de julio de `sp-contenido`. Se mudó a
+    `sp-contenido/knowledge/voz-de-arturo.md`, donde lo leen los bots y las
+    sesiones. Lo nuevo se anota ahí con un PR a ese repo (regla de
+    `CLAUDE.md`). Al juntar los documentos, Arturo decidió que la marca de
+    agua no frena la publicación automática del blog 🟢, y que en el blog del
+    motor no va el «no es X, es Y» hasta ver notas con una sola. Detalle en
+    `sp-interno` (BITACORA caps. 15-16). Territorio: `CLAUDE.md` y `HANDOFF.md`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
@@ -2937,7 +2947,7 @@ dato que ya estaba estructurado en las 935 filas de
 cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
 cubre); fisioterapia 90; tomografía 60/60/30 *(⚠ corregido el 25/09/2026:
 ese 60/30 era de la ortopantomografía; la tomografía es 120 en Silver y 90 en
-Gold — BITACORA cap. 107)*; ecografía y laboratorio ~60;
+Gold — BITACORA cap. 108)*; ecografía y laboratorio ~60;
 consultas y urgencias sin espera declarada.
 
 ⚠ **Regla crítica al leer carencias de la grilla — no borrar.** Las filas
