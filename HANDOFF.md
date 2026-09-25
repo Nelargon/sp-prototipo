@@ -38,6 +38,15 @@ absolutamente conectado»*.
   GUARDIAN.md`, paso 2b). Resuelve lo que puede resolver Claude, con PRs que
   cierran el issue, y sube al tablero lo que espera a una persona hace más de 7
   días. El tablero público muestra solo el conteo.
+- **Primer punto resuelto (25/09, `sp-interno#57`):** los botones al simulador
+  dicen todos «Simulá tu plan». Cambiaron cinco: «Simulá tu precio» en el menú
+  Planes (inicio y resto de las páginas), «Simulá el tuyo en un minuto» en la
+  ficha de cada médico, y «Mirá tu precio con el descuento» y «Mirá tu precio
+  en el simulador» al pie de dos respuestas de la FAQ. Los dos últimos no los
+  vio la búsqueda en el código, que buscaba «Simulá…» y ellos dicen «Mirá…»:
+  los encontró la prueba en el navegador, que lee el texto de cada link que va
+  al simulador. Quedan, a propósito, «Ver mi precio» en la columna de
+  cada plan y «Simulá Plan Vital» en las bandas de 65+. Es regla de CLAUDE.md.
 - **Regla para toda sesión (CLAUDE.md):** lo que necesita una decisión va a un
   issue `revisión`, no solo al HANDOFF. Las listas de pendientes de las
   secciones de abajo son historia: lo vigente está en los issues.
@@ -161,7 +170,8 @@ una firme y se regenera.
 - `/que-cubre` tiene dos nombres en el sitio; conviene uno solo.
 - «Para mis padres» no preselecciona Vital con `?plan=vital`.
 - Los CTA al simulador no están unificados («Simulá tu plan», «Simulá tu
-  precio», «Ver mi precio», «Simulá el tuyo en un minuto»).
+  precio», «Ver mi precio», «Simulá el tuyo en un minuto»). *(Resuelto el 25/09: todos «Simulá tu plan», salvo «Ver
+  mi precio» en la columna de cada plan y «Simulá Plan Vital»; `sp-interno#57`.)*
 - Quedan oraciones en Nunito Sans dentro del simulador.
 - Nombres de especialidades: salen de la planilla y algunos no son Tipo Oración.
 - Radios escritos a mano en algunos componentes, y la regex del QA no los ve

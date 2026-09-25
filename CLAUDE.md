@@ -180,6 +180,12 @@ pierde (BITACORA cap. 96).
   copy nuevo. Cuando el usuario diga algo con una expresión que sirve, se
   anota ahí, textual y con fecha, con un PR a `sp-contenido` en la misma tanda
   de trabajo. Nunca inventarle anécdotas u opiniones que no dijo.
+- **Un solo texto para ir al simulador: «Simulá tu plan»** (25 sep 2026,
+  decisión de Arturo, `sp-interno#57`). Había seis («Simulá tu precio»,
+  «Simulá el tuyo en un minuto», «Mirá tu precio en el simulador»…). Dos excepciones con su porqué: «Ver mi
+  precio» en la columna o tarjeta de un plan (la persona ya eligió cuál) y
+  «Simulá Plan Vital» en las bandas de 65+ (es otro producto). Un CTA nuevo al
+  simulador usa ese texto; no se inventa otro.
 - Los eventos `track()` nunca llevan nombre/teléfono/email.
 - **Un header fijo no desborda la página** (25 sep 2026, BITACORA cap. 112):
   lo que se sale de un `position:fixed` no agranda `scrollWidth`, así que «sin
