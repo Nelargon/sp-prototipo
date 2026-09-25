@@ -3736,3 +3736,71 @@ cuando la respuesta llega, se escribe en el HANDOFF con un aviso visible,
 porque la confusión ya estaba repartida en cinco lugares. También quedó a la
 vista un costo de las claves internas: `esencial_*` sigue queriendo decir
 Essential. Se dejó así para no romper links, pero con el aviso al lado.
+
+## Capítulo 104 — Un chico que dibuja y se entiende (24/09/2026)
+
+**Qué intentamos.** En la tercera vuelta de las portadas, Claude propuso cinco
+maneras de dibujar y recomendó una sola, la gente del isotipo, para toda la
+biblioteca.
+
+**Qué pasó.** Arturo no eligió una columna: tachó en rojo, dibujo por dibujo, lo
+que no le servía. Sobrevivieron piezas de tres columnas distintas: las dos
+personas que se explican, la familia entre la casa y el sanatorio, el barrio con
+paisaje y los tres íconos en círculo. Y dijo qué tenían en común: *«Es casi como
+un niño que dibuja, pero un niño que dibuja y se entiende.»* Del círculo, que
+Claude había descartado por narrar poco: *«No me cerraría del todo a usar eso si
+se necesita, porque la idea es que también sea diverso para llenar las
+diferentes necesidades de los blogs.»* Pidió cinco iteraciones más de eso.
+
+**Qué aprendimos.** Las columnas de una lámina son una forma de ordenar, no
+opciones cerradas. El que decide puede elegir en diagonal, y lo que elige es
+un lenguaje, no un tratamiento. Por eso tachar sirvió más que votar: el rojo
+mostró el hilo que unía las piezas elegidas. La recomendación de Claude («una
+sola manera para todo») resolvía la coherencia a costa de la variedad que un
+blog necesita. La coherencia la da la mano, y el que se entienda como el dibujo
+de un chico; el resto puede variar.
+
+## Capítulo 105 — El carpincho está en el hocico (24/09/2026)
+
+**Qué intentamos.** Arturo pidió sumar a Tranquibara a las portadas: *«Podemos
+usar versiones de Tranquibara también.»* Mandó dos piezas y un video con sus
+estados animados. Claude lo dibujó de frente, con la misma mano blanca.
+
+**Qué pasó.** Leído primero el documento del personaje, dos reglas cambiaron el
+dibujo antes de empezar. Los ojos nunca se agrandan, y en una nota sobre una
+enfermedad no aparece: la de tratamiento oncológico se quedó con la familia. Aun
+así, el primer Tranquibara de frente se leía como un oso. El segundo, con el
+contorno del hocico marcado, como un oso con barba. En el original, lo que lo
+hace carpincho es el color del pelaje y el hocico oscuro, y en línea blanca no
+hay color. Quedaba la forma: el hocico largo y chato, que de frente no se ve.
+Girarle la cabeza tres cuartos lo resolvió. Y era también una regla suya que
+estaba escrita: la cabeza mira hacia lo que atiende.
+
+**Qué aprendimos.** Cuando un personaje pierde el color, lo que lo identifica
+tiene que salir de la silueta. Y antes de dibujar a alguien que ya existe, se
+leen sus reglas: acá dijeron dónde no va, qué no se le agranda y hacia dónde
+mira. Esa última regla resolvió el problema del dibujo.
+
+## Capítulo 106 — Volver atrás también es elegir (25/09/2026)
+
+**Qué intentamos.** Después de elegir el lenguaje del «niño que dibuja y se
+entiende», se abrieron dos caminos más en la misma noche. Uno fue Tranquibara
+dibujado por código, con sus reglas de personaje. El otro, un muñeco de cabeza
+grande y cuerpo de papa, sacado de una referencia de Arturo. Los dos se dibujaron,
+se probaron en el blog y se guardaron.
+
+**Qué pasó.** A Tranquibara, Arturo lo vio y dijo: *«Si el dibujo es así es
+horrible. Parece como que la IA trató de dibujar usando líneas.»* Y preguntó si
+Claude entendía la filosofía detrás del estilo de Claude. La respuesta honesta
+fue que sí, y que el centro de esa filosofía es una mano, que Claude no tiene: un
+trazo de pincel, un gesto, muy pocos elementos. Al día siguiente decidió: *«vamos
+a volver atrás con todo»*. Fuera Tranquibara y el muñeco; como base, el estilo del
+chico, y el detalle lleno a veces. *«No tenemos que ser muy estrictos.»*
+
+**Qué aprendimos.** El estilo del chico aguanta la línea construida porque la
+simpleza es el estilo: una casita o una persona de dos trazos no piden más mano
+de la que hay. Un personaje con hocico, orejas, ojos, camisa y pose sí la pide, y
+ahí se nota que el dibujo sale de coordenadas. Lo que Claude puede dibujar bien
+tiene un techo de complejidad, y conviene elegir un estilo que viva debajo de ese
+techo. Y volver a una lámina anterior no fue perder dos vueltas: esas vueltas
+mostraron dónde estaba el techo.

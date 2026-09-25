@@ -116,7 +116,7 @@ el nombre de Essential.
 
 ---
 
-## 🖼 PORTADAS DIBUJADAS DEL BLOG — EN PRUEBA, ESPERANDO A ARTURO (24 sep 2026)
+## 🖼 PORTADAS DIBUJADAS DEL BLOG — ESTILO ELEGIDO, FALTA LA BIBLIOTECA (25 sep 2026)
 
 Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
 lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo
@@ -125,47 +125,62 @@ que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Y al ver los
 cinco acabados: *«Trazo blanco está bien. El problema no era eso, pero más el
 estilo de los garabatos o dibujos. Por ejemplo, la mano, que tiene súper
 similitud con la mano que se usa para Claude.»* Recorrido y láminas en
-`docs/diseno/` (lecciones 18 a 20); el camino, en BITACORA caps. 100 y 101.
+`docs/diseno/` (lecciones 18 a 24); el camino, en BITACORA caps. 100, 101, 104 a 106.
 
 **Qué se busca:** un dibujo por nota que diga lo que dice la nota. Hoy 61 de las
 70 notas comparten 5 dibujos, uno por categoría (las otras 9 llevan su cifra).
 
-**Estado:** el **tratamiento está elegido: trazo blanco** (papel blanco al 20 %
-y trazo blanco repasado sobre el -700 de la categoría). Falta **la manera de
-dibujar**, entre cinco: gente del isotipo, escenas con horizonte, objetos desde
-arriba, manos en silueta y el ícono grande (lección 20), probadas en tres notas
-reales y en el índice del blog en celular. **Arturo elige. En el sitio no
-cambió nada.** Los dibujos y las técnicas están en `docs/diseno/fuentes/` (no es
-código del sitio).
+**Lo decidido (Arturo, 25/09/2026, sobre la lámina de la lección 22):**
+- **Tratamiento: trazo blanco** (papel blanco al 20 % y trazo blanco repasado
+  sobre el -700 de la categoría).
+- **Estilo base: «como lo dibuja un chico»** (iteración 1): la gente del isotipo
+  (cabeza en anillo, cuerpo en arco), las casitas, el sanatorio, el sol con
+  rayos y el pasto. *«Me gusta mucho la figura de cómo lo dibujaría un chico,
+  número uno.»* Es el *«niño que dibuja y se entiende»*.
+- **El detalle lleno (iteración 4) se usa a veces:** lo importante de la nota en
+  papel blanco macizo. Le gustó en la lista y en el globo; **no en el sanatorio**
+  (*«excepto la figura que tiene la casa, no me gusta esa»*). Regla: se llena
+  un objeto chico que lleva la idea, nunca un edificio. *«Hay ciertos momentos
+  en los que se puede aplicar y ciertos momentos en los que no. No hay nada malo
+  con eso […] No tenemos que ser muy estrictos.»*
+- **El paisaje y el círculo** quedan disponibles cuando la nota los pida
+  (diversidad dentro del lenguaje).
+- **Descartados: Tranquibara dibujado por código y el muñeco de cuerpo de papa**
+  (lecciones 23 y 24). De Tranquibara: *«Si el dibujo es así es horrible.
+  Parece como que la IA trató de dibujar usando líneas.»* Y de todo eso:
+  *«vamos a volver atrás con todo»* (BITACORA cap. 106). **Que ninguna sesión
+  vuelva a dibujar a Tranquibara por código**: si aparece en el blog, va con su
+  arte oficial.
+
+**En el sitio no cambió nada todavía.** Los dibujos y las piezas están en
+`docs/diseno/fuentes/` (no es código del sitio); el estilo elegido sale de
+`2026-09-24-portadas-iteraciones.mjs`, iteraciones 1 y 4.
 
 **Lo que ya vale (no re-litigar sin motivo):**
 - **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
   blanco) ni sus dibujos. Cambiar solo la paleta no alcanza: es el mismo estilo
   (lección 18).
 - **No se dibujan manos con dedos en lazo, líneas sueltas que van y vuelven ni
-  garabatos enredados**: es el lenguaje de los dibujos de Claude, y la primera
-  mano salió casi igual (cap. 101). Lo que se varía para no parecerse es el
-  dibujo, no el acabado.
+  garabatos enredados**: es el lenguaje de los dibujos de Claude (cap. 101).
 - **El trazo es el de los íconos**: a mano, blanco y repasado, que no cierra
-  perfecto.
+  perfecto. **Figuras simples**: el estilo del chico aguanta la línea construida
+  porque la simpleza es el estilo; un personaje complejo la delata (cap. 106).
 - **La composición vive entre x 110 y 300** del cuadro de 400×200: en el riel
   «Lo último» la portada se recorta en cuadrado. Medido: hoy esas miniaturas no
   muestran el ícono de la categoría, que queda afuera del recorte.
 - **El temblor del trazo va en el dibujo, no en un filtro** (cap. 100).
 
-**Pendiente, cuando elija:**
-1. Llevar el estilo a `app/blog/Cover.jsx`, con las 70 portadas verificadas en
-   el navegador (tarjeta, destacada, riel, «Seguí leyendo» y el artículo).
+**Pendiente:**
+1. **La biblioteca:** unas 25 a 30 metáforas en el estilo del chico, armadas con
+   las piezas de siempre (gente, casitas, sanatorio, lista, globo, sol, lapacho),
+   para que cada nota tenga la suya.
 2. **Qué dibujo lleva cada nota se acuerda con el Orquestador de
-   `sp-contenido`**, que escribe las notas: la propuesta es una biblioteca de
-   25 a 30 metáforas que se reusan por tema, y un campo en el frontmatter que
-   la nota elige. No lo implementa una sesión de web sola.
-3. Las 9 portadas con cifra (`cover_dato`) se quedan como están: recomendación
+   `sp-contenido`**, que escribe las notas: un campo en el frontmatter que la
+   nota elige. No lo implementa una sesión de web sola.
+3. Llevar el estilo a `app/blog/Cover.jsx`, con las 70 portadas verificadas en
+   el navegador (tarjeta, destacada, riel, «Seguí leyendo» y el artículo).
+4. Las 9 portadas con cifra (`cover_dato`) se quedan como están: recomendación
    de Claude, falta que Arturo la confirme.
-4. Si gana un estilo de fondo claro, sumar el isotipo navy a
-   `public/assets/brand/` (el blanco se pierde).
-5. Los dibujos son de Claude: la mano cuesta (cap. 100). Un ilustrador podría
-   redibujar la biblioteca más adelante sin cambiar el sistema.
 
 ---
 

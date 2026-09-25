@@ -381,3 +381,100 @@ vista, debajo de la tabla.
 plan cuenta distinto, la diferencia se escribe junto al número; y lo que la
 tabla no puede mostrar (la espera) se dice al lado, no se deja para la letra
 chica.
+
+---
+
+## Parte 6 · Portadas del blog: el lenguaje elegido (24/09/2026)
+
+Sigue a la Parte 4. Arturo tachó en rojo, sobre la lámina de la lección 20, todo
+lo que no le servía. Quedaron la gente del isotipo (las dos personas que se
+explican, la familia entre la casa y el sanatorio), el barrio con paisaje y el
+ícono grande en círculo: *«Es casi como un niño que dibuja, pero un niño que
+dibuja y se entiende.»*
+
+### 22 · Un chico que dibuja y se entiende
+
+![Lo que marcó Arturo y cinco iteraciones de ese lenguaje](img/2026-09-24-portadas-cinco-iteraciones.webp)
+
+![Las cinco iteraciones en el índice del blog, en celular](img/2026-09-24-portadas-iteraciones-en-su-lugar.webp)
+
+**Qué muestra.** Primero, lo que Arturo marcó. Después, cinco iteraciones del
+mismo lenguaje sobre las mismas tres notas: más de chico (temblor, sol con rayos,
+pasto), la escena dentro del círculo, con paisaje (lomas, sol, lapacho), un
+detalle en papel blanco macizo, y gente con gestos (brazos simples). Abajo, las
+cinco en el índice del blog, en celular.
+
+**Lo que se vio.** «Antes de la consulta» no tenía ninguna versión elegida
+fuera del círculo. La que mejor lo cuenta con gente es la de gestos: el paciente
+le da su lista a la doctora. En el paisaje, las lomas dibujadas con línea
+cruzaban a las personas y parecían rayitas sueltas; como papel translúcido
+detrás, se leen como campo y no tapan a nadie. Y el detalle lleno es el que más
+se ve de lejos, porque es lo único macizo de la portada.
+
+**Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Se pueden
+combinar: él pidió que el conjunto sea diverso.
+
+**Qué se decidió (25/09/2026).** Después de ver a Tranquibara y al muñeco
+(lecciones 23 y 24), Arturo volvió a esta lámina: *«vamos a volver atrás con
+todo»*. Eligió la **1 · Como lo dibuja un chico** como estilo base, y la **4 · Un
+detalle lleno** para usar a veces: en la lista y en el globo sí, en el sanatorio
+no (*«excepto la figura que tiene la casa, no me gusta esa»*). La regla que sale
+de ahí: se llena un objeto chico que lleva la idea, nunca un edificio. Y sin
+rigidez: *«No tenemos que ser muy estrictos, pero el estilo de dibujo creo que
+encaja bastante bien aquí.»*
+
+### 23 · Tranquibara también, con la misma mano
+
+![Tranquibara a mano: sus estados, tres portadas y la nota donde no va](img/2026-09-24-portadas-tranquibara.webp)
+
+**Qué muestra.** Arriba, Tranquibara dibujado con el mismo trazo blanco, en cinco
+estados: en reposo, saluda, leyendo y verificando, explicando y tranqui. Después,
+tres portadas, sueltas y en el círculo: lee su cuaderno antes de la consulta,
+explica con calma qué es una carencia, y descansa en la hamaca con su tereré
+porque resolvió su cobertura antes de necesitarla. Al final, la nota donde no
+va.
+
+**Qué se respetó.** Las reglas del personaje: los ojos nunca se agrandan, nada
+de guardapolvo ni carpeta, sereno y presente. En carencias y copagos va sereno y
+sin chiste. En una nota sobre tratamiento oncológico no aparece: *cuanta más
+angustia hay en el momento, menos personaje y más persona*.
+
+**Lo que se vio.** De frente, en línea blanca, parecía un oso. El carpincho está
+en el hocico largo, y eso solo se ve de tres cuartos. Girarle la cabeza fue
+también cumplir otra regla suya: la cabeza mira hacia lo que atiende.
+
+**Estado (24/09/2026):** esperando a Arturo. Tranquibara no tiene todavía un
+dibujo maestro en vector; si estas portadas salen, conviene que las revise quien
+hizo el original.
+
+**Después (25/09/2026): descartado.** Arturo: *«Si el dibujo es así es horrible.
+Parece como que la IA trató de dibujar usando líneas. No es el estilo de
+Claude.»* Un personaje con tantos rasgos delata que el dibujo está construido con
+coordenadas; las figuras simples del estilo del chico no, porque ahí la simpleza
+es el estilo (BITACORA cap. 106). Si Tranquibara aparece en el blog, va con su
+arte oficial.
+
+### 24 · La gente, con otra mano
+
+![La gente de hasta ahora y cinco variaciones del muñeco](img/2026-09-24-portadas-gente-otra-mano.webp)
+
+![Las cinco variaciones en el índice del blog, en celular](img/2026-09-24-portadas-gente-en-su-lugar.webp)
+
+**Qué muestra.** Arturo pasó una referencia para dibujar a las personas: cabeza
+grande y redonda con dos puntitos, cuerpo como una papa, brazos y piernas de
+palito, poses con movimiento. La referencia no se guarda acá, porque no es
+nuestra. Se tomó la manera de dibujar, no el personaje. La lámina muestra la gente
+de hasta ahora y cinco variaciones del muñeco sobre las mismas tres notas:
+cabeza blanca, solo línea, cuerpo de color, con caras y con pelo y detalles.
+
+**Lo que se vio.** Con cabeza, cuerpo y palitos, la gente se mueve: el que no
+entiende se rasca la cabeza, el que explica abre el brazo, la familia camina. El
+primer intento de pelo y lentes fue en blanco sobre la cabeza blanca, y no se
+veía. Lo que va en la cara va en el color del fondo, que cumple el papel de la
+línea oscura de la referencia con la paleta de SP.
+
+**Estado (24/09/2026):** esperando a Arturo.
+
+**Después (25/09/2026): descartado** junto con Tranquibara: *«vamos a volver
+atrás con todo»*. La gente sigue siendo la del isotipo (lección 22).
+
