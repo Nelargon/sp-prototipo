@@ -44,7 +44,7 @@ Buenavista tiene que hacer, en `docs/IMPLEMENTAR-v1.md`.
 
 ## 🩺 Salud del sitio
 
-Todas las noches a las 05:00 (Asunción) `.github/workflows/salud-nocturna.yml`
+Dos veces por día (05:23 y 17:23, Asunción) `.github/workflows/salud-nocturna.yml`
 construye las dos ediciones, corre todas las pruebas y mira el sitio en vivo; a
 las 06:00 una rutina de Claude (el Guardián) cruza los repos y arregla lo que
 puede. El estado del día está en el issue fijo con la etiqueta
