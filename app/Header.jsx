@@ -102,7 +102,7 @@ export default function Header({ variant = 'dark' }) {
               <div className="navmenu"><div className="navmenu-card">
                 <Item href={`${BP}/#comparar`} t="Essential, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
-                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu precio" s="Unas preguntas y ves el precio, en 1 minuto" />
+                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu plan" s="Unas preguntas y ves el precio, en 1 minuto" />
               </div></div>
             </div>
             {CON_BLOG && <a href={`${BP}/blog/`} className="nav-link" style={linkStyle}>Blog</a>}
