@@ -3580,3 +3580,32 @@ que se formó mirando íconos sueltos se prueba en los lugares reales antes de
 convertirla en regla, como la lección 9 ya decía de los íconos mismos. Y ante
 dos reglas que funcionan, la más simple es más fácil de sostener: un ícono, un
 tratamiento, cualquier fondo.
+
+## Capítulo 99 — Bronze → Essential no era un cambio de nombre (24/09/2026)
+
+**Qué intentamos.** Arturo pidió cinco ajustes al home. Cuatro eran de forma:
+mudar «Para que no haya sorpresas» a la FAQ para liberar espacio, podar cuatro
+etiquetas, reescribir la línea del débito automático para que convenza y
+corregir la *«disonancia gráfica»* de las dos puertas del comparador. El quinto
+parecía otro de texto: *«El plan Bronze ha quedado obsoleto; ya no se
+comercializa. El plan Essential lo reemplaza.»*
+
+**Qué pasó.** Los cuatro de forma entraron en el mismo PR (lección 17 de
+`docs/diseno/README.md`). El quinto no. La guarda de datos del 15/09 decía
+*«cambiar "Bronze" por "Esencial" a mano, sin la grilla, es inventar»*, así que
+antes de tocar nada se buscó la grilla en el Drive, y apareció: los precios de
+Essential (21/08/2026) y su cuadernillo (25/03/2026). Leídos, muestran otro
+producto. Tiene tres precios por zona y el sitio dice cuatro veces que el precio
+es el mismo en todo el país. El parto espera 365 días y la FAQ dice «10 meses en
+los tres». La resonancia es una por familia al año. Y cubre odontología básica en
+Lister: justo lo contrario de *«nuestros planes no cubren odontología»*, la
+frase que este mismo PR mudaba a la FAQ. Además, dos fuentes de SP no coinciden: la tabla editable rotula
+«Interior» la columna que el PDF llama «Nacional».
+
+**Qué aprendimos.** Un pedido que suena a renombrar puede ser un cambio de datos,
+y la única forma de saberlo es abrir la fuente antes de tocar el texto. La guarda
+no frenó el trabajo: le dio forma. Lo que no dependía del dato se hizo, y lo que
+sí depende quedó escrito con sus números y sus fuentes en el HANDOFF, para que
+el PR de Essential arranque sabiendo qué cuatro afirmaciones del sitio va a tener
+que cambiar. La contradicción entre las dos tablas es la frase de Arturo del
+15/09 hecha dato: *«Quiero que alguien me diga esta es la versión oficial.»*

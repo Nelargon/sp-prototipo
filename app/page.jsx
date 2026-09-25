@@ -66,6 +66,20 @@ export default function Page() {
       ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, escribinos y te decimos dónde atenderte: no te dejamos sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
       : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
     { q: '¿Cubren preexistencias?', a: 'Las preexistencias se evalúan caso por caso al momento de afiliarte. Contanos tu situación y te decimos exactamente qué cobertura aplica, sin sorpresas después.', cta: { label: 'Contanos tu caso por WhatsApp →', wa: 'Hola! Quiero consultar por preexistencias antes de afiliarme.', tema: 'preexistencias' } },
+    // LO QUE QUEDA AFUERA — vivía como caja "Para que no haya sorpresas" en el
+    // comparador; se mudó acá el 24/09/2026 (Arturo: liberar espacio). Va al
+    // lado de preexistencias: las dos contestan "¿qué no entra?".
+    // Su historia viaja con ella:
+    // · 25/07 (Arturo: "la transparencia tiene que cumplir un propósito"): las
+    //   exclusiones cierran con qué hacer, no con un punto final.
+    // · ⚠ 26/07 — LEER ANTES DE TOCAR. Una versión anterior decía que esto "en
+    //   general" no lo cubre la medicina prepaga. El relevamiento de
+    //   competidores lo REFUTÓ con cita textual: hay planes del rubro que cubren
+    //   oncología, alta complejidad y odontología básica. Es el límite NUESTRO,
+    //   no el del producto: habla solo de SP. NO volver a afirmar nada sobre lo
+    //   que cubre "la medicina prepaga" sin relevamiento con fuente y fecha
+    //   (BITACORA cap. 57, HANDOFF 12c; el relevamiento vive en sp-interno).
+    { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('odontología, cirugía bariátrica, tratamiento oncológico ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma a Lister más de 600 médicos, sanatorios y laboratorios en todo el país; cuáles te tocan depende del plan que elijas.' },
     { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas — el precio es el mismo en todo el país, con IVA incluido.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
@@ -528,7 +542,8 @@ export default function Page() {
         <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
           <div style={css('position:absolute;z-index:-1;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('max-width:640px;margin:0 auto')}>
-            <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}>Simulá tu plan</div>
+            {/* Sin etiqueta "Simulá tu plan" (Arturo, 24/09/2026): repetía el
+                botón de la misma tarjeta. Regla de etiquetas: si repite, se poda. */}
             <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h2>
             <p style={css('font-size:17px;color:var(--sp-blue-soft);line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
             <div className="frases-sim" style={css('margin-bottom:34px')}>
@@ -577,7 +592,8 @@ export default function Page() {
       <section data-mani-corto className="sec" style={css('padding:80px 40px;background:var(--sp-navy-deep)')}>
         <div style={css('max-width:860px;margin:0 auto;text-align:center')}>
           <div data-rv>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:16px')}>Por qué importa</div>
+            {/* Sin etiqueta "Por qué importa" (Arturo, 24/09/2026): la frase de
+                abajo ya dice por qué importa, y mejor. */}
             <p className="disp" style={css('font-size:clamp(24px,3vw,36px);line-height:1.32;letter-spacing:-0.01em;color:#fff;margin:0 0 16px')}>Creés que estás protegido. La mayoría lo descubre recién cuando algo sale mal.</p>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:var(--sp-blue-soft);line-height:1.65;margin:0 auto 32px;max-width:600px')}>No es una impresión nuestra: es lo que pasa cuando la salud se paga recién en el momento de necesitarla.</p>
           </div>
@@ -625,10 +641,13 @@ export default function Page() {
           abajo como GARANTÍA positiva. BITACORA cap. 48. Detalle → /planes. */}
       <section id="comparar" className="sec" style={css('padding:80px 40px;background:var(--sp-surface)')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
+          {/* Sin la etiqueta "Bronze, Silver y Gold" ni "Los tres cubren lo
+              esencial y ninguno cubre el 100%" (Arturo, 24/09/2026): la etiqueta
+              repetía los nombres que la tabla muestra dos líneas más abajo, y
+              Bronze ya no se vende. */}
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Bronze, Silver y Gold</div>
             <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:var(--sp-teal-deep)')}>qué ponés vos</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Los tres cubren lo esencial y ninguno cubre el 100% — preferimos decírtelo a prometerte lo contrario. Acá está <b style={css('color:var(--sp-teal-deep)')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
+            <p style={css('font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Acá está <b style={css('color:var(--sp-teal-deep)')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
@@ -652,7 +671,11 @@ export default function Page() {
           <div data-rv style={css('display:flex;justify-content:center;margin-bottom:22px')}>
             <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:#2A2A28;line-height:1.5;text-align:left;max-width:640px')}>
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
-              <span>Pagando con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b>, los tres planes tienen <b style={css('color:var(--sp-teal-deep)')}>10% de descuento</b> todos los meses.</span>
+              {/* Del dato a lo que significa (Arturo, 24/09/2026: más persuasiva).
+                  "10% de descuento" es un porcentaje; "más de una cuota al año" es
+                  plata que la familia ve. La cuenta vale para cualquier plan y
+                  precio: 10% × 12 meses = 1,2 cuotas de lista. */}
+              <span>Pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo.</span>
             </span>
           </div>
 
@@ -740,15 +763,20 @@ export default function Page() {
               médica en la mano ("¿me cubre la resonancia de rodilla?") aterriza
               en la comparación de planes, que no responde eso.
               La regla: cada puerta dice QUÉ PREGUNTA responde, no "ver más".
-              El reparto completo de las cuatro superficies está en HANDOFF. */}
+              El reparto completo de las cuatro superficies está en HANDOFF.
+              ⚠ SIMÉTRICAS (24/09/2026, Arturo: "presentan una disonancia
+              gráfica"). La derecha decía "El detalle fila por fila": un nombre
+              al lado de una pregunta, y una bajada de dos líneas al lado de una
+              de una. Dos puertas hermanas hablan con la misma gramática: las dos
+              son la pregunta de la persona y sus bajadas miden lo mismo. */}
           <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto')}>
             <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
               <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
               <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
             </a>
             <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
-              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>El detalle fila por fila <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Los tres planes comparados servicio por servicio, con sus esperas.</span>
+              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Qué cambia de un plan a otro? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Los tres, servicio por servicio y con sus esperas.</span>
             </a>
           </div>
 
@@ -787,45 +815,11 @@ export default function Page() {
               </div>
             )}
 
-          {/* LO QUE QUEDA AFUERA — reencuadre (25 jul 2026, observación del usuario:
-              "la transparencia tiene que cumplir un propósito, no puede ser
-              transparencia por ser transparencia"). Dos cambios:
-              1) Se eliminó el bloque "cuánto cubre de verdad cada plan" (45/66/93).
-                 Informaba cuán incompleto es cada plan sin ayudar a decidir nada, y
-                 "45% cubierto" se lee como "55% NO cubierto": la transparencia
-                 terminaba vendiendo en contra. Lo que sí decide —qué cambia entre
-                 planes— ya vive alineado en el comparador.
-              2) Las exclusiones cierran con qué hacer, no con un punto final.
-
-              ⚠ CORRECCIÓN (26 jul 2026) — LEER ANTES DE TOCAR ESTE BLOQUE.
-              La versión anterior decía que estas cuatro categorías "en general" no
-              las cubre la medicina prepaga y cerraba con "es hasta dónde llega este
-              tipo de producto". El relevamiento de competidores REFUTÓ esa frase con
-              cita textual: SPS (Superior Plus) cubre tratamiento oncológico —quimio
-              en pensión y honorarios, radioterapia, cirugías oncológicas— y alta
-              complejidad —"Neurológicas, torácicas, cardiacas y vascular
-              periférica"—; SPS y MediLife cubren odontología general básica.
-              O sea: NO es el límite del producto, es el límite NUESTRO.
-
-              Por eso el bloque ahora habla solo de SP y no afirma nada sobre el
-              rubro. La fuerza de esta pieza nunca fue "los demás tampoco": fue
-              "te lo decimos antes de que firmes". Eso sobrevive intacto; lo que se
-              cayó era una generalización que no podíamos sostener — y que, de
-              descubrirla una familia comparando, habría dañado justo la honestidad
-              que este bloque viene a demostrar.
-
-              NO volver a escribir afirmaciones sobre lo que cubre "la medicina
-              prepaga" sin relevamiento con fuente y fecha. Ver BITACORA cap. 57,
-              HANDOFF 12c, y sp-interno/project/RELEVAMIENTO-competidores-2026-07-26.md
-              (repo privado: el análisis de competidores nombrados no vive acá). */}
-          <div className="sq" data-rv style={css('margin-top:18px;background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:var(--r-md);padding:22px 26px;display:flex;align-items:flex-start;gap:14px')}>
-            <span className="sq" style={css('width:28px;height:28px;--sq:var(--r-xs);flex:none;background:var(--sp-line-3);color:var(--sp-estado-ink);display:flex;align-items:center;justify-content:center;margin-top:1px')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></span>
-            <div>
-              <div className="disp" style={css('font-size:16px;font-weight:800;color:var(--sp-text);margin-bottom:6px')}>Para que no haya sorpresas</div>
-              <div style={css('font-size:14.5px;color:var(--sp-text-2);line-height:1.6;font-family:var(--font-inter),sans-serif')}>Hay cuatro cosas que <b style={css('color:var(--sp-text)')}>nuestros planes no cubren</b>: {annotate('odontología, cirugía bariátrica, tratamiento oncológico y alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Preferimos que lo sepas ahora y no cuando lo necesites — pasá el mouse o tocá cada una para ver qué incluye.</div>
-              <div style={css('font-size:14.5px;color:var(--sp-text-2);line-height:1.6;margin-top:8px;font-family:var(--font-inter),sans-serif')}>Si alguna de estas te preocupa, <b style={css('color:var(--sp-text)')}>decíselo a tu asesor antes de firmar</b>: te va a decir con qué contás y con qué no. Mejor saberlo hoy que en la sala de espera.</div>
-            </div>
-          </div>
+          {/* ⚠ "PARA QUE NO HAYA SORPRESAS" VIVÍA ACÁ hasta el 24/09/2026: la caja
+              de lo que nuestros planes no cubren. Se mudó a la FAQ (pedido de
+              Arturo: libera espacio en la sección más larga de la home). El
+              contenido y su historia —incluida la corrección del 26/07 sobre
+              no generalizar al rubro— viajaron con ella: ver faqs(), arriba. */}
 
           {/* "Dónde/con quién atenderte" es su propia utilidad: abre la Guía
               Médica (una entrada honesta, no un buscador que finge — la búsqueda
@@ -866,7 +860,8 @@ export default function Page() {
       <section className="sec" style={css('padding:72px 40px 64px;background:var(--sp-surface)')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>De la cotización a tu credencial</div>
+            {/* Sin etiqueta "De la cotización a tu credencial" (Arturo, 24/09/2026):
+                los cuatro pasos de abajo ya cuentan ese recorrido. */}
             <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0')}>Cómo funciona la contratación</h2>
           </div>
           <div data-rv className="steps-flow" style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:26px')}>
