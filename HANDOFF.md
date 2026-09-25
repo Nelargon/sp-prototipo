@@ -72,10 +72,15 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
 
 **En diseño (25/09, noche), pendiente de Arturo:** (1) el muro como **tapiz de
-la Guía Médica**, tres maneras (docs/diseno n.º 36); (2) **compactar el tramo
-de abajo del comparador** del home, dos maneras (n.º 37). En las dos del
-tramo, la banda «¿Dónde atenderte?» pasa a ser una puerta: repetía a «Dónde
-te atendés».
+la Guía Médica**: eligió el 2 (en los márgenes) y pidió verlo sin el degradé
+junto a la columna → 2a, borde neto, o 2b, sin máscara (docs/diseno n.º 36 y
+38; recomendado 2a). (2) **El tramo de abajo del comparador** del home: las
+dos compactadas (n.º 37) le parecieron *«mucha info, mucho ruido»*; hay dos
+calmas, 3 sin cajas y 4 en una tarjeta (n.º 39; recomendada 4). En todas, la
+banda «¿Dónde atenderte?» pasa a ser una puerta, «¿Dónde me atiendo?»:
+repetía a «Dónde te atendés» y además decía el total («más de 600»), que
+Arturo sacó del home. Al construir: la leyenda conserva el ancla `#bolsillo`
+(la usa el menú) y SP Senior conserva «Simulá Plan Vital».
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
