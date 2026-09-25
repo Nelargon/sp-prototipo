@@ -294,7 +294,9 @@ mirando la referencia de cerca, y cómo le fue a la tanda 1, en la lección 28:
 **la referencia condensa una idea (un objeto y un gesto); la tanda 1 cuenta una
 escena** (suelo, gente de cuerpo entero, sol). Primera prueba, una IA sin
 contexto: acertó 2 de 10 a ciegas y aprobó 2 de 10 (filosofía 4/10,
-personalidad 5/10). **Ningún arreglo lleva una mano**: el evaluador las propuso y
+personalidad 5/10). La corrida de Arturo, otro lector a ciegas: 1 de 10; solo el
+dengue lo aciertan los dos, y **un cuadrante con aguja se lee como hora, y la
+hora como espera** (3 de 4 lecturas). **Ningún arreglo lleva una mano**: el evaluador las propuso y
 es la firma de la referencia (lección 20); el gesto lo hacen la gente del logo,
 el objeto que se mueve o una flecha. Qué hacer con la tanda lo decide Arturo
 (BITACORA cap. 110).

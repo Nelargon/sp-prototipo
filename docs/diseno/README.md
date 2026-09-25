@@ -660,7 +660,41 @@ mensaje 2 en su variante con contrapeso).
   gente del logo, el objeto que se mueve o una flecha, como la moneda que sube la
   escalera, otro de sus arreglos.
 
-**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo y a la prueba de
-pasillo. Propuesta de Claude, sin decidir: la mano del chico con la gramática del
-emblema; rehacer como emblema las ocho que no pasaron y probarlas igual antes de
-la tanda 2.
+**Segunda ronda a ciegas: la corrida de Arturo** (el mensaje 1, en otra ventana).
+Un segundo lector que nunca vio al primero. Por número de la hoja:
+
+| N° | Nota | Arturo | Claude | Juntas |
+|---|---|---|---|---|
+| 1 | VIH | *«Controles médicos regulares o agendamiento de turnos»* (alta) | *«Cumplir un plazo de días»* | ✗ ✗ |
+| 2 | Precio que se avisa | *«Prevención de accidentes en el edificio»* | *«No sé»* | ✗ ✗ |
+| 3 | Cambiar de médico | *«Traslados de pacientes o red de sanatorios»* | *«Usar tu carnet en distintas clínicas»* | cerca · cerca |
+| 4 | Dengue | *«Prevención contra el dengue o chikungunya»* (alta) | dengue (alta) | ✓ ✓ |
+| 5 | Aseguradora que cumple | *«No sé»* | *«A la gente le aprueban algo»* | ✗ ✗ |
+| 6 | Más gente | *«Costos de planes médicos familiares»* (alta) | *«Cuánto cuesta cubrir a toda la familia»* | cerca · cerca |
+| 7 | Cirugía | *«Atención médica a domicilio o traslados»* (alta) | *«Ir y volver del hospital»* | cerca · cerca |
+| 8 | Presión | *«Tiempos de espera en las consultas»* | presión | ✗ ✓ |
+| 9 | Cuello uterino | *«Horarios de atención durante el día»* | *«Horarios de atención»* | ✗ ✗ |
+| 10 | Hospital y quien estudia | *«Construcción de nuevas clínicas o sucursales»* (alta) | *«No sé»* | cerca · ✗ |
+
+**Lo que suma el segundo lector.**
+- **Solo el dengue lo aciertan los dos.** La presión se parte: para Arturo, el
+  tensiómetro era *«un reloj grande»*.
+- **Cuando dos lectores que no se vieron coinciden en la lectura equivocada, no
+  es ruido: el dibujo dice otra cosa.** El cuello uterino dio *«horarios de
+  atención»* las dos veces; la fila con chicos, *«plan familiar»* las dos; la
+  cirugía, *«traslados»* las dos.
+- **Un cuadrante con aguja se lee como hora, y en salud la hora es espera.** De
+  cuatro lecturas de los dos relojes (el del cuello uterino y el tensiómetro), tres
+  fueron tiempo: *«horarios»*, *«horarios»*, *«tiempos de espera»*. Es la queja de
+  la categoría puesta en la portada.
+- **El «!» se lee como peligro** (*«prevención de accidentes»*), no como aviso
+  previo.
+- **Equivocarse con seguridad es peor que un «No sé».** Cuatro lecturas que no
+  eran la nota vinieron marcadas «alta»: quien las lee se va convencido de otra
+  cosa.
+
+**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo. Propuesta de
+Claude, sin decidir: quedarse con el dengue, rehacer las otras nueve como emblema
+(sin manos, sin relojes ni cuadrantes, sin «!», sin una fila de gente que se lea
+como familia) y gastar la prueba de pasillo en la versión nueva, no en esta, que
+dos lectores ya marcaron.
