@@ -1,7 +1,7 @@
 // PORTADAS DEL BLOG · DIBUJOS DE PRUEBA (24/09/2026)
 //
 // Los tres dibujos de la lámina `docs/diseno/img/2026-09-24-portadas-*.webp`
-// (docs/diseno/README.md, lecciones 17 y 18). NO es código del sitio: se
+// (docs/diseno/README.md, lecciones 18 y 19). NO es código del sitio: se
 // guarda para que, cuando Arturo elija el estilo, la sesión que lo lleve a
 // app/blog/Cover.jsx no tenga que redibujar desde cero (BITACORA cap. 96: lo
 // que no se guarda en el repo se pierde).
@@ -15,9 +15,9 @@
 //   - `mover`: corrimiento de toda la composición para centrarla.
 // El borde irregular del papel sale de un filtro (feTurbulence 0,022 +
 // feDisplacementMap 2,2). El trazo NO lleva filtro: el mismo filtro cortaba la
-// línea en guiones (BITACORA cap. 99). El temblor del trazo va en el dibujo.
+// línea en guiones (BITACORA cap. 100). El temblor del trazo va en el dibujo.
 //
-// Las tres paletas de la primera vuelta (lección 17; los cinco estilos de la
+// Las tres paletas de la primera vuelta (lección 18; los cinco estilos de la
 // segunda están en 2026-09-24-portadas-estilos.mjs):
 //   A · Tinta navy     fondo -200 (turquesa: -100), papel blanco, trazo #002A52
 //   B · Trazo blanco   fondo -700 (navy: -500), papel blanco al 20 %, trazo blanco

@@ -23,7 +23,7 @@ Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
 lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo
 más al estilo SP?»*. Y mientras se armaba la prueba: *«Acordate de que no tienen
 que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Recorrido y
-láminas en `docs/diseno/` (lecciones 17 y 18); el camino, en BITACORA cap. 99.
+láminas en `docs/diseno/` (lecciones 18 y 19); el camino, en BITACORA cap. 100.
 
 **Qué se busca:** un dibujo por nota que diga lo que dice la nota. Hoy 61 de las
 70 notas comparten 5 dibujos, uno por categoría (las otras 9 llevan su cifra).
@@ -36,12 +36,12 @@ técnicas están en `docs/diseno/fuentes/` (no es código del sitio).
 **Lo que ya vale (no re-litigar sin motivo):**
 - **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
   blanco) ni sus dibujos. Cambiar solo la paleta no alcanza: es el mismo estilo
-  (lección 17).
+  (lección 18).
 - **La mano es la de los íconos**: trazo a mano, que no cierra perfecto.
 - **La composición vive entre x 110 y 300** del cuadro de 400×200: en el riel
   «Lo último» la portada se recorta en cuadrado. Medido: hoy esas miniaturas no
   muestran el ícono de la categoría, que queda afuera del recorte.
-- **El temblor del trazo va en el dibujo, no en un filtro** (cap. 99).
+- **El temblor del trazo va en el dibujo, no en un filtro** (cap. 100).
 
 **Pendiente, cuando elija:**
 1. Llevar el estilo a `app/blog/Cover.jsx`, con las 70 portadas verificadas en
@@ -54,8 +54,70 @@ técnicas están en `docs/diseno/fuentes/` (no es código del sitio).
    de Claude, falta que Arturo la confirme.
 4. Si gana un estilo de fondo claro, sumar el isotipo navy a
    `public/assets/brand/` (el blanco se pierde).
-5. Los dibujos son de Claude: la mano cuesta (cap. 99). Un ilustrador podría
+5. Los dibujos son de Claude: la mano cuesta (cap. 100). Un ilustrador podría
    redibujar la biblioteca más adelante sin cambiar el sistema.
+
+---
+
+## ✂️ EL COMPARADOR DEL HOME, MÁS LIVIANO (24 sep 2026)
+
+Pedido de Arturo, cinco puntos. Cuatro entraron; el quinto (Bronze → Essential)
+**no es un cambio de texto** y queda esperando su respuesta. Lámina:
+`docs/diseno/img/2026-09-24-comparador-puertas-simetricas.webp` (lección 17 de
+`docs/diseno/README.md`).
+
+**Lo que entró (`app/page.jsx`, las dos ediciones):**
+
+- **«Para que no haya sorpresas» se mudó a la FAQ.** La caja gris de las cuatro
+  exclusiones salió del comparador y es la pregunta *«¿Hay algo que los planes no
+  cubran?»*, al lado de preexistencias, con los términos del glosario y un
+  WhatsApp de cierre (`tema: 'exclusiones'`). Su historia (la corrección del
+  26/07: no generalizar al rubro) viajó con ella, en el comentario de `faqs()`.
+- **Etiquetas podadas:** «Simulá tu plan» (tarjeta del simulador), «Por qué
+  importa», «Bronze, Silver y Gold» (comparador) y «De la cotización a tu
+  credencial». Y la bajada perdió «Los tres cubren lo esencial y ninguno cubre el
+  100%»: queda *«Acá está todo lo que cambia entre los tres, de un vistazo»*.
+- **El descuento, en plata:** *«Pagá con débito automático o tarjeta de crédito y
+  ahorrás 10% todos los meses: en un año, es más de una cuota que te queda en el
+  bolsillo.»* La cuenta vale para cualquier plan y precio (10% × 12 = 1,2
+  cuotas de lista), así que no envejece cuando cambie la grilla.
+- **Las dos puertas, simétricas.** «El detalle fila por fila» pasó a *«¿Qué
+  cambia de un plan a otro?»* con la bajada *«Los tres, servicio por servicio y
+  con sus esperas.»*: dos preguntas de la persona, del mismo largo, bajadas de
+  una línea en escritorio y de dos en celular. A 360 px la de la izquierda
+  («¿Está cubierto lo que me pidieron?») parte el título en dos líneas: se dejó
+  así porque es la frase del menú y cambiarla acá sola rompe la coherencia.
+
+### ⚠ Bronze → Essential: lo que encontramos y por qué no se hizo en este PR
+
+Arturo (24/09): *«El plan Bronze ha quedado obsoleto; ya no se comercializa. El
+plan Essential lo reemplaza.»* La guarda de datos del 15/09 (más abajo) sigue
+en pie. Pero ahora sí hay fuentes, y muestran que **Essential no es Bronze con
+otro nombre**:
+
+| | Bronze (lo que dice hoy el sitio) | Essential (fuentes del Drive) |
+|---|---|---|
+| Precio | Uno para todo el país, por edad (0-54, 55-64, 65+) | **Tres por zona**: Asunción/Central 265.000 · Interior 220.000 · Nacional 305.000 (titular hasta 64). Sin tramos 65+ |
+| Parto | «10 meses en los tres planes» (FAQ) | A los **365 días** |
+| Resonancia | «Desde Silver» en la tabla; espera de 5 meses (FAQ) | **Una por grupo familiar al año**, a los 365 días |
+| Odontología | «Nuestros planes no cubren odontología» (FAQ) | **Cubre lo básico en Lister**: primera consulta, controles, extracciones simples, limpieza, flúor en chicos |
+| Red | Privilege | La suya, por zona (ya está en la Guía Médica como SP Esencial) |
+
+Fuentes: `PRECIOS ESSENTIAL.pdf` (21/08/2026) y `CUADERNILLO PLAN ESSENTIAL.pdf`
+(25/03/2026, mismo lote que los cuadernillos Privilege de la grilla vigente).
+**Contradicción a resolver:** la tabla editable de precios 2026 rotula
+«Interior» la columna de 305.000, que en el PDF es «Nacional».
+
+El día que entre Essential, **cuatro afirmaciones del sitio pasan a ser falsas**: el
+precio igual en todo el país (home ×3, simulador), las esperas de la FAQ (parto
+a los 10 meses «en los tres», resonancia a los 5), la odontología «no cubierta» (FAQ nueva y glosario) y todo lo que
+`/que-cubre` responde de Bronze. Por eso es un PR propio, con la grilla cargada
+como dato (`datos/planes-vigentes/`), el simulador preguntando la zona y **el OK
+de Arturo antes de fusionar**. Y el nombre: el sitio y la Guía Médica dicen
+**«SP Esencial»** (el QA de lanzamiento marca «Essential» como nombre interno);
+hay que confirmar cuál va de cara al cliente.
+
+---
 
 ## 🎨 ÍCONOS PROPIOS — APLICADOS (24 sep 2026)
 
@@ -881,7 +943,7 @@ planilla.
 
 | Pendiente | Quién |
 |---|---|
-| Grilla oficial: Bronze → Esencial, precio por zona (guarda de datos) | SP |
+| Grilla oficial: Bronze → Esencial, precio por zona (guarda de datos). Fuentes encontradas el 24/09 (ver «El comparador del home, más liviano»): falta que Arturo las confirme | SP |
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
@@ -1050,6 +1112,10 @@ Dos contradicciones concretas, medidas el 16/09 contra el código:
   home, 1 en el simulador) y `TARIFAS` en `app/quote.js` no tiene dimensión de
   zona. El directorio habló de **3 precios por zona** para el Esencial. Una de
   las dos afirmaciones es falsa y todavía no sabemos cuál.
+
+> **Actualización 24/09/2026:** aparecieron en el Drive el precio por zona y el
+> cuadernillo de Essential. Qué dicen y qué rompen: sección «El comparador del
+> home, más liviano», arriba. La guarda sigue hasta que Arturo los confirme.
 
 **No tocar los números de cobertura ni de precio hasta que llegue la grilla
 oficial.** Cambiar "Bronze" por "Esencial" a mano, sin la grilla, es

@@ -1,7 +1,7 @@
 // PORTADAS DEL BLOG · CINCO ESTILOS DE PRUEBA (24/09/2026)
 //
 // Las técnicas de la lámina `docs/diseno/img/2026-09-24-portadas-cinco-estilos.webp`
-// (docs/diseno/README.md, lección 18). NO es código del sitio: se guarda para
+// (docs/diseno/README.md, lección 19). NO es código del sitio: se guarda para
 // que, cuando Arturo elija, la sesión que lo lleve a app/blog/Cover.jsx parta
 // de acá. `portadaEstilo(dibujo, categoría, estilo)` devuelve el SVG de la
 // portada completa, con su firma (onda + isotipo).
@@ -14,7 +14,7 @@
 //
 // Ojo con los filtros: el grano (3 y 5) y el borde del papel son filtros SVG.
 // Sobre el TRAZO, un filtro de desplazamiento lo cortó en guiones (BITACORA
-// cap. 99): el temblor del trazo va en el dibujo, no en un filtro.
+// cap. 100): el temblor del trazo va en el dibujo, no en un filtro.
 
 import { ILUS } from './2026-09-24-portadas-dibujos.mjs';
 

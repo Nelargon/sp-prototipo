@@ -256,14 +256,38 @@ sueltos (como la lección 9), y ante dos reglas que funcionan gana la más simpl
 
 ---
 
-## Parte 3 · Portadas del blog: un dibujo por nota (24/09/2026)
+## Parte 3 · El comparador del home (24/09/2026)
+
+### 17 · Dos puertas hermanas hablan con la misma gramática
+
+![El comparador del home antes y después: etiquetas, descuento y las dos puertas](img/2026-09-24-comparador-puertas-simetricas.webp)
+
+**Qué muestra.** El encabezado del comparador y sus dos puertas de salida, antes
+y después, en escritorio y en celular.
+
+**Qué se decidió.** Arturo vio que *«¿Está cubierto lo que me pidieron?»* y *«El
+detalle fila por fila»* *«presentan una disonancia gráfica; no son simétricos»*.
+Las cajas medían lo mismo; lo que no era simétrico era el texto: una pregunta al
+lado de un sustantivo, y una bajada de una línea al lado de una de dos. Ahora las
+dos son la pregunta que se hace la persona (*«¿Qué cambia de un plan a otro?»*) y
+sus bajadas miden lo mismo. En la misma pasada se fueron las etiquetas que
+repetían lo que estaba al lado y la línea del descuento pasó del porcentaje a la
+plata: *«en un año, es más de una cuota que te queda en el bolsillo»*.
+
+**La lección.** La simetría no es solo de cajas: dos elementos del mismo rango
+se escriben con la misma forma gramatical y el mismo largo. Si no, el ojo los lee
+como cosas de distinto peso aunque el borde sea idéntico.
+
+---
+
+## Parte 4 · Portadas del blog: un dibujo por nota (24/09/2026)
 
 Arturo pasó cinco portadas del newsroom de Anthropic (no se guardan acá: son
 suyas): *«Son muy creativos, lucen genial y no tienen que ser fotos. Podés
 hacerlo e imitarlo, pero llevarlo más al estilo SP?»*. Lo que se aprende de esas
 portadas no es el dibujo sino la idea: cada imagen dice lo que dice su nota.
 
-### 17 · Un color distinto no es un estilo distinto
+### 18 · Un color distinto no es un estilo distinto
 
 ![Hoy y un mismo estilo en tres paletas](img/2026-09-24-portadas-tres-paletas.webp)
 
@@ -283,7 +307,7 @@ versiones del estilo»*. Tres paletas de la misma técnica eran tres versiones d
 lo mismo: la receta de la referencia (fondo apagado, trazo oscuro, papel blanco)
 seguía entera en las tres. Cambiar el color no cambia el estilo.
 
-### 18 · Cinco técnicas, una sola mano
+### 19 · Cinco técnicas, una sola mano
 
 ![Cinco estilos para las mismas tres notas](img/2026-09-24-portadas-cinco-estilos.webp)
 
