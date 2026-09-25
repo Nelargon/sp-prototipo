@@ -3650,3 +3650,32 @@ igual. El temblor de la mano va en el dibujo y no en un filtro, y se verifica en
 lo que se ve, como el blur fantasma del minificador. Y un dibujo se juzga en su
 uso más chico: el recorte cuadrado del riel decidió dónde tiene que vivir la
 composición.
+
+## Capítulo 101 — Lo que se parecía era la mano, no la pintura (24/09/2026)
+
+**Qué intentamos.** Arturo había pedido *«3 - 5 versiones del estilo»* para las
+portadas del blog, con un aviso: *«no tienen que ser muy similares»* a la
+referencia. Claude entendió «estilo» como el acabado y armó cinco: trazo blanco,
+línea y acento, dos tintas, rayado y tiza. Las cinco usaban el mismo dibujo.
+
+**Qué pasó.** Arturo: *«Trazo blanco está bien. El problema no era eso, pero más
+el estilo de los garabatos o dibujos. Por ejemplo, la mano, que tiene súper
+similitud con la mano que se usa para Claude.»* Lo que se parecía a la referencia
+era el dibujo: la mano con dedos en lazo, la línea suelta que va y vuelve, el
+garabato enredado. Cambiarle el acabado era pintar de otro color la misma mano.
+La primera vez, Claude había anotado «la mano» como riesgo, pero pensando en si
+saldría torpe. El riesgo estaba en su forma.
+
+Esta vez, antes de dibujar, Claude le devolvió lo que había entendido: qué
+significaba y qué no. Recién con su «Adelante» hizo cinco maneras de dibujar las
+mismas tres notas, con el trazo blanco fijo: gente del isotipo, escenas con
+horizonte, objetos desde arriba, manos en silueta y el ícono grande.
+
+![La mano de antes y cinco maneras de dibujar](docs/diseno/img/2026-09-24-portadas-cinco-maneras-de-dibujar.webp)
+
+**Qué aprendimos.** Cuando algo «se parece» a una referencia, primero se nombra
+la parte exacta que se parece, y se varía esa parte. Todo lo demás se deja
+quieto, para que la comparación diga algo. «Estilo» puede ser el dibujo o el
+acabado; como el cap. 98 ya decía de «lo que hablamos», una palabra que admite
+dos lecturas se confirma antes de construir. Y confirmar lo entendido con un
+«significa / no significa» costó un mensaje y ahorró una vuelta entera.
