@@ -550,3 +550,117 @@ quedó en objetos chicos, en cuatro de diez.
 
 **Estado (25/09/2026):** esperando a Arturo.
 
+
+### 28 · El objeto dice el tema; el gesto dice la idea
+
+![La tanda 1 a ciegas, parte 1: cinco portadas numeradas, sin título](img/2026-09-25-portadas-tanda-1-ciega-1.webp)
+
+![La tanda 1 a ciegas, parte 2](img/2026-09-25-portadas-tanda-1-ciega-2.webp)
+
+![Los diez títulos con letra, en otro orden](img/2026-09-25-portadas-tanda-1-ciega-titulos.webp)
+
+**Qué se pidió.** Arturo volvió a pasar dos juegos de la referencia (seis
+portadas de colores apagados y seis íconos crema con un acento terracota) y
+pidió *«un prompt para testear si esto se entiende realmente, y si coincide con
+la filosofía del estilo de Claude, aunque no sea exactamente lo mismo, pero la
+forma en la que el dibujo refleja el mensaje, y la personalidad del estilo»*.
+Y después: *«Si miras con excesiva atención las imágenes, ¿qué observas? ¿Qué
+otros detalles podrías extraer del estilo y forma?»* Las imágenes de referencia
+no se guardan acá: son de otra marca.
+
+**Lo que se ve de cerca.**
+- **Emblema, no escena.** Un objeto que todos conocen (corazón, ADN, lamparita,
+  escalera, moneda) y un gesto o una línea que le cambia el sentido: el pulso
+  que cruza el corazón, la flecha que sube por arriba de la escalera, la mano
+  que sostiene la moneda. El objeto dice el tema; el gesto dice la idea.
+- **Dos capas que no se calcan.** Una forma plana, llena y sin contorno carga
+  la idea; la línea es lo humano y la acción, y cruza la forma sin seguirle el
+  borde. En la nuestra el papel también va corrido de la línea, pero al 20 %:
+  se lee como sombra, no como idea.
+- **Pocos trazos y mucho aire.** Uno a tres elementos en el centro, a media
+  altura del cuadro. Sin suelo ni paisaje: las cosas flotan.
+- **La gente, en pedazos.** Una mano que sostiene, un perfil que piensa. Nunca
+  un cuerpo entero, nunca ojos. La personalidad está en el gesto, no en la cara.
+- **Pocos valores.** Fondo, línea y forma. En el juego crema, un solo color de
+  acento marca la idea, y un beige apenas más oscuro rellena los detalles.
+- **Una picardía.** Un movimiento chico e inesperado: el cursor que hace clic en
+  una molécula, la mano que mete un edificio en la ciudad.
+- **Misma gramática, otra piel.** Los dos juegos cambian fondo, grosor y color, y
+  se reconocen igual. La filosofía viaja; la firma (la mano de dedos en rulo, el
+  perfil de una sola línea, las formas facetadas, la pincelada negra) no se toma.
+
+**Lo que eso dice de la tanda 1** (contado sobre la lámina de la lección 27).
+Nueve de diez tienen suelo; ocho de diez, gente de cuerpo entero; el sol o el
+pasto aparecen en tres. La forma llena, que en la referencia es la idea, en la
+nuestra es un detalle chico. Las nuestras cuentan una escena; las de la
+referencia condensan una idea.
+
+**La prueba** (`prueba-de-portadas.md`). La hoja a ciegas mezcla el orden y saca
+títulos y categorías; la de títulos los trae con letra, en otro orden. Primera
+medición, 25/09/2026: una IA sin contexto adivinó el tema de cada portada solo
+con el dibujo. Es un lector, no cinco personas: vale como señal.
+- **Acertó (2):** dengue (seguridad alta) y presión (baja).
+- **Se acercó (3):** cambiar de médico (*«usar tu carnet en distintas
+  clínicas»*), más gente (*«cuánto cuesta cubrir a toda la familia»*) y cirugía
+  (*«ir y volver del hospital»*).
+- **No acertó (5):** VIH (*«cumplir un plazo de días»*), el precio que se avisa
+  (*«No sé»*), la aseguradora que cumple (*«a la gente le aprueban algo»*), el
+  cuello uterino y el hospital con quien estudia (*«No sé»*).
+
+El cuello uterino es la lección chica: el reloj quería decir «quince minutos» y
+se leyó *«cuánto esperás para que te atiendan»*. En salud, un reloj se lee como
+espera.
+
+**Los errores que la referencia evita** (Arturo: *«¿Qué errores pensás que evita
+cometer?»*). Entre paréntesis, la tanda 1:
+1. **Dibujar la oración entera** en lugar de un objeto y un gesto (la comete: la
+   aseguradora lleva edificio, globo, dos personas y dos tildes).
+2. **La escena genérica de salud**: ni un hospital, ni un guardapolvo, ni un
+   estetoscopio en doce dibujos (la comete: cuatro llevan sanatorio o hospital, y
+   las dos de «persona + sanatorio» se leyeron como «clínicas» y «horarios»).
+3. **Las caras**, que traen edad, género y emoción, y dejan a alguien afuera (la
+   evita: la cabeza en anillo no tiene cara).
+4. **El adorno** (la comete: suelo en nueve, sol o pasto en tres).
+5. **Que todo pese igual** (la comete: todo con el mismo contorno, el papel como
+   sombra).
+6. **Los símbolos con dos lecturas** (la comete: el reloj y el cartel «!»).
+7. **El dibujo quieto** (la comete: casi todo parado sobre una horizontal; la
+   excepción, el mosquito que se va, fue de las dos que se acertaron).
+
+Tres preguntas antes de dibujar cada portada: ¿cuál es el objeto?, ¿cuál es el
+gesto?, ¿qué sobra?
+
+**Segunda ronda: con los títulos y la referencia** (el mismo evaluador, con el
+mensaje 2 en su variante con contrapeso).
+- **Aprobadas: 2 de 10.** La presión y, después del contrapeso, el dengue (*«a
+  ciegas leí dengue, vacuna y mayores»*). Las otras ocho, a rehacer, cada una con
+  su causa visible: el sol que llevó a «vacaciones», el reloj que dice «horario»,
+  el globo de la empresa que se ve antes que las tildes de la gente, la persona
+  que queda al costado de la grúa.
+- **Filosofía 4/10:** *«Nueve de diez son escenas con gente de cuerpo entero
+  parada sobre una línea de suelo, no emblemas que flotan.»*
+- **Personalidad 5/10:** *«La mano se reconoce […] Pero los objetos son los
+  pictogramas de siempre (clínica con cruz, casa, calendario con tildes, edificio
+  de ventanitas), así que el carácter está en el trazo y no en la idea.»*
+- **Familia: no.** Composiciones repetidas: persona de pie a un lado y objeto al
+  otro (cuatro portadas); tres elementos en espejo (dos); persona, clínica y sol
+  (dos).
+- **Lo que más le falta:** el emblema que flota, la gente en pedazos y la
+  picardía.
+
+**Dos cosas que enseñó la prueba sobre la prueba.**
+- **El evaluador corrigió una observación nuestra, y con razón.** En el juego
+  crema, la moneda y la estrella tienen el relleno adentro de la línea, y hay dos
+  rellenos (terracota y beige), no uno. La regla «forma llena sin contorno» vale
+  para el acento, no para todo. La guarda que le pedía decirlo funcionó.
+- **Tres de sus nueve arreglos traían una mano** («una mano pasa la carpeta»,
+  «una mano suma gente a la fila»). Es la firma de la referencia que Arturo
+  descartó (lección 20). Quien aprende de una referencia tiende a proponerla: el
+  prompt ahora prohíbe las manos como arreglo. En esta marca el gesto lo hacen la
+  gente del logo, el objeto que se mueve o una flecha, como la moneda que sube la
+  escalera, otro de sus arreglos.
+
+**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo y a la prueba de
+pasillo. Propuesta de Claude, sin decidir: la mano del chico con la gramática del
+emblema; rehacer como emblema las ocho que no pasaron y probarlas igual antes de
+la tanda 2.

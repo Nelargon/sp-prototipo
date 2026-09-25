@@ -284,6 +284,21 @@ aprueba antes de la siguiente. **Tanda 1: lista, esperando a Arturo** (lección
 27; dibujos en `docs/diseno/fuentes/2026-09-25-portadas-tanda-1.mjs`, que ya es
 el registro slug → dibujo para cuando se lleve a `Cover.jsx`).
 
+**Cada tanda pasa una prueba a ciegas antes de aprobarse (25/09/2026).** Arturo
+pidió *«un prompt para testear si esto se entiende realmente»*. El kit y los
+dos prompts están en `docs/diseno/prueba-de-portadas.md`: la hoja con las
+portadas numeradas y sin título, una IA sin contexto que adivina el tema y
+después evalúa contra la referencia, y la prueba de pasillo con 5 personas
+(pasa si 3 de 5 la aciertan a ciegas), que es la que manda. Lo que se vio
+mirando la referencia de cerca, y cómo le fue a la tanda 1, en la lección 28:
+**la referencia condensa una idea (un objeto y un gesto); la tanda 1 cuenta una
+escena** (suelo, gente de cuerpo entero, sol). Primera prueba, una IA sin
+contexto: acertó 2 de 10 a ciegas y aprobó 2 de 10 (filosofía 4/10,
+personalidad 5/10). **Ningún arreglo lleva una mano**: el evaluador las propuso y
+es la firma de la referencia (lección 20); el gesto lo hacen la gente del logo,
+el objeto que se mueve o una flecha. Qué hacer con la tanda lo decide Arturo
+(BITACORA cap. 110).
+
 **En el sitio no cambió nada todavía.** Los dibujos y las piezas están en
 `docs/diseno/fuentes/` (no es código del sitio); el estilo elegido sale de
 `2026-09-24-portadas-iteraciones.mjs`, iteraciones 1 y 4.
