@@ -550,3 +550,68 @@ quedó en objetos chicos, en cuatro de diez.
 
 **Estado (25/09/2026):** esperando a Arturo.
 
+
+### 28 · El objeto dice el tema; el gesto dice la idea
+
+![La tanda 1 a ciegas, parte 1: cinco portadas numeradas, sin título](img/2026-09-25-portadas-tanda-1-ciega-1.webp)
+
+![La tanda 1 a ciegas, parte 2](img/2026-09-25-portadas-tanda-1-ciega-2.webp)
+
+![Los diez títulos con letra, en otro orden](img/2026-09-25-portadas-tanda-1-ciega-titulos.webp)
+
+**Qué se pidió.** Arturo volvió a pasar dos juegos de la referencia (seis
+portadas de colores apagados y seis íconos crema con un acento terracota) y
+pidió *«un prompt para testear si esto se entiende realmente, y si coincide con
+la filosofía del estilo de Claude, aunque no sea exactamente lo mismo, pero la
+forma en la que el dibujo refleja el mensaje, y la personalidad del estilo»*.
+Y después: *«Si miras con excesiva atención las imágenes, ¿qué observas? ¿Qué
+otros detalles podrías extraer del estilo y forma?»* Las imágenes de referencia
+no se guardan acá: son de otra marca.
+
+**Lo que se ve de cerca.**
+- **Emblema, no escena.** Un objeto que todos conocen (corazón, ADN, lamparita,
+  escalera, moneda) y un gesto o una línea que le cambia el sentido: el pulso
+  que cruza el corazón, la flecha que sube por arriba de la escalera, la mano
+  que sostiene la moneda. El objeto dice el tema; el gesto dice la idea.
+- **Dos capas que no se calcan.** Una forma plana, llena y sin contorno carga
+  la idea; la línea es lo humano y la acción, y cruza la forma sin seguirle el
+  borde. En la nuestra el papel también va corrido de la línea, pero al 20 %:
+  se lee como sombra, no como idea.
+- **Pocos trazos y mucho aire.** Uno a tres elementos en el centro, a media
+  altura del cuadro. Sin suelo ni paisaje: las cosas flotan.
+- **La gente, en pedazos.** Una mano que sostiene, un perfil que piensa. Nunca
+  un cuerpo entero, nunca ojos. La personalidad está en el gesto, no en la cara.
+- **Pocos valores.** Fondo, línea y forma. En el juego crema, un solo color de
+  acento marca la idea, y un beige apenas más oscuro rellena los detalles.
+- **Una picardía.** Un movimiento chico e inesperado: el cursor que hace clic en
+  una molécula, la mano que mete un edificio en la ciudad.
+- **Misma gramática, otra piel.** Los dos juegos cambian fondo, grosor y color, y
+  se reconocen igual. La filosofía viaja; la firma (la mano de dedos en rulo, el
+  perfil de una sola línea, las formas facetadas, la pincelada negra) no se toma.
+
+**Lo que eso dice de la tanda 1** (contado sobre la lámina de la lección 27).
+Nueve de diez tienen suelo; ocho de diez, gente de cuerpo entero; el sol o el
+pasto aparecen en tres. La forma llena, que en la referencia es la idea, en la
+nuestra es un detalle chico. Las nuestras cuentan una escena; las de la
+referencia condensan una idea.
+
+**La prueba** (`prueba-de-portadas.md`). La hoja a ciegas mezcla el orden y saca
+títulos y categorías; la de títulos los trae con letra, en otro orden. Primera
+medición, 25/09/2026: una IA sin contexto adivinó el tema de cada portada solo
+con el dibujo. Es un lector, no cinco personas: vale como señal.
+- **Acertó (2):** dengue (seguridad alta) y presión (baja).
+- **Se acercó (3):** cambiar de médico (*«usar tu carnet en distintas
+  clínicas»*), más gente (*«cuánto cuesta cubrir a toda la familia»*) y cirugía
+  (*«ir y volver del hospital»*).
+- **No acertó (5):** VIH (*«cumplir un plazo de días»*), el precio que se avisa
+  (*«No sé»*), la aseguradora que cumple (*«a la gente le aprueban algo»*), el
+  cuello uterino y el hospital con quien estudia (*«No sé»*).
+
+El cuello uterino es la lección chica: el reloj quería decir «quince minutos» y
+se leyó *«cuánto esperás para que te atiendan»*. En salud, un reloj se lee como
+espera.
+
+**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo, ahora con la
+prueba de pasillo. Propuesta de Claude, sin decidir: la mano del chico con la
+gramática del emblema; rehacer como emblema las cinco que fallaron y probarlas
+igual antes de la tanda 2.
