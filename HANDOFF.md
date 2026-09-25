@@ -125,18 +125,23 @@ que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Y al ver los
 cinco acabados: *«Trazo blanco está bien. El problema no era eso, pero más el
 estilo de los garabatos o dibujos. Por ejemplo, la mano, que tiene súper
 similitud con la mano que se usa para Claude.»* Recorrido y láminas en
-`docs/diseno/` (lecciones 18 a 20); el camino, en BITACORA caps. 100 y 101.
+`docs/diseno/` (lecciones 18 a 20 y 22); el camino, en BITACORA caps. 100, 101 y 104.
 
 **Qué se busca:** un dibujo por nota que diga lo que dice la nota. Hoy 61 de las
 70 notas comparten 5 dibujos, uno por categoría (las otras 9 llevan su cifra).
 
 **Estado:** el **tratamiento está elegido: trazo blanco** (papel blanco al 20 %
-y trazo blanco repasado sobre el -700 de la categoría). Falta **la manera de
-dibujar**, entre cinco: gente del isotipo, escenas con horizonte, objetos desde
-arriba, manos en silueta y el ícono grande (lección 20), probadas en tres notas
-reales y en el índice del blog en celular. **Arturo elige. En el sitio no
-cambió nada.** Los dibujos y las técnicas están en `docs/diseno/fuentes/` (no es
-código del sitio).
+y trazo blanco repasado sobre el -700 de la categoría). **El lenguaje también:**
+Arturo tachó en la tercera vuelta todo menos la gente del isotipo (las dos
+personas que se explican, la familia entre la casa y el sanatorio), el barrio
+con paisaje y el ícono grande en círculo: *«Es casi como un niño que dibuja,
+pero un niño que dibuja y se entiende.»* Del círculo: *«No me cerraría del todo
+a usar eso si se necesita, porque la idea es que también sea diverso para
+llenar las diferentes necesidades de los blogs.»* Sobre ese lenguaje hay cinco
+iteraciones esperando su elección (lección 22): como lo dibuja un chico, dentro
+del círculo, con paisaje, un detalle lleno y gente con gestos. **En el sitio no
+cambió nada.** Los dibujos están en `docs/diseno/fuentes/` (no es código del
+sitio).
 
 **Lo que ya vale (no re-litigar sin motivo):**
 - **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
@@ -148,6 +153,9 @@ código del sitio).
   dibujo, no el acabado.
 - **El trazo es el de los íconos**: a mano, blanco y repasado, que no cierra
   perfecto.
+- **Diverso dentro de un lenguaje**: gente del isotipo, casitas, paisaje y
+  círculo conviven; cada nota usa el que mejor la cuenta. Lo que no entra es otra
+  mano (objetos desde arriba, manos en silueta, escenas con muebles: tachados).
 - **La composición vive entre x 110 y 300** del cuadro de 400×200: en el riel
   «Lo último» la portada se recorta en cuadrado. Medido: hoy esas miniaturas no
   muestran el ícono de la categoría, que queda afuera del recorte.

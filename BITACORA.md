@@ -3736,3 +3736,26 @@ cuando la respuesta llega, se escribe en el HANDOFF con un aviso visible,
 porque la confusión ya estaba repartida en cinco lugares. También quedó a la
 vista un costo de las claves internas: `esencial_*` sigue queriendo decir
 Essential. Se dejó así para no romper links, pero con el aviso al lado.
+
+## Capítulo 104 — Un chico que dibuja y se entiende (24/09/2026)
+
+**Qué intentamos.** En la tercera vuelta de las portadas, Claude propuso cinco
+maneras de dibujar y recomendó una sola, la gente del isotipo, para toda la
+biblioteca.
+
+**Qué pasó.** Arturo no eligió una columna: tachó en rojo, dibujo por dibujo, lo
+que no le servía. Sobrevivieron piezas de tres columnas distintas: las dos
+personas que se explican, la familia entre la casa y el sanatorio, el barrio con
+paisaje y los tres íconos en círculo. Y dijo qué tenían en común: *«Es casi como
+un niño que dibuja, pero un niño que dibuja y se entiende.»* Del círculo, que
+Claude había descartado por narrar poco: *«No me cerraría del todo a usar eso si
+se necesita, porque la idea es que también sea diverso para llenar las
+diferentes necesidades de los blogs.»* Pidió cinco iteraciones más de eso.
+
+**Qué aprendimos.** Las columnas de una lámina son una forma de ordenar, no
+opciones cerradas. El que decide puede elegir en diagonal, y lo que elige es
+un lenguaje, no un tratamiento. Por eso tachar sirvió más que votar: el rojo
+mostró el hilo que unía las piezas elegidas. La recomendación de Claude («una
+sola manera para todo») resolvía la coherencia a costa de la variedad que un
+blog necesita. La coherencia la da la mano, y el que se entienda como el dibujo
+de un chico; el resto puede variar.

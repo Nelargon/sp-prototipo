@@ -381,3 +381,36 @@ vista, debajo de la tabla.
 plan cuenta distinto, la diferencia se escribe junto al número; y lo que la
 tabla no puede mostrar (la espera) se dice al lado, no se deja para la letra
 chica.
+
+---
+
+## Parte 6 · Portadas del blog: el lenguaje elegido (24/09/2026)
+
+Sigue a la Parte 4. Arturo tachó en rojo, sobre la lámina de la lección 20, todo
+lo que no le servía. Quedaron la gente del isotipo (las dos personas que se
+explican, la familia entre la casa y el sanatorio), el barrio con paisaje y el
+ícono grande en círculo: *«Es casi como un niño que dibuja, pero un niño que
+dibuja y se entiende.»*
+
+### 22 · Un chico que dibuja y se entiende
+
+![Lo que marcó Arturo y cinco iteraciones de ese lenguaje](img/2026-09-24-portadas-cinco-iteraciones.webp)
+
+![Las cinco iteraciones en el índice del blog, en celular](img/2026-09-24-portadas-iteraciones-en-su-lugar.webp)
+
+**Qué muestra.** Primero, lo que Arturo marcó. Después, cinco iteraciones del
+mismo lenguaje sobre las mismas tres notas: más de chico (temblor, sol con rayos,
+pasto), la escena dentro del círculo, con paisaje (lomas, sol, lapacho), un
+detalle en papel blanco macizo, y gente con gestos (brazos simples). Abajo, las
+cinco en el índice del blog, en celular.
+
+**Lo que se vio.** «Antes de la consulta» no tenía ninguna versión elegida
+fuera del círculo. La que mejor lo cuenta con gente es la de gestos: el paciente
+le da su lista a la doctora. En el paisaje, las lomas dibujadas con línea
+cruzaban a las personas y parecían rayitas sueltas; como papel translúcido
+detrás, se leen como campo y no tapan a nadie. Y el detalle lleno es el que más
+se ve de lejos, porque es lo único macizo de la portada.
+
+**Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Se pueden
+combinar: él pidió que el conjunto sea diverso.
+
