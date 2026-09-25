@@ -4006,3 +4006,36 @@ negocian: no puede mostrar lo privado y no puede guardar un secreto. Cuando un
 pedido necesita cualquiera de las dos cosas, la pieza vive afuera y el sitio
 solo la enlaza. Y ante «cualquier visitante», preguntar primero quién es
 cualquiera: la respuesta decidió la arquitectura.
+
+## Capítulo 114 — Los logos que no se pudieron bajar (25/09/2026)
+
+**Qué intentamos.** Arturo: *«Ahora mismo me cuesta conseguir los logotipos de
+nuestros prestadores médicos. ¿Vos podrías ponerte a buscar sus logotipos
+online y ubicarlos en esta tira?»*. La tira decía categorías de ejemplo
+(«Sanatorio», «Laboratorio»), no dónde te atendés.
+
+**Qué pasó.** Tres caminos, tres paredes. La red de la sesión bloquea los
+sitios de los sanatorios, Facebook y Wikimedia: el buscador encuentra las
+páginas, pero no deja bajar una imagen. El Drive tiene las carpetas
+(«LOGO DE SANATORIOS», «PRESTADORES/SANATORIOS»), pero vacías; la única con
+logos es de 2023, con fotos de perfil de Facebook de sanatorios del interior.
+Y bajar un archivo del Drive lo trae como texto (base64): al rearmarlo, se
+perdió un carácter en 4.700 y la imagen quedó rota. Una imagen no viaja
+copiada a mano.
+
+El cruce con la planilla encontró algo más importante que los logos. Los
+nombres que más venden (Italiano, Español, Americano, Díaz Gill, Meyer Lab)
+están **solo** en la red de Silver/Gold. La tira dice «prestadores **de tu
+plan**». Quien compra Essential vería en la home un sanatorio que su plan no
+tiene: justo lo que Arturo no quiere, *«si la persona siente otra vez que se
+le mintió, nosotros vamos a pagar caro eso»*. Arturo propuso probar las dos
+versiones. Se hizo la que no depende de nadie: 12 nombres reales que están en
+Silver/Gold y en Essential, con su ciudad y un link a la Guía Médica. La tira
+quedó lista para recibir los logos.
+
+**Qué aprendimos.** Antes de salir a buscar lo que falta, cruzar lo que se va
+a mostrar con lo que se promete al lado. El logo más reconocible puede ser el
+que más promete de más. Y cuando una pieza depende de algo que no se puede
+conseguir hoy, se construye el lugar donde va a ir y se publica lo que sí es
+verdad.
+

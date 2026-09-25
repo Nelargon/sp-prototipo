@@ -860,3 +860,27 @@ botones de verdad del header.
 dice «te escuché». En un header donde conviven botones y links, los links que
 no responden al toque se leen como texto muerto. Y la pastilla se agrandó con
 padding y margen negativo: en reposo, el header quedó idéntico píxel por píxel.
+
+---
+
+## Parte 10 · La tira de prestadores del home (25/09/2026)
+
+### 31 · Un nombre real vale más que una categoría
+
+![La tira de prestadores del home: hoy, con categorías de ejemplo; la propuesta, con 12 prestadores reales y su ciudad, en escritorio y a 390 px](img/2026-09-25-tira-prestadores-nombres-reales.webp)
+
+**Qué muestra.** Arriba, la sección tal como estaba: la segunda tira decía
+«Sanatorio», «Laboratorio», «Clínica». Abajo, la propuesta sin logos: 12
+prestadores reales de la planilla, cada uno con su ciudad, y una nota al pie
+con link a la Guía Médica. A la derecha, a 390 px.
+
+**Qué se decidió.** Pendiente. Arturo pidió los logos; no se pudieron bajar
+(BITACORA cap. 114) y propuso comparar una versión con logos y otra sin. Esta
+es la sin logos. La elección de los nombres no es estética: solo entran los
+que están en Silver/Gold **y** en Essential, porque el título dice «de tu
+plan».
+
+**La lección.** Una categoría («Sanatorio») no le dice a nadie si su sanatorio
+está. Un nombre sí, y por eso también puede prometer de más: se elige con la
+planilla al lado, no con la fama.
+

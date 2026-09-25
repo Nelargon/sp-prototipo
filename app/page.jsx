@@ -391,12 +391,31 @@ export default function Page() {
       { name: 'Upalala', file: 'upalala.webp' },
       { name: 'Assist Card', file: 'assistcard.webp' },
     ],
-    // Sin "Odontología" (23/09/2026): la tira decía que el dentista era parte
-    // de la red del plan y /que-cubre dice que no entra en Silver/Gold
-    // (Essential cubre lo básico, solo en Lister).
-    // Las cifras de la red (600+ en 79 ciudades) salen de lib/guia-medica.json:
-    // 615 prestadores en la red de Silver/Gold, 674 en total, al 23/09/2026.
-    prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Oftalmología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
+    // Tira 2 — prestadores REALES de la planilla maestra (25/09/2026). Antes
+    // decía categorías de ejemplo ("Sanatorio", "Laboratorio"…). Criterio: solo
+    // los que están en la red de Silver/Gold Y en la de Essential
+    // (lib/guia-medica.json, datos al 24/09/2026). Los nombres más conocidos de
+    // Asunción (Italiano, Español, Americano, Díaz Gill, Meyer Lab) quedan
+    // afuera a propósito: están solo en Silver/Gold, y el título dice "de tu
+    // plan". Quien compra Essential no puede ver en la home un sanatorio que su
+    // plan no tiene.
+    // `file` (opcional): logo en public/assets/prestadores/. Si está, la tira lo
+    // muestra en gris como a los aliados; si no, el nombre en texto.
+    // Sin "Odontología" desde el 23/09/2026 (contradecía a /que-cubre).
+    prestadores: [
+      { name: 'Sanatorio Adventista', city: 'Asunción' },
+      { name: 'Sanatorio Central', city: 'Ciudad del Este' },
+      { name: 'Sanatorio Medicis', city: 'Asunción' },
+      { name: 'Sanatorio Itapúa', city: 'Encarnación' },
+      { name: 'Instituto Radiológico Iribas', city: 'Asunción' },
+      { name: 'Sanatorio Metropolitano', city: 'Fernando de la Mora' },
+      { name: 'Sanatorio San Lucas', city: 'Asunción' },
+      { name: 'Sanatorio Santa Lucía', city: 'Ciudad del Este' },
+      { name: 'Sanatorio San Martín', city: 'Asunción' },
+      { name: 'Sanatorio Unimedic', city: 'Luque' },
+      { name: 'Centro de Diagnóstico Oxades', city: 'Asunción' },
+      { name: 'Sanatorio Da Vinci', city: 'Fernando de la Mora' },
+    ],
   };
 
   // ===== markup =====
@@ -984,7 +1003,7 @@ export default function Page() {
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>{ES_LANZAMIENTO ? 'Descuentos con nuestros aliados comerciales, incluidos en tu plan.' : 'Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.'}</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados y algunos de los sanatorios donde te atendés.</p>
           </div>
         </div>
 
@@ -999,19 +1018,24 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Tira 2 — prestadores (próximamente) · izquierda → derecha */}
-        <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:48s')}>
+        {/* Tira 2 — prestadores reales · izquierda → derecha */}
+        <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:64s')}>
           <div className="mq-track">
-            {[...v.prestadores, ...v.prestadores].map((pr, i) => (
+            {[...v.prestadores, ...v.prestadores].map((pr, i) => pr.file ? (
+              <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
+                <img src={`${BP}/assets/prestadores/${pr.file}`} alt={pr.name} loading="lazy" className="ally-logo" />
+              </div>
+            ) : (
               <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:var(--sp-muted)')}>
-                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
-                <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr}</span>
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
+                <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr.name}</span>
+                <span style={css('font-family:var(--font-inter),sans-serif;font-size:13px;white-space:nowrap;opacity:.8')}>{pr.city}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : <>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:var(--sp-teal-deep)')}>próximamente</b> con la red médica real.</>}</div>
+        <div style={css('font-family:var(--font-inter),sans-serif;max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;line-height:1.6;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Los descuentos vienen incluidos en tu plan.' : 'Aliados reales: pasá el cursor para verlos a color.'} La red médica cambia según tu plan y tu ciudad: <a href={v.guiaHome} onClick={() => v.trackGuia('tira_red')} style={css('color:var(--sp-teal-deep);font-weight:600;text-decoration:underline;text-underline-offset:2px')}>buscá la tuya en la Guía Médica</a>.</div>
       </section>
 
       {/* FAQ */}
