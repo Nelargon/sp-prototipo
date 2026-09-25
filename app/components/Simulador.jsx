@@ -6,6 +6,7 @@ import IconoSP from './IconoSP';
 import { BP } from '../basePath';
 import {
   WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
+  ZONA_ESSENTIAL, GUIA_ESSENTIAL, RED_ESSENTIAL,
 } from '../quote';
 import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { redEnZona, guiaHref } from '../../lib/red-zona';
@@ -21,7 +22,10 @@ import { Term, waitLabel } from '../glossary';
 // final, dicho como oportunidad ("Desde Silver"), nunca como falta.
 function carenciasDe(d) {
   if (d.who === 'padres') return carenciasVital().map((c) => ({ que: c.que, dias: c.dias, label: waitLabel(c.dias, true), nota: '', sinCobertura: false }));
-  const idx = { esencial: 0, equilibrio: 1, amplia: 2 }[d.nivel];
+  // Las esperas del plan que el motor dio de verdad: si el grupo no entra en
+  // Essential, el resultado es Silver y sus esperas son las de Silver.
+  if (!d.nivel) return [];
+  const idx = { essential: 0, silver: 1, gold: 2 }[engine(d).key];
   if (idx == null) return [];
   return carencias()
     .map((c) => {
@@ -34,7 +38,8 @@ function carenciasDe(d) {
 const INITIAL_SIM = {
   // ubi = {ciudad, deptId, deptNombre} (buscador de ciudades, HANDOFF 11h);
   // geo (string) queda solo por compatibilidad con simulaciones guardadas.
-  step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [],
+  // essNacional: en Essential, la persona eligió la versión para todo el país.
+  step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', essNacional: false, addons: [], people: [],
   // sentVia: 'crm' (llegó a HubSpot) | 'wa' (viaja por WhatsApp prellenado).
   // crmErr marca que el CRM falló y WhatsApp actuó de respaldo.
   nombre: '', tel: '', email: '', sent: false, sentVia: null, crmErr: false, sending: false, err: '', priceAnim: null,
@@ -43,8 +48,8 @@ const INITIAL_SIM = {
 /* "En Luque tenés 12 médicos y centros con este plan" — con números de la
    planilla maestra, nunca "la red está creciendo" donde ya hay red. */
 const cuantos = (n) => n + (n === 1 ? ' médico o centro' : ' médicos y centros');
-function notaRed(ubi, planGuia) {
-  const z = redEnZona('privilege', ubi);
+function notaRed(ubi, planGuia, red = 'privilege') {
+  const z = redEnZona(red, ubi);
   const lugar = z.dp === 'Capital' ? 'Asunción' : z.dp;
   let texto;
   if (z.nCiudad) texto = `En ${z.c} tenés ${cuantos(z.nCiudad)} de la red de este plan${z.dp === 'Capital' ? ', Lister incluido' : ''}.`;
@@ -162,13 +167,14 @@ export default function Simulador() {
     const L = [];
     L.push('SALUD PROTEGIDA — Cotización estimada');
     L.push('');
-    L.push('Plan recomendado: ' + r.name);
-    if (d.ubi) L.push('Vivís en: ' + (d.ubi.ciudad ? d.ubi.ciudad + ' (' + d.ubi.deptNombre + ')' : d.ubi.deptNombre) + ' · cobertura en todo el país');
+    L.push('Plan recomendado: ' + r.name + (r.zonaEss ? ' · ' + r.geoLabel : ''));
+    if (r.essentialNoAplica) L.push(r.essentialNoAplica + ' Para tu grupo, el plan de entrada es Silver.');
+    if (d.ubi) L.push('Vivís en: ' + (d.ubi.ciudad ? d.ubi.ciudad + ' (' + d.ubi.deptNombre + ')' : d.ubi.deptNombre) + (r.zonaEss ? '' : ' · cobertura en todo el país'));
     else L.push('Cobertura: ' + r.geoLabel);
     L.push('Cotización ' + groupLabel(d) + ' · titular de ' + titularAge(d));
     L.push('');
     L.push('Cobertura para el grupo: ' + fmt(r.breakdown.personas));
-    L.push('Zona: ' + (r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo — el precio es el mismo en todo el país'));
+    L.push('Zona: ' + (r.zonaEss ? 'precio de Essential para ' + r.geoLabel : r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo — el precio es el mismo en todo el país'));
     if (ad.length) { L.push('Coberturas adicionales:'); ad.forEach((o) => L.push('  · ' + o.label + ': + ' + fmt(o.price))); }
     L.push('');
     L.push('TOTAL ESTIMADO: ' + fmt(r.price) + ' / mes');
@@ -314,10 +320,10 @@ export default function Simulador() {
 
   useEffect(() => () => { if (liveRafRef.current) cancelAnimationFrame(liveRafRef.current); }, []);
 
-  // Plan pre-elegido desde el comparador (?plan=bronze|silver|gold): entra con
+  // Plan pre-elegido desde el comparador (?plan=essential|silver|gold): entra con
   // el nivel puesto para que el simulador saltee la pregunta "¿qué plan?". La
   // consulta llega caliente — la persona ve su precio antes de hablar con nadie.
-  // (`bronce` se conserva por si algún link viejo trae el nombre anterior.)
+  // (`bronze` y `bronce` abren Essential: el plan que reemplazó a Bronze.)
   useEffect(() => {
     try {
       const pv = (new URLSearchParams(window.location.search).get('plan') || '').toLowerCase();
@@ -364,11 +370,11 @@ export default function Simulador() {
   const planShortOf = (who, nivel) => {
     if (!nivel) return '';
     if (who === 'padres') return 'Vital';
-    return { esencial: 'Bronze', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
+    return { esencial: 'Essential', equilibrio: 'Silver', amplia: 'Gold' }[nivel] || '';
   };
 
-  // Current configuration → plan colour + live estimate (el precio es
-  // nacional: la ubicación no lo cambia hasta que haya tarifa por zona).
+  // Current configuration → plan colour + live estimate. Silver, Gold y Vital
+  // cuestan lo mismo en todo el país; Essential cambia con la zona (quote.js).
   const curReady = !!(d.who && d.nivel && (d.people || []).length);
   const cur = curReady ? engine(d) : null;
   const planColor = cur ? cur.color : 'var(--sp-navy)';
@@ -415,7 +421,7 @@ export default function Simulador() {
   // Result breakdown, built from the engine's rounded parts so it sums to the total.
   const resBreakdown = r ? (() => {
     const items = [{ label: 'Cobertura ' + groupLabel(d), amount: fmt(r.breakdown.personas) }];
-    items.push({ label: d.ubi ? 'Tu zona: ' + (d.ubi.ciudad || d.ubi.deptNombre) : 'Zona ' + r.geoLabel, amount: r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'Sin recargo — precio nacional' });
+    items.push({ label: d.ubi ? 'Tu zona: ' + (d.ubi.ciudad || d.ubi.deptNombre) : 'Zona ' + r.geoLabel, amount: r.zonaEss ? 'Precio de ' + r.geoLabel : r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'Sin recargo — precio nacional' });
     O.addons.filter((o) => (d.addons || []).includes(o.k)).forEach((o) => items.push({ label: o.label, amount: '+ ' + fmt(o.price) }));
     return items;
   })() : [];
@@ -472,21 +478,34 @@ export default function Simulador() {
     // (pedido del usuario, 21 jul: poder evaluar decisiones sin arrancar
     // de cero). Lo configurado queda intacto; el precio se recalcula solo.
     backFromResult: () => { setSimDir(-1); simPatch({ step: 4 }); },
-    restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', addons: [], people: [], sent: false, sentVia: null, crmErr: false, sending: false, err: '', nombre: '', tel: '', email: '' }); },
+    restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', essNacional: false, addons: [], people: [], sent: false, sentVia: null, crmErr: false, sending: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '',
-    resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · cobertura en todo el país') : ('Cobertura ' + r.geoLabel)) : '',
+    resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · ' + (r.zonaEss ? ({ asuncion_central: 'red de Asunción y Central', interior: 'red del interior', nacional: 'red en todo el país' })[r.zonaEss] : 'cobertura en todo el país')) : ('Cobertura ' + r.geoLabel)) : '',
     // La red REAL de este plan en tu zona (lib/red-zona.js), con la puerta a la
     // guía ya filtrada: la cuarta pregunta ("¿dónde me atiendo?") contestada
-    // en el momento en que la persona decide. Bronze/Silver/Gold y Vital usan
-    // la misma red; lo que cambia entre ellos es cuánto cubren.
-    resRed: r && r.ubi ? notaRed(r.ubi, isPadres ? 'vital' : 'silver-gold') : null,
+    // en el momento en que la persona decide. Silver/Gold y Vital usan la
+    // misma red; Essential tiene la suya, una por zona.
+    resRed: r && r.ubi ? (r.zonaEss ? notaRed(r.ubi, GUIA_ESSENTIAL[r.zonaEss], RED_ESSENTIAL[r.zonaEss]) : notaRed(r.ubi, isPadres ? 'vital' : 'silver-gold')) : null,
+    // Essential: la ciudad decide el precio y Nacional es una opción (Arturo,
+    // 24/09/2026). Dos botones con TU precio: el de tu zona y el de todo el país.
+    essZonas: r && r.key === 'essential' && r.ubi ? [false, true].map((nac) => {
+      const e = engine(Object.assign({}, d, { essNacional: nac }));
+      return { key: nac ? 'nacional' : 'local', label: nac ? 'En todo el país' : 'En ' + (e.zonaEss === 'asuncion_central' ? 'Asunción y Central' : 'el interior'), price: fmt(e.price), active: !!d.essNacional === nac, onPick: () => { if (!!d.essNacional !== nac) { track('sim_essential_zona', { zona: e.zonaEss }); simPatch({ essNacional: nac }); } } };
+    }) : [],
+    essNoAplica: r && r.essentialNoAplica ? r.essentialNoAplica + ' Para tu grupo, el plan de entrada es Silver.' : '',
+    isEssential: !!(r && r.key === 'essential'),
     resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
     resBreakdown, resCarencias, resTotal: r ? fmt(r.price) : '',
     planPreset, resLabel: planPreset ? 'Tu plan elegido' : 'Plan recomendado',
     // Mini-comparador con TU precio: "editable pero puesto" (decisión del usuario).
     // Cambiar de plan recalcula el resultado sin salir de la pantalla.
-    planSwitch: (!isPadres && r) ? ['esencial', 'equilibrio', 'amplia'].map((k) => ({ key: k, label: planShortOf(d.who, k), price: fmt(engine(Object.assign({}, d, { nivel: k })).price), active: d.nivel === k, onPick: () => { if (d.nivel !== k) { track('sim_plan_switch', { plan: planShortOf(d.who, k) }); setSimDir(1); simPatch({ nivel: k }); } } })) : [],
+    planSwitch: (!isPadres && r) ? ['esencial', 'equilibrio', 'amplia'].map((k) => {
+      const e = engine(Object.assign({}, d, { nivel: k }));
+      const noAplica = k === 'esencial' && !!e.essentialNoAplica;
+      const active = !noAplica && ({ esencial: 'essential', equilibrio: 'silver', amplia: 'gold' })[k] === r.key;
+      return { key: k, label: planShortOf(d.who, k), price: noAplica ? 'No aplica' : fmt(e.price), disabled: noAplica, active, onPick: () => { if (!noAplica && d.nivel !== k) { track('sim_plan_switch', { plan: planShortOf(d.who, k) }); setSimDir(1); simPatch({ nivel: k }); } } };
+    }) : [],
     // El WhatsApp secundario del resultado ya lleva el plan (cierre caliente).
     waResultHref: (r && waDigits) ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero consultar por el ' + r.name + ' — vi mi precio en el simulador.')) : waHref,
     // Puente honesto: mientras el CRM no está (o si falla), la cotización
@@ -494,7 +513,7 @@ export default function Simulador() {
     // contacto va DENTRO del mensaje (así el asesor puede devolver la
     // llamada aunque escriban desde otro número); jamás en la analítica.
     waLeadHref: (r && waDigits) ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(
-      'Hola! Soy ' + d.nombre.trim() + ' y quiero mi cotización del simulador:\n• ' + r.name + ' — ' + fmt(r.price) + ' al mes\n• Para: ' + grupoPropio(d) +
+      'Hola! Soy ' + d.nombre.trim() + ' y quiero mi cotización del simulador:\n• ' + r.name + (r.zonaEss ? ' (' + r.geoLabel + ')' : '') + ' — ' + fmt(r.price) + ' al mes\n• Para: ' + grupoPropio(d) +
       '\nMi número: ' + d.tel.trim() + (d.email.trim() ? '\nEmail: ' + d.email.trim() : '')
     )) : waHref,
     download: downloadQuote, share: shareQuote, shareMsg,
@@ -734,10 +753,29 @@ export default function Simulador() {
                       Asunción/Central, registra y acompaña en el resto —
                       nunca "no cubierto" (decisión #7). */}
                   {sim.resRed && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-tint);border:1px solid var(--sp-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRed.texto} <a href={sim.resRed.href} onClick={() => track('sim_guia', { origen: 'resultado' })} style={css('color:var(--sp-teal-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap')}>Ver en la Guía Médica →</a></span></div>}
+                  {/* Eligió Essential y su grupo no tiene tarifa ahí: se dice por
+                      qué y se muestra el plan de entrada que sí le corresponde. */}
+                  {sim.essNoAplica && <div className="sq" style={css('background:var(--sp-gold-bg);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-gold-ink);line-height:1.45')}>{sim.essNoAplica}</div>}
                   <p style={css('font-size:14px;color:var(--sp-text);line-height:1.6;margin:0')}>{sim.resWhy}</p>
                   {sim.hasAddons && <div style={css('font-size:13px;color:var(--sp-navy);font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {sim.resAddonsText}</span></div>}
                 </div>
               </div>
+
+              {/* ESSENTIAL: tu zona o todo el país (Arturo, 24/09/2026). La ciudad
+                  pone el precio; Nacional queda a un toque, con su precio real. */}
+              {sim.essZonas.length > 0 && (
+                <div style={css('margin-top:14px')}>
+                  <div style={css('font-size:12.5px;color:var(--sp-muted);margin-bottom:8px;font-weight:600')}>¿Dónde te vas a atender?</div>
+                  <div style={css('display:grid;grid-template-columns:repeat(2,1fr);gap:8px')}>
+                    {sim.essZonas.map((o) => (
+                      <button key={o.key} onClick={o.onPick} aria-pressed={o.active} className={'sq' + (o.active ? '' : ' rel-btn')} style={css('display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;--sq:var(--r-sm);cursor:pointer;transition:all .15s cubic-bezier(0.22,1,0.36,1);border:1.5px solid ' + (o.active ? 'var(--sp-teal)' : 'var(--sp-line)') + ';background:' + (o.active ? 'var(--sp-mint-soft)' : '#fff'))}>
+                        <span style={css('font-size:13px;font-weight:800;color:' + (o.active ? 'var(--sp-teal-deep)' : 'var(--sp-navy)'))}>{o.label}</span>
+                        <span className="num-tnum" style={css('font-size:12px;font-weight:700;color:var(--sp-muted)')}>{o.price}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Mini-comparador con TU precio: la persona puede cambiar de plan
                   sin salir (editable pero puesto). Resuelve la duda acá, no la
@@ -747,7 +785,7 @@ export default function Simulador() {
                   <div style={css('font-size:12.5px;color:var(--sp-muted);margin-bottom:8px;font-weight:600')}>¿Querés ver los otros planes para tu familia?</div>
                   <div style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:8px')}>
                     {sim.planSwitch.map((o, i) => (
-                      <button key={i} onClick={o.onPick} aria-pressed={o.active} className={'sq' + (o.active ? '' : ' rel-btn')} style={css('display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;--sq:var(--r-sm);cursor:pointer;transition:all .15s cubic-bezier(0.22,1,0.36,1);border:1.5px solid ' + (o.active ? 'var(--sp-teal)' : 'var(--sp-line)') + ';background:' + (o.active ? 'var(--sp-mint-soft)' : '#fff'))}>
+                      <button key={i} onClick={o.onPick} disabled={o.disabled} aria-pressed={o.active} className={'sq' + (o.active || o.disabled ? '' : ' rel-btn')} style={css('display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;--sq:var(--r-sm);cursor:' + (o.disabled ? 'default' : 'pointer') + ';opacity:' + (o.disabled ? '.55' : '1') + ';transition:all .15s cubic-bezier(0.22,1,0.36,1);border:1.5px solid ' + (o.active ? 'var(--sp-teal)' : 'var(--sp-line)') + ';background:' + (o.active ? 'var(--sp-mint-soft)' : '#fff'))}>
                         <span style={css('font-size:13px;font-weight:800;color:' + (o.active ? 'var(--sp-teal-deep)' : 'var(--sp-navy)'))}>{o.label}</span>
                         <span className="num-tnum" style={css('font-size:12px;font-weight:700;color:var(--sp-muted)')}>{o.price}</span>
                       </button>
@@ -781,6 +819,8 @@ export default function Simulador() {
                   <div style={css('padding:9px 16px;background:var(--sp-mint-tint);border-top:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4')}>
                     {sim.isPadres
                       ? 'Grilla vigente del Plan Vital, julio 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
+                      : sim.isEssential
+                      ? 'Cuadernillo vigente de Essential, marzo 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
                       : <>Grilla vigente, julio 2026. El detalle estudio por estudio está en <a href={`${BP}/que-cubre/`} className="link-teal" style={css('color:var(--sp-teal-deep);font-weight:700')}>Qué cubre</a>.</>}
                   </div>
                 </div>

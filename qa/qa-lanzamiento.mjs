@@ -131,8 +131,8 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.goto(BASE + '/guia-medica/?q=pediatra&plan=esencial-interior', { waitUntil: 'networkidle' });
   await page.waitForTimeout(500);
   const n1 = await page.locator('article').count();
-  if (!n1) mal(nombre + ': "pediatra" con SP Esencial Interior no devuelve nada');
-  else bien(nombre + ': pediatras con SP Esencial Interior desde la URL (' + n1 + ')');
+  if (!n1) mal(nombre + ': "pediatra" con Essential Interior no devuelve nada');
+  else bien(nombre + ': pediatras con Essential Interior desde la URL (' + n1 + ')');
   const puntos = await page.locator('[aria-label="Dato a revisar, marca interna"]').count();
   if (puntos) mal(nombre + ': la v1 muestra la marca interna de "Revisar"');
   await page.fill('input[type=search]', 'rezonancia');
@@ -146,7 +146,9 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const ficha = await page.evaluate(() => document.body.innerText);
   if (!r || r.status() !== 200 || !/Lo usás con estos planes/.test(ficha)) mal(nombre + ': la ficha P-0001 no carga');
   else bien(nombre + ': ficha P-0001 con sus planes');
-  if (/Privilege|Essential/.test(txt + ficha)) mal(nombre + ': aparece un nombre interno (Privilege/Essential)');
+  // "Essential" dejó de ser nombre interno el 24/09/2026: es el nombre que ve
+  // el cliente (Arturo). "Privilege" sigue sin mostrarse nunca.
+  if (/Privilege/.test(txt + ficha)) mal(nombre + ': aparece un nombre interno (Privilege)');
   if (errores.length) mal(nombre + ': errores de JS en la guía: ' + errores.slice(0, 2).join(' | '));
   await page.close();
 }

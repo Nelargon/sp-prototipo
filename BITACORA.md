@@ -3650,3 +3650,36 @@ igual. El temblor de la mano va en el dibujo y no en un filtro, y se verifica en
 lo que se ve, como el blur fantasma del minificador. Y un dibujo se juzga en su
 uso más chico: el recorte cuadrado del riel decidió dónde tiene que vivir la
 composición.
+
+## Capítulo 101 — Tres fuentes para un precio, y un guardián que esperaba 10 meses (24/09/2026)
+
+**Qué intentamos.** Aplicar Essential en lugar de Bronze, con lo que había dejado
+escrito el capítulo 99. Faltaban dos respuestas de Arturo. Sobre el nombre dijo
+*«Ve "Essential"»*, y con eso se revirtió lo del 23/09, cuando la Guía Médica
+había pasado a decir «SP Esencial». Sobre los precios, en vez de elegir él,
+preguntó *«¿Cuál es la más actualizada?»*.
+
+**Qué pasó.** Por fecha, la más nueva era la tabla editable (15/09). Pero esa
+fecha es la del archivo entero, que guarda las tablas de todos los planes, y la
+suya para Essential tiene dos zonas cuando el plan tiene tres. El PDF del 21/08
+coincidía con otras dos fuentes independientes: la minuta del 18/08 (*«Gs.
+265.000 (Asunción), Gs. 305.000 (nacional), Gs. 220.000 (interior)»*) y el
+anexo del Interior de 2025. La tabla editable tenía el rótulo equivocado. Arturo
+eligió después cómo se arma el precio (por ciudad, con Nacional como opción) y
+que `/que-cubre` se haga en dos pasos.
+
+Con el cambio hecho aparecieron dos cosas. El QA integral esperaba «parto de 10
+meses» en cualquier resultado del simulador; con Essential el resultado dice
+«1 año», y el guardián habría gritado en falso. Es la regla del capítulo 90:
+cambió cómo se dice algo, así que hay que revisar a quien leía la forma vieja.
+Ahora espera la del plan que salió, y se probó con casos que pasan y casos que
+fallan. La otra la mostró la captura de la tabla: Essential tiene internación,
+resonancia y parto al año de afiliarse, y la tabla, que muestra topes, no lo
+decía en ningún lado. Se sumó una línea visible debajo.
+
+**Qué aprendimos.** La fecha de modificación de un archivo no es la fecha de
+cada dato que tiene adentro. Cuando dos fuentes chocan, gana la que coincide con
+otras independientes, y la que perdió se anota para corregirla, no se tira. Y lo
+más caro de descubrir tarde tiene que estar donde la gente compara, aunque la
+FAQ y el simulador ya lo digan: quien elige Essential por precio mira la tabla,
+no la pregunta 2 de la FAQ.

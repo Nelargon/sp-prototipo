@@ -11,9 +11,18 @@ import Header from '../Header';
 import Buscador from './Buscador';
 import datos from '../../lib/prestaciones.json';
 
-/* /que-cubre — el espacio propio de los planes Bronze, Silver y Gold (la
-   familia que internamente se llama "Privilege"; de cara al usuario NUNCA se
-   nombra así — HANDOFF dec. 11o).
+/* /que-cubre — el espacio propio de los planes Essential, Silver y Gold.
+   Silver y Gold son de la familia que internamente se llama "Privilege" (de
+   cara al usuario NUNCA se nombra así — HANDOFF dec. 11o).
+
+   ⚠ ESSENTIAL (24/09/2026) reemplazó a Bronze, pero la grilla de la que sale
+   lib/prestaciones.json es la de Privilege: Essential tiene su propio
+   cuadernillo y todavía no está cargado estudio por estudio (paso 2, PR aparte,
+   decisión de Arturo). Mientras tanto: las tarjetas y los once servicios salen
+   de quote.js y coverage.js (que ya tienen Essential); el buscador dice
+   "confirmalo con tu asesor" en su columna; y las tablas finas (especialidades
+   y números) muestran Silver y Gold con una nota sobre Essential. Nunca los
+   datos de Bronze con el nombre de Essential.
    ----------------------------------------------------------------------------
    ⚠ NO es /planes y no la reemplaza. Decisión del usuario (6 ago 2026): "que
    sea un espacio aparte". `/planes` sigue siendo la comparación servicio por
@@ -42,7 +51,9 @@ import datos from '../../lib/prestaciones.json';
    propósito"): informa cuán incompleto es un plan sin ayudar a decidir. La
    sección 3 usa los mismos datos para responder lo que sí decide. */
 
-const PLAN_KEYS = ['b', 's', 'o'];
+// Las columnas que salen de la grilla Privilege (ver el aviso de arriba).
+const PLAN_KEYS = ['s', 'o'];
+const NOTA_ESSENTIAL = 'Essential no está en esta tabla todavía: tiene su propio cuadernillo, que estamos cargando. Tu asesor te lo confirma.';
 
 const seccionTitulo = (kicker, titulo, resalte, bajada) => (
   <div data-rv style={css('text-align:center;max-width:700px;margin:0 auto 26px')}>
@@ -108,7 +119,7 @@ export default function Landing() {
   const especialidades = datos.items.filter((i) => i.t === 'c');
   const especialidadesVisibles = verTodas ? especialidades : especialidades.slice(0, 12);
   const excluidos = datos.items.filter((i) => i.t === 'x');
-  const { bs, so } = datos.saltos;
+  const { so } = datos.saltos;
   const nombreCuadro = (k) => datos.meta.cuadros[k].toLowerCase();
 
   /* Cómo se MUESTRA un parámetro del master, sin tocar el dato:
@@ -141,7 +152,7 @@ export default function Landing() {
       <section style={css('padding:100px 24px 12px')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div style={css('text-align:center;max-width:720px;margin:0 auto 26px')}>
-            <div className="disp" style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Bronze · Silver · Gold</div>
+            <div className="disp" style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Essential · Silver · Gold</div>
             <h1 className="disp" style={css('font-size:clamp(32px,5vw,50px);font-weight:800;color:var(--sp-navy);line-height:1.1;letter-spacing:-0.025em;margin:0 0 16px')}>
               Tres planes que <span style={css('color:var(--sp-teal-deep)')}>podés revisar antes de firmar</span>.
             </h1>
@@ -156,7 +167,7 @@ export default function Landing() {
       {/* ---- 2. LOS TRES PLANES ------------------------------------------ */}
       <section style={css('padding:64px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {seccionTitulo('Los tres planes', 'Cada uno incluye todo el anterior', 'y suma lo suyo.', 'El precio es nacional y ya tiene IVA. Con débito automático o tarjeta de crédito, 10% menos.')}
+          {seccionTitulo('Los tres planes', 'Qué trae cada uno', 'y cuánto sale.', 'Silver y Gold cuestan lo mismo en todo el país; Essential, según tu zona. Todos con IVA incluido y, con débito automático o tarjeta de crédito, 10% menos.')}
           <div className="planes-grid" style={css('display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px')}>
             {plansArr.map((pl, i) => (
               <div key={pl.short} data-rv className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;background:#fff;display:flex;flex-direction:column')}>
@@ -210,10 +221,12 @@ export default function Landing() {
           del encabezado del archivo). */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {seccionTitulo('Subir un escalón', 'Qué comprás exactamente', 'cuando pasás al plan de arriba.', 'No es "más cobertura" en abstracto. Contamos cuántas cosas de la grilla cambian a tu favor — y podés verificar cada una en el buscador de arriba.')}
-          <div className="planes-grid-2" style={css('display:grid;grid-template-columns:1fr 1fr;gap:16px')}>
+          {/* Solo Silver → Gold hasta que Essential esté cargado estudio por
+              estudio: el salto Essential → Silver no se puede contar con la
+              grilla Privilege (ver el aviso del encabezado). */}
+          {seccionTitulo('Subir un escalón', 'Qué comprás exactamente', 'cuando pasás de Silver a Gold.', 'No es "más cobertura" en abstracto. Contamos cuántas cosas de la grilla cambian a tu favor — y podés verificar cada una en el buscador de arriba.')}
+          <div style={css('display:grid;grid-template-columns:1fr;gap:16px;max-width:560px;margin:0 auto')}>
             {[
-              { de: 'Bronze', a: 'Silver', color: 'var(--sp-plan-silver)', d: bs },
               { de: 'Silver', a: 'Gold', color: 'var(--sp-plan-gold)', d: so },
             ].map((s) => (
               <div key={s.a} data-rv className="rv sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-lg);padding:24px 26px')}>
@@ -302,16 +315,17 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Con qué especialista', `Las ${especialidades.length} especialidades`, 'y cuántas veces al año.', 'Donde dice "sin tope" es sin tope de verdad: las que tienen número, lo tienen escrito acá.')}
+          <p data-rv style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.55;text-align:center;max-width:640px;margin:-10px auto 16px')}>En Essential, las consultas son sin tope en Lister y hasta 3 por mes en la red. {NOTA_ESSENTIAL}</p>
           <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
-            <div style={css('min-width:600px')}>
-              <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
+            <div style={css('min-width:460px')}>
+              <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
                 <div style={css('padding:13px 18px')}>Especialidad</div>
-                {plansArr.map((pl) => (
+                {plansArr.slice(1).map((pl) => (
                   <div key={pl.short} style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
                 ))}
               </div>
               {especialidadesVisibles.map((esp, r) => (
-                <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
                   <div className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
                   {PLAN_KEYS.map((k) => {
                     const [cob, cantIdx] = esp[k];
@@ -347,20 +361,21 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('La letra chica, en letra grande', 'Los números que deciden', 'cuando ya estás internado.', 'Días de terapia intensiva, topes de medicamentos, esperas de maternidad. Es lo que casi nadie publica y lo que más se extraña el día que hace falta.')}
+          <p data-rv style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.55;text-align:center;max-width:640px;margin:-10px auto 16px')}>{NOTA_ESSENTIAL}</p>
           <div data-rv style={css('display:flex;flex-direction:column;gap:14px')}>
             {seccionesParam.map((grupo) => (
               <div className="sq" key={grupo.sec} style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                <div style={css('min-width:600px')}>
-                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
+                <div style={css('min-width:460px')}>
+                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
                     <div style={css('padding:12px 18px')}>{grupo.sec}</div>
-                    {plansArr.map((pl) => (
+                    {plansArr.slice(1).map((pl) => (
                       <div key={pl.short} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
                     ))}
                   </div>
                   {grupo.filas.map((f, r) => (
-                    <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                    <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
                       <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
-                      {f.v.map((v, j) => (
+                      {f.v.slice(1).map((v, j) => (
                         <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v ? valorParam(v) : '—'}</div>
                       ))}
                     </div>
@@ -387,7 +402,7 @@ export default function Landing() {
               cantar "cinco" acá y "cuatro" allá sí sería una contradicción a
               la vista. Si algún día se unifica, que sea sumando en el home —
               no restando acá. Ver HANDOFF. */}
-          {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Son las mismas en Bronze, Silver y Gold.')}
+          {seccionTitulo('Antes de firmar', 'Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Valen para los tres planes, con una diferencia: Essential cubre la odontología básica en Lister.')}
           <div data-rv className="excl-grid" style={css('display:grid;grid-template-columns:1fr 1fr;gap:12px')}>
             {excluidos.map((e) => (
               <div className="sq" key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:var(--r-md);padding:18px 20px')}>

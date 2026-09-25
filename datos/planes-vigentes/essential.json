@@ -1,0 +1,63 @@
+{
+  "id": "essential",
+  "nombre_web": "Essential",
+  "nombre_oficial": "Plan Essential (en la minuta del 18/08/2026: \"Plan SP Esencial\")",
+  "reemplaza_a": "bronce",
+  "decisiones": {
+    "nombre": "De cara al cliente se llama \"Essential\" (Arturo, 24/09/2026).",
+    "zona": "El simulador deduce la zona de la ciudad: Asunción y Central → asuncion_central; el resto del país → interior. Nacional se ofrece como opción para quien quiere atenderse en cualquier parte del país (Arturo, 24/09/2026)."
+  },
+  "fuente": {
+    "precios": "PRECIOS ESSENTIAL.pdf (Drive de SP, 21/08/2026)",
+    "precios_confirmados_por": "Minuta de implementación del 18/08/2026 (Crafting): \"Essential Gs. 265.000 (Asunción), Gs. 305.000 (nacional), Gs. 220.000 (interior)\". El Anexo I del Interior (06/2025) ya tenía los mismos valores del Interior.",
+    "precios_contradiccion": "La tabla EDITABLE - TABLA DE PRECIOS PLANES SP 2026.docx (editada el 15/09/2026) tiene solo dos columnas y rotula \"Interior\" la que en el PDF y en la minuta es \"Nacional\" (305.000 / 125.000 / 455.000 / 545.000 / 635.000). Se toma el PDF: coincide con la minuta, con el anexo de 2025 y con las tres guías médicas del 10/08/2026.",
+    "precios_advertencia": "La minuta del 18/08 dejaba el costeo pendiente de confirmar para el 25/08/2026. No se encontró un documento posterior que lo cierre.",
+    "cobertura": "CUADERNILLO PLAN ESSENTIAL.pdf (25/03/2026, mismo lote que los cuadernillos Privilege de la grilla vigente)"
+  },
+  "moneda": "PYG",
+  "iva_incluido": true,
+  "precios_por_zona": {
+    "asuncion_central": { "titular_hasta_64": 265000, "adherente_menor_hasta_20": 110000, "pareja_18_45": 395000, "pareja_46_64": 475000, "grupo_familiar_2_hijos": 550000 },
+    "interior":         { "titular_hasta_64": 220000, "adherente_menor_hasta_20": 92000,  "pareja_18_45": 330000, "pareja_46_64": 400000, "grupo_familiar_2_hijos": 460000 },
+    "nacional":         { "titular_hasta_64": 305000, "adherente_menor_hasta_20": 125000, "pareja_18_45": 455000, "pareja_46_64": 545000, "grupo_familiar_2_hijos": 635000 }
+  },
+  "reglas_de_grupo": {
+    "titular": "Hasta 64 años.",
+    "adherente_menor": "Hijo, tutela o hermano, hasta 20 años. Precio por cada uno.",
+    "pareja": "Titular y cónyuge. Tramo por el mayor de los dos: 18-45 o 46-64.",
+    "grupo_familiar": "Titular y cónyuge de 18 a 64 más 2 hijos de hasta 20 años.",
+    "inferencia_del_motor": "El PDF no trae ejemplos de grupos. El motor aplica: pareja + cada hijo como adherente menor; grupo familiar + cada hijo desde el 3º como adherente menor; titular solo + cada hijo como adherente menor. Mayores de 64 o hijos de más de 20 no tienen tarifa en Essential."
+  },
+  "cobertura_clave": {
+    "consultas": "Sin tope en el Centro Médico Lister (17 especialidades). En la red: hasta 3 consultas por mes del conjunto de 21 especialidades, por persona. Subespecialidades (psicología, neurología, ORL y otras 13): hasta 3 al año por grupo familiar.",
+    "urgencias": "Consulta de urgencia 24 h, sin espera, una por día por persona.",
+    "ambulancia": "Hasta 3 veces al año por grupo familiar, dentro de 20 km del centro de Asunción.",
+    "odontologia": "Sin costo y solo en Lister: primera consulta, controles, extracciones simples, limpieza y, en chicos, extracciones de dientes de leche y flúor. Lo demás, con arancel.",
+    "laboratorio": "Rutina (18 determinaciones) sin espera; especializados (106) a los 90 días. Hasta 2 veces por determinación y 30 al año por persona.",
+    "radiografias": "Simples, hasta 5 posiciones al año por persona, sin espera.",
+    "fisioterapia": "Hasta 5 sesiones al año por grupo familiar, sin espera.",
+    "ecografias": "Hasta 4 al año por grupo familiar, a los 90 días.",
+    "tomografia": "Hasta 2 estudios al año por grupo familiar (junto con ecocardiograma y ergometría), a los 180 días.",
+    "resonancia": "1 al año por grupo familiar, a los 365 días. Sin contraste ni sedación.",
+    "internacion": "Hasta 20 días al año por grupo familiar, habitación privada, a los 365 días. Medicamentos hasta ₲ 350.000 por evento.",
+    "cirugias": "1 cirugía al año por grupo familiar, de una lista cerrada de 26, a los 365 días.",
+    "parto": "Parto (2 días) o cesárea (3 días), con el bebé en nursery, a los 365 días. Medicamentos hasta ₲ 350.000.",
+    "terapia_intensiva": "Hasta 2 días al año por persona, a los 365 días. Medicamentos hasta ₲ 350.000 por evento.",
+    "no_cubre": "Cirugía bariátrica, tratamiento oncológico, cirugías de alta complejidad: no están en la lista de cirugías del cuadernillo.",
+    "sin_dato": "El cuadernillo no declara un tope de remedios en la consulta de urgencia."
+  },
+  "carencias_dias": {
+    "consultas_y_urgencias": 0,
+    "laboratorio_rutina": 0,
+    "laboratorio_especializado": 90,
+    "ecografias": 90,
+    "fisioterapia": 0,
+    "tomografia": 180,
+    "cirugias_menores": 180,
+    "resonancia": 365,
+    "internacion": 365,
+    "cirugias_programadas": 365,
+    "parto": 365,
+    "terapia_intensiva": 365
+  }
+}

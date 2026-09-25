@@ -2,7 +2,7 @@
 
 import { css } from '../css';
 import { BP } from '../basePath';
-import { fmt, plans } from '../quote';
+import { fmt, plans, essentialTitular } from '../quote';
 import { coverage } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track } from '../track';
@@ -23,8 +23,8 @@ export default function Planes() {
       <div style={css('max-width:1080px;margin:0 auto;padding:104px 24px 20px')}>
         <div style={css('text-align:center;max-width:680px;margin:0 auto 36px')}>
           <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Los tres planes</div>
-          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,46px);font-weight:800;color:var(--sp-navy);line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Bronze, Silver y Gold — <span style={css('color:var(--sp-teal-deep)')}>todo el detalle</span>.</h1>
-          <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Servicio por servicio, qué cubre cada nivel y cuánto sale. Cada nivel incluye todo el anterior y suma lo suyo.</p>
+          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,46px);font-weight:800;color:var(--sp-navy);line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Essential, Silver y Gold — <span style={css('color:var(--sp-teal-deep)')}>todo el detalle</span>.</h1>
+          <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Servicio por servicio, qué cubre cada plan y cuánto sale. En Essential, varios topes son por familia y el precio depende de tu zona.</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export default function Planes() {
                 <div key={i} style={css('padding:14px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>
                   <div style={css('display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:' + pl.color + ';margin-bottom:6px')}></div>
                   <div className="disp" style={css('font-size:18px;font-weight:800;line-height:1')}>{pl.short}</div>
-                  <div style={css('font-size:12px;opacity:.85;margin-top:5px')}>desde <span className="num-tnum">{fmt(pl.price)}</span></div>
+                  <div style={css('font-size:12px;opacity:.85;margin-top:5px')}>desde <span className="num-tnum">{fmt(pl.price)}</span>{pl.nivel === 'esencial' && <span style={css('display:block;font-size:11px;opacity:.9;margin-top:2px')}>según tu zona</span>}</div>
                   <a className="sq" href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`} onClick={() => track('cta_simulador', { origen: 'planes', plan: pl.name })} style={css('margin-top:9px;height:34px;padding:0 14px;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:background .2s')}>Ver mi precio</a>
                 </div>
               ))}
@@ -83,7 +83,7 @@ export default function Planes() {
         </div>
         <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);margin-top:14px;text-align:center;line-height:1.6')}>
           Los tiempos de espera son la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás.<br />
-          Coberturas y precios de lista vigentes, IVA incluido — con débito automático o tarjeta de crédito, 10% de descuento. El detalle final lo confirmás con tu asesor.
+          Coberturas y precios de lista vigentes, IVA incluido — con débito automático o tarjeta de crédito, 10% de descuento. Essential: {fmt(essentialTitular('interior'))} en el interior, {fmt(essentialTitular('asuncion_central'))} en Asunción y Central y {fmt(essentialTitular('nacional'))} en su versión Nacional, para una persona sola. El detalle final lo confirmás con tu asesor.
         </div>
       </div>
 

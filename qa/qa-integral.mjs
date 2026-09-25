@@ -24,6 +24,12 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo';
+
+// Puerta 1.5: la espera del parto que tiene que decir el resultado, según el
+// plan que salió (Essential: 1 año; Silver y Gold: 10 meses). Probada contra
+// un caso que pasa y uno que falla en el PR del 24/09/2026.
+const esperaParto = (plan) => (/Essential/.test(plan || '') ? '1 año' : '10 meses');
+const partoEsperado = (car) => car.filas.length >= 7 && car.filas.some((t) => /parto/i.test(t) && t.includes(esperaParto(car.plan)));
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'out');
 const hallazgos = []; // {frente, severidad: 'roto'|'confunde'|'cosmetico', detalle, donde}
 const oks = [];
@@ -116,8 +122,10 @@ console.log('\n== 1. FUNCIONAL ==');
        el hallazgo más accionable de la Puerta 1. Se verifica sobre el DOM
        renderizado, no sobre el código: el bloque existe, tiene tamaño,
        precede al formulario, y trae la espera más cara de descubrir tarde
-       (parto, 10 meses). Si mañana alguien mueve el bloque debajo del
-       formulario "para convertir más", esto se pone rojo. */
+       (parto: 1 año en Essential, 10 meses en Silver y Gold — desde el
+       24/09/2026 la espera esperada depende del plan que salió). Si mañana
+       alguien mueve el bloque debajo del formulario "para convertir más",
+       esto se pone rojo. */
     const car = await page.evaluate(() => {
       const b = document.querySelector('[data-sp-carencias]');
       const f = document.querySelector('input[placeholder*="ombre"]');
@@ -129,8 +137,8 @@ console.log('\n== 1. FUNCIONAL ==');
     });
     if (!car.ok) falla('funcional', 'roto', 'Puerta 1.5: ' + (car.motivo || 'el bloque de esperas no tiene tamaño'), '/simulador/');
     else if (!car.antes) falla('funcional', 'confunde', 'Puerta 1.5: las esperas aparecen DESPUÉS del formulario de contacto — el criterio pide antes', '/simulador/');
-    else if (car.filas.length < 7 || !car.filas.some((t) => /parto/i.test(t) && /10 meses/.test(t))) falla('funcional', 'confunde', 'Puerta 1.5: esperas del plan incompletas (' + car.filas.length + ' filas; parto de 10 meses ' + (car.filas.some((t) => /parto/i.test(t)) ? 'presente' : 'ausente') + ')', '/simulador/');
-    else ok('funcional', 'Puerta 1.5: las esperas del ' + car.plan + ' (' + car.filas.length + ' servicios, parto de 10 meses incluido) se muestran antes de pedir nombre y teléfono');
+    else if (!partoEsperado(car)) falla('funcional', 'confunde', 'Puerta 1.5: esperas del plan incompletas (' + car.filas.length + ' filas; parto de ' + esperaParto(car.plan) + ' ' + (car.filas.some((t) => /parto/i.test(t)) ? 'con otra espera' : 'ausente') + ')', '/simulador/');
+    else ok('funcional', 'Puerta 1.5: las esperas del ' + car.plan + ' (' + car.filas.length + ' servicios, parto de ' + esperaParto(car.plan) + ' incluido) se muestran antes de pedir nombre y teléfono');
     const nombre = page.locator('input[placeholder*="ombre"]');
     if (await nombre.count()) {
       await nombre.fill('QA Prueba');

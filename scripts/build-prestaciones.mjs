@@ -130,7 +130,8 @@ const ES_RADIOGRAFIA = /\d\s*POSICION|^(TORAX|ABDOMEN|CRANEO|COLUMNA|PELVIS|SENO
    informa. */
 const EXCLUIDOS = [
   { n: 'Odontología', a: 'muela diente dentista caries limpieza extraccion ortodoncia',
-    d: 'La atención del dentista no entra en ningún plan. Las radiografías dentales sí, porque son un estudio de imagen.' },
+    // Essential (24/09/2026) cubre lo básico en Lister: su cuadernillo, 1.6.
+    d: 'En Silver y Gold la atención del dentista no entra; las radiografías dentales sí, porque son un estudio de imagen. Essential cubre lo básico, solo en Lister: consulta, controles, extracciones simples y limpieza.' },
   { n: 'Tratamiento oncológico', a: 'cancer quimioterapia radioterapia tumor oncologia quimio',
     d: 'La quimioterapia, la radioterapia y las cirugías para tratar el cáncer no entran. La consulta con el oncólogo sí está cubierta.' },
   { n: 'Cirugía bariátrica', a: 'obesidad bajar de peso manga gastrica bypass balon',
@@ -138,7 +139,7 @@ const EXCLUIDOS = [
   { n: 'Cirugías de alta complejidad', a: 'corazon cerebro trasplante neurocirugia cardiocirugia vascular',
     d: 'Las cirugías del corazón, del cerebro y de los vasos principales no entran. Las consultas con esos especialistas sí, y sin tope.' },
   { n: 'Enfermería a domicilio', a: 'enfermera enfermero domicilio casa curaciones',
-    d: 'No está cubierta (cláusula 2.9.2). La consulta médica a domicilio sí: 2 al año en Bronze, 3 en Silver, 4 en Gold.' },
+    d: 'No está cubierta (cláusula 2.9.2). La consulta médica a domicilio sí: 3 al año en Silver y 4 en Gold.' },
 ];
 
 const norm = (s) =>
@@ -368,7 +369,7 @@ const out = {
     fuente: grilla.meta.archivo_fuente,
     total: items.length,
     porTipo: { e: items.filter((i) => i.t === 'e').length, c: items.filter((i) => i.t === 'c').length, x: items.filter((i) => i.t === 'x').length },
-    cuadros: { ...Object.fromEntries(Object.values(CUADROS).map((c) => [c.k, c.label])), esp: 'Consultas con especialista', exc: 'No lo cubre ningún plan' },
+    cuadros: { ...Object.fromEntries(Object.values(CUADROS).map((c) => [c.k, c.label])), esp: 'Consultas con especialista', exc: 'Antes de firmar' },
     /* Los modos, en el vocabulario del sitio — el mismo del home (ancla
        #bolsillo). El índice de este array ES el código de cobertura. */
     modos: [
@@ -377,7 +378,9 @@ const out = {
       { k: 'Cubre una parte', d: 'El plan cubre una parte del evento; la diferencia queda a tu cargo.' },
       { k: 'Según la cirugía', d: 'Depende de la cirugía: buscá la cirugía puntual para ver qué te toca.' },
       { k: 'Al precio de convenio', d: 'Este plan no lo cubre, pero lo pagás a la tarifa negociada de SP, no a la de la calle.' },
-      { k: 'No lo cubre ningún plan', d: 'No entra en Bronze, Silver ni Gold.' },
+      // Desde el 24/09/2026 el modo se dice por plan: con Essential, la
+      // odontología básica sí entra en un plan, y "ningún plan" dejó de ser cierto.
+      { k: 'No entra en este plan', d: 'Este plan no lo cubre.' },
     ],
   },
   cantidades,

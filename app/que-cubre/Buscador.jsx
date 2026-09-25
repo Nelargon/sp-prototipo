@@ -41,8 +41,13 @@ const ESTILO_MODO = [
 ];
 const SIN_DATO = { bg: '#FAFAFA', fg: '#8a8a8a', punto: '#c9c9c9' };
 
+/* Essential reemplazó a Bronze el 24/09/2026. Su cobertura NO está en la
+   grilla Privilege de la que sale este índice: tiene su propio cuadernillo y se
+   va a cargar estudio por estudio en un PR aparte (decisión de Arturo: "dos
+   pasos"). Mientras tanto su columna dice lo único cierto — que lo confirma un
+   asesor — en vez de mostrar los datos de Bronze con otro nombre. */
 const PLANES = [
-  { k: 'b', nombre: 'Bronze', color: 'var(--sp-plan-bronze)' },
+  { k: 'e', nombre: 'Essential', color: 'var(--sp-plan-essential)', sinMapa: true },
   { k: 's', nombre: 'Silver', color: 'var(--sp-plan-silver)' },
   { k: 'o', nombre: 'Gold', color: 'var(--sp-plan-gold)' },
 ];
@@ -65,6 +70,21 @@ function esperaTexto(dias) {
 }
 
 function Celda({ item, plan, indice, datos }) {
+  if (plan.sinMapa) {
+    return (
+      <div style={css('padding:13px 14px;border-left:1px solid var(--sp-line-2);display:flex;flex-direction:column;gap:6px')}>
+        <div style={css('display:flex;align-items:center;gap:6px')}>
+          <span style={css('width:8px;height:8px;border-radius:var(--r-pill);flex:none;background:' + plan.color)}></span>
+          <span className="disp" style={css('font-size:12px;font-weight:800;color:var(--sp-navy)')}>{plan.nombre}</span>
+        </div>
+        <div className="disp" style={css(`display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);line-height:1.3;background:${SIN_DATO.bg};color:var(--sp-estado-ink)`)}>
+          <span style={css('width:7px;height:7px;border-radius:var(--r-pill);flex:none;background:' + SIN_DATO.punto)}></span>
+          Confirmalo con tu asesor
+        </div>
+        <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.45')}>Essential tiene su propio cuadernillo. Lo estamos cargando estudio por estudio.</div>
+      </div>
+    );
+  }
   const cel = item[plan.k];
   const [cob, cantIdx, carencia] = cel;
   const sinDato = cob === -1;
@@ -75,7 +95,7 @@ function Celda({ item, plan, indice, datos }) {
 
   /* La ausencia se dice como oportunidad, nunca como falta (regla de tono del
      HANDOFF §3.7). Si un plan de más arriba mejora esto, el dorado lo señala:
-     es la única lectura útil de un "no" en la columna de Bronze. */
+     es la única lectura útil de un "no" en la columna del plan de entrada. */
   let mejora = null;
   if (!sinDato && indice < 2) {
     for (let j = indice + 1; j < 3; j++) {

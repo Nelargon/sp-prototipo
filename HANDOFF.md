@@ -17,6 +17,86 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🔁 ESSENTIAL REEMPLAZA A BRONZE — ESPERA EL OK DE ARTURO (24 sep 2026)
+
+Arturo: *«El plan Bronze ha quedado obsoleto; ya no se comercializa. El plan
+Essential lo reemplaza.»* Este PR es el **paso 1 de 2** (lo eligió él). Toca
+datos de precio y cobertura: **no se fusiona sin su OK**. Lámina:
+`docs/diseno/img/2026-09-24-essential-reemplaza-bronze.webp` (lección 20);
+el camino, en BITACORA cap. 99 y 101.
+
+**Decisiones de Arturo (24/09):**
+- **El cliente ve «Essential»**, no «SP Esencial». Cambió también en la Guía
+  Médica (`lib/red-medica.js`) y el QA de lanzamiento ya no lo marca como
+  nombre interno. «Privilege» sigue sin mostrarse nunca.
+- **La zona sale de la ciudad** que la persona pone en el simulador: Asunción y
+  Central → ₲ 265.000; el resto del país → ₲ 220.000. **Nacional (₲ 305.000)
+  es una opción** a un toque («¿Dónde te vas a atender?»).
+- **Dos pasos para `/que-cubre`:** ahora, Essential en el home, el simulador y
+  `/planes`; en el buscador su columna dice «Confirmalo con tu asesor». El paso
+  2 carga Essential estudio por estudio (ver abajo).
+
+**Las fuentes (y por qué esas):** precios de `PRECIOS ESSENTIAL.pdf`
+(21/08/2026), confirmados por la minuta de implementación del 18/08 (Crafting:
+*«Essential Gs. 265.000 (Asunción), Gs. 305.000 (nacional), Gs. 220.000
+(interior)»*) y por el Anexo I del Interior de 2025. La tabla editable de
+precios 2026 (editada el 15/09) rotula «Interior» la columna que es «Nacional»:
+**hay que avisarle a quien la mantiene**. Cobertura: `CUADERNILLO PLAN
+ESSENTIAL.pdf` (25/03/2026). Todo transcripto en
+`datos/planes-vigentes/essential.json`. ⚠ La minuta dejaba el costeo de
+Essential pendiente para el 25/08 y no apareció un documento posterior que lo
+cierre.
+
+**Qué cambió:**
+- `app/quote.js`: tarifa de Essential por zona (`ESSENTIAL`, `zonaEssential`,
+  `essentialNoAplica`, `priceEssential`). Sin tarifa en Essential: mayores de
+  64, hijos de más de 20 y un tercer adulto → el resultado pasa a Silver y dice
+  por qué. `?plan=bronze` y `?plan=bronce` abren Essential. Probado en Node con
+  15 casos (solo, pareja por tramo, grupo familiar, 3 hijos, Nacional, 65+).
+- **Inferencia del motor (anotada en `essential.json`):** el PDF no trae
+  ejemplos de grupos. Pareja + cada hijo; grupo familiar + cada hijo desde el
+  3º; titular solo + cada hijo. Un asesor lo confirma; si SP dice otra cosa, se
+  cambia en `priceEssential`.
+- `app/coverage.js`: la columna de Essential sale de su cuadernillo, con los
+  topes **por familia** dichos como tales. Esperas de Essential: rutina,
+  radiografías y fisioterapia sin espera; especializados y ecografías 3 meses;
+  tomografía 6; **resonancia, internación, cirugías, terapia y parto, 1 año**.
+- Home: tabla con Essential (y una línea visible con la espera de un año),
+  cuatro FAQ reescritas (diferencia entre planes, esperas, todo el país, precio),
+  la de exclusiones corrige odontología (Essential cubre lo básico en Lister),
+  menú, diferenciadores y aviso del parto. Ya no se dice «cada plan incluye todo
+  lo del anterior»: entre Essential y Silver no es cierto (otra red).
+- Simulador: precio por zona, botones «En [tu zona] / En todo el país», red de
+  Essential de esa zona en la nota de la Guía, esperas del cuadernillo.
+- `/planes` y `/que-cubre`: Essential en tarjetas y en los once servicios; el
+  buscador y las tablas finas (especialidades, números) muestran Silver y Gold
+  con una nota. «Subir un escalón» cuenta solo Silver → Gold.
+- `lib/prestaciones.json` regenerado: odontología y enfermería a domicilio sin
+  Bronze; el modo 5 pasó de «No lo cubre ningún plan» a «No entra en este plan»
+  (con Essential, «ningún plan» dejó de ser cierto para la odontología básica).
+- `waitLabel`: 365 días se dicen «1 año», no «12 meses».
+- Color: `--sp-plan-bronze` → `--sp-plan-essential` (mismo tono).
+- QA: la Puerta 1.5 esperaba «parto de 10 meses» siempre; ahora espera la del
+  plan que salió (1 año en Essential), probada contra casos que pasan y fallan.
+
+**Paso 2 (pendiente, PR aparte):** cargar Essential estudio por estudio en
+`/que-cubre` (las 106 determinaciones de laboratorio, las listas de ecografías,
+tomografías, resonancias y las 26 cirugías del cuadernillo), las 43
+especialidades y los números finos. Hasta entonces, nada de datos de Bronze con
+el nombre de Essential.
+
+**Datos que faltan o no cierran (no se inventan):**
+- Remedios en la consulta de urgencia: el cuadernillo no trae tope → la tabla
+  dice «Consultalo con tu asesor».
+- «Hasta 3 consultas por mes, por beneficiario, por año de contrato»
+  (cuadernillo 1.2) es ambiguo; el sitio dice «3 por mes en la red».
+- Odontología en Silver y Gold: el sitio sigue diciendo que no entra (pendiente
+  de SP desde antes).
+- Bronze se queda en la Guía Médica («¿Qué plan tenés?»): hay clientes que lo
+  tienen. `bronce.json` queda como historia.
+
+---
+
 ## 🖼 PORTADAS DIBUJADAS DEL BLOG — EN PRUEBA, ESPERANDO A ARTURO (24 sep 2026)
 
 Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
@@ -62,7 +142,8 @@ técnicas están en `docs/diseno/fuentes/` (no es código del sitio).
 ## ✂️ EL COMPARADOR DEL HOME, MÁS LIVIANO (24 sep 2026)
 
 Pedido de Arturo, cinco puntos. Cuatro entraron; el quinto (Bronze → Essential)
-**no es un cambio de texto** y queda esperando su respuesta. Lámina:
+**no era un cambio de texto** y va en su propio PR (sección de arriba, «Essential
+reemplaza a Bronze»). Lámina:
 `docs/diseno/img/2026-09-24-comparador-puertas-simetricas.webp` (lección 17 de
 `docs/diseno/README.md`).
 
@@ -89,6 +170,8 @@ Pedido de Arturo, cinco puntos. Cuatro entraron; el quinto (Bronze → Essential
   así porque es la frase del menú y cambiarla acá sola rompe la coherencia.
 
 ### ⚠ Bronze → Essential: lo que encontramos y por qué no se hizo en este PR
+*(Historia. Resuelto el mismo día: ver «Essential reemplaza a Bronze», arriba.
+El nombre quedó «Essential», no «SP Esencial».)*
 
 Arturo (24/09): *«El plan Bronze ha quedado obsoleto; ya no se comercializa. El
 plan Essential lo reemplaza.»* La guarda de datos del 15/09 (más abajo) sigue
@@ -943,7 +1026,7 @@ planilla.
 
 | Pendiente | Quién |
 |---|---|
-| Grilla oficial: Bronze → Esencial, precio por zona (guarda de datos). Fuentes encontradas el 24/09 (ver «El comparador del home, más liviano»): falta que Arturo las confirme | SP |
+| ~~Grilla oficial: Bronze → Esencial, precio por zona~~ Hecho el 24/09 con las fuentes del Drive (sección «Essential reemplaza a Bronze»). Queda: confirmar el costeo cerrado y corregir el rótulo de la tabla editable | SP |
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
@@ -1115,7 +1198,8 @@ Dos contradicciones concretas, medidas el 16/09 contra el código:
 
 > **Actualización 24/09/2026:** aparecieron en el Drive el precio por zona y el
 > cuadernillo de Essential. Qué dicen y qué rompen: sección «El comparador del
-> home, más liviano», arriba. La guarda sigue hasta que Arturo los confirme.
+> home, más liviano», arriba. Ese mismo día Arturo pidió aplicarlos: sección
+> «Essential reemplaza a Bronze», que espera su OK para fusionarse.
 
 **No tocar los números de cobertura ni de precio hasta que llegue la grilla
 oficial.** Cambiar "Bronze" por "Esencial" a mano, sin la grilla, es
