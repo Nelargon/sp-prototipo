@@ -3580,3 +3580,44 @@ que se formó mirando íconos sueltos se prueba en los lugares reales antes de
 convertirla en regla, como la lección 9 ya decía de los íconos mismos. Y ante
 dos reglas que funcionan, la más simple es más fácil de sostener: un ícono, un
 tratamiento, cualquier fondo.
+
+## Capítulo 99 — Un color distinto no es un estilo distinto (24/09/2026)
+
+**Qué intentamos.** Arturo pasó cinco portadas del newsroom de Anthropic y
+preguntó si podíamos hacer algo así para el blog, *«pero llevarlo más al estilo
+SP»*. Antes de dibujar, Claude le marcó dos riesgos: que la mano saliera torpe
+(las de la referencia las dibuja un ilustrador) y que nos pareciéramos
+demasiado, porque Sage y Lavender son casi sus colores. La primera vuelta fue
+un solo estilo, papel recortado y trazo a mano, en tres paletas: A (trazo navy
+sobre el tono medio), B (trazo blanco sobre el color fuerte) y C (todo en un
+tono).
+
+**Qué pasó.** Cuatro cosas, en orden:
+
+1. **Arturo corrigió antes de ver la lámina:** *«Acordate de que no tienen que
+   ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Tenía razón por
+   una razón que la lámina escondía: las tres paletas conservaban entera la
+   receta de la referencia (fondo, trazo, papel) y solo cambiaban el color. Se
+   rehízo con cinco técnicas: trazo blanco, línea y acento, dos tintas, rayado
+   y tiza.
+2. **La mano parecía un resorte.** El primer intento dibujó los dedos como
+   lazos iguales que cruzaban el lápiz; se leían como un resorte. Funcionó una
+   mano más gruesa, con el índice apoyado sobre el lápiz y el lápiz hecho de
+   papel, debajo de la línea. En un dibujo de línea, una línea que cruza otra
+   confunde; un papel debajo las separa.
+3. **El filtro cortó el trazo en guiones.** Para que la línea temblara se le
+   puso un filtro de desplazamiento. En el borde del papel funcionó; en una
+   línea de 3,6 de grosor la partió en pedacitos. Se vio recién en la imagen
+   renderizada, no en el código.
+4. **Lo que se midió de paso:** 61 de las 70 notas comparten 5 dibujos, y en el
+   riel «Lo último» las miniaturas nunca mostraron el ícono. El recorte cuadrado
+   lo deja afuera y quedaban cuadrados de color que parecían estar bien.
+
+![Cinco estilos para las mismas tres notas](docs/diseno/img/2026-09-24-portadas-cinco-estilos.webp)
+
+**Qué aprendimos.** Cuando se piden versiones de un estilo, lo que varía es la
+técnica, cómo se hacen la línea y el papel; con otra paleta, la receta queda
+igual. El temblor de la mano va en el dibujo y no en un filtro, y se verifica en
+lo que se ve, como el blur fantasma del minificador. Y un dibujo se juzga en su
+uso más chico: el recorte cuadrado del riel decidió dónde tiene que vivir la
+composición.

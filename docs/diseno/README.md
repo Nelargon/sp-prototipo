@@ -253,3 +253,52 @@ nunca forman una fila larga. Para que la mano se siga viendo dentro del círculo
 el trazo va repasado (fila del medio). El dibujo más grande ya toca el borde de
 la mancha. La lección: una regla se juzga en su lugar, no en una lámina de íconos
 sueltos (como la lección 9), y ante dos reglas que funcionan gana la más simple.
+
+---
+
+## Parte 3 · Portadas del blog: un dibujo por nota (24/09/2026)
+
+Arturo pasó cinco portadas del newsroom de Anthropic (no se guardan acá: son
+suyas): *«Son muy creativos, lucen genial y no tienen que ser fotos. Podés
+hacerlo e imitarlo, pero llevarlo más al estilo SP?»*. Lo que se aprende de esas
+portadas no es el dibujo sino la idea: cada imagen dice lo que dice su nota.
+
+### 17 · Un color distinto no es un estilo distinto
+
+![Hoy y un mismo estilo en tres paletas](img/2026-09-24-portadas-tres-paletas.webp)
+
+**Qué muestra.** Tres notas reales, de las tres categorías con más notas, a su
+tamaño de tarjeta: la portada de hoy y un mismo estilo (papel recortado y trazo
+a mano) en tres paletas. Abajo, las mismas portadas a 64 px, como en el riel
+«Lo último».
+
+**Qué se midió.** Hoy, 61 de las 70 notas comparten 5 dibujos: cada una lleva el
+ícono de su categoría (las otras 9 muestran su cifra). Y en el riel «Lo último»
+la miniatura se recorta en cuadrado y el ícono, que vive a la izquierda, queda
+afuera: son cuadrados de color. Nadie lo había notado.
+
+**Qué pasó.** La paleta A era la más parecida a la referencia. Antes de verla,
+Arturo avisó: *«Acordate de que no tienen que ser muy similares. Podes ver 3 - 5
+versiones del estilo»*. Tres paletas de la misma técnica eran tres versiones de
+lo mismo: la receta de la referencia (fondo apagado, trazo oscuro, papel blanco)
+seguía entera en las tres. Cambiar el color no cambia el estilo.
+
+### 18 · Cinco técnicas, una sola mano
+
+![Cinco estilos para las mismas tres notas](img/2026-09-24-portadas-cinco-estilos.webp)
+
+![Los cinco estilos en el índice del blog, en celular](img/2026-09-24-portadas-estilos-en-su-lugar.webp)
+
+**Qué muestra.** El mismo dibujo con cinco técnicas: trazo blanco (la mano de los
+íconos del sitio), línea y acento ámbar, dos tintas con grano, rayado a mano y
+tiza. Abajo, los cinco en el índice del blog, en un celular de 390 px.
+
+**Lo que se vio.** En la página azul, las portadas de fondo blanco (línea y
+acento, rayado) se funden con la tarjeta blanca y la tarjeta se lee como una
+sola pieza, más de revista. La tiza de «Salud en Paraguay» usa el mismo azul que
+la página y pierde el borde de arriba. El trazo blanco es el más parecido a la
+referencia de los cinco, porque conserva papel y trazo, pero es también el que
+ya usa el sitio en sus íconos.
+
+**Estado (24/09/2026):** los cinco sobre la mesa, esperando a Arturo. Los dibujos
+y las técnicas están en `fuentes/`, para no redibujar cuando elija.
