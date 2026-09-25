@@ -3780,3 +3780,27 @@ estaba escrita: la cabeza mira hacia lo que atiende.
 tiene que salir de la silueta. Y antes de dibujar a alguien que ya existe, se
 leen sus reglas: acá dijeron dónde no va, qué no se le agranda y hacia dónde
 mira. Esa última regla resolvió el problema del dibujo.
+
+## Capítulo 106 — Volver atrás también es elegir (25/09/2026)
+
+**Qué intentamos.** Después de elegir el lenguaje del «niño que dibuja y se
+entiende», se abrieron dos caminos más en la misma noche. Uno fue Tranquibara
+dibujado por código, con sus reglas de personaje. El otro, un muñeco de cabeza
+grande y cuerpo de papa, sacado de una referencia de Arturo. Los dos se dibujaron,
+se probaron en el blog y se guardaron.
+
+**Qué pasó.** A Tranquibara, Arturo lo vio y dijo: *«Si el dibujo es así es
+horrible. Parece como que la IA trató de dibujar usando líneas.»* Y preguntó si
+Claude entendía la filosofía detrás del estilo de Claude. La respuesta honesta
+fue que sí, y que el centro de esa filosofía es una mano, que Claude no tiene: un
+trazo de pincel, un gesto, muy pocos elementos. Al día siguiente decidió: *«vamos
+a volver atrás con todo»*. Fuera Tranquibara y el muñeco; como base, el estilo del
+chico, y el detalle lleno a veces. *«No tenemos que ser muy estrictos.»*
+
+**Qué aprendimos.** El estilo del chico aguanta la línea construida porque la
+simpleza es el estilo: una casita o una persona de dos trazos no piden más mano
+de la que hay. Un personaje con hocico, orejas, ojos, camisa y pose sí la pide, y
+ahí se nota que el dibujo sale de coordenadas. Lo que Claude puede dibujar bien
+tiene un techo de complejidad, y conviene elegir un estilo que viva debajo de ese
+techo. Y volver a una lámina anterior no fue perder dos vueltas: esas vueltas
+mostraron dónde estaba el techo.

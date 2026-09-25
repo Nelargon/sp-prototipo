@@ -414,6 +414,15 @@ se ve de lejos, porque es lo único macizo de la portada.
 **Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Se pueden
 combinar: él pidió que el conjunto sea diverso.
 
+**Qué se decidió (25/09/2026).** Después de ver a Tranquibara y al muñeco
+(lecciones 23 y 24), Arturo volvió a esta lámina: *«vamos a volver atrás con
+todo»*. Eligió la **1 · Como lo dibuja un chico** como estilo base, y la **4 · Un
+detalle lleno** para usar a veces: en la lista y en el globo sí, en el sanatorio
+no (*«excepto la figura que tiene la casa, no me gusta esa»*). La regla que sale
+de ahí: se llena un objeto chico que lleva la idea, nunca un edificio. Y sin
+rigidez: *«No tenemos que ser muy estrictos, pero el estilo de dibujo creo que
+encaja bastante bien aquí.»*
+
 ### 23 · Tranquibara también, con la misma mano
 
 ![Tranquibara a mano: sus estados, tres portadas y la nota donde no va](img/2026-09-24-portadas-tranquibara.webp)
@@ -438,6 +447,13 @@ también cumplir otra regla suya: la cabeza mira hacia lo que atiende.
 dibujo maestro en vector; si estas portadas salen, conviene que las revise quien
 hizo el original.
 
+**Después (25/09/2026): descartado.** Arturo: *«Si el dibujo es así es horrible.
+Parece como que la IA trató de dibujar usando líneas. No es el estilo de
+Claude.»* Un personaje con tantos rasgos delata que el dibujo está construido con
+coordenadas; las figuras simples del estilo del chico no, porque ahí la simpleza
+es el estilo (BITACORA cap. 106). Si Tranquibara aparece en el blog, va con su
+arte oficial.
+
 ### 24 · La gente, con otra mano
 
 ![La gente de hasta ahora y cinco variaciones del muñeco](img/2026-09-24-portadas-gente-otra-mano.webp)
@@ -458,4 +474,7 @@ veía. Lo que va en la cara va en el color del fondo, que cumple el papel de la
 línea oscura de la referencia con la paleta de SP.
 
 **Estado (24/09/2026):** esperando a Arturo.
+
+**Después (25/09/2026): descartado** junto con Tranquibara: *«vamos a volver
+atrás con todo»*. La gente sigue siendo la del isotipo (lección 22).
 
