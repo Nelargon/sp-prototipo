@@ -52,6 +52,15 @@ Lámina de comparación: `docs/diseno/img/2026-09-25-tira-prestadores-con-y-sin-
   del home no lo muestra.
 - **Sigue abierto:** qué aliados quedan en la primera tira (el directorio
   pidió podarla, «perfumería»).
+- **Y la tira puede irse (25/09, noche).** Arturo: *«¿Qué pasa si, en vez de
+  que sea una tira dinámica, algo que se ve muchísimo, no es algo más
+  original?»*. Hay cinco versiones de una sección «Dónde te atendés», en
+  láminas (`docs/diseno/img/2026-09-25-red-v1…v5`, docs/diseno n.º 33): el
+  mapa, la línea, el muro de nombres, las fichas y «tu ciudad primero». Todas
+  funcionan con o sin logos. Recomendada: la 5, con el mapa de la 1 en
+  escritorio. **Si elige una, el PR #204 cambia de alcance:** la segunda tira
+  se reemplaza por esa sección, y la tira de aliados queda sola, esperando la
+  poda del directorio.
 
 ## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
 

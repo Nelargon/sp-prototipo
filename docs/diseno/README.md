@@ -900,3 +900,37 @@ tira de aliados no se distingue un sanatorio de una farmacia con descuento.
 **La lección.** Dos tiras de logos en gris, una arriba de la otra, se leen
 como una sola. Si la segunda dice otra cosa, tiene que verse distinta.
 
+### 33 · Cinco maneras de mostrar la red, sin tira
+
+Arturo, después de ver la tira con y sin logos: *«¿Qué pasa si, en vez de que
+sea una tira dinámica, algo que se ve muchísimo, no es algo más original?»*.
+Y que funcionara igual con o sin logos. Las cinco usan datos reales de la
+planilla (615 médicos y centros de Silver/Gold, 79 ciudades, 17
+departamentos) y cierran en la Guía Médica.
+
+![Versión 1, el mapa: el Paraguay con un punto por ciudad, del tamaño de su red; al tocar Encarnación aparece su tarjeta](img/2026-09-25-red-v1-mapa.webp)
+
+![Versión 2, la línea: ocho ciudades como paradas de un recorrido, cada una con su cantidad y sus sanatorios](img/2026-09-25-red-v2-linea.webp)
+
+![Versión 3, el muro de nombres: 615 en grande y los nombres como un texto sobre azul, con logo donde hay](img/2026-09-25-red-v3-muro.webp)
+
+![Versión 4, las fichas: siete tarjetas con logo o iniciales y una última con «+600»](img/2026-09-25-red-v4-fichas.webp)
+
+![Versión 5, tu ciudad primero: «¿Dónde vivís?» con las ciudades como botones y la respuesta de Encarnación abierta](img/2026-09-25-red-v5-ciudad.webp)
+
+**Qué muestra.** 1, el mapa: un punto por ciudad, del tamaño de su red; al
+tocarlo, quién te atiende ahí. 2, la línea: las ciudades como paradas de un
+recorrido. 3, el muro: la cifra grande y los nombres como un texto. 4, las
+fichas: una tarjeta por prestador, con logo o con iniciales. 5, tu ciudad
+primero: «¿Dónde vivís?» y la respuesta con números y nombres.
+
+**Qué se decidió.** Pendiente de Arturo. La recomendación fue la 5, con el mapa
+de la 1 como compañía en escritorio: es la única que contesta la pregunta que
+trae la persona (*¿tengo algo cerca?*) en lugar de repetir la puerta a la Guía
+Médica, que es por lo que se sacó la franja «Lister + más de 50 prestadores»
+el 6 de agosto.
+
+**La lección.** Una tira que se mueve dice «tenemos convenios». Un mapa o una
+ciudad dicen «acá te atendés». El formato también es parte del mensaje, y el
+logo pasa a ser un detalle: la ficha, el muro y el mapa funcionan igual sin él.
+

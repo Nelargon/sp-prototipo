@@ -4050,3 +4050,19 @@ original antes de decidir. Da Vinci igual salió de la vidriera: un nombre con
 clausura en su historia no va en la home, aunque siga en la guía. Un logo
 ajeno no se pega tal cual: se mira qué más dice además del nombre.
 
+## Capítulo 115 — La tira que se ve en todos lados (25/09/2026)
+
+**Qué intentamos.** Poner los prestadores reales en la tira que se mueve, con
+logos o sin ellos (cap. 114).
+
+**Qué pasó.** Con las dos versiones delante, Arturo cambió la pregunta: *«¿Qué
+pasa si, en vez de que sea una tira dinámica, algo que se ve muchísimo, no es
+algo más original?»*. Y agregó que tenía que funcionar igual con o sin logos.
+Se hicieron cinco versiones con los datos de la planilla: un mapa, una línea
+de paradas, un muro de nombres, fichas y una que empieza por «¿Dónde vivís?».
+
+**Qué aprendimos.** Discutíamos si poner logos o no, y el problema era el
+formato: una tira de logos es lo que toda empresa pone para decir «tenemos
+convenios», y no le contesta a nadie si tiene un sanatorio cerca. Cuando el
+formato contesta la pregunta, el logo deja de ser el problema.
+
