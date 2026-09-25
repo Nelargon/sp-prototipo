@@ -3737,7 +3737,7 @@ porque la confusión ya estaba repartida en cinco lugares. También quedó a la
 vista un costo de las claves internas: `esencial_*` sigue queriendo decir
 Essential. Se dejó así para no romper links, pero con el aviso al lado.
 
-## Capítulo 104 — La tomografía que era una placa dental (25/09/2026)
+## Capítulo 106 — La tomografía que era una placa dental (25/09/2026)
 
 **Qué intentamos.** Cargar Essential estudio por estudio en `/que-cubre` (el
 paso 2 que Arturo había dejado pendiente: *«Dale. Eso está pendiente»*) y, en

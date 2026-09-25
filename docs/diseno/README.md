@@ -382,7 +382,7 @@ plan cuenta distinto, la diferencia se escribe junto al número; y lo que la
 tabla no puede mostrar (la espera) se dice al lado, no se deja para la letra
 chica.
 
-### 22 · «No sé» también es una respuesta de la tabla
+### 25 · «No sé» también es una respuesta de la tabla
 
 ![El buscador de «¿Está cubierto?» en celular con la columna de Essential: cubierto, confirmalo con tu asesor, exclusión y especialidades](img/2026-09-25-essential-estudio-por-estudio.webp)
 

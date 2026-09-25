@@ -21,8 +21,8 @@ que documenta la implementación técnica de la página de planes.
 
 Arturo: *«Dale. Eso está pendiente»* (el paso 2 de Essential) y *«Sigue buscando
 por inconsistencias que arreglar porfa»*. Este PR publica datos de cobertura:
-**no se fusiona sin su OK**. El camino, en BITACORA cap. 104; la lámina,
-`docs/diseno/img/2026-09-25-essential-estudio-por-estudio.webp` (lección 22).
+**no se fusiona sin su OK**. El camino, en BITACORA cap. 106; la lámina,
+`docs/diseno/img/2026-09-25-essential-estudio-por-estudio.webp` (lección 25).
 
 **Paso 2 hecho: `/que-cubre` tiene la columna de Essential.** El buscador, la
 tabla de especialidades (4 columnas otra vez), los números finos y «Subir un
@@ -2915,7 +2915,7 @@ dato que ya estaba estructurado en las 935 filas de
 cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
 cubre); fisioterapia 90; tomografía 60/60/30 *(⚠ corregido el 25/09/2026:
 ese 60/30 era de la ortopantomografía; la tomografía es 120 en Silver y 90 en
-Gold — BITACORA cap. 104)*; ecografía y laboratorio ~60;
+Gold — BITACORA cap. 106)*; ecografía y laboratorio ~60;
 consultas y urgencias sin espera declarada.
 
 ⚠ **Regla crítica al leer carencias de la grilla — no borrar.** Las filas
