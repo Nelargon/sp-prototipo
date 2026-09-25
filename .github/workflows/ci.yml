@@ -28,10 +28,11 @@ jobs:
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.
-      - name: Pruebas rápidas (buscador, cobertura de páginas, links internos)
+      - name: Pruebas rápidas (buscador, cobertura de páginas, mapa de la guía, links internos)
         run: |
           node scripts/test-buscador.mjs
           node qa/cobertura-rutas.mjs
+          node qa/mapa-ciudades.mjs
           node qa/links-internos.mjs out /sp-prototipo
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base

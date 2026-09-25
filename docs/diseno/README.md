@@ -860,3 +860,136 @@ botones de verdad del header.
 dice «te escuché». En un header donde conviven botones y links, los links que
 no responden al toque se leen como texto muerto. Y la pastilla se agrandó con
 padding y margen negativo: en reposo, el header quedó idéntico píxel por píxel.
+
+---
+
+## Parte 10 · La tira de prestadores del home (25/09/2026)
+
+### 31 · Un nombre real vale más que una categoría
+
+![La tira de prestadores del home: hoy, con categorías de ejemplo; la propuesta, con 12 prestadores reales y su ciudad, en escritorio y a 390 px](img/2026-09-25-tira-prestadores-nombres-reales.webp)
+
+**Qué muestra.** Arriba, la sección tal como estaba: la segunda tira decía
+«Sanatorio», «Laboratorio», «Clínica». Abajo, la propuesta sin logos: 12
+prestadores reales de la planilla, cada uno con su ciudad, y una nota al pie
+con link a la Guía Médica. A la derecha, a 390 px.
+
+**Qué se decidió.** Quedó atrás: la tira se reemplazó por «Dónde te atendés»
+(n.º 33 a 35). En su momento: Arturo pidió los logos; no se pudieron bajar
+(BITACORA cap. 114) y propuso comparar una versión con logos y otra sin. Esta
+es la sin logos. La elección de los nombres no es estética: solo entran los
+que están en Silver/Gold **y** en Essential, porque el título dice «de tu
+plan».
+
+**La lección.** Una categoría («Sanatorio») no le dice a nadie si su sanatorio
+está. Un nombre sí, y por eso también puede prometer de más: se elige con la
+planilla al lado, no con la fama.
+
+### 32 · Con logos o sin logos
+
+![La tira de prestadores: hoy, la versión A con 11 nombres reales y su ciudad, y la versión B con los logos de 6 prestadores, en escritorio y a 390 px](img/2026-09-25-tira-prestadores-con-y-sin-logos.webp)
+
+**Qué muestra.** Tres estados de la misma sección. Hoy: categorías de ejemplo.
+A: 11 prestadores reales en texto, con su ciudad. B: los 6 que tienen un logo
+publicable, en gris como los aliados.
+
+**Qué se decidió.** Ni una ni otra: la tira entera se reemplazó por «Dónde te
+atendés» (n.º 33 a 35). Arturo había pedido comparar (*«Igual podemos probar
+una versión con y una versión sin logos»*). La recomendación fue A: B deja afuera a
+Encarnación y Luque, de Ciudad del Este queda solo Santa Lucía, y pegada a la
+tira de aliados no se distingue un sanatorio de una farmacia con descuento.
+
+**La lección.** Dos tiras de logos en gris, una arriba de la otra, se leen
+como una sola. Si la segunda dice otra cosa, tiene que verse distinta.
+
+### 33 · Cinco maneras de mostrar la red, sin tira
+
+Arturo, después de ver la tira con y sin logos: *«¿Qué pasa si, en vez de que
+sea una tira dinámica, algo que se ve muchísimo, no es algo más original?»*.
+Y que funcionara igual con o sin logos. Las cinco usan datos reales de la
+planilla (615 médicos y centros de Silver/Gold, 79 ciudades, 17
+departamentos) y cierran en la Guía Médica.
+
+![Versión 1, el mapa: el Paraguay con un punto por ciudad, del tamaño de su red; al tocar Encarnación aparece su tarjeta](img/2026-09-25-red-v1-mapa.webp)
+
+![Versión 2, la línea: ocho ciudades como paradas de un recorrido, cada una con su cantidad y sus sanatorios](img/2026-09-25-red-v2-linea.webp)
+
+![Versión 3, el muro de nombres: 615 en grande y los nombres como un texto sobre azul, con logo donde hay](img/2026-09-25-red-v3-muro.webp)
+
+![Versión 4, las fichas: siete tarjetas con logo o iniciales y una última con «+600»](img/2026-09-25-red-v4-fichas.webp)
+
+![Versión 5, tu ciudad primero: «¿Dónde vivís?» con las ciudades como botones y la respuesta de Encarnación abierta](img/2026-09-25-red-v5-ciudad.webp)
+
+**Qué muestra.** 1, el mapa: un punto por ciudad, del tamaño de su red; al
+tocarlo, quién te atiende ahí. 2, la línea: las ciudades como paradas de un
+recorrido. 3, el muro: la cifra grande y los nombres como un texto. 4, las
+fichas: una tarjeta por prestador, con logo o con iniciales. 5, tu ciudad
+primero: «¿Dónde vivís?» y la respuesta con números y nombres.
+
+**Qué se decidió.** Arturo se quedó con tres —el muro, el mapa y «tu ciudad
+primero»— y las combinó (n.º 34 y 35). La recomendación había sido la 5, con el mapa
+de la 1 como compañía en escritorio: es la única que contesta la pregunta que
+trae la persona (*¿tengo algo cerca?*) en lugar de repetir la puerta a la Guía
+Médica, que es por lo que se sacó la franja «Lister + más de 50 prestadores»
+el 6 de agosto.
+
+**La lección.** Una tira que se mueve dice «tenemos convenios». Un mapa o una
+ciudad dicen «acá te atendés». El formato también es parte del mensaje, y el
+logo pasa a ser un detalle: la ficha, el muro y el mapa funcionan igual sin él.
+
+### 34 · El muro de fondo, el desglose y el mapa en la Guía
+
+![Home: la sección «Dónde te atendés» con el desglose de la red y «¿Dónde vivís?», sobre un fondo de nombres de sanatorios](img/2026-09-25-red-home-desglose-muro.webp)
+
+![Guía Médica: el mapa debajo de «Tu ciudad o localidad», con Encarnación elegida](img/2026-09-25-red-guia-mapa.webp)
+
+**Qué muestra.** Arriba, la sección del home que junta tres ideas: el muro (sin
+logos) pasa a ser el **fondo**, una textura con los 56 sanatorios y clínicas
+que están en todos los planes; adelante, el **desglose** de la red y el
+«¿Dónde vivís?». Abajo, el **mapa** dentro de la Guía Médica real, como otra
+manera de elegir la ciudad.
+
+**Qué se decidió.** Arturo eligió tres de las cinco: *«Me gusta muchísimo el
+muro… El mapa está genial y también está muy bueno la versión 5»*. Y pidió
+desglosar el número: *«ese número grande, 615, a veces se puede comparar con
+otras prepagas que son la competencia y tienen un número mayor»*. Por eso el
+615 ya no aparece solo: 130 sanatorios y clínicas, 107 laboratorios, 363
+médicos de 47 especialidades, 9 centros de imágenes. El muro va de fondo, como
+propuso él; el mapa, donde es útil (la Guía, que ya filtra por ciudad).
+Construido después de la n.º 35.
+
+**La lección.** Un número total invita a comparar con el total de otro; un
+número con nombre («44 pediatras») se compara con lo que la persona necesita.
+Y un fondo de texto funciona si es textura: casi del color del fondo, con un
+velo claro donde está lo que se lee, y oculto para los lectores de pantalla.
+
+### 35 · Muro gris, y dos opciones más para el home y para el mapa
+
+![Home, opción 1: el muro gris claro de fondo, sin velo, y todo el contenido dentro de una tarjeta blanca](img/2026-09-25-red-home-op1-muro-gris.webp)
+
+![Home, opción 2: el muro en un bloque gris al costado con el 56, y el contenido al lado](img/2026-09-25-red-home-op2-muro-bloque.webp)
+
+![Mapa, opción 1: en el home, el mapa elige la ciudad y la tarjeta de al lado cambia](img/2026-09-25-red-mapa-op1-home.webp)
+
+![Mapa, opción 2: en la Guía Médica, un panel al costado de la lista marca las ciudades donde hay resultados; en el celular, «Lista | Mapa»](img/2026-09-25-red-mapa-op2-guia-lateral.webp)
+
+**Qué muestra.** Arturo sobre la n.º 34: el muro *«puede ser de color gris.
+Puede ser más claro»*, sin el velo blanco de atrás, para que lo de adelante
+tenga contraste propio. Con ese muro, dos maneras de ponerlo en el home: **1**,
+de fondo a sangre con todo adentro de una tarjeta blanca; **2**, en su propio
+bloque al costado, donde nada se lee encima. Y dos lugares más para el mapa:
+**1**, en el home como selector de ciudad; **2**, en la Guía Médica como panel
+que muestra dónde están los resultados de lo que buscaste (ginecología: 11
+ciudades), con un «Lista | Mapa» en el celular.
+
+**Qué se decidió.** Arturo: *«Dale, construí home opción 1 y mapa opción
+2»*. Construido el mismo día: la sección del home con el muro gris a sangre y
+todo en la tarjeta, y el mapa en la guía, al costado desde 1400 px y con
+«Lista | Mapa» en el resto. En la guía, el mapa va **sin números**: la guía no
+muestra totales de prestadores desde el 23/09 (la lámina los tenía).
+
+**La lección.** Un fondo de texto no necesita velo si es suficientemente
+claro: el velo es un parche para un fondo que grita. Y un mapa sirve más donde
+responde a lo que la persona ya hizo (buscó una especialidad) que donde solo
+muestra la red.
+

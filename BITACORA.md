@@ -4006,3 +4006,88 @@ negocian: no puede mostrar lo privado y no puede guardar un secreto. Cuando un
 pedido necesita cualquiera de las dos cosas, la pieza vive afuera y el sitio
 solo la enlaza. Y ante «cualquier visitante», preguntar primero quién es
 cualquiera: la respuesta decidió la arquitectura.
+
+## Capítulo 114 — Los logos que no se pudieron bajar (25/09/2026)
+
+**Qué intentamos.** Arturo: *«Ahora mismo me cuesta conseguir los logotipos de
+nuestros prestadores médicos. ¿Vos podrías ponerte a buscar sus logotipos
+online y ubicarlos en esta tira?»*. La tira decía categorías de ejemplo
+(«Sanatorio», «Laboratorio»), no dónde te atendés.
+
+**Qué pasó.** Tres caminos, tres paredes. La red de la sesión bloquea los
+sitios de los sanatorios, Facebook y Wikimedia: el buscador encuentra las
+páginas, pero no deja bajar una imagen. El Drive tiene las carpetas
+(«LOGO DE SANATORIOS», «PRESTADORES/SANATORIOS»), pero vacías; la única con
+logos es de 2023, con fotos de perfil de Facebook de sanatorios del interior.
+Y bajar un archivo del Drive lo trae como texto (base64): al rearmarlo, se
+perdió un carácter en 4.700 y la imagen quedó rota. Una imagen no viaja
+copiada a mano.
+
+El cruce con la planilla encontró algo más importante que los logos. Los
+nombres que más venden (Italiano, Español, Americano, Díaz Gill, Meyer Lab)
+están **solo** en la red de Silver/Gold. La tira dice «prestadores **de tu
+plan**». Quien compra Essential vería en la home un sanatorio que su plan no
+tiene: justo lo que Arturo no quiere, *«si la persona siente otra vez que se
+le mintió, nosotros vamos a pagar caro eso»*. Arturo propuso probar las dos
+versiones. Se hizo la que no depende de nadie: 12 nombres reales que están en
+Silver/Gold y en Essential, con su ciudad y un link a la Guía Médica. La tira
+quedó lista para recibir los logos.
+
+**Qué aprendimos.** Antes de salir a buscar lo que falta, cruzar lo que se va
+a mostrar con lo que se promete al lado. El logo más reconocible puede ser el
+que más promete de más. Y cuando una pieza depende de algo que no se puede
+conseguir hoy, se construye el lugar donde va a ir y se publica lo que sí es
+verdad.
+
+**Después, el mismo día.** Arturo abrió la red de la sesión y los logos
+aparecieron en una hora. De los 11 prestadores, 6 tenían uno publicable. Dos
+traían sorpresa. El de San Lucas tenía abajo la franja «medicina pre paga»:
+su propia prepaga, en la home de otra prepaga. El de Iribas sumaba «IRM», una
+marca que en la planilla está solo en Essential. Se recortaron las dos. Y el
+buscador, al resumir, fechó en «julio de 2026» una clausura de Sanatorio Da
+Vinci que la nota original fecha en diciembre de 2021. Se leyó la nota
+original antes de decidir. Da Vinci igual salió de la vidriera: un nombre con
+clausura en su historia no va en la home, aunque siga en la guía. Un logo
+ajeno no se pega tal cual: se mira qué más dice además del nombre.
+
+## Capítulo 115 — La tira que se ve en todos lados (25/09/2026)
+
+**Qué intentamos.** Poner los prestadores reales en la tira que se mueve, con
+logos o sin ellos (cap. 114).
+
+**Qué pasó.** Con las dos versiones delante, Arturo cambió la pregunta: *«¿Qué
+pasa si, en vez de que sea una tira dinámica, algo que se ve muchísimo, no es
+algo más original?»*. Y agregó que tenía que funcionar igual con o sin logos.
+Se hicieron cinco versiones con los datos de la planilla: un mapa, una línea
+de paradas, un muro de nombres, fichas y una que empieza por «¿Dónde vivís?».
+
+**Qué aprendimos.** Discutíamos si poner logos o no, y el problema era el
+formato: una tira de logos es lo que toda empresa pone para decir «tenemos
+convenios», y no le contesta a nadie si tiene un sanatorio cerca. Cuando el
+formato contesta la pregunta, el logo deja de ser el problema.
+
+**Después, la elección.** Arturo se quedó con tres de las cinco y las juntó:
+el muro sin logos como fondo, el «¿Dónde vivís?» y el mapa en otro lugar donde
+sirviera. Y agregó lo que nadie había visto: *«ese número grande, 615, a
+veces se puede comparar con otras prepagas que son la competencia y tienen un
+número mayor»*. El total pasó a ser un desglose: 130 sanatorios y clínicas,
+107 laboratorios, 363 médicos. Un total se compara con otro total; «44
+pediatras» se compara con lo que la persona necesita.
+
+## Capítulo 116 — El archivo que ya existía (25/09/2026)
+
+**Qué intentamos.** Para que el home no cargara la planilla entera (258 KB),
+un script nuevo saca de ella solo lo que muestra «Dónde te atendés» y lo
+escribe en `lib/red-resumen.json`, un nombre que parecía obvio.
+
+**Qué pasó.** `git status` lo marcó como **modificado**, no como nuevo. Ese
+archivo ya existía: lo escribe `build-guia-medica.py` con los conteos por red y
+zona, y lo usa el puente entre el simulador y la guía. El script nuevo lo había
+pisado con otra forma de datos; el build habría pasado y el simulador habría
+dejado de mostrar la red de tu ciudad. Se restauró, el nuevo pasó a llamarse
+`lib/red-home.json`, y los dos scripts se nombran mutuamente en un comentario.
+
+**Qué aprendimos.** Antes de escribir un archivo generado, fijarse si el
+nombre ya existe. Un «M» en `git status` donde esperabas un «??» es una alarma:
+estás tocando algo que otro hizo.
+

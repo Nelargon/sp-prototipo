@@ -10,6 +10,7 @@ import { Term, waitLabel, annotate } from './glossary';
 import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
+import DondeTeAtendes from './components/DondeTeAtendes';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
@@ -391,12 +392,6 @@ export default function Page() {
       { name: 'Upalala', file: 'upalala.webp' },
       { name: 'Assist Card', file: 'assistcard.webp' },
     ],
-    // Sin "Odontología" (23/09/2026): la tira decía que el dentista era parte
-    // de la red del plan y /que-cubre dice que no entra en Silver/Gold
-    // (Essential cubre lo básico, solo en Lister).
-    // Las cifras de la red (600+ en 79 ciudades) salen de lib/guia-medica.json:
-    // 615 prestadores en la red de Silver/Gold, 674 en total, al 23/09/2026.
-    prestadores: ['Sanatorio', 'Laboratorio', 'Centro de imágenes', 'Clínica', 'Maternidad', 'Oftalmología', 'Cardiología', 'Pediatría', 'Emergencias 24 h', 'Traumatología'],
   };
 
   // ===== markup =====
@@ -978,17 +973,23 @@ export default function Page() {
           un destino o un momento que otro no cubre; este repetía y no sumaba.
           El padding inferior que aportaba esta franja pasó a la sección de arriba. */}
 
-      {/* RED DE BENEFICIOS + PRESTADORES — dos tiras flotantes, sentidos opuestos */}
+      {/* DÓNDE TE ATENDÉS — la red médica (25/09/2026). Reemplaza a la tira de
+          prestadores en movimiento: desglose, «¿Dónde vivís?» y el muro de
+          sanatorios de fondo. Ver app/components/DondeTeAtendes.jsx. */}
+      <DondeTeAtendes />
+
+      {/* RED DE BENEFICIOS — la tira de aliados, sola desde el 25/09/2026 (los
+          prestadores pasaron a «Dónde te atendés», arriba). Sigue pendiente la
+          poda que pidió el directorio («perfumería», HANDOFF). */}
       <section style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados y prestadores <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
-            <p style={css('font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>{ES_LANZAMIENTO ? 'Descuentos con nuestros aliados comerciales, incluidos en tu plan.' : 'Descuentos con nuestros aliados comerciales y, muy pronto, toda la red médica de Salud Protegida.'}</p>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados comerciales, incluidos en tu plan.</p>
           </div>
         </div>
 
-        {/* Tira 1 — aliados · derecha → izquierda */}
         <div data-rv className="mq" style={css('margin-top:42px;--mq-dur:54s')}>
           <div className="mq-track">
             {[...v.aliados, ...v.aliados].map((a, i) => (
@@ -999,19 +1000,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Tira 2 — prestadores (próximamente) · izquierda → derecha */}
-        <div data-rv className="mq mq-rev" style={css('margin-top:14px;--mq-dur:48s')}>
-          <div className="mq-track">
-            {[...v.prestadores, ...v.prestadores].map((pr, i) => (
-              <div key={i} style={css('flex:none;display:inline-flex;align-items:center;gap:10px;height:52px;margin-right:48px;color:var(--sp-muted)')}>
-                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M10 21v-4h4v4M9.5 9.5h.01M14.5 9.5h.01M9.5 13h.01M14.5 13h.01" /></svg>
-                <span style={css('font-size:15px;font-weight:700;white-space:nowrap')}>{pr}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={css('max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : <>Aliados reales — pasá el cursor para verlos a color. Prestadores de ejemplo: <b style={css('color:var(--sp-teal-deep)')}>próximamente</b> con la red médica real.</>}</div>
+        <div style={css('font-family:var(--font-inter),sans-serif;max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;line-height:1.6;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : 'Aliados reales: pasá el cursor para verlos a color.'}</div>
       </section>
 
       {/* FAQ */}

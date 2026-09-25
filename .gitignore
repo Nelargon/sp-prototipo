@@ -30,3 +30,8 @@ qa/qa-resultados.json
 # Guía Médica, correo del blog). No es fuente y cambia en cada corrida.
 __pycache__/
 *.pyc
+
+# Resumen de la red para el home: lo arma scripts/red-home.mjs desde
+# lib/guia-medica.json antes de cada build y dev. No se versiona para que nunca
+# quede atrasado respecto de la planilla.
+/lib/red-home.json
