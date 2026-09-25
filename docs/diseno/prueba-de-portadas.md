@@ -160,8 +160,9 @@ la ronda anterior para el primero. Después, calificá la tanda completa.
 
 <definition>
 Por portada, cada criterio es ✓ o ✗:
-- [ ] A ciegas: mi adivinanza de la ronda anterior apuntaba al tema del título
-      (el mismo asunto, aunque con otras palabras).
+- [ ] A ciegas: alguien que leyera solo mi adivinanza de la ronda anterior
+      elegiría este título entre los diez. Si mi adivinanza nombra otro tema,
+      aunque se parezca, es ✗.
 - [ ] Una idea: la portada se resume en una frase de ≤8 palabras y esa frase va
       con el título.
 - [ ] Un verbo: alguien o algo hace una acción que se ve (avisar, llevar,
@@ -190,8 +191,10 @@ Para la tanda:
 Después de la tabla, un segundo pase. Por cada Aprobada, escribí en una línea el
 argumento más fuerte de un lector apurado para no entenderla. Por cada Rehacer,
 la mejor defensa en una línea. Si el argumento o la defensa se sostiene mirando
-la imagen, cambiá el veredicto. Mostrá solo los veredictos que cambiaron, con su
-línea; si no cambió ninguno, escribí "Sin cambios".
+la imagen, cambiá el veredicto. Una portada con ✗ en "A ciegas" no puede pasar
+a Aprobada: el contrapeso no defiende lo que el dibujo no dijo solo. Mostrá
+solo los veredictos que cambiaron, con su línea; si no cambió ninguno, escribí
+"Sin cambios".
 </contrapeso>
 
 <format>
@@ -222,6 +225,8 @@ línea; si no cambió ninguno, escribí "Sin cambios".
   gente del logo, el objeto que se mueve o una flecha; una mano devuelve el
   dibujo a la firma de la referencia.
 - Proponer cambiar la paleta, el trazo blanco o la firma de la marca.
+- Proponer rojo (en esta marca es solo para urgencias) o dibujos que toquen o
+  cambien el logo.
 - Elogios generales ("buen trabajo", "gran potencial").
 </avoid>
 
@@ -237,7 +242,16 @@ La misma que la B **sin el bloque `<contrapeso>`** y sin el punto 3 de
 `<format>`. Sirve para una pasada rápida sobre una tanda chica o sobre una sola
 portada rehecha; para aprobar una tanda, la B.
 
-**Ajuste después de la tanda 1 (25/09/2026):** el evaluador propuso manos en
+**Segundo ajuste (25/09/2026, después de la corrida de Arturo):** el contrapeso
+cambió cinco veredictos en las dos corridas y cuatro fueron para aprobar. Dos
+de esas aprobaciones (cambiar de médico y más gente) se apoyaban en un «A
+ciegas» generoso: el evaluador contó «traslados» como acierto de «cambiar de
+médico». «A ciegas» se volvió una prueba concreta (¿alguien elegiría este título
+leyendo solo la adivinanza?), y una portada con ✗ a ciegas ya no se puede
+aprobar en el contrapeso. Y el rojo y el logo entraron en `<avoid>`: un arreglo
+proponía un lazo rojo tocando el logo.
+
+**Primer ajuste (25/09/2026):** el evaluador propuso manos en
 tres de sus nueve arreglos, y corrigió con razón las observaciones 2 y 5. El
 prompt de arriba ya trae las dos cosas: las observaciones corregidas y las manos
 en `<avoid>`.
@@ -248,4 +262,5 @@ en `<avoid>`.
 |---|---|---|---|---|---|
 | 1 | IA sin contexto (variante B) | 25/09/2026 | 2 de 10 (3 cerca) | 2 aprobadas, 8 a rehacer · filosofía 4/10 · personalidad 5/10 | `README.md`, lección 28 |
 | 1 | IA sin contexto, ronda a ciegas (corrida de Arturo) | 25/09/2026 | 1 de 10 (4 cerca) | — | `README.md`, lección 28 |
+| 1 | IA sin contexto (variante B, corrida de Arturo) | 25/09/2026 | (su ronda de arriba) | 3 aprobadas, 7 a rehacer · filosofía 4/10 · personalidad 6/10 | `README.md`, lección 29 |
 | 1 | Pasillo, 5 personas | — | — | — | pendiente (Arturo) |

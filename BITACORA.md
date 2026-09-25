@@ -3915,3 +3915,26 @@ lista de lo que no se toma tiene que nombrar también los arreglos prohibidos. E
 evaluador, a su vez, corrigió una observación nuestra sobre la referencia, y
 tenía razón. La vara se revisa contra la imagen, no contra lo que recordamos de
 ella.
+
+
+## Capítulo 111 — El contrapeso aprobaba (25/09/2026)
+
+**Qué intentamos.** La prueba de portadas tiene un segundo pase, el contrapeso:
+el evaluador ataca cada portada que aprobó y defiende cada una que mandó a
+rehacer, y cambia el veredicto si el argumento se sostiene. Estaba pensado para
+ser parejo, y para cortar la tendencia a aprobar de quien evalúa.
+
+**Qué pasó.** En las dos corridas de la tanda 1 (la de Claude y la de Arturo), el
+contrapeso cambió cinco veredictos, y cuatro fueron para aprobar. Dos de esas
+aprobaciones se apoyaban en un «A ciegas» generoso: el evaluador había contado
+*«traslados de pacientes»* como acierto de «cuando cambiás de médico, la
+información no viaja sola». La regla decía «tu adivinanza apuntaba al tema», y
+casi cualquier cosa apunta a un tema si se la mira con ganas.
+
+**Qué aprendimos.** Un pase parejo en el papel no es parejo en la práctica: quien
+evalúa defiende mejor de lo que ataca. Lo que lo endereza es una regla despareja
+a propósito: lo que el dibujo no dijo solo, no se defiende después. Y una vara
+blanda («apuntaba al tema») se endurece convirtiéndola en una pregunta que se
+puede tildar: ¿alguien que lea solo la adivinanza elegiría este título entre los
+diez? La prueba también se prueba: se corrió dos veces antes de confiarle una
+tanda.
