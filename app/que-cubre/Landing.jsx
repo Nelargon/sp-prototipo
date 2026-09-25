@@ -15,14 +15,11 @@ import datos from '../../lib/prestaciones.json';
    Silver y Gold son de la familia que internamente se llama "Privilege" (de
    cara al usuario NUNCA se nombra así — HANDOFF dec. 11o).
 
-   ⚠ ESSENTIAL (24/09/2026) reemplazó a Bronze, pero la grilla de la que sale
-   lib/prestaciones.json es la de Privilege: Essential tiene su propio
-   cuadernillo y todavía no está cargado estudio por estudio (paso 2, PR aparte,
-   decisión de Arturo). Mientras tanto: las tarjetas y los once servicios salen
-   de quote.js y coverage.js (que ya tienen Essential); el buscador dice
-   "confirmalo con tu asesor" en su columna; y las tablas finas (especialidades
-   y números) muestran Silver y Gold con una nota sobre Essential. Nunca los
-   datos de Bronze con el nombre de Essential.
+   ⚠ ESSENTIAL (24/09/2026) reemplazó a Bronze. Su columna (`e`) NO sale de la
+   grilla Privilege: sale de cruzar cada fila con su propio cuadernillo
+   (datos/planes-vigentes/essential-cobertura.json, paso 2 del 25/09/2026).
+   Donde el cuadernillo no nombra algo de forma cruzable con certeza, la celda
+   manda al asesor. Nunca los datos de Bronze con el nombre de Essential.
    ----------------------------------------------------------------------------
    ⚠ NO es /planes y no la reemplaza. Decisión del usuario (6 ago 2026): "que
    sea un espacio aparte". `/planes` sigue siendo la comparación servicio por
@@ -51,9 +48,8 @@ import datos from '../../lib/prestaciones.json';
    propósito"): informa cuán incompleto es un plan sin ayudar a decidir. La
    sección 3 usa los mismos datos para responder lo que sí decide. */
 
-// Las columnas que salen de la grilla Privilege (ver el aviso de arriba).
-const PLAN_KEYS = ['s', 'o'];
-const NOTA_ESSENTIAL = 'Essential no está en esta tabla todavía: tiene su propio cuadernillo, que estamos cargando. Tu asesor te lo confirma.';
+// e = Essential (su cuadernillo) · s = Silver · o = Gold (la grilla).
+const PLAN_KEYS = ['e', 's', 'o'];
 
 const seccionTitulo = (kicker, titulo, resalte, bajada) => (
   <div data-rv style={css('text-align:center;max-width:700px;margin:0 auto 26px')}>
@@ -119,7 +115,7 @@ export default function Landing() {
   const especialidades = datos.items.filter((i) => i.t === 'c');
   const especialidadesVisibles = verTodas ? especialidades : especialidades.slice(0, 12);
   const excluidos = datos.items.filter((i) => i.t === 'x');
-  const { so } = datos.saltos;
+  const { es, so } = datos.saltos;
   const nombreCuadro = (k) => datos.meta.cuadros[k].toLowerCase();
 
   /* Cómo se MUESTRA un parámetro del master, sin tocar el dato:
@@ -202,7 +198,7 @@ export default function Landing() {
                     className="btn-teal sq"
                     style={css('margin-top:20px;height:46px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px')}
                   >
-                    Ver mi precio real
+                    Ver mi precio
                   </a>
                 </div>
               </div>
@@ -221,12 +217,13 @@ export default function Landing() {
           del encabezado del archivo). */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {/* Solo Silver → Gold hasta que Essential esté cargado estudio por
-              estudio: el salto Essential → Silver no se puede contar con la
-              grilla Privilege (ver el aviso del encabezado). */}
-          {seccionTitulo('Subir un escalón', 'Qué comprás exactamente', 'cuando pasás de Silver a Gold.', 'No es "más cobertura" en abstracto. Contamos cuántas cosas de la grilla cambian a tu favor — y podés verificar cada una en el buscador de arriba.')}
-          <div style={css('display:grid;grid-template-columns:1fr;gap:16px;max-width:560px;margin:0 auto')}>
+          {/* Essential → Silver se cuenta con la columna `e` (su cuadernillo)
+              contra la grilla de Silver: cada número se puede verificar en el
+              buscador, fila por fila. */}
+          {seccionTitulo('Subir un escalón', 'Qué comprás exactamente', 'cuando pasás al plan de arriba.', 'No es "más cobertura" en abstracto. Contamos cuántas cosas cambian a tu favor — y podés verificar cada una en el buscador de arriba.')}
+          <div className="planes-grid-2" style={css('display:grid;grid-template-columns:1fr 1fr;gap:16px')}>
             {[
+              { de: 'Essential', a: 'Silver', color: 'var(--sp-plan-silver)', d: es },
               { de: 'Silver', a: 'Gold', color: 'var(--sp-plan-gold)', d: so },
             ].map((s) => (
               <div key={s.a} data-rv className="rv sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-lg);padding:24px 26px')}>
@@ -315,21 +312,21 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('Con qué especialista', `Las ${especialidades.length} especialidades`, 'y cuántas veces al año.', 'Donde dice "sin tope" es sin tope de verdad: las que tienen número, lo tienen escrito acá.')}
-          <p data-rv style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.55;text-align:center;max-width:640px;margin:-10px auto 16px')}>En Essential, las consultas son sin tope en Lister y hasta 3 por mes en la red. {NOTA_ESSENTIAL}</p>
           <div className="sq" data-rv style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
-            <div style={css('min-width:460px')}>
-              <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
+            <div style={css('min-width:600px')}>
+              <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
                 <div style={css('padding:13px 18px')}>Especialidad</div>
-                {plansArr.slice(1).map((pl) => (
+                {plansArr.map((pl) => (
                   <div key={pl.short} style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
                 ))}
               </div>
               {especialidadesVisibles.map((esp, r) => (
-                <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
                   <div className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
                   {PLAN_KEYS.map((k) => {
                     const [cob, cantIdx] = esp[k];
-                    const texto = cantIdx >= 0 ? datos.cantidades[cantIdx] : '—';
+                    // Essential nombra una lista cerrada: la que no está, no entra.
+                    const texto = cob === 5 ? 'No entra en este plan' : cantIdx >= 0 ? datos.cantidades[cantIdx] : '—';
                     const copago = cob === 1;
                     return (
                       <div key={k} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-text);line-height:1.4')}>
@@ -361,21 +358,20 @@ export default function Landing() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {seccionTitulo('La letra chica, en letra grande', 'Los números que deciden', 'cuando ya estás internado.', 'Días de terapia intensiva, topes de medicamentos, esperas de maternidad. Es lo que casi nadie publica y lo que más se extraña el día que hace falta.')}
-          <p data-rv style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.55;text-align:center;max-width:640px;margin:-10px auto 16px')}>{NOTA_ESSENTIAL}</p>
           <div data-rv style={css('display:flex;flex-direction:column;gap:14px')}>
             {seccionesParam.map((grupo) => (
               <div className="sq" key={grupo.sec} style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                <div style={css('min-width:460px')}>
-                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
+                <div style={css('min-width:600px')}>
+                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
                     <div style={css('padding:12px 18px')}>{grupo.sec}</div>
-                    {plansArr.slice(1).map((pl) => (
+                    {plansArr.map((pl) => (
                       <div key={pl.short} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
                     ))}
                   </div>
                   {grupo.filas.map((f, r) => (
-                    <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                    <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
                       <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
-                      {f.v.slice(1).map((v, j) => (
+                      {f.v.map((v, j) => (
                         <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v ? valorParam(v) : '—'}</div>
                       ))}
                     </div>

@@ -53,8 +53,8 @@ function notaRed(ubi, planGuia, red = 'privilege') {
   const lugar = z.dp === 'Capital' ? 'Asunción' : z.dp;
   let texto;
   if (z.nCiudad) texto = `En ${z.c} tenés ${cuantos(z.nCiudad)} de la red de este plan${z.dp === 'Capital' ? ', Lister incluido' : ''}.`;
-  else if (z.nDepto) texto = (z.ciudadPedida && z.ciudadPedida !== lugar ? `En ${z.ciudadPedida} todavía no hay prestadores de la red; en ` : 'En ') + `${lugar} tenés ${cuantos(z.nDepto)}.`;
-  else texto = `Todavía no tenemos prestadores en ${ubi.deptNombre}. Tu asesor te dice dónde atenderte más cerca.`;
+  else if (z.nDepto) texto = (z.ciudadPedida && z.ciudadPedida !== lugar ? `En ${z.ciudadPedida} todavía no hay médicos ni centros de la red; en ` : 'En ') + `${lugar} tenés ${cuantos(z.nDepto)}.`;
+  else texto = `Todavía no tenemos médicos ni centros en ${ubi.deptNombre}. Tu asesor te dice dónde atenderte más cerca.`;
   return { texto, href: guiaHref(BP, planGuia, z) };
 }
 
@@ -87,7 +87,11 @@ export default function Simulador() {
   // que corre por Plan Vital y ve su propio paso).
   const pickWho = (k) => { setSimDir(1); const skipNivel = !!planPresetRef.current && k !== 'padres'; simPatch({ who: k, people: peopleFor(k), step: skipNivel ? 3 : 2 }); };
   const setPersonAge = (i, val) =>
-    setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => (idx === i ? Object.assign({}, p, { age: +val }) : p)) }));
+    setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => {
+      if (idx !== i) return p;
+      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? 25 : 85;
+      return Object.assign({}, p, { age: Math.max(lo, Math.min(hi, +val || lo)) });
+    }) }));
   const addKid = () =>
     setSimState((s) => {
       const ppl = s.people.slice();
@@ -134,7 +138,8 @@ export default function Simulador() {
   const bumpPersonAge = (i, delta) =>
     setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => {
       if (idx !== i) return p;
-      const lo = p.kind === 'kid' ? 0 : 18, hi = p.kind === 'kid' ? 25 : 85;
+      // Plan Vital es para personas de 65 o más: en ese carril la edad no baja de 65.
+      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? 25 : 85;
       return Object.assign({}, p, { age: Math.max(lo, Math.min(hi, p.age + delta)) });
     }) }));
 
@@ -169,9 +174,10 @@ export default function Simulador() {
     L.push('');
     L.push('Plan recomendado: ' + r.name + (r.zonaEss ? ' · ' + r.geoLabel : ''));
     if (r.essentialNoAplica) L.push(r.essentialNoAplica + ' Para tu grupo, el plan de entrada es Silver.');
+    if (r.aviso70) L.push(r.aviso70);
     if (d.ubi) L.push('Vivís en: ' + (d.ubi.ciudad ? d.ubi.ciudad + ' (' + d.ubi.deptNombre + ')' : d.ubi.deptNombre) + (r.zonaEss ? '' : ' · cobertura en todo el país'));
     else L.push('Cobertura: ' + r.geoLabel);
-    L.push('Cotización ' + groupLabel(d) + ' · titular de ' + titularAge(d));
+    L.push('Cotización ' + groupLabel(d) + ' · titular de ' + titularAge(d) + ' años');
     L.push('');
     L.push('Cobertura para el grupo: ' + fmt(r.breakdown.personas));
     L.push('Zona: ' + (r.zonaEss ? 'precio de Essential para ' + r.geoLabel : r.breakdown.geoDelta > 0 ? '+ ' + fmt(r.breakdown.geoDelta) : 'sin recargo — el precio es el mismo en todo el país'));
@@ -182,7 +188,7 @@ export default function Simulador() {
     const esperas = carenciasDe(d);
     if (esperas.length) { L.push(''); L.push('Cuánto esperás para usar cada cobertura:'); esperas.forEach((c) => L.push('  · ' + c.que + ': ' + c.label + (c.nota ? ' (' + c.nota + ')' : ''))); }
     if (r.autoPay) L.push('Con débito automático o tarjeta de crédito: ' + fmt(r.autoPay) + ' / mes (10% de descuento)');
-    if (r.vitalParticular) L.push('Precio con débito automático — pagando particular: ' + fmt(r.vitalParticular) + ' / mes');
+    if (r.vitalParticular) L.push('Sin débito automático ni tarjeta: ' + fmt(r.vitalParticular) + ' / mes');
     L.push('');
     L.push('Precios de lista vigentes, IVA incluido — un asesor de Salud Protegida confirma el detalle.');
     return L.join('\n');
@@ -397,7 +403,7 @@ export default function Simulador() {
       label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:#9fb8d2;font-weight:500;'),
     };
   });
-  const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : 18, max: pp.kind === 'kid' ? 25 : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
+  const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : (isPadres ? 65 : 18), max: pp.kind === 'kid' ? 25 : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
 
   // Para 65+ el plan vigente es uno solo: Plan Vital (tarifa fija por persona).
   const nivelData = isPadres
@@ -432,9 +438,9 @@ export default function Simulador() {
   const encWho = { mi: 'Un plan para vos. Empecemos bien.', pareja: 'Para los dos. Cuidarse de a dos suma.', familia: 'Toda la familia junta — de eso se trata.', padres: 'Cuidar a los que nos cuidaron. Estamos con vos.' }[d.who];
   const encNivel = isPadres
     ? ({ equilibrio: 'Plan Vital: cuidado cercano para ellos.', amplia: 'Plan Vital: cuidado cercano para ellos.' })[d.nivel]
-    : ({ esencial: 'Lo importante, bien cubierto.', equilibrio: 'El equilibrio que más familias eligen.', amplia: 'Tranquilidad completa. Buen viaje.' })[d.nivel];
+    : ({ esencial: 'Lo importante, bien cubierto.', equilibrio: 'Un equilibrio entre precio y cobertura.', amplia: 'La cobertura más amplia.' })[d.nivel];
   const encGeo = d.ubi
-    ? (zonaConRed(d.ubi.deptId) ? 'Tu zona tiene la red más fuerte — Lister incluida.' : (d.ubi.ciudad || d.ubi.deptNombre) + ' — anotado. La red nacional te acompaña.')
+    ? (zonaConRed(d.ubi.deptId) ? 'Tu zona tiene la red más fuerte — Lister incluido.' : (d.ubi.ciudad || d.ubi.deptNombre) + (d.nivel === 'esencial' && !isPadres ? ' — anotado. En Essential, tu ciudad define el precio y la red.' : ' — anotado. La red nacional te acompaña.'))
     : ({ central: 'Cobertura donde hacés tu vida.', interior: 'Tu zona, bien cubierta.', nacional: 'Todo el país con vos.' })[d.geo];
   const stepEnc = { 1: 'Empecemos por lo básico.', 2: encWho || 'Esto define tu precio base.', 3: encNivel || 'Elegí hasta dónde te cubrimos.', 4: encGeo || 'Último paso y vemos tu precio.' }[d.step] || '';
   const simAnim = 'animation:' + (simDir > 0 ? 'spSlideR' : 'spSlideL') + ' 0.34s cubic-bezier(0.22,1,0.36,1)';
@@ -492,7 +498,7 @@ export default function Simulador() {
       const e = engine(Object.assign({}, d, { essNacional: nac }));
       return { key: nac ? 'nacional' : 'local', label: nac ? 'En todo el país' : 'En ' + (e.zonaEss === 'asuncion_central' ? 'Asunción y Central' : 'el interior'), price: fmt(e.price), active: !!d.essNacional === nac, onPick: () => { if (!!d.essNacional !== nac) { track('sim_essential_zona', { zona: e.zonaEss }); simPatch({ essNacional: nac }); } } };
     }) : [],
-    essNoAplica: r && r.essentialNoAplica ? r.essentialNoAplica + ' Para tu grupo, el plan de entrada es Silver.' : '',
+    essNoAplica: r && r.essentialNoAplica ? r.essentialNoAplica + ' Para tu grupo, el plan de entrada es Silver.' + (r.aviso70 ? ' ' + r.aviso70 : '') : (r && r.aviso70 ? r.aviso70 : ''),
     isEssential: !!(r && r.key === 'essential'),
     resAutoPay: r && r.autoPay ? fmt(r.autoPay) : '', resEsDebito: !!(r && r.vitalParticular), resVitalParticular: r && r.vitalParticular ? fmt(r.vitalParticular) : '',
     resAddonsText: r ? O.addons.filter((o) => (d.addons || []).includes(o.k)).map((o) => o.label).join(' · ') : '', hasAddons: r ? (d.addons || []).length > 0 : false,
@@ -734,7 +740,7 @@ export default function Simulador() {
                   </div>
                 </div>
                 <div>
-                  <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sp-teal-deep)')}>Encontramos tu match</div>
+                  <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sp-teal-deep)')}>Encontramos tu plan</div>
                   <div style={css('font-size:14px;color:var(--sp-muted)')}>Según lo que nos contaste</div>
                 </div>
               </div>
@@ -746,9 +752,9 @@ export default function Simulador() {
                 </div>
                 <div style={css('padding:18px 20px;background:#fff')}>
                   <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:var(--sp-navy);letter-spacing:-0.01em;line-height:1')}>{sim.resPrice}</span><span style={css('font-size:14px;color:var(--sp-muted);font-weight:500')}>/ mes estimado</span></div>
-                  <div style={css('font-size:12px;color:var(--sp-muted);margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge}. El precio final lo confirma un asesor.</div>
+                  <div style={css('font-size:12px;color:var(--sp-muted);margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge} años. El precio final lo confirma un asesor.</div>
                   {sim.resAutoPay && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:var(--sp-navy)')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
-                  {sim.resEsDebito && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Precio con débito automático o tarjeta de crédito — pagando particular: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
+                  {sim.resEsDebito && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Este es el precio con débito automático o tarjeta de crédito. Sin débito ni tarjeta: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
                   {/* Nota de red honesta por zona (geo.js): confirma en
                       Asunción/Central, registra y acompaña en el resto —
                       nunca "no cubierto" (decisión #7). */}
@@ -782,7 +788,7 @@ export default function Simulador() {
                   manda de vuelta al comparador. */}
               {sim.planSwitch.length > 0 && (
                 <div style={css('margin-top:14px')}>
-                  <div style={css('font-size:12.5px;color:var(--sp-muted);margin-bottom:8px;font-weight:600')}>¿Querés ver los otros planes para tu familia?</div>
+                  <div style={css('font-size:12.5px;color:var(--sp-muted);margin-bottom:8px;font-weight:600')}>¿Querés ver los otros planes?</div>
                   <div style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:8px')}>
                     {sim.planSwitch.map((o, i) => (
                       <button key={i} onClick={o.onPick} disabled={o.disabled} aria-pressed={o.active} className={'sq' + (o.active || o.disabled ? '' : ' rel-btn')} style={css('display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;--sq:var(--r-sm);cursor:' + (o.disabled ? 'default' : 'pointer') + ';opacity:' + (o.disabled ? '.55' : '1') + ';transition:all .15s cubic-bezier(0.22,1,0.36,1);border:1.5px solid ' + (o.active ? 'var(--sp-teal)' : 'var(--sp-line)') + ';background:' + (o.active ? 'var(--sp-mint-soft)' : '#fff'))}>
@@ -820,7 +826,7 @@ export default function Simulador() {
                     {sim.isPadres
                       ? 'Grilla vigente del Plan Vital, julio 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
                       : sim.isEssential
-                      ? 'Cuadernillo vigente de Essential, marzo 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
+                      ? 'Condiciones vigentes de Essential, marzo 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
                       : <>Grilla vigente, julio 2026. El detalle estudio por estudio está en <a href={`${BP}/que-cubre/`} className="link-teal" style={css('color:var(--sp-teal-deep);font-weight:700')}>Qué cubre</a>.</>}
                   </div>
                 </div>
@@ -837,7 +843,8 @@ export default function Simulador() {
                     </div>
                     <input type="email" value={sim.email} onChange={sim.setEmail} placeholder="Email (opcional)" className="inp sq" style={css('width:100%;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none;margin-bottom:8px')} />
                     <div style={css('font-size:11.5px;color:var(--sp-muted);margin-bottom:12px;line-height:1.4')}>Tu WhatsApp con código de país si podés (ej: +595 9…). El email es opcional.</div>
-                    {sim.hasErr && <div role="alert" style={css('font-size:12px;color:#F44336;margin-bottom:10px')}>{sim.err}</div>}
+                    {/* Sin rojo: el rojo es SOLO para urgencias (regla de color). */}
+                    {sim.hasErr && <div role="alert" className="sq" style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-text);background:var(--sp-gold-bg);--sq:var(--r-xs);padding:7px 10px;margin-bottom:10px')}>{sim.err}</div>}
                     <button onClick={sim.submit} disabled={sim.sending} className="btn-teal sq" style={css('width:100%;height:48px;border:none;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;cursor:pointer;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : 'Enviarme mi cotización'}</button>
                   </div>
                 )}
@@ -875,7 +882,7 @@ export default function Simulador() {
                   <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>{sim.shareMsg || 'Compartir'}</button>
                 </div>
                 <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
-                  <a href={`${BP}/#comparar`} className="link-teal" style={css('font-size:13px;color:var(--sp-muted);font-weight:600')}>Ver el detalle de los planes →</a>
+                  <a href={`${BP}/planes/`} className="link-teal" style={css('font-size:13px;color:var(--sp-muted);font-weight:600')}>Ver el detalle de los planes →</a>
                   <button onClick={sim.restart} className="link-grey" style={css('background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer')}>↺ Empezar de nuevo</button>
                 </div>
               </div>

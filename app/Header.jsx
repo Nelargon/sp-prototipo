@@ -91,7 +91,7 @@ export default function Header({ variant = 'dark' }) {
                     que ya no existe es peor que uno escueto. */}
                 <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Essential, Silver y Gold, de un vistazo" />
                 <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
-                <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Copago, precio de convenio y lo que no cubre ningún plan" />
+                <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Qué significa copago y precio de convenio" />
                 <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Tiempos de espera, preexistencias, cambios de plan y más" />
               </div></div>
             </div>

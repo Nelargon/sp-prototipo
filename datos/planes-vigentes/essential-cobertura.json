@@ -1,0 +1,538 @@
+{
+  "_": "Cobertura de Essential cruzada contra la grilla Privilege, para /que-cubre. La lee scripts/build-prestaciones.mjs y arma la columna `e` de lib/prestaciones.json.",
+  "fuente": "CUADERNILLO PLAN ESSENTIAL.pdf (Drive de SP, 25/03/2026). Transcripción en essential.json; acá, las listas cerradas del cuadernillo convertidas en reglas contra los nombres de la grilla.",
+  "como_se_lee": {
+    "cob": "CT = cubierto · CP = cubre una parte · NO = no entra en Essential · ? = el cuadernillo no lo nombra de una forma que se pueda cruzar con certeza (el sitio dice «preguntale a tu asesor»; nunca se completa por inferencia)",
+    "orden": "Gana la primera regla que coincide. Las dudosas (?) van primero para que una regla amplia no las tape.",
+    "patrones": "Expresiones regulares contra el nombre de la grilla en MAYÚSCULAS y sin tildes (la ñ queda como n).",
+    "por_defecto": "El cuadernillo es una lista cerrada («Las determinaciones no citadas serán a cargo del asegurado», 2.1). Lo que no coincide con ninguna regla queda como NO."
+  },
+  "reglas": [
+    {
+      "id": "lab-dudoso",
+      "cuadro": "lab",
+      "cob": "?",
+      "fuente": "1.7 y 2.1",
+      "nota": "Nombres que pueden ser lo mismo que un ítem del cuadernillo, pero no seguro.",
+      "patrones": [
+        "^FACTOR REUMATOIDEO CUALITATIVO, SANGRE$",
+        "^UREA$",
+        "^CREATININA, DEPURACION CLEARANCE$",
+        "^GLUCOSA PRUEBA DE TOLERANCIA ORAL PTGO 2 DETER",
+        "^FOSFORO, ORINA$"
+      ]
+    },
+    {
+      "id": "lab-rutina",
+      "cuadro": "lab",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.7",
+      "cantidad": "Hasta 2 veces al año cada uno, y hasta 30 análisis al año por persona",
+      "patrones": [
+        "^ACIDO URICO, SANGRE$",
+        "^COLESTEROL (HDL|LDL|TOTAL|VLDL), SANGRE$",
+        "^CREATININA, SANGRE$",
+        "^ERITROSEDIMENTACION, SANGRE$",
+        "^FACTOR REUMATOIDEO - ARTRITEST$",
+        "^GLUCOSA EN SANGRE$",
+        "^GLUCOSA, SANGRE$",
+        "^PARASITOLOGICO, HECES$",
+        "^HEMOGRAMA, SANGRE$",
+        "^HEMOGRAMA CON ERITROSEDIMENTACION, SANGRE$",
+        "^ORINA RUTINA$",
+        "^LIPIDOGRAMA, SANGRE$",
+        "^PLAQUETAS, SANGRE$",
+        "^TIPIFICACION, SANGRE$",
+        "^TRIGLICERIDOS, SANGRE$",
+        "^UREA, SANGRE$",
+        "^VDRL ANTICUERPO TREPONEMA PALLIDIUM CUALITATIVO, SANGRE$"
+      ]
+    },
+    {
+      "id": "lab-especializados",
+      "cuadro": "lab",
+      "cob": "CT",
+      "carencia": 90,
+      "fuente": "2.1",
+      "cantidad": "Hasta 2 veces al año cada uno, y hasta 30 análisis al año por persona",
+      "patrones": [
+        "^ACIDO URICO, ORINA$",
+        "^ALDOLASA, SANGRE$",
+        "^ALFA AMILASA, (ORINA|SANGRE)$",
+        "^ASTO \\(ANTIESTREPTOLISINA O\\), SANGRE$",
+        "^HCG \\(GONADOTROPONA CORIONICA SUB UNIDAD BETA\\) CUALITATIVO, SANGRE$",
+        "^BILIRRUBINA TOTAL, DIRECTA, E INDIRECTA, SANGRE$",
+        "^CALCIO, (ORINA|SANGRE)$",
+        "^CHAGAS \\(TRYPANOSOMA CRUZI\\) ANTICUERPOS IG[GM], SANGRE$",
+        "^CK MB CREATININKINASA, SANGRE$",
+        "^CK CREATININKINASA, SANGRE$",
+        "^CLORUROS, (ORINA|SANGRE)$",
+        "^COAGULOGRAMA CRASIS, SANGRE$",
+        "^COLINESTERASA, SANGRE$",
+        "^CULTIVO, HECES \\(COPROCULTIVO\\)$",
+        "^COPROFUNCIONAL",
+        "^MICROSCOPIA FUNCIONAL, COPROFUNCIONAL$",
+        "^COOMBS (DIRECTO|INDIRECTO), SANGRE$",
+        "^ELECTROLITOS \\(NA, K,CL\\) SANGRE$",
+        "^ELECTROLITOS, ORINA$",
+        "^SODIO, SANGRE$",
+        "^POTASIO, SANGRE$",
+        "^FIBRINOGENO, SANGRE$",
+        "^FORMULA LEUCOCITARIA, SANGRE$",
+        "^FOSFATASA ACIDA PROSTATICA, SANGRE$",
+        "^FOSFATASA ACIDA TOTAL, SANGRE$",
+        "^FOSFATASA ALCALINA, SANGRE$",
+        "^FOSFORO, SANGRE$",
+        "^FROTIS DE SANGRE PERIFERICA$",
+        "^T3 LIBRE, SANGRE$",
+        "^T4 LIBRE, SANGRE$",
+        "^FTA-ABS \\(ANTICUERPOS IG[GM], TREPONEMA PALLIDUM\\), SANGRE$",
+        "^GAMMA GT ",
+        "^GLUCOSA, ORINA$",
+        "^GLUCOSA PRUEBA DE TOLERANCIA ORAL PTGO 3 DETER",
+        "^GOT \\(ASPARTATO AMINOTRANFERASA\\), SANGRE$",
+        "^GPT \\(ALANINA AMINOTRANSFERASA\\), SANGRE$",
+        "^HEMOGLOBINA GLICOSILADA HBA1C, SANGRE$",
+        "^PARASITOLOGICO SERIADO, HECES$",
+        "^HECES FLORA MICROBIANA$",
+        "^HEMATOCRITO, SANGRE$",
+        "^HEMOGLOBINA, SANGRE$",
+        "^HEPATOGRAMA, SANGRE$",
+        "^HIERRO, SANGRE$",
+        "^HIV 1 \\+ HIV 2 ANTICUERPOS$",
+        "^INR ",
+        "^LDH LACTICODESHIDROGENASA, SANGRE$",
+        "^LEUCOCITOS RECUENTO, SANGRE$",
+        "^MAGNESIO, SANGRE$",
+        "^PARASITOS INVESTIGACION E IDENTIFICACION",
+        "^PAS (LIBRE|TOTAL) ",
+        "^PROTEINAS TOTALES Y FRACCIONES ALBUMINAS/GLOBULINAS, SANGRE$",
+        "^PROTEINAS TOTALES, SANGRE$",
+        "^ALBUMINA, SANGRE$",
+        "^GLOBULINAS, SANGRE$",
+        "^PH, VARIOS MATERIALES POR MUESTRA$",
+        "^PROTEINA C REACTIVA CUALITATIVA$",
+        "^PROTEINAS TOTALES, ORINA$",
+        "^PRUEBA DEL LAZO$",
+        "^RETICULOCITOS, SANGRE$",
+        "^RUBEOLA ANTICUERPOS IG[GM], SANGRE$",
+        "^CULTIVO, SECRECION VAGINAL$",
+        "^SUSTANCIAS REDUCTORAS BENEDICT, (HECES|ORINA)$",
+        "^T3, SANGRE$",
+        "^T4, SANGRE$",
+        "^TSH NEONATAL",
+        "^FENILALANINA, SANGRE$",
+        "^TIEMPO DE PROTROMBINA TP, SANGRE$",
+        "^TIEMPO PARCIAL DE TROMBOPLASTINA ACTIVADA TTPA",
+        "^TOXOPLASMA GONDII ANTICUERPOS? IG[GM], SANGRE$",
+        "^TSH HORMONA TIROIDEA, SANGRE$",
+        "^UREA, DEPURACION CLEARANCE$"
+      ]
+    },
+    {
+      "id": "img-dudoso",
+      "cuadro": "img",
+      "cob": "?",
+      "fuente": "1.8, 2.2, 2.3, 3.2 y 4.2",
+      "nota": "Placas y estudios que podrían entrar en una categoría del cuadernillo, pero el nombre no alcanza para saberlo.",
+      "patrones": [
+        "^APENDICE$",
+        "^ARBOL URINARIO$",
+        "^DENTAL OCLUSAL$",
+        "^DENTAL SEMISERIADA$",
+        "^ORTOPANTOMOGRAFIA$",
+        "^TELERRADIOGRAFIA DIGITAL$",
+        "^ECOCARDIOGRAMA CON DOPPLER DE BASOS DE CUELLO$",
+        "^MAMOGRAFIA 2 LADOS ECOGRAFIA DOPPLER$",
+        "^TAC-TCMS DE PENAZCOS$",
+        "^TAC-TCMS DE ORBITAS$",
+        "^RMN DE PARTES BLANDAS$",
+        "^ECOGRAFIA HIGADO/VIAS BILIARES/VESICULA$"
+      ]
+    },
+    {
+      "id": "img-radiografias",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.8.2",
+      "cantidad": "Radiografías simples: hasta 5 posiciones al año por persona",
+      "patrones": [
+        "\\d\\s*POS(I)?CION",
+        "^HUESOS PROPIOS DE LA NARIZ$",
+        "^RADIOGRAFIA CADA PLACA$"
+      ]
+    },
+    {
+      "id": "img-electrocardiograma",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.8.1",
+      "cantidad": "1 al año por persona",
+      "patrones": [
+        "^ELECTROCARDIOGRAMA$"
+      ]
+    },
+    {
+      "id": "img-ecografias",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 90,
+      "fuente": "2.2.1",
+      "cantidad": "Hasta 4 al año por familia, entre todas las ecografías de la lista",
+      "patrones": [
+        "^ECOGRAFIA ABDOMINAL (COMPLETA|INFERIOR|SUPERIOR)$",
+        "^ECOGRAFIA GINECOLOGICA$",
+        "^ECOGRAFIA MAMARIA$",
+        "^ECOGRAFIA RENAL$",
+        "^ECOGRAFIA VIAS URINARIAS$",
+        "^ECOGRAFIA DE TIROIDES$",
+        "^ECOGRAFIA TRANSVAGINAL$",
+        "^ECOGRAFIA VESICAL$",
+        "^ECOGRAFIA DE VEJIGA$",
+        "^ECOGRAFIA PROSTATICA SUPRAPUBICA$"
+      ]
+    },
+    {
+      "id": "img-espirometria",
+      "cuadro": "img",
+      "cob": "CP",
+      "carencia": 90,
+      "fuente": "2.2.1.11",
+      "cantidad": "La espirometría simple sí, dentro de las 4 ecografías al año por familia; con prueba broncodilatadora, no",
+      "patrones": [
+        "^ESPIROMETRIA SIMPLE"
+      ]
+    },
+    {
+      "id": "img-papanicolau",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 90,
+      "fuente": "2.2.2",
+      "cantidad": "1 al año por persona, con la citología",
+      "patrones": [
+        "^PAPANICOLAU Y COLPOSCOPIA$"
+      ]
+    },
+    {
+      "id": "img-otros-estudios",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 90,
+      "fuente": "2.3",
+      "cantidad": "Hasta 2 al año por familia, junto con audiometría, holter, mamografía y otros estudios de la lista",
+      "patrones": [
+        "^ELECTROENCEFALOGRAMA$"
+      ]
+    },
+    {
+      "id": "img-prenatales",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 180,
+      "fuente": "3.1",
+      "cantidad": "Para la titular o la cónyuge del titular, con una cantidad fija por estudio",
+      "patrones": [
+        "^ECOGRAFIA MARCADORES CROMOSOMICOS SIMPLE$",
+        "^ECOGRAFIA MORFOLOGICA SIMPLE$",
+        "^ECOGRAFIA OBSTETRICA$",
+        "^MONITOREO FETAL$",
+        "^PERFIL BIOFISICO$"
+      ]
+    },
+    {
+      "id": "img-tomografia-ecocardiograma",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 180,
+      "fuente": "3.2",
+      "cantidad": "Hasta 2 al año por familia, entre tomografías, ecocardiograma y ergometría",
+      "patrones": [
+        "^ECOCARDIOGRAMA$",
+        "^TAC-TCMS DE (PELVIS|CRANEO|OIDO|SENOS PARANASALES|ABDOMEN COMPLETO|COLUMNA SACRA|ABDOMEN INFERIOR|ABDOMEN SUPERIOR|COLUMNA CERVICAL|COLUMNA DORSAL|COLUMNA LUMBAR|TORAX)$",
+        "^TAC-TCMS MIEMBROS INFERIORES/SUPERIORES$",
+        "^TAC-TCMS DE PEQUENAS PARTES"
+      ]
+    },
+    {
+      "id": "img-endoscopia",
+      "cuadro": "img",
+      "cob": "CP",
+      "carencia": 180,
+      "fuente": "3.4 y 4.1",
+      "cantidad": "1 alta al año (a los 6 meses) y 1 baja (al año), por familia: cubre honorarios y sala; medicamentos, anestesista y equipo quedan a tu cargo",
+      "patrones": [
+        "^ENDOSCOPIA DIGESTIVA ALTA O BAJA$"
+      ]
+    },
+    {
+      "id": "img-resonancias",
+      "cuadro": "img",
+      "cob": "CT",
+      "carencia": 365,
+      "fuente": "4.2",
+      "cantidad": "1 al año por familia, sin contraste ni sedación",
+      "patrones": [
+        "^RMN DE (COLUMNA LUMBAR|TOBILLO|COLUMNA DORSAL|HIPOFISIS|COLUMNA CERVICAL|PIERNA|PIE|SENOS PARANASALES|PELVIS|ARTICULACION TEMPORO MAXILAR|CRANEO / ENCEFALO|ABDOMEN|CADERA|CODO|HOMBRO|MEDIASTINO O TORAX|MUNECA|RODILLA|ORBITAS)$",
+        "^RMN DE OIDO RMN DE RODILLA$"
+      ]
+    },
+    {
+      "id": "cir-dudoso",
+      "cuadro": "cir",
+      "cob": "?",
+      "fuente": "4.4 y 4.5",
+      "nota": "Cirugías parecidas a una de la lista de 26, pero con otra técnica o con algo más.",
+      "patrones": [
+        "^COLPORRAFIA POSTERIOR CON PERINEORRAFIA$",
+        "^COLPORRAFIA ANTEROPOSTERIOR MAS AMPUTACION DE CUELLO$",
+        "^FACOEMULSIFICACION DEL CRISTALINO$",
+        "^TRATAMIENTO QUIRURGICO DEL QUISTE OVARIO COMPLICADO$",
+        "^TUMORECTOMIA$",
+        "^CESAREA MAS HISTERECTOMIA$",
+        "^CIRUGIA DE LIATISIS CORALIFORME$",
+        "^QUISTECTOMIA RENAL ABIERTA$",
+        "^HONORARIOS TERAPISTA COORDINADOR"
+      ]
+    },
+    {
+      "id": "cir-videolaparoscopia",
+      "cuadro": "cir",
+      "cob": "CP",
+      "carencia": 365,
+      "fuente": "4.4",
+      "cantidad": "Entra en la cirugía al año por familia, pero por videolaparoscopía pagás la diferencia de honorarios y el uso del equipo",
+      "patrones": [
+        "^APENDICETOMIA POR VIDEOLAPAROSCOPIA$",
+        "^COLECISTECTOMIA POR VIDEOLAPAROSCOPIA$",
+        "^TRATAMIENTO QUIRURGICO DE LA HERNIA INGUINAL POR VIDEOLAPAROSCOPIA$",
+        "^OOFORECTOMIA PARCIAL O TOTAL POR VIDEOLAPAROSCOPIA$"
+      ]
+    },
+    {
+      "id": "cir-lista-26",
+      "cuadro": "cir",
+      "cob": "CP",
+      "carencia": 365,
+      "fuente": "4.4",
+      "cantidad": "1 cirugía al año por familia, de una lista de 26 · el anestesista al 50% · medicamentos hasta ₲ 350 mil",
+      "patrones": [
+        "^INCISION DRENAJE DE ABSCESO PERIANAL$",
+        "^AMIGDALECTOMIA Y/O ADENOIDECTOMIA, CONVENCIONAL$",
+        "^ADENOMECTOMIA PROSTATICA SUPRAPUBICA$",
+        "^APENDICETOMIA$",
+        "^APENDICETOMIA PEDIATRICA$",
+        "^BLEFAROTOMIA \\(ABSCESO, ORZUELO, CHALAZION\\)$",
+        "^CIRCUNCISION \\(NO ELECTIVA\\)$",
+        "^COLECISTECTOMIA POR LAPAROTOMIA$",
+        "^COLPORRAFIA ANTERIOR Y POSTERIOR$",
+        "^TRATAMIENTO QUIRURGICO DE CATARATA",
+        "^HEMORROIDECTOMIA CON O SIN FISURA ANAL$",
+        "^HERNIORRAFIA (CRURAL|INGUINAL|UMBILICAL)$",
+        "^TRATAMIENTO QUIRURGICO DE HIDROCELE$",
+        "^HISTERECTOMIA TOTAL$",
+        "^LAPAROTOMIA EXPLORADORA$",
+        "^LEGRADO EVACUADOR",
+        "^EXTIRPACION DE OVARIO - OOFORECTOMIA$",
+        "^SALPINGECTOMIA \\(EMBARAZO ECTOPICO\\) SALPINGO-OOFORECTOMIA$",
+        "^ESCISION LESION CONJUNTIVA \\(PTERIGION",
+        "^EXTIRPACION DE NODULO DE MAMA$",
+        "^TRATAMIENTO QUIRURGICO DE VARICOLE"
+      ]
+    },
+    {
+      "id": "cir-parto",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 365,
+      "fuente": "4.5",
+      "cantidad": "Hasta 2 días de internación, con el bebé en nursery · medicamentos hasta ₲ 350 mil",
+      "patrones": [
+        "^PARTO$"
+      ]
+    },
+    {
+      "id": "cir-cesarea",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 365,
+      "fuente": "4.5",
+      "cantidad": "Hasta 3 días de internación, con el bebé en nursery · medicamentos hasta ₲ 350 mil",
+      "patrones": [
+        "^CESAREA$"
+      ]
+    },
+    {
+      "id": "cir-internacion",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 365,
+      "fuente": "4.3",
+      "cantidad": "Una visita por día del médico tratante, dentro de los 20 días de internación al año por familia",
+      "patrones": [
+        "^VISITA EN SALA$",
+        "^HONORARIOS POR INTERNACION CLINICA$"
+      ]
+    },
+    {
+      "id": "cir-interconsultas",
+      "cuadro": "cir",
+      "cob": "NO",
+      "fuente": "4.3.7",
+      "nota": "«No incluye interconsultas»",
+      "patrones": [
+        "^INTERCONSULTA "
+      ]
+    },
+    {
+      "id": "cir-menores",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 180,
+      "fuente": "3.5",
+      "cantidad": "Hasta 2 al año por familia · medicamentos hasta ₲ 100 mil",
+      "patrones": [
+        "^INCISION Y DRENAJE DE ABSCESO SUPERFICIAL$",
+        "^ESCISION LOCAL DE LESION DE PIEL O GLANDULA",
+        "^ELECTROCOAGULACION DE LESIONES BENIGNAS$",
+        "^ESCISION TUMOR TEJIDO CELULAR SUBCUTANEO: LIPOMA$",
+        "^ESCISION DE QUISTES EPIDERMICOS Y SEBACEOS$",
+        "^ESCISION DE UNA LECHO O REPLIEGUE UNGUEAL$"
+      ]
+    },
+    {
+      "id": "cir-sutura",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.10.12 y 3.5.7",
+      "cantidad": "Hasta 5 puntos, sin espera (dentro de 3 procedimientos al año por familia); de 5 a 10 puntos, a los 6 meses",
+      "patrones": [
+        "^SUTURA HERIDAS SIMPLES$"
+      ]
+    },
+    {
+      "id": "cir-primeros-auxilios",
+      "cuadro": "cir",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.10",
+      "cantidad": "Hasta 3 al año por familia, entre todos los procedimientos menores",
+      "patrones": [
+        "^LAVADO DE OIDO$",
+        "^TAPONAMIENTO NASAL ANTERIOR$",
+        "^EXTRACCION CUERPO EXTRANO NARIZ$",
+        "^EXTRACCION DE CUERPO EXTRANO EN OIDO$",
+        "^SONDAJE VESICAL$"
+      ]
+    },
+    {
+      "id": "fis-traumatologica",
+      "cuadro": "fis",
+      "cob": "CT",
+      "carencia": 0,
+      "fuente": "1.11",
+      "cantidad": "Solo la traumatológica: hasta 5 sesiones al año por familia",
+      "patrones": [
+        "^FISIOTERAPIA AMBULATORIAL"
+      ]
+    }
+  ],
+  "especialidades": {
+    "_": "1.1 Lister (sin tope, 17), 1.2 red (hasta 3 por mes por persona, 21), 1.3 subespecialidades (hasta 3 al año por familia, 16). Clave = nombre de la grilla.",
+    "textos": {
+      "red_lister": "Sin tope en Lister; en la red, hasta 3 por mes",
+      "red": "Hasta 3 por mes, junto con otras especialidades",
+      "sub_lister": "Sin tope en Lister; en la red, hasta 3 al año por familia",
+      "sub": "Hasta 3 al año por familia, en el mismo cupo que otras especialidades"
+    },
+    "mapeo": {
+      "Alergia e Inmunología": "sub",
+      "Cardiocirugía": "NO",
+      "Cardiología Clínica": "red_lister",
+      "Cardiología Pediátrica": "red",
+      "Cirugía General": "red_lister",
+      "Cirugía Pediátrica": "red",
+      "Cirugía Plástica y Reconstructiva": "NO",
+      "Cirugía Torácica": "NO",
+      "Cirugía Vascular Periférica": "NO",
+      "Coloproctología": "red_lister",
+      "Dermatología": "red_lister",
+      "Diabetología": "sub",
+      "Endocrinología": "sub_lister",
+      "Endocrinología Pediátrica": "NO",
+      "Flebología": "red_lister",
+      "Fonoaudiología": "sub",
+      "Gastroenterología": "red_lister",
+      "Gastroenterología Pediátrica": "red",
+      "Geriatría": "red",
+      "Ginecología y Obstetricia": "red_lister",
+      "Hematología": "red_lister",
+      "Infectología": "sub",
+      "Infectología Pediátrica": "sub",
+      "Mastología": "red_lister",
+      "Medicina Familiar": "red",
+      "Medicina Interna - Clínica Médica": "red_lister",
+      "Nefrología": "red",
+      "Nefrología Pediátrica": "red",
+      "Neumología": "sub_lister",
+      "Neurocirugía": "sub",
+      "Neurología": "sub_lister",
+      "Neurología Pediátrica": "sub",
+      "Nutrición": "sub_lister",
+      "Oftalmología": "red",
+      "Oftalmología Pediátrica": "red",
+      "Oncología Clínica": "sub",
+      "Otorrinolaringología": "sub",
+      "Pediatría": "red_lister",
+      "Psicología": "sub",
+      "Psiquiatría": "NO",
+      "Reumatología": "sub",
+      "Traumatología": "red_lister",
+      "Urología": "sub_lister"
+    }
+  },
+  "excluidos": {
+    "_": "Las exclusiones del buscador (tipo x). Odontología: Essential cubre lo básico en Lister (1.6).",
+    "Odontología": {
+      "cob": "CP",
+      "cantidad": "Lo básico, solo en Lister: consulta, controles, extracciones simples y limpieza"
+    },
+    "Tratamiento oncológico": {
+      "cob": "NO"
+    },
+    "Cirugía bariátrica": {
+      "cob": "NO"
+    },
+    "Cirugías de alta complejidad": {
+      "cob": "NO"
+    },
+    "Enfermería a domicilio": {
+      "cob": "NO"
+    },
+    "Hemodinamia": {
+      "cob": "NO"
+    }
+  },
+  "parametros": {
+    "_": "Los números finos de /que-cubre, en la columna de Essential. null = el cuadernillo no trae ese dato (se muestra «—»).",
+    "Habitación de internación": "Habitación privada",
+    "Tope de días de internación (por año)": "20 días por familia",
+    "Unidad de Terapia Intensiva – UTI (días por año)": "2 días",
+    "Interconsultas en internación (por año; + hasta 3 visitas por especialidad)": "No incluye",
+    "Carencia – internación clínica por evento agudo": "365 días",
+    "En internación clínica y/o quirúrgica (por evento)": "Gs. 350.000",
+    "En cirugía ambulatoria – quirófano (por evento)": "Gs. 100.000",
+    "En urgencia / emergencia (por evento)": null,
+    "En estudios y procedimientos – Cuadro 2 (por evento)": null,
+    "Carencia de maternidad": "365 días",
+    "Internación de la madre": "2 días parto normal · 3 días cesárea",
+    "Medicamentos y descartables": "Gs. 350.000",
+    "Consulta médica a domicilio (eventos por año)": "No incluye",
+    "Fisioterapia traumatológica / neurológica / post-quirúrgica (sesiones por año)": "5 por familia (solo traumatológica)",
+    "Fisioterapia respiratoria (sesiones por año)": "No incluye"
+  }
+}

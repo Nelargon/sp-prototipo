@@ -69,7 +69,7 @@ export const TERMS = {
   // planes; y las radiografías dentales son estudio de imagen, sí cubierto.
   oncologico: {
     t: 'Tratamiento oncológico',
-    d: 'El tratamiento del cáncer en sí: quimioterapia, radioterapia y las cirugías para tratarlo. La consulta con el oncólogo sí está cubierta — lo que no entra es el tratamiento.',
+    d: 'El tratamiento del cáncer en sí: quimioterapia, radioterapia y las cirugías para tratarlo. La consulta con el oncólogo sí entra (en Silver y Gold pagás la mitad) — lo que no entra es el tratamiento.',
   },
   bariatrica: {
     t: 'Cirugía bariátrica',
@@ -77,7 +77,14 @@ export const TERMS = {
   },
   altacomplejidad: {
     t: 'Alta complejidad',
-    d: 'Las cirugías más grandes y delicadas: las del corazón, las del cerebro y las de los vasos sanguíneos principales. Las consultas con esos especialistas sí están cubiertas y sin tope — lo que no entra es la cirugía.',
+    d: 'Las cirugías más grandes y delicadas: las del corazón, las del cerebro y las de los vasos sanguíneos principales. Las consultas con esos especialistas sí entran en Silver y Gold — lo que no entra es la cirugía.',
+  },
+  // Hemodinamia: figura sin cobertura en Silver y Gold (silver.json/gold.json,
+  // "sin_cobertura_arancel_diferenciado") y no está en la lista de Essential.
+  // Hasta el 25/09/2026 no se nombraba en ningún lado del sitio.
+  hemodinamia: {
+    t: 'Hemodinamia',
+    d: 'Los estudios y tratamientos que se hacen con un catéter por dentro de las arterias del corazón: el cateterismo y la angioplastia. La consulta con el cardiólogo sí entra.',
   },
   odontologia: {
     t: 'Odontología',
@@ -242,6 +249,7 @@ const MATCHERS = [
   [/tratamiento oncológico/i, 'oncologico'],
   [/cirugía bariátrica/i, 'bariatrica'],
   [/alta complejidad/i, 'altacomplejidad'],
+  [/hemodinamia/i, 'hemodinamia'],
   [/odontología/i, 'odontologia'],
   [/semi-?suite/i, 'semisuite'],
   [/copago/i, 'copago'],

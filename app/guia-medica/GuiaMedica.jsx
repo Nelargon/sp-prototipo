@@ -348,7 +348,7 @@ export default function GuiaMedica() {
         {/* Encabezado */}
         <div style={css('display:flex;flex-direction:column;gap:8px')}>
           <div style={css('display:flex;justify-content:space-between;align-items:flex-start;gap:12px')}>
-            <h1 className="disp" style={css('margin:0;font-size:clamp(34px,6vw,44px);line-height:1.05;font-weight:900;color:var(--sp-navy);letter-spacing:-0.01em')}>Guía médica</h1>
+            <h1 className="disp" style={css('margin:0;font-size:clamp(34px,6vw,44px);line-height:1.05;font-weight:900;color:var(--sp-navy);letter-spacing:-0.01em')}>Guía Médica</h1>
             <button type="button" onClick={() => abrirVisar('encabezado')} className="disp" style={css('flex-shrink:0;margin-top:4px;height:36px;padding:0 12px;border-radius:var(--r-pill);border:1.5px solid var(--sp-teal-deep);background:#fff;color:var(--sp-teal-deep);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer')}>Visar una orden</button>
           </div>
           <p style={css(INTER + 'margin:0;font-size:15px;line-height:1.45;color:var(--sp-text-2)')}>Médicos, sanatorios y laboratorios, con dirección y teléfono.</p>

@@ -41,13 +41,13 @@ const ESTILO_MODO = [
 ];
 const SIN_DATO = { bg: '#FAFAFA', fg: '#8a8a8a', punto: '#c9c9c9' };
 
-/* Essential reemplazó a Bronze el 24/09/2026. Su cobertura NO está en la
-   grilla Privilege de la que sale este índice: tiene su propio cuadernillo y se
-   va a cargar estudio por estudio en un PR aparte (decisión de Arturo: "dos
-   pasos"). Mientras tanto su columna dice lo único cierto — que lo confirma un
-   asesor — en vez de mostrar los datos de Bronze con otro nombre. */
+/* Essential reemplazó a Bronze el 24/09/2026. Su columna `e` sale de cruzar la
+   grilla con su propio cuadernillo (scripts/build-prestaciones.mjs +
+   datos/planes-vigentes/essential-cobertura.json, paso 2 del 25/09/2026).
+   Donde el cuadernillo no nombra el estudio de una forma cruzable con
+   certeza, la celda dice que lo confirma el asesor: no se completa. */
 const PLANES = [
-  { k: 'e', nombre: 'Essential', color: 'var(--sp-plan-essential)', sinMapa: true },
+  { k: 'e', nombre: 'Essential', color: 'var(--sp-plan-essential)' },
   { k: 's', nombre: 'Silver', color: 'var(--sp-plan-silver)' },
   { k: 'o', nombre: 'Gold', color: 'var(--sp-plan-gold)' },
 ];
@@ -66,25 +66,12 @@ function esperaTexto(dias) {
   if (dias === 0) return 'Desde el día uno';
   if (dias < 45) return `${dias} días de espera`;
   const meses = Math.round(dias / 30);
+  // 365 días: "1 año", como lo dice una familia (mismo criterio que waitLabel).
+  if (meses === 12) return '1 año de espera';
   return `${meses} meses de espera`;
 }
 
 function Celda({ item, plan, indice, datos }) {
-  if (plan.sinMapa) {
-    return (
-      <div style={css('padding:13px 14px;border-left:1px solid var(--sp-line-2);display:flex;flex-direction:column;gap:6px')}>
-        <div style={css('display:flex;align-items:center;gap:6px')}>
-          <span style={css('width:8px;height:8px;border-radius:var(--r-pill);flex:none;background:' + plan.color)}></span>
-          <span className="disp" style={css('font-size:12px;font-weight:800;color:var(--sp-navy)')}>{plan.nombre}</span>
-        </div>
-        <div className="disp" style={css(`display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);line-height:1.3;background:${SIN_DATO.bg};color:var(--sp-estado-ink)`)}>
-          <span style={css('width:7px;height:7px;border-radius:var(--r-pill);flex:none;background:' + SIN_DATO.punto)}></span>
-          Confirmalo con tu asesor
-        </div>
-        <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.45')}>Essential tiene su propio cuadernillo. Lo estamos cargando estudio por estudio.</div>
-      </div>
-    );
-  }
   const cel = item[plan.k];
   const [cob, cantIdx, carencia] = cel;
   const sinDato = cob === -1;
@@ -115,7 +102,7 @@ function Celda({ item, plan, indice, datos }) {
       </div>
       <div className="disp" style={css(`display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);line-height:1.3;background:${est.bg};color:${est.fg}`)}>
         <span style={css('width:7px;height:7px;border-radius:var(--r-pill);flex:none;background:' + est.punto)}></span>
-        {sinDato ? 'Sin dato' : modo.k}
+        {sinDato ? (plan.k === 'e' ? 'Confirmalo con tu asesor' : 'Sin dato') : modo.k}
       </div>
       {cantidad && (
         <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);line-height:1.45')}>{cantidad}</div>
@@ -126,7 +113,7 @@ function Celda({ item, plan, indice, datos }) {
         </div>
       )}
       {sinDato && (
-        <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#8a8a8a;line-height:1.45')}>La grilla no lo declara para este plan. Preguntale a tu asesor.</div>
+        <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:#8a8a8a;line-height:1.45')}>{plan.k === 'e' ? 'Las condiciones de Essential no lo nombran así; tu asesor te dice si entra.' : 'La grilla no lo declara para este plan. Preguntale a tu asesor.'}</div>
       )}
       {mejora && (
         <div className="disp" style={css('font-size:11.5px;font-weight:700;color:var(--sp-gold-ink);line-height:1.35')}>↑ {mejora}</div>
@@ -237,7 +224,7 @@ export default function Buscador() {
              exageraría el respaldo justo de las afirmaciones más fuertes, las
              negativas. En una página de transparencia eso importa. */
           <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.6;text-align:center;padding:14px 6px')}>
-            <b className="disp" style={css('color:var(--sp-navy)')}>{datos.meta.total} respuestas</b>: {datos.meta.porTipo.e} estudios, análisis y cirugías y {datos.meta.porTipo.c} especialidades salidas de la <b>grilla oficial de coberturas</b>, más {datos.meta.porTipo.x} cosas que <b>no cubre ningún plan</b>, tomadas del contrato.
+            <b className="disp" style={css('color:var(--sp-navy)')}>{datos.meta.total} respuestas</b>: {datos.meta.porTipo.e} estudios, análisis y cirugías y {datos.meta.porTipo.c} especialidades salidas de la <b>grilla oficial de coberturas</b>, más {datos.meta.porTipo.x} cosas que <b>nuestros planes no cubren</b> (de la odontología, Essential cubre lo básico), tomadas del contrato.
           </div>
         )}
 
@@ -278,7 +265,7 @@ export default function Buscador() {
       </div>
 
       <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);line-height:1.6;margin-top:16px;padding-top:14px;border-top:1px solid #e2eeed')}>
-        La espera es la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás. Coberturas de la grilla oficial vigente ({datos.meta.vigencia}); el detalle final lo confirmás con tu asesor.
+        La espera es la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás. Silver y Gold, de la grilla oficial vigente ({datos.meta.vigencia.toLowerCase()}); Essential, de sus condiciones vigentes ({datos.meta.vigenciaEss}). El detalle final lo confirmás con tu asesor.
       </div>
     </div>
   );

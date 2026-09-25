@@ -51,8 +51,10 @@ export const fmt = (n) =>
    pkg: grupo familiar titular + cónyuge + 2 hijos (≤59 / 60-64). */
 // Bronze salió de la venta el 24/09/2026; su tarifa queda en bronce.json.
 const TARIFAS = {
-  silver: { solo: [324000, 420000, 570000, 741000], tc: [228000, 330000, 430000, 684000], adh0_20: 172000, hijo3: 140000, pkg: [770000, 1000000] },
-  gold: { solo: [432000, 560000, 680000, 884000], tc: [324000, 440000, 540000, 816000], adh0_20: 238000, hijo3: 180000, pkg: [990000, 1300000] },
+  // adh21_54: hijos de 21 a 25 (el simulador deja cargarlos hasta 25). Antes
+  // pagaban la tarifa de hasta 20 (auditoría del 25/09/2026).
+  silver: { solo: [324000, 420000, 570000, 741000], tc: [228000, 330000, 430000, 684000], adh0_20: 172000, adh21_54: 226000, hijo3: 140000, pkg: [770000, 1000000] },
+  gold: { solo: [432000, 560000, 680000, 884000], tc: [324000, 440000, 540000, 816000], adh0_20: 238000, adh21_54: 324000, hijo3: 180000, pkg: [990000, 1300000] },
 };
 /* ESSENTIAL — precio POR ZONA (datos/planes-vigentes/essential.json).
    Fuente: PRECIOS ESSENTIAL.pdf (21/08/2026), confirmado por la minuta del
@@ -125,11 +127,11 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 export const plans = () => [
   // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
   { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
-    lines: ['Consultas sin tope en Lister, y hasta 3 por mes en la red', 'Urgencias 24 h, desde el día uno', 'Laboratorio de rutina, radiografías y fisioterapia, sin espera', 'Odontología básica en Lister: consulta, controles, extracciones y limpieza', 'Internación, cirugías y parto, al año de afiliarte'] },
-  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'El que suma resonancia',
-    lines: ['Consultas con especialistas (hasta 5 al año por especialidad)', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
+    lines: ['Consultas sin tope en Lister, y hasta 3 por mes en la red', 'Urgencias 24 h, desde el día uno', 'Laboratorio de rutina, radiografías y fisioterapia, sin espera', 'Odontología básica en Lister: consulta, controles, extracciones simples y limpieza', 'Internación, cirugías y parto, al año de afiliarte'] },
+  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía al 100% y por persona',
+    lines: ['Consultas con especialistas: sin tope en la mitad, 5 o 6 al año en el resto', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
   { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
+    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%; la tomografía, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del
@@ -163,15 +165,19 @@ export const peopleFor = (who) => {
 const priceFor = (planKey, people) => {
   const T = TARIFAS[planKey];
   const adults = people.filter((p) => p.kind !== 'kid');
-  const kids = people.filter((p) => p.kind === 'kid');
+  // La prima de grupo familiar y la de hijo es para hijos de HASTA 20 años;
+  // de 21 en adelante, cada hijo paga la de adherente de 21 a 54.
+  const menores = people.filter((p) => p.kind === 'kid' && p.age <= 20);
+  const mayores = people.filter((p) => p.kind === 'kid' && p.age > 20);
   if (people.length === 1 && adults.length === 1) return T.solo[bracket(adults[0].age)];
-  if (adults.length === 2 && kids.length >= 2) {
+  if (adults.length === 2 && menores.length >= 2) {
     const maxAd = Math.max(adults[0].age, adults[1].age);
-    if (maxAd <= 64) return T.pkg[maxAd <= 59 ? 0 : 1] + (kids.length - 2) * T.hijo3;
+    if (maxAd <= 64) return T.pkg[maxAd <= 59 ? 0 : 1] + (menores.length - 2) * T.hijo3 + mayores.length * T.adh21_54;
   }
   let total = 0;
   adults.forEach((p) => { total += T.tc[bracket(p.age)]; });
-  kids.forEach(() => { total += T.adh0_20; });
+  menores.forEach(() => { total += T.adh0_20; });
+  mayores.forEach(() => { total += T.adh21_54; });
   return total;
 };
 
@@ -186,8 +192,8 @@ export const engine = (d) => {
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
   const P = {
     essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
-    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: suma tomografía y resonancia al 100%, más días de terapia intensiva y topes más altos.' },
-    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia del tarifario vigente: consultas sin tope, más días de internación y los topes más altos.' },
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: tomografía y resonancia al 100% y por persona, más días de terapia intensiva y topes más altos.' },
+    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.' },
     vital: { name: 'Plan Vital', color: 'var(--sp-navy)', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
   let best;
@@ -198,6 +204,13 @@ export const engine = (d) => {
   const noAplica = best === 'essential' ? essentialNoAplica(ppl) : null;
   if (noAplica) best = 'silver';
   const zonaEss = best === 'essential' ? zonaEssential(d) : null;
+  /* Desde los 70, la tarifa de Silver y Gold es SOLO de renovación: no se
+     contratan nuevos (datos/planes-vigentes/*.json, "solo_renovacion"). El
+     precio se muestra como referencia y el resultado lo dice (auditoría del
+     25/09/2026). */
+  const aviso70 = (best === 'silver' || best === 'gold') && ppl.some((p) => p.kind !== 'kid' && p.age >= 70)
+    ? 'Desde los 70 años, Silver y Gold solo se renuevan: no se contratan nuevos. Para esa edad está Plan Vital.'
+    : null;
   const nAdultos = ppl.filter((p) => p.kind !== 'kid').length;
   const personas = best === 'vital'
     ? VITAL_PRECIO * nAdultos
@@ -216,7 +229,7 @@ export const engine = (d) => {
   return {
     key: best, name: P[best].name, color: P[best].color, why: P[best].why,
     geoLabel: zonaEss ? ZONA_ESSENTIAL[zonaEss] : ubi ? 'Nacional' : (GL[d.geo] || ''), ubi, price, autoPay, vitalParticular,
-    zonaEss, essentialNoAplica: noAplica,
+    zonaEss, essentialNoAplica: noAplica, aviso70,
     breakdown: { base: personas, personas, geoMult: ajuste, geoDelta: price - personas, addonsSum: 0, addonItems: [] },
   };
 };
@@ -257,8 +270,8 @@ export const opts = () => ({
   ],
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Suma tomografía y resonancia al 100% y topes más altos. El paso que más tranquilidad agrega.' },
-    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope anual, más días de internación y terapia intensiva, los topes más altos.' },
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Tomografía y resonancia al 100% y por persona, y topes más altos.' },
+    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.' },
   ],
   /* geo: reemplazado por el buscador de ciudades (app/geo.js) — el paso
      "¿Dónde querés tu cobertura?" ya no usa opciones fijas (HANDOFF 11h). */
@@ -267,7 +280,7 @@ export const opts = () => ({
 
 export const why = () => ({
   who: 'Así armamos un plan a la medida de quienes querés cuidar.',
-  edades: 'La edad define el tramo del tarifario. Con este dato te damos el precio de lista real, no un estimado al voleo.',
+  edades: 'La edad define el precio. Con este dato te damos el precio de lista real, no un estimado al voleo.',
   nivel: 'No todos necesitan lo mismo. Te mostramos el plan que mejor equilibra lo que te importa y lo que querés pagar.',
   geo: 'Con tu ciudad te mostramos la red que te queda cerca. En Essential, además, define el precio: Asunción y Central tienen uno y el interior otro.',
   addons: '',

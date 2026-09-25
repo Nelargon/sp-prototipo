@@ -54,8 +54,8 @@ export default function Page() {
     // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
-    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías y ecografías, y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía al 100%, 5 consultas al año por especialidad y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
-    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 2 meses (1 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía al 100% y por persona, con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Mirá tu precio con el descuento →', sim: true } },
     // ⚠ Estas dos preguntas dependen de la guía. Entre el 15 y el 23/09 la v1
     // no la tenía y se contestaban por WhatsApp (una respuesta no puede
@@ -86,7 +86,7 @@ export default function Page() {
     // cuadernillo, 1.6). Por eso sale de la lista de exclusiones y va aparte,
     // sin el glosario: la definición de "odontología" dice limpiezas y
     // extracciones, justo lo que Essential sí cubre.
-    { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('cirugía bariátrica, tratamiento oncológico ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Del dentista, Essential cubre lo básico en Lister (consulta, controles, extracciones simples y limpieza); Silver y Gold no lo cubren. Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
+    { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('cirugía bariátrica, tratamiento oncológico, hemodinamia ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Del dentista, Essential cubre lo básico en Lister (consulta, controles, extracciones simples y limpieza); Silver y Gold no lo cubren. Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma a Lister más de 600 médicos, sanatorios y laboratorios en todo el país; cuáles te tocan depende del plan que elijas.' },
     { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas; en Essential, también de tu zona. Siempre con IVA incluido.', cta: { label: 'Mirá tu precio en el simulador →', sim: true } },
@@ -103,7 +103,7 @@ export default function Page() {
   // cuadernillo: psicología sí, en el cupo de subespecialidades.
   const difsData = () => [
     { icono: 'letra', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
-    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo.' },
+    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo en Asunción y alrededores (en Essential, hasta 3 veces al año por familia).' },
     { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología cubierta en los tres planes, y psiquiatría en Silver y Gold, no como un extra aparte.' },
   ];
 
@@ -284,8 +284,8 @@ export default function Page() {
   // barras (eran ruido); y lo común, abajo, como GARANTÍA positiva, no letra chica.
   const FORWHOM = [
     'Lo importante cubierto, al precio de tu zona.',
-    'La más elegida. Cobertura equilibrada para tu familia.',
-    'Tranquilidad total, sin preocupaciones.',
+    'Cobertura equilibrada para tu familia.',
+    'La cobertura más amplia, con los topes más altos.',
   ];
   const planHead = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: FORWHOM[i], recommended: i === 1,
@@ -312,7 +312,10 @@ export default function Page() {
   const cmp = [
     { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
     { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
-    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: '5' }, { t: 'Sin tope' }] },
+    // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
+    // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
+    // "5" para Silver, lo mismo que la especialidad más acotada).
+    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }] },
     { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }] },
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }] },
     { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }] },
@@ -360,7 +363,7 @@ export default function Page() {
     { n: '1', title: 'Simulá tu plan', body: 'Un minuto, con el precio incluido antes de dejar cualquier dato.' },
     { n: '2', title: 'Un asesor te contacta', body: 'Por WhatsApp o el medio que prefieras, sin apuro ni compromiso.' },
     { n: '3', title: 'Elegís y firmás', body: 'Online o presencial, con todas tus dudas resueltas antes de firmar.' },
-    { n: '4', title: 'Activás tu credencial', body: 'Empezás a usar Lister y el resto de la red desde el día uno.' },
+    { n: '4', title: 'Activás tu credencial', body: 'Consultas y urgencias desde el día uno; lo demás, según su tiempo de espera.' },
   ];
 
   const v = {
@@ -416,7 +419,7 @@ export default function Page() {
                       prometía un selector que ya no existe. */}
                   <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Lo que cambia entre Essential, Silver y Gold, de un vistazo</span></a>
                   <a href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">¿Está cubierto lo que me pidieron?</span><span className="navmenu-s">Buscá el estudio, análisis o cirugía por su nombre</span></a>
-                  <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Copago, precio de convenio y lo que no cubre ningún plan</span></a>
+                  <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Qué significa copago y precio de convenio</span></a>
                   <a href="#faq" className="navmenu-item"><span className="navmenu-t">Preguntas frecuentes</span><span className="navmenu-s">Tiempos de espera, preexistencias, cambios de plan y más</span></a>
                 </div>
               </div>
@@ -493,7 +496,7 @@ export default function Page() {
           <div style={css('max-width:720px')}>
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill)')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
             <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:var(--sp-teal)')}>se siente</span>.</h1>
-            <p style={css('font-size:20px;line-height:1.6;color:var(--sp-blue-pale);max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:20px;line-height:1.6;color:var(--sp-blue-pale);max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
             {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red.
                 Un solo verbo para la acción comercial en todo el sitio: "Simulá tu plan"
                 (auditoría de conversión, jul 2026 — cinco nombres eran cinco decisiones). */}
@@ -661,8 +664,11 @@ export default function Page() {
               repetía los nombres que la tabla muestra dos líneas más abajo, y
               Bronze ya no se vende. */}
           <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 36px')}>
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0 0 14px')}>Qué te cubre cada plan y <span style={css('color:var(--sp-teal-deep)')}>qué ponés vos</span>.</h2>
-            <p style={css('font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0')}>Acá está <b style={css('color:var(--sp-teal-deep)')}>todo lo que cambia</b> entre los tres, de un vistazo.</p>
+            {/* Solo el título (Arturo, 25/09/2026: «La transparencia no implica
+                sobreexplicar»). Antes: «Qué te cubre cada plan y qué ponés vos»
+                + «Acá está todo lo que cambia entre los tres, de un vistazo». Son
+                las mismas palabras del menú que trae hasta acá. */}
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0')}>Qué te cubre <span style={css('color:var(--sp-teal-deep)')}>cada plan</span>.</h2>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
@@ -860,7 +866,7 @@ export default function Page() {
               <IconoSP nombre="red" size={56} />
               <div>
                 <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
-                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), y más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
+                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), y más de 600 médicos, sanatorios y laboratorios en 79 ciudades en Silver y Gold; Essential tiene la suya, según tu zona.</div>
               </div>
               <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
             </div>
@@ -900,7 +906,7 @@ export default function Page() {
                 <span className="disp sq" style={css('width:30px;height:30px;flex:none;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px')}>{st.n}</span>
                 <div>
                   <div style={css('font-size:15px;font-weight:700;color:var(--sp-navy);line-height:1.3;margin-bottom:3px')}>{st.title}</div>
-                  <div style={css('font-size:13.5px;color:var(--sp-muted);line-height:1.5')}>{st.body}</div>
+                  <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-muted);line-height:1.5')}>{st.body}</div>
                 </div>
               </div>
             ))}
@@ -1021,7 +1027,8 @@ export default function Page() {
                     Cerrada sigue en la página, inert: Google la lee y quien copia
                     el sitio no tiene que armar nada para mostrarla. */}
                 <Plegable id={'faq-r-' + i} abierto={f.open}>
-                  <div style={css('padding:0 20px 20px;font-size:14.5px;color:var(--sp-text);line-height:1.65')}>
+                  {/* Respuesta = oración: Inter (regla tipográfica; auditoría del 25/09/2026). */}
+                  <div style={css('padding:0 20px 20px;font-family:var(--font-inter),sans-serif;font-size:14.5px;color:var(--sp-text);line-height:1.65')}>
                     {f.a}
                     {f.cta && <a href={f.cta.href} onClick={f.cta.onClick} {...(f.cta.external ? { target: '_blank', rel: 'noopener' } : {})} className="link-teal" style={css('display:inline-block;margin-top:10px;color:var(--sp-teal-deep);font-weight:700;font-size:14px')}>{f.cta.label}</a>}
                   </div>
@@ -1062,7 +1069,7 @@ export default function Page() {
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Contacto</div>
             <div style={css('font-size:14px;color:var(--sp-blue-pale);line-height:2')}>
               <div>Sede Administrativa · Perú 222 esq. Eligio Ayala, Asunción</div>
-              <div>Centro Médico Lister · Paí Perez 630 c/ Azara, Asunción</div>
+              <div>Centro Médico Lister · Pa'í Pérez 630 c/ Azara, Asunción</div>
               <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:var(--sp-blue-pale);font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
               <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:var(--sp-blue-pale)')}>hola@saludprotegida.com.py</a></div>
             </div>

@@ -478,3 +478,46 @@ línea oscura de la referencia con la paleta de SP.
 **Después (25/09/2026): descartado** junto con Tranquibara: *«vamos a volver
 atrás con todo»*. La gente sigue siendo la del isotipo (lección 22).
 
+---
+
+## Parte 7 · Essential estudio por estudio y un título sin bajada (25/09/2026)
+
+### 25 · «No sé» también es una respuesta de la tabla
+
+![El buscador de «¿Está cubierto?» en celular con la columna de Essential: cubierto, confirmalo con tu asesor, exclusión y especialidades](img/2026-09-25-essential-estudio-por-estudio.webp)
+
+**Qué muestra.** El buscador de `/que-cubre` en celular después de cargar
+Essential estudio por estudio: un estudio cubierto con su tope y su espera, uno
+que el cuadernillo no nombra igual («Confirmalo con tu asesor»), la exclusión
+de hemodinamia que faltaba y la tabla de especialidades con cuatro columnas.
+
+**Qué se decidió.** El cuadernillo de Essential es una lista cerrada, así que
+lo que no nombra queda como «No entra en este plan». Cuando un nombre de la
+grilla podría ser el mismo estudio con otra palabra, no se adivina: se muestra
+en gris neutro, con una línea que dice por qué y a quién preguntar. La nota del
+pie nombra las dos fuentes con su fecha, porque Essential y Silver/Gold salen
+de documentos distintos.
+
+**La lección.** Un casillero que dice «preguntá» es más honesto que uno
+rellenado por parecido, siempre que diga por qué no sabe y a quién preguntar:
+sin esa línea, «Confirmalo» se lee como una evasiva. Y cuando dos columnas
+salen de dos fuentes, la nota lo dice; si no, la persona cree que todo viene
+del mismo papel.
+
+### 26 · La transparencia no implica sobreexplicar
+
+![El título de la tabla del home antes (dos partes y una bajada) y después (solo «Qué te cubre cada plan.»)](img/2026-09-25-titulo-tabla-solo-titulo.webp)
+
+**Qué muestra.** El encabezado de la tabla que compara los planes en el home,
+antes y después, en celular y en escritorio.
+
+**Qué se decidió.** Arturo: *«Esta frase no es muy clara y no se dirige
+directamente a la persona. Debemos ser más directos y claros. Solo hace falta
+poner un título, sin demasiados detalles adicionales. La transparencia no
+implica sobreexplicar.»* Quedó «Qué te cubre cada plan.», casi las mismas
+palabras del menú que trae hasta ahí, y sin bajada. La tabla sube unos 100 px
+en el celular.
+
+**La lección.** Una bajada que anuncia lo que el bloque de abajo ya muestra
+(«todo lo que cambia, de un vistazo») no agrega información: agrega lectura. Lo
+honesto está en la tabla, no en explicar que la tabla es honesta.

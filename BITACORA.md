@@ -3825,3 +3825,63 @@ tiene una regla nueva: si la corrida de la mañana no está, la dispara él y
 espera su resultado. Queda además una lectura para `deploy.yml`: su «red de
 seguridad cada hora» es, medida, una red cada tres o cuatro horas. Sirve igual
 (el camino normal es el push), pero ya no se puede leer como hora.
+
+## Capítulo 108 — La tomografía que era una placa dental (25/09/2026)
+
+**Qué intentamos.** Cargar Essential estudio por estudio en `/que-cubre` (el
+paso 2 que Arturo había dejado pendiente: *«Dale. Eso está pendiente»*) y, en
+el mismo recorrido, buscar inconsistencias en todo el sitio (*«Sigue buscando
+por inconsistencias que arreglar porfa»*). El cuadernillo de Essential no usa
+los nombres de la grilla de Silver y Gold, así que la carga se hizo con reglas:
+un patrón por grupo del cuadernillo, aplicado a cada fila de la grilla.
+
+**Qué pasó.** Tres cosas enseñaron algo.
+
+La primera la encontró la auditoría, no la carga. El sitio decía hace meses que
+la tomografía espera 60 días en Silver y 30 en Gold. Todas las filas de
+tomografía de la grilla dicen 120 y 90. El 60/30 venía de la
+ORTOPANTOMOGRAFIA, una placa dental, que tiene «TOMOGRAFIA» adentro del nombre.
+Alguien buscó por el nombre, encontró la primera fila que lo contenía y la dio
+por buena. El HANDOFF de julio lo repetía como dato.
+
+La segunda es de la misma familia, en el motor de precios. El simulador deja
+cargar hijos hasta los 25 años; el tarifario tiene una tarifa para hijos de
+hasta 20 y otra de 21 a 54. El motor conocía solo la primera, así que un hijo de
+23 pagaba como uno de 9. El control y la tarifa tenían rangos distintos y nadie
+los había puesto uno al lado del otro.
+
+La tercera fue una decisión. Muchas filas de la grilla no se parecen a nada del
+cuadernillo. Adivinar habría llenado la tabla, pero el cuadernillo es una lista
+cerrada: lo que no nombra, no entra. Quedaron tres estados: cubierto (o en
+parte), «No entra en este plan», y para los 26 nombres que podrían ser lo mismo
+con otra palabra, «Confirmalo con tu asesor». Y como las reglas son patrones de
+texto, el build ahora se corta si un patrón no encuentra ninguna fila: una regla
+que no calza con nada es una regla que dejó de funcionar sin avisar. Se probó
+con un patrón falso (corta) y con el archivo sano (pasa).
+
+**Qué aprendimos.** Buscar por una parte del nombre encuentra también a los
+parientes. Cuando un dato sale de una búsqueda por texto, hay que mirar qué
+fila lo dio, no solo que haya dado algo. Un rango que la persona puede elegir en
+pantalla tiene que salir de la misma fuente que el precio, o el precio queda
+mal justo en el borde. Y ante una lista cerrada, «no sé» dicho con honestidad
+vale más que una tabla completa: la columna de Essential tiene 26 casilleros que
+dicen «preguntá», y cada regla de las demás anota la cláusula de la que salió.
+
+## Capítulo 109 — La transparencia no implica sobreexplicar (25/09/2026)
+
+**Qué intentamos.** Encabezar la tabla que compara los planes con un título en
+dos partes («Qué te cubre cada plan y qué ponés vos») y una bajada que
+anunciaba lo que venía («Acá está todo lo que cambia entre los tres, de un
+vistazo»). La idea era prometer claridad antes de darla.
+
+**Qué pasó.** Arturo lo leyó y lo frenó: *«Esta frase no es muy clara y no se
+dirige directamente a la persona. Al leerla, me confunde un poco. Debemos ser
+más directos y claros. Solo hace falta poner un título, sin demasiados detalles
+adicionales. La transparencia no implica sobreexplicar.»* Quedó «Qué te cubre
+cada plan.», sin bajada. En el celular, la tabla subió unos 100 px.
+
+**Qué aprendimos.** El proyecto se apoya en la honestidad, y eso empuja a
+agregar una línea más que explique. Pero la honestidad está en
+lo que la tabla dice, no en un texto que anuncia que la tabla es honesta. Una
+bajada que repite lo que el bloque de abajo ya muestra no informa: hace leer
+más. Antes de sumar una línea, preguntarse qué dice que la pantalla no diga ya.
