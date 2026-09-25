@@ -3651,7 +3651,36 @@ lo que se ve, como el blur fantasma del minificador. Y un dibujo se juzga en su
 uso más chico: el recorte cuadrado del riel decidió dónde tiene que vivir la
 composición.
 
-## Capítulo 101 — Tres fuentes para un precio, y un guardián que esperaba 10 meses (24/09/2026)
+## Capítulo 101 — Lo que se parecía era la mano, no la pintura (24/09/2026)
+
+**Qué intentamos.** Arturo había pedido *«3 - 5 versiones del estilo»* para las
+portadas del blog, con un aviso: *«no tienen que ser muy similares»* a la
+referencia. Claude entendió «estilo» como el acabado y armó cinco: trazo blanco,
+línea y acento, dos tintas, rayado y tiza. Las cinco usaban el mismo dibujo.
+
+**Qué pasó.** Arturo: *«Trazo blanco está bien. El problema no era eso, pero más
+el estilo de los garabatos o dibujos. Por ejemplo, la mano, que tiene súper
+similitud con la mano que se usa para Claude.»* Lo que se parecía a la referencia
+era el dibujo: la mano con dedos en lazo, la línea suelta que va y vuelve, el
+garabato enredado. Cambiarle el acabado era pintar de otro color la misma mano.
+La primera vez, Claude había anotado «la mano» como riesgo, pero pensando en si
+saldría torpe. El riesgo estaba en su forma.
+
+Esta vez, antes de dibujar, Claude le devolvió lo que había entendido: qué
+significaba y qué no. Recién con su «Adelante» hizo cinco maneras de dibujar las
+mismas tres notas, con el trazo blanco fijo: gente del isotipo, escenas con
+horizonte, objetos desde arriba, manos en silueta y el ícono grande.
+
+![La mano de antes y cinco maneras de dibujar](docs/diseno/img/2026-09-24-portadas-cinco-maneras-de-dibujar.webp)
+
+**Qué aprendimos.** Cuando algo «se parece» a una referencia, primero se nombra
+la parte exacta que se parece, y se varía esa parte. Todo lo demás se deja
+quieto, para que la comparación diga algo. «Estilo» puede ser el dibujo o el
+acabado; como el cap. 98 ya decía de «lo que hablamos», una palabra que admite
+dos lecturas se confirma antes de construir. Y confirmar lo entendido con un
+«significa / no significa» costó un mensaje y ahorró una vuelta entera.
+
+## Capítulo 102 — Tres fuentes para un precio, y un guardián que esperaba 10 meses (24/09/2026)
 
 **Qué intentamos.** Aplicar Essential en lugar de Bronze, con lo que había dejado
 escrito el capítulo 99. Faltaban dos respuestas de Arturo. Sobre el nombre dijo
@@ -3684,7 +3713,7 @@ más caro de descubrir tarde tiene que estar donde la gente compara, aunque la
 FAQ y el simulador ya lo digan: quien elige Essential por precio mira la tabla,
 no la pregunta 2 de la FAQ.
 
-## Capítulo 102 — Essential no era SP Esencial (25/09/2026)
+## Capítulo 103 — Essential no era SP Esencial (25/09/2026)
 
 **Qué intentamos.** El 23/09 una sesión dio por hecho que el «Essential» de los
 PDF de SP era el «SP Esencial» del que se hablaba en el directorio, y la Guía

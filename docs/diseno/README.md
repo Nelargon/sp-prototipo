@@ -327,11 +327,40 @@ ya usa el sitio en sus íconos.
 **Estado (24/09/2026):** los cinco sobre la mesa, esperando a Arturo. Los dibujos
 y las técnicas están en `fuentes/`, para no redibujar cuando elija.
 
+**Después (24/09/2026):** Arturo: *«Trazo blanco está bien. El problema no era
+eso, pero más el estilo de los garabatos o dibujos. Por ejemplo, la mano, que
+tiene súper similitud con la mano que se usa para Claude.»* El acabado quedó
+elegido; lo que se parecía era el dibujo, y ese no había cambiado en ninguno de
+los cinco (lección 20).
+
+### 20 · Lo que se parecía era la mano, no la pintura
+
+![La mano de antes y cinco maneras de dibujar, en trazo blanco](img/2026-09-24-portadas-cinco-maneras-de-dibujar.webp)
+
+![Las cinco maneras de dibujar en el índice del blog, en celular](img/2026-09-24-portadas-maneras-en-su-lugar.webp)
+
+**Qué muestra.** Las mismas tres notas, las mismas ideas y el mismo trazo blanco,
+dibujadas de cinco maneras: gente con cabeza en anillo y cuerpo en arco, como las
+figuras del isotipo; escenas chicas con suelo y cielo; objetos sobre la mesa
+vistos desde arriba; manos macizas con el pulgar a la vista; y la portada como un
+ícono grande dentro de su mancha. A la izquierda, apagada, la mano de antes.
+Abajo, las cinco en el índice del blog, en un celular de 390 px.
+
+**Lo que se vio.** La gente del isotipo se lee a tamaño de tarjeta y es la única
+que pone personas donde la referencia pone manos sueltas. Las manos en silueta se
+leen como manos gracias al pulgar; sin él, la palma parecía una hoja. El ícono
+grande es el que mejor se lee chico, pero dice el tema más que la historia. En
+las escenas, los detalles lejanos (la ciudad en el horizonte) no se ven en la
+tarjeta. Y la guampa vista desde arriba se puede confundir con un blanco de tiro.
+
+**Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Los dibujos
+están en `fuentes/2026-09-24-portadas-maneras-de-dibujar.mjs`.
+
 ---
 
 ## Parte 5 · Essential reemplaza a Bronze (24/09/2026)
 
-### 20 · Si el número no se compara igual, se dice debajo
+### 21 · Si el número no se compara igual, se dice debajo
 
 ![La tabla del home con Bronze y con Essential, y el resultado del simulador con la zona](img/2026-09-24-essential-reemplaza-bronze.webp)
 
