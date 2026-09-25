@@ -753,3 +753,84 @@ reglas: sin manos, sin relojes ni cuadrantes, sin «!», sin rojo). Sin decidir:
 
 **Estado (25/09/2026):** esperando el OK de Arturo para rehacer las nueve y
 probarlas igual, con la prueba de pasillo para la versión nueva.
+
+### 30 · La tanda rehecha como emblema, y lo que le falta: contraste y gesto
+
+![Tanda 1 rehecha, parte 1: antes y ahora](img/2026-09-25-portadas-tanda-1-v2-1.webp)
+
+![Tanda 1 rehecha, parte 2: antes y ahora](img/2026-09-25-portadas-tanda-1-v2-2.webp)
+
+**Qué se hizo.** Con el OK de Arturo, las diez se rehicieron como emblema: un
+objeto y un gesto, con la mano del chico, sin suelo, sin sol, sin manos, sin
+relojes, sin «!» y sin rojo (dibujos en
+`fuentes/2026-09-25-portadas-tanda-1-v2.mjs`). La lámina muestra cada una al lado
+de la versión que no pasó.
+
+**La prueba, con un evaluador nuevo y el prompt calibrado.** A ciegas acertó 6 de
+10, contra 2 y 1 de las corridas anteriores: el médico (*«cambiarse de […] una
+clínica a otra»*), el dengue (*«vacunas para adultos mayores contra el
+dengue»*), la cirugía (*«ir a operarse y volver a casa»*), la presión, el cuello
+uterino (*«dónde hacerte análisis de laboratorio cerca de tu casa»*) y la
+formación de los médicos. Con los títulos aprobó 5, y subieron la filosofía (de 4
+a 5) y la personalidad (de 5-6 a 7). Hojas: `…-tanda-1-v2-ciega-*.webp`.
+
+**Lo que sigue fallando, según el evaluador.**
+- **El lazo sin rojo se lee como cáncer.** Un lazo blanco es de cualquier campaña.
+- **El sobre al final de la escalera se lee «después», no «antes».**
+- **La lupa con tilde y el pin del mapa parecen íconos de sistema.**
+- **La gente del logo en grupo es una familia.** Tres figuras de alturas
+  distintas dieron *«plan familiar»* en las tres corridas: el isotipo mismo es una
+  familia. Para decir «más gente» hace falta una multitud pareja.
+- **Falta el gesto sobre el objeto** (el lazo, el corazón, el pin y los libros
+  están quietos) **y sobran recorridos punteados** (el médico, el dengue y la
+  cirugía se explican con una flecha de A a B: *«se parecen más a un diagrama que
+  a una picardía»*).
+- **La línea repasa el borde del lleno en vez de cruzarlo**: la moneda, los
+  libros, el microscopio.
+
+**Lo que dijo Arturo, viendo la tanda.** Sobre el color: *«Usted está poniendo
+todo de blanco y puede ver también que el modelo de Claude usa diferentes colores
+para tener ese contraste que uno necesita en las imágenes, porque en algunas de
+las imágenes que me está mostrando no se siente ese contraste.»* Y sobre el
+precio: *«el concepto de moneda y el concepto de aviso, como una casilla de
+correo, un correo o un tipo de sobre de correo, no encajan muy bien en la idea
+[…] Mira bien los conceptos, observa bien para que te puedas agarrar mejor con lo
+que quieres comunicar.»* Las dos cosas coinciden con el evaluador: sin un segundo
+color, la línea y el lleno pesan igual y las dos capas no se separan.
+
+**El color: cuatro tratamientos** (tratamientos en
+`fuentes/2026-09-25-portadas-color.mjs`, todos con la paleta oficial).
+
+![El color, 1 de 2: hoy y tono sobre tono](img/2026-09-25-portadas-color-1.webp)
+
+![El color, 2 de 2: un acento de marca y fondo claro](img/2026-09-25-portadas-color-2.webp)
+
+- **Hoy:** todo blanco sobre el color de la categoría.
+- **A · Tono sobre tono:** fondo más oscuro (g1), línea blanca, la idea en el tono
+  claro de su categoría.
+- **B · Un acento de marca:** fondo más oscuro, línea blanca, la idea siempre en
+  menta (`--sp-mint`). Es la recomendación de Claude: el contraste más fuerte sin
+  dejar el trazo blanco, y un solo acento que une todo el blog, como el terracota
+  une los íconos de la referencia, pero con un color de SP.
+- **C · Fondo claro:** fondo claro, línea oscura, la idea en el tono medio. Es la
+  que más se lee, pero es la receta de la referencia (fondo claro, línea oscura,
+  un acento) y da vuelta el aspecto de todo el blog (lección 18).
+
+**El precio: tres conceptos** en lugar de la moneda y el sobre.
+
+![Tres conceptos para el precio que se avisa antes de subir](img/2026-09-25-portadas-precio-conceptos.webp)
+
+1. **La etiqueta suena antes de subir** (recomendado): la etiqueta del precio
+   sube colgada de un hilo y en el hilo suena una campanita, el aviso de todos los
+   días en el celular. El aviso va arriba, antes que el precio.
+2. **La fecha, antes que la suba:** la etiqueta prendida en un día del almanaque y
+   la flecha que sube desde ahí.
+3. **Se anuncia:** un megáfono le avisa a la etiqueta que sube.
+
+La escalera se va por otra razón: la referencia tiene un ícono de escalera con
+flecha, y la nuestra se le acercaba.
+
+**Estado (25/09/2026):** esperando a Arturo: el color, el concepto del precio y
+qué hacer con el lazo del VIH. Después, una pasada más a las diez con el gesto
+sobre el objeto, menos flechas punteadas, la línea que cruza el lleno y una
+multitud pareja en «más gente»; y de nuevo la prueba.

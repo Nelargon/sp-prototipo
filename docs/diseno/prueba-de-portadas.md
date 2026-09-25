@@ -263,4 +263,5 @@ en `<avoid>`.
 | 1 | IA sin contexto (variante B) | 25/09/2026 | 2 de 10 (3 cerca) | 2 aprobadas, 8 a rehacer · filosofía 4/10 · personalidad 5/10 | `README.md`, lección 28 |
 | 1 | IA sin contexto, ronda a ciegas (corrida de Arturo) | 25/09/2026 | 1 de 10 (4 cerca) | — | `README.md`, lección 28 |
 | 1 | IA sin contexto (variante B, corrida de Arturo) | 25/09/2026 | (su ronda de arriba) | 3 aprobadas, 7 a rehacer · filosofía 4/10 · personalidad 6/10 | `README.md`, lección 29 |
-| 1 | Pasillo, 5 personas | — | — | — | pendiente (Arturo) |
+| 1 v2 (emblema) | IA sin contexto (variante B calibrada) | 25/09/2026 | 6 de 10 | 5 aprobadas, 5 a rehacer · filosofía 5/10 · personalidad 7/10 | `README.md`, lección 30 |
+| 1 | Pasillo, 5 personas | — | — | — | pendiente (Arturo), para la versión que se elija |
