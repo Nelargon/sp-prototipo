@@ -834,3 +834,29 @@ flecha, y la nuestra se le acercaba.
 qué hacer con el lazo del VIH. Después, una pasada más a las diez con el gesto
 sobre el objeto, menos flechas punteadas, la línea que cruza el lleno y una
 multitud pareja en «más gente»; y de nuevo la prueba.
+
+---
+
+## Parte 9 · El header se siente botón (25/09/2026)
+
+### 30 · Lo que se toca tiene que avisar que se tocó
+
+![El header hoy y tres maneras de que Cobertura, Planes, Blog y Mi SP respondan al pasar y al apretar, en escritorio y en el menú del celular](img/2026-09-25-header-que-se-sienta-boton.webp)
+
+**Qué muestra.** El header tal como estaba y tres opciones, en cuatro estados:
+el mouse encima y el botón apretado, arriba de todo (sobre la foto) y al bajar
+(barra clara). Abajo, el menú del celular con el dedo sobre «Planes».
+
+**Qué se decidió.** Arturo: *«que se sienta también como botón cada vez que
+hacemos clic en eso»*. Medido en el navegador antes de proponer: Guía Médica y
+Simulá ya respondían; Urgencias se hundía pero no cambiaba al pasar; Cobertura,
+Planes, Blog y Mi SP no se hundían nunca. Eligió la **A, pastilla suave**: una
+pastilla clara aparece detrás de la palabra al pasar, se oscurece y se hunde al
+apretar; en el celular, el renglón del menú se pinta de menta. La B dejaba el
+subrayado y seguía pareciendo texto; la C, con sombra, competía con los tres
+botones de verdad del header.
+
+**La lección.** Un subrayado dice «esto es un link»; una pastilla que se hunde
+dice «te escuché». En un header donde conviven botones y links, los links que
+no responden al toque se leen como texto muerto. Y la pastilla se agrandó con
+padding y margen negativo: en reposo, el header quedó idéntico píxel por píxel.

@@ -17,6 +17,43 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🧭 PUNTOS DE REVISIÓN + EL HEADER SE SIENTE BOTÓN (25 sep 2026)
+
+**Puntos de revisión del sitio: la lista única de pendientes.** Arturo: *«un
+pequeño botón […] donde podemos ver todos los puntos de revisión necesarios
+[…] y vamos agregando pendientes ahí»*, sin complicar: *«Todo tiene que estar
+absolutamente conectado»*.
+- **Dónde viven:** issues con la etiqueta **`revisión`** en `sp-interno`
+  (privado). Se agregan con la plantilla «Punto de revisión del sitio» (desde
+  la app de GitHub) o pidiéndoselo a Claude. Arrancó con 13 (#50 a #62): la
+  fisioterapia de Gold, los 26 «a confirmar» de Essential, «La más elegida», la
+  tabla editable de precios, los CTA, los testimonios y los arreglos chicos de
+  la auditoría.
+- **El botón:** «Revisión», gris y punteado, junto al logo en escritorio y al
+  final del menú en el celular (en la barra del celular no entra: ver BITACORA
+  cap. 112). Está en las **dos ediciones** por decisión de Arturo (Buenavista
+  sabe que no va en el sitio real). Se apaga con `CON_REVISION` en
+  `app/edicion.js`. Quien no tiene acceso al repo privado ve «no encontrado».
+- **El barrido:** el Guardián lo hace cada mañana (`sp-interno/salud/
+  GUARDIAN.md`, paso 2b). Resuelve lo que puede resolver Claude, con PRs que
+  cierran el issue, y sube al tablero lo que espera a una persona hace más de 7
+  días. El tablero público muestra solo el conteo.
+- **Regla para toda sesión (CLAUDE.md):** lo que necesita una decisión va a un
+  issue `revisión`, no solo al HANDOFF. Las listas de pendientes de las
+  secciones de abajo son historia: lo vigente está en los issues.
+
+**El header se siente botón (opción A, «pastilla suave», elegida por Arturo).**
+Lámina: `docs/diseno/img/2026-09-25-header-que-se-sienta-boton.webp` (lección
+30). Cobertura, Planes, Blog y Mi SP muestran una pastilla al pasar y se hunden
+al apretar. Urgencias se oscurece al pasar y los renglones del menú del celular
+se pintan de menta al tocarlos. Sale el subrayado de julio. En reposo, el header
+quedó idéntico píxel por píxel (medido). Todo vive en `app/globals.css`, con
+tokens nuevos `--toque-claro`, `--toque-nav` y sus versiones apretadas.
+Verificado en el navegador: 41 comprobaciones, a 360/390/430/1200/1440 y en 6
+páginas, con «reducir movimiento» incluido.
+
+---
+
 ## 🔎 ESSENTIAL ESTUDIO POR ESTUDIO + AUDITORÍA — FUSIONADO CON EL OK DE ARTURO (25 sep 2026)
 
 Arturo: *«Dale. Eso está pendiente»* (el paso 2 de Essential) y *«Sigue buscando
