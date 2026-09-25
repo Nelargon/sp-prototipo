@@ -143,6 +143,14 @@ del círculo, con paisaje, un detalle lleno y gente con gestos. **En el sitio no
 cambió nada.** Los dibujos están en `docs/diseno/fuentes/` (no es código del
 sitio).
 
+**Tranquibara en las portadas (24/09/2026, pedido de Arturo):** *«Podemos usar
+versiones de Tranquibara también.»* Dibujado a mano en trazo blanco, con cinco
+estados y tres portadas de prueba (lección 23). Sigue las reglas del personaje,
+que viven en `sp-interno`: ojos que nunca se agrandan, sin pose de autoridad,
+libre en el blog, sereno en carencias y copagos, **ausente en notas sobre una
+enfermedad o un diagnóstico**. No hay dibujo maestro en vector: antes de
+publicarlo, que lo revise quien hizo el original.
+
 **Lo que ya vale (no re-litigar sin motivo):**
 - **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
   blanco) ni sus dibujos. Cambiar solo la paleta no alcanza: es el mismo estilo

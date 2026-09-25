@@ -414,3 +414,27 @@ se ve de lejos, porque es lo único macizo de la portada.
 **Estado (24/09/2026):** las cinco sobre la mesa, esperando a Arturo. Se pueden
 combinar: él pidió que el conjunto sea diverso.
 
+### 23 · Tranquibara también, con la misma mano
+
+![Tranquibara a mano: sus estados, tres portadas y la nota donde no va](img/2026-09-24-portadas-tranquibara.webp)
+
+**Qué muestra.** Arriba, Tranquibara dibujado con el mismo trazo blanco, en cinco
+estados: en reposo, saluda, leyendo y verificando, explicando y tranqui. Después,
+tres portadas, sueltas y en el círculo: lee su cuaderno antes de la consulta,
+explica con calma qué es una carencia, y descansa en la hamaca con su tereré
+porque resolvió su cobertura antes de necesitarla. Al final, la nota donde no
+va.
+
+**Qué se respetó.** Las reglas del personaje: los ojos nunca se agrandan, nada
+de guardapolvo ni carpeta, sereno y presente. En carencias y copagos va sereno y
+sin chiste. En una nota sobre tratamiento oncológico no aparece: *cuanta más
+angustia hay en el momento, menos personaje y más persona*.
+
+**Lo que se vio.** De frente, en línea blanca, parecía un oso. El carpincho está
+en el hocico largo, y eso solo se ve de tres cuartos. Girarle la cabeza fue
+también cumplir otra regla suya: la cabeza mira hacia lo que atiende.
+
+**Estado (24/09/2026):** esperando a Arturo. Tranquibara no tiene todavía un
+dibujo maestro en vector; si estas portadas salen, conviene que las revise quien
+hizo el original.
+

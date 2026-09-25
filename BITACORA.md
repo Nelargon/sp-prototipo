@@ -3759,3 +3759,24 @@ mostró el hilo que unía las piezas elegidas. La recomendación de Claude («un
 sola manera para todo») resolvía la coherencia a costa de la variedad que un
 blog necesita. La coherencia la da la mano, y el que se entienda como el dibujo
 de un chico; el resto puede variar.
+
+## Capítulo 105 — El carpincho está en el hocico (24/09/2026)
+
+**Qué intentamos.** Arturo pidió sumar a Tranquibara a las portadas: *«Podemos
+usar versiones de Tranquibara también.»* Mandó dos piezas y un video con sus
+estados animados. Claude lo dibujó de frente, con la misma mano blanca.
+
+**Qué pasó.** Leído primero el documento del personaje, dos reglas cambiaron el
+dibujo antes de empezar. Los ojos nunca se agrandan, y en una nota sobre una
+enfermedad no aparece: la de tratamiento oncológico se quedó con la familia. Aun
+así, el primer Tranquibara de frente se leía como un oso. El segundo, con el
+contorno del hocico marcado, como un oso con barba. En el original, lo que lo
+hace carpincho es el color del pelaje y el hocico oscuro, y en línea blanca no
+hay color. Quedaba la forma: el hocico largo y chato, que de frente no se ve.
+Girarle la cabeza tres cuartos lo resolvió. Y era también una regla suya que
+estaba escrita: la cabeza mira hacia lo que atiende.
+
+**Qué aprendimos.** Cuando un personaje pierde el color, lo que lo identifica
+tiene que salir de la silueta. Y antes de dibujar a alguien que ya existe, se
+leen sus reglas: acá dijeron dónde no va, qué no se le agranda y hacia dónde
+mira. Esa última regla resolvió el problema del dibujo.
