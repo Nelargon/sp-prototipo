@@ -521,3 +521,32 @@ en el celular.
 **La lección.** Una bajada que anuncia lo que el bloque de abajo ya muestra
 («todo lo que cambia, de un vistazo») no agrega información: agrega lectura. Lo
 honesto está en la tabla, no en explicar que la tabla es honesta.
+
+---
+
+## Parte 8 · Portadas del blog: la biblioteca, en tandas (25/09/2026)
+
+Con el estilo elegido (lección 22), Arturo: *«Vamos a cubrir todas en tandas de
+10.»* Son 62 notas sin cifra (las 9 con cifra quedan como están), de la más
+nueva a la más vieja. Cada tanda se aprueba antes de pasar a la siguiente.
+
+### 27 · Tanda 1: las diez más nuevas
+
+![Las 10 portadas de la tanda 1](img/2026-09-25-portadas-tanda-1.webp)
+
+![La tanda 1 arriba del blog, en escritorio y en celular](img/2026-09-25-portadas-tanda-1-en-su-lugar.webp)
+
+**Qué muestra.** Una metáfora por nota, armada con piezas: la empresa que dice
+que cumple y otros que lo confirman; el cartel antes de la escalera; el centro de
+salud con su relojito; la curita del joven y del mayor; el ida y vuelta de una
+cirugía; la obra y quien estudia; el calendario de todos los días; el
+tensiómetro; la carpeta de un consultorio al otro; la gente y las monedas que
+suben. Abajo, la parte de arriba del blog con la nota destacada y el riel.
+
+**Lo que se vio.** En el riel «Lo último», la miniatura de 64 px ahora muestra el
+dibujo: antes el ícono de la categoría quedaba afuera del recorte y se veía un
+cuadrado de color. Las curitas tuvieron que crecer para verse. Y el detalle lleno
+quedó en objetos chicos, en cuatro de diez.
+
+**Estado (25/09/2026):** esperando a Arturo.
+
