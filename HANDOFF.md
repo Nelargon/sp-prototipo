@@ -25,10 +25,27 @@ datos de precio y cobertura: **no se fusiona sin su OK**. Lámina:
 `docs/diseno/img/2026-09-24-essential-reemplaza-bronze.webp` (lección 20);
 el camino, en BITACORA cap. 99 y 101.
 
+> ⚠ **ESSENTIAL NO ES SP ESENCIAL (Arturo, 25/09/2026).** *«El plan "Esencial"
+> será parte de la nueva gama de planes que aún no está lista. El "Essential" es
+> un plan separado que ya viene hace un par de años. No es la versión nueva
+> aún.»* Son **dos productos distintos**:
+> - **Essential** — plan vigente desde hace años, con su cuadernillo, sus
+>   guías médicas por zona y su tarifa por zona. Es el que reemplaza a Bronze
+>   **hoy**, y el que muestra el sitio.
+> - **SP Esencial** — el primer escalón de la **gama nueva** (Esencial ·
+>   Integral · Premium), todavía en diseño. No se publica nada de él.
+>
+> Lo escrito antes de esta fecha que dice «SP Esencial (= Essential de los
+> PDF)» —HANDOFF del 23/09, BITACORA cap. 99, comentarios de la guía— los
+> confundía. Las claves internas `esencial_*` / `esencial-*` de la Guía Médica
+> y el `nivel: 'esencial'` del simulador son nombres viejos que hoy quieren
+> decir **Essential**; no se renombraron para no romper links.
+
 **Decisiones de Arturo (24/09):**
-- **El cliente ve «Essential»**, no «SP Esencial». Cambió también en la Guía
-  Médica (`lib/red-medica.js`) y el QA de lanzamiento ya no lo marca como
-  nombre interno. «Privilege» sigue sin mostrarse nunca.
+- **El cliente ve «Essential»**, no «SP Esencial» (que es otro plan, el de la
+  gama nueva: ver el aviso de arriba). Cambió también en la Guía Médica
+  (`lib/red-medica.js`) y el QA de lanzamiento ya no lo marca como nombre
+  interno. «Privilege» sigue sin mostrarse nunca.
 - **La zona sale de la ciudad** que la persona pone en el simulador: Asunción y
   Central → ₲ 265.000; el resto del país → ₲ 220.000. **Nacional (₲ 305.000)
   es una opción** a un toque («¿Dónde te vas a atender?»).
@@ -43,9 +60,11 @@ el camino, en BITACORA cap. 99 y 101.
 precios 2026 (editada el 15/09) rotula «Interior» la columna que es «Nacional»:
 **hay que avisarle a quien la mantiene**. Cobertura: `CUADERNILLO PLAN
 ESSENTIAL.pdf` (25/03/2026). Todo transcripto en
-`datos/planes-vigentes/essential.json`. ⚠ La minuta dejaba el costeo de
-Essential pendiente para el 25/08 y no apareció un documento posterior que lo
-cierre.
+`datos/planes-vigentes/essential.json`. La minuta del 18/08 llama al plan
+«SP Esencial» y a la vez «Essential», y deja un costeo pendiente para el 25/08.
+Con la aclaración de Arturo del 25/09, ese costeo pendiente es muy
+probablemente el del SP Esencial nuevo, no el de Essential, que ya se vendía
+(el Interior costaba ₲ 220.000 desde 2025) — inferencia, no confirmada.
 
 **Qué cambió:**
 - `app/quote.js`: tarifa de Essential por zona (`ESSENTIAL`, `zonaEssential`,
@@ -875,7 +894,8 @@ Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
   una red; Silver y Gold comparten la misma y lo que cambia es cuánto cubren.
   El molde viejo suponía Gold ⊇ Silver ⊇ Bronze, y eso no es cierto para la
   red. Opciones: SP Esencial en sus 3 zonas (= "Essential" de los PDF,
-  confirmado por Arturo el 23/09), Silver/Gold/Bronze, Vital, Bienestar/
+  confirmado por Arturo el 23/09 — ⚠ corregido el 25/09: Essential y SP
+  Esencial son planes distintos; en la guía hoy dice «Essential»), Silver/Gold/Bronze, Vital, Bienestar/
   Superior/Integral/Primordial (las 3 últimas usan la misma red) y Plan
   Estatal. **La Centralizada no se publica** hasta saber qué planes cubre.
 - **"Revisar" (185 filas):** se publican como en el PDF. En el **prototipo**
@@ -1026,7 +1046,7 @@ planilla.
 
 | Pendiente | Quién |
 |---|---|
-| ~~Grilla oficial: Bronze → Esencial, precio por zona~~ Hecho el 24/09 con las fuentes del Drive (sección «Essential reemplaza a Bronze»). Queda: confirmar el costeo cerrado y corregir el rótulo de la tabla editable | SP |
+| ~~Grilla oficial: Bronze → Essential, precio por zona~~ Hecho el 24/09 con las fuentes del Drive (sección «Essential reemplaza a Bronze»). Queda: corregir el rótulo de la tabla editable | SP |
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
@@ -1156,7 +1176,9 @@ es lo que ningún otro equipo va a poder copiar sin rehacerlo.
 Reunión de directorio con Crafting sobre MKT. Lo que toca a la web:
 
 1. **Bronze se dio de baja.** La línea pasa a ser **SP Esencial (reemplaza a
-   Bronze) · Silver · Gold**. Arturo: *"solo 3 productos necesitamos ofrecer"*;
+   Bronze) · Silver · Gold**. *(⚠ 25/09/2026: lo que reemplaza a Bronze hoy es
+   **Essential**, el plan vigente; SP Esencial es de la gama nueva, que todavía
+   no está lista. Ver «Essential reemplaza a Bronze», arriba.)* Arturo: *"solo 3 productos necesitamos ofrecer"*;
    y el 14/09 a Buenavista: *"voy a hablar para que en la página pongamos 3
    productos y se acabó"*. El Vital sigue aparte, para 65+.
 2. **Fecha de lanzamiento: primera semana de octubre de 2026**, con los 3

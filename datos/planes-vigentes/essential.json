@@ -1,7 +1,8 @@
 {
   "id": "essential",
   "nombre_web": "Essential",
-  "nombre_oficial": "Plan Essential (en la minuta del 18/08/2026: \"Plan SP Esencial\")",
+  "nombre_oficial": "Plan Essential",
+  "no_confundir": "Essential NO es SP Esencial. Essential es un plan vigente desde hace un par de años; SP Esencial será el primer escalón de la gama nueva (Esencial · Integral · Premium), que todavía no está lista (Arturo, 25/09/2026). La minuta del 18/08/2026 usa los dos nombres para hablar de este plan.",
   "reemplaza_a": "bronce",
   "decisiones": {
     "nombre": "De cara al cliente se llama \"Essential\" (Arturo, 24/09/2026).",
@@ -11,7 +12,7 @@
     "precios": "PRECIOS ESSENTIAL.pdf (Drive de SP, 21/08/2026)",
     "precios_confirmados_por": "Minuta de implementación del 18/08/2026 (Crafting): \"Essential Gs. 265.000 (Asunción), Gs. 305.000 (nacional), Gs. 220.000 (interior)\". El Anexo I del Interior (06/2025) ya tenía los mismos valores del Interior.",
     "precios_contradiccion": "La tabla EDITABLE - TABLA DE PRECIOS PLANES SP 2026.docx (editada el 15/09/2026) tiene solo dos columnas y rotula \"Interior\" la que en el PDF y en la minuta es \"Nacional\" (305.000 / 125.000 / 455.000 / 545.000 / 635.000). Se toma el PDF: coincide con la minuta, con el anexo de 2025 y con las tres guías médicas del 10/08/2026.",
-    "precios_advertencia": "La minuta del 18/08 dejaba el costeo pendiente de confirmar para el 25/08/2026. No se encontró un documento posterior que lo cierre.",
+    "precios_advertencia": "La minuta del 18/08 deja un costeo pendiente para el 25/08/2026. Con la aclaración de Arturo (25/09), es muy probablemente el del SP Esencial nuevo: Essential ya se vendía y su Interior costaba 220.000 desde 2025. Inferencia, no confirmada.",
     "cobertura": "CUADERNILLO PLAN ESSENTIAL.pdf (25/03/2026, mismo lote que los cuadernillos Privilege de la grilla vigente)"
   },
   "moneda": "PYG",

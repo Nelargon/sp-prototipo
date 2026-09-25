@@ -3683,3 +3683,27 @@ otras independientes, y la que perdió se anota para corregirla, no se tira. Y l
 más caro de descubrir tarde tiene que estar donde la gente compara, aunque la
 FAQ y el simulador ya lo digan: quien elige Essential por precio mira la tabla,
 no la pregunta 2 de la FAQ.
+
+## Capítulo 102 — Essential no era SP Esencial (25/09/2026)
+
+**Qué intentamos.** El 23/09 una sesión dio por hecho que el «Essential» de los
+PDF de SP era el «SP Esencial» del que se hablaba en el directorio, y la Guía
+Médica pasó a decir «SP Esencial». El capítulo 99 y el PR de Essential
+heredaron esa equivalencia sin revisarla.
+
+**Qué pasó.** Con el PR esperando su OK, Arturo lo corrigió: *«El plan
+"Esencial" será parte de la nueva gama de planes que aún no está lista. El
+"Essential" es un plan separado que ya viene hace un par de años. No es la
+versión nueva aún.»* Son dos productos. El sitio ya mostraba lo correcto
+(Essential, con su tarifa y su cuadernillo), así que no hubo que tocar ninguna
+pantalla. Lo que estaba mal era la historia escrita en el HANDOFF, en los
+comentarios de la guía, en el JSON de datos y en la lectura de la minuta del
+18/08. La minuta usa los dos nombres para el mismo plan, y su «costeo
+pendiente» era muy probablemente del plan nuevo.
+
+**Qué aprendimos.** Un nombre que parece la traducción de otro puede ser otro
+producto. Antes de igualar dos nombres hay que preguntar si son lo mismo, y
+cuando la respuesta llega, se escribe en el HANDOFF con un aviso visible,
+porque la confusión ya estaba repartida en cinco lugares. También quedó a la
+vista un costo de las claves internas: `esencial_*` sigue queriendo decir
+Essential. Se dejó así para no romper links, pero con el aviso al lado.

@@ -6,7 +6,11 @@
    cuadernillos y tarifarios oficiales. Primas con IVA incluido.
    Essential reemplazó a Bronze el 24/09/2026 (Arturo: "El plan Bronze ha
    quedado obsoleto; ya no se comercializa"). Silver y Gold son de la gama
-   que internamente se llama "Privilege" (nunca de cara al cliente). */
+   que internamente se llama "Privilege" (nunca de cara al cliente).
+   Contenido temporal hasta que exista la gama nueva (Esencial / Integral /
+   Premium). ⚠ Essential NO es el "Esencial" de esa gama: es un plan vigente
+   desde hace años (Arturo, 25/09/2026). La clave interna `nivel: 'esencial'`
+   es vieja y hoy quiere decir Essential. */
 
 import { DEPT_AJUSTE } from './geo';
 
