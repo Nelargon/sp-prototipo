@@ -524,6 +524,19 @@ crudo (BITACORA cap. 94). Que el botón aparezca lo decide cada cliente de
 correo: Gmail suele mostrarlo solo a remitentes con volumen, así que puede no
 verse. El pie del correo explica cómo darse de baja en cualquier caso.
 
+**⚠ Desde el 25/09/2026, no todo el blog sale solo** (decisión de Arturo,
+`sp-contenido` GOVERNANCE §3b.7). El 25/09 se corrigieron cuatro notas
+publicadas con errores sobre quién regula a la medicina prepaga (la regula la
+Superintendencia de Salud del Ministerio de Salud, no el BCP) o sobre qué
+mide una cifra del mercado. La del 05/09 sobre la ley de seguros se retiró de
+`contenido/blog/publicados/` porque el error era su premisa. Desde entonces,
+las notas de **«Entendé tu plan»** y **«Salud en Paraguay»** esperan una
+lectura humana en la revista antes de publicarse, y el correo del blog las
+manda recién cuando llegan a la web. Arturo: *«Este es un punto muy importante
+que no puede descuidarse.»* En esta vitrina no cambia nada: el Publicador
+sigue trayendo solo lo que la compuerta aprueba. El detalle está en la
+bitácora de `sp-contenido`, caps. 7 y 8.
+
 ---
 
 ## 🩺 LA RUTINA DIARIA DE SALUD — el Guardián (24 sep 2026)
