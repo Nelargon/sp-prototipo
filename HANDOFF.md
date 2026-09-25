@@ -61,6 +61,17 @@ Lámina de comparación: `docs/diseno/img/2026-09-25-tira-prestadores-con-y-sin-
   escritorio. **Si elige una, el PR #204 cambia de alcance:** la segunda tira
   se reemplaza por esa sección, y la tira de aliados queda sola, esperando la
   poda del directorio.
+- **Lo que eligió Arturo (25/09, noche): tres de las cinco, combinadas.**
+  Lámina `docs/diseno/img/2026-09-25-red-home-desglose-muro.webp` y
+  `…-red-guia-mapa.webp` (docs/diseno n.º 34). **Home:** sección «Dónde te
+  atendés» con el desglose (130 sanatorios y clínicas · 107 laboratorios ·
+  363 médicos de 47 especialidades · 9 centros de imágenes, más Lister), el
+  «¿Dónde vivís?» por ciudad y el muro de nombres **sin logos, de fondo**
+  (56 sanatorios y clínicas de todos los planes, `aria-hidden`). **Sin el 615
+  suelto**: Arturo, *«ese número grande, 615, a veces se puede comparar con
+  otras prepagas… que tienen un número mayor»*. **Guía Médica:** el mapa
+  debajo de «Tu ciudad o localidad»; tocar un punto elige la ciudad. Toca
+  territorio de la guía: declararlo en el PR. Pendiente del OK para construir.
 
 ## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
 

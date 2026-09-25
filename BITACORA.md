@@ -4066,3 +4066,11 @@ formato: una tira de logos es lo que toda empresa pone para decir «tenemos
 convenios», y no le contesta a nadie si tiene un sanatorio cerca. Cuando el
 formato contesta la pregunta, el logo deja de ser el problema.
 
+**Después, la elección.** Arturo se quedó con tres de las cinco y las juntó:
+el muro sin logos como fondo, el «¿Dónde vivís?» y el mapa en otro lugar donde
+sirviera. Y agregó lo que nadie había visto: *«ese número grande, 615, a
+veces se puede comparar con otras prepagas que son la competencia y tienen un
+número mayor»*. El total pasó a ser un desglose: 130 sanatorios y clínicas,
+107 laboratorios, 363 médicos. Un total se compara con otro total; «44
+pediatras» se compara con lo que la persona necesita.
+

@@ -934,3 +934,29 @@ el 6 de agosto.
 ciudad dicen «acá te atendés». El formato también es parte del mensaje, y el
 logo pasa a ser un detalle: la ficha, el muro y el mapa funcionan igual sin él.
 
+### 34 · El muro de fondo, el desglose y el mapa en la Guía
+
+![Home: la sección «Dónde te atendés» con el desglose de la red y «¿Dónde vivís?», sobre un fondo de nombres de sanatorios](img/2026-09-25-red-home-desglose-muro.webp)
+
+![Guía Médica: el mapa debajo de «Tu ciudad o localidad», con Encarnación elegida](img/2026-09-25-red-guia-mapa.webp)
+
+**Qué muestra.** Arriba, la sección del home que junta tres ideas: el muro (sin
+logos) pasa a ser el **fondo**, una textura con los 56 sanatorios y clínicas
+que están en todos los planes; adelante, el **desglose** de la red y el
+«¿Dónde vivís?». Abajo, el **mapa** dentro de la Guía Médica real, como otra
+manera de elegir la ciudad.
+
+**Qué se decidió.** Arturo eligió tres de las cinco: *«Me gusta muchísimo el
+muro… El mapa está genial y también está muy bueno la versión 5»*. Y pidió
+desglosar el número: *«ese número grande, 615, a veces se puede comparar con
+otras prepagas que son la competencia y tienen un número mayor»*. Por eso el
+615 ya no aparece solo: 130 sanatorios y clínicas, 107 laboratorios, 363
+médicos de 47 especialidades, 9 centros de imágenes. El muro va de fondo, como
+propuso él; el mapa, donde es útil (la Guía, que ya filtra por ciudad).
+Pendiente de su OK para construir.
+
+**La lección.** Un número total invita a comparar con el total de otro; un
+número con nombre («44 pediatras») se compara con lo que la persona necesita.
+Y un fondo de texto funciona si es textura: casi del color del fondo, con un
+velo claro donde está lo que se lee, y oculto para los lectores de pantalla.
+
