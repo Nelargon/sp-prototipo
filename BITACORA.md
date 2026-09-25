@@ -3885,3 +3885,33 @@ agregar una línea más que explique. Pero la honestidad está en
 lo que la tabla dice, no en un texto que anuncia que la tabla es honesta. Una
 bajada que repite lo que el bloque de abajo ya muestra no informa: hace leer
 más. Antes de sumar una línea, preguntarse qué dice que la pantalla no diga ya.
+
+
+## Capítulo 110 — El título explicaba lo que el dibujo no decía (25/09/2026)
+
+**Qué intentamos.** La tanda 1 de portadas del blog, las diez notas más nuevas,
+se dibujó con una metáfora por nota. Se le mostró a Arturo con el título y una
+línea de explicación al lado de cada dibujo, y así todas parecían decir su nota.
+Arturo pidió *«un prompt para testear si esto se entiende realmente»*, y que se
+mirara la referencia *«con excesiva atención»*.
+
+**Qué pasó.** Se armó una hoja a ciegas: las portadas numeradas, en otro orden,
+sin título ni categoría. Un evaluador sin contexto acertó el tema de 2 de 10
+(dengue y presión). El reloj que quería decir «quince minutos» se leyó como
+*«cuánto esperás para que te atiendan»*; el sol, como vacaciones. Después, con
+los títulos y la referencia, el mismo evaluador aprobó 2 de 10 y puso 4/10 en
+filosofía: *«Nueve de diez son escenas con gente de cuerpo entero parada sobre
+una línea de suelo, no emblemas que flotan.»* Mirando la referencia de cerca se
+vio lo mismo: allá, un objeto que todos conocen y un gesto que le cambia el
+sentido; acá, una escena. Y una sorpresa: tres de sus nueve arreglos traían una
+mano, la firma de la referencia que Arturo había descartado el día anterior.
+
+**Qué aprendimos.** Una lámina con el título al lado mide si el dibujo acompaña,
+no si el dibujo dice: el título completa lo que falta y el ojo no se da cuenta.
+Por eso cada tanda pasa primero por la ronda a ciegas (`docs/diseno/
+prueba-de-portadas.md`), y la prueba de pasillo con cinco personas manda sobre la
+de la IA. Y quien aprende de una referencia tiende a proponer la referencia: la
+lista de lo que no se toma tiene que nombrar también los arreglos prohibidos. El
+evaluador, a su vez, corrigió una observación nuestra sobre la referencia, y
+tenía razón. La vara se revisa contra la imagen, no contra lo que recordamos de
+ella.

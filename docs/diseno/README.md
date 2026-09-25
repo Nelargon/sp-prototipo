@@ -630,7 +630,37 @@ cometer?»*). Entre paréntesis, la tanda 1:
 Tres preguntas antes de dibujar cada portada: ¿cuál es el objeto?, ¿cuál es el
 gesto?, ¿qué sobra?
 
-**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo, ahora con la
-prueba de pasillo. Propuesta de Claude, sin decidir: la mano del chico con la
-gramática del emblema; rehacer como emblema las cinco que fallaron y probarlas
-igual antes de la tanda 2.
+**Segunda ronda: con los títulos y la referencia** (el mismo evaluador, con el
+mensaje 2 en su variante con contrapeso).
+- **Aprobadas: 2 de 10.** La presión y, después del contrapeso, el dengue (*«a
+  ciegas leí dengue, vacuna y mayores»*). Las otras ocho, a rehacer, cada una con
+  su causa visible: el sol que llevó a «vacaciones», el reloj que dice «horario»,
+  el globo de la empresa que se ve antes que las tildes de la gente, la persona
+  que queda al costado de la grúa.
+- **Filosofía 4/10:** *«Nueve de diez son escenas con gente de cuerpo entero
+  parada sobre una línea de suelo, no emblemas que flotan.»*
+- **Personalidad 5/10:** *«La mano se reconoce […] Pero los objetos son los
+  pictogramas de siempre (clínica con cruz, casa, calendario con tildes, edificio
+  de ventanitas), así que el carácter está en el trazo y no en la idea.»*
+- **Familia: no.** Composiciones repetidas: persona de pie a un lado y objeto al
+  otro (cuatro portadas); tres elementos en espejo (dos); persona, clínica y sol
+  (dos).
+- **Lo que más le falta:** el emblema que flota, la gente en pedazos y la
+  picardía.
+
+**Dos cosas que enseñó la prueba sobre la prueba.**
+- **El evaluador corrigió una observación nuestra, y con razón.** En el juego
+  crema, la moneda y la estrella tienen el relleno adentro de la línea, y hay dos
+  rellenos (terracota y beige), no uno. La regla «forma llena sin contorno» vale
+  para el acento, no para todo. La guarda que le pedía decirlo funcionó.
+- **Tres de sus nueve arreglos traían una mano** («una mano pasa la carpeta»,
+  «una mano suma gente a la fila»). Es la firma de la referencia que Arturo
+  descartó (lección 20). Quien aprende de una referencia tiende a proponerla: el
+  prompt ahora prohíbe las manos como arreglo. En esta marca el gesto lo hacen la
+  gente del logo, el objeto que se mueve o una flecha, como la moneda que sube la
+  escalera, otro de sus arreglos.
+
+**Estado (25/09/2026):** la tanda 1 sigue esperando a Arturo y a la prueba de
+pasillo. Propuesta de Claude, sin decidir: la mano del chico con la gramática del
+emblema; rehacer como emblema las ocho que no pasaron y probarlas igual antes de
+la tanda 2.

@@ -127,14 +127,15 @@ distinguir entre copiar un estilo y entender su filosofía.
   1. Emblema, no escena: un objeto que todos conocen (corazón, ADN, lamparita,
      escalera, moneda) y un gesto o una línea que le cambia el sentido. El
      objeto dice el tema; el gesto dice la idea.
-  2. Dos capas: una forma plana y llena, sin contorno, carga la idea; la línea
-     es lo humano y la acción. La línea cruza la forma sin calcarla.
+  2. Dos capas: una forma plana y llena carga la idea; la línea es lo humano y
+     la acción, y cruza la forma sin calcarla. (En el segundo juego, el acento
+     va sin contorno; los detalles beige, adentro de la línea.)
   3. Pocos trazos, uno a tres elementos y mucho aire alrededor. Sin suelo ni
      paisaje de escena: las cosas flotan.
   4. La gente aparece en pedazos (una mano que sostiene, un perfil), nunca un
      cuerpo entero, nunca ojos.
-  5. Pocos valores: fondo, línea y forma. En el segundo juego, un solo color de
-     acento marca la idea.
+  5. Pocos valores: fondo, línea y forma. En el segundo juego, un acento
+     terracota marca la idea y un beige rellena los detalles.
   6. Una picardía: un movimiento chico e inesperado (el cursor que hace clic en
      una idea, la mano que mete un edificio en la ciudad).
 - Lo que el equipo eligió propio a propósito, y no cuenta como falla: el trazo
@@ -217,6 +218,9 @@ línea; si no cambió ninguno, escribí "Sin cambios".
 
 <avoid>
 - Recomendar rasgos de firma de la referencia (la lista de "lo que no quiere").
+- Proponer manos o brazos como arreglo. En esta marca el gesto lo hacen la
+  gente del logo, el objeto que se mueve o una flecha; una mano devuelve el
+  dibujo a la firma de la referencia.
 - Proponer cambiar la paleta, el trazo blanco o la firma de la marca.
 - Elogios generales ("buen trabajo", "gran potencial").
 </avoid>
@@ -233,9 +237,14 @@ La misma que la B **sin el bloque `<contrapeso>`** y sin el punto 3 de
 `<format>`. Sirve para una pasada rápida sobre una tanda chica o sobre una sola
 portada rehecha; para aprobar una tanda, la B.
 
+**Ajuste después de la tanda 1 (25/09/2026):** el evaluador propuso manos en
+tres de sus nueve arreglos, y corrigió con razón las observaciones 2 y 5. El
+prompt de arriba ya trae las dos cosas: las observaciones corregidas y las manos
+en `<avoid>`.
+
 ## Resultados
 
 | Tanda | Prueba | Fecha | Pasan a ciegas | Veredicto | Dónde |
 |---|---|---|---|---|---|
-| 1 | IA sin contexto, ronda a ciegas | 25/09/2026 | 2 de 10 (3 cerca) | — | `README.md`, lección 28 |
+| 1 | IA sin contexto (variante B) | 25/09/2026 | 2 de 10 (3 cerca) | 2 aprobadas, 8 a rehacer · filosofía 4/10 · personalidad 5/10 | `README.md`, lección 28 |
 | 1 | Pasillo, 5 personas | — | — | — | pendiente (Arturo) |

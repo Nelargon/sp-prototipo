@@ -292,8 +292,12 @@ después evalúa contra la referencia, y la prueba de pasillo con 5 personas
 (pasa si 3 de 5 la aciertan a ciegas), que es la que manda. Lo que se vio
 mirando la referencia de cerca, y cómo le fue a la tanda 1, en la lección 28:
 **la referencia condensa una idea (un objeto y un gesto); la tanda 1 cuenta una
-escena** (suelo, gente de cuerpo entero, sol). Qué hacer con eso lo decide
-Arturo.
+escena** (suelo, gente de cuerpo entero, sol). Primera prueba, una IA sin
+contexto: acertó 2 de 10 a ciegas y aprobó 2 de 10 (filosofía 4/10,
+personalidad 5/10). **Ningún arreglo lleva una mano**: el evaluador las propuso y
+es la firma de la referencia (lección 20); el gesto lo hacen la gente del logo,
+el objeto que se mueve o una flecha. Qué hacer con la tanda lo decide Arturo
+(BITACORA cap. 110).
 
 **En el sitio no cambió nada todavía.** Los dibujos y las piezas están en
 `docs/diseno/fuentes/` (no es código del sitio); el estilo elegido sale de
