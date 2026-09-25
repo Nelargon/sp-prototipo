@@ -3974,3 +3974,35 @@ pidió Arturo sobre la lista vale como regla: antes de construir un lugar nuevo
 para algo, buscar si ya hay uno que lo pueda llevar. La lista de pendientes
 existía repartida en el HANDOFF; ahora tiene un lugar que se abre, se tacha y
 se barre solo.
+
+## Capítulo 113 — El botón que solo le servía a uno (25/09/2026)
+
+**Qué intentamos.** Arturo pidió que el botón «Revisión» no mandara a GitHub,
+sino a *«una página interna de Salud Protegida, donde se muestren los problemas
+y sus detalles»*, con un chat donde *«cualquier visitante pueda chatear con mi
+Claude, hacer preguntas y proponer soluciones»*.
+
+**Qué pasó.** El pedido destapó algo que el botón de la mañana escondía: solo
+le servía a él. La lista vive en un repo privado, y cualquier otra persona que
+tocaba «Revisión» veía «no encontrado». Pero llevar la lista a una página de
+este sitio tampoco servía: el repo es público, así que la página la publicaba
+para cualquiera. Y el sitio es estático, sin un lugar donde guardar la clave
+de Claude sin que se pueda copiar. Antes de construir se le preguntaron dos
+cosas: quién entra y dónde vive el chat. Eligió equipo con clave personal y una
+página de claude.ai, sin servidor. La sala quedó como un Artifact privado: la
+invitación es la clave, y cada persona chatea con su propia cuenta de Claude.
+El sitio solo cambió el link.
+
+Se probó con datos simulados antes de publicarla: 42 comprobaciones, a 360,
+390, 430 y 1280 px, en claro y en oscuro, con el chat sin permiso, con una
+invitación de solo lectura y abierta fuera de claude.ai. La prueba encontró
+una cosa: una propuesta armada con Claude mostraba los asteriscos del formato.
+Después de publicarla se probaron las reglas de acceso contra la sala real. Un
+colaborador no puede tocar los puntos y sí puede proponer. Un editor no puede
+marcar una propuesta como llevada.
+
+**Qué aprendimos.** Un sitio público y estático tiene dos límites que no se
+negocian: no puede mostrar lo privado y no puede guardar un secreto. Cuando un
+pedido necesita cualquiera de las dos cosas, la pieza vive afuera y el sitio
+solo la enlaza. Y ante «cualquier visitante», preguntar primero quién es
+cualquiera: la respuesta decidió la arquitectura.

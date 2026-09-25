@@ -191,8 +191,10 @@ pierde (BITACORA cap. 96).
   lo que se sale de un `position:fixed` no agranda `scrollWidth`, así que «sin
   desborde» no lo ve. En el header se mide cada hijo contra la pantalla.
 - **Los pendientes del sitio viven en un solo lugar** (25 sep 2026, pedido de
-  Arturo): los issues con la etiqueta `revisión` de `sp-interno`, que abre el
-  botón «Revisión» del sitio y que el Guardián barre cada mañana. Una sesión
+  Arturo): los issues con la etiqueta `revisión` de `sp-interno`, que el
+  Guardián barre cada mañana. El botón «Revisión» del sitio abre la **sala de
+  revisión** (claude.ai, por invitación), una copia con chat y propuestas que
+  el Guardián regenera: lo que se decide, se decide en el issue. Una sesión
   que encuentra algo que necesita una decisión o que no puede resolver en su
   PR abre ahí un issue con la plantilla «Punto de revisión del sitio»; el
   HANDOFF apunta, no copia. El PR que resuelve uno lleva

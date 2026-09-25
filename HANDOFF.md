@@ -17,6 +17,30 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🗂 LA SALA DE REVISIÓN: EL BOTÓN «REVISIÓN» YA NO VA A GITHUB (25 sep 2026, noche)
+
+Arturo: que el botón lleve *«directamente a una página interna de Salud
+Protegida, donde se muestren los problemas y sus detalles»*, con un área donde
+*«cualquier visitante pueda chatear con mi Claude, hacer preguntas y proponer
+soluciones»*.
+- **Qué es:** la **sala de revisión**, un Artifact de claude.ai privado:
+  https://claude.ai/artifact/HsTwZywxrypycEjGb4xFxj. Lista de puntos con
+  filtro por quién decide, el detalle de cada uno, un chat con Claude y
+  propuestas firmadas. `REVISION_URL` en `app/edicion.js` apunta ahí.
+- **Por qué no es una página de este sitio:** este repo es público y el sitio
+  es estático. Una página del sitio publicaría los puntos, que son privados, y
+  no puede guardar una clave de Claude. Arturo eligió dos cosas: **equipo con
+  clave personal** (la clave es la invitación por email de claude.ai) y
+  **claude.ai sin servidor** (en vez de un servidor propio con la API paga).
+  El camino, en BITACORA cap. 113 y en `sp-interno` BITACORA cap. 18.
+- **Lo que no cambió:** la lista de verdad son los issues `revisión` de
+  `sp-interno`. La sala es una copia que el Guardián regenera cada mañana. Él
+  también lleva las propuestas como comentarios al issue. Cómo se sincroniza,
+  cómo se invita y cómo se vuelve a publicar: `sp-interno/sala-revision/README.md`.
+- **Pendiente de Arturo:** invitar al equipo desde «Compartir» de la sala
+  (a los de otra organización, como Editor) y decir si quiere que Claude
+  sincronice también fuera del horario del Guardián.
+
 ## 🧭 PUNTOS DE REVISIÓN + EL HEADER SE SIENTE BOTÓN (25 sep 2026)
 
 **Puntos de revisión del sitio: la lista única de pendientes.** Arturo: *«un
