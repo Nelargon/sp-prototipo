@@ -22,22 +22,33 @@ que documenta la implementación técnica de la página de planes.
 Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
 lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo
 más al estilo SP?»*. Y mientras se armaba la prueba: *«Acordate de que no tienen
-que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Recorrido y
-láminas en `docs/diseno/` (lecciones 18 y 19); el camino, en BITACORA cap. 100.
+que ser muy similares. Podes ver 3 - 5 versiones del estilo»*. Y al ver los
+cinco acabados: *«Trazo blanco está bien. El problema no era eso, pero más el
+estilo de los garabatos o dibujos. Por ejemplo, la mano, que tiene súper
+similitud con la mano que se usa para Claude.»* Recorrido y láminas en
+`docs/diseno/` (lecciones 18 a 20); el camino, en BITACORA caps. 100 y 101.
 
 **Qué se busca:** un dibujo por nota que diga lo que dice la nota. Hoy 61 de las
 70 notas comparten 5 dibujos, uno por categoría (las otras 9 llevan su cifra).
 
-**Estado:** cinco estilos sobre la mesa (trazo blanco, línea y acento, dos
-tintas, rayado, tiza), probados en tres notas reales y en el índice del blog en
-celular. **Arturo elige. En el sitio no cambió nada.** Los dibujos y las
-técnicas están en `docs/diseno/fuentes/` (no es código del sitio).
+**Estado:** el **tratamiento está elegido: trazo blanco** (papel blanco al 20 %
+y trazo blanco repasado sobre el -700 de la categoría). Falta **la manera de
+dibujar**, entre cinco: gente del isotipo, escenas con horizonte, objetos desde
+arriba, manos en silueta y el ícono grande (lección 20), probadas en tres notas
+reales y en el índice del blog en celular. **Arturo elige. En el sitio no
+cambió nada.** Los dibujos y las técnicas están en `docs/diseno/fuentes/` (no es
+código del sitio).
 
 **Lo que ya vale (no re-litigar sin motivo):**
 - **No se copia la receta de la referencia** (fondo apagado, trazo negro, papel
   blanco) ni sus dibujos. Cambiar solo la paleta no alcanza: es el mismo estilo
   (lección 18).
-- **La mano es la de los íconos**: trazo a mano, que no cierra perfecto.
+- **No se dibujan manos con dedos en lazo, líneas sueltas que van y vuelven ni
+  garabatos enredados**: es el lenguaje de los dibujos de Claude, y la primera
+  mano salió casi igual (cap. 101). Lo que se varía para no parecerse es el
+  dibujo, no el acabado.
+- **El trazo es el de los íconos**: a mano, blanco y repasado, que no cierra
+  perfecto.
 - **La composición vive entre x 110 y 300** del cuadro de 400×200: en el riel
   «Lo último» la portada se recorta en cuadrado. Medido: hoy esas miniaturas no
   muestran el ícono de la categoría, que queda afuera del recorte.
