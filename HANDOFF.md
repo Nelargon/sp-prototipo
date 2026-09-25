@@ -2478,6 +2478,16 @@ usa `npm ci`).
       (`project/ESTRATEGIA-levantar-la-niebla-2026-09.md` §3c, privado).
     Territorio: solo `HANDOFF.md`.
 
+12f. **La voz de Arturo, en un solo lugar (25 sep 2026).** El registro de su
+    voz vivía en `sp-interno` y el bot que escribe el blog cada noche nunca
+    lo leyó: escribía con el destilado de julio de `sp-contenido`. Se mudó a
+    `sp-contenido/knowledge/voz-de-arturo.md`, donde lo leen los bots y las
+    sesiones. Lo nuevo se anota ahí con un PR a ese repo (regla de
+    `CLAUDE.md`). Al juntar los documentos, Arturo decidió que la marca de
+    agua no frena la publicación automática del blog 🟢, y que en el blog del
+    motor no va el «no es X, es Y» hasta ver notas con una sola. Detalle en
+    `sp-interno` (BITACORA caps. 15-16). Territorio: `CLAUDE.md` y `HANDOFF.md`.
+
 ---
 
 ## 4. PENDIENTES PRIORIZADOS — el siguiente ciclo
