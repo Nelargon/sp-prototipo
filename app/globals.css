@@ -114,6 +114,10 @@
   --sombra-hoja:0 -10px 40px rgba(0,27,52,.18);
   --toque-gris:#F4F5F6;     /* la fila apretada se oscurece hasta acá */
   --mov-toque:.12s;         /* cuánto tarda el botón en hundirse */
+  --toque-claro:rgba(255,255,255,.16);          /* pastilla del nav sobre el vidrio oscuro */
+  --toque-claro-apretado:rgba(255,255,255,.26); /* la misma, apretada */
+  --toque-nav:rgba(0,59,113,.07);               /* pastilla del nav sobre la barra clara */
+  --toque-nav-apretado:rgba(0,59,113,.13);      /* la misma, apretada */
 }
 html{font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
 body{margin:0;background:#fff}
@@ -187,18 +191,43 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    debajo de 1200px, donde el nav completo no entra. Verificado: sin desborde
    ≥1200px, hamburguesa completa por debajo. */
 .nav-links-desktop .nav-link{white-space:nowrap}
-/* Señal de hover del nav: un subrayado que crece de izquierda a derecha bajo el
-   link (la señal del header de Anthropic — pedido del usuario, jul 2026).
-   currentColor → funciona sobre nav oscuro y claro por igual. Refleja en
-   :focus-visible para el teclado. Los desplegables ya avisan con el chevron
-   que rota + el panel; excluimos el subrayado ahí para no rayar bajo el chevron. */
+/* EL NAV SE SIENTE BOTÓN (25/09/2026, opción A de la lámina «header que se
+   sienta botón», elegida por Arturo: «que se sienta también como botón cada vez
+   que hacemos clic»). Antes había un subrayado que crecía bajo el link (la señal
+   del header de Anthropic, jul 2026): decía «esto es un link», no «esto se
+   toca». Ahora Cobertura, Planes, Blog y Mi SP muestran una pastilla al pasar
+   y se hunden al apretar, como Guía Médica y Simulá. El padding con margen
+   negativo agranda el área de la pastilla sin mover ninguna palabra.
+   BITACORA cap. 112. */
 .nav-link{position:relative}
-.nav-link:not(.nav-link-menu)::after{content:'';position:absolute;left:0;bottom:-6px;height:2px;width:100%;background:currentColor;border-radius:2px;transform:scaleX(0);transform-origin:left center;transition:transform .28s cubic-bezier(.22,1,.36,1)}
-.nav-link:not(.nav-link-menu):hover::after,.nav-link:not(.nav-link-menu):focus-visible::after{transform:scaleX(1)}
-@media(prefers-reduced-motion:reduce){.nav-link::after{transition:none}}
-/* Menú móvil a pantalla completa: el ítem también subraya al hover/focus */
-.menu-item{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:8px;transition:text-decoration-color .2s ease}
-.menu-item:hover,.menu-item:focus-visible{text-decoration-color:currentColor}
+.nav-links-desktop .nav-link{padding:8px 12px;margin:-8px -12px;border-radius:var(--r-sm);transition:background-color .15s ease,transform var(--mov-toque) ease,color .3s}
+[data-nav]:not(.solid) .nav-links-desktop .nav-link:hover,[data-nav]:not(.solid) .navmenu-wrap:hover>.nav-link,[data-nav]:not(.solid) .nav-links-desktop .nav-link:focus-visible{background:var(--toque-claro)}
+[data-nav].solid .nav-links-desktop .nav-link:hover,[data-nav].solid .navmenu-wrap:hover>.nav-link,[data-nav].solid .nav-links-desktop .nav-link:focus-visible{background:var(--toque-nav)}
+[data-nav]:not(.solid) .nav-links-desktop .nav-link:active{background:var(--toque-claro-apretado)}
+[data-nav].solid .nav-links-desktop .nav-link:active{background:var(--toque-nav-apretado)}
+/* El hundido va en una regla aparte y liviana, para que la de «reducir
+   movimiento» (abajo, mismo peso) la pueda apagar. */
+.nav-links-desktop .nav-link:active{transform:scale(.97)}
+/* Botón «Revisión» junto al logo (uso interno; app/components/BotonRevision).
+   Chico, gris y punteado: una herramienta de trabajo, no una oferta. */
+.revision-btn{display:inline-flex;align-items:center;height:28px;padding:0 10px;--sq:var(--r-xs);border:1.5px dashed currentColor;font-family:var(--font-display),sans-serif;font-size:12px;font-weight:800;letter-spacing:.02em;white-space:nowrap;color:rgba(255,255,255,.8);position:relative;z-index:3}
+[data-nav].solid .revision-btn,[data-nav].menu-open .revision-btn{color:var(--sp-muted)}
+[data-nav]:not(.solid):not(.menu-open) .revision-btn:hover{background:var(--toque-claro)}
+[data-nav].solid .revision-btn:hover,[data-nav].menu-open .revision-btn:hover{background:var(--toque-nav)}
+.revision-nav{margin-left:14px}
+@media(max-width:1199px){.revision-nav{display:none !important}}
+.menu-overlay .revision-menu{align-self:flex-start;margin-top:30px;height:36px;padding:0 14px;font-size:14px;color:var(--sp-muted)}
+.menu-overlay .revision-menu:hover{background:var(--toque-nav)}
+/* Urgencias ya se hundía al apretar; ahora también responde al pasar. */
+.urg-pill:hover{filter:brightness(.9)}
+/* Menú móvil a pantalla completa: cada ítem es un renglón que se pinta al
+   tocarlo. Se oscurece y NO se achica (regla de .fila: un renglón que se
+   achica despega sus bordes), y además la animación de entrada deja fijo el
+   transform. */
+.menu-item{border-radius:var(--r-md);padding-left:14px;padding-right:14px;margin-left:-14px;margin-right:-14px;transition:background-color .15s ease}
+.menu-item:hover,.menu-item:focus-visible{background:var(--sp-mint-bg)}
+.menu-item:active{background:var(--sp-mint-line)}
+@media(prefers-reduced-motion:reduce){.nav-links-desktop .nav-link,.menu-item{transition:none}.nav-links-desktop .nav-link:active{transform:none}}
 /* Mega-menú fluido del nav (POC header tipo Anthropic, jul 2026): el panel se
    revela con hover/focus con un fade+slide suave; vidrio como el propio nav.
    Solo desktop — bajo 1280px el nav ya colapsa al menú overlay. */

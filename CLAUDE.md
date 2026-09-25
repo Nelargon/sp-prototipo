@@ -181,6 +181,16 @@ pierde (BITACORA cap. 96).
   anota ahí, textual y con fecha, con un PR a `sp-contenido` en la misma tanda
   de trabajo. Nunca inventarle anécdotas u opiniones que no dijo.
 - Los eventos `track()` nunca llevan nombre/teléfono/email.
+- **Un header fijo no desborda la página** (25 sep 2026, BITACORA cap. 112):
+  lo que se sale de un `position:fixed` no agranda `scrollWidth`, así que «sin
+  desborde» no lo ve. En el header se mide cada hijo contra la pantalla.
+- **Los pendientes del sitio viven en un solo lugar** (25 sep 2026, pedido de
+  Arturo): los issues con la etiqueta `revisión` de `sp-interno`, que abre el
+  botón «Revisión» del sitio y que el Guardián barre cada mañana. Una sesión
+  que encuentra algo que necesita una decisión o que no puede resolver en su
+  PR abre ahí un issue con la plantilla «Punto de revisión del sitio»; el
+  HANDOFF apunta, no copia. El PR que resuelve uno lleva
+  `Closes Nelargon/sp-interno#n`.
 - **Lo nuevo entra con su prueba (24 sep 2026, rutina de salud).** Toda
   página nueva (`app/**/page.jsx`) se suma a una suite con navegador
   (`PAGINAS_APP` de `qa/qa-integral.mjs`, o `qa/qa-lanzamiento.mjs` si sale en

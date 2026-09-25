@@ -3938,3 +3938,39 @@ blanda («apuntaba al tema») se endurece convirtiéndola en una pregunta que se
 puede tildar: ¿alguien que lea solo la adivinanza elegiría este título entre los
 diez? La prueba también se prueba: se corrió dos veces antes de confiarle una
 tanda.
+
+## Capítulo 112 — El header que se desbordaba sin que la página lo notara (25/09/2026)
+
+**Qué intentamos.** Dos pedidos de Arturo en un mismo mensaje. Que los links
+del header se sientan botón (*«que se sienta también como botón cada vez que
+hacemos clic en eso»*) y un botón para ver los puntos de revisión del sitio
+(*«un pequeño botón […] donde podemos ver todos los puntos de revisión
+necesarios […] y vamos agregando pendientes ahí»*). Para la lista puso una
+condición que ordenó todo: *«Todo tiene que estar absolutamente conectado, y
+tampoco te tiene que ser muy complicado a vos»*.
+
+**Qué pasó.** La lista no se construyó: ya existía el lugar. Los pendientes
+pasaron a ser issues `revisión` del repo privado, y el Guardián, que ya barría
+los repos cada mañana, suma un paso para barrerlos. El sitio solo tiene un
+botón que abre esa lista. El header se resolvió con una lámina de tres opciones
+(eligió la pastilla suave). En el camino hubo dos tropiezos que vale anotar.
+
+El primero fue el botón. Junto al logo, en el celular, empujó el botón del menú
+fuera de la pantalla: 15 px a 360 y 49 px a 430. La prueba de desborde dio
+verde igual, porque mide el ancho de la página, y el header es `position:fixed`:
+lo que se sale de un elemento fijo no agranda la página. Se agregó la medida que
+faltaba (cada hijo del header dentro de la pantalla), se confirmó que marcaba el
+error y recién después se arregló: en el celular, «Revisión» va al final del
+menú.
+
+El segundo fue «reducir movimiento». La regla que apaga el hundido pesaba menos
+que la que lo prende, porque la de prender llevaba `[data-nav]:not(.solid)`
+adelante. Es el mismo error que el comentario del CSS ya advertía para la guía.
+Se separó el hundido en una regla liviana, del mismo peso que la que lo apaga.
+
+**Qué aprendimos.** Una prueba de «sin desborde» que mide la página no ve lo que
+está fijo: para un header, hay que medir sus hijos contra la pantalla. Y lo que
+pidió Arturo sobre la lista vale como regla: antes de construir un lugar nuevo
+para algo, buscar si ya hay uno que lo pueda llevar. La lista de pendientes
+existía repartida en el HANDOFF; ahora tiene un lugar que se abre, se tacha y
+se barre solo.

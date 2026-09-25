@@ -58,3 +58,13 @@ export const CON_HISTORIA = !ES_LANZAMIENTO;
 // el Excel firmado (datos/glosario/), se corrigen los textos, se regenera con
 // scripts/build-glosario-web.py y esto pasa a `true` siempre.
 export const CON_GLOSARIO_MEDICO = !ES_LANZAMIENTO;
+// Botón «Revisión» junto al logo: abre la lista de puntos de revisión del sitio
+// (issues con la etiqueta «revisión» en el repo privado sp-interno). Pedido de
+// Arturo el 25/09/2026: «un pequeño botón […] donde podemos ver todos los
+// puntos de revisión necesarios […] y vamos agregando pendientes ahí». Está en
+// las dos ediciones por decisión suya: Buenavista sabe que no va en el sitio
+// real («van a tener el sentido común de no usar ese espacio»). La lista es
+// privada: quien no tiene acceso al repo ve «no encontrado». Para quitarlo de
+// todo el sitio, esto pasa a `false`.
+export const CON_REVISION = true;
+export const REVISION_URL = 'https://github.com/Nelargon/sp-interno/issues?q=is%3Aissue%20is%3Aopen%20label%3Arevisi%C3%B3n';
