@@ -103,13 +103,24 @@ del muro, **fija a la pantalla y recortada a la sección** (`.muro-marco` con
 el mismo lugar, las líneas siguen de una sección a la otra: la página se
 desliza sobre una sola pared, como el tapiz de la guía.
 - Tres tonos: `oscuro` en las bandas navy (inicio, manifiesto, contacto, pie),
-  `claro` en las claras (4 puntos más oscuro que el fondo, de 255, medido) y
+  `claro` en las claras (5 puntos más oscuro que el fondo, de 255, medido) y
   `pleno` en «Dónde te atendés», donde se ve entero (reemplazó a `.dta-muro`).
 - La sección necesita `className="con-muro"` (isolation): el muro queda sobre
   su fondo y debajo de todo lo demás, sin tocar a los hijos.
 - ⚠ **Sección nueva en la home = su `<MuroFondo tono=… />`.** Y nada de
   `transform`/`filter`/`contain` en un ancestro de una sección: rompe el fixed.
   `qa-lanzamiento` controla las dos cosas y el tono contra el fondo real.
+- **Ajuste del 26/09** (Arturo: azul un 5% más transparente, claras un 5%
+  menos). El navegador guarda la transparencia en pasos de 1/255 y a esta
+  intensidad el 5% cae dentro del mismo paso: medido, los píxeles salían
+  idénticos. Se movió un paso cada uno (navy 11/255 → 10/255, claras 5/255 →
+  6/255): el muro claro pasó de 4 a 5 puntos sobre el fondo y el navy bajó
+  uno. Es el cambio más chico que existe; para retocarlo, de a 1/255.
+- **En el inicio, el muro no va sobre la foto** (Arturo, 26/09): se apaga
+  hacia la derecha antes de que la foto empiece a verse (máscara en
+  `[data-hero]>.muro-marco`, tres anchos: >1250, ≤1250 y ≤820 px). En el
+  celular, donde la foto ocupa todo el ancho, queda solo en el borde
+  izquierdo. Si cambia la máscara de `[data-hero-bg]`, cambia esta.
 - Costo medido: el HTML del home pasa de 16,9 a 18,1 KB comprimido; el scroll
   sigue a 60 cuadros por segundo con la CPU 4× más lenta (laboratorio).
 

@@ -1153,7 +1153,10 @@ con el muro al 50% detrás (el mínimo es 4,5).
 **Qué se decidió.** Recomendé el 50% (al 30%, en muchas pantallas el muro ya no
 se ve). Arturo eligió el punto del medio: *«Y claras al 40%»*. Se construyó el
 26/09/2026 (`components/MuroFondo.jsx`): medido en el sitio, el muro queda 4
-puntos más oscuro que el fondo, sobre el gris y sobre el blanco.
+puntos más oscuro que el fondo, sobre el gris y sobre el blanco. Ya publicado,
+lo ajustó: *«en la banda azul vamos un 5% más transparente, y en la blanca un
+5% menos»*. El 5% no se podía dibujar (ver BITACORA cap. 119); se movió el paso
+más chico que existe, y las claras quedaron a 5 puntos del fondo.
 
 **La lección.** Arturo encontró la variable que faltaba: no era *dónde* va el
 muro sino *cuánto* se ve en cada lugar. Con el mismo muro en toda la página y
