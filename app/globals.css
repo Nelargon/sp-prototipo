@@ -81,8 +81,8 @@
   /* El muro de nombres de «Dónde te atendés» (25/09/2026): gris apenas más
      oscuro que su fondo (--sp-estado-bg). Es textura, no texto: Arturo lo pidió
      gris y claro, sin velo, para que la tarjeta blanca resalte sola. */
-  --sp-muro:#EAECEE;
-  --sp-muro-2:#E2E5E8;
+  --sp-muro:#E9EBED;
+  --sp-muro-2:#E1E4E7;
   --sp-marca-interna:#F28C28; /* punto «Revisar» y «sin prestadores» de la guía — solo prototipo, nunca de cara al cliente */
   /* Neutros semánticos */
   --sp-ink:#1D1D1B;         /* texto más fuerte */
@@ -502,12 +502,16 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    celular) para que entre la red entera de Silver y Gold; a esa letra el trazo
    es más fino, así que «claro» subió otro paso (6/255 → 7/255) para seguir
    leyéndose. El padding de arriba deja la primera línea debajo del menú fijo:
-   ahí van los destacados, y se ven en todo el home. */
+   ahí van los destacados, y se ven en todo el home.
+   Y otra vez el 26/09 (Arturo: «un 5% menos de transparencia en general»): un
+   paso en los tres tonos, el más chico que se ve. Navy 10/255 → 11/255, claro
+   7/255 → 8/255, y --sp-muro/--sp-muro-2 un nivel más oscuros, que también
+   usan «Dónde te atendés» y el tapiz de la Guía Médica. */
 .con-muro{position:relative;isolation:isolate}
 .muro-marco{position:absolute;inset:0;z-index:-1;clip-path:inset(0);pointer-events:none;user-select:none}
 .muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:92px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:16px;line-height:1.62;font-weight:800;letter-spacing:0;text-align:justify}
-.muro-oscuro .muro-texto{color:rgba(255,255,255,.0392)}
-.muro-claro .muro-texto{color:rgba(0,27,52,.0275)}
+.muro-oscuro .muro-texto{color:rgba(255,255,255,.0431)}
+.muro-claro .muro-texto{color:rgba(0,27,52,.0314)}
 .muro-pleno .muro-texto{color:var(--sp-muro)}
 .muro-pleno .m2{color:var(--sp-muro-2)}
 .muro-pleno i{font-style:normal}
