@@ -152,6 +152,10 @@ opción B; BITACORA cap. 121):
   ciudad.
 - En las secciones claras, el muro subió otro paso (7/255): con letra fina, un
   paso menos no se leía. Medido: 7 niveles sobre el fondo (antes, 5).
+- Ya publicado, Arturo pidió *«un 5% menos de transparencia en general»*: un
+  paso más en los tres tonos (navy 11/255, claro 8/255, `--sp-muro` y
+  `--sp-muro-2` un nivel más oscuros, que también usa el tapiz de la guía).
+  Medido: cada tono, exactamente un nivel más visible.
 - Costo medido: el HTML del home pasa de 18 a 25 KB comprimido, el LCP de 1040
   a 1288 ms (límite 2500) y el scroll sigue a 60 cuadros con la CPU 4× lenta.
 - **El tapiz de la Guía Médica usa la misma lista pero sigue a 40 px.**
