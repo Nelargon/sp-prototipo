@@ -4256,3 +4256,39 @@ número: controla que la sección no vuelva a crecer (sin botones, sin lista de
 especialidades, un solo link, a la guía), y se probó contra la versión vieja,
 que la hace fallar.
 
+## Capítulo 123 — Lo que se mueve no se lee (26/09/2026)
+
+**Qué intentamos.** Mostrar a los aliados comerciales en una tira de logos en
+movimiento, en gris y a color al pasar el mouse. Y comparar los tres planes en
+el celular con la misma tabla de escritorio, deslizando hacia el costado.
+
+**Qué pasó.** Arturo, mirando la tira en el celular: *«la animación de la tira
+no es demasiado lenta, no es funcional y roba espacio»*. Medido: tarda 54
+segundos en mostrar los 12 logos, se ven 4 a la vez y en el teléfono quedan
+siempre en gris, porque el color dependía del mouse. Además, la norma de
+accesibilidad (WCAG 2.2.2) pide poder pausar lo que se mueve más de cinco
+segundos, y acá solo se pausaba con el mouse. Arturo eligió el rumbo: *«quiero
+dejarlo como un espacio lo más reducido posible»*. Cuatro formas quietas,
+docs/diseno n.º 44.
+
+Del comparador: *«el diseño está muy mal, especialmente para el celular»*, con
+una referencia: Apple y las páginas de planes de ChatGPT, Grok y Manus. Medido
+en el nuestro: al llegar, Gold no se ve (0%); al bajar, los nombres de los
+planes se van y quedan números sin dueño; 24 de 73 textos miden menos de 12 px
+y los botones, 34 px de alto. Se estudiaron Apple, ChatGPT, Grok, Manus, Claude,
+Linear, Notion y Figma, más Nielsen Norman y Baymard. En este entorno no se
+pudo abrir un navegador contra sitios externos, así que se leyó el HTML, el CSS
+y el JavaScript que sirven. Lo que se repite: en el celular la tabla cambia de
+forma (Apple pasa a dos columnas, Linear a un plan a la vez, Claude parte la
+fila); los nombres de los planes quedan fijos arriba; las filas se agrupan; y
+lo que no cambia entre planes sale de la tabla, algo que nuestro «En los tres
+planes» ya hace. Tres formas con los datos reales, docs/diseno n.º 45 y 46.
+
+**Qué aprendimos.** El movimiento no reemplaza al diseño: una tira dice «son
+muchísimos» cuando son cientos; con 12, una grilla quieta lo dice de un vistazo
+y se deja leer. Y achicar no es adaptar. En el teléfono la tabla de escritorio
+se achicó y se le puso un aviso, «Deslizá para comparar los tres planes»: el
+aviso reconocía el problema en vez de resolverlo. Una cosa más, que
+conviene saber antes de elegir: las tres formas se leen mejor que la de hoy y
+las tres miden más. En el celular, leer mejor cuesta alto.
+
