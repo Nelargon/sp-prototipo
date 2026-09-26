@@ -369,18 +369,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .blog-ult-t{transition:color .18s}
 .blog-ult:hover .blog-ult-t{color:var(--sp-mint)}
 @media(prefers-reduced-motion:reduce){.blog-hero h2,.blog-ult,.blog-ult-t{transition:none}.blog-ult:hover{padding-left:0}}
-/* Comparador "lo que cambia": en móvil la tabla scrollea horizontal (los planes
-   no entran en 390px) — la columna de servicios queda PEGADA a la izquierda para
-   no perder el contexto de qué fila estás mirando mientras corrés los planes. */
-.cmp-lbl{position:sticky;left:0;z-index:2}
-@media(max-width:640px){.cmp-lbl{box-shadow:1px 0 0 #EDEDED}}
-/* Comparador — grilla en clase (para reencuadrar en móvil sin tocar el markup
-   fila por fila). Desktop = igual que antes; en ≤640px la columna de servicios
-   se angosta y los planes se ensanchan para que entren DOS planes completos +
-   asomo del tercero (affordance de scroll), en vez de una sola columna con la
-   etiqueta comiéndose la pantalla (feedback del usuario, jul 2026). */
-.cmp-inner{min-width:640px}
-.cmp-row{display:grid;grid-template-columns:minmax(148px,1.6fr) 1fr 1fr 1fr}
+/* Aviso «Deslizá para ver Silver y Gold» de /planes (solo en el celular). */
 .cmp-hint{display:none}
 /* Las frases del bloque «Simulá tu plan» (inicio). Sin ícono desde el 24/09
    (el texto ya lo dice): en una línea van separadas por un punto; en el
@@ -389,9 +378,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .frases-sim{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px}
 @media (max-width:560px){.frases-sim{flex-direction:column;gap:8px}.frases-sim .punto{display:none}}
 @media(max-width:640px){
-  .cmp-inner{min-width:520px}
-  .cmp-row{grid-template-columns:104px 1fr 1fr 1fr}
-  .cmp-lbl{padding-left:13px !important;padding-right:9px !important}
   .cmp-hint{display:flex}
   /* /planes en celular: la columna del servicio se angosta y queda fija al
      deslizar, así cada plan se lee al lado de su servicio (23/09/2026). */
@@ -404,10 +390,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    tarjeta con lo que es igual en los tres planes y las tres preguntas que
    siguen, la nota y SP Senior en una frase. Un solo contenedor, un solo acento:
    lo demás va en voz baja. */
-.cmp-ley{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 20px;margin:14px 0 0;font-family:var(--font-inter),sans-serif;font-size:13px;line-height:1.5;color:var(--sp-muted);scroll-margin-top:110px}
-.cmp-ley>span{display:inline-flex;align-items:baseline;gap:7px}
-.cmp-ley i{width:9px;height:9px;border-radius:var(--r-pill);flex:none;transform:translateY(1px)}
-.cmp-ley b{font-weight:600;color:var(--sp-text-2)}
 .cmp-tarjeta{--sq:var(--r-lg);margin-top:18px;background:#fff;box-shadow:var(--sombra-sup);overflow:hidden}
 .cmp-igual{display:flex;gap:9px;align-items:flex-start;margin:0;padding:18px 26px;font-family:var(--font-inter),sans-serif;font-size:14.5px;line-height:1.55;color:var(--sp-text-fuerte)}
 .cmp-igual svg{flex:none;margin-top:4px;color:var(--sp-teal-deep)}
@@ -420,7 +402,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .cmp-senior a{font-family:var(--font-display),sans-serif;font-weight:800;color:var(--sp-teal-deep);margin-left:6px;white-space:nowrap}
 .cmp-senior a:hover{text-decoration:underline;text-underline-offset:4px}
 @media(max-width:640px){
-  .cmp-ley{flex-direction:column;align-items:flex-start}
   .cmp-igual{padding:16px}
   .cmp-puertas{flex-direction:column;padding:0 16px}
   .cmp-puertas a{border-left:none;border-top:1px solid var(--sp-line-2);padding:12px 0;min-height:46px}
@@ -450,9 +431,6 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @media(max-width:860px){.blog-list{grid-template-columns:1fr !important}.misp-soon{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:720px){.misp-grid{grid-template-columns:1fr !important}}
 @media(max-width:480px){.misp-soon{grid-template-columns:1fr !important}}
-@media(max-width:900px){.ally-grid{grid-template-columns:repeat(4,1fr) !important}}
-@media(max-width:560px){.ally-grid{grid-template-columns:repeat(3,1fr) !important}}
-@media(max-width:380px){.ally-grid{grid-template-columns:repeat(2,1fr) !important}}
 @media(max-width:820px){.testi-side{display:none !important}}
 @media(max-width:820px){.steps-flow{grid-template-columns:1fr !important;gap:16px !important}}
 /* Dieta de espacios en móvil (el 77% del tráfico): secciones más compactas
@@ -469,16 +447,83 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   [data-page="viva"] h2.disp{font-size:29px !important}
   [data-page="viva"] section h3.disp{font-size:23px !important}
 }
-/* Marquee / logo ticker — infinite right-to-left scroll (seamless: content rendered twice) */
-.mq{overflow:hidden;position:relative;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.mq-track{display:flex;width:max-content;animation:mqscroll var(--mq-dur,45s) linear infinite;will-change:transform}
-.mq-rev .mq-track{animation-direction:reverse}
-.mq:hover .mq-track{animation-play-state:paused}
-@keyframes mqscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.mq{overflow-x:auto}}
-/* Logos flotan sobre fondo transparente — sin tarjeta */
-.ally-logo{max-height:40px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.62;transition:filter .3s,opacity .3s}
-.mq:hover .ally-logo{filter:grayscale(0);opacity:1}
+/* Aliados en muro continuo (26/09/2026, docs/diseno n.º 53, la 2). Quietos:
+   la tira en movimiento tardaba 54 s en mostrar los 12 logos. Los logos
+   conservan el tamaño de la tira (alto y ancho máximos); lo que se achicó es
+   el espacio entre ellos. Arturo: «no hacer más chicos los logotipos, sino
+   compactar los espacios». ⚠ Los archivos miden de 19 a 63 px de alto: para
+   mostrarlos más grandes hay que pedir los originales, no estirarlos. */
+/* Título chico a propósito: la regla de los h2 del celular (29 px) no aplica acá. */
+[data-page="viva"] h2.aliados-t{font-size:17px !important;font-weight:800;color:var(--sp-navy);text-align:center;margin:0 0 14px;line-height:1.3}
+[data-page="viva"] h2.aliados-t span{display:block;font-family:var(--font-inter),sans-serif;font-size:13.5px;font-weight:400;color:var(--sp-muted);margin-top:2px}
+.aliados-muro{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 22px;max-width:900px;margin:0 auto;padding:0;list-style:none}
+.ally-logo{display:block;max-height:44px;max-width:150px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.72}
+@media(max-width:699px){.ally-logo{max-height:38px;max-width:104px}}
+
+/* El comparador de planes (26/09/2026, components/Comparador.jsx). Una sola
+   estructura: en la computadora, la 1.5 (tabla limpia, Silver en tarjeta,
+   nombres fijos arriba); en el celular, la 4.1 (tarjetas apiladas con
+   titulillos de banda). La letra chica vive en la tarjeta del servicio. */
+.cmp2{position:relative}
+.cmp2-srv-wrap{position:relative;display:inline-block}
+.cmp2-srv{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;text-align:left;cursor:help;border-bottom:1.5px dotted var(--sp-teal-deep)}
+.cmp2-tarjeta{position:absolute;left:0;top:calc(100% + 8px);z-index:40;display:block;width:min(420px,calc(100vw - 48px));background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);box-shadow:0 18px 44px rgba(0,27,52,.18);padding:14px 16px 12px;text-align:left;pointer-events:none;font-family:var(--font-inter),sans-serif;font-weight:400;white-space:normal}
+.cmp2-tarjeta-t{display:block;font-size:16px;font-weight:800;color:var(--sp-navy);margin-bottom:6px}
+.cmp2-tarjeta-p{display:grid;grid-template-columns:72px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--sp-line-2);font-size:13px;line-height:1.45;color:var(--sp-text)}
+.cmp2-tarjeta-p b{font-weight:800;color:var(--sp-navy)}
+.cmp2-tarjeta-p.rec b{color:var(--sp-teal-deep)}
+.cmp2-tarjeta-pie{display:block;font-size:12px;line-height:1.45;color:var(--sp-muted);margin-top:6px}
+.cmp2-chip{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);background:var(--sp-mint-bg);color:var(--sp-teal-deep)}
+.cmp2-val{font-size:15.5px;font-weight:800;color:var(--sp-ink)}
+.cmp2-fam{font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-left:6px}
+.cmp2-cta{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:800}
+.cmp2-cta:hover{background:var(--sp-teal-hover)}
+.cmp2-tag{display:block;min-height:14px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sp-teal-deep)}
+.cmp2-nombre{display:block;font-size:20px;font-weight:800;color:var(--sp-navy);line-height:1.15}
+.cmp2-precio{display:block;font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);margin-top:3px}
+.cmp2-precio b{color:var(--sp-ink);font-weight:700}
+.cmp2-hint{display:block;max-width:220px;font-family:var(--font-inter),sans-serif;font-size:12.5px;line-height:1.45;color:var(--sp-muted)}
+@media(min-width:820px){
+  .cmp2{display:grid;grid-template-columns:26% 1fr 1fr 1fr;background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-lg);padding:0 10px}
+  .cmp2-lab,.cmp2-plan{display:flex;flex-direction:column;min-width:0}
+  .cmp2-lab{position:relative;z-index:5}
+  .cmp2-plan.rec{position:relative;z-index:2;margin:-14px 0;padding:12px 0;background:#fff;border:2px solid var(--sp-teal-deep);border-radius:var(--r-lg);box-shadow:0 16px 36px rgba(0,125,119,.15)}
+  /* Los nombres quedan fijos debajo del menú (88 px, como el mapa de la guía). */
+  .cmp2-h{height:96px;position:sticky;top:88px;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+  .cmp2-lab .cmp2-h{align-items:flex-start;padding:0 14px}
+  .cmp2-plan.rec .cmp2-h{border-radius:var(--r-lg) var(--r-lg) 0 0}
+  .cmp2-mes,.cmp2-para,.cmp2-l{display:none}
+  .cmp2-gt{height:36px;display:flex;align-items:flex-end;padding:0 14px 6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-deep)}
+  .cmp2-plan .cmp2-gt span{visibility:hidden}
+  .cmp2-c{height:48px;display:flex;align-items:center;justify-content:center;text-align:center;border-top:1px solid var(--sp-line-2);padding:0 10px}
+  .cmp2-gt+.cmp2-c{border-top:none}
+  .cmp2-lab .cmp2-c{justify-content:flex-start;text-align:left;padding:0 14px;font-size:14.5px;font-weight:700;color:var(--sp-navy);font-family:var(--font-display),sans-serif}
+  .cmp2-plan.rec .cmp2-c{border-top-color:rgba(0,125,119,.12)}
+  .cmp2-pie{height:76px;display:flex;align-items:center;padding:0 12px;border-top:1px solid var(--sp-line-2)}
+  .cmp2-pie .cmp2-cta{width:100%}
+}
+@media(max-width:819px){
+  .cmp2{display:flex;flex-direction:column;gap:16px}
+  .cmp2-lab{display:none}
+  .cmp2-plan{background:#fff;border:1px solid var(--sp-line);border-top:4px solid var(--c);border-radius:var(--r-lg);padding:18px 16px 14px;box-shadow:0 6px 20px rgba(0,27,52,.05)}
+  .cmp2-plan.rec{border:2px solid var(--sp-teal-deep);border-top-width:4px;box-shadow:0 14px 32px rgba(0,125,119,.14)}
+  .cmp2-nombre{font-size:24px}
+  .cmp2-precio{font-size:14px;margin-top:4px}
+  .cmp2-precio b{font-family:var(--font-display),sans-serif;font-size:22px;font-weight:800}
+  .cmp2-para{display:block;font-family:var(--font-inter),sans-serif;font-size:14px;line-height:1.45;color:var(--sp-text);margin:6px 0 4px}
+  /* Titulillo de banda (docs/diseno n.º 52, la 2): a lo ancho de la tarjeta. */
+  .cmp2-gt{display:flex;align-items:center;gap:8px;margin:14px -16px 2px;padding:10px 16px;background:#E6F2F1;font-size:15px;font-weight:800;color:var(--sp-teal-deep)}
+  .cmp2-gt::before{content:'';flex:none;width:6px;height:18px;border-radius:var(--r-pill);background:var(--sp-teal-deep)}
+  .cmp2-c{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:baseline;padding:11px 0;border-top:1px solid var(--sp-line-2)}
+  .cmp2-gt+.cmp2-c{border-top:none}
+  .cmp2-c.sobre{z-index:6}
+  .cmp2-l{font-family:var(--font-display),sans-serif;font-size:14.5px;font-weight:700;color:var(--sp-navy);line-height:1.3}
+  .cmp2-v{text-align:right}
+  /* En el celular la tarjeta se ancla a la fila, a lo ancho, no a la palabra. */
+  .cmp2-srv-wrap{position:static}
+  .cmp2-tarjeta{left:-6px;right:-6px;width:auto;top:calc(100% - 2px)}
+  .cmp2-pie{margin-top:12px}
+}
 
 /* «Dónde te atendés» — la red médica en el home (25/09/2026, app/components/
    DondeTeAtendes.jsx). El muro va detrás, a sangre; todo lo que se lee va

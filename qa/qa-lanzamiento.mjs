@@ -206,24 +206,28 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
 }
 
 // ── El tramo bajo la tabla del comparador (26/09/2026, BITACORA cap. 117) ───
-// La espera de Essential es una fila de la tabla; abajo quedan la leyenda
-// (#bolsillo, que enlaza el menú), una tarjeta con tres puertas y SP Senior
-// en una frase. La banda «¿Dónde atenderte?» (que decía el total) ya no está.
+// La espera de Essential es una fila de la tabla; abajo quedan una tarjeta con
+// tres puertas y SP Senior en una frase. La banda «¿Dónde atenderte?» (que
+// decía el total) ya no está. La leyenda de colores salió el 26/09 (cap. 125):
+// #bolsillo, que enlaza el menú, es ahora una pregunta del FAQ.
 console.log('\n── El tramo bajo la tabla del comparador');
 for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
   const page = await browser.newPage({ viewport: { width, height } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   const r = await page.evaluate(() => {
     const comp = document.getElementById('comparar');
-    const filas = [...document.querySelectorAll('#cartilla .cmp-row')];
+    // La última fila de Essential (la primera tarjeta o columna de plan).
+    const essential = document.querySelector('#cartilla .cmp2-plan');
+    const filas = essential ? [...essential.querySelectorAll('.cmp2-c')] : [];
     const ultima = filas.length ? filas[filas.length - 1] : null;
-    const celdas = ultima ? [...ultima.children].map((c) => c.innerText.replace(/\s+/g, ' ').trim()) : [];
+    const nombre = ultima ? ultima.querySelector('.cmp2-srv')?.textContent.trim() : '';
+    const celdas = ultima ? [nombre, ultima.querySelector('.cmp2-v')?.textContent.trim() || ''] : [];
     const ley = document.getElementById('bolsillo');
     const puertas = [...document.querySelectorAll('#comparar .cmp-puertas a')].map((a) => ({ h: a.getAttribute('href'), alto: a.getBoundingClientRect().height }));
     const senior = [...comp.querySelectorAll('a')].find((a) => a.textContent.includes('Simulá Plan Vital'));
     return {
       espera: celdas[0] && celdas[0].startsWith('Tiempo de espera') && /1 año/.test(celdas[1] || ''),
-      ley: !!ley && comp.contains(ley) && /Copago/.test(ley.innerText),
+      ley: !!ley && !!ley.closest('#faq') && /Copago/.test(ley.textContent),
       puertas, senior: senior && senior.getAttribute('href'),
       // textContent y no innerText: el rótulo viejo iba en mayúsculas por CSS,
       // e innerText lo devuelve transformado («¿DÓNDE ATENDERTE?»).
@@ -235,8 +239,8 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const chicas = width < 600 ? r.puertas.filter((p) => p.alto < 44).length : 0;
   if (!r.espera) mal(nombre + ': la última fila de la tabla no es «Tiempo de espera» con «1 año» en Essential');
   else bien(nombre + ': la espera de Essential es una fila de la tabla');
-  if (!r.ley) mal(nombre + ': falta la leyenda #bolsillo en el comparador (la enlaza el menú)');
-  else bien(nombre + ': leyenda #bolsillo pegada a la tabla');
+  if (!r.ley) mal(nombre + ': falta #bolsillo en el FAQ, con copago (lo enlaza el menú «Qué pagás de tu bolsillo»)');
+  else bien(nombre + ': #bolsillo es una pregunta del FAQ que explica el copago');
   if (faltan.length || chicas) mal(nombre + ': puertas del comparador — faltan ' + (faltan.join(', ') || 'ninguna') + (chicas ? '; ' + chicas + ' miden menos de 44 px' : ''));
   else bien(nombre + ': tres puertas (qué cubre, planes, guía)' + (width < 600 ? ', de 44 px o más' : ''));
   if (r.viejo.length) mal(nombre + ': el comparador todavía dice ' + r.viejo.join(' y '));
@@ -246,6 +250,84 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   // arreglo deshecho.
   if (!r.senior || !r.senior.endsWith('/simulador/?plan=vital')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador con ?plan=vital' + (r.senior ? ' (va a ' + r.senior + ')' : ''));
   else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital» (?plan=vital)');
+  await page.close();
+}
+
+// ── El comparador de planes (26/09/2026, components/Comparador.jsx) ────────
+// En la computadora, la tabla 1.5: los tres planes a la vista, los nombres
+// fijos debajo del menú al bajar. En el celular, las tarjetas apiladas. En las
+// dos, la tarjeta del servicio con los tres planes. Y «por familia» a la vista
+// (lección 51 de docs/diseno: cambia la comparación, no va a la tarjeta).
+console.log('\n── El comparador de planes');
+for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+  const movil = width < 820;
+  const page = await browser.newPage({ viewport: { width, height }, hasTouch: movil, isMobile: movil });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const base = await page.evaluate(() => {
+    const box = document.querySelector('#cartilla.cmp2');
+    if (!box) return null;
+    const planes = [...box.querySelectorAll('.cmp2-plan')].map((p) => p.getBoundingClientRect());
+    const fam = [...box.querySelector('.cmp2-plan').querySelectorAll('.cmp2-fam')].filter((e) => e.offsetParent).length;
+    return {
+      planes: planes.length,
+      apiladas: planes.every((r, i) => i === 0 || r.top > planes[i - 1].bottom - 1),
+      enFila: planes.every((r, i) => i === 0 || Math.abs(r.top - planes[0].top) < 20),
+      dentro: planes.every((r) => r.left >= 0 && r.right <= innerWidth + 1),
+      desborde: document.documentElement.scrollWidth - innerWidth,
+      fam,
+      vieja: !!document.querySelector('.cmp-row, .cmp-ley'),
+    };
+  });
+  if (!base) { mal(nombre + ': el home no tiene el comparador nuevo (#cartilla.cmp2)'); await page.close(); continue; }
+  const forma = movil ? base.apiladas : base.enFila;
+  if (base.planes !== 3 || !forma || !base.dentro || base.desborde > 0) mal(nombre + ': los tres planes no se ven ' + (movil ? 'uno debajo del otro' : 'uno al lado del otro') + ' dentro de la pantalla (' + JSON.stringify(base) + ')');
+  else bien(nombre + ': tres planes ' + (movil ? 'apilados' : 'lado a lado') + ', sin deslizar de costado');
+  if (!base.fam) mal(nombre + ': «por familia» no está a la vista en Essential (cambia la comparación)');
+  else bien(nombre + ': «por familia» a la vista en Essential');
+  if (base.vieja) mal(nombre + ': quedan restos de la tabla vieja (.cmp-row o la leyenda)');
+  // La tarjeta del servicio: con el dedo en el celular, con el mouse en la compu.
+  const btn = movil ? page.locator('.cmp2-plan').nth(1).locator('.cmp2-srv', { hasText: 'Fisioterapia' }) : page.locator('.cmp2-lab .cmp2-srv', { hasText: 'Fisioterapia' });
+  await btn.scrollIntoViewIfNeeded();
+  if (movil) await btn.tap(); else await btn.hover();
+  await page.waitForTimeout(250);
+  const t = await page.evaluate(() => { const e = document.querySelector('.cmp2-tarjeta'); if (!e) return null; const r = e.getBoundingClientRect(); return { planes: e.querySelectorAll('.cmp2-tarjeta-p').length, dentro: r.left >= 0 && r.right <= innerWidth + 1 }; });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(150);
+  const cerrada = await page.evaluate(() => !document.querySelector('.cmp2-tarjeta'));
+  if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada }) + ')');
+  else bien(nombre + ': la tarjeta del servicio se abre ' + (movil ? 'al tocar' : 'al pasar el mouse') + ', con los tres planes, y se cierra');
+  if (!movil) {
+    await page.evaluate(() => { const e = document.querySelector('#cartilla'); window.scrollTo({ top: e.getBoundingClientRect().top + scrollY + 300, behavior: 'instant' }); });
+    await page.waitForTimeout(200);
+    const arriba = await page.evaluate(() => [...document.querySelectorAll('.cmp2-plan .cmp2-h')].map((h) => Math.round(h.getBoundingClientRect().top)));
+    if (!arriba.every((y) => Math.abs(y - 88) <= 14)) mal(nombre + ': al bajar, los nombres de los planes no quedan fijos debajo del menú (' + arriba.join(', ') + ')');
+    else bien(nombre + ': al bajar, los nombres de los planes quedan fijos debajo del menú');
+  }
+  await page.close();
+}
+
+// ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────
+// Los 12 a la vista y sin movimiento: la tira tardaba 54 s en mostrarlos.
+console.log('\n── Los aliados');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const sec = page.locator('section.aliados');
+  if (!(await sec.count())) { mal(nombre + ': el home no tiene la sección de aliados'); await page.close(); continue; }
+  await sec.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1200);
+  const r = await sec.evaluate((s) => {
+    const imgs = [...s.querySelectorAll('img')];
+    return {
+      logos: imgs.length,
+      visibles: imgs.filter((i) => { const b = i.getBoundingClientRect(); return i.naturalWidth && b.width > 4 && b.left >= 0 && b.right <= innerWidth; }).length,
+      mueve: [...s.querySelectorAll('*')].some((e) => getComputedStyle(e).animationName !== 'none'),
+      alto: Math.round(s.getBoundingClientRect().height),
+    };
+  });
+  const tope = width < 700 ? 320 : 280;
+  if (r.logos !== 12 || r.visibles !== 12 || r.mueve || r.alto > tope) mal(nombre + ': aliados — ' + JSON.stringify(r) + ' (se esperan 12 logos a la vista, quietos, en menos de ' + tope + ' px)');
+  else bien(nombre + ': los 12 aliados a la vista, quietos, en ' + r.alto + ' px');
   await page.close();
 }
 

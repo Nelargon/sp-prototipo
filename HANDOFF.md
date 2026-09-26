@@ -82,7 +82,13 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   px), **2** muro continuo (257 px), **3** mosaico en recuadros (365 px).
   ⚠ Los archivos de los logos son chicos (de 19 a 63 px de alto, ya sin
   márgenes): para mostrarlos más grandes hay que pedirle a cada aliado su
-  logo en buena calidad. **Esperando su elección**; no se tocó.
+  logo en buena calidad. **Construido el 26/09: la 2, muro continuo**
+  (sección `section.aliados` de `app/page.jsx`, estilos `.aliados-*` y
+  `.ally-logo`): 274 px en el celular y 234 en la computadora. Sin tira, sin
+  kicker «Red de beneficios · SaludPro 360» y sin la nota que repetía la bajada.
+  `qa-lanzamiento` controla los 12 logos a la vista, quietos y por debajo de
+  320 px (probado contra la tira y contra un muro con movimiento). La poda del
+  directorio sigue pendiente.
 - **El comparador en el celular** (26/09, Arturo: *«el diseño está muy mal,
   especialmente para el celular»*). Medido: al llegar se ve Essential entero,
   Silver al 74% y **Gold nada**; al bajar se pierde qué columna es cada plan.
@@ -120,7 +126,29 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
     siga a la vista.
   - **4.1 con titulillos más visuales**: **1** con ícono propio, **2** con banda
     de color, **3** en bloques.
-  **Esperando su elección** en las dos.
+  **Construido el 26/09** (`app/components/Comparador.jsx`, estilos `.cmp2-*`;
+  BITACORA cap. 125): la **1.5** en la computadora (desde 820 px) y la **4.1**
+  en el celular, con la **tarjeta del servicio** (la 2 de la n.º 51) y los
+  **titulillos de banda** (la 2 de la n.º 52). Arturo, de la 4.1: *«este
+  tampoco tiene las aclaraciones como hablamos antes»*, así que el celular
+  lleva la misma tarjeta: al tocar un servicio en cualquier plan, se ve lo que
+  da cada uno de los tres.
+  - **Una sola estructura**: cada plan es una columna en la computadora y una
+    tarjeta en el celular. La columna de nombres solo existe en la compu.
+  - **Los datos de la tarjeta** (`d` y `pie` en `cmp`, `app/page.jsx`) salen de
+    `datos/planes-vigentes/` (essential, silver, gold y la grilla). Nada
+    escrito de memoria: si cambia un cuadernillo, cambia la tarjeta.
+  - **«por familia» se quedó a la vista** en Essential; el resto de la letra
+    chica fue a la tarjeta. La prueba lo controla.
+  - **La leyenda de colores salió.** «Al 100%: no ponés nada» va en la
+    tarjeta; copago y precio de convenio, en la pregunta nueva del FAQ
+    **«¿Qué pago de mi bolsillo?»** (`id="bolsillo"`), que es adonde lleva el
+    menú «Qué pagás de tu bolsillo» y que se abre sola al llegar.
+  - Medido: la tabla de la compu mide 762 px (antes 858); en el celular las
+    tres tarjetas suman unos 2.500 px (antes 1.099 de tabla que se deslizaba y
+    no mostraba Gold). `qa-lanzamiento` controla los planes a la vista sin
+    deslizar, la tarjeta con los tres planes, los nombres fijos al bajar y
+    «por familia».
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):
@@ -1536,9 +1564,9 @@ planilla.
 | ~~Grilla oficial: Bronze → Essential, precio por zona~~ Hecho el 24/09 con las fuentes del Drive (sección «Essential reemplaza a Bronze»). Queda: corregir el rótulo de la tabla editable | SP |
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
-| Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
-| Aliados en el home: cuál de las cuatro formas (docs/diseno n.º 44) | Arturo |
-| Comparador: cuál forma en el celular y cuál en la computadora (docs/diseno n.º 45 a 48) | Arturo |
+| Qué aliados quedan en el muro de logos (el directorio pidió podarla) | Arturo |
+| ~~Aliados en el home y comparador: qué forma~~ Construidos el 26/09 (muro continuo; 1.5 + 4.1 con tarjeta del servicio) | — |
+| Logos de los aliados en buena calidad (hoy de 19 a 63 px de alto) | SP |
 | Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
