@@ -237,8 +237,11 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   else bien(nombre + ': tres puertas (qué cubre, planes, guía)' + (width < 600 ? ', de 44 px o más' : ''));
   if (r.viejo.length) mal(nombre + ': el comparador todavía dice ' + r.viejo.join(' y '));
   else bien(nombre + ': sin la banda «¿Dónde atenderte?» ni el total');
-  if (!r.senior || !r.senior.endsWith('/simulador/')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador');
-  else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital»');
+  // Desde el 26/09 lleva ?plan=vital: el simulador entra directo al carril de
+  // padres (sp-interno#59). Un enlace a /simulador/ sin el parámetro es el
+  // arreglo deshecho.
+  if (!r.senior || !r.senior.endsWith('/simulador/?plan=vital')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador con ?plan=vital' + (r.senior ? ' (va a ' + r.senior + ')' : ''));
+  else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital» (?plan=vital)');
   await page.close();
 }
 
