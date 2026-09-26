@@ -307,11 +307,14 @@ una firme y se regenera.
 
 **Encontrado y NO arreglado (necesita decisión o es de otro territorio):**
 - `/que-cubre` tiene dos nombres en el sitio; conviene uno solo.
-- «Para mis padres» no preselecciona Vital con `?plan=vital`.
+- «Para mis padres» no preselecciona Vital con `?plan=vital`. *(Resuelto el 26/09:
+  con `?plan=vital`, «Empecemos» entra directo al carril de padres, y los tres
+  «Simulá Plan Vital» llevan ese parámetro; `sp-interno#59`.)*
 - Los CTA al simulador no están unificados («Simulá tu plan», «Simulá tu
   precio», «Ver mi precio», «Simulá el tuyo en un minuto»). *(Resuelto el 25/09: todos «Simulá tu plan», salvo «Ver
   mi precio» en la columna de cada plan y «Simulá Plan Vital»; `sp-interno#57`.)*
-- Quedan oraciones en Nunito Sans dentro del simulador.
+- Quedan oraciones en Nunito Sans dentro del simulador. *(Resuelto el 26/09: las
+  20 que se medían en el navegador pasan a Inter; `sp-interno#59`.)*
 - Nombres de especialidades: salen de la planilla y algunos no son Tipo Oración.
 - Radios escritos a mano en algunos componentes, y la regex del QA no los ve
   todos.
@@ -323,7 +326,10 @@ una firme y se regenera.
 - Silver «al 100%» tiene excepciones con copago (URO-TAC, colangiorresonancia).
 - La fecha de la Guía Médica dice siempre 17/09.
 - `track('sim_zona_sin_lista')` manda el texto libre que escribió la persona
-  (no es nombre ni teléfono, pero podría serlo).
+  (no es nombre ni teléfono, pero podría serlo). *(Resuelto el 26/09: el texto
+  viaja solo si parece un lugar —sin números, «@» ni más de cuatro palabras—;
+  si no, va vacío con `descartado: true`. Se conserva el dato de qué ciudades
+  faltan; `sp-interno#59`.)*
 - La guía vieja del prototipo (`guia/`) sigue con Bronze.
 - «SP SENIOR» en documentos de SP vs «Plan Vital» en el sitio (pendiente de
   antes).

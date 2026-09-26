@@ -150,6 +150,26 @@ console.log('\n== 1. FUNCIONAL ==');
     }
   } else falla('funcional', 'roto', 'el caminante no llegó al precio del simulador', '/simulador/');
 
+  // 1b-vital. «Simulá Plan Vital» lleva ?plan=vital: «Empecemos» entra directo
+  // al carril de padres. Sin el parámetro, pregunta para quién (sp-interno#59).
+  // Antes del arreglo, con el parámetro se veía lo mismo que sin él: el caso
+  // «sin parámetro» es el que prueba que esto sabe fallar.
+  {
+    const pv = await browser.newPage({ viewport: { width: 390, height: 800 } });
+    const primerPaso = async (q) => {
+      await pv.goto(BASE + '/simulador/' + q, { waitUntil: 'domcontentloaded' });
+      await pv.locator('button', { hasText: /Empecemos/ }).click();
+      await pv.waitForTimeout(500);
+      const t = await pv.locator('.sim-body').innerText();
+      return { vital: /Plan Vital/.test(t) && !/Para mis padres o un adulto mayor/.test(t), preguntaQuien: /Para mis padres o un adulto mayor/.test(t) };
+    };
+    const con = await primerPaso('?plan=vital');
+    const sin = await primerPaso('');
+    if (con.vital && sin.preguntaQuien && !sin.vital) ok('funcional', 'simulador: ?plan=vital entra directo a Plan Vital; sin parámetro pregunta para quién');
+    else falla('funcional', 'confunde', '?plan=vital no entra al carril de Plan Vital (con: ' + JSON.stringify(con) + ', sin: ' + JSON.stringify(sin) + ')', '/simulador/?plan=vital');
+    await pv.close();
+  }
+
   // 1b-bis. Presupuesto de geometría móvil del simulador (390×670 ≈ viewport
   // útil de un in-app browser): en cada paso, la primera opción debe verse
   // sin scroll — el preámbulo comprimido + auto-scroll lo garantizan.

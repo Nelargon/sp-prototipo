@@ -75,7 +75,7 @@ export default function SimuladorPage() {
             {objeciones.map((o, i) => (
               <div className="sq" key={i} style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-md);padding:24px 22px')}>
                 <div style={css('font-size:16px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:8px')}>{o.q}</div>
-                <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55')}>{o.a}</div>
+                <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-muted);line-height:1.55')}>{o.a}</div>
               </div>
             ))}
           </div>
@@ -89,7 +89,7 @@ export default function SimuladorPage() {
         <div className="sq" style={css('max-width:820px;margin:0 auto;background:var(--sp-teal-deep);--sq:var(--r-lg);padding:40px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap')}>
           <div style={css('max-width:460px')}>
             <h2 className="disp" style={css('font-size:26px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px')}>¿Preferís hablarlo con alguien?</h2>
-            <p style={css('font-size:16px;color:rgba(255,255,255,0.96);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
+            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;color:rgba(255,255,255,0.96);line-height:1.55;margin:0')}>Escribinos por WhatsApp y un asesor te acompaña, sin apuro y sin compromiso.</p>
           </div>
           {/* Sin nowrap: Nunito Sans es más ancha que Gilroy y en 360px el
               rótulo desbordaba la pantalla (QA, jul 2026) — que quiebre línea. */}

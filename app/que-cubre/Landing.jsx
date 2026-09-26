@@ -423,7 +423,7 @@ export default function Landing() {
               <div className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div>
             </div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'quecubre_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+            <a href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'quecubre_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>

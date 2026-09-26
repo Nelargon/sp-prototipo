@@ -78,6 +78,10 @@ export default function Simulador() {
   // Plan pre-elegido desde el comparador (?plan=…): el nivel entra puesto y el
   // paso "¿qué plan?" se saltea (editable después, en el resultado).
   const planPresetRef = useRef(null);
+  // Llegó desde un «Simulá Plan Vital» (?plan=vital): «Empecemos» entra
+  // directo al carril de padres, sin volver a preguntar para quién es
+  // (sp-interno#59). Con «Volver» se puede cambiar.
+  const vitalPresetRef = useRef(false);
 
   const toggleCalc = () => setShowCalc((v) => !v);
 
@@ -156,12 +160,17 @@ export default function Simulador() {
 
   // "No encontramos tu ciudad" también es un dato (cero resultados nunca es
   // un callejón): se registra una vez por término, sin datos personales.
+  // El texto es el dato (qué ciudades faltan), así que viaja solo si parece
+  // un lugar: con números, «@» o más de cuatro palabras puede ser un
+  // teléfono, un email o una frase con un nombre, y entonces se manda vacío
+  // (sp-interno#59).
+  const pareceLugar = (q) => q.length <= 40 && !/[\d@]/.test(q) && q.split(/\s+/).length <= 4;
   useEffect(() => {
     const q = (simState.ubiQ || '').trim().toLowerCase();
     if (simState.step !== 3 || q.length < 3) return;
     if (buscarCiudad(q).length > 0 || sinListaRef.current.has(q)) return;
     const t = setTimeout(() => {
-      if (!sinListaRef.current.has(q)) { sinListaRef.current.add(q); track('sim_zona_sin_lista', { texto: q }); }
+      if (!sinListaRef.current.has(q)) { sinListaRef.current.add(q); track('sim_zona_sin_lista', pareceLugar(q) ? { texto: q } : { texto: '', descartado: true }); }
     }, 900);
     return () => clearTimeout(t);
   }, [simState.ubiQ, simState.step]);
@@ -334,7 +343,8 @@ export default function Simulador() {
     try {
       const pv = (new URLSearchParams(window.location.search).get('plan') || '').toLowerCase();
       const map = planKeyToNivel(); // fuente única en quote.js: no se puede desincronizar del botón
-      if (map[pv]) { planPresetRef.current = map[pv]; simPatch({ nivel: map[pv] }); track('sim_plan_preset', { plan: pv }); }
+      if (pv === 'vital') { vitalPresetRef.current = true; track('sim_plan_preset', { plan: pv }); }
+      else if (map[pv]) { planPresetRef.current = map[pv]; simPatch({ nivel: map[pv] }); track('sim_plan_preset', { plan: pv }); }
     } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -476,7 +486,7 @@ export default function Simulador() {
     adultCount: (d.people || []).filter((pp) => pp.kind !== 'kid').length,
     addKid, removeKid, addAdult, removeAdult,
     toAddons: () => simGo({ step: 6 }), // los planes vigentes no tienen adicionales: de las edades se pasa directo al precio
-    back: simBack, start: () => simGo({ step: 1 }),
+    back: simBack, start: () => (vitalPresetRef.current ? simGo({ who: 'padres', people: peopleFor('padres'), step: 2 }) : simGo({ step: 1 })),
     introTitle: planPreset ? ('Tu precio para el Plan ' + planShortOf(d.who, planPresetRef.current)) : 'Encontremos tu plan ideal',
     introText: planPreset ? ('Elegiste Plan ' + planShortOf(d.who, planPresetRef.current) + '. Contanos para quién es y en un toque ves tu precio real — antes de dejar cualquier dato. Después podés compararlo con los otros planes.') : 'Te hacemos unas pocas preguntas y te mostramos el plan que mejor va con tu momento, con un precio estimado. El precio lo ves antes de dejar cualquier dato.',
     // Desde el resultado se vuelve UN paso (a las edades, salteando el paso
@@ -562,8 +572,8 @@ export default function Simulador() {
               </div>
             ))}
           </div>
-          {sim.enc && <div className="sim-side-enc" style={css('font-size:12px;color:var(--sp-mint);font-weight:600;line-height:1.4;margin-top:16px')}>{sim.enc}</div>}
-          <div className="sim-trust" style={css('font-size:12px;color:var(--sp-blue-soft);display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4')}>Sin datos sensibles · menos de 1 minuto</div>
+          {sim.enc && <div className="sim-side-enc" style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-mint);font-weight:600;line-height:1.4;margin-top:16px')}>{sim.enc}</div>}
+          <div className="sim-trust" style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-blue-soft);display:flex;align-items:center;gap:8px;margin-top:24px;line-height:1.4')}>Sin datos sensibles · menos de 1 minuto</div>
         </div>
 
         <div ref={bodyRef} className="sim-body" style={css('flex:1;min-width:0;background:#fff;padding:34px 34px;min-height:560px;display:flex;flex-direction:column;justify-content:center')}>
@@ -573,10 +583,10 @@ export default function Simulador() {
                 <span style={css('font-size:12px;font-weight:800;color:var(--sp-navy);white-space:nowrap')}>Paso {sim.stepNum} de {sim.totalSteps}</span>
                 {sim.livePanelReady
                   ? <span style={css('text-align:right;white-space:nowrap')}><span style={css('font-size:11px;color:var(--sp-muted)')}>Estimado </span><span className="num-tnum" style={css('font-size:14px;font-weight:800;color:var(--sp-navy)')}>{sim.liveTotalFmt}</span></span>
-                  : <span style={css('font-size:12px;color:var(--sp-teal-deep);text-align:right')}>{sim.enc}</span>}
+                  : <span style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-teal-deep);text-align:right')}>{sim.enc}</span>}
               </div>
               <div style={css('height:5px;border-radius:var(--r-pill);background:var(--sp-blue-bg);overflow:hidden')}><div style={css('height:100%;border-radius:var(--r-pill);transition:width .35s cubic-bezier(.22,1,.36,1),background .3s;background:' + sim.progressBarColor + ';width:' + sim.progressPct + '%')}></div></div>
-              {sim.livePanelReady && sim.enc && <div style={css('font-size:12px;color:var(--sp-teal-deep);font-weight:600;margin-top:7px')}>{sim.enc}</div>}
+              {sim.livePanelReady && sim.enc && <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-teal-deep);font-weight:600;margin-top:7px')}>{sim.enc}</div>}
             </div>
           )}
           {sim.isIntro && (
@@ -605,7 +615,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.whoOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt sq rel-btn" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid var(--sp-line);--sq:var(--r-sm);background:#fff;color:var(--sp-ink);font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:var(--sp-muted);line-height:1.35')}>{opt.note}</span>}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="m9 18 6-6-6-6" /></svg></button>
@@ -618,7 +628,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
               <div style={css('display:flex;flex-direction:column')}>
                 {sim.people.map((person, i) => (
                   <div key={i} style={css('margin-bottom:14px')}>
@@ -662,7 +672,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{sim.nivelTitle}</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.nivelOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt sq rel-btn" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid var(--sp-line);--sq:var(--r-sm);background:#fff;color:var(--sp-ink);font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:var(--sp-muted);line-height:1.35')}>{opt.note}</span>}</span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}>{opt.from}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
@@ -675,7 +685,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Dónde querés tu cobertura?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
+              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
               {/* Buscador de ciudades: la persona escribe SU ciudad y el
                   departamento se resuelve solo (geo.js — HANDOFF 11h). */}
               <div style={css('position:relative')}>
@@ -686,7 +696,7 @@ export default function Simulador() {
                     {sim.ubiMatches.map((m, i) => (
                       <button key={i} role="option" onClick={() => sim.pickUbi(m, 'busqueda')} className="cart-match ubi-row fila" style={css('display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 15px;background:#fff;border:none;border-bottom:1px solid var(--sp-line-2);cursor:pointer;font-size:15px;color:var(--sp-ink)')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span className="ubi-row-title" style={css('transition:color .18s')}>{m.ciudad}</span><span style={css('margin-left:auto;font-size:12.5px;color:var(--sp-muted)')}>{m.deptNombre}</span><span className="ubi-go" style={css('display:inline-flex;flex:none')}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00BCB4" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
                     ))}
-                    {sim.ubiSinLista && <div style={css('padding:12px 15px;font-size:13.5px;color:var(--sp-muted);background:var(--sp-mint-tint);line-height:1.5')}>No encontramos «{sim.ubiQ.trim()}» — elegí tu departamento acá abajo y listo. Tu búsqueda igual nos queda anotada para crecer hacia tu zona.</div>}
+                    {sim.ubiSinLista && <div style={css('font-family:var(--font-inter),sans-serif;padding:12px 15px;font-size:13.5px;color:var(--sp-muted);background:var(--sp-mint-tint);line-height:1.5')}>No encontramos «{sim.ubiQ.trim()}» — elegí tu departamento acá abajo y listo. Tu búsqueda igual nos queda anotada para crecer hacia tu zona.</div>}
                   </div>
                 )}
               </div>
@@ -711,7 +721,7 @@ export default function Simulador() {
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:8px')}>Coberturas adicionales</div>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Querés personalizar tu cobertura?</h3>
-              <p style={css('font-size:13px;color:var(--sp-muted);line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyAddons}</span></p>
+              <p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:0 0 16px;display:flex;align-items:flex-start;gap:7px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg><span>{sim.whyAddons}</span></p>
               {sim.liveReady && (
                 <div className="sq" style={css('display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-sm);padding:12px 15px;margin-bottom:14px')}>
                   <span style={css('font-size:13px;color:var(--sp-teal-ink)')}>Tu estimado</span>
@@ -748,21 +758,21 @@ export default function Simulador() {
                 <div style={css(sim.headerStyle)}>
                   <div style={css('font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85')}>{sim.resLabel}</div>
                   <div style={css('font-size:24px;font-weight:800;line-height:1.1;margin-top:2px')}>{sim.resName}</div>
-                  <div style={css('font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>{sim.resGeoLine}</div>
+                  <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;font-weight:600;opacity:0.92;margin-top:4px;display:flex;align-items:center;gap:5px')}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>{sim.resGeoLine}</div>
                 </div>
                 <div style={css('padding:18px 20px;background:#fff')}>
                   <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:var(--sp-navy);letter-spacing:-0.01em;line-height:1')}>{sim.resPrice}</span><span style={css('font-size:14px;color:var(--sp-muted);font-weight:500')}>/ mes estimado</span></div>
-                  <div style={css('font-size:12px;color:var(--sp-muted);margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge} años. El precio final lo confirma un asesor.</div>
-                  {sim.resAutoPay && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:var(--sp-navy)')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
-                  {sim.resEsDebito && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Este es el precio con débito automático o tarjeta de crédito. Sin débito ni tarjeta: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
+                  <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge} años. El precio final lo confirma un asesor.</div>
+                  {sim.resAutoPay && <div className="sq" style={css('font-family:var(--font-inter),sans-serif;display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:var(--sp-navy)')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
+                  {sim.resEsDebito && <div className="sq" style={css('font-family:var(--font-inter),sans-serif;display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Este es el precio con débito automático o tarjeta de crédito. Sin débito ni tarjeta: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
                   {/* Nota de red honesta por zona (geo.js): confirma en
                       Asunción/Central, registra y acompaña en el resto —
                       nunca "no cubierto" (decisión #7). */}
-                  {sim.resRed && <div className="sq" style={css('display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-tint);border:1px solid var(--sp-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRed.texto} <a href={sim.resRed.href} onClick={() => track('sim_guia', { origen: 'resultado' })} style={css('color:var(--sp-teal-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap')}>Ver en la Guía Médica →</a></span></div>}
+                  {sim.resRed && <div className="sq" style={css('font-family:var(--font-inter),sans-serif;display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-tint);border:1px solid var(--sp-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#009690" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg><span>{sim.resRed.texto} <a href={sim.resRed.href} onClick={() => track('sim_guia', { origen: 'resultado' })} style={css('color:var(--sp-teal-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap')}>Ver en la Guía Médica →</a></span></div>}
                   {/* Eligió Essential y su grupo no tiene tarifa ahí: se dice por
                       qué y se muestra el plan de entrada que sí le corresponde. */}
                   {sim.essNoAplica && <div className="sq" style={css('background:var(--sp-gold-bg);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-gold-ink);line-height:1.45')}>{sim.essNoAplica}</div>}
-                  <p style={css('font-size:14px;color:var(--sp-text);line-height:1.6;margin:0')}>{sim.resWhy}</p>
+                  <p style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-text);line-height:1.6;margin:0')}>{sim.resWhy}</p>
                   {sim.hasAddons && <div style={css('font-size:13px;color:var(--sp-navy);font-weight:600;margin-top:10px;display:flex;align-items:flex-start;gap:6px')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:1px')}><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg><span>Sumás: {sim.resAddonsText}</span></div>}
                 </div>
               </div>
@@ -836,13 +846,13 @@ export default function Simulador() {
                 {sim.formOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:18px 18px 16px')}>
                     <div style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:3px')}>¿A dónde te enviamos tu cotización?</div>
-                    <div style={css('font-size:12px;color:var(--sp-muted);margin-bottom:14px')}>{sim.whyContacto}</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-bottom:14px')}>{sim.whyContacto}</div>
                     <div style={css('display:flex;gap:10px;margin-bottom:10px')}>
                       <input type="text" value={sim.nombre} onChange={sim.setNombre} placeholder="Nombre y apellido" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
                       <input type="tel" value={sim.tel} onChange={sim.setTel} placeholder="WhatsApp" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
                     </div>
                     <input type="email" value={sim.email} onChange={sim.setEmail} placeholder="Email (opcional)" className="inp sq" style={css('width:100%;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none;margin-bottom:8px')} />
-                    <div style={css('font-size:11.5px;color:var(--sp-muted);margin-bottom:12px;line-height:1.4')}>Tu WhatsApp con código de país si podés (ej: +595 9…). El email es opcional.</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);margin-bottom:12px;line-height:1.4')}>Tu WhatsApp con código de país si podés (ej: +595 9…). El email es opcional.</div>
                     {/* Sin rojo: el rojo es SOLO para urgencias (regla de color). */}
                     {sim.hasErr && <div role="alert" className="sq" style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-text);background:var(--sp-gold-bg);--sq:var(--r-xs);padding:7px 10px;margin-bottom:10px')}>{sim.err}</div>}
                     <button onClick={sim.submit} disabled={sim.sending} className="btn-teal sq" style={css('width:100%;height:48px;border:none;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;cursor:pointer;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : 'Enviarme mi cotización'}</button>
@@ -873,7 +883,7 @@ export default function Simulador() {
                       <div key={i} style={css('display:flex;justify-content:space-between;gap:12px;padding:11px 14px;font-size:13.5px;color:var(--sp-text);border-top:' + (i === 0 ? '0' : '1px solid var(--sp-line-2)'))}><span>{it.label}</span><span style={css('font-weight:700;color:var(--sp-navy);white-space:nowrap')}>{it.amount}</span></div>
                     ))}
                     <div style={css('display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid var(--sp-line);background:var(--sp-mint-tint);font-size:14px;font-weight:800;color:var(--sp-navy)')}><span>Total estimado</span><span>{sim.resTotal}</span></div>
-                    <div style={css('padding:10px 14px;font-size:11.5px;color:var(--sp-muted);background:var(--sp-mint-tint);border-top:1px solid var(--sp-line-2);line-height:1.4')}>Números de referencia, redondeados. El asesor confirma el total final.</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;padding:10px 14px;font-size:11.5px;color:var(--sp-muted);background:var(--sp-mint-tint);border-top:1px solid var(--sp-line-2);line-height:1.4')}>Números de referencia, redondeados. El asesor confirma el total final.</div>
                   </div>
                 </Plegable>
               </div>
