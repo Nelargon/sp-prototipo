@@ -1127,7 +1127,8 @@ bandas oscuras: el inicio, el manifiesto, el contacto y el pie. **D**, C más
 los márgenes de las claras. En «Dónde te atendés» el muro queda entero en
 todas.
 
-**Qué se decidió.** Pendiente de Arturo. Recomendada: **C**.
+**Qué se decidió.** Arturo tomó la **C** y le agregó una vuelta: las secciones
+claras también, pero más transparentes (n.º 41).
 
 **La lección.** El muro no molesta por estar, molesta por dónde está: detrás
 de un texto chico (los pasos de «Cómo funciona») es el ruido que se acaba de
@@ -1149,9 +1150,10 @@ oscuro que el gris de fondo y 7 más que el blanco; al 30%, 3 y 4. En la A eran
 9 y 13. El texto gris de lectura (`#4A4A4A`) pasa de un contraste de 8,1 a 7,8
 con el muro al 50% detrás (el mínimo es 4,5).
 
-**Qué se decidió.** Pendiente de Arturo. Recomendada: **al 50%**. Al 30%, en
-muchas pantallas el muro ya no se ve, y un fondo que depende del monitor no
-suma.
+**Qué se decidió.** Recomendé el 50% (al 30%, en muchas pantallas el muro ya no
+se ve). Arturo eligió el punto del medio: *«Y claras al 40%»*. Se construyó el
+26/09/2026 (`components/MuroFondo.jsx`): medido en el sitio, el muro queda 4
+puntos más oscuro que el fondo, sobre el gris y sobre el blanco.
 
 **La lección.** Arturo encontró la variable que faltaba: no era *dónde* va el
 muro sino *cuánto* se ve en cada lugar. Con el mismo muro en toda la página y

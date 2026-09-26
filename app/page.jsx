@@ -11,6 +11,7 @@ import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
 import DondeTeAtendes from './components/DondeTeAtendes';
+import MuroFondo from './components/MuroFondo';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
@@ -494,7 +495,14 @@ export default function Page() {
       )}
 
       {/* HERO */}
-      <section data-hero style={css('position:relative;height:100vh;min-height:640px;overflow:hidden;background:var(--sp-navy-deep);display:flex;align-items:center')}>
+      {/* EL MURO DETRÁS DE TODA LA HOME (26/09/2026, components/MuroFondo.jsx):
+          cada sección lleva su copia, fija a la pantalla y recortada a la
+          sección, así que es una sola pared de punta a punta. Entero en las
+          bandas navy, casi transparente en las claras (Arturo: «claras al 40%»),
+          y pleno en «Dónde te atendés». Sección nueva en la home = su
+          <MuroFondo /> y la clase con-muro (lo controla qa-lanzamiento). */}
+      <section data-hero className="con-muro" style={css('position:relative;height:100vh;min-height:640px;overflow:hidden;background:var(--sp-navy-deep);display:flex;align-items:center')}>
+        <MuroFondo tono="oscuro" />
         <div data-hero-bg style={css("position:absolute;top:-5%;right:0;bottom:-5%;width:56%;background:url('" + BP + "/assets/hero.webp') center 25%/cover no-repeat;-webkit-mask:linear-gradient(90deg,transparent 0%,#000 34%);mask:linear-gradient(90deg,transparent 0%,#000 34%);will-change:transform")}></div>
         <div style={css('position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,25,48,0.5) 0%,rgba(0,25,48,0.3) 45%,rgba(0,25,48,0) 72%,rgba(0,25,48,0.15) 100%)')}></div>
         <div style={css('position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,rgba(0,25,48,0) 0%,rgba(0,25,48,0.55) 100%)')}></div>
@@ -556,7 +564,8 @@ export default function Page() {
           Regla que deja: al mover una sección hay que mirar de qué color quedan
           sus vecinas nuevas — el ritmo de la página es una propiedad de la
           secuencia, no de cada sección por separado. */}
-      <section className="sec" style={css('padding:80px 40px;background:var(--sp-mint-soft)')}>
+      <section className="sec con-muro" style={css('padding:80px 40px;background:var(--sp-mint-soft)')}>
+        <MuroFondo tono="claro" />
         {/* La tarjeta se toca entera (sistema táctil, 24/09/2026): su link
             "Simulá tu plan" se estira sobre toda la tarjeta (.estirado) y la
             tarjeta se hunde al apretarla, como una tarjeta de Apple. Así su
@@ -613,7 +622,8 @@ export default function Page() {
           ⚠ Conserva [data-mani-corto]: el evento manifesto_scroll sigue vivo,
           pero ahora se dispara arriba y ya no significa "atravesó la home"
           (anotado en ANEXO §2 para que nadie lo lea como antes). */}
-      <section data-mani-corto className="sec" style={css('padding:80px 40px;background:var(--sp-navy-deep)')}>
+      <section data-mani-corto className="sec con-muro" style={css('padding:80px 40px;background:var(--sp-navy-deep)')}>
+        <MuroFondo tono="oscuro" />
         <div style={css('max-width:860px;margin:0 auto;text-align:center')}>
           <div data-rv>
             {/* Sin etiqueta "Por qué importa" (Arturo, 24/09/2026): la frase de
@@ -663,7 +673,8 @@ export default function Page() {
           los tres (Gold ya no se apaga); Silver resaltado como "la más elegida"
           (anclaje); una línea humana bajo cada plan; sin barras (ruido); lo común
           abajo como GARANTÍA positiva. BITACORA cap. 48. Detalle → /planes. */}
-      <section id="comparar" className="sec" style={css('padding:80px 40px;background:var(--sp-surface)')}>
+      <section id="comparar" className="sec con-muro" style={css('padding:80px 40px;background:var(--sp-surface)')}>
+        <MuroFondo tono="claro" />
         <div style={css('max-width:1080px;margin:0 auto')}>
           {/* Sin la etiqueta "Bronze, Silver y Gold" ni "Los tres cubren lo
               esencial y ninguno cubre el 100%" (Arturo, 24/09/2026): la etiqueta
@@ -841,7 +852,8 @@ export default function Page() {
 
       {/* CÓMO FUNCIONA — el proceso después de decidir (el teaser del simulador
           subió al puesto 2; esta sección sigue explicando qué pasa al contratar) */}
-      <section className="sec" style={css('padding:72px 40px 64px;background:var(--sp-surface)')}>
+      <section className="sec con-muro" style={css('padding:72px 40px 64px;background:var(--sp-surface)')}>
+        <MuroFondo tono="claro" />
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 30px')}>
             {/* Sin etiqueta "De la cotización a tu credencial" (Arturo, 24/09/2026):
@@ -875,7 +887,8 @@ export default function Page() {
           en el prototipo: no está mal hecha, está de más en una v1 que tiene
           que ser corta y copiable. */}
       {!ES_LANZAMIENTO && (
-        <section className="sec" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
+        <section className="sec con-muro" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
+          <MuroFondo tono="claro" />
           <div style={css('max-width:1080px;margin:0 auto')}>
             <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
               <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
@@ -896,7 +909,8 @@ export default function Page() {
       )}
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
-      <section className="sec-x" style={css('padding:72px 40px 64px;background:#fff')}>
+      <section className="sec-x con-muro" style={css('padding:72px 40px 64px;background:#fff')}>
+        <MuroFondo tono="claro" />
         <div data-rv className="two-col sq" style={css('max-width:1080px;margin:0 auto;background:var(--sp-blue-bg);--sq:var(--r-lg);padding:40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center')}>
           <div style={css('position:relative;display:flex;align-items:center;justify-content:center;min-height:210px')}>
             <div style={css('position:absolute;width:210px;height:210px;border-radius:50%;background:var(--sp-blue-line)')}></div>
@@ -931,7 +945,8 @@ export default function Page() {
       {/* RED DE BENEFICIOS — la tira de aliados, sola desde el 25/09/2026 (los
           prestadores pasaron a «Dónde te atendés», arriba). Sigue pendiente la
           poda que pidió el directorio («perfumería», HANDOFF). */}
-      <section style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
+      <section className="con-muro" style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
+        <MuroFondo tono="claro" />
         <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
           <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
@@ -954,7 +969,8 @@ export default function Page() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="sec" style={css('padding:80px 40px;background:#fff')}>
+      <section id="faq" className="sec con-muro" style={css('padding:80px 40px;background:#fff')}>
+        <MuroFondo tono="claro" />
         <div style={css('max-width:820px;margin:0 auto')}>
           <div data-rv style={css('text-align:center;max-width:640px;margin:0 auto 12px')}>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Antes de contratar</div>
@@ -982,7 +998,8 @@ export default function Page() {
       </section>
 
       {/* CIERRE */}
-      <section className="sec" style={css('padding:64px 40px 84px;background:var(--sp-navy)')}>
+      <section className="sec con-muro" style={css('padding:64px 40px 84px;background:var(--sp-navy)')}>
+        <MuroFondo tono="oscuro" />
         {/* Teal profundo (var(--sp-teal-deep)), no el brillante: el blanco sobre var(--sp-teal) medía
             2.37:1 (título) y 2.2:1 (bajada). El acento pasa de navy a menta porque
             sobre el teal profundo el navy cae a 2.25:1. Regla (jul 2026, decisión
@@ -1001,7 +1018,8 @@ export default function Page() {
       </section>
 
       {/* FOOTER */}
-      <footer style={css('background:var(--sp-navy-deep);color:#fff;padding:56px 40px 30px')}>
+      <footer className="con-muro" style={css('background:var(--sp-navy-deep);color:#fff;padding:56px 40px 30px')}>
+        <MuroFondo tono="oscuro" />
         <div className="two-col" style={css('max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.12)')}>
           <div>
             <img src={`${BP}/assets/brand/logo-sp-white.png`} alt="Salud Protegida" loading="lazy" style={css('height:52px;display:block;margin-bottom:14px')} />

@@ -5,6 +5,7 @@ import { BP } from '../basePath';
 import { track } from '../track';
 import { GUIA_HREF } from '../edicion';
 import red from '../../lib/red-home.json';
+import MuroFondo from './MuroFondo';
 
 /* «Dónde te atendés» — la red médica en el home (25/09/2026).
    ----------------------------------------------------------------------------
@@ -23,6 +24,9 @@ import red from '../../lib/red-home.json';
    - El MURO de fondo: los sanatorios y clínicas que están en todos los planes,
      en gris muy claro y sin velo (pedido de Arturo), para que la tarjeta
      resalte sola. Es textura: aria-hidden, sin puntero y sin selección.
+     Desde el 26/09 es el mismo muro de toda la home (components/MuroFondo.jsx),
+     acá en tono «pleno»: la página se desliza sobre una sola pared y esta es
+     la sección donde se ve entera.
    Los datos salen de lib/red-home.json, que scripts/red-home.mjs arma
    de la planilla antes de cada build. Ninguna cifra está escrita a mano. */
 
@@ -30,8 +34,6 @@ const GUIA = `${BP}${GUIA_HREF}`;
 const fecha = (red.datos_al || '').split('-').reverse().join('/');
 const plural = (n, uno, varios) => (n === 1 ? uno : varios);
 const lista = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
-// El muro, dos vueltas para cubrir la sección en cualquier ancho.
-const MURO = [...red.muro, ...red.muro];
 
 export default function DondeTeAtendes() {
   const [sel, setSel] = useState('');
@@ -54,10 +56,8 @@ export default function DondeTeAtendes() {
   };
 
   return (
-    <section className="dta" aria-labelledby="dta-titulo">
-      <div className="dta-muro" aria-hidden="true">
-        {MURO.map((n, i) => <span key={i} className={i % 6 === 2 ? 'm2' : undefined}>{n}{i < MURO.length - 1 ? <i> · </i> : null}</span>)}
-      </div>
+    <section className="dta con-muro" aria-labelledby="dta-titulo">
+      <MuroFondo tono="pleno" />
 
       <div className="dta-tarjeta">
         <h2 id="dta-titulo" className="disp dta-titulo">Dónde te <span>atendés</span>.</h2>
