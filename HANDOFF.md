@@ -782,6 +782,34 @@ línea por línea no quedó guardada y, rehecha con la misma regla, da 18
   un artefacto privado de Arturo en claude.ai): quedó publicado sin revisar
   renderizado, a propósito, y Arturo lo dejó como pendiente el 24/09.
 
+## ✍️ EL ESTÁNDAR NUEVO DEL BLOG: LA FRASE EN GRANDE (26 sep 2026) — APROBADO
+
+**Qué es.** El 26/09/2026 Arturo decidió cómo es una nota del blog (hasta 400
+palabras, una idea, una analogía, título sin negaciones, lector de prueba). El
+estándar vive y se mide en `sp-contenido` (PR sp-contenido#205, con
+`no-fusionar`). Lo que le toca a esta vitrina es una sola cosa: **la frase en
+grande** (*«Que hayan expresiones claves en grande, para elementos que la
+persona pueda escanear en el blog sin necesidad de leerlo todo»*).
+
+**Cómo funciona.** El motor la escribe como `> [!clave]` seguido del texto en
+líneas `>`. `lib/blog-texto.mjs` (`frasesClave`) la convierte en su propio
+bloque antes de `marked`, en la web (`.art-body .frase-clave`) y en el correo
+(una tabla de una celda con borde, para Outlook). Las citas viejas
+`> **Dato:**` siguen siendo citas. Pruebas en
+`scripts/correo-blog/test_correo_blog.py` (clase `FraseClave`).
+
+**⚠ Orden de fusión:** este PR (sp-prototipo#219) va **antes** que
+sp-contenido#205. Si el motor empieza a escribir `[!clave]` y esta vitrina no
+lo entiende, la web y el correo muestran la marca como texto.
+
+**Decidido por Arturo (26/09/2026):** el estándar, aprobado. La forma de la
+frase es la **B, resaltador** (lámina 54 de `docs/diseno/`): un trazo menta
+sobre la mitad de abajo de cada renglón, en un `<span>` dentro de
+`.frase-clave`. En el correo es un fondo menta parejo, porque Outlook no
+entiende degradés. **El correo sigue saliendo apenas se publica** (cerca de
+las 05:00): se propuso pasarlo a las 11:00 para dejar una ventana para retirar
+una nota, y Arturo eligió dejarlo como está.
+
 ## 📬 EL BLOG LLEGA POR CORREO (24 sep 2026)
 
 **Arturo, 24/09/2026:** *«Para mí, ese contenido tiene mucho valor y debe

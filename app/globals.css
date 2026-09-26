@@ -607,6 +607,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .art-body a:hover{color:var(--sp-teal-hover)}
 .art-body ul,.art-body ol{margin:0 0 16px;padding-left:24px}
 .art-body li{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:17px;line-height:1.75;color:var(--sp-text);margin-bottom:8px}
+/* La frase en grande (estándar del blog, 26/09/2026): una o dos por nota, para
+   quien escanea sin leer todo. Forma B, «resaltador», elegida por Arturo el
+   26/09/2026 (docs/diseno/, lámina 54): el <span> lleva un trazo menta sobre
+   la mitad de abajo del renglón, y box-decoration-break lo repite en cada
+   renglón. Va en Inter porque es una oración (termina en punto y ocupa más de
+   un renglón): la regla tipográfica no cambia por el tamaño. */
+.art-body .frase-clave{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:23px;line-height:1.5;font-weight:600;letter-spacing:-0.01em;color:var(--sp-navy);margin:30px 0}
+.art-body .frase-clave span{background:linear-gradient(transparent 58%,rgba(0,188,180,.30) 58%,rgba(0,188,180,.30) 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 3px}
 .art-body blockquote{background:var(--sp-mint-soft);border-left:3px solid var(--sp-teal);border-radius:0 12px 12px 0;padding:16px 18px;margin:0 0 16px}
 .art-body blockquote p{font-size:16px;line-height:1.7;color:var(--sp-teal-ink);margin:0}
 .art-body blockquote p+p{margin-top:10px}

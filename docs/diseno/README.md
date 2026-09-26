@@ -1411,3 +1411,26 @@ casilleros del ancho del logo más ancho en la grilla. Y los archivos son chicos
 (de 19 a 63 px de alto): para agrandarlos hay que pedir los originales, no
 estirarlos.
 
+
+### 54 · La frase en grande del blog
+
+![La frase en grande en el celular: barra turquesa, resaltador, recuadro menta, y cómo llega en el correo](img/2026-09-26-blog-frase-clave-tres-formas.webp)
+
+**Qué muestra.** El estándar nuevo del blog (26/09/2026) pide una o dos frases
+clave en grande: *«Que hayan expresiones claves en grande, para elementos que
+la persona pueda escanear en el blog sin necesidad de leerlo todo»*. La misma
+nota de prueba a 390 px con tres formas: **A**, barra turquesa; **B**,
+resaltador; **C**, recuadro menta. Y **D**, cómo llega en el correo con la A
+(Outlook de escritorio: una tabla con borde). Las tres van en Inter, porque la
+frase termina en punto y ocupa más de un renglón: la regla tipográfica no
+cambia por el tamaño.
+
+**Qué se decidió.** La **B**, resaltador, elegida por Arturo el 26/09/2026. La
+recomendación había sido la A, porque es la que menos se confunde con los
+recuadros «Dato» de las notas viejas. Construida en sp-prototipo#219. En el
+correo, Outlook no entiende degradés, así que el resaltador es un fondo menta
+parejo detrás del texto.
+
+**La lección.** Una frase en grande compite con el título y con los recuadros
+que ya existen: se ve primero por qué se distingue, y recién después por qué
+llama la atención.
