@@ -1162,3 +1162,32 @@ más chico que existe, y las claras quedaron a 5 puntos del fondo.
 muro sino *cuánto* se ve en cada lugar. Con el mismo muro en toda la página y
 la intensidad según lo que hay que leer encima, la continuidad que él quería
 no cuesta la lectura.
+
+---
+
+## Parte 15 · El muro con letra más chica (26/09/2026)
+
+### 42 · Tres tamaños para que entren más prestadores
+
+![El muro de la home en tres tamaños (24, 16 y 12 px) contra el de hoy (40 px), en «Dónde te atendés», el manifiesto, «Cómo funciona» y a 390 px](img/2026-09-26-home-muro-letra-chica.webp)
+
+**Qué muestra.** Arturo, con el muro ya publicado: *«quiero que la tipografía
+de ese muro… sea más chica para que puedan entrar más prestadores… y todavía
+se vea legible, como para entender que son prestadores, son sanatorios, son
+laboratorios y sus nombres»*. Tres tamaños con la misma intensidad de hoy:
+**A**, 24 px; **B**, 16 px; **C**, 12 px en mayúsculas espaciadas. En las tres
+entran, además de los 56 sanatorios y clínicas, los laboratorios y centros de
+imagen que están en todos los planes: 92 nombres distintos. Medido en
+«Dónde te atendés» a 1440 px: hoy se ven 46 nombres; A, 126; B, 233; C, 206.
+
+**Qué se decidió.** Pendiente de Arturo. Recomendada: **A**.
+
+**La lección.** Achicar la letra choca con dos techos que no son de diseño.
+El primero es la lista: en todos los planes hay 92 nombres, así que a 16 px
+cada uno aparece dos o tres veces a la vista, y un muro que se repite deja de
+parecer una red. Para llenar sin repetir habría que sumar los de Silver y Gold
+solos, y la nota de la sección dice que los nombres están en todos los planes.
+El segundo es la intensidad: con la transparencia que eligió Arturo, una letra
+de 12 px sobre el claro deja de leerse; se vuelve trama. Legible y chica a la
+vez pide un poco más de contraste.
+

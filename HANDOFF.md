@@ -126,6 +126,10 @@ desliza sobre una sola pared, como el tapiz de la guía.
 
 **Pendiente de Arturo:** el «más de 600» que sigue en tres preguntas
 frecuentes del home → `Nelargon/sp-interno#68`.
+Y el muro con **letra más chica** para que entren más prestadores: tres
+tamaños en docs/diseno n.º 42 (recomendada A, 24 px), con los laboratorios e
+imágenes de todos los planes sumados (92 nombres). No se construye hasta que
+elija.
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
