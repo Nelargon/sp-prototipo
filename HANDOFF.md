@@ -17,6 +17,43 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🔁 `/que-cubre` QUEDA OBSOLETA: LO QUE SE BUSCA ES LA COMPARATIVA COMPLETA (26 sep 2026)
+
+**Qué dijo Arturo.** Le preguntamos qué página sentía obsoleta: si
+«Essential, Silver y Gold — todo el detalle» (`/planes`) o «Tres planes que
+podés revisar antes de firmar» (`/que-cubre`). Contestó:
+
+> *«B Qué Cubre. Mencioné que el propósito realmente es tener una página que
+> muestre en todo detalle la comparativa de los tres planes.»*
+
+Con eso reabre su propia decisión del 6/08 (*«que sea un espacio aparte»*, ver
+«/que-cubre — la landing de los planes» y «EL MAPA DE COBERTURA», más abajo).
+
+**Qué quiere decir para una sesión que llega:**
+- **No invertir en `/que-cubre` como landing aparte** sin mirar esto antes.
+- **La página que se busca es una sola:** la comparativa completa de los tres
+  planes, «en todo detalle» y «sin marear» (sus palabras). Se diseña con la
+  revisión integral del sitio. El prompt y el workflow están en `sp-interno`,
+  en `.claude/prompts/revision-integral-sitio.md`.
+- **Nada de lo que hoy solo tiene `/que-cubre` se pierde.** Pasa a la
+  comparativa:
+  - el buscador de estudios;
+  - las especialidades con su tope;
+  - los números finos;
+  - la exclusión de enfermería a domicilio.
+- **Siguen siendo de Arturo** el momento de retirar `/que-cubre` y qué pasa
+  con su dirección, que es la que circula por WhatsApp y anuncios y no puede
+  quedar rota. El PR que la retire espera su OK aunque CI esté verde.
+- **El mapa de cobertura** (más abajo) se redibuja en el PR que construya la
+  comparativa, no antes.
+
+**«Sin marear», no «sin manejar».** El pedido original decía «una página que
+hable en más detalle de los planes sin manejar a la persona». Era un dictado,
+y él lo corrigió: *«Es "sin marear"»*. La vara es la claridad: lo principal a
+la vista, lo fino a un toque, nada que obligue a ir y volver.
+
+---
+
 ## 🏥 «DÓNDE TE ATENDÉS»: LA RED MÉDICA EN EL HOME, Y EL MAPA EN LA GUÍA (25 sep 2026)
 
 La tira de prestadores en movimiento del home **se reemplazó**. Camino (BITACORA
@@ -1876,6 +1913,11 @@ justo de las afirmaciones negativas, que son las más fuertes).
 porcentajes.** Ver BITACORA cap. 65.
 
 ### ⚠ `/que-cubre` NO reemplaza a `/planes` — son dos cosas
+
+> 🔁 **Reabierto por Arturo el 26/09/2026:** siente `/que-cubre` obsoleta y
+> busca una sola comparativa completa de los tres planes. Ver la sección
+> «`/que-cubre` QUEDA OBSOLETA» al principio de este documento. Lo de abajo
+> queda como historia de cómo se llegó.
 
 Decisión del usuario (6 ago 2026), textual: **"que sea un espacio aparte"**.
 
@@ -3864,6 +3906,9 @@ persona que llega con una orden médica en la mano a la comparación de planes.
 lado, nunca por el lugar al que lleva.* El home tiene ahora dos puertas bajo la
 matriz — "¿Está cubierto lo que me pidieron?" → `/que-cubre` y "El detalle fila
 por fila" → `/planes` — en vez de una sola que decía "ver todos los planes".
+
+🔁 **26/09/2026: Arturo reabrió este reparto** (ver «`/que-cubre` QUEDA
+OBSOLETA» al principio). El mapa se redibuja con la comparativa completa.
 
 ⚠ Que `/planes` y `/que-cubre` sean cosas distintas **es decisión de Arturo**,
 registrada al construir `/que-cubre`: *"que sea un espacio aparte"*. No
