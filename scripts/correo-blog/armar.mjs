@@ -85,13 +85,12 @@ function conEstilos(html) {
     .replace(new RegExp(`<(${tags})(\\s[^>]*)?>`, 'g'), (m, tag, attrs = '') => (/\sstyle=/.test(attrs) ? m : `<${tag} style="${ESTILO[tag]}"${attrs}>`));
 }
 
-// La frase en grande (estándar del blog, 26/09/2026; ver lib/blog-texto.mjs).
-// En el correo va en una tabla de una celda: es lo único con borde y relleno
-// que Outlook de escritorio respeta siempre.
-const fraseClaveCorreo = (t) => `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:10px 0 26px"><tr><td style="border-left:4px solid #00BCB4;padding:2px 0 2px 16px;font-family:${F_TEXTO};font-size:21px;line-height:1.4;font-weight:600;color:${NAVY}">${t}</td></tr></table>`;
+// La frase en grande (estándar del blog, 26/09/2026; ver lib/blog-texto.mjs),
+// en la forma B que eligió Arturo: resaltador. Outlook de escritorio no
+// entiende degradés, así que acá el resaltador es un fondo menta parejo en el
+// <span> (el turquesa de la marca al 30 % sobre blanco), que sí respeta.
+const fraseClaveCorreo = (t) => `<p style="margin:10px 0 26px;font-family:${F_TEXTO};font-size:21px;line-height:1.5;font-weight:600;color:${NAVY}"><span style="background-color:#B3EBE9;padding:0 3px">${t}</span></p>`;
 
-// Texto plano: la alternativa que ven los clientes sin HTML y los filtros de
-// spam. Es el markdown sin sus marcas.
 function aTextoPlano(md) {
   return frasesClave(String(md), (t) => t, { escapar: false })
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')

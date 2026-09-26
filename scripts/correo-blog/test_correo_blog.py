@@ -361,10 +361,10 @@ Otro párrafo.
     def tearDownClass(cls):
         shutil.rmtree(cls.tmp)
 
-    def test_sale_en_grande_con_su_borde(self):
+    def test_sale_en_grande_con_su_resaltador(self):
         import re
-        celdas = re.findall(r'<td style="border-left:4px solid #00BCB4[^"]*font-size:21px[^"]*">(.*?)</td>', self.correo['html'])
-        self.assertEqual(celdas, ['La presión alta trabaja en silencio: no duele mientras desgasta.',
+        frases = re.findall(r'<p style="[^"]*font-size:21px[^"]*"><span style="background-color:#B3EBE9[^"]*">(.*?)</span></p>', self.correo['html'])
+        self.assertEqual(frases, ['La presión alta trabaja en silencio: no duele mientras desgasta.',
                                   'Medirla lleva dos minutos.'])
 
     def test_la_marca_no_se_ve(self):

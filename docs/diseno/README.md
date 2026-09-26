@@ -1425,9 +1425,11 @@ resaltador; **C**, recuadro menta. Y **D**, cómo llega en el correo con la A
 frase termina en punto y ocupa más de un renglón: la regla tipográfica no
 cambia por el tamaño.
 
-**Qué se decidió.** Pendiente: la elige Arturo. Construida la **A** mientras
-tanto (sp-prototipo#219), porque es la que no se confunde con los recuadros
-«Dato» de las notas viejas, que son menta como la C.
+**Qué se decidió.** La **B**, resaltador, elegida por Arturo el 26/09/2026. La
+recomendación había sido la A, porque es la que menos se confunde con los
+recuadros «Dato» de las notas viejas. Construida en sp-prototipo#219. En el
+correo, Outlook no entiende degradés, así que el resaltador es un fondo menta
+parejo detrás del texto.
 
 **La lección.** Una frase en grande compite con el título y con los recuadros
 que ya existen: se ve primero por qué se distingue, y recién después por qué

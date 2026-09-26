@@ -782,7 +782,7 @@ línea por línea no quedó guardada y, rehecha con la misma regla, da 18
   un artefacto privado de Arturo en claude.ai): quedó publicado sin revisar
   renderizado, a propósito, y Arturo lo dejó como pendiente el 24/09.
 
-## ✍️ EL ESTÁNDAR NUEVO DEL BLOG: LA FRASE EN GRANDE (26 sep 2026) — ESPERA EL OK DE ARTURO
+## ✍️ EL ESTÁNDAR NUEVO DEL BLOG: LA FRASE EN GRANDE (26 sep 2026) — APROBADO
 
 **Qué es.** El 26/09/2026 Arturo decidió cómo es una nota del blog (hasta 400
 palabras, una idea, una analogía, título sin negaciones, lector de prueba). El
@@ -802,8 +802,13 @@ bloque antes de `marked`, en la web (`.art-body .frase-clave`) y en el correo
 sp-contenido#205. Si el motor empieza a escribir `[!clave]` y esta vitrina no
 lo entiende, la web y el correo muestran la marca como texto.
 
-**Pendiente de Arturo:** la forma (lámina 54 de `docs/diseno/`: barra, resaltador
-o recuadro). Construida la A, barra turquesa.
+**Decidido por Arturo (26/09/2026):** el estándar, aprobado. La forma de la
+frase es la **B, resaltador** (lámina 54 de `docs/diseno/`): un trazo menta
+sobre la mitad de abajo de cada renglón, en un `<span>` dentro de
+`.frase-clave`. En el correo es un fondo menta parejo, porque Outlook no
+entiende degradés. **El correo sigue saliendo apenas se publica** (cerca de
+las 05:00): se propuso pasarlo a las 11:00 para dejar una ventana para retirar
+una nota, y Arturo eligió dejarlo como está.
 
 ## 📬 EL BLOG LLEGA POR CORREO (24 sep 2026)
 
