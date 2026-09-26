@@ -194,6 +194,51 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const tarjetas = await page.$$eval('.gm-lista article', (as) => as.map((a) => a.innerText));
   if (!u.includes('c=' + encodeURIComponent(primera)) || !tarjetas.length || !tarjetas.every((t) => t.includes(primera))) mal(nombre + ': tocar «' + primera + '» en el mapa no filtra la lista');
   else bien(nombre + ': mapa con ' + puntos + ' ciudades; tocar «' + primera + '» deja ' + tarjetas.length + ' tarjetas de ahí');
+  // El tapiz de la guía (26/09/2026): textura, no contenido.
+  const tapiz = await page.$eval('.gm-tapiz', (t) => ({ aria: t.getAttribute('aria-hidden'), pe: getComputedStyle(t).pointerEvents, largo: t.textContent.length })).catch(() => null);
+  if (!tapiz || tapiz.aria !== 'true' || tapiz.pe !== 'none' || tapiz.largo < 200) mal(nombre + ': el tapiz de la guía falta, lo leen los lectores de pantalla o ataja el puntero');
+  else bien(nombre + ': tapiz detrás de la guía, invisible para lectores y puntero');
+  await page.close();
+}
+
+// ── El tramo bajo la tabla del comparador (26/09/2026, BITACORA cap. 117) ───
+// La espera de Essential es una fila de la tabla; abajo quedan la leyenda
+// (#bolsillo, que enlaza el menú), una tarjeta con tres puertas y SP Senior
+// en una frase. La banda «¿Dónde atenderte?» (que decía el total) ya no está.
+console.log('\n── El tramo bajo la tabla del comparador');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const r = await page.evaluate(() => {
+    const comp = document.getElementById('comparar');
+    const filas = [...document.querySelectorAll('#cartilla .cmp-row')];
+    const ultima = filas.length ? filas[filas.length - 1] : null;
+    const celdas = ultima ? [...ultima.children].map((c) => c.innerText.replace(/\s+/g, ' ').trim()) : [];
+    const ley = document.getElementById('bolsillo');
+    const puertas = [...document.querySelectorAll('#comparar .cmp-puertas a')].map((a) => ({ h: a.getAttribute('href'), alto: a.getBoundingClientRect().height }));
+    const senior = [...comp.querySelectorAll('a')].find((a) => a.textContent.includes('Simulá Plan Vital'));
+    return {
+      espera: celdas[0] && celdas[0].startsWith('Tiempo de espera') && /1 año/.test(celdas[1] || ''),
+      ley: !!ley && comp.contains(ley) && /Copago/.test(ley.innerText),
+      puertas, senior: senior && senior.getAttribute('href'),
+      // textContent y no innerText: el rótulo viejo iba en mayúsculas por CSS,
+      // e innerText lo devuelve transformado («¿DÓNDE ATENDERTE?»).
+      viejo: ['¿Dónde atenderte?', 'más de 600'].filter((t) => comp.textContent.includes(t)),
+    };
+  });
+  const destinos = ['/que-cubre/', '/planes/', '/guia-medica/'];
+  const faltan = destinos.filter((d) => !r.puertas.some((p) => p.h && p.h.endsWith(d)));
+  const chicas = width < 600 ? r.puertas.filter((p) => p.alto < 44).length : 0;
+  if (!r.espera) mal(nombre + ': la última fila de la tabla no es «Tiempo de espera» con «1 año» en Essential');
+  else bien(nombre + ': la espera de Essential es una fila de la tabla');
+  if (!r.ley) mal(nombre + ': falta la leyenda #bolsillo en el comparador (la enlaza el menú)');
+  else bien(nombre + ': leyenda #bolsillo pegada a la tabla');
+  if (faltan.length || chicas) mal(nombre + ': puertas del comparador — faltan ' + (faltan.join(', ') || 'ninguna') + (chicas ? '; ' + chicas + ' miden menos de 44 px' : ''));
+  else bien(nombre + ': tres puertas (qué cubre, planes, guía)' + (width < 600 ? ', de 44 px o más' : ''));
+  if (r.viejo.length) mal(nombre + ': el comparador todavía dice ' + r.viejo.join(' y '));
+  else bien(nombre + ': sin la banda «¿Dónde atenderte?» ni el total');
+  if (!r.senior || !r.senior.endsWith('/simulador/')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador');
+  else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital»');
   await page.close();
 }
 

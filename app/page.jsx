@@ -324,6 +324,14 @@ export default function Page() {
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }] },
     { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
     { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
+    // LA ESPERA, COMO FILA (26/09/2026, pregunta de Arturo: «¿no se podría
+    // simplemente poner como una fila más en el comparativo?»). Desde el 24/09
+    // era una oración abajo de la tabla; pero es un dato que cambia por plan, y
+    // eso es lo que la tabla hace. Essential: 365 días en todo lo nombrado
+    // (datos/planes-vigentes/essential.json, carencias_dias). Silver y Gold: de
+    // 60 días (internación) a 300 (parto) según el servicio (silver.json y
+    // gold.json); el detalle servicio por servicio está en /planes.
+    { name: 'Tiempo de espera', unit: 'internación, terapia intensiva, cirugías, resonancia y parto', kind: 'num', cells: [{ t: '1 año', n: 'desde que te afiliás' }, { t: '2 a 10 meses', n: 'según el servicio' }, { t: '2 a 10 meses', n: 'según el servicio' }] },
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero
@@ -333,7 +341,7 @@ export default function Page() {
   // al lector dos cosas distintas sobre la misma palabra (lo marcó la revisión
   // del PR #91). Regla: si un servicio está en la banda, su fila en la tabla
   // tiene que nombrar el LÍMITE, no el servicio.
-  const cmpIgual = 'Urgencias 24 h · Ecografías y radiografías · Parto y cesárea · Laboratorio · Terapia intensiva';
+  const cmpIgual = 'urgencias 24 h, ecografías y radiografías, parto y cesárea, laboratorio y terapia intensiva';
 
   // faq
   const faqList = faqs().map((f, i) => ({
@@ -752,102 +760,71 @@ export default function Page() {
             </div>
           </div>
 
-          {/* LA ESPERA DE ESSENTIAL, A LA VISTA (24/09/2026). La tabla muestra
-              topes, no esperas; y en Essential la internación, las cirugías, la
-              terapia intensiva, la resonancia y el parto esperan un año. Es lo
-              más caro de descubrir tarde para quien lo elige por precio, así
-              que va acá, legible, y no solo en la FAQ o en el simulador. */}
-          <div data-rv style={css('display:flex;justify-content:center;margin:16px 0 18px')}>
-            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:14.5px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:680px')}>
-              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-              <span>En <b style={css('color:var(--sp-navy)')}>Essential</b>, la internación, las cirugías, la terapia intensiva, la resonancia y el parto se cubren <b style={css('color:var(--sp-navy)')}>al año de afiliarte</b>. En Silver y Gold esas esperas van de 2 a 10 meses.</span>
-            </span>
-          </div>
-
-          {/* Los tres modos como LEYENDA del explorador (antes eran tres tarjetas):
-              es el vocabulario que usan los badges de abajo. Ancla #bolsillo. */}
-          <div className="sq" data-rv id="bolsillo" style={css('display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;padding:15px 20px;background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-md);margin-bottom:18px')}>
+          {/* EL TRAMO DE ABAJO, SIN RUIDO (26/09/2026, Arturo eligió la opción 4 de
+              docs/diseno n.º 39). Eran siete piezas, cada una en su caja: la espera
+              de Essential, la leyenda, la garantía, dos puertas, la nota, la banda
+              «¿Dónde atenderte?» y la de SP Senior. Seis cajas, unas veinte
+              negritas y siete ideas con el mismo peso: Arturo, de las versiones
+              compactadas, «mucha info, mucho ruido» (BITACORA cap. 117). Ahora:
+              - la espera de Essential es la última fila de la tabla;
+              - la leyenda, una línea gris pegada a la tabla (conserva #bolsillo:
+                el menú «Qué pagás de tu bolsillo» enlaza acá);
+              - UNA tarjeta con lo que tenés en los tres planes y las tres
+                preguntas que siguen, sin subtítulos (cada puerta dice qué
+                pregunta responde, regla del 6/08);
+              - la banda «¿Dónde atenderte?» pasó a ser la tercera puerta: desde el
+                25/09 el home tiene «Dónde te atendés», y la banda repetía lo mismo
+                con más texto y con el total («más de 600») que Arturo sacó del home;
+              - SP Senior, una frase con su «Simulá Plan Vital». */}
+          <p data-rv id="bolsillo" className="cmp-ley">
             {[
               { c: 'var(--sp-teal)', t: 'Cubierto', b: 'no ponés nada' },
-              { c: 'var(--sp-estado-punto)', t: 'Copago', b: 'ponés una parte — es la sorpresa más común' },
-              { c: 'var(--sp-estado-ink)', t: 'Al precio de convenio', b: 'no lo cubre el plan, pero pagás la tarifa negociada de SP' },
-            ].map((m, i) => (
-              <span key={i} style={css('display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.5')}>
-                <span style={css('width:10px;height:10px;border-radius:var(--r-pill);flex:none;transform:translateY(1px);background:' + m.c)}></span>
-                <span><b style={css('color:var(--sp-navy);font-weight:800')}>{m.t}</b> <span style={css('color:var(--sp-muted)')}>· {m.b}</span></span>
-              </span>
+              { c: 'var(--sp-estado-punto)', t: 'Copago', b: 'ponés una parte' },
+              { c: 'var(--sp-estado-ink)', t: 'Precio de convenio', b: 'no lo cubre el plan; pagás la tarifa negociada de SP' },
+            ].map((m) => (
+              <span key={m.t}><i style={{ background: m.c }} /><span><b>{m.t}:</b> {m.b}</span></span>
             ))}
+          </p>
+
+          <div data-rv className="sq cmp-tarjeta">
+            <p className="cmp-igual">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+              <span>En los tres planes: {v.cmpIgual}.</span>
+            </p>
+            <div className="cmp-puertas">
+              <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="disp">¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="disp">¿Qué cambia de un plan a otro? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              {/* CON_GUIA es true en las dos ediciones desde el 23/09 (app/edicion.js). */}
+              {CON_GUIA && <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="disp">¿Dónde me atiendo? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>}
+            </div>
           </div>
 
-          {/* Lo común a los tres, como GARANTÍA positiva (no letra chica): la base
-              de integridad sobre la que se construyen los tres planes. */}
-          <div data-rv className="cmp-garantia sq" style={css('margin-top:24px;display:flex;align-items:center;gap:13px 22px;flex-wrap:wrap;padding:22px 26px;border:1.5px solid #bfe8e4;--sq:var(--r-md);background:var(--sp-mint-soft)')}>
-            <span style={css('display:inline-flex;align-items:center;gap:11px;font-size:15.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}><span style={css('display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;flex:none')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>Todos los planes te garantizan</span>
-            <span style={css('font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);font-weight:600;line-height:1.55')}>{v.cmpIgual}</span>
-          </div>
-
-          {/* La comparación entera vive de un vistazo arriba; el detalle
-              fila-por-fila (11 servicios × 3 planes) se fue a /planes: home =
-              resumen completo, la profundidad a un click (HANDOFF 11t, cap. 46). */}
-          {/* ⚠ DOS PUERTAS, PORQUE HAY DOS PREGUNTAS DISTINTAS (6 ago 2026).
-              Hasta hoy había una sola que decía "¿Querés el detalle fila por
-              fila?" y llevaba a /planes. Desde el 6/08 existe además
-              /que-cubre, con las 983 respuestas de la grilla oficial buscables.
-              Con una sola puerta genérica, la persona que llega con una orden
-              médica en la mano ("¿me cubre la resonancia de rodilla?") aterriza
-              en la comparación de planes, que no responde eso.
-              La regla: cada puerta dice QUÉ PREGUNTA responde, no "ver más".
-              El reparto completo de las cuatro superficies está en HANDOFF.
-              ⚠ SIMÉTRICAS (24/09/2026, Arturo: "presentan una disonancia
-              gráfica"). La derecha decía "El detalle fila por fila": un nombre
-              al lado de una pregunta, y una bajada de dos líneas al lado de una
-              de una. Dos puertas hermanas hablan con la misma gramática: las dos
-              son la pregunta de la persona y sus bajadas miden lo mismo. */}
-          <div data-rv className="two-col" style={css('display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto')}>
-            <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
-              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Buscá el estudio, análisis o cirugía por su nombre.</span>
-            </a>
-            <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="cmp-verplanes sq rel" style={css('display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1.5px solid #b8e6e2;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);text-align:left')}>
-              <span style={css('font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px')}>¿Qué cambia de un plan a otro? <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-              <span style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.5;font-weight:400')}>Los tres, servicio por servicio y con sus esperas.</span>
-            </a>
-          </div>
-
-          {/* ⚠ El bloque "Por qué importa" (36% de gasto de bolsillo · 7 de cada 10
-              sin seguro) VIVÍA ACÁ hasta el 6 ago 2026. Se mudó al puesto 3 de la
-              home, fusionado con el manifiesto corto — el argumento que justifica
-              la categoría no puede llegar DESPUÉS de pedirle a la persona que
-              elija plan. Ver la sección [data-mani-corto], arriba del comparador. */}
-
-
-
-            <div style={css('font-size:12.5px;color:var(--sp-muted);margin-top:12px;text-align:center')}>Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</div>
-            {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
-                contesta "¿Qué es la carencia y cuánto dura?" con el mismo dato
-                (1 año en Essential, 10 meses en Silver y Gold, 5 en Gold para cesárea). El dato NO
-                se pierde — se dice una vez en vez de dos, que es de lo que se
-                trata acortar. En el prototipo se queda, con su porqué intacto. */}
-            {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
-                Parto son 300 días en Silver y Gold (365 en Essential, desde el
-                24/09/2026) y la cesárea baja a 150 en Gold — el dato más caro de descubrir tarde de todo el sistema, y
-                que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
-                al asesor). Va en dorado, no en rojo: la regla de color reserva
-                el rojo para urgencias, y el dorado es "oportunidad". Y el
-                encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
-                una trampa escondida y pasa a ser una razón para afiliarse antes.
-                No se suaviza el número: se le da un destino. */}
-            {!ES_LANZAMIENTO && (
-              <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:var(--r-md);padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
-                <IconoSP nombre="espera" size={32} style={{ marginTop: -5 }} />
-                <div>
-                  <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
-                  <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
-                    El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>), y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
-                  </div>
+          <p className="cmp-nota">Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</p>
+          {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
+              contesta "¿Qué es la carencia y cuánto dura?" con el mismo dato
+              (1 año en Essential, 10 meses en Silver y Gold, 5 en Gold para cesárea). El dato NO
+              se pierde — se dice una vez en vez de dos, que es de lo que se
+              trata acortar. En el prototipo se queda, con su porqué intacto. */}
+          {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
+              Parto son 300 días en Silver y Gold (365 en Essential, desde el
+              24/09/2026) y la cesárea baja a 150 en Gold — el dato más caro de descubrir tarde de todo el sistema, y
+              que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
+              al asesor). Va en dorado, no en rojo: la regla de color reserva
+              el rojo para urgencias, y el dorado es "oportunidad". Y el
+              encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
+              una trampa escondida y pasa a ser una razón para afiliarse antes.
+              No se suaviza el número: se le da un destino. */}
+          {!ES_LANZAMIENTO && (
+            <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:var(--r-md);padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
+              <IconoSP nombre="espera" size={32} style={{ marginTop: -5 }} />
+              <div>
+                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
+                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
+                  El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>), y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
           {/* ⚠ "PARA QUE NO HAYA SORPRESAS" VIVÍA ACÁ hasta el 24/09/2026: la caja
               de lo que nuestros planes no cubren. Se mudó a la FAQ (pedido de
@@ -855,36 +832,9 @@ export default function Page() {
               contenido y su historia —incluida la corrección del 26/07 sobre
               no generalizar al rubro— viajaron con ella: ver faqs(), arriba. */}
 
-          {/* "Dónde/con quién atenderte" es su propia utilidad: abre la Guía
-              Médica (una entrada honesta, no un buscador que finge — la búsqueda
-              real de médicos y sanatorios vive allá). La rama de agendar es la
-              que usó la v1 entre el 15 y el 23/09, cuando no tenía guía. */}
-          {CON_GUIA ? (
-            <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <IconoSP nombre="red" size={56} />
-              <div>
-                <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde atenderte?</div>
-                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>Buscá tu <b style={css('color:var(--sp-navy)')}>médico, sanatorio o estudio</b> en toda la red: <b>Lister</b>, nuestro centro propio (consultas, laboratorio e imagen), y más de 600 médicos, sanatorios y laboratorios en 79 ciudades en Silver y Gold; Essential tiene la suya, según tu zona.</div>
-              </div>
-              <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Abrí la Guía Médica <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          ) : (
-            <div data-rv className="two-col sq" style={css('margin-top:18px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-              <IconoSP nombre="hospital" size={56} />
-              <div>
-                <div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>¿Dónde te atendés?</div>
-                <div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}><b style={css('color:var(--sp-navy)')}>Lister</b> es nuestro centro médico propio en Asunción: consultas, laboratorio e imagen. La red suma más de 600 médicos, sanatorios y laboratorios en 79 ciudades.</div>
-              </div>
-              <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'cobertura' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap')}>Pedí tu turno en Lister <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          )}
-
-
-          <div data-rv className="two-col sq" style={css('margin-top:26px;background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
-            <div className="disp sq" style={css('background:var(--sp-navy);color:#fff;--sq:var(--r-sm);padding:16px 22px;text-align:center;font-weight:800')}><div style={css('font-size:11px;letter-spacing:.2em;opacity:.85')}>SP</div><div style={css('font-size:20px')}>SENIOR</div></div>
-            <div><div style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div><div style={css('font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div></div>
-            <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
-          </div>
+          {/* SP Senior en una frase: el track conserva origen 'banda_senior'
+              para que la serie de la métrica siga siendo una sola. */}
+          <p data-rv className="cmp-senior">¿Es para tus padres? Plan Vital, para 65 años o más. <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })}>Simulá Plan Vital →</a></p>
         </div>
       </section>
 

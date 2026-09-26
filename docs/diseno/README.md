@@ -993,3 +993,115 @@ claro: el velo es un parche para un fondo que grita. Y un mapa sirve más donde
 responde a lo que la persona ya hizo (buscó una especialidad) que donde solo
 muestra la red.
 
+---
+
+## Parte 11 · El muro como tapiz de la Guía Médica (25/09/2026)
+
+### 36 · Tres maneras de poner el muro detrás de la guía
+
+![Tapiz 1: el muro grande detrás del título y el buscador de la guía, que se apaga antes de la lista](img/2026-09-25-guia-tapiz-1-encabezado.webp)
+
+![Tapiz 2: el muro fijo, visible solo a los costados de la columna de resultados](img/2026-09-25-guia-tapiz-2-margenes.webp)
+
+![Tapiz 3: los nombres chicos en mayúscula cubren todo el fondo como un tejido](img/2026-09-25-guia-tapiz-3-trama.webp)
+
+**Qué muestra.** Arturo, con «Dónde te atendés» publicado: el muro *«también
+puede estar detrás de la guía médica… más sutil, más fade… como un lindo tapiz
+de atrás»*. Tres maneras, sobre la guía real: **1**, en el encabezado, que se
+apaga antes de la lista (con el centro más claro detrás del texto); **2**, en
+los márgenes, fijo y visible solo a los costados de la columna; **3**, la
+trama fina: nombres chicos en mayúscula, como un tejido, en todo el fondo.
+
+**Qué se decidió.** Arturo eligió el **2**, y pidió verlo sin el degradé que
+lo apagaba al acercarse a la columna (n.º 38).
+
+**La lección.** La guía es una herramienta: se leen direcciones y teléfonos.
+El tapiz tiene que vivir donde no se lee. En el celular no hay márgenes, así
+que el 2 se vuelve el 1: la misma idea necesita otro lugar en otra pantalla.
+
+---
+
+## Parte 12 · El tramo de abajo del comparador (25/09/2026)
+
+### 37 · Siete piezas apiladas, compactadas en dos maneras
+
+![El tramo debajo de la tabla del home, hoy (697 px), en la opción 1 (426 px) y en la opción 2 (403 px)](img/2026-09-25-home-tramo-compacto-escritorio.webp)
+
+![El mismo tramo a 390 px: hoy 1506 px, opción 1 890 px, opción 2 907 px](img/2026-09-25-home-tramo-compacto-celular.webp)
+
+**Qué muestra.** Arturo: *«esta parte de aquí no me gusta tanto cómo está
+diseñada… podemos cram it a little bit more while maintaining very good
+aesthetic design»*. Hoy son siete piezas, cada una con su caja: la espera de
+Essential, la leyenda, la garantía, dos puertas, la nota de precios, la banda
+«¿Dónde atenderte?» y la banda de SP Senior. **Opción 1**: la leyenda y la
+espera en una sola caja, la garantía en una línea, tres puertas iguales y SP
+Senior en una tira. **Opción 2**: todo en un solo panel —leyenda, espera,
+garantía en cápsulas— con las tres puertas como su pie, y SP Senior en una
+tira. Las dos bajan el tramo un 40%.
+
+**Qué se decidió.** Ninguna de las dos. Arturo: *«las versiones compactadas
+se ven como mucha info, mucho ruido»* (n.º 39). En las dos, la banda «¿Dónde
+atenderte?» pasa a ser la tercera puerta («¿Dónde me atiendo?»): desde el
+25/09 el home tiene «Dónde te atendés», y la banda repetía lo mismo con más
+texto (la misma razón por la que se sacó la franja de Lister el 6/08).
+
+**La lección.** Una pila de cajas iguales no ordena: cada caja pide la misma
+atención. Juntar lo que se lee junto (leyenda y espera explican la tabla) y
+alinear lo que es del mismo tipo (tres preguntas, tres puertas iguales)
+achica sin sacar nada.
+
+### 38 · El tapiz 2 sin degradé: borde neto o sin borde
+
+![El tapiz 2 en tres bordes: con degradé, con borde neto a 24 px de la columna y sin máscara; abajo, 2a y 2b a 390 px](img/2026-09-25-guia-tapiz-2a-borde-neto.webp)
+
+**Qué muestra.** Arturo, del tapiz 2: *«¿podemos probar qué tal se ve sin ese
+fade al acercarse al cuadro?»*. El mismo muro con tres bordes: **2**, el de
+antes, que se apaga al llegar a la columna; **2a**, entero hasta 24 px antes
+de la columna y cortado en seco; **2b**, sin máscara: el muro sigue por
+detrás de todo.
+
+**Qué se decidió.** Arturo eligió el **2a** y se construyó el 26/09/2026
+(`.gm-tapiz`).
+
+**La lección.** Sin degradé, el muro se lee como muro: nombres enteros, sin
+la niebla que los desdibujaba junto a la columna. Pero sin *ningún* borde (2b) los
+nombres se meten detrás del título y de «Datos al», y en el celular ensucian
+toda la pantalla. El degradé no era lo que protegía la columna: lo que la
+protege es el borde. Se puede sacar la niebla y dejar el borde.
+
+---
+
+## Parte 13 · El tramo del comparador, sin ruido (25/09/2026)
+
+### 39 · Compactar no es calmar
+
+![El tramo bajo la tabla del home: hoy (697 px), opción 3 sin cajas (308 px) y opción 4 en una tarjeta (290 px)](img/2026-09-25-home-tramo-calmo-escritorio.webp)
+
+![El mismo tramo a 390 px: hoy 1506 px, opción 3 607 px, opción 4 569 px](img/2026-09-25-home-tramo-calmo-celular.webp)
+
+**Qué muestra.** Con las opciones 1 y 2 del n.º 37 delante, Arturo: *«se ven
+como mucha info, mucho ruido. ¿Cómo podríamos solucionar esto?»*. El ruido no
+venía del alto: hoy son **6 cajas, unas 20 palabras en negrita y 7 ideas con el
+mismo peso**, y las opciones 1 y 2 las apretaban sin sacarles volumen. Las dos
+nuevas bajan el volumen: **3**, sin cajas: un solo acento (la espera de
+Essential, en una franja menta), la leyenda en una línea gris pegada a la
+tabla, la garantía en una línea con un tilde, tres preguntas como enlaces sin
+subtítulo y SP Senior en una frase. **4**, lo mismo, pero la espera, la
+garantía y las tres preguntas viven en **una** tarjeta blanca; afuera quedan
+solo la leyenda (arriba, pegada a la tabla) y la nota de precios.
+
+**Qué se decidió.** Arturo eligió la **4** (recomendada: un solo contenedor y
+un solo eje de lectura; en la 3 quedan cinco piezas sueltas de anchos
+distintos), y al elegirla preguntó: *«esa "essential" (las carencias), ¿no se
+podría simplemente poner como una fila más en el comparativo?»*. Sí: es un dato
+que cambia por plan, que es lo que la tabla hace. Se construyó el 26/09/2026
+con la espera como última fila («Tiempo de espera»): el tramo quedó en 244 px
+en escritorio (hoy eran 697) y 474 a 390 px (eran 1506).
+
+**La lección.** Achicar no saca ruido: lo concentra. El ruido lo hacen las
+cosas que piden atención a la vez (cajas, negritas, subtítulos, íconos), y
+se baja quitando pedidos, no píxeles: una sola cosa destacada por tramo, las
+demás en voz baja. Y una segunda, de método: la foto de «hoy» del n.º 37 salió
+a mitad de la animación de entrada de la página, lavada. Un «antes» que se ve
+peor de lo que es hace ganar a cualquier «después»; en esta lámina está
+repetida con la animación terminada.

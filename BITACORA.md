@@ -4091,3 +4091,38 @@ dejado de mostrar la red de tu ciudad. Se restauró, el nuevo pasó a llamarse
 nombre ya existe. Un «M» en `git status` donde esperabas un «??» es una alarma:
 estás tocando algo que otro hizo.
 
+
+## Capítulo 117 — Compactar no es calmar (25/09/2026)
+
+**Qué intentamos.** Arturo pidió apretar el tramo de abajo del comparador del
+home: *«cram it a little bit more while maintaining very good aesthetic
+design»*. Siete piezas apiladas, cada una en su caja. Se hicieron dos
+versiones que juntaban piezas y achicaban espacios: el tramo bajó de 697 a
+unos 410 px (docs/diseno n.º 37).
+
+**Qué pasó.** Arturo las miró y dijo lo que los números no decían: *«se ven
+como mucha info, mucho ruido. ¿Cómo podríamos solucionar esto?»*. Tenía
+razón: las dos conservaban las cajas, las negritas, los subtítulos de las
+puertas y el peso parejo de las siete ideas. Estaban más juntas, no más
+tranquilas. Contadas, hoy son 6 cajas, unas 20 palabras en negrita y 7 ideas
+que piden la misma atención.
+
+**Qué aprendimos.** El ruido no se mide en píxeles sino en pedidos de
+atención: cada caja, cada negrita y cada subtítulo es uno. Achicar sin sacar
+pedidos los concentra, y se oye más fuerte. Las dos versiones nuevas
+(n.º 39) sacan pedidos: una sola cosa destacada (la espera de Essential),
+la garantía en una línea, las puertas sin subtítulo, SP Senior en una frase.
+Y de paso, una de método: la foto de «hoy» de la primera lámina salió a mitad
+de la animación de entrada, lavada, y hacía ganar a cualquier propuesta. En
+una comparación, el «antes» se fotografía tan terminado como el «después».
+
+**Después, la fila.** Arturo eligió la versión en una tarjeta y, al elegirla,
+preguntó lo que la lámina no había visto: *«esa "essential" (las carencias),
+¿no se podría simplemente poner como una fila más en el comparativo? Pregunto
+para ahorrar espacio, porque igual se siente largo»*. La espera era una oración
+debajo de la tabla desde el 24/09, cuando se la puso «a la vista». Pero es un
+dato que cambia de plan a plan, y eso es exactamente lo que una tabla ordena:
+como fila se lee alineado con el precio de cada plan, y la oración sobraba. El
+tramo terminó en 244 px (eran 697). Lo que aprendimos, de nuevo: antes de
+decidir cómo decorar un dato, preguntarse qué forma tiene. Uno que se compara
+va en la tabla.
