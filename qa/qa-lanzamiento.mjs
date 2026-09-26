@@ -155,7 +155,10 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
 
 // ── «Dónde te atendés» del home y el mapa de la guía (25/09/2026) ───────────
 // El desglose sale de la planilla (scripts/red-home.mjs): se prueba que los
-// números existan y cambien con la ciudad, no un valor fijo que envejece.
+// números existan, no un valor fijo que envejece. Y que la sección siga corta
+// (26/09/2026, Arturo: «no hace falta poner dónde uno vive… ni cuántos
+// ginecólogos»; BITACORA cap. 122): sin botones de ciudad ni lista de
+// especialidades, y una sola salida, a la Guía Médica.
 console.log('\n── Dónde te atendés y el mapa de la guía');
 for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
   const page = await browser.newPage({ viewport: { width, height } });
@@ -166,14 +169,15 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const muro = await page.$eval('section.dta .muro-marco', (m) => ({ aria: m.getAttribute('aria-hidden'), n: m.querySelectorAll('.muro-texto span').length })).catch(() => ({ aria: null, n: 0 }));
   if (muro.aria !== 'true' || muro.n < 10) mal(nombre + ': el muro de nombres falta o lo leen los lectores de pantalla');
   const pais = await page.$$eval('section.dta .dta-cuadro b', (bs) => bs.map((b) => b.textContent).join('/'));
-  const segunda = page.locator('section.dta .dta-ciudad').nth(2);
-  const ciudad = (await segunda.textContent()).trim();
-  await segunda.click();
-  await page.waitForTimeout(200);
-  const enCiudad = await page.$$eval('section.dta .dta-cuadro b', (bs) => bs.map((b) => b.textContent).join('/'));
-  const href = await page.$eval('section.dta .dta-cta', (a) => a.getAttribute('href'));
-  if (!/^\d/.test(pais) || pais === enCiudad || !href.includes('c=' + encodeURIComponent(ciudad))) mal(nombre + ': elegir «' + ciudad + '» no cambia el desglose o el link a la guía');
-  else bien(nombre + ': desglose ' + pais + ' → ' + ciudad + ' ' + enCiudad + ', y el link lleva la ciudad');
+  const corta = await sec.evaluate((s) => ({
+    botones: s.querySelectorAll('button').length,
+    oficios: /ginecólog|pediatras|oftalmólog/i.test(s.innerText),
+    links: [...s.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')),
+  }));
+  if (!/^\d+(\/\d+){2,}$/.test(pais)) mal(nombre + ': «Dónde te atendés» no muestra el desglose de la red (' + (pais || 'vacío') + ')');
+  else if (corta.botones || corta.oficios) mal(nombre + ': «Dónde te atendés» volvió a crecer: ' + [corta.botones && corta.botones + ' botones', corta.oficios && 'lista de especialidades'].filter(Boolean).join(' y '));
+  else if (corta.links.length !== 1 || !/\/guia-medica\/$/.test(corta.links[0])) mal(nombre + ': «Dónde te atendés» debería tener una sola salida, a la Guía Médica (' + corta.links.join(', ') + ')');
+  else bien(nombre + ': desglose ' + pais + ', sin ciudades ni especialidades, y una sola salida a la guía');
   // El mapa: al costado en escritorio; detrás de «Lista | Mapa» en el celular.
   await page.goto(BASE + '/guia-medica/?esp=Pediatr%C3%ADa', { waitUntil: 'networkidle' });
   await page.waitForTimeout(500);

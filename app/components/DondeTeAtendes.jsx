@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { BP } from '../basePath';
 import { track } from '../track';
 import { GUIA_HREF } from '../edicion';
@@ -15,46 +14,37 @@ import MuroFondo from './MuroFondo';
    (docs/diseno n.º 33 a 35, opción 1 del home):
    - El DESGLOSE en lugar del total: «ese número grande, 615, a veces se puede
      comparar con otras prepagas… que tienen un número mayor». Un total se
-     compara con otro total; «44 pediatras» se compara con lo que la persona
-     necesita.
-   - «¿Dónde vivís?»: la pregunta que trae la persona, con la respuesta ahí
-     mismo. No repite la puerta a la Guía Médica (por eso se sacó la franja
-     «Lister + más de 50 prestadores» el 6/08): da la respuesta y después
-     lleva a la guía con la ciudad ya elegida.
+     compara con otro total; cuatro cuadros dicen de qué está hecha la red.
    - El MURO de fondo: desde el 26/09 es la red entera de Silver y Gold, con los
      más destacados primero (decisión de Arturo), en gris muy claro y sin velo,
-     para que la tarjeta resalte sola. La nota de abajo dice de qué red son;
-     «En todos los planes: …» sigue nombrando solo a los de todos los planes. Es textura: aria-hidden, sin puntero y sin selección.
+     para que la tarjeta resalte sola. La nota de abajo dice de qué red son. Es
+     textura: aria-hidden, sin puntero y sin selección.
      Desde el 26/09 es el mismo muro de toda la home (components/MuroFondo.jsx),
      acá en tono «pleno»: la página se desliza sobre una sola pared y esta es
      la sección donde se ve entera.
+   ⚠ MÁS CORTA DESDE EL 26/09/2026 (Arturo, mirándola en el celular: «es
+   excesivamente larga. No hace falta poner dónde uno vive, no hace falta
+   ponerlo de Lister, no hace falta poner los detalles de cuántos ginecólogos…
+   al final la persona se puede ir a la guía médica»). Salieron «¿Dónde vivís?»
+   con sus ocho ciudades, el panel por ciudad, «Entre los médicos: 53
+   ginecólogos…» y la línea de Lister. Queda el desglose del país y una sola
+   salida: la Guía Médica, que responde la pregunta de la ciudad mejor que ocho
+   botones. Ver BITACORA cap. 122.
    Los datos salen de lib/red-home.json, que scripts/red-home.mjs arma
    de la planilla antes de cada build. Ninguna cifra está escrita a mano. */
 
 const GUIA = `${BP}${GUIA_HREF}`;
 const fecha = (red.datos_al || '').split('-').reverse().join('/');
 const plural = (n, uno, varios) => (n === 1 ? uno : varios);
-const lista = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
 
 export default function DondeTeAtendes() {
-  const [sel, setSel] = useState('');
-  const ciudad = red.ciudades.find((x) => x.c + '|' + x.dp === sel);
-  const d = ciudad || red.pais;
-
+  const d = red.pais;
   const cuadros = [
     [d.sanatorios, plural(d.sanatorios, 'sanatorio o clínica', 'sanatorios y clínicas')],
     [d.laboratorios, plural(d.laboratorios, 'laboratorio', 'laboratorios')],
-    [d.medicos, plural(d.medicos, 'médico', 'médicos'), ciudad ? '' : `de ${red.pais.especialidades} especialidades`],
+    [d.medicos, plural(d.medicos, 'médico', 'médicos'), `de ${d.especialidades} especialidades`],
     [d.imagenes, plural(d.imagenes, 'centro de diagnóstico por imagen', 'centros de diagnóstico por imagen')],
   ].filter(([n]) => n > 0);
-  // Solo las especialidades con dos o más: «1 nutricionista y 1 oftalmólogo» no dice nada.
-  const oficios = d.oficios.filter((o) => o.n >= 2);
-  const hrefGuia = ciudad ? `${GUIA}?c=${encodeURIComponent(ciudad.c)}&dp=${encodeURIComponent(ciudad.dp)}` : GUIA;
-
-  const elegir = (k, c) => {
-    setSel(k);
-    track('red_ciudad', { ciudad: c || 'todo_el_pais' });
-  };
 
   return (
     <section className="dta con-muro" aria-labelledby="dta-titulo">
@@ -62,44 +52,19 @@ export default function DondeTeAtendes() {
 
       <div className="dta-tarjeta">
         <h2 id="dta-titulo" className="disp dta-titulo">Dónde te <span>atendés</span>.</h2>
-        <p className="dta-bajada">Sanatorios, laboratorios y médicos en {red.pais.ciudades} ciudades del país.</p>
+        <p className="dta-bajada">Sanatorios, laboratorios y médicos en {d.ciudades} ciudades del país.</p>
 
-        <div id="dta-pregunta" className="disp dta-pregunta">¿Dónde vivís?</div>
-        <div className="dta-ciudades" role="group" aria-labelledby="dta-pregunta">
-          <button type="button" className="disp dta-ciudad" aria-pressed={!ciudad} onClick={() => elegir('', '')}>Todo el país</button>
-          {red.ciudades.map((x) => {
-            const k = x.c + '|' + x.dp;
-            return <button key={k} type="button" className="disp dta-ciudad" aria-pressed={sel === k} onClick={() => elegir(k, x.c)}>{x.c}</button>;
-          })}
-          <a href={GUIA} className="disp dta-ciudad dta-otra" onClick={() => track('guia_handoff', { q: '', via: 'red_otra_ciudad' })}>Otra ciudad</a>
+        <div className={'dta-cuadros n' + cuadros.length}>
+          {cuadros.map(([n, que, extra]) => (
+            <div key={que} className="dta-cuadro">
+              <b className="disp num-tnum">{n}</b>
+              <span>{que}</span>
+              {extra ? <small>{extra}</small> : null}
+            </div>
+          ))}
         </div>
 
-        <div className="dta-panel" aria-live="polite">
-          <div className="dta-panel-tit">
-            <b className="disp">{ciudad ? ciudad.c : 'Todo el país'}</b>
-            <span>{ciudad ? `${ciudad.total} ${plural(ciudad.total, 'médico o centro', 'médicos y centros')} en la red` : `${red.pais.ciudades} ciudades · ${red.pais.departamentos} departamentos`}</span>
-          </div>
-          <div className={'dta-cuadros n' + cuadros.length}>
-            {cuadros.map(([n, que, extra]) => (
-              <div key={que} className="dta-cuadro">
-                <b className="disp num-tnum">{n}</b>
-                <span>{que}</span>
-                {extra ? <small>{extra}</small> : null}
-              </div>
-            ))}
-          </div>
-          {oficios.length > 0 && (
-            <p className="dta-oficios">Entre los médicos: {oficios.map((o, i) => <span key={o.o}>{i ? (i === oficios.length - 1 ? ' y ' : ', ') : ''}<b className="disp num-tnum">{o.n}</b> {o.o}</span>)}.</p>
-          )}
-          <div className="dta-pie">
-            {ciudad
-              ? (ciudad.nombres.length ? <p>En todos los planes: <b className="disp">{lista(ciudad.nombres)}</b>.</p> : <p />)
-              : <p>Y <b className="disp">Lister</b>, nuestro centro médico propio en Asunción.</p>}
-            <a href={hrefGuia} className="disp boton dta-cta" onClick={() => track('guia_handoff', { q: '', via: ciudad ? 'red_ciudad' : 'red_pais' })}>
-              {ciudad ? `Ver ${ciudad.c} en la Guía Médica` : 'Buscá tu ciudad en la Guía Médica'}
-            </a>
-          </div>
-        </div>
+        <a href={GUIA} className="disp boton dta-cta" onClick={() => track('guia_handoff', { q: '', via: 'red_pais' })}>Buscá tu ciudad en la Guía Médica</a>
       </div>
 
       <p className="dta-nota">Las cifras y los nombres del fondo son de la red de Silver y Gold, según la planilla al {fecha}. La red de Essential cambia según la zona: buscala en la Guía Médica.</p>

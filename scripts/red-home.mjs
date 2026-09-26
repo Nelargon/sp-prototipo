@@ -14,10 +14,11 @@
    comparar con otras prepagas… que tienen un número mayor»; se desglosa):
    - La red de Silver y Gold (guía «privilege»), la misma de las cifras del
      FAQ. Un prestador cuenta una vez aunque tenga varias filas (id único).
-   - «En todos los planes: …» (al elegir una ciudad) nombra solo a los que
-     están además en alguna red de Essential: ahí se promete algo, y quien
-     compra Essential no puede ver un sanatorio que su plan no tiene (BITACORA
-     cap. 114).
+   - Sin ciudades ni especialidades desde el 26/09/2026: Arturo acortó la
+     sección («no hace falta poner dónde uno vive… ni cuántos ginecólogos»;
+     BITACORA cap. 122). Hasta ese día este script armaba también las ocho
+     ciudades de «¿Dónde vivís?», con «En todos los planes: …», y las cuatro
+     especialidades con más médicos; están en el historial de git.
    - EL MURO, en cambio, es la red entera de Silver y Gold, con los más
      destacados primero (26/09/2026, decisión de Arturo: «la idea es también
      que la gente sienta que estos son realmente todos los prestadores que
@@ -27,7 +28,6 @@ import { readFileSync, writeFileSync } from 'node:fs';
 
 const datos = JSON.parse(readFileSync('lib/guia-medica.json', 'utf8'));
 const red = datos.prestadores.filter((p) => p.r.includes('privilege'));
-const enTodos = (p) => p.r.includes('privilege') && p.r.some((r) => r.startsWith('esencial'));
 
 // Fuera de la vidriera del home, aunque sigan en la guía (la planilla manda en
 // la guía; el home elige qué muestra). Los tres esperan que SP los verifique
@@ -63,32 +63,6 @@ const limpio = (n) => n.replace(/\s*-\s*Suc\.?\s*\d+$/i, '').replace(/\s+(Ltda|S
 const ids = (lista) => new Set(lista.map((p) => p.id)).size;
 const esSanatorio = (p) => p.t === 'i' && p.e === 'Sanatorios y clínicas';
 
-// Especialidades en el idioma de una familia: «44 pediatras».
-const OFICIO = {
-  'Ginecología y Obstetricia': ['ginecólogo y obstetra', 'ginecólogos y obstetras'],
-  'Pediatría': ['pediatra', 'pediatras'],
-  'Oftalmología': ['oftalmólogo', 'oftalmólogos'],
-  'Clínica Médica': ['clínico', 'clínicos'],
-  'Otorrinolaringología': ['otorrino', 'otorrinos'],
-  'Traumatología': ['traumatólogo', 'traumatólogos'],
-  'Cardiología': ['cardiólogo', 'cardiólogos'],
-  'Cirugía General': ['cirujano', 'cirujanos'],
-  'Dermatología': ['dermatólogo', 'dermatólogos'],
-  'Urología': ['urólogo', 'urólogos'],
-  'Nutrición': ['nutricionista', 'nutricionistas'],
-  'Psicología': ['psicólogo', 'psicólogos'],
-  'Neurología': ['neurólogo', 'neurólogos'],
-  'Gastroenterología': ['gastroenterólogo', 'gastroenterólogos'],
-  'Endocrinología': ['endocrinólogo', 'endocrinólogos'],
-  'Neumología': ['neumólogo', 'neumólogos'],
-  'Coloproctología': ['coloproctólogo', 'coloproctólogos'],
-};
-function oficios(lista, cuantos) {
-  const por = {};
-  for (const p of lista) if (p.t === 'p' && OFICIO[p.e]) (por[p.e] = por[p.e] || new Set()).add(p.id);
-  return Object.entries(por).map(([e, s]) => ({ n: s.size, o: OFICIO[e][s.size === 1 ? 0 : 1] }))
-    .sort((a, b) => b.n - a.n).slice(0, cuantos);
-}
 function desglose(lista) {
   const de = (f) => ids(lista.filter(f));
   return {
@@ -105,22 +79,7 @@ const pais = {
   ...desglose(red),
   especialidades: new Set(red.filter((p) => p.t === 'p').map((p) => p.e)).size,
   ciudades: new Set(red.map((p) => p.c + '|' + p.dp)).size,
-  departamentos: new Set(red.map((p) => p.dp)).size,
-  oficios: oficios(red, 4),
 };
-
-// Las ciudades con más red, para los botones de «¿Dónde vivís?»
-const porCiudad = {};
-for (const p of red) (porCiudad[p.c + '|' + p.dp] = porCiudad[p.c + '|' + p.dp] || []).push(p);
-const ciudades = Object.entries(porCiudad)
-  .map(([k, lista]) => {
-    const [c, dp] = k.split('|');
-    const nombres = [...new Set(lista.filter((p) => p.t === 'i' && enTodos(p) && !FUERA_DEL_HOME.has(p.n) && !FUERA_DEL_HOME.has(limpio(p.n)))
-      .sort((a, b) => (esSanatorio(b) - esSanatorio(a)) || a.n.localeCompare(b.n, 'es')).map((p) => limpio(p.n)))].slice(0, 3);
-    return { c, dp, ...desglose(lista), oficios: oficios(lista, 4), nombres };
-  })
-  .sort((a, b) => b.total - a.total || a.c.localeCompare(b.c, 'es'))
-  .slice(0, 8);
 
 // El muro: todas las instituciones de la red de Silver y Gold (sanatorios,
 // laboratorios, imagen y el resto), los destacados primero y después las
@@ -161,6 +120,6 @@ for (let i = 0; S.length || L.length || O.length; i++) {
   if (i % 2 === 1 && O.length) muro.push(O.shift());
 }
 
-const resumen = { datos_al: datos.meta.datos_al, pais, ciudades, muro };
+const resumen = { datos_al: datos.meta.datos_al, pais, muro };
 writeFileSync('lib/red-home.json', JSON.stringify(resumen));
 console.log(`✓ lib/red-home.json: ${pais.total} en la red de Silver y Gold · ${pais.sanatorios} sanatorios · ${pais.laboratorios} laboratorios · ${pais.medicos} médicos · muro de ${muro.length} nombres (${nDestacados} destacados primero)`);

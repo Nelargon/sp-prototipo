@@ -938,8 +938,9 @@ export default function Page() {
           El padding inferior que aportaba esta franja pasó a la sección de arriba. */}
 
       {/* DÓNDE TE ATENDÉS — la red médica (25/09/2026). Reemplaza a la tira de
-          prestadores en movimiento: desglose, «¿Dónde vivís?» y el muro de
-          sanatorios de fondo. Ver app/components/DondeTeAtendes.jsx. */}
+          prestadores en movimiento: desglose, muro de la red de fondo y la
+          salida a la Guía Médica («¿Dónde vivís?» salió el 26/09: la guía lo
+          responde). Ver app/components/DondeTeAtendes.jsx. */}
       <DondeTeAtendes />
 
       {/* RED DE BENEFICIOS — la tira de aliados, sola desde el 25/09/2026 (los

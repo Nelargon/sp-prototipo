@@ -1197,3 +1197,27 @@ El segundo es la intensidad: con la transparencia que eligió Arturo, una letra
 de 12 px sobre el claro deja de leerse; se vuelve trama. Legible y chica a la
 vez pide un poco más de contraste.
 
+## Parte 16 · «Dónde te atendés», más corta (26/09/2026)
+
+### 43 · El home muestra que la red existe; la guía dice dónde
+
+![«Dónde te atendés» en el celular: hoy, con «¿Dónde vivís?», la lista de especialidades y Lister, contra la propuesta, con el desglose y un botón](img/2026-09-26-home-donde-te-atendes-corta.webp)
+
+**Qué muestra.** La sección a 390 px, antes y después del recorte. A la
+izquierda, la del 25/09: la pregunta «¿Dónde vivís?» con nueve botones, el
+panel «Todo el país · 79 ciudades · 17 departamentos», los cuatro cuadros,
+«Entre los médicos: 53 ginecólogos y obstetras…», Lister y el botón a la guía:
+922 px. A la derecha, los cuatro cuadros y el botón: 617 px.
+
+**Qué se decidió.** Arturo, un día después de elegirla, mirándola en el
+celular: *«es excesivamente larga. No hace falta poner dónde uno vive, no hace
+falta ponerlo de Lister, no hace falta poner los detalles de cuántos
+ginecólogos y todo eso hay… porque al final la persona se puede ir a la guía
+médica»*. Se construyó la de la derecha.
+
+**La lección.** En el home, una respuesta completa compite con la herramienta
+que la da mejor. La sección tenía que mostrar que la red existe y cuánta es;
+la pregunta «¿y en mi ciudad?» ya tiene una casa, la Guía Médica, que la
+contesta con nombres, teléfonos y mapa. Dos lugares que responden lo mismo
+alargan el camino en vez de acortarlo.
+
