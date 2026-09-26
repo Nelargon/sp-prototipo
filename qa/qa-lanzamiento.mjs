@@ -268,16 +268,21 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
         esperado: s.classList.contains('dta') ? 'pleno' : lum(getComputedStyle(s).backgroundColor) < 0.4 ? 'oscuro' : 'claro',
         textura: !!m && m.getAttribute('aria-hidden') === 'true' && getComputedStyle(m).pointerEvents === 'none',
         fijo: !!t && getComputedStyle(t).position === 'fixed' && Math.abs(bb.top) < 1 && Math.abs(bb.height - innerHeight) < 2,
+        // Los que el home deja afuera hasta que SP los verifique (sp-interno#71;
+        // FUERA_DEL_HOME de scripts/red-home.mjs).
+        afuera: t ? ['Sanatorio da Vinci', 'COMED Amambay', 'Planmed Caaguazú'].filter((n) => t.textContent.includes(n)) : [],
       };
     });
   });
+  const colados = [...new Set(secs.flatMap((x) => x.afuera))];
+  if (colados.length) mal(nombre + ': el muro muestra prestadores que el home deja afuera: ' + colados.join(' · '));
   const sin = secs.filter((x) => !x.tono), mal_tono = secs.filter((x) => x.tono && x.tono !== x.esperado);
   const suelto = secs.filter((x) => x.tono && (!x.textura || !x.fijo));
   if (!secs.length) mal(nombre + ': no encontré las secciones de la home');
   if (sin.length) mal(nombre + ': ' + sin.length + ' sección(es) sin muro: ' + sin.map((x) => x.nombre).join(' · '));
   if (mal_tono.length) mal(nombre + ': tono del muro que no va con su fondo: ' + mal_tono.map((x) => x.nombre + ' (' + x.tono + ', va ' + x.esperado + ')').join(' · '));
   if (suelto.length) mal(nombre + ': muro que lo leen los lectores, ataja el puntero o no queda fijo: ' + suelto.map((x) => x.nombre).join(' · '));
-  if (secs.length && !sin.length && !mal_tono.length && !suelto.length) bien(nombre + ': las ' + secs.length + ' secciones con su muro, fijo y en el tono de su fondo');
+  if (secs.length && !sin.length && !mal_tono.length && !suelto.length && !colados.length) bien(nombre + ': las ' + secs.length + ' secciones con su muro, fijo, en el tono de su fondo y sin los prestadores que quedan afuera');
   await page.close();
 }
 

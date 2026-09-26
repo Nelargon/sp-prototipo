@@ -497,12 +497,17 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    los píxeles salían idénticos). Así que se movió el paso más chico que existe:
    «oscuro» de 11/255 a 10/255 y «claro» de 5/255 a 6/255. Por eso los alfas
    están escritos como múltiplos de 1/255. «pleno», el de «Dónde te atendés».
-   Lo medido en la captura está en el HANDOFF. */
+   Lo medido en la captura está en el HANDOFF.
+   Letra chica (26/09, opción B de docs/diseno n.º 42): 16 px (13 en el
+   celular) para que entre la red entera de Silver y Gold; a esa letra el trazo
+   es más fino, así que «claro» subió otro paso (6/255 → 7/255) para seguir
+   leyéndose. El padding de arriba deja la primera línea debajo del menú fijo:
+   ahí van los destacados, y se ven en todo el home. */
 .con-muro{position:relative;isolation:isolate}
 .muro-marco{position:absolute;inset:0;z-index:-1;clip-path:inset(0);pointer-events:none;user-select:none}
-.muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:40px;line-height:1.28;font-weight:900;letter-spacing:-.015em;text-align:justify}
+.muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:92px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:16px;line-height:1.62;font-weight:800;letter-spacing:0;text-align:justify}
 .muro-oscuro .muro-texto{color:rgba(255,255,255,.0392)}
-.muro-claro .muro-texto{color:rgba(0,27,52,.0235)}
+.muro-claro .muro-texto{color:rgba(0,27,52,.0275)}
 .muro-pleno .muro-texto{color:var(--sp-muro)}
 .muro-pleno .m2{color:var(--sp-muro-2)}
 .muro-pleno i{font-style:normal}
@@ -543,7 +548,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .dta-nota{position:relative;max-width:960px;margin:16px auto 0;text-align:center;font-family:var(--font-inter),sans-serif;font-size:12px;line-height:1.6;color:var(--sp-muted)}
 @media(max-width:600px){
   .dta{padding:64px 12px 48px}
-  .muro-texto{font-size:26px}
+  .muro-texto{font-size:13px;padding-top:88px}
   .dta-tarjeta{padding:26px 18px 22px}
   .dta-titulo{font-size:28px}
   .dta-ciudades{flex-wrap:nowrap;overflow-x:auto;margin-right:-18px;padding-right:18px;scrollbar-width:none;scroll-snap-type:x proximity}

@@ -4197,3 +4197,34 @@ respuesta: la regla del cap. 89 (probarlo con un caso que debe fallar) evitó
 cerrar el punto con un «no había nada». Y un dato para la próxima: en el
 navegador la fuente se reconoce por su alias (`display`, `inter`), no por su
 nombre comercial.
+
+## Capítulo 121 — La regla que Arturo rompió a propósito (26/09/2026)
+
+**Qué intentamos.** Achicar la letra del muro de la home para que entraran más
+prestadores (docs/diseno n.º 42). La recomendación fue 24 px. A 16 px, los 92
+nombres de todos los planes se repetían dos o tres veces a la vista, y un muro
+que se repite deja de parecer una red. Para llenarlo sin repetir había que
+sumar los de Silver y Gold solos, y eso rompía una regla del 25/09: en el home,
+solo nombres de todos los planes.
+
+**Qué pasó.** Arturo rompió la regla, con su porqué: *«la idea es también que
+la gente sienta que estos son realmente todos los prestadores que hay… y que en
+los lugares más visibles también estén los mejores prestadores, los más
+renombrados»*. Y lo encuadró: *«nuestra intención es también vender. No es lo
+principal en sí, pero es la consecuencia… sin romper con los valores y
+principios nobles que tenemos como personas»*.
+- La regla vieja tenía un costado incoherente que nadie había visto: la
+  sección mostraba las **cifras** de Silver y Gold (130 sanatorios) con los
+  **nombres** de todos los planes (57). Con su cambio, números y nombres hablan
+  de la misma red.
+- Lo que sí quedó estricto es lo que promete: «En todos los planes: …» al
+  elegir una ciudad, y la nota que dice de qué red son los nombres.
+- «Los más renombrados» se investigó con fuentes. Salió algo que no sabíamos:
+  nadie de la red está acreditado, y un prestador cargado como sanatorio es
+  una prepaga (`sp-interno`, cap. 20).
+
+**Qué aprendimos.** Una regla de honestidad protege una promesa, no un
+formato. Mostrar todo lo que la red tiene no promete nada si dice de qué red
+es. La promesa está en «en todos los planes», y ahí la regla sigue entera.
+Antes de defender una regla, preguntarse qué promesa cuida.
+

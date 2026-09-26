@@ -21,9 +21,10 @@ import MuroFondo from './MuroFondo';
      mismo. No repite la puerta a la Guía Médica (por eso se sacó la franja
      «Lister + más de 50 prestadores» el 6/08): da la respuesta y después
      lleva a la guía con la ciudad ya elegida.
-   - El MURO de fondo: los sanatorios y clínicas que están en todos los planes,
-     en gris muy claro y sin velo (pedido de Arturo), para que la tarjeta
-     resalte sola. Es textura: aria-hidden, sin puntero y sin selección.
+   - El MURO de fondo: desde el 26/09 es la red entera de Silver y Gold, con los
+     más destacados primero (decisión de Arturo), en gris muy claro y sin velo,
+     para que la tarjeta resalte sola. La nota de abajo dice de qué red son;
+     «En todos los planes: …» sigue nombrando solo a los de todos los planes. Es textura: aria-hidden, sin puntero y sin selección.
      Desde el 26/09 es el mismo muro de toda la home (components/MuroFondo.jsx),
      acá en tono «pleno»: la página se desliza sobre una sola pared y esta es
      la sección donde se ve entera.
@@ -101,7 +102,7 @@ export default function DondeTeAtendes() {
         </div>
       </div>
 
-      <p className="dta-nota">Red de Silver y Gold, planilla al {fecha}. Los nombres que ves están en todos los planes; la red de Essential cambia según la zona.</p>
+      <p className="dta-nota">Las cifras y los nombres del fondo son de la red de Silver y Gold, según la planilla al {fecha}. La red de Essential cambia según la zona: buscala en la Guía Médica.</p>
     </section>
   );
 }
