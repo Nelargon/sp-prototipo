@@ -1105,3 +1105,34 @@ demás en voz baja. Y una segunda, de método: la foto de «hoy» del n.º 37 sa
 a mitad de la animación de entrada de la página, lavada. Un «antes» que se ve
 peor de lo que es hace ganar a cualquier «después»; en esta lámina está
 repetida con la animación terminada.
+
+---
+
+## Parte 14 · El muro detrás de toda la home (26/09/2026)
+
+### 40 · Cuatro maneras de que el muro atraviese la página
+
+![El muro en toda la home, cuatro versiones, en tres tramos a tamaño real: el inicio, el manifiesto y «Cómo funciona»](img/2026-09-26-home-muro-toda-la-pagina-escritorio.webp)
+
+![Las versiones A y C a 390 px, junto a la home de hoy](img/2026-09-26-home-muro-toda-la-pagina-celular.webp)
+
+**Qué muestra.** Arturo, con el tapiz de la guía ya elegido: *«el mural se
+podría ver muy bien si se puede ver atrás de toda la página, desde el home,
+desde la primera sección, que traspase toda la página»*. En las cuatro es
+**un solo muro**: las líneas siguen de una sección a la otra y cada sección
+muestra su pedazo, en el color de su fondo (gris sobre claro, navy apenas
+más claro sobre navy). **A**, de punta a punta, detrás de todo. **B**, por
+los márgenes, como la guía (en el celular no existe). **C**, solo en las
+bandas oscuras: el inicio, el manifiesto, el contacto y el pie. **D**, C más
+los márgenes de las claras. En «Dónde te atendés» el muro queda entero en
+todas.
+
+**Qué se decidió.** Pendiente de Arturo. Recomendada: **C**.
+
+**La lección.** El muro no molesta por estar, molesta por dónde está: detrás
+de un texto chico (los pasos de «Cómo funciona») es el ruido que se acaba de
+sacar del comparador (n.º 39). Sobre navy, en cambio, se lee como una marca
+de agua y no compite con nada. La pregunta para un fondo no es «¿se ve
+lindo?» sino «¿qué hay que leer encima?». Y una de método: a media escala, el
+navy sobre navy desaparece de la lámina; los recortes van a tamaño real, o la
+lámina miente por omisión.

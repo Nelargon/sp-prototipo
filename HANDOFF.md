@@ -97,7 +97,8 @@ BITACORA cap. 117). Era una pila de siete cajas; ahora:
 
 **Pendiente de Arturo:** el «más de 600» que sigue en tres preguntas
 frecuentes del home → `Nelargon/sp-interno#68`. Y su idea del 26/09, el
-**muro detrás de toda la home**, está en maqueta.
+**muro detrás de toda la home**: cuatro versiones en docs/diseno n.º 40
+(recomendada C, solo en las bandas oscuras); no se construye hasta que elija.
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
