@@ -4292,3 +4292,31 @@ aviso reconocía el problema en vez de resolverlo. Una cosa más, que
 conviene saber antes de elegir: las tres formas se leen mejor que la de hoy y
 las tres miden más. En el celular, leer mejor cuesta alto.
 
+## Capítulo 124 — El patrón que estaba en el informe (26/09/2026)
+
+**Qué intentamos.** Resolver el comparador en el celular con las formas que
+salían de «transformar la tabla»: fila partida, dos planes a la vez con
+selector y un plan a la vez con pestañas (docs/diseno n.º 45). Arturo prefirió
+«un plan a la vez», pidió más vueltas, y las tres siguientes siguieron siendo
+de pestañas o de tarjetas que se deslizan de costado (n.º 47). La
+recomendación fue la 3.1, con pestañas.
+
+**Qué pasó.** Arturo: *«no me convence del todo ver los planes por botón, sino
+que sea más scroll. O sea, que las tarjetas de los planes estén una debajo de
+la otra… No sé por qué no se me ocurrió esa idea, pero usualmente es así como
+se ven las versiones móviles de las páginas web más icónicas del mercado.»*
+Estaba en el informe de referencias desde el principio: Notion, en el
+celular, esconde la tabla y deja solo las tarjetas; ChatGPT y Spotify las
+apilan. Las seis muestras de celular partieron de la tabla y ninguna probó lo
+más común. Medido al construirlas (n.º 50): apilar tres tarjetas completas
+lleva la sección a 2630 px, tres pantallas; con cuatro datos por tarjeta y el
+resto detrás de un botón, a 1232.
+
+**Qué aprendimos.** En el celular el gesto natural es bajar con el dedo, no
+tocar pestañas ni deslizar de costado: lo que se esconde detrás de un toque, se
+ve menos. Y un error de método, con nombre: las opciones se generaron a partir
+del problema («la tabla no entra») en vez de a partir de lo que hacen las
+mejores («¿cómo muestran tres planes en un teléfono?»). Cuando un informe de
+referencias trae un patrón que se repite, va entre las muestras aunque no
+parezca resolver el problema como se lo planteó.
+

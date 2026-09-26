@@ -92,8 +92,17 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   px; la tabla completa, en /planes), **3.3** uno grande y los otros dos chicos
   (1269 px). Computadora: **1.1** botones fijos arriba y grupos que se pliegan
   (972 px), **1.2** compacta, una línea por fila (723 px, más corta que la de
-  hoy, 858), **1.3** columnas como tarjetas (994 px). **Esperando su
-  elección**.
+  hoy, 858), **1.3** columnas como tarjetas (994 px). Arturo, al verlas: en la
+  computadora le gustan la 1.2 (*«más corto… tiene el botón al final»*) y la
+  1.3 (*«mucho más limpio»*); en el celular descartó las pestañas: *«que las
+  tarjetas de los planes estén una debajo de la otra en formato scroll… así
+  es como se ven las versiones móviles de las páginas web más icónicas»*.
+  Nuevas muestras (docs/diseno n.º 49 y 50). Computadora: **1.4** tarjetas
+  compactas (784 px) y **1.5** tabla limpia con Silver en tarjeta (786 px).
+  Celular, apiladas: **4.1** tarjetas completas (2630 px, 3,1 pantallas),
+  **4.2** «todo lo del anterior, y además» (2018 px) y **4.3** tarjetas
+  resumen con cuatro datos y «Comparar los 10 servicios» (1232 px). **Esperando
+  su elección**.
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):

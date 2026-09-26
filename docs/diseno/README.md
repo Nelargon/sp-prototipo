@@ -1315,3 +1315,40 @@ lado del número y no debajo alcanza para que la tabla quede más corta que la d
 hoy, aun con los grupos y los nombres fijos arriba. En la 1.3 el muro se ve
 detrás de los nombres de las filas; si se elige, esa columna necesita fondo.
 
+### 49 · En la computadora, lo corto de una y lo limpio de otra
+
+![El comparador en la computadora: la compacta (1.2) y las columnas como tarjetas (1.3) arriba, y sus dos combinaciones abajo](img/2026-09-26-comparador-escritorio-combinaciones.webp)
+
+**Qué muestra.** Arturo, entre la 1.2 y la 1.3: una *«se ve más corto, está muy
+bien y tiene el botón… al final»*, la otra *«se ve mucho más limpio»*. Dos
+combinaciones a 1280 px. **1.4**, tarjetas compactas: cada plan en su tarjeta,
+con filas de una línea (784 px). **1.5**, una tabla limpia, sin cajas ni rayado,
+donde solo Silver se levanta como tarjeta (786 px). Las cuatro son más cortas
+que la de hoy (858 px).
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** Una tabla se ve limpia por lo que le falta, no por lo que se le
+agrega. En la 1.5 se sacaron el rayado, los fondos por celda y los bordes, y la
+tarjeta queda solo donde hay algo que decir: el plan destacado.
+
+### 50 · En el celular, los planes uno debajo del otro
+
+![Los planes apilados en el celular: tarjetas completas, «todo lo del anterior, y además» y tarjetas resumen](img/2026-09-26-comparador-celular-apiladas.webp)
+
+**Qué muestra.** Arturo descartó las pestañas del celular: *«que las tarjetas de
+los planes estén una debajo de la otra en formato scroll… usualmente es así como
+se ven las versiones móviles de las páginas web más icónicas del mercado»*. Tres
+formas a 390 px. **4.1**, cada plan con sus 10 servicios: 2630 px, 3,1 pantallas.
+**4.2**, Essential completo y, en Silver y Gold, «todo lo del anterior, y
+además», con lo que tenía el anterior entre paréntesis: 2018 px. **4.3**, cuatro
+datos por plan y «Comparar los 10 servicios» para el resto: 1232 px. Hoy la
+tabla mide 1099 px.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** Apilar tres planes multiplica por tres lo que dice cada uno. Las
+páginas de precios que apilan en el celular dicen poco por tarjeta y dejan el
+detalle para después; con los 10 servicios completos, la sección triplica su
+largo.
+
