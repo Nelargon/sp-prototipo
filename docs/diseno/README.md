@@ -1352,3 +1352,59 @@ páginas de precios que apilan en el celular dicen poco por tarjeta y dejan el
 detalle para después; con los 10 servicios completos, la sección triplica su
 largo.
 
+### 51 · La letra chica, en una aclaración
+
+![La 1.5 en la computadora: con todo el texto, y con la letra chica en un globo, en una tarjeta del servicio o en una fila que se abre](img/2026-09-26-comparador-escritorio-aclaraciones.webp)
+
+**Qué muestra.** Arturo eligió la 1.5 (*«se ve súper bien»*) y marcó en una
+captura todo lo secundario: la unidad debajo de cada servicio («al año»,
+«tope por evento»), las notas debajo de cada valor («por familia», «según el
+servicio») y la leyenda de abajo. Su idea: *«en mouse hover o que la persona
+haga clic en el ítem, pueda mostrar una tarjetita de aclaración… así ahorramos
+exceso de información, ahorramos espacio»*. Tres formas a 1280 px, cada una
+con una aclaración abierta: **1**, un globo sobre el dato, el mismo que ya
+explica «carencia» en el sitio (734 px); **2**, una tarjeta del servicio con los
+tres planes (734 px); **3**, la fila que se abre (792 px con una abierta).
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** Esconder la letra chica funciona cuando lo escondido amplía el
+dato, no cuando lo cambia. «Al 100%: no ponés nada» amplía. «Por familia» en
+Essential cambia la comparación: 5 sesiones por familia contra 15 no es tres
+veces más, es más todavía. Lo que cambia el dato se queda a la vista.
+
+### 52 · Titulillos para no perderse en el scroll
+
+![La tarjeta de Essential en el celular con los titulillos de tres formas: con ícono propio, con banda de color y en bloques](img/2026-09-26-comparador-celular-titulillos.webp)
+
+**Qué muestra.** Arturo eligió la 4.1 para el celular, *«especialmente porque
+especificaste urgencias, internación, consultas»*, y pidió titulillos más
+visuales, *«un diferencial interesante»*. Tres formas en la tarjeta de
+Essential: **1**, con el ícono propio (orden, hospital, reloj); **2**, con una
+banda de color a lo ancho; **3**, cada grupo como un bloque.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** En una columna de casi tres pantallas, los titulillos son los
+carteles del camino: dicen dónde estás sin leer. Es uno de los pocos lugares
+donde un ícono se gana su lugar, porque se repite igual en las tres tarjetas y
+se reconoce antes de leerse.
+
+### 53 · Los doce aliados, sin espacio muerto
+
+![Los aliados en el celular: la tira de hoy contra los 12 logos en grilla de 3, en muro continuo y en mosaico](img/2026-09-26-home-aliados-los-doce.webp)
+
+**Qué muestra.** Arturo eligió la B (logos quietos), pero con los 12: *«no hacer
+más chicos los logotipos, sino compactar los espacios, porque veo que hay mucho
+espacio muerto»*. Tres formas con los logos del tamaño de hoy: **1**, grilla de
+3 (309 px); **2**, muro continuo (257 px); **3**, mosaico en recuadros (365 px).
+Hoy la tira mide 419 px y muestra 4 logos a la vez.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** El espacio muerto no estaba en los archivos: se midieron y ya
+vienen sin márgenes. Estaba en el diseño: 60 px entre logos en la tira y
+casilleros del ancho del logo más ancho en la grilla. Y los archivos son chicos
+(de 19 a 63 px de alto): para agrandarlos hay que pedir los originales, no
+estirarlos.
+
