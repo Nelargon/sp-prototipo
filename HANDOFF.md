@@ -116,6 +116,11 @@ desliza sobre una sola pared, como el tapiz de la guía.
   idénticos. Se movió un paso cada uno (navy 11/255 → 10/255, claras 5/255 →
   6/255): el muro claro pasó de 4 a 5 puntos sobre el fondo y el navy bajó
   uno. Es el cambio más chico que existe; para retocarlo, de a 1/255.
+- **En el inicio, el muro no va sobre la foto** (Arturo, 26/09): se apaga
+  hacia la derecha antes de que la foto empiece a verse (máscara en
+  `[data-hero]>.muro-marco`, tres anchos: >1250, ≤1250 y ≤820 px). En el
+  celular, donde la foto ocupa todo el ancho, queda solo en el borde
+  izquierdo. Si cambia la máscara de `[data-hero-bg]`, cambia esta.
 - Costo medido: el HTML del home pasa de 16,9 a 18,1 KB comprimido; el scroll
   sigue a 60 cuadros por segundo con la CPU 4× más lenta (laboratorio).
 
