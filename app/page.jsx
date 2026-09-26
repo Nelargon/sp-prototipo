@@ -845,7 +845,7 @@ export default function Page() {
 
           {/* SP Senior en una frase: el track conserva origen 'banda_senior'
               para que la serie de la métrica siga siendo una sola. */}
-          <p data-rv className="cmp-senior">¿Es para tus padres? Plan Vital, para 65 años o más. <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })}>Simulá Plan Vital →</a></p>
+          <p data-rv className="cmp-senior">¿Es para tus padres? Plan Vital, para 65 años o más. <a href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'banda_senior' })}>Simulá Plan Vital →</a></p>
         </div>
       </section>
 

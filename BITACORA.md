@@ -4173,3 +4173,27 @@ Un ajuste fino se verifica en los píxeles, no en el CSS. Y un detalle que
 sirve para la próxima: una transparencia muy baja se mueve de a 1/255; por
 eso los alfas del muro están escritos como múltiplos de ese paso.
 
+
+---
+
+## Capítulo 120 — El detector que no veía nada (26/09/2026)
+
+**Qué intentamos.** El punto `sp-interno#59` decía que en el simulador
+quedaban oraciones en Nunito Sans, la letra de los títulos. Para encontrarlas
+sin adivinar, el Guardián escribió un recorrido que pasa por cada paso del
+simulador y lista todo texto que termina en punto y está en Nunito.
+
+**Qué pasó.** Dio cero. Antes de creerle, se lo probó con un caso que tenía
+que marcar: un título, que va en Nunito a propósito. Tampoco lo vio. El
+navegador no llama «Nunito Sans» a la fuente: la llama `display`, el alias con
+que el sitio la declara (y a Inter, `inter`). El detector buscaba un nombre que
+nunca aparece. Corregido el nombre, aparecieron **20 oraciones**: las
+respuestas de las preguntas frecuentes, los «¿Por qué te preguntamos esto?»,
+las notas del resultado y la línea «Sin datos sensibles». Pasaron a Inter y el
+mismo recorrido, ahora sí confiable, dejó solo títulos y preguntas.
+
+**Qué aprendimos.** Un cero de un detector nuevo es una pregunta, no una
+respuesta: la regla del cap. 89 (probarlo con un caso que debe fallar) evitó
+cerrar el punto con un «no había nada». Y un dato para la próxima: en el
+navegador la fuente se reconoce por su alias (`display`, `inter`), no por su
+nombre comercial.

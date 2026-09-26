@@ -166,7 +166,9 @@ pierde (BITACORA cap. 96).
   Test rápido: si el texto tiene más de una línea o termina en punto, va
   en Inter; si es un titular, botón o etiqueta, Nunito Sans. Al agregar
   texto nuevo, elegir la fuente a conciencia — el default de `.body` es la
-  display y se filtra solo.
+  display y se filtra solo. Para medirlo en el navegador: `getComputedStyle`
+  la llama por su alias, `display` o `inter`, no «Nunito Sans» (BITACORA
+  cap. 120).
 - **Regla de lenguaje (julio 2026, pedido del usuario)**: escribir en el
   idioma del cliente, no en jerga de seguros. Prohibido de cara al
   usuario: "cartilla" / "cartilla viva" (→ "qué cubre", "cobertura",
