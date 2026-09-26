@@ -71,8 +71,21 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   esperando la poda del directorio. El 26/09 Arturo pidió sacarla de ahí o
   llevarla a otro lado, y cuestionó la animación (*«no es demasiado lenta, no
   es funcional y roba espacio»*): medida, tarda 54 s en mostrar los 12 logos y
-  en el celular se ven 4 a la vez. Cinco destinos propuestos, **esperando su
-  elección**; no se tocó.
+  en el celular se ven 4 a la vez. Después eligió el rumbo: *«quiero dejarlo
+  como un espacio lo más reducido posible… en la página principal»*. Cuatro
+  formas, todas quietas (docs/diseno n.º 44): **A** una línea (124 px), **B**
+  seis logos quietos (191), **C** plegable (126 cerrada), **D** una línea
+  dentro del comparador (0 px propios; pide confirmar que Essential incluye
+  SaludPro 360). Hoy mide 419 px. **Esperando su elección**; no se tocó.
+- **El comparador en el celular** (26/09, Arturo: *«el diseño está muy mal,
+  especialmente para el celular»*). Medido: al llegar se ve Essential entero,
+  Silver al 74% y **Gold nada**; al bajar se pierde qué columna es cada plan.
+  Tres formas con los datos reales (docs/diseno n.º 45 y 46): **1** fila
+  partida (los tres planes siempre a la vista), **2** dos a la vez con
+  selector (Apple), **3** un plan a la vez con pestañas. Las tres alargan la
+  tabla en el celular (1099 px hoy → 1324, 1230 y 1128): se gana lectura y se
+  paga alto. **Esperando su elección**. Referencias externas y principios en
+  BITACORA cap. 123.
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):
@@ -1489,6 +1502,8 @@ planilla.
 | Qué cubre cada plan en odontología | SP |
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
+| Aliados en el home: cuál de las cuatro formas (docs/diseno n.º 44) | Arturo |
+| Comparador en el celular: cuál de las tres formas (docs/diseno n.º 45 y 46) | Arturo |
 | Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |

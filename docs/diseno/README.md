@@ -1221,3 +1221,60 @@ la pregunta «¿y en mi ciudad?» ya tiene una casa, la Guía Médica, que la
 contesta con nombres, teléfonos y mapa. Dos lugares que responden lo mismo
 alargan el camino en vez de acortarlo.
 
+## Parte 17 · Aliados en el menor espacio posible (26/09/2026)
+
+### 44 · Una sección que no pide nada cabe en una línea
+
+![Los aliados en el celular: la tira de hoy contra cuatro formas quietas (una línea, seis logos, plegable y una línea dentro del comparador)](img/2026-09-26-home-aliados-cuatro-formas.webp)
+
+**Qué muestra.** La sección de aliados a 390 px, en su lugar del home. Hoy: la
+tira en movimiento, 419 px. **A**, una línea de texto con «Ver aliados» (124
+px). **B**, seis logos quietos y «Ver los 12» (191 px). **C**, un plegable que
+se abre con la grilla (126 px cerrado). **D**, sin sección propia: una línea en
+«En los tres planes» del comparador.
+
+**Qué se decidió.** El rumbo, sí: Arturo, sobre la tira, *«no es demasiado
+lenta, no es funcional y roba espacio»*, y después *«quiero dejarlo como un
+espacio lo más reducido posible… en la página principal»*. La forma, pendiente
+de su elección (26/09/2026).
+
+**La lección.** El espacio que ocupa una pieza tiene que ir con lo que le pide a
+la persona. Los aliados no piden nada: no tienen precio, ni botón, ni pregunta
+que contestar. Una tira en movimiento los hacía parecer más importantes de lo
+que son, y además no se deja leer: 54 segundos para ver 12 logos.
+
+## Parte 18 · El comparador en el celular (26/09/2026)
+
+### 45 · En el celular, la tabla cambia de forma
+
+![El comparador en el celular: la tabla que se desliza de hoy contra fila partida, dos a la vez y un plan a la vez, al llegar y a mitad de la tabla](img/2026-09-26-comparador-tres-formas-celular.webp)
+
+**Qué muestra.** El comparador a 390 px con los datos reales, al llegar y a
+mitad de la tabla. Hoy: Gold no se ve, y al bajar se pierde qué columna es cada
+plan. **1**, fila partida: el servicio a lo ancho y los tres valores debajo,
+con los nombres de los planes fijos arriba (así lo hace la página de precios de
+Claude). **2**, dos planes a la vez, elegidos con un selector (Apple). **3**, un
+plan a la vez con pestañas; cada fila dice cuánto tenía el plan anterior
+(Linear).
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** Una tabla de escritorio achicada no es una tabla de celular.
+Las marcas que lo hacen bien no la encogen: la cambian de forma. Y leer mejor
+cuesta alto: las tres formas miden más que la de hoy (1099 px contra 1324, 1230
+y 1128). Conviene decirlo antes de elegir, no descubrirlo después.
+
+### 46 · En escritorio, la tabla de hoy ya funciona
+
+![El comparador en escritorio: la tabla actual y las tres formas](img/2026-09-26-comparador-tres-formas-escritorio.webp)
+
+**Qué muestra.** Las mismas tres formas a 1280 px. En escritorio la 1 vuelve a
+ser tabla, con grupos; la 2 muestra tres selectores y la 3, tres tarjetas.
+
+**Qué se decidió.** Pendiente, junto con la n.º 45.
+
+**La lección.** El problema del comparador está en el celular. En escritorio la
+tabla actual es la más compacta (858 px); lo que se le puede sumar sin costo son
+los grupos y los nombres fijos arriba. Tres selectores para tres planes, en una
+pantalla donde entran los tres, no suman nada.
+
