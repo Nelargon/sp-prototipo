@@ -84,8 +84,16 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   partida (los tres planes siempre a la vista), **2** dos a la vez con
   selector (Apple), **3** un plan a la vez con pestañas. Las tres alargan la
   tabla en el celular (1099 px hoy → 1324, 1230 y 1128): se gana lectura y se
-  paga alto. **Esperando su elección**. Referencias externas y principios en
-  BITACORA cap. 123.
+  paga alto. Referencias externas y principios en BITACORA cap. 123.
+  Arturo, al verlas: la **1 le gusta en la computadora** y en el celular *«un
+  plan a la vez se ve mejor»*, aunque ninguna de celular lo convence del todo;
+  pidió más vueltas. Seis más (docs/diseno n.º 47 y 48). Celular: **3.1** lo
+  que suma cada plan («5 → 15», 909 px), **3.2** tarjetas que se deslizan (737
+  px; la tabla completa, en /planes), **3.3** uno grande y los otros dos chicos
+  (1269 px). Computadora: **1.1** botones fijos arriba y grupos que se pliegan
+  (972 px), **1.2** compacta, una línea por fila (723 px, más corta que la de
+  hoy, 858), **1.3** columnas como tarjetas (994 px). **Esperando su
+  elección**.
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):
@@ -1503,7 +1511,7 @@ planilla.
 | Qué planes usa la red Centralizada | SP |
 | Qué aliados quedan en la tira de logos (el directorio pidió podarla) | Arturo |
 | Aliados en el home: cuál de las cuatro formas (docs/diseno n.º 44) | Arturo |
-| Comparador en el celular: cuál de las tres formas (docs/diseno n.º 45 y 46) | Arturo |
+| Comparador: cuál forma en el celular y cuál en la computadora (docs/diseno n.º 45 a 48) | Arturo |
 | Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
 | "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |

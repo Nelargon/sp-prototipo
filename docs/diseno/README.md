@@ -1278,3 +1278,40 @@ tabla actual es la más compacta (858 px); lo que se le puede sumar sin costo so
 los grupos y los nombres fijos arriba. Tres selectores para tres planes, en una
 pantalla donde entran los tres, no suman nada.
 
+### 47 · En el celular, un plan a la vez, tres vueltas más
+
+![El comparador en el celular: un plan a la vez contra «lo que suma cada plan», tarjetas que se deslizan y «uno grande, los otros dos chicos»](img/2026-09-26-comparador-celular-iteraciones.webp)
+
+**Qué muestra.** Arturo, frente a la n.º 45: *«un plan a la vez se ve mejor en
+el celular»*, pero ninguna forma lo convencía del todo. Tres vueltas sobre la 3,
+a 390 px y con los datos reales. **3.1**, lo que suma cada plan sobre el
+anterior, en una línea («5 → 15»): 909 px. **3.2**, tarjetas que se deslizan
+con el dedo, con la de al lado asomando, y la comparación completa en /planes:
+737 px. **3.3**, el plan elegido en grande y, debajo de cada fila, lo que
+tienen los otros dos: 1269 px. Hoy, 1099 px.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+
+**La lección.** «Un plan a la vez» ya no es comparar lado a lado. Por eso cada
+vuelta resuelve de otra manera cómo sigue viéndose el otro plan: con una flecha
+(3.1), con el dedo (3.2) o con una línea chica (3.3). Dos de las tres quedan
+más cortas que la tabla de hoy.
+
+### 48 · En la computadora, la fila partida, tres vueltas más
+
+![El comparador en la computadora: la fila partida contra botones fijos arriba, la compacta y columnas como tarjetas](img/2026-09-26-comparador-escritorio-iteraciones.webp)
+
+**Qué muestra.** La 1 a 1280 px, que a Arturo le gustó en la computadora, y tres
+vueltas. **1.1**, «Ver mi precio» fijo arriba mientras bajás, el descuento en
+la esquina vacía, Silver como una banda continua y grupos que se pliegan: 972
+px. **1.2**, compacta, con la nota al lado del número y no debajo: 723 px. **1.3**,
+cada plan como una tarjeta y Silver con borde, el formato de las páginas de
+precios: 994 px. Hoy, 858 px.
+
+**Qué se decidió.** Pendiente, junto con la n.º 47.
+
+**La lección.** En la computadora sobra ancho y falta alto: poner la nota al
+lado del número y no debajo alcanza para que la tabla quede más corta que la de
+hoy, aun con los grupos y los nombres fijos arriba. En la 1.3 el muro se ve
+detrás de los nombres de las filas; si se elige, esa columna necesita fondo.
+
