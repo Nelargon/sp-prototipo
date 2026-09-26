@@ -135,6 +135,10 @@ pierde (BITACORA cap. 96).
   todos los fondos (Arturo: *«Hay algo humano y auténtico en eso»*). No se suman
   íconos de librería, y un botón que ya dice lo que hace no lleva ícono. Las
   señales de uso (flechas, «×», lupa, WhatsApp, urgencias) se quedan simples.
+- **Una transparencia muy baja se mueve de a 1/255** (26 sep 2026, BITACORA
+  cap. 119): el navegador la guarda en 255 pasos, así que un «5% más» sobre un
+  alfa de .02 no cambia un solo píxel. Un ajuste fino se verifica midiendo los
+  píxeles de la captura, no leyendo el CSS.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
   medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.

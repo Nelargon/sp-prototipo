@@ -491,14 +491,18 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    las copias coinciden y las líneas siguen de una sección a la otra.
    ⚠ Un transform, filter o contain en un ancestro rompe el fixed: el muro
    pasaría a moverse con la sección. qa-lanzamiento lo controla.
-   Tonos, medidos sobre la captura (0 a 255, cuánto más oscuro o claro que el
-   fondo): «claro» 4 sobre el gris y el blanco (la A, sin transparencia, era 9
-   y 13); «oscuro» es el de la versión C; «pleno», el de «Dónde te atendés». */
+   Tonos. Ajuste del 26/09 (Arturo: «en la banda azul un 5% más transparente,
+   y en la blanca un 5% menos»): el navegador guarda la transparencia en
+   pasos de 1/255, y a esta intensidad un 5% cae dentro del mismo paso (medido:
+   los píxeles salían idénticos). Así que se movió el paso más chico que existe:
+   «oscuro» de 11/255 a 10/255 y «claro» de 5/255 a 6/255. Por eso los alfas
+   están escritos como múltiplos de 1/255. «pleno», el de «Dónde te atendés».
+   Lo medido en la captura está en el HANDOFF. */
 .con-muro{position:relative;isolation:isolate}
 .muro-marco{position:absolute;inset:0;z-index:-1;clip-path:inset(0);pointer-events:none;user-select:none}
 .muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:40px;line-height:1.28;font-weight:900;letter-spacing:-.015em;text-align:justify}
-.muro-oscuro .muro-texto{color:rgba(255,255,255,.045)}
-.muro-claro .muro-texto{color:rgba(0,27,52,.018)}
+.muro-oscuro .muro-texto{color:rgba(255,255,255,.0392)}
+.muro-claro .muro-texto{color:rgba(0,27,52,.0235)}
 .muro-pleno .muro-texto{color:var(--sp-muro)}
 .muro-pleno .m2{color:var(--sp-muro-2)}
 .muro-pleno i{font-style:normal}

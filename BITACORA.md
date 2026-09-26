@@ -4151,3 +4151,25 @@ colores distintos sin medir nada con JavaScript, cada sección lleva su copia
 fija a la pantalla y recortada a la sección. Todas coinciden, y la página se
 desliza sobre una sola pared.
 
+## Capítulo 119 — El 5% que no existe (26/09/2026)
+
+**Qué intentamos.** Con el muro publicado, Arturo pidió un ajuste fino: *«en
+la banda azul vamos un 5% más transparente, y en la blanca un 5% menos»*. Se
+cambiaron los dos números del CSS en esa proporción (.045 → .0428 y .018 →
+.0203), se compiló y todo pasó.
+
+**Qué pasó.** Al medir las capturas, los píxeles eran **idénticos** a los de
+antes, color por color. El navegador guarda la transparencia en 255 pasos, y
+a esta intensidad el muro está a 4 o 5 niveles del fondo: un 5% de eso es un
+quinto de nivel. Los dos números nuevos caían en el mismo paso que los viejos
+(el navegador los mostraba como .043 y .02, igual que antes). El cambio estaba
+en el código y no existía en la pantalla. Se movió el paso más chico posible,
+1/255 en cada dirección, y ahí sí: el muro claro pasó de 4 a 5 niveles sobre
+el fondo y el navy bajó uno.
+
+**Qué aprendimos.** Lo mismo que el blur fantasma del minificador, desde el
+otro lado: el código dice lo que pediste, la pantalla muestra lo que puede.
+Un ajuste fino se verifica en los píxeles, no en el CSS. Y un detalle que
+sirve para la próxima: una transparencia muy baja se mueve de a 1/255; por
+eso los alfas del muro están escritos como múltiplos de ese paso.
+
