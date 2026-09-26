@@ -1136,3 +1136,24 @@ de agua y no compite con nada. La pregunta para un fondo no es «¿se ve
 lindo?» sino «¿qué hay que leer encima?». Y una de método: a media escala, el
 navy sobre navy desaparece de la lámina; los recortes van a tamaño real, o la
 lámina miente por omisión.
+
+### 41 · La C, con las secciones claras más transparentes
+
+![La versión C como estaba, con las secciones claras al 50% y al 30%: el comparador, «Cómo funciona» y lo mismo a 390 px](img/2026-09-26-home-muro-c-claras-transparentes.webp)
+
+**Qué muestra.** Arturo, sobre el n.º 40: *«¿Y si vamos con C, pero en las
+secciones claras, si es un poco más transparente?»*. Las bandas oscuras quedan
+como en la C; en las claras vuelve el muro de la A, con menos opacidad.
+Medido sobre la captura (de 0 a 255): al 50%, el muro queda 5 puntos más
+oscuro que el gris de fondo y 7 más que el blanco; al 30%, 3 y 4. En la A eran
+9 y 13. El texto gris de lectura (`#4A4A4A`) pasa de un contraste de 8,1 a 7,8
+con el muro al 50% detrás (el mínimo es 4,5).
+
+**Qué se decidió.** Pendiente de Arturo. Recomendada: **al 50%**. Al 30%, en
+muchas pantallas el muro ya no se ve, y un fondo que depende del monitor no
+suma.
+
+**La lección.** Arturo encontró la variable que faltaba: no era *dónde* va el
+muro sino *cuánto* se ve en cada lugar. Con el mismo muro en toda la página y
+la intensidad según lo que hay que leer encima, la continuidad que él quería
+no cuesta la lectura.
