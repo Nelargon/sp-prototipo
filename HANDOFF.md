@@ -71,16 +71,33 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 `qa/qa-lanzamiento.mjs` que elige una ciudad en el home y toca una ciudad en el
 mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
 
-**En diseño (25/09, noche), pendiente de Arturo:** (1) el muro como **tapiz de
-la Guía Médica**: eligió el 2 (en los márgenes) y pidió verlo sin el degradé
-junto a la columna → 2a, borde neto, o 2b, sin máscara (docs/diseno n.º 36 y
-38; recomendado 2a). (2) **El tramo de abajo del comparador** del home: las
-dos compactadas (n.º 37) le parecieron *«mucha info, mucho ruido»*; hay dos
-calmas, 3 sin cajas y 4 en una tarjeta (n.º 39; recomendada 4). En todas, la
-banda «¿Dónde atenderte?» pasa a ser una puerta, «¿Dónde me atiendo?»:
-repetía a «Dónde te atendés» y además decía el total («más de 600»), que
-Arturo sacó del home. Al construir: la leyenda conserva el ancla `#bolsillo`
-(la usa el menú) y SP Senior conserva «Simulá Plan Vital».
+**Guía Médica — el tapiz** (26/09, Arturo eligió el 2a de docs/diseno n.º 38):
+el muro detrás de la guía, fijo, en `--sp-muro` sobre el gris de la guía. Desde
+1024 px se ve **solo en los márgenes** y se corta en seco a 24 px de la columna
+(sin degradé: lo que protege la columna es el borde, no la niebla); en menos,
+arriba y apagándose antes del buscador. `.gm-tapiz` en `globals.css`; los
+nombres, de `lib/red-home.json`. `aria-hidden` y sin puntero (lo prueba
+`qa-lanzamiento`). Si la columna de la guía cambia de ancho (hoy 720 − 2×16),
+cambian los `368px` de la máscara.
+
+**Home — el tramo bajo la tabla del comparador** (26/09, opción 4 de n.º 39;
+BITACORA cap. 117). Era una pila de siete cajas; ahora:
+- **La espera es la última fila de la tabla**, «Tiempo de espera» (pregunta de
+  Arturo: *«¿no se podría simplemente poner como una fila más en el
+  comparativo?»*): Essential 1 año; Silver y Gold, 2 a 10 meses según el
+  servicio. Sale de `datos/planes-vigentes/` (el comentario de `cmp` dice de
+  dónde cada número).
+- La **leyenda** es una línea gris pegada a la tabla y conserva `#bolsillo`.
+- **Una tarjeta**: lo que tenés en los tres planes y tres puertas sin subtítulo
+  (qué cubre, planes, **«¿Dónde me atiendo?»** → Guía). La banda «¿Dónde
+  atenderte?» salió: repetía a «Dónde te atendés» y decía el total.
+- SP Senior en una frase con «Simulá Plan Vital» (track `banda_senior`, igual
+  que antes). La caja del parto sigue solo en el prototipo.
+- Mide 244 px en escritorio (antes 697) y 474 a 390 px (antes 1506).
+
+**Pendiente de Arturo:** el «más de 600» que sigue en tres preguntas
+frecuentes del home → `Nelargon/sp-interno#68`. Y su idea del 26/09, el
+**muro detrás de toda la home**, está en maqueta.
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se

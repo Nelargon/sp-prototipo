@@ -13,7 +13,16 @@ import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
 import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
+import red from '../../lib/red-home.json';
 import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
+
+/* El tapiz (25/09/2026, docs/diseno n.º 36 y 38; Arturo eligió el 2a): el muro
+   de «Dónde te atendés» detrás de la guía, en gris casi blanco. En pantallas
+   anchas se ve solo en los márgenes y se corta en seco a 24 px de la columna,
+   sin degradé; en el celular no hay márgenes, así que queda arriba y se apaga
+   antes del buscador. Es textura: aria-hidden, sin puntero ni selección.
+   Los nombres son los de lib/red-home.json (los que están en todos los planes). */
+const TAPIZ = [...red.muro, ...red.muro, ...red.muro].join(' · ');
 
 /* /guia-medica — ¿dónde me atiendo?
    ----------------------------------------------------------------------------
@@ -355,6 +364,7 @@ export default function GuiaMedica() {
 
   return (
     <div className="body gm tactil" style={css('min-height:100vh;background:var(--gm-fondo);color:var(--sp-ink)')}>
+      <div className="gm-tapiz" aria-hidden="true">{TAPIZ}</div>
       <Header variant="solid" />
 
       <div style={css('position:relative;max-width:720px;margin:0 auto;padding:96px 16px 70px;display:flex;flex-direction:column;gap:14px')}>

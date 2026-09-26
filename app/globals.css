@@ -398,12 +398,35 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .pl-inner{min-width:560px !important}
   .pl-row{grid-template-columns:118px repeat(3,minmax(146px,1fr)) !important}
   .pl-lbl{padding-left:12px !important;padding-right:8px !important;box-shadow:1px 0 0 var(--sp-line)}
-  .cmp-garantia{padding:18px 18px !important;gap:10px 14px !important}
 }
-/* "Ver todos los planes" ganó peso de CTA secundario (borde + más cuerpo);
-   el hover rellena en teal muy suave — misma gramática que los demás botones. */
-.cmp-verplanes{transition:background .2s,border-color .2s}
-.cmp-verplanes:hover{background:var(--sp-mint-soft);border-color:#8fd9d3}
+/* El tramo bajo la tabla del comparador (26/09/2026, docs/diseno n.º 39,
+   opción 4; BITACORA cap. 117): la leyenda en una línea pegada a la tabla, una
+   tarjeta con lo que es igual en los tres planes y las tres preguntas que
+   siguen, la nota y SP Senior en una frase. Un solo contenedor, un solo acento:
+   lo demás va en voz baja. */
+.cmp-ley{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 20px;margin:14px 0 0;font-family:var(--font-inter),sans-serif;font-size:13px;line-height:1.5;color:var(--sp-muted);scroll-margin-top:110px}
+.cmp-ley>span{display:inline-flex;align-items:baseline;gap:7px}
+.cmp-ley i{width:9px;height:9px;border-radius:var(--r-pill);flex:none;transform:translateY(1px)}
+.cmp-ley b{font-weight:600;color:var(--sp-text-2)}
+.cmp-tarjeta{--sq:var(--r-lg);margin-top:18px;background:#fff;box-shadow:var(--sombra-sup);overflow:hidden}
+.cmp-igual{display:flex;gap:9px;align-items:flex-start;margin:0;padding:18px 26px;font-family:var(--font-inter),sans-serif;font-size:14.5px;line-height:1.55;color:var(--sp-text-fuerte)}
+.cmp-igual svg{flex:none;margin-top:4px;color:var(--sp-teal-deep)}
+.cmp-puertas{display:flex;flex-wrap:wrap;justify-content:center;border-top:1px solid var(--sp-line-2);padding:12px 0}
+.cmp-puertas a{display:inline-flex;align-items:center;gap:7px;padding:6px 22px;font-size:15px;font-weight:700;color:var(--sp-teal-deep);border-left:1px solid var(--sp-line)}
+.cmp-puertas a:first-child{border-left:none}
+.cmp-puertas a:hover{text-decoration:underline;text-underline-offset:4px}
+.cmp-nota{margin:14px 0 0;font-family:var(--font-inter),sans-serif;font-size:12.5px;line-height:1.5;color:var(--sp-muted);text-align:center}
+.cmp-senior{margin:22px 0 0;text-align:center;font-family:var(--font-inter),sans-serif;font-size:14.5px;line-height:1.5;color:var(--sp-text-2)}
+.cmp-senior a{font-family:var(--font-display),sans-serif;font-weight:800;color:var(--sp-teal-deep);margin-left:6px;white-space:nowrap}
+.cmp-senior a:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:640px){
+  .cmp-ley{flex-direction:column;align-items:flex-start}
+  .cmp-igual{padding:16px}
+  .cmp-puertas{flex-direction:column;padding:0 16px}
+  .cmp-puertas a{border-left:none;border-top:1px solid var(--sp-line-2);padding:12px 0;min-height:46px}
+  .cmp-puertas a:first-child{border-top:none}
+  .cmp-nota,.cmp-senior{text-align:left}
+}
 @media(max-width:1000px){.blog-top{grid-template-columns:1fr !important;gap:26px !important}}
 /* "Seguí leyendo": tres columnas dentro de la caja de 680px del artículo dan
    ~200px por nota — abajo de 640px eso deja títulos de dos palabras por línea,
@@ -570,6 +593,11 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    claro. La esquina, el relieve y el movimiento nacieron acá y desde el
    24/09/2026 son de todo el sitio: ver «Sistema táctil», abajo. */
 .gm{--gm-fondo:#F4F5F6;--gm-linea:#E6E8EA;--gm-borde:#D4E0EE}
+/* El tapiz de la guía (Arturo eligió el 2a, docs/diseno n.º 38): el muro fijo
+   detrás de todo. En el celular, arriba y apagándose; desde 1024 px, solo en los
+   márgenes, con borde neto a 24 px de la columna (720 − 2×16 = 688; 344 + 24). */
+.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:26px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none;mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.55) 25%,transparent 45%)}
+@media(min-width:1024px){.gm-tapiz{font-size:40px;mask-image:linear-gradient(90deg,#000 calc(50% - 368px),transparent calc(50% - 368px),transparent calc(50% + 368px),#000 calc(50% + 368px))}}
 /* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
    la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
 .gm-mapa-lado{display:none;position:absolute;top:96px;bottom:70px;left:calc(100% + 28px);width:300px}

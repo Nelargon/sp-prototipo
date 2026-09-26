@@ -4115,3 +4115,14 @@ la garantía en una línea, las puertas sin subtítulo, SP Senior en una frase.
 Y de paso, una de método: la foto de «hoy» de la primera lámina salió a mitad
 de la animación de entrada, lavada, y hacía ganar a cualquier propuesta. En
 una comparación, el «antes» se fotografía tan terminado como el «después».
+
+**Después, la fila.** Arturo eligió la versión en una tarjeta y, al elegirla,
+preguntó lo que la lámina no había visto: *«esa "essential" (las carencias),
+¿no se podría simplemente poner como una fila más en el comparativo? Pregunto
+para ahorrar espacio, porque igual se siente largo»*. La espera era una oración
+debajo de la tabla desde el 24/09, cuando se la puso «a la vista». Pero es un
+dato que cambia de plan a plan, y eso es exactamente lo que una tabla ordena:
+como fila se lee alineado con el precio de cada plan, y la oración sobraba. El
+tramo terminó en 244 px (eran 697). Lo que aprendimos, de nuevo: antes de
+decidir cómo decorar un dato, preguntarse qué forma tiene. Uno que se compara
+va en la tabla.

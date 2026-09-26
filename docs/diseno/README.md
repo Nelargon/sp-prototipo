@@ -1060,7 +1060,8 @@ antes, que se apaga al llegar a la columna; **2a**, entero hasta 24 px antes
 de la columna y cortado en seco; **2b**, sin máscara: el muro sigue por
 detrás de todo.
 
-**Qué se decidió.** Pendiente de Arturo. Recomendado: **2a**.
+**Qué se decidió.** Arturo eligió el **2a** y se construyó el 26/09/2026
+(`.gm-tapiz`).
 
 **La lección.** Sin degradé, el muro se lee como muro: nombres enteros, sin
 la niebla que los desdibujaba junto a la columna. Pero sin *ningún* borde (2b) los
@@ -1089,9 +1090,13 @@ subtítulo y SP Senior en una frase. **4**, lo mismo, pero la espera, la
 garantía y las tres preguntas viven en **una** tarjeta blanca; afuera quedan
 solo la leyenda (arriba, pegada a la tabla) y la nota de precios.
 
-**Qué se decidió.** Pendiente de Arturo. Recomendada: **4**: un solo
-contenedor y un solo eje de lectura; en la 3 quedan cinco piezas sueltas de
-anchos distintos.
+**Qué se decidió.** Arturo eligió la **4** (recomendada: un solo contenedor y
+un solo eje de lectura; en la 3 quedan cinco piezas sueltas de anchos
+distintos), y al elegirla preguntó: *«esa "essential" (las carencias), ¿no se
+podría simplemente poner como una fila más en el comparativo?»*. Sí: es un dato
+que cambia por plan, que es lo que la tabla hace. Se construyó el 26/09/2026
+con la espera como última fila («Tiempo de espera»): el tramo quedó en 244 px
+en escritorio (hoy eran 697) y 474 a 390 px (eran 1506).
 
 **La lección.** Achicar no saca ruido: lo concentra. El ruido lo hacen las
 cosas que piden atención a la vez (cajas, negritas, subtítulos, íconos), y
