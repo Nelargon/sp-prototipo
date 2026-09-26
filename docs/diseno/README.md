@@ -1180,7 +1180,13 @@ entran, además de los 56 sanatorios y clínicas, los laboratorios y centros de
 imagen que están en todos los planes: 92 nombres distintos. Medido en
 «Dónde te atendés» a 1440 px: hoy se ven 46 nombres; A, 126; B, 233; C, 206.
 
-**Qué se decidió.** Pendiente de Arturo. Recomendada: **A**.
+**Qué se decidió.** Arturo resolvió el primer techo: rompió la regla de «todos
+los planes» para el muro (*«la idea es también que la gente sienta que estos
+son realmente todos los prestadores que hay»*). Con la red entera de Silver y
+Gold, que son 231 nombres, la **B (16 px)** dejó de repetirse: entra casi la
+red completa en una pantalla. Se construyó el 26/09/2026 con los destacados
+primero y un paso más de intensidad en las secciones claras, que resuelve el
+segundo techo.
 
 **La lección.** Achicar la letra choca con dos techos que no son de diseño.
 El primero es la lista: en todos los planes hay 92 nombres, así que a 16 px

@@ -37,19 +37,29 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   que están en todos los planes y el botón lleva a la guía con la ciudad puesta
   (`?c=…&dp=…`). Especialidades con 1 solo médico no se nombran; cuadros en 0 no
   se muestran.
-- **El muro de fondo**: los 56 sanatorios y clínicas que están en Silver/Gold
-  **y** en Essential, en gris muy claro (`--sp-muro`, `--sp-muro-2`) y sin velo
-  (pedido de Arturo). `aria-hidden`, sin puntero.
+- **El muro de fondo**: desde el 26/09 es la **red entera de Silver y Gold**
+  (231 instituciones: sanatorios, laboratorios, imagen y el resto), con **25
+  destacados primero** (ver «el muro detrás de toda la home», abajo). Antes eran
+  los 56 sanatorios de todos los planes. Gris muy claro, sin velo,
+  `aria-hidden`, sin puntero.
 - **Sin kicker**: el título solo alcanza (regla de etiquetas).
 - **Los datos**: `scripts/red-home.mjs` los saca de `lib/guia-medica.json`
   antes de cada build y dev (`prebuild`/`predev`) → `lib/red-home.json`, que
   **no está en git**. Ninguna cifra escrita a mano. ⚠ **No confundir con
   `lib/red-resumen.json`**: ese lo escribe `build-guia-medica.py` y lo usa el
   puente simulador ↔ guía (cap. 116).
-- **Criterios que no se negocian sin Arturo**: cifras de la red de Silver/Gold
-  (la nota al pie lo dice); nombres solo de los que están en todos los planes
-  (Italiano, Español, Americano, Díaz Gill, Meyer Lab no aparecen); **Sanatorio
-  Da Vinci fuera del home** (clausura temporal en dic. 2021; sigue en la guía).
+- **Criterios que no se negocian sin Arturo** (actualizados el 26/09):
+  - Cifras y nombres del muro son de la red de Silver y Gold, y la nota al pie
+    lo dice: «Las cifras y los nombres del fondo son de la red de Silver y
+    Gold…».
+  - **«En todos los planes: …»** (al elegir una ciudad) sigue nombrando solo a
+    los que están en todos los planes: ahí se promete algo.
+  - **Fuera del home**, aunque sigan en la guía: Sanatorio Da Vinci, COMED
+    Amambay y Planmed Caaguazú. Esperan que SP los verifique:
+    `Nelargon/sp-interno#71`.
+  - De cara al público, nunca «acreditado»: en Paraguay nadie de la red lo
+    está. Lo que existe es la categorización de la Superintendencia de Salud
+    («categorizado Nivel 3»; `sp-interno/project/RED-destacados-2026-09-26.md`).
 - La tira de **aliados** quedó sola, en su sección («Aliados de tu plan»),
   esperando la poda del directorio.
 
@@ -126,10 +136,25 @@ desliza sobre una sola pared, como el tapiz de la guía.
 
 **Pendiente de Arturo:** el «más de 600» que sigue en tres preguntas
 frecuentes del home → `Nelargon/sp-interno#68`.
-Y el muro con **letra más chica** para que entren más prestadores: tres
-tamaños en docs/diseno n.º 42 (recomendada A, 24 px), con los laboratorios e
-imágenes de todos los planes sumados (92 nombres). No se construye hasta que
-elija.
+
+**Home — el muro, con letra chica y la red entera** (26/09, docs/diseno n.º 42,
+opción B; BITACORA cap. 121):
+- Letra de **16 px** (13 en el celular), para que entre la red entera de
+  Silver y Gold: a 16 px, una pantalla de computadora muestra unos 230 nombres,
+  casi la red completa una vez.
+- **Los destacados, primero.** El muro va fijo a la pantalla, así que sus
+  primeras líneas, justo debajo del menú, se ven en todo el home. La lista
+  (`DESTACADOS` en `scripts/red-home.mjs`) sale de la investigación de
+  `sp-interno/project/RED-destacados-2026-09-26.md`. El orden es juicio
+  comercial; se cambia ahí. Si un destacado sale de la planilla, se cae solo y
+  el build lo avisa.
+- Después van los demás, intercalando tipo (sanatorio, laboratorio, imagen) y
+  ciudad.
+- En las secciones claras, el muro subió otro paso (7/255): con letra fina, un
+  paso menos no se leía. Medido: 7 niveles sobre el fondo (antes, 5).
+- Costo medido: el HTML del home pasa de 18 a 25 KB comprimido, el LCP de 1040
+  a 1288 ms (límite 2500) y el scroll sigue a 60 cuadros con la CPU 4× lenta.
+- **El tapiz de la Guía Médica usa la misma lista pero sigue a 40 px.**
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se
