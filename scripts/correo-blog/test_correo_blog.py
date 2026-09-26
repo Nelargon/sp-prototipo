@@ -315,5 +315,72 @@ class Armado(unittest.TestCase):
                 self.assertNotEqual(parrafos[0][:60], intro.group(1)[:60], c['archivo'])
 
 
+@unittest.skipUnless((RAIZ / 'node_modules/marked').exists(), 'sin node_modules (correr npm ci)')
+class FraseClave(unittest.TestCase):
+    """La frase en grande del estándar del blog (26/09/2026): «> [!clave]».
+
+    Tiene que salir grande y con su borde, sin la marca a la vista, en el HTML
+    y en el texto plano; y una cita vieja («> **Dato:**») tiene que seguir
+    siendo una cita, no una frase en grande.
+    """
+
+    NOTA = 'zz-prueba-frase-clave.md'
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        cls.ruta = RAIZ / 'contenido/blog/publicados' / cls.NOTA
+        cls.ruta.write_text("""---
+title: "Nota de prueba de la frase en grande"
+slug: "zz-prueba-frase-clave"
+categoria: "Prevención"
+date: "2026-09-27"
+intro: "Un copete corto."
+---
+
+Un párrafo.
+
+> [!clave]
+> La presión alta trabaja en silencio:
+> no duele mientras desgasta.
+
+Otro párrafo.
+
+> [!clave] Medirla lleva dos minutos.
+
+> **Dato:** una cita de las de antes.
+""", encoding='utf-8')
+        try:
+            subprocess.run(['node', 'scripts/correo-blog/armar.mjs', '--salida', str(cls.tmp), cls.NOTA],
+                           check=True, capture_output=True)
+            cls.correo = json.loads((cls.tmp / 'zz-prueba-frase-clave.json').read_text())
+        finally:
+            cls.ruta.unlink()
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp)
+
+    def test_sale_en_grande_con_su_borde(self):
+        import re
+        celdas = re.findall(r'<td style="border-left:4px solid #00BCB4[^"]*font-size:21px[^"]*">(.*?)</td>', self.correo['html'])
+        self.assertEqual(celdas, ['La presión alta trabaja en silencio: no duele mientras desgasta.',
+                                  'Medirla lleva dos minutos.'])
+
+    def test_la_marca_no_se_ve(self):
+        self.assertNotIn('[!clave]', self.correo['html'])
+        self.assertNotIn('[!clave]', self.correo['texto'])
+
+    def test_texto_plano_la_trae_entera(self):
+        self.assertIn('La presión alta trabaja en silencio: no duele mientras desgasta.', self.correo['texto'])
+
+    def test_una_cita_vieja_sigue_siendo_cita(self):
+        self.assertRegex(self.correo['html'], r'<blockquote style="[^"]*"[^>]*>\s*<p style="[^"]*"><strong style="[^"]*">Dato:</strong> una cita de las de antes.')
+
+    def test_no_se_pisan_dos_estilos(self):
+        import re
+        self.assertIsNone(re.search(r'<\w+ style="[^"]*" style=', self.correo['html']))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

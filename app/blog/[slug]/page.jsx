@@ -3,6 +3,7 @@ import { A, Nota } from '../Articulo';
 import { css } from '../../css';
 import { BP } from '../../basePath';
 import { getPublishedPosts, getPost, getRelacionadas, getContextoDeSerie, formatFecha } from '../../../lib/blog';
+import { frasesClave } from '../../../lib/blog-texto.mjs';
 
 // Con output:'export' cada slug debe existir en build time, y Next rechaza
 // una lista vacía de params: sin notas publicadas se genera una única página
@@ -47,7 +48,9 @@ export default async function BlogPost({ params }) {
 
   // Los links internos del markdown se escriben absolutos ("/simulador/");
   // acá reciben el basePath para que funcionen bajo /sp-prototipo en Pages.
-  const html = marked.parse(post.content).replaceAll('href="/', `href="${BP}/`);
+  // La frase en grande (> [!clave]) se vuelve su propio bloque antes de marked:
+  // ver lib/blog-texto.mjs.
+  const html = marked.parse(frasesClave(post.content)).replaceAll('href="/', `href="${BP}/`);
 
   // JSON-LD para SEO (queda inerte con noindex; listo para cuando se prenda la
   // indexación — HANDOFF #8b). El schema.org de artículo mejora el rich result.

@@ -24,7 +24,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import { readingMinutes, stripDupIntro, formatFecha } from '../../lib/blog-texto.mjs';
+import { readingMinutes, stripDupIntro, formatFecha, frasesClave } from '../../lib/blog-texto.mjs';
 
 const PUBLICADOS = path.join(process.cwd(), 'contenido', 'blog', 'publicados');
 const SITIO = (process.env.SITIO || 'https://nelargon.github.io/sp-prototipo').replace(/\/$/, '');
@@ -80,13 +80,20 @@ function conEstilos(html) {
     // Los links internos se escriben absolutos ("/simulador/"): en la web
     // reciben el basePath; en un correo necesitan el dominio entero.
     .replace(/href="\//g, `href="${SITIO}/`)
-    .replace(new RegExp(`<(${tags})(\\s[^>]*)?>`, 'g'), (_, tag, attrs = '') => `<${tag} style="${ESTILO[tag]}"${attrs}>`);
+    // Lo que ya trae su propio estilo (la frase en grande) no se pisa: dos
+    // atributos style en la misma etiqueta y Outlook se queda con el primero.
+    .replace(new RegExp(`<(${tags})(\\s[^>]*)?>`, 'g'), (m, tag, attrs = '') => (/\sstyle=/.test(attrs) ? m : `<${tag} style="${ESTILO[tag]}"${attrs}>`));
 }
+
+// La frase en grande (estándar del blog, 26/09/2026; ver lib/blog-texto.mjs).
+// En el correo va en una tabla de una celda: es lo único con borde y relleno
+// que Outlook de escritorio respeta siempre.
+const fraseClaveCorreo = (t) => `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:10px 0 26px"><tr><td style="border-left:4px solid #00BCB4;padding:2px 0 2px 16px;font-family:${F_TEXTO};font-size:21px;line-height:1.4;font-weight:600;color:${NAVY}">${t}</td></tr></table>`;
 
 // Texto plano: la alternativa que ven los clientes sin HTML y los filtros de
 // spam. Es el markdown sin sus marcas.
 function aTextoPlano(md) {
-  return String(md)
+  return frasesClave(String(md), (t) => t, { escapar: false })
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, t, u) => `${t} (${u.startsWith('/') ? SITIO + u : u})`)
     .replace(/^#{1,6}\s+/gm, '')
@@ -113,7 +120,7 @@ function armar(archivo) {
   // No identifica a nadie.
   const urlBoton = `${url}?utm_source=correo-interno&utm_medium=email&utm_campaign=blog`;
   const byline = `Equipo Salud Protegida · ${formatFecha(data.date || '')} · Lectura de ${minutos} min`;
-  const cuerpoHtml = conEstilos(marked.parse(cuerpo));
+  const cuerpoHtml = conEstilos(marked.parse(frasesClave(cuerpo, fraseClaveCorreo)));
 
   const bloqueFuentes = fuentes.length === 0 ? '' : `
           <tr><td class="pad" style="padding:8px 40px 0">
