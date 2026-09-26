@@ -4228,3 +4228,31 @@ formato. Mostrar todo lo que la red tiene no promete nada si dice de qué red
 es. La promesa está en «en todos los planes», y ahí la regla sigue entera.
 Antes de defender una regla, preguntarse qué promesa cuida.
 
+## Capítulo 122 — La respuesta que ya tenía casa (26/09/2026)
+
+**Qué intentamos.** Que «Dónde te atendés» contestara la pregunta de la
+persona ahí mismo, en el home: «¿Dónde vivís?» con las ocho ciudades con más
+red, el desglose que cambia al elegir una, los nombres que están en todos los
+planes, las cuatro especialidades con más médicos («53 ginecólogos y
+obstetras, 44 pediatras…») y Lister. El argumento del 25/09 era que así no
+repetía la puerta a la Guía Médica: daba la respuesta y después llevaba a la
+guía con la ciudad puesta.
+
+**Qué pasó.** Un día después, Arturo la miró en el celular: *«También esta
+parte es excesivamente larga. No hace falta poner dónde uno vive, no hace
+falta ponerlo de Lister, no hace falta poner los detalles de cuántos
+ginecólogos y todo eso hay. Tenemos que hacerlo un poco más breve, porque al
+final la persona se puede ir a la guía médica.»* Medido: la sección ocupaba
+922 px a 390, más de una pantalla entera. Quedaron los cuatro cuadros y un
+botón: 617 px (docs/diseno n.º 43). El script de datos dejó de armar las
+ciudades y las especialidades.
+
+**Qué aprendimos.** El argumento del 25/09 se miró desde la regla («no repetir
+una puerta») y no desde el camino de la persona. Responder en el home lo que
+la guía responde mejor no evita la repetición: la traslada, y la paga el que
+scrollea. Cada sección del home hace una sola cosa y deja lo demás a la página
+que existe para eso. La prueba que se sumó a `qa-lanzamiento` no controla un
+número: controla que la sección no vuelva a crecer (sin botones, sin lista de
+especialidades, un solo link, a la guía), y se probó contra la versión vieja,
+que la hace fallar.
+

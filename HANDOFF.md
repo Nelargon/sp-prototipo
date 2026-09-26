@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 25 sep 2026.*
+*Última actualización: 26 sep 2026.*
 
 ---
 
@@ -29,14 +29,20 @@ home opción 1 y mapa opción 2»*).
 **Home — sección «Dónde te atendés»** (`app/components/DondeTeAtendes.jsx`,
 estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 - **Desglose, no el total**: sanatorios y clínicas · laboratorios · médicos (de
-  N especialidades) · centros de imágenes, y «Entre los médicos: 53 ginecólogos
-  y obstetras, 44 pediatras…». Arturo: el 615 suelto *«a veces se puede
-  comparar con otras prepagas… que tienen un número mayor»*.
-- **«¿Dónde vivís?»**: «Todo el país» + las 8 ciudades con más red + «Otra
-  ciudad» (a la guía). Al elegir una, cambian los números, aparecen los nombres
-  que están en todos los planes y el botón lleva a la guía con la ciudad puesta
-  (`?c=…&dp=…`). Especialidades con 1 solo médico no se nombran; cuadros en 0 no
-  se muestran.
+  N especialidades) · centros de imágenes. Arturo: el 615 suelto *«a veces se
+  puede comparar con otras prepagas… que tienen un número mayor»*. Cuadros en 0
+  no se muestran.
+- **Más corta desde el 26/09** (Arturo, en el celular: *«es excesivamente
+  larga. No hace falta poner dónde uno vive, no hace falta ponerlo de Lister,
+  no hace falta poner los detalles de cuántos ginecólogos… al final la persona
+  se puede ir a la guía médica»*). Salieron **«¿Dónde vivís?»** (las 8
+  ciudades y el panel por ciudad), **«Entre los médicos: 53 ginecólogos…»** y
+  la línea de **Lister**. Queda una sola salida: «Buscá tu ciudad en la Guía
+  Médica». De 922 a 617 px en el celular (1,09 → 0,73 pantallas); lámina en
+  docs/diseno n.º 43, BITACORA cap. 122. `qa-lanzamiento` controla que no
+  vuelva a crecer (sin botones ni especialidades, un solo link, a la guía).
+  ⚠ No volver a poner la pregunta de la ciudad en el home: la guía la
+  responde.
 - **El muro de fondo**: desde el 26/09 es la **red entera de Silver y Gold**
   (231 instituciones: sanatorios, laboratorios, imagen y el resto), con **25
   destacados primero** (ver «el muro detrás de toda la home», abajo). Antes eran
@@ -52,8 +58,9 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   - Cifras y nombres del muro son de la red de Silver y Gold, y la nota al pie
     lo dice: «Las cifras y los nombres del fondo son de la red de Silver y
     Gold…».
-  - **«En todos los planes: …»** (al elegir una ciudad) sigue nombrando solo a
-    los que están en todos los planes: ahí se promete algo.
+  - ~~**«En todos los planes: …»** (al elegir una ciudad)~~ Salió del home
+    con «¿Dónde vivís?» el 26/09. Si una lista de nombres vuelve a prometer
+    algo, vuelve la regla: solo los que están en todos los planes.
   - **Fuera del home**, aunque sigan en la guía: Sanatorio Da Vinci, COMED
     Amambay y Planmed Caaguazú. Esperan que SP los verifique:
     `Nelargon/sp-interno#71`.
@@ -61,7 +68,11 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
     está. Lo que existe es la categorización de la Superintendencia de Salud
     («categorizado Nivel 3»; `sp-interno/project/RED-destacados-2026-09-26.md`).
 - La tira de **aliados** quedó sola, en su sección («Aliados de tu plan»),
-  esperando la poda del directorio.
+  esperando la poda del directorio. El 26/09 Arturo pidió sacarla de ahí o
+  llevarla a otro lado, y cuestionó la animación (*«no es demasiado lenta, no
+  es funcional y roba espacio»*): medida, tarda 54 s en mostrar los 12 logos y
+  en el celular se ven 4 a la vez. Cinco destinos propuestos, **esperando su
+  elección**; no se tocó.
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):
