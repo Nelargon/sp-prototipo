@@ -20,7 +20,10 @@ import red from '../../lib/red-home.json';
    - Es textura: aria-hidden, sin puntero ni selección. La sección que lo lleva
      necesita la clase .con-muro (isolation) para que quede sobre su fondo y
      debajo de todo lo demás.
-   Los nombres son los de lib/red-home.json: los que están en todos los planes. */
+   Los nombres son los de lib/red-home.json: la red entera de Silver y Gold,
+   con los destacados primero (26/09/2026, decisión de Arturo; la lista y su
+   porqué están en scripts/red-home.mjs). Como el texto va fijo a la pantalla,
+   las primeras líneas —los destacados— se ven en todas las secciones. */
 
 const NOMBRES = [...red.muro, ...red.muro, ...red.muro];
 const TEXTO = NOMBRES.join(' · ');
