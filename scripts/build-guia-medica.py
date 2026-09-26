@@ -40,7 +40,9 @@ Qué decide este script (y por qué):
 - Tipo "Aviso" no es un prestador: la guía pone una leyenda en lugar de una
   lista. Viaja como nota de la especialidad.
 - Condiciones: se quita la procedencia "(según …)", que nombra guías que la
-  persona no conoce.
+  persona no conoce. Y la condición del Plan Centralizado («Plan
+  Centralizado: …») no se publica: esa guía no está online (Decisiones
+  23/09, n.º 4), y un asegurado de otro plan la leería como propia (26/09).
 """
 import sys, os, re, json, unicodedata, argparse, subprocess, datetime
 from collections import Counter, defaultdict
@@ -75,6 +77,13 @@ def sin_segun(c):
         if p and p.lower() not in vistos:
             vistos.add(p.lower()); out.append(p)
     return '; '.join(out)
+
+
+CONDS_CENTRAL = []  # filas a las que se les sacó la condición de la Centralizada
+
+
+def sin_centralizada(c):
+    return '; '.join(p for p in c.split('; ') if p and not p.lower().startswith('plan centralizado'))
 
 
 def telefonos(*vals):
@@ -306,7 +315,10 @@ def main(ruta, solo_validar=False, ruta_informe=None):
             'tel': telefonos(r['Teléfono'], r['Otros teléfonos']),
             'r': redes,
         }
-        cond = sin_segun(txt(r['Condiciones']))
+        crudo = sin_segun(txt(r['Condiciones']))
+        cond = sin_centralizada(crudo)
+        if cond != crudo:
+            CONDS_CENTRAL.append(txt(r['ID fila']))
         if cond:
             p['k'] = cond
         if en_lister(direccion, nombre, txt(r['ID fila'])):
@@ -353,6 +365,8 @@ def main(ruta, solo_validar=False, ruta_informe=None):
             '- Guías publicadas: ' + ', '.join(f'{guias.get(GUIA_DE_RED[k], {}).get("nombre", k)} ({GUIA_DE_RED[k]})' for _, k in REDES) + '.',
             f'- Centralizada: fuera de la guía online por ahora (Decisiones 23/09, n.º 4). '
             f'{len(solo_central)} filas están solo ahí y no se publican: {", ".join(solo_central) or "ninguna"}.',
+            f'- Condición «Plan Centralizado: …»: no se publica, por la misma razón '
+            f'({len(CONDS_CENTRAL)} filas: {", ".join(CONDS_CENTRAL) or "ninguna"}).',
             f'- «Revisar»: se publican, como en el PDF ({sum(1 for p in prestadores if p.get("rv"))} filas). '
             'El punto naranja se ve solo en el prototipo, no en la v1.',
             f'- «Baja»: no se publica ({excluidas["baja"]} filas).',
