@@ -11,6 +11,7 @@ import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
 import DondeTeAtendes from './components/DondeTeAtendes';
+import Comparador from './components/Comparador';
 import MuroFondo from './components/MuroFondo';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
@@ -60,6 +61,11 @@ export default function Page() {
     { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía al 100% y por persona, con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
+    // #bolsillo (26/09/2026). El menú «Qué pagás de tu bolsillo» llevaba a la
+    // leyenda de colores del comparador, que salió con el resto de la letra
+    // chica. La explicación vive acá, con las palabras del glosario (copago,
+    // arancel) y de la leyenda. Al llegar por el menú, la respuesta se abre.
+    { id: 'bolsillo', q: '¿Qué pago de mi bolsillo?', a: 'Depende de cómo cubre tu plan cada cosa. Cubierto: no ponés nada. Copago: vos pagás una parte y Salud Protegida la otra; cuando dice «copago 50%», pagás la mitad. Precio de convenio: el plan no lo cubre, pero pagás la tarifa que negoció Salud Protegida, más baja que la de la calle.' },
     // ⚠ Estas dos preguntas dependen de la guía. Entre el 15 y el 23/09 la v1
     // no la tenía y se contestaban por WhatsApp (una respuesta no puede
     // apuntar a un lugar que no existe). Desde el 23/09 la guía está en las
@@ -210,6 +216,19 @@ export default function Page() {
 
   useEffect(() => { try { document.documentElement.lang = 'es'; } catch (e) {} }, []);
 
+  // #bolsillo: quien llega desde el menú «Qué pagás de tu bolsillo» ve la
+  // respuesta abierta, no una pregunta cerrada que tiene que volver a tocar.
+  useEffect(() => {
+    const abrir = () => {
+      if (window.location.hash !== '#bolsillo') return;
+      const i = faqs().findIndex((f) => f.id === 'bolsillo');
+      if (i >= 0) setState({ faqOpen: i });
+    };
+    abrir();
+    window.addEventListener('hashchange', abrir);
+    return () => window.removeEventListener('hashchange', abrir);
+  }, []);
+
   // Menú overlay: bloquear el scroll del fondo mientras está abierto; al
   // cerrar, re-sincronizar el estado del header (solid/transparente).
   useEffect(() => {
@@ -309,30 +328,52 @@ export default function Page() {
   // hasta hoy solo se veían dentro del explorador.
   // ESSENTIAL (24/09/2026) en la primera columna, desde su cuadernillo
   // (datos/planes-vigentes/essential.json). Muchos de sus topes son POR FAMILIA
-  // y no por persona: eso va en `n`, debajo del número, porque "5" por familia
-  // y "15" por persona no se comparan a ojo. Donde el cuadernillo no declara
-  // el dato (remedios en urgencias) se dice eso, no se completa.
+  // y no por persona: «por familia» va al lado del número y nunca a la tarjeta,
+  // porque "5" por familia y "15" por persona no se comparan a ojo. Donde el
+  // cuadernillo no declara el dato (remedios en urgencias) se dice eso, no se
+  // completa.
+  // LA TARJETA DEL SERVICIO (26/09/2026, docs/diseno n.º 51, la 2). La letra
+  // chica salió de la tabla y vive acá: `d` es lo que dice cada plan al tocar
+  // el nombre del servicio, y `pie`, una línea del glosario o de la leyenda.
+  // Fuentes: datos/planes-vigentes/essential.json (cuadernillo), silver.json y
+  // gold.json, y la grilla (grilla-coberturas-precios-jul2026.json: topes de
+  // medicamentos por evento). «Por beneficiario» en la fuente = «por persona».
+  // `g` abre un grupo: titulillo en la tabla y banda en las tarjetas del celular.
+  const PIE_100 = 'Al 100%: no ponés nada.';
+  const PIE_TOPE = 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.';
   const cmp = [
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }] },
+    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }],
+      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', 'Al 100%, hasta 1 al año. Se puede usar a los 150 días de afiliarte.', 'Al 100%, hasta 1 al año. Se puede usar a los 150 días de afiliarte.'], pie: PIE_100 },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }],
+      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Al 100%, hasta 2 al año. Se puede usar a los 120 días de afiliarte.', 'Al 100%, hasta 2 al año. Se puede usar a los 90 días de afiliarte.'], pie: PIE_100 },
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).
-    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }] },
-    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }] },
-    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }] },
-    { name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }] },
-    { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }] },
-    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }] },
-    { name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }] },
+    { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }],
+      d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
+      pie: 'Copago: vos pagás una parte y Salud Protegida la otra.' },
+    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }],
+      d: ['3 sesiones al año para toda la familia, no por persona.', '5 sesiones al año.', '6 sesiones al año.'] },
+    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }],
+      d: ['5 sesiones al año para toda la familia, desde el primer día.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.', '20 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.'] },
+    { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }],
+      d: ['20 días al año para toda la familia, en habitación privada. A los 365 días de afiliarte.', '20 días al año por persona, en semi-suite. A los 60 días de afiliarte.', '25 días al año por persona, en semi-suite. A los 60 días de afiliarte.'],
+      pie: 'Semi-suite: habitación privada, con baño propio y lugar para un acompañante.' },
+    { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
+      d: ['Hasta 2 días al año por persona, a los 365 días de afiliarte.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }],
+      d: ['Hasta ₲350.000 en medicamentos en cada internación.', 'Hasta ₲1.000.000 en medicamentos y descartables en cada internación.', 'Hasta ₲1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
+    // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
+    { g: 'Urgencias y espera', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }],
+      d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta ₲150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta ₲200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
     // LA ESPERA, COMO FILA (26/09/2026, pregunta de Arturo: «¿no se podría
-    // simplemente poner como una fila más en el comparativo?»). Desde el 24/09
-    // era una oración abajo de la tabla; pero es un dato que cambia por plan, y
-    // eso es lo que la tabla hace. Essential: 365 días en todo lo nombrado
-    // (datos/planes-vigentes/essential.json, carencias_dias). Silver y Gold: de
-    // 60 días (internación) a 300 (parto) según el servicio (silver.json y
+    // simplemente poner como una fila más en el comparativo?»). Essential: 365
+    // días en todo lo nombrado (essential.json, carencias_dias). Silver y Gold:
+    // de 60 días (internación) a 300 (parto) según el servicio (silver.json y
     // gold.json); el detalle servicio por servicio está en /planes.
-    { name: 'Tiempo de espera', unit: 'internación, terapia intensiva, cirugías, resonancia y parto', kind: 'num', cells: [{ t: '1 año', n: 'desde que te afiliás' }, { t: '2 a 10 meses', n: 'según el servicio' }, { t: '2 a 10 meses', n: 'según el servicio' }] },
+    { name: 'Tiempo de espera', unit: 'internación, terapia intensiva, cirugías, resonancia y parto', kind: 'num', cells: [{ t: '1 año', n: 'desde que te afiliás' }, { t: '2 a 10 meses', n: 'según el servicio' }, { t: '2 a 10 meses', n: 'según el servicio' }],
+      d: ['1 año desde que te afiliás para internación, terapia intensiva, cirugías, resonancia y parto. Consultas, urgencias y fisioterapia, desde el primer día.', 'Según el servicio: internación a los 60 días, resonancia a los 150, la mayoría de las cirugías a los 180 y parto a los 300.', 'Según el servicio: internación a los 60 días, resonancia y la mayoría de las cirugías a los 150, y parto a los 300.'],
+      pie: 'Es lo que el contrato llama carencia: se cuenta desde el día que te afiliás, no desde el día que lo necesitás.' },
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero
@@ -346,7 +387,7 @@ export default function Page() {
 
   // faq
   const faqList = faqs().map((f, i) => ({
-    q: f.q, a: f.a, open: state.faqOpen === i,
+    id: f.id, q: f.q, a: f.a, open: state.faqOpen === i,
     chevStyle: 'transition:transform .2s cubic-bezier(.22,1,.36,1);transform:rotate(' + (state.faqOpen === i ? '180deg' : '0deg') + ')',
     toggle: () => { if (state.faqOpen !== i) track('faq_open', { pregunta: f.q }); toggleFaq(i); },
     // Tres destinos posibles: el simulador, una página del sitio (`to`) o
@@ -387,19 +428,20 @@ export default function Page() {
     selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     planHead, cmp, cmpIgual, planesHref: `${BP}/planes/`, stepsHow, faqList,
     difs: difsData(),
+    // Orden del muro (26/09/2026): las tres farmacias juntas, después óptica y viajes.
     aliados: [
       { name: 'Farmatotal', file: 'farmatotal.webp' },
+      { name: 'Punto Farma', file: 'puntofarma.webp' },
+      { name: 'Farmacia San José', file: 'sanjose.webp' },
+      { name: 'Óptica Meister', file: 'meister.webp' },
+      { name: 'Assist Card', file: 'assistcard.webp' },
       { name: 'Fisio Spa', file: 'fisiospa.webp' },
       { name: 'Barberos López', file: 'barberos.webp' },
       { name: 'Charpentier', file: 'charpentier.webp' },
       { name: 'Acuidarte', file: 'acuidarte.webp' },
       { name: 'Billio', file: 'billio.webp' },
-      { name: 'Farmacia San José', file: 'sanjose.webp' },
-      { name: 'Punto Farma', file: 'puntofarma.webp' },
       { name: 'Promedik', file: 'promedik.webp' },
-      { name: 'Óptica Meister', file: 'meister.webp' },
       { name: 'Upalala', file: 'upalala.webp' },
-      { name: 'Assist Card', file: 'assistcard.webp' },
     ],
   };
 
@@ -717,59 +759,14 @@ export default function Page() {
             </span>
           </div>
 
-          {/* Hint de scroll (solo móvil): en el teléfono la tabla se compara
-              deslizando — decilo antes para que no se lea como algo cortado. */}
-          <div data-rv className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para comparar los tres planes <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
-
           {/* ⚠ CONSERVA EL ANCLA #cartilla: el menú del header enlaza "Qué cubre
-              tu plan" acá. Al fusionarse las dos secciones, #comparar quedó en la
-              sección y #cartilla en la matriz, que es lo que esa entrada del menú
-              promete mostrar. Si algún día se mueve la tabla, el ancla va con ella. */}
-          <div className="sq" data-rv id="cartilla" style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
-            <div className="cmp-inner">
-              {/* Encabezado: cada plan con precio, para-quién y CTA. Silver = "la más elegida" (anclaje). */}
-              <div className="cmp-row">
-                <div className="cmp-lbl" style={css('padding:18px 22px;background:#fff')}></div>
-                {v.planHead.map((ph, i) => (
-                  <div key={i} style={css('padding:14px 12px 16px;text-align:center;border-left:1px solid var(--sp-line-2);border-top:3px solid ' + ph.color + ';' + (ph.recommended ? 'background:#F1FAF9;' : ''))}>
-                    {/* Ranura de badge de altura fija en LAS TRES columnas: el badge de
-                        Silver ya no empuja su título hacia abajo — nombres, precios y
-                        CTAs quedan en la misma línea base (el resalte de Silver deja de
-                        desbalancear la sección; feedback del usuario, jul 2026). */}
-                    <div style={css('height:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center')}>
-                      {ph.recommended && <span style={css('font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--sp-teal-deep);border-radius:var(--r-pill);padding:3px 10px')}>La más elegida</span>}
-                    </div>
-                    <div className="disp" style={css('font-size:20px;font-weight:800;color:var(--sp-navy);line-height:1')}>{ph.short}</div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-top:5px')}>desde <span className="num-tnum" style={css('font-weight:700;color:var(--sp-ink)')}>{ph.price}</span></div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:9px;min-height:31px')}>{ph.forWhom}</div>
-                    <a className="sq" href={ph.href} onClick={ph.onCta} style={css('margin-top:11px;height:34px;padding:0 15px;--sq:var(--r-xs);background:var(--sp-teal-deep);color:#fff;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center')}>Ver mi precio</a>
-                  </div>
-                ))}
-              </div>
-              {/* Filas: "Al 100%" en teal en TODOS los planes que lo tienen (Gold no se
-                  apaga); "Desde Silver"/"Copago" en dorado (oportunidad). Silver tenue. */}
-              {v.cmp.map((row, r) => (
-                <div key={r} className="cmp-row" style={css('border-top:1px solid var(--sp-line-2)')}>
-                  <div className="cmp-lbl" style={css('padding:15px 22px;background:#fff;display:flex;flex-direction:column;justify-content:center')}>
-                    <span style={css('font-size:14px;font-weight:700;color:var(--sp-navy);line-height:1.2')}>{row.name}</span>
-                    {row.unit && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);margin-top:2px')}>{row.unit}</span>}
-                  </div>
-                  {row.cells.map((c, j) => (
-                    <div key={j} style={css('padding:14px 12px;border-left:1px solid var(--sp-line-2);display:flex;align-items:center;justify-content:center;text-align:center;' + (j === 1 ? 'background:#F1FAF9;' : ''))}>
-                      <span style={css('display:flex;flex-direction:column;align-items:center;gap:4px')}>
-                      {row.kind === 'num' ? (
-                        <span style={css('font-size:16px;font-weight:700;color:var(--sp-ink);line-height:1.1')}>{c.t}</span>
-                      ) : (
-                        <span style={css('display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);' + (c.ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)'))}>{c.t}</span>
-                      )}
-                      {c.n && <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.3')}>{c.n}</span>}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
+              tu plan" acá (va en el contenedor de Comparador). Si algún día se
+              mueve la tabla, el ancla va con ella.
+              EL COMPARADOR NUEVO (26/09/2026): la 1.5 en la computadora y la 4.1
+              en el celular, con la tarjeta del servicio (docs/diseno n.º 45 a
+              53, BITACORA cap. 125). Reemplaza a la tabla que en el celular se
+              deslizaba de costado: al llegar, Gold no se veía. */}
+          <Comparador planes={v.planHead} filas={v.cmp} />
 
           {/* EL TRAMO DE ABAJO, SIN RUIDO (26/09/2026, Arturo eligió la opción 4 de
               docs/diseno n.º 39). Eran siete piezas, cada una en su caja: la espera
@@ -778,8 +775,11 @@ export default function Page() {
               negritas y siete ideas con el mismo peso: Arturo, de las versiones
               compactadas, «mucha info, mucho ruido» (BITACORA cap. 117). Ahora:
               - la espera de Essential es la última fila de la tabla;
-              - la leyenda, una línea gris pegada a la tabla (conserva #bolsillo:
-                el menú «Qué pagás de tu bolsillo» enlaza acá);
+              - la leyenda de colores salió el 26/09 (Arturo la marcó en una
+                captura con el resto de la letra chica): «Al 100%: no ponés nada»
+                va en la tarjeta del servicio, y copago y precio de convenio, en
+                la pregunta #bolsillo del FAQ, que es adonde lleva el menú «Qué
+                pagás de tu bolsillo»;
               - UNA tarjeta con lo que tenés en los tres planes y las tres
                 preguntas que siguen, sin subtítulos (cada puerta dice qué
                 pregunta responde, regla del 6/08);
@@ -787,15 +787,6 @@ export default function Page() {
                 25/09 el home tiene «Dónde te atendés», y la banda repetía lo mismo
                 con más texto y con el total («más de 600») que Arturo sacó del home;
               - SP Senior, una frase con su «Simulá Plan Vital». */}
-          <p data-rv id="bolsillo" className="cmp-ley">
-            {[
-              { c: 'var(--sp-teal)', t: 'Cubierto', b: 'no ponés nada' },
-              { c: 'var(--sp-estado-punto)', t: 'Copago', b: 'ponés una parte' },
-              { c: 'var(--sp-estado-ink)', t: 'Precio de convenio', b: 'no lo cubre el plan; pagás la tarifa negociada de SP' },
-            ].map((m) => (
-              <span key={m.t}><i style={{ background: m.c }} /><span><b>{m.t}:</b> {m.b}</span></span>
-            ))}
-          </p>
 
           <div data-rv className="sq cmp-tarjeta">
             <p className="cmp-igual">
@@ -943,30 +934,22 @@ export default function Page() {
           responde). Ver app/components/DondeTeAtendes.jsx. */}
       <DondeTeAtendes />
 
-      {/* RED DE BENEFICIOS — la tira de aliados, sola desde el 25/09/2026 (los
-          prestadores pasaron a «Dónde te atendés», arriba). Sigue pendiente la
-          poda que pidió el directorio («perfumería», HANDOFF). */}
-      <section className="con-muro" style={css('padding:64px 0 68px;background:var(--sp-surface);overflow:hidden')}>
+      {/* ALIADOS — los 12, quietos, en muro continuo (26/09/2026, docs/diseno n.º
+          44 y 53). Reemplaza a la tira en movimiento: tardaba 54 s en mostrar los
+          12 logos, en el celular se veían 4 y siempre en gris (el color dependía
+          del mouse). Arturo: «no es demasiado lenta, no es funcional y roba
+          espacio», y después «lo más reducido posible». Sin kicker ni bajada
+          repetida: un título chico y los logos. De 419 a unos 260 px en el
+          celular. ⚠ Sigue pendiente la poda que pidió el directorio
+          («perfumería», HANDOFF). */}
+      <section className="con-muro aliados" aria-labelledby="aliados-t" style={css('padding:36px 16px 40px;background:var(--sp-surface)')}>
         <MuroFondo tono="claro" />
-        <div style={css('max-width:1100px;margin:0 auto;padding:0 40px')}>
-          <div data-rv style={css('text-align:center;max-width:680px;margin:0 auto')}>
-            <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Red de beneficios · SaludPro 360</div>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Aliados <span style={css('color:var(--sp-teal-deep)')}>de tu plan</span>.</h2>
-            <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0')}>Descuentos con nuestros aliados comerciales, incluidos en tu plan.</p>
-          </div>
-        </div>
-
-        <div data-rv className="mq" style={css('margin-top:42px;--mq-dur:54s')}>
-          <div className="mq-track">
-            {[...v.aliados, ...v.aliados].map((a, i) => (
-              <div key={i} style={css('flex:none;display:flex;align-items:center;justify-content:center;height:58px;margin-right:60px')}>
-                <img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} loading="lazy" className="ally-logo" />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={css('font-family:var(--font-inter),sans-serif;max-width:1100px;margin:22px auto 0;padding:0 40px;text-align:center;font-size:12px;line-height:1.6;color:var(--sp-muted)')}>{ES_LANZAMIENTO ? 'Aliados reales de la red de beneficios. Los descuentos vienen incluidos en tu plan.' : 'Aliados reales: pasá el cursor para verlos a color.'}</div>
+        <h2 id="aliados-t" data-rv className="disp aliados-t">Descuentos con aliados<span>Incluidos en tu plan.</span></h2>
+        <ul data-rv className="aliados-muro">
+          {v.aliados.map((a) => (
+            <li key={a.file}><img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} loading="lazy" className="ally-logo" /></li>
+          ))}
+        </ul>
       </section>
 
       {/* FAQ */}
@@ -980,7 +963,7 @@ export default function Page() {
           </div>
           <div data-rv style={css('display:flex;flex-direction:column;gap:10px')}>
             {v.faqList.map((f, i) => (
-              <div className="sq rel" key={i} style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden')}>
+              <div className="sq rel" key={i} id={f.id} style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;scroll-margin-top:100px')}>
                 <button onClick={f.toggle} aria-expanded={f.open} aria-controls={'faq-r-' + i} className="fila" style={css('width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15.5px;font-weight:700;color:var(--sp-navy)')}>{f.q}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009690" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css(f.chevStyle + ';flex:none')}><path d="m6 9 6 6 6-6" /></svg></button>
                 {/* La respuesta crece en vez de aparecer de golpe (sistema táctil).
                     Cerrada sigue en la página, inert: Google la lee y quien copia

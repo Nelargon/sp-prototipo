@@ -4320,3 +4320,48 @@ mejores («¿cómo muestran tres planes en un teléfono?»). Cuando un informe d
 referencias trae un patrón que se repite, va entre las muestras aunque no
 parezca resolver el problema como se lo planteó.
 
+## Capítulo 125 — La tabla que se volvió tarjetas (26/09/2026)
+
+**Qué intentamos.** Un comparador de planes que se lea en el celular. La tabla
+de la computadora, achicada, se deslizaba de costado: al llegar se veía
+Essential entera, Silver al 74% y Gold nada. Hubo cinco rondas de muestras
+(docs/diseno n.º 45 a 53) y cada una corrigió a la anterior: pestañas,
+carrusel, tarjetas apiladas, titulillos y, al final, la letra chica.
+
+**Qué pasó.** Arturo eligió en partes, y cada elección vino con su porqué. En
+la computadora, la tabla limpia donde solo Silver se levanta (*«se ve súper
+bien»*). En el celular, los planes uno debajo del otro (cap. 124). Y la letra
+chica, marcada a mano en una captura: la unidad de cada servicio, las notas
+debajo de cada valor y la leyenda, todo a una tarjeta que aparece al pasar el
+mouse o tocar (*«así ahorramos exceso de información, ahorramos espacio»*).
+Cuando vio que el celular no la tenía: *«este tampoco tiene las aclaraciones
+como hablamos antes»*. Se construyó una sola estructura: cada plan es columna
+en la computadora y tarjeta en el celular. Dos cosas salieron al construir:
+- **Los archivos de los planes decían más que la tabla.** Al escribir las
+  tarjetas desde `datos/planes-vigentes/` aparecieron datos que el sitio no
+  mostraba: el tope de 3 consultas por mes en cada especialidad (después, con
+  copago), que en Silver y Gold la internación y la terapia intensiva se
+  cuentan por persona, y cuántos días espera cada servicio. La tarjeta no
+  resume la tabla: la completa.
+- **Sacar la leyenda dejaba al menú sin destino.** «Qué pagás de tu bolsillo»
+  llevaba a esas tres líneas de colores. La explicación pasó a una pregunta
+  del FAQ, con las palabras del glosario, que se abre sola al llegar.
+- **El CI tiró la tarjeta en la computadora, y no era la tarjeta.** La prueba
+  usaba `hover()` de Playwright. Como la página tiene scroll suave, Playwright
+  la desplaza con animación para acomodar el botón mientras el puntero ya
+  llegó: el botón se va de abajo del mouse y la tarjeta se cierra. Con un
+  mouse de verdad se abre en todas las filas. La prueba ahora mueve el mouse
+  como una persona. Y el sitio ganó algo en el camino: con mouse, un clic
+  también abre la tarjeta.
+
+Y una que se sostuvo contra el pedido: «por familia» quedó a la vista. Arturo
+la había marcado con el resto. Pero 5 sesiones por familia contra 15 por
+persona no es el triple: es bastante más. Esconder eso es la letra chica que
+el sitio promete no tener. Se le planteó y lo confirmó: *«dejá "por familia" a
+la vista»*.
+
+**Qué aprendimos.** Una tabla y unas tarjetas pueden ser la misma estructura
+leída en dos direcciones: por fila en la computadora, por plan en el celular.
+Y al esconder información hay que separar lo que amplía el dato (va a la
+aclaración) de lo que lo cambia (se queda a la vista).
+

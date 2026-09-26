@@ -1366,7 +1366,9 @@ con una aclaración abierta: **1**, un globo sobre el dato, el mismo que ya
 explica «carencia» en el sitio (734 px); **2**, una tarjeta del servicio con los
 tres planes (734 px); **3**, la fila que se abre (792 px con una abierta).
 
-**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+**Qué se decidió.** La **2**, la tarjeta del servicio (*«me gusta el formato de
+la tarjeta de servicio»*), y también en el celular. «Por familia» se quedó a la
+vista. Construido el 26/09/2026 (BITACORA cap. 125).
 
 **La lección.** Esconder la letra chica funciona cuando lo escondido amplía el
 dato, no cuando lo cambia. «Al 100%: no ponés nada» amplía. «Por familia» en
@@ -1383,7 +1385,7 @@ visuales, *«un diferencial interesante»*. Tres formas en la tarjeta de
 Essential: **1**, con el ícono propio (orden, hospital, reloj); **2**, con una
 banda de color a lo ancho; **3**, cada grupo como un bloque.
 
-**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+**Qué se decidió.** La **2**, con banda de color. Construido el 26/09/2026.
 
 **La lección.** En una columna de casi tres pantallas, los titulillos son los
 carteles del camino: dicen dónde estás sin leer. Es uno de los pocos lugares
@@ -1400,7 +1402,8 @@ espacio muerto»*. Tres formas con los logos del tamaño de hoy: **1**, grilla d
 3 (309 px); **2**, muro continuo (257 px); **3**, mosaico en recuadros (365 px).
 Hoy la tira mide 419 px y muestra 4 logos a la vez.
 
-**Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+**Qué se decidió.** La **2**, muro continuo. Construido el 26/09/2026: 274 px
+en el celular y 234 en la computadora.
 
 **La lección.** El espacio muerto no estaba en los archivos: se midieron y ya
 vienen sin márgenes. Estaba en el diseño: 60 px entre logos en la tira y
