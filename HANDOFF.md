@@ -139,7 +139,8 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
     `datos/planes-vigentes/` (essential, silver, gold y la grilla). Nada
     escrito de memoria: si cambia un cuadernillo, cambia la tarjeta.
   - **«por familia» se quedó a la vista** en Essential; el resto de la letra
-    chica fue a la tarjeta. La prueba lo controla.
+    chica fue a la tarjeta. Arturo lo confirmó (*«dejá "por familia" a la
+    vista»*). La prueba lo controla.
   - **La leyenda de colores salió.** «Al 100%: no ponés nada» va en la
     tarjeta; copago y precio de convenio, en la pregunta nueva del FAQ
     **«¿Qué pago de mi bolsillo?»** (`id="bolsillo"`), que es adonde lleva el

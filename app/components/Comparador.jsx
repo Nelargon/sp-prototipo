@@ -37,7 +37,10 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
         aria-expanded={abierta}
         aria-controls={abierta ? id : undefined}
         onPointerDown={(e) => { puntero.current = e.pointerType || 'mouse'; }}
-        onClick={(e) => { e.stopPropagation(); if (puntero.current !== 'mouse') (abierta ? cerrar() : abrir()); }}
+        // Con mouse, el clic solo abre (el hover ya la abrió o la cierra al
+        // salir): si el hover no llegó, un clic igual la muestra. Con el dedo,
+        // el toque abre y cierra.
+        onClick={(e) => { e.stopPropagation(); if (puntero.current === 'mouse') abrir(); else (abierta ? cerrar() : abrir()); }}
         onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') abrir(); }}
         onPointerLeave={(e) => { if ((e.pointerType || 'mouse') === 'mouse') cerrar(); }}
         onFocus={(e) => { if (e.target.matches?.(':focus-visible')) abrir(); }}

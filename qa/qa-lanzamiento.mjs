@@ -287,9 +287,22 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   if (base.vieja) mal(nombre + ': quedan restos de la tabla vieja (.cmp-row o la leyenda)');
   // La tarjeta del servicio: con el dedo en el celular, con el mouse en la compu.
   const btn = movil ? page.locator('.cmp2-plan').nth(1).locator('.cmp2-srv', { hasText: 'Fisioterapia' }) : page.locator('.cmp2-lab .cmp2-srv', { hasText: 'Fisioterapia' });
-  await btn.scrollIntoViewIfNeeded();
-  if (movil) await btn.tap(); else await btn.hover();
-  await page.waitForTimeout(250);
+  // ⚠ Con mouse, NO usar btn.hover(): la página tiene scroll-behavior:smooth y
+  // Playwright, al acomodar el botón, la desplaza con animación mientras el
+  // puntero ya llegó; el botón se va de abajo del mouse y la tarjeta se cierra
+  // (así falló el CI del PR #218, 26/09/2026). Se hace como una persona: el
+  // botón al medio de la pantalla con scroll instantáneo, y el mouse que
+  // entra desde afuera. Antes, que React haya activado los botones.
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.waitForTimeout(300);
+  if (movil) await btn.tap();
+  else {
+    const caja = await btn.boundingBox();
+    await page.mouse.move(width / 2, 5);
+    await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+  }
+  await page.waitForSelector('.cmp2-tarjeta', { timeout: 2000 }).catch(() => {});
   const t = await page.evaluate(() => { const e = document.querySelector('.cmp2-tarjeta'); if (!e) return null; const r = e.getBoundingClientRect(); return { planes: e.querySelectorAll('.cmp2-tarjeta-p').length, dentro: r.left >= 0 && r.right <= innerWidth + 1 }; });
   await page.keyboard.press('Escape');
   await page.waitForTimeout(150);

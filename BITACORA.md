@@ -4346,11 +4346,19 @@ en la computadora y tarjeta en el celular. Dos cosas salieron al construir:
 - **Sacar la leyenda dejaba al menú sin destino.** «Qué pagás de tu bolsillo»
   llevaba a esas tres líneas de colores. La explicación pasó a una pregunta
   del FAQ, con las palabras del glosario, que se abre sola al llegar.
+- **El CI tiró la tarjeta en la computadora, y no era la tarjeta.** La prueba
+  usaba `hover()` de Playwright. Como la página tiene scroll suave, Playwright
+  la desplaza con animación para acomodar el botón mientras el puntero ya
+  llegó: el botón se va de abajo del mouse y la tarjeta se cierra. Con un
+  mouse de verdad se abre en todas las filas. La prueba ahora mueve el mouse
+  como una persona. Y el sitio ganó algo en el camino: con mouse, un clic
+  también abre la tarjeta.
 
 Y una que se sostuvo contra el pedido: «por familia» quedó a la vista. Arturo
 la había marcado con el resto. Pero 5 sesiones por familia contra 15 por
 persona no es el triple: es bastante más. Esconder eso es la letra chica que
-el sitio promete no tener.
+el sitio promete no tener. Se le planteó y lo confirmó: *«dejá "por familia" a
+la vista»*.
 
 **Qué aprendimos.** Una tabla y unas tarjetas pueden ser la misma estructura
 leída en dos direcciones: por fila en la computadora, por plan en el celular.
