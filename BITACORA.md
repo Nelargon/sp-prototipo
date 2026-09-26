@@ -4126,3 +4126,28 @@ como fila se lee alineado con el precio de cada plan, y la oración sobraba. El
 tramo terminó en 244 px (eran 697). Lo que aprendimos, de nuevo: antes de
 decidir cómo decorar un dato, preguntarse qué forma tiene. Uno que se compara
 va en la tabla.
+
+## Capítulo 118 — Cuánto, no dónde (26/09/2026)
+
+**Qué intentamos.** Arturo quería el muro de «Dónde te atendés» detrás de toda
+la home: *«que traspase toda la página»*. Se hicieron cuatro versiones (docs/
+diseno n.º 40) y todas discutían **dónde** ponerlo: de punta a punta (A), solo
+en los márgenes (B), solo en las bandas navy (C) o una mezcla (D). La
+recomendación fue la C, con un 4/10 para la A por el ruido detrás de los
+textos chicos, el mismo que se acababa de sacar del comparador (cap. 117).
+
+**Qué pasó.** Arturo no eligió entre los cuatro lugares: movió otra perilla.
+*«¿Y si vamos con C, pero en las secciones claras, si es un poco más
+transparente?»*. Con el muro en todas partes y la intensidad según lo que hay
+que leer encima, la continuidad de la A dejó de costar lectura. Medido: al 50%
+el muro quedaba 5 puntos más oscuro que el fondo (de 255); al 30%, 3; la A
+eran 9. Eligió el medio: *«Y claras al 40%»*.
+
+**Qué aprendimos.** Cuatro opciones que varían la misma variable esconden la
+que no se movió. Todas las láminas cambiaban el lugar del muro y ninguna su
+intensidad. Cuando las opciones se parecen demasiado, preguntarse qué perilla
+quedó quieta. Y de construcción: para que un fondo atraviese secciones con
+colores distintos sin medir nada con JavaScript, cada sección lleva su copia
+fija a la pantalla y recortada a la sección. Todas coinciden, y la página se
+desliza sobre una sola pared.
+

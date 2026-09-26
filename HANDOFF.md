@@ -95,9 +95,26 @@ BITACORA cap. 117). Era una pila de siete cajas; ahora:
   que antes). La caja del parto sigue solo en el prototipo.
 - Mide 244 px en escritorio (antes 697) y 474 a 390 px (antes 1506).
 
+**Home — el muro detrás de toda la página** (26/09, idea de Arturo; eligió la
+C de docs/diseno n.º 40 con las secciones claras al 40%, n.º 41).
+`components/MuroFondo.jsx`: cada sección de la home y el pie llevan su copia
+del muro, **fija a la pantalla y recortada a la sección** (`.muro-marco` con
+`clip-path`, `.muro-texto` con `position:fixed`). Como todas las copias ocupan
+el mismo lugar, las líneas siguen de una sección a la otra: la página se
+desliza sobre una sola pared, como el tapiz de la guía.
+- Tres tonos: `oscuro` en las bandas navy (inicio, manifiesto, contacto, pie),
+  `claro` en las claras (4 puntos más oscuro que el fondo, de 255, medido) y
+  `pleno` en «Dónde te atendés», donde se ve entero (reemplazó a `.dta-muro`).
+- La sección necesita `className="con-muro"` (isolation): el muro queda sobre
+  su fondo y debajo de todo lo demás, sin tocar a los hijos.
+- ⚠ **Sección nueva en la home = su `<MuroFondo tono=… />`.** Y nada de
+  `transform`/`filter`/`contain` en un ancestro de una sección: rompe el fixed.
+  `qa-lanzamiento` controla las dos cosas y el tono contra el fondo real.
+- Costo medido: el HTML del home pasa de 16,9 a 18,1 KB comprimido; el scroll
+  sigue a 60 cuadros por segundo con la CPU 4× más lenta (laboratorio).
+
 **Pendiente de Arturo:** el «más de 600» que sigue en tres preguntas
-frecuentes del home → `Nelargon/sp-interno#68`. Y su idea del 26/09, el
-**muro detrás de toda la home**, está en maqueta.
+frecuentes del home → `Nelargon/sp-interno#68`.
 
 **Pendiente de SP**: tildes que faltan en la planilla y se ven en el home
 («Sanatorio San Martin», «Sanatorio Santa Lucia», «Divino Niño Jesus»). Se

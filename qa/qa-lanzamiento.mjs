@@ -163,7 +163,7 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const sec = page.locator('section.dta');
   if (!(await sec.count())) { mal(nombre + ': el home no tiene «Dónde te atendés»'); await page.close(); continue; }
   await sec.scrollIntoViewIfNeeded();
-  const muro = await page.$eval('section.dta .dta-muro', (m) => ({ aria: m.getAttribute('aria-hidden'), n: m.children.length }));
+  const muro = await page.$eval('section.dta .muro-marco', (m) => ({ aria: m.getAttribute('aria-hidden'), n: m.querySelectorAll('.muro-texto span').length })).catch(() => ({ aria: null, n: 0 }));
   if (muro.aria !== 'true' || muro.n < 10) mal(nombre + ': el muro de nombres falta o lo leen los lectores de pantalla');
   const pais = await page.$$eval('section.dta .dta-cuadro b', (bs) => bs.map((b) => b.textContent).join('/'));
   const segunda = page.locator('section.dta .dta-ciudad').nth(2);
@@ -239,6 +239,42 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   else bien(nombre + ': sin la banda «¿Dónde atenderte?» ni el total');
   if (!r.senior || !r.senior.endsWith('/simulador/')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador');
   else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital»');
+  await page.close();
+}
+
+// ── El muro detrás de toda la home (26/09/2026, components/MuroFondo.jsx) ──
+// Cada sección y el pie llevan su copia del muro, fija a la pantalla: si una
+// sección nueva entra sin la suya, o un transform en un ancestro rompe el
+// fixed (el muro empezaría a moverse con la sección y las líneas dejarían de
+// coincidir), esto lo dice. El tono se controla contra el fondo real.
+console.log('\n── El muro detrás de toda la home');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight / 2, behavior: 'instant' }));
+  const secs = await page.evaluate(() => {
+    const lum = (c) => { const m = c.match(/[\d.]+/g).map(Number); return (0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2]) / 255; };
+    return [...document.querySelectorAll('[data-page="viva"] > section, [data-page="viva"] > footer')].map((s) => {
+      const m = s.querySelector(':scope > .muro-marco');
+      const t = m && m.querySelector('.muro-texto');
+      const bb = t && t.getBoundingClientRect();
+      const nombre = s.id || (s.querySelector('h1,h2') || {}).textContent || s.tagName.toLowerCase();
+      return {
+        nombre: nombre.trim().slice(0, 28),
+        tono: m ? ([...m.classList].find((c) => c !== 'muro-marco' && c.startsWith('muro-')) || '').replace('muro-', '') : '',
+        esperado: s.classList.contains('dta') ? 'pleno' : lum(getComputedStyle(s).backgroundColor) < 0.4 ? 'oscuro' : 'claro',
+        textura: !!m && m.getAttribute('aria-hidden') === 'true' && getComputedStyle(m).pointerEvents === 'none',
+        fijo: !!t && getComputedStyle(t).position === 'fixed' && Math.abs(bb.top) < 1 && Math.abs(bb.height - innerHeight) < 2,
+      };
+    });
+  });
+  const sin = secs.filter((x) => !x.tono), mal_tono = secs.filter((x) => x.tono && x.tono !== x.esperado);
+  const suelto = secs.filter((x) => x.tono && (!x.textura || !x.fijo));
+  if (!secs.length) mal(nombre + ': no encontré las secciones de la home');
+  if (sin.length) mal(nombre + ': ' + sin.length + ' sección(es) sin muro: ' + sin.map((x) => x.nombre).join(' · '));
+  if (mal_tono.length) mal(nombre + ': tono del muro que no va con su fondo: ' + mal_tono.map((x) => x.nombre + ' (' + x.tono + ', va ' + x.esperado + ')').join(' · '));
+  if (suelto.length) mal(nombre + ': muro que lo leen los lectores, ataja el puntero o no queda fijo: ' + suelto.map((x) => x.nombre).join(' · '));
+  if (secs.length && !sin.length && !mal_tono.length && !suelto.length) bien(nombre + ': las ' + secs.length + ' secciones con su muro, fijo y en el tono de su fondo');
   await page.close();
 }
 
