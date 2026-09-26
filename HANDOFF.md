@@ -76,7 +76,13 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   formas, todas quietas (docs/diseno n.º 44): **A** una línea (124 px), **B**
   seis logos quietos (191), **C** plegable (126 cerrada), **D** una línea
   dentro del comparador (0 px propios; pide confirmar que Essential incluye
-  SaludPro 360). Hoy mide 419 px. **Esperando su elección**; no se tocó.
+  SaludPro 360). Hoy mide 419 px. Arturo eligió la B y pidió los 12 logos,
+  *«no hacer más chicos los logotipos, sino compactar los espacios»*: tres
+  formas con el tamaño de hoy (docs/diseno n.º 53): **1** grilla de 3 (309
+  px), **2** muro continuo (257 px), **3** mosaico en recuadros (365 px).
+  ⚠ Los archivos de los logos son chicos (de 19 a 63 px de alto, ya sin
+  márgenes): para mostrarlos más grandes hay que pedirle a cada aliado su
+  logo en buena calidad. **Esperando su elección**; no se tocó.
 - **El comparador en el celular** (26/09, Arturo: *«el diseño está muy mal,
   especialmente para el celular»*). Medido: al llegar se ve Essential entero,
   Silver al 74% y **Gold nada**; al bajar se pierde qué columna es cada plan.
@@ -101,8 +107,20 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
   compactas (784 px) y **1.5** tabla limpia con Silver en tarjeta (786 px).
   Celular, apiladas: **4.1** tarjetas completas (2630 px, 3,1 pantallas),
   **4.2** «todo lo del anterior, y además» (2018 px) y **4.3** tarjetas
-  resumen con cuatro datos y «Comparar los 10 servicios» (1232 px). **Esperando
-  su elección**.
+  resumen con cuatro datos y «Comparar los 10 servicios» (1232 px). Arturo
+  eligió la **1.5** para la computadora (*«se ve súper bien»*) y la **4.1**
+  para el celular (le gustó que separe urgencias, internación y consultas), y
+  pidió tres cosas más (docs/diseno n.º 51 y 52):
+  - **1.5 con la letra chica en una aclaración.** Marcó en una captura todo lo
+    secundario: la unidad de cada servicio, las notas bajo cada valor y la
+    leyenda. Sale de la tabla y aparece al pasar el mouse o tocar: **1** globo
+    sobre el dato (el mismo de «carencia»), **2** tarjeta del servicio con los
+    tres planes, **3** la fila se abre. 734 a 792 px. ⚠ «por familia» en
+    Essential cambia la comparación (5 por familia contra 15): conviene que
+    siga a la vista.
+  - **4.1 con titulillos más visuales**: **1** con ícono propio, **2** con banda
+    de color, **3** en bloques.
+  **Esperando su elección** en las dos.
 
 **Guía Médica — el mapa** (`app/guia-medica/MapaRed.jsx`, datos en
 `lib/mapa-paraguay.js`):
