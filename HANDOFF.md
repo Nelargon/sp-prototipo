@@ -13,7 +13,48 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 26 sep 2026.*
+*Última actualización: 27 sep 2026.*
+
+---
+
+## 📱 LA COMPARATIVA EN EL CELULAR: TARJETAS IGUALES Y EL DETALLE AL TOCAR (27 sep 2026)
+
+> ⚠ **Propuesta aprobada en su dirección, NO construir todavía.** Arturo dijo
+> que sí a la forma, pero va a revisar la maqueta en su celular antes de
+> confirmarla (27/09/2026). Cuando la confirme, la construye **una sola
+> sesión**, acordada con él.
+
+**Qué pasó.** La revisión integral (`sp-interno#91`) y el pase de la
+comparativa recomendaban para el celular la tabla en «fila partida» (láminas 56
+y 57). Arturo la sintió demasiado ordenada: *«quizás, al tratar de hacerlo
+demasiado ordenado en filas y columnas, se pierde un poquito de claridad»*. Con
+capturas reales de páginas de planes conocidas (lámina 58), la propuesta pasó a
+ser otra (lámina 59):
+- **Arriba, una vez**, quiénes entran y lo que tienen los tres planes.
+- **Tres tarjetas apiladas con las mismas cinco líneas, en el mismo orden**,
+  cada una con su dato concreto. Hoy las tarjetas de la maqueta destacan cosas
+  distintas en cada plan y hacen creer que Essential no tiene resonancia ni
+  psicología, cuando las tiene.
+- **Cada línea abre la tarjeta del servicio** con los tres planes, la que Arturo
+  eligió el 26/09 (lámina 51).
+- **Las palabras con letra chica van subrayadas** y se explican al tocar.
+- **La tabla completa, a pedido**, en una hoja que se abre.
+
+Medido: del título al final de la comparación, 3,3 pantallas del celular contra
+8,1 de la fila partida.
+
+**La regla que sale de acá** está en el `CLAUDE.md` («regla de claridad»):
+ninguna sorpresa grande puede estar solo en el contrato.
+
+**Pendiente de Arturo:**
+1. Revisar la maqueta y confirmar la forma.
+2. Las cinco líneas. Hoy son consultas con especialistas, psicología,
+   resonancia, internación y dentista; el parto es candidato a entrar.
+3. Si la tabla completa se abre como hoja o queda plegada al final.
+
+**Dónde está todo:** en `sp-interno/project/comparativa-2026-09-27/`. Ahí
+están el `PASE.md` al día, las dos láminas navegables de esta conversación, las
+capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
 

@@ -186,6 +186,24 @@ pierde (BITACORA cap. 96).
   copy nuevo. Cuando el usuario diga algo con una expresión que sirve, se
   anota ahí, textual y con fecha, con un PR a `sp-contenido` en la misma tanda
   de trabajo. Nunca inventarle anécdotas u opiniones que no dijo.
+- **Regla de claridad (27 sep 2026, conversación con Arturo)**: la web no tiene
+  que decirlo todo, pero **ninguna sorpresa grande puede estar solo en el
+  contrato**. Arturo: *«dar claridad al cliente no quiere decir llenarle de
+  información que podría verse como necesaria»*. Antes de mostrar o esconder un
+  dato, la pregunta es: **si la persona no lo ve, ¿puede elegir mal o llevarse
+  una sorpresa después?**
+  - Si sí, va **a la vista**: el precio con su condición, «para toda la
+    familia», los tiempos de espera largos y lo que no entra en ningún plan.
+  - Si solo amplía lo que ya se ve, va **a un toque**: la palabra subrayada con
+    puntos que abre una explicación (al pasar el mouse en la computadora).
+  - Si está para protegernos a nosotros, va **al contrato**, con un enlace.
+
+  La meta es que la persona siga adelante **con confianza**: lo que descubre
+  en el contrato después de firmar ya no le sirve para elegir.
+  Las explicaciones que se abren al tocar se miden con `track()`, sin datos
+  personales: si algo que importa casi nadie lo abre, sube a la vista. Es la
+  lámina 51 («lo que cambia el dato no se esconde») dicha para toda la página
+  (láminas 57 a 59).
 - **Un solo texto para ir al simulador: «Simulá tu plan»** (25 sep 2026,
   decisión de Arturo, `sp-interno#57`). Había seis («Simulá tu precio»,
   «Simulá el tuyo en un minuto», «Mirá tu precio en el simulador»…). Dos excepciones con su porqué: «Ver mi
