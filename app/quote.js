@@ -128,10 +128,10 @@ export const plans = () => [
   // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
   { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
     lines: ['Consultas sin tope en Lister, y hasta 3 por mes en la red', 'Urgencias 24 h, desde el día uno', 'Laboratorio de rutina, radiografías y fisioterapia, sin espera', 'Odontología básica en Lister: consulta, controles, extracciones simples y limpieza', 'Internación, cirugías y parto, al año de afiliarte'] },
-  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía al 100% y por persona',
-    lines: ['Consultas con especialistas: sin tope en la mitad, 5 o 6 al año en el resto', 'Tomografía y resonancia al 100%', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
+  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía por persona',
+    lines: ['Consultas con especialistas: sin tope en la mitad, 5 o 6 al año en el resto', 'Tomografía y resonancia por persona', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
   { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia al 100%; la tomografía, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
+    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia por persona; la tomografía, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
 ];
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del
@@ -192,7 +192,7 @@ export const engine = (d) => {
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
   const P = {
     essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
-    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: tomografía y resonancia al 100% y por persona, más días de terapia intensiva y topes más altos.' },
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: tomografía y resonancia por persona, más días de terapia intensiva y topes más altos.' },
     gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.' },
     vital: { name: 'Plan Vital', color: 'var(--sp-navy)', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
@@ -270,7 +270,7 @@ export const opts = () => ({
   ],
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Tomografía y resonancia al 100% y por persona, y topes más altos.' },
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Tomografía y resonancia por persona, y topes más altos.' },
     { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.' },
   ],
   /* geo: reemplazado por el buscador de ciudades (app/geo.js) — el paso

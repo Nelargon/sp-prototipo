@@ -17,6 +17,34 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🔤 «AL 100%» SALIÓ DEL SITIO: CADA FILA DICE CUÁNTAS Y PARA QUIÉN (27 sep 2026)
+
+**Qué pasó.** Arturo: *«Qué quiere decir al 100%, no me queda claro en el
+comparador de planes»*. En resonancia y tomografía, Essential decía «1 por
+familia» y Silver y Gold decían «Al 100%»: dos preguntas distintas en la misma
+fila, y la diferencia real (por familia contra por persona) escondida. Ahora:
+- **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona».
+  «No ponés nada» va en la tarjeta del servicio, solo en Silver y Gold, y el pie
+  explica por familia y por persona. En el FAQ, «por persona y no por familia».
+- **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador) y
+  **`app/quote.js`** (etiqueta, líneas y textos del simulador): sin «Al 100%».
+
+«Al 100%» aparecía 5 veces en el home, 10 en `/planes` y 13 en `/que-cubre`;
+ahora, 0 (medido). Lámina 60 y BITACORA cap. 126.
+
+**Dos datos para confirmar con SP** (se suman a la pregunta de precios en
+pareja del pase de la comparativa, en `sp-interno`):
+1. **¿Essential cubre la resonancia y la tomografía sin que la persona ponga
+   nada?** Su fuente dice «1 al año por grupo familiar» y no declara
+   porcentaje. Hasta saberlo, «no ponés nada» no se dice de Essential.
+2. **¿El tope de Silver y Gold es por persona?** El cuadernillo dice
+   «Cobertura total (100%), hasta 1 por año (cualquiera de la lista)», sin
+   decir por persona. El sitio ya lo decía antes de este cambio (FAQ,
+   etiqueta de Silver, simulador); ahora se ve en la celda, así que conviene
+   confirmarlo.
+
+---
+
 ## 📱 LA COMPARATIVA EN EL CELULAR: TARJETAS IGUALES Y EL DETALLE AL TOCAR (27 sep 2026)
 
 > ⚠ **Propuesta aprobada en su dirección, NO construir todavía.** Arturo dijo

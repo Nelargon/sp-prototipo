@@ -4365,3 +4365,36 @@ leída en dos direcciones: por fila en la computadora, por plan en el celular.
 Y al esconder información hay que separar lo que amplía el dato (va a la
 aclaración) de lo que lo cambia (se queda a la vista).
 
+
+## Capítulo 126 — Una fila, una pregunta (27/09/2026)
+
+**Qué intentamos.** Desde el capítulo 48, el comparador del home ponía «Al
+100%» en turquesa en Silver y Gold para resonancia y tomografía, con el mismo
+color en los tres planes para que ninguno se apagara. Cuando la letra chica
+salió de la tabla (cap. 125), la explicación («Al 100%: no ponés nada») quedó
+en la tarjeta que se abre al tocar.
+
+**Qué pasó.** Arturo, mirando el comparador: *«Qué quiere decir al 100%, no me
+queda claro en el comparador de planes»*. Al revisarlo apareció que no faltaba
+una explicación, sino que la fila estaba mal planteada. En la misma fila,
+Essential decía *cuántas* («1 por familia») y Silver y Gold decían *cuánto paga
+SP* («Al 100%»). Lo que de verdad cambia, una resonancia para toda la familia
+contra una para cada uno, no se veía en ningún lado sin tocar. Y el dato estaba
+en todo el sitio: «Al 100%» aparecía 5 veces en el home, 10 en `/planes` y 13
+en `/que-cubre` (medido). Se cambió en el comparador, en `coverage.js` y en
+`quote.js`: «1 por persona», «2 por persona», y «no ponés nada» solo en la
+tarjeta y solo donde la fuente lo dice.
+
+**Qué aprendimos.**
+- **En una fila de comparación, las tres celdas contestan la misma pregunta.**
+  Si no, la persona compara lo que no se compara y la diferencia que importa se
+  pierde.
+- **Una explicación detrás de un toque no arregla una celda que pregunta otra
+  cosa.** Es la regla de claridad del `CLAUDE.md` aplicada a una celda: si no
+  la ve, puede elegir mal.
+- **«Al 100%» es un porcentaje de seguros.** Una familia dice «no ponés nada».
+- **Al buscar la fuente apareció un dato que el sitio afirmaba sin respaldo
+  textual:** que el tope de Silver y Gold es por persona. El cuadernillo dice
+  «hasta 1 por año», sin decir por quién. Quedó anotado en el HANDOFF para
+  confirmar con SP, junto con si Essential cubre esos estudios sin que se pague
+  nada.
