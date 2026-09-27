@@ -58,7 +58,7 @@ export default function Page() {
     // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
-    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía al 100% y por persona, con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía por persona y no por familia, con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
     // #bolsillo (26/09/2026). El menú «Qué pagás de tu bolsillo» llevaba a la
@@ -339,13 +339,19 @@ export default function Page() {
   // gold.json, y la grilla (grilla-coberturas-precios-jul2026.json: topes de
   // medicamentos por evento). «Por beneficiario» en la fuente = «por persona».
   // `g` abre un grupo: titulillo en la tabla y banda en las tarjetas del celular.
-  const PIE_100 = 'Al 100%: no ponés nada.';
+  // «Al 100%» salió de las celdas (27/09/2026, Arturo: «no me queda claro»):
+  // al lado de «1 por familia» contestaba otra pregunta (cuánto paga SP) y
+  // tapaba lo que de verdad cambia, por familia contra por persona. Ahora las
+  // tres celdas dicen cuántas y para quién, y «no ponés nada» va en la tarjeta
+  // del servicio, solo donde la fuente lo dice (Silver y Gold: «Cobertura
+  // total (100%)»). Essential no declara porcentaje: se pregunta a SP.
+  const PIE_QUIEN = 'Por familia: las comparten todos. Por persona: cada uno tiene las suyas.';
   const PIE_TOPE = 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.';
   const cmp = [
-    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }],
-      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', 'Al 100%, hasta 1 al año. Se puede usar a los 150 días de afiliarte.', 'Al 100%, hasta 1 al año. Se puede usar a los 150 días de afiliarte.'], pie: PIE_100 },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: 'Al 100%', ok: true }, { t: 'Al 100%', ok: true }],
-      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Al 100%, hasta 2 al año. Se puede usar a los 120 días de afiliarte.', 'Al 100%, hasta 2 al año. Se puede usar a los 90 días de afiliarte.'], pie: PIE_100 },
+    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: '1 por persona', ok: true, n: 'al año' }, { t: '1 por persona', ok: true, n: 'al año' }],
+      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', '1 al año por persona, y no ponés nada. Se puede usar a los 150 días de afiliarte.', '1 al año por persona, y no ponés nada. Se puede usar a los 150 días de afiliarte.'], pie: PIE_QUIEN },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: '2 por persona', ok: true, n: 'al año' }, { t: '2 por persona', ok: true, n: 'al año' }],
+      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Hasta 2 al año por persona, y no ponés nada. Se puede usar a los 120 días de afiliarte.', 'Hasta 2 al año por persona, y no ponés nada. Se puede usar a los 90 días de afiliarte.'], pie: PIE_QUIEN },
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).

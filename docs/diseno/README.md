@@ -1572,3 +1572,25 @@ plegada al final.
 **La lección.** Una tarjeta corta que destaca cosas distintas en cada plan es
 peor que una larga. Cada tarjeta tiene sentido sola, y juntas llevan a
 conclusiones falsas. Lo que falta también informa, y a veces informa mal.
+
+### 60 · Una fila, una pregunta: «Al 100%» no se compara con «1 por familia»
+
+![El comparador del home antes y después: «Al 100%» en Silver y Gold al lado de «1 por familia» en Essential, y después «1 por persona»](img/2026-09-27-al-100-no-se-compara.webp)
+
+**Qué muestra.** El comparador del home, antes y después del cambio, en la
+computadora, en el celular y en la tarjeta que se abre al tocar. Antes, en las
+filas de resonancia y tomografía, Essential decía *cuántas* («1 por familia») y
+Silver y Gold decían *cuánto paga SP* («Al 100%»).
+
+**Qué se decidió.** Arturo: *«Qué quiere decir al 100%, no me queda claro en el
+comparador de planes»* y *«tenemos que mejorar la claridad de eso»*. Ahora las
+tres celdas dicen cuántas y para quién («1 por persona», «2 por persona»). «No
+ponés nada» pasó a la tarjeta del servicio, solo en los planes cuya fuente dice
+«Cobertura total (100%)», y el pie de la tarjeta explica la diferencia entre por
+familia y por persona. «Al 100%» salió del sitio: estaba 5 veces en el home, 10
+en `/planes` y 13 en `/que-cubre` (medido antes del cambio).
+
+**La lección.** En una fila de comparación, las tres celdas contestan la misma
+pregunta. Si una dice cuántas y otra dice cuánto paga, la persona compara cosas
+que no se comparan y no ve la diferencia que importa. Una explicación detrás de
+un toque no arregla una celda que pregunta otra cosa.
