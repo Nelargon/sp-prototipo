@@ -1490,3 +1490,85 @@ vista.
 En la maqueta, el primer precio se ve sin bajar. La página mide unas 9,5
 pantallas del celular, contra casi 16 de /planes y /que-cubre juntas (MEDIDO en
 la revisión).
+
+## Parte 20 · La comparativa en el celular: claridad no es cantidad (27/09/2026)
+
+Arturo, al ver la tabla de la comparativa en el celular: *«quizás, al tratar de
+hacerlo demasiado ordenado en filas y columnas, se pierde un poquito de
+claridad»*. Y después, al ver cómo lo resuelven otros: *«dar claridad al cliente
+no quiere decir llenarle de información que podría verse como necesaria»*. De
+esta parte sale la **regla de claridad** del `CLAUDE.md`.
+
+### 57 · La tabla, como en las páginas de planes de los productos de IA
+
+![La maqueta en el celular: arriba las tarjetas de los planes, y la tabla en tres formas: fila partida, un plan a la vez y planes apilados](img/2026-09-27-comparativa-como-productos-ia-celular.webp)
+
+![La maqueta en la computadora: las tarjetas, la tarjeta del servicio al pasar el mouse y el buscador dentro de la tabla](img/2026-09-27-comparativa-como-productos-ia-escritorio.webp)
+
+**Qué muestra.** La maqueta del pedido de Arturo del 27/09 (*«que haya una
+tarjeta que explique ciertas cosas cuando se hace mouse over o se hace medio
+clic en uno de los items»*). Arriba van las tarjetas de los tres planes, con el
+selector de quiénes entran. Abajo, la tabla «Compará todo», con el buscador de
+los 983 ítems adentro. En el celular, la tabla en tres formas:
+- **A**, fila partida: 9,7 pantallas;
+- **B**, un plan a la vez: 9;
+- **C**, planes apilados: 11.
+
+En la computadora, la tarjeta del servicio se abre al pasar el mouse.
+
+**Qué se decidió.** Ninguna de las tres. La recomendada era la A, y Arturo la
+sintió demasiado ordenada: filas y columnas que no aclaran. Eso llevó a mirar
+cómo lo resuelven otros (lámina 58).
+
+**La lección.** El orden no es claridad. Una tabla prolija, con cada dato en su
+celda, puede marear igual: para llegar a la diferencia, obliga a leer y cruzar.
+
+### 58 · Cómo muestran sus planes en el celular las páginas que la gente ya usa
+
+![Capturas reales a 390 px de Manus, Notion, Claude, Dropbox, Spotify y Apple One, con el largo de cada página](img/2026-09-27-planes-en-el-celular-referencias.webp)
+
+**Qué muestra.** Capturas reales del 27/09/2026, a 390 px, de seis productos:
+Manus, Notion, Claude, Dropbox, Spotify y Apple One. Debajo de cada nombre, el
+largo de la página entera en pantallas de celular (medido). El relevamiento
+completo, con dos páginas de salud más, está en `sp-interno`, en la carpeta del
+pase de la comparativa.
+
+**Qué se decidió.** Tomar cuatro cosas:
+- las mismas líneas en todas las tarjetas;
+- lo que tienen todos los planes, dicho una vez;
+- el detalle en la palabra subrayada que se abre al tocar, como Dropbox;
+- la tabla completa a pedido: Notion no la muestra en el celular y Claude la
+  deja al final.
+
+Y dejar una: los adjetivos que no se pueden comparar («uso estándar», «uso
+personalizable»).
+
+**La lección.** Las páginas que se sienten fáciles no dicen menos: dicen cada
+cosa una vez, donde la persona la busca. Ninguna pone la tabla completa en el
+camino de todos.
+
+### 59 · Tarjetas iguales y el detalle al tocar
+
+![A la izquierda, la tarjeta de hoy y lo que destaca cada plan; a la derecha, la propuesta con lo común una vez, las mismas líneas, una palabra que se explica y la tarjeta del servicio](img/2026-09-27-comparativa-tarjetas-iguales-al-tocar.webp)
+
+**Qué muestra.** A la izquierda, la maqueta de la mañana. Cada tarjeta destaca
+cinco cosas, pero no las mismas: solo Silver nombra la resonancia, y solo
+Silver y Gold nombran la psicología. Quien lee cree que Essential no tiene
+ninguna de las dos, y tiene las dos: una resonancia y 3 sesiones al año, para
+toda la familia. A la derecha, la propuesta:
+- quiénes entran, y lo que tienen los tres, dicho una vez;
+- cinco líneas iguales, en el mismo orden, en las tres tarjetas;
+- la palabra subrayada que explica al tocar;
+- la tarjeta del servicio con los tres planes, al tocar una línea.
+
+Del título al final de la comparación mide 3,3 pantallas, contra 8,1 de la A
+(medido).
+
+**Qué se decidió.** Arturo aprobó la dirección y va a revisar la maqueta en su
+celular antes de confirmarla (27/09/2026). Queda pendiente cuáles son las cinco
+líneas (el parto es candidato) y si la tabla completa se abre como hoja o queda
+plegada al final.
+
+**La lección.** Una tarjeta corta que destaca cosas distintas en cada plan es
+peor que una larga. Cada tarjeta tiene sentido sola, y juntas llevan a
+conclusiones falsas. Lo que falta también informa, y a veces informa mal.
