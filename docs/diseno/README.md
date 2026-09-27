@@ -1434,3 +1434,43 @@ parejo detrás del texto.
 **La lección.** Una frase en grande compite con el título y con los recuadros
 que ya existen: se ve primero por qué se distingue, y recién después por qué
 llama la atención.
+
+---
+
+## Parte 19 · La comparativa de los planes (27/09/2026)
+
+Arturo pidió *«una página que hable en más detalle de los planes sin marear a
+la persona y que sea más directo»*, y precisó el propósito: *«tener una página
+que muestre en todo detalle la comparativa de los tres planes»* (ver HANDOFF,
+«/que-cubre QUEDA OBSOLETA»). La revisión integral del sitio le trajo tres
+formas de ordenarla.
+
+### 55 · Una comparativa se ordena por lo que se compara
+
+![Tres versiones de la página de planes y la recomendada, lado a lado, en el celular](img/2026-09-27-planes-tres-versiones-celular.webp)
+
+![Las mismas cuatro, lado a lado, en la computadora](img/2026-09-27-planes-tres-versiones-escritorio.webp)
+
+**Qué muestra.** Maquetas estáticas de `/planes`, con las cifras de las
+fuentes del sitio.
+- **1 · Por servicio:** una tabla, cada servicio en una fila y los tres planes
+  en columnas. Mide 8,9 pantallas en el celular y 4,2 en la computadora.
+- **2 · Por plan:** una ficha por plan, que se lee de arriba abajo. Mide 13 y
+  7,4.
+- **3 · Por pregunta:** las siete preguntas que más les hacen a las asesoras,
+  en su orden. Mide 10,4 y 6,7.
+- **La recomendada:** la 1, con el precio por familia de la 3 y la red de cada
+  plan de la 2. Mide 9,5 y 4,4.
+
+Las maquetas se hicieron antes de que llegara el pedido completo. Muestran la
+forma, no todo el contenido: la que se elija suma el buscador de estudios, las
+especialidades y los números finos.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (27/09/2026).
+
+**La lección.** Con la misma información, la forma decide cuánto hay que
+recordar. En las fichas por plan, comparar Silver con Gold obliga a leer una
+ficha, bajar a la otra y volver. Eso es marear, aunque cada ficha sea clara.
+En la tabla, la comparación ya está hecha en cada fila. Y el largo también se
+diseña: la ficha por plan mide 13 pantallas en el celular, más que la página
+que se quiere reemplazar.
