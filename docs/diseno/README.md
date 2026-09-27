@@ -1462,6 +1462,20 @@ fuentes del sitio.
 - **La recomendada:** la 1, con el precio por familia de la 3 y la red de cada
   plan de la 2. Mide 9,5 y 4,4.
 
+Arturo pidió verlas de nuevo, cortas y con capturas. Cada una en dos pantallas
+del celular, la primera y la que la define, más la recomendada en la
+computadora:
+
+![La versión 1, por servicio, en dos pantallas del celular](img/2026-09-27-planes-por-servicio-dos-pantallas.webp)
+
+![La versión 2, por plan, en dos pantallas del celular](img/2026-09-27-planes-por-plan-dos-pantallas.webp)
+
+![La versión 3, por pregunta, en dos pantallas del celular](img/2026-09-27-planes-por-pregunta-dos-pantallas.webp)
+
+![La recomendada en dos pantallas del celular: los planes como en la home y el precio por familia](img/2026-09-27-planes-recomendada-dos-pantallas.webp)
+
+![La recomendada en la computadora: la tabla con los tres planes y «Ver mi precio» arriba](img/2026-09-27-planes-recomendada-computadora.webp)
+
 Las maquetas se hicieron antes de que llegara el pedido completo. Muestran la
 forma, no todo el contenido: la que se elija suma el buscador de estudios, las
 especialidades y los números finos.
