@@ -1434,3 +1434,59 @@ parejo detrás del texto.
 **La lección.** Una frase en grande compite con el título y con los recuadros
 que ya existen: se ve primero por qué se distingue, y recién después por qué
 llama la atención.
+
+## Parte 19 · La comparativa completa de los planes (27/09/2026)
+
+Arturo, al contestar qué página sentía obsoleta: *«el propósito realmente es
+tener una página que muestre en todo detalle la comparativa de los tres
+planes»*. Y sobre cómo tiene que ser: *«Es "sin marear"»*. Las tres versiones
+salieron de la revisión integral del sitio. Las láminas son maquetas armadas
+con los estilos del sitio, no el sitio publicado. Las marcas naranjas señalan
+un dato que espera a SP o una decisión de Arturo.
+
+### 55 · Directo no es corto: todo el detalle, cada dato en un solo lugar
+
+![Las primeras pantallas de las tres versiones de la comparativa y de la recomendada, en la computadora](img/2026-09-27-comparativa-planes-tres-versiones.webp)
+
+**Qué muestra.** Las primeras pantallas de cada maqueta, a 1440 px:
+- **Por servicio:** una fila por servicio, con los tres planes al lado; la fila
+  se abre con lo fino.
+- **Por plan:** una columna por plan, que se lee de arriba abajo.
+- **Por pregunta:** ordenada por lo que preguntan los clientes (cuánto pago, en
+  qué se diferencian, cuánto espero, qué cubre…).
+- **Recomendada:** «Por servicio», con el precio arriba y con lo mejor de las
+  otras dos.
+
+**Qué se decidió.** Pendiente de la elección de Arturo (27/09/2026). La
+recomendación es la última:
+- es la que menos marea: todo lo de un servicio está en una fila, y lo fino se
+  abre con un toque;
+- «Por pregunta» repite el mismo dato en dos o tres lugares;
+- «Por plan» separa la espera de su servicio y, en el celular, al llegar no se
+  ve Gold.
+
+**La lección.** «Sin marear» no pide menos detalle: pide que cada dato esté en
+un solo lugar, al lado de lo que lo explica. Una página larga no marea si
+nunca obliga a ir y volver.
+
+### 56 · La recomendada, entera
+
+![La versión recomendada completa en la computadora](img/2026-09-27-comparativa-planes-recomendada-escritorio.webp)
+
+![La versión recomendada completa en el celular, con la fila partida](img/2026-09-27-comparativa-planes-recomendada-celular.webp)
+
+**Qué muestra.** La maqueta recomendada entera, a 1440 y a 390 px:
+- el precio arriba, con su condición;
+- lo que es igual en los tres planes, a lo ancho;
+- la tabla por servicio y el buscador «¿Está cubierto lo que te pidió el
+  médico?»;
+- «Lo que no entra», con lo que sí entra al lado;
+- «¿Está tu médico?» y el cierre al simulador y a WhatsApp.
+
+En el celular va la fila partida (lámina 45): los tres planes siempre a la
+vista.
+
+**Qué se decidió.** Pendiente de Arturo (27/09/2026), junto con la lámina 55.
+En la maqueta, el primer precio se ve sin bajar. La página mide unas 9,5
+pantallas del celular, contra casi 16 de /planes y /que-cubre juntas (MEDIDO en
+la revisión).
