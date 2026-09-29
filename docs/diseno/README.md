@@ -1638,3 +1638,28 @@ espera 90 días) y trae odontología básica en Lister, que las líneas de Silve
 y Gold no mencionan. Por eso las láminas dicen «lo que **mejora**», no «todo lo
 anterior y además». ⚠ «Por persona» en Silver y Gold sigue esperando la
 confirmación de SP (HANDOFF, cap. 126).
+
+### 65 a 68 · Cuatro tarjetas simples: mismo tamaño, un check y una frase
+
+![Opción 1: los mismos cinco temas en las tres tarjetas](img/2026-09-29-planes-simples-1-mismos-cinco-temas.webp)
+![Opción 2: Essential dice lo que trae; Silver y Gold, «Más…» o «Menos…»](img/2026-09-29-planes-simples-2-mas-y-menos.webp)
+![Opción 3: una frase que dice el escalón y cuatro checks](img/2026-09-29-planes-simples-3-una-frase.webp)
+![Opción 4: tres checks por plan](img/2026-09-29-planes-simples-4-tres-checks.webp)
+
+**Qué pasó.** Las láminas 61 a 63 no gustaron. Arturo: *«seguimos complicándonos…
+me gustó mucho el formato original porque es sencillo: muestra un check y explica
+claramente lo que cubre, sin mucho ruido visual… en lugar de incluir temas
+aleatorios en Silver y Gold que no se relacionan con lo esencial, menciona la
+mejora de Silver y la de Gold de forma sencilla… las tarjetas deben tener el
+mismo tamaño, sin variaciones»*. Estas cuatro salen de ahí: tres o cinco
+checks, un solo tamaño (el alto lo iguala la grilla), sin flechas ni etiquetas.
+
+**Qué se decidió.** Nada todavía: Arturo elige. Recomendación: la 1, por los
+mismos temas en las tres. El punto naranja marca un dato que espera a SP y es
+solo de la lámina.
+
+**La lección.** Antes de diseñar una comparación hay que ver si los datos se
+comparan: la auditoría (`sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md`)
+encontró que solo tres temas se comparan limpio (tomografía y resonancia,
+internación y terapia intensiva, medicamentos en internación). BITACORA de
+`sp-interno`, cap. 28.
