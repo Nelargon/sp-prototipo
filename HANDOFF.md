@@ -276,7 +276,7 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
 
 **Guía Médica — el tapiz** (26/09, Arturo eligió el 2a de docs/diseno n.º 38):
-el muro detrás de la guía, fijo, en `--sp-muro` sobre el gris de la guía. Desde
+el muro detrás de la guía, fijo, sobre el gris de la guía. **Color propio `#EBEDEF` desde el 29/09** (un paso más suave que `--sp-muro`; Arturo: «bajar un chiqui la intensidad»). Desde
 ⚠ **Cambiado el 29/09/2026 (BITACORA cap. 127):** el tapiz cubre **toda la
 pantalla**, sin máscara ni fade y sin dejar libre la columna (antes: solo en los
 márgenes desde 1024 px, y arriba y apagándose en el celular). Tarjetas y campos
