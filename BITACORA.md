@@ -4461,3 +4461,25 @@ celular): se arregló con `grid-auto-rows:1fr` y quedaron iguales a 1440, 1000,
   salió, y Arturo la pidió de vuelta al ver las capturas: lo que Essential tiene
   y Silver y Gold no es justo lo que una tarjeta tiene que decir.
 
+## Capítulo 129 — `/que-cubre` deja de ser obsoleta (29/09/2026)
+
+**Qué intentamos.** El 26/09, a la pregunta «¿qué página sentís obsoleta?»,
+Arturo contestó «B Qué Cubre», y el HANDOFF pasó a decir que `/que-cubre`
+quedaba obsoleta a favor de una comparativa completa nueva. Desde entonces
+varias sesiones diseñaron esa comparativa aparte.
+
+**Qué pasó.** El 29/09, tras elegir las tarjetas de planes, Arturo aclaró qué
+quería decir: *«El /que-cubre debería ser un espacio de ver todos los detalles
+de los 3 planes, así como el vital… donde se pueden ver la comparativa de los
+planes en su máximo detalle… una landing aparte de los planes»*. O sea que lo
+obsoleto no era la página sino su contenido de entonces; la comparativa
+completa **es** `/que-cubre`. La guarda «no invertir» se leyó al pie de la letra
+y estuvo a punto de frenar el trabajo de las tarjetas.
+
+**Qué aprendimos.**
+- **Una respuesta de una palabra («B») no es una decisión de diseño.** Se
+  construyó una guarda sobre ella; la aclaración llegó tres días después.
+- **Cuando el usuario dice qué debería ser la página, eso se escribe de
+  inmediato en el HANDOFF con sus palabras**, para que la próxima sesión no
+  arranque con la guarda vieja.
+
