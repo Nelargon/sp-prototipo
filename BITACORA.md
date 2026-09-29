@@ -4456,6 +4456,8 @@ celular): se arregló con `grid-auto-rows:1fr` y quedaron iguales a 1440, 1000,
   faltar. Se lo decimos a Arturo con lo que cambió y por qué.
 - **«Mismo tamaño» se mide en cada ancho**, no se mira en uno: apiladas, el
   largo de las frases decide el alto.
-- **Lo que sale de una tarjeta hay que anotarlo**: urgencias, odontología y
-  laboratorio de Essential ya no están a la vista en `/que-cubre`.
+- **Lo que sale de una tarjeta hay que anotarlo**: urgencias y laboratorio de
+  Essential ya no están a la vista en `/que-cubre`. La odontología también
+  salió, y Arturo la pidió de vuelta al ver las capturas: lo que Essential tiene
+  y Silver y Gold no es justo lo que una tarjeta tiene que decir.
 
