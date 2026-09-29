@@ -333,6 +333,9 @@ frecuentes del home → `Nelargon/sp-interno#68`.
 
 **Home — el muro, con letra chica y la red entera** (26/09, docs/diseno n.º 42,
 opción B; BITACORA cap. 121):
+- ⚠ **Tamaño corregido el 29/09/2026 (BITACORA cap. 127):** el muro de la home
+  pasó a **22 px** (15 en el celular) y el de la guía bajó a **30 px** en
+  computadora (22 en el celular). Lo de abajo es el razonamiento original.
 - Letra de **16 px** (13 en el celular), para que entre la red entera de
   Silver y Gold: a 16 px, una pantalla de computadora muestra unos 230 nombres,
   casi la red completa una vez.

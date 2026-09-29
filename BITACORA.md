@@ -4398,3 +4398,27 @@ tarjeta y solo donde la fuente lo dice.
   «hasta 1 por año», sin decir por quién. Quedó anotado en el HANDOFF para
   confirmar con SP, junto con si Essential cubre esos estudios sin que se pague
   nada.
+
+## Capítulo 127 — Un muro, dos tamaños (29/09/2026)
+
+**Qué intentamos.** El muro de nombres de la red es la misma idea en dos
+lugares, pero se decidió en dos días distintos y con dos objetivos: en la home
+(cap. 121) letra de 16 px para que entrara la red entera; en la Guía Médica
+(cap. del tapiz) 40 px en computadora, para que se leyera como un tapiz.
+
+**Qué pasó.** Arturo puso las dos pantallas lado a lado: *«En el principal se
+ve demasiado chico. En el otro, demasiado grande. Necesitamos un balance, por
+más de que no podamos mostrar a todos los prestadores»*. Tenía razón en lo de
+fondo: cada tamaño era bueno para su decisión y ninguno era bueno para la
+marca. Medido: 16 px contra 40 px, una diferencia de 2,5 veces para lo que la
+persona percibe como el mismo objeto.
+
+**Qué aprendimos.**
+- **Un elemento que se repite en el sitio se decide una vez, no por pantalla.**
+  Cada capítulo optimizó lo suyo y nadie miró los dos juntos.
+- **Entrar la red entera no era la meta.** Era un medio: el muro dice «somos
+  muchos y conocidos», y eso se logra con una parte legible, no con todo
+  ilegible. Ahora: home 22 px, guía 30 px en computadora (1,4 veces, y la guía
+  sigue más grande porque tiene el muro solo en los márgenes).
+- Verificado en el navegador con estilos computados a 1440, 1000 y 390 px.
+

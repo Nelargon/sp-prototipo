@@ -554,7 +554,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    usan «Dónde te atendés» y el tapiz de la Guía Médica. */
 .con-muro{position:relative;isolation:isolate}
 .muro-marco{position:absolute;inset:0;z-index:-1;clip-path:inset(0);pointer-events:none;user-select:none}
-.muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:92px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:16px;line-height:1.62;font-weight:800;letter-spacing:0;text-align:justify}
+.muro-texto{position:fixed;inset:0;overflow:hidden;padding-top:92px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.5;font-weight:800;letter-spacing:0;text-align:justify}
 .muro-oscuro .muro-texto{color:rgba(255,255,255,.0431)}
 .muro-claro .muro-texto{color:rgba(0,27,52,.0314)}
 .muro-pleno .muro-texto{color:var(--sp-muro)}
@@ -584,7 +584,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .dta-nota{position:relative;max-width:960px;margin:16px auto 0;text-align:center;font-family:var(--font-inter),sans-serif;font-size:12px;line-height:1.6;color:var(--sp-muted)}
 @media(max-width:600px){
   .dta{padding:64px 12px 48px}
-  .muro-texto{font-size:13px;padding-top:88px}
+  .muro-texto{font-size:15px;padding-top:88px}
   .dta-tarjeta{padding:26px 18px 22px}
   .dta-titulo{font-size:28px}
   .dta-cuadros,.dta-cuadros.n3{grid-template-columns:1fr 1fr}
@@ -668,8 +668,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 /* El tapiz de la guía (Arturo eligió el 2a, docs/diseno n.º 38): el muro fijo
    detrás de todo. En el celular, arriba y apagándose; desde 1024 px, solo en los
    márgenes, con borde neto a 24 px de la columna (720 − 2×16 = 688; 344 + 24). */
-.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:26px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none;mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.55) 25%,transparent 45%)}
-@media(min-width:1024px){.gm-tapiz{font-size:40px;mask-image:linear-gradient(90deg,#000 calc(50% - 368px),transparent calc(50% - 368px),transparent calc(50% + 368px),#000 calc(50% + 368px))}}
+.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none;mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.55) 25%,transparent 45%)}
+@media(min-width:1024px){.gm-tapiz{font-size:30px;mask-image:linear-gradient(90deg,#000 calc(50% - 368px),transparent calc(50% - 368px),transparent calc(50% + 368px),#000 calc(50% + 368px))}}
 /* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
    la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
 .gm-mapa-lado{display:none;position:absolute;top:96px;bottom:70px;left:calc(100% + 28px);width:300px}
