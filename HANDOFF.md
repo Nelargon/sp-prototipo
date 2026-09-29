@@ -86,6 +86,38 @@ capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
 
+## 🔁 REABIERTO 29/09/2026: `/que-cubre` ES EL ESPACIO DE TODO EL DETALLE, NO ES OBSOLETA
+
+Arturo, 29/09/2026: *«El /que-cubre debería ser un espacio de ver todos los
+detalles de los 3 planes, así como el vital. Toda la cobertura. Es el espacio
+dedicado donde se pueden ver la comparativa de los planes en su máximo detalle.
+Y sirve como una landing aparte de los planes, pero que estará en el espacio de
+planes. No uses el etiquetado característico de la IA porfa.»*
+
+**Qué cambia respecto de la sección de abajo (26/09):**
+- `/que-cubre` **no se retira ni se reemplaza**: es la comparativa completa de
+  Essential, Silver, Gold **y Vital**, con toda la cobertura, y funciona como
+  landing propia dentro del espacio de Planes. La guarda «no invertir en
+  `/que-cubre`» queda sin efecto.
+- **Vital entra con la misma profundidad** que los otros tres. Hoy solo tiene
+  una banda (`Landing.jsx`) y datos en `datos/planes-vigentes/vital.json` y
+  `grilla-vital-coberturas-jul2026.json`.
+- **Sin el «etiquetado de la IA»**: nada de rótulos chicos en mayúsculas sobre
+  los títulos, píldoras ni marcadores tipo «▲ mejora». La regla de etiquetas de
+  `CLAUDE.md` ya pedía podar los que repiten el título.
+- **Las tarjetas** ya están: los mismos seis temas y el mismo alto (opción 1,
+  lámina 65, publicadas el 29/09).
+- **Pendientes de Arturo antes de construir la página entera:** qué pasa con
+  `/planes` (recomendación: vista corta con tarjetas y simulador, sin tabla
+  repetida), si Vital es cuarta columna o bloque aparte (recomendación: bloque
+  aparte) y la forma de la página. La construye **una sola sesión**, y solo
+  después de que Arturo confirme la forma (pase del 27/09 en `sp-interno`).
+- **Inconsistencias que frenan «mejora tema por tema»:**
+  `sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md` (37 puntos;
+  issues #110 a #117). Se siguen sumando las que aparezcan al armar Vital.
+
+*(Lo que sigue es el registro del 26/09, que esta decisión reemplaza.)*
+
 ## 🔁 `/que-cubre` QUEDA OBSOLETA: LO QUE SE BUSCA ES LA COMPARATIVA COMPLETA (26 sep 2026)
 
 **Qué dijo Arturo.** Le preguntamos qué página sentía obsoleta: si
