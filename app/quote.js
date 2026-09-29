@@ -124,14 +124,23 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // `nivel` es la clave interna del simulador; `short.toLowerCase()` es la clave
 // pública del `?plan=` del comparador. Ambas viven ACÁ (fuente única): el botón y
 // el simulador derivan de este mismo array, así el puente no se puede desincronizar.
+// LAS LÍNEAS DE LAS TARJETAS (29/09/2026, lámina 65, opción 1 de Arturo): los
+// MISMOS seis temas y en el mismo orden en los tres planes, para comparar
+// leyendo de lado a lado. Lo que cambia va entre `**`: /que-cubre lo pone en
+// negrita. Se sumó «Espera para internarte»: la regla de claridad pide que el
+// año de espera de Essential esté a la vista, no en el contrato. Salieron
+// urgencias y laboratorio/radiografías/fisioterapia de Essential (siguen en el
+// buscador y el comparador del home). La odontología volvió a pedido de Arturo
+// (29/09): es lo que Essential tiene y Silver y Gold no. ⚠ «Por persona» de Silver y
+// Gold espera confirmación de SP (sp-interno#110).
 export const plans = () => [
   // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
   { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
-    lines: ['Consultas sin tope en Lister, y hasta 3 por mes en la red', 'Urgencias 24 h, desde el día uno', 'Laboratorio de rutina, radiografías y fisioterapia, sin espera', 'Odontología básica en Lister: consulta, controles, extracciones simples y limpieza', 'Internación, cirugías y parto, al año de afiliarte'] },
+    lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', 'Tomografía y resonancia: **por familia**', 'Internación: **habitación privada**, hasta 20 días por familia', 'Espera para internarte: **1 año** desde que te afiliás', 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
   { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía por persona',
-    lines: ['Consultas con especialistas: sin tope en la mitad, 5 o 6 al año en el resto', 'Tomografía y resonancia por persona', 'Terapia intensiva hasta 5 días al año', 'Fisioterapia: 15 sesiones al año', 'Medicamentos en internación hasta ₲ 1.000.000'] },
+    lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', 'Tomografía y resonancia: **por persona**', 'Internación: **semi-suite**, hasta 20 días al año', 'Espera para internarte: **2 meses** si es por algo agudo', 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
   { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas sin tope anual en casi todas las especialidades', 'Tomografía y resonancia por persona; la tomografía, con menos espera', 'Internación semi-suite, hasta 25 días al año', 'Terapia intensiva hasta 6 días al año', 'Medicamentos en internación hasta ₲ 1.500.000'] },
+    lines: ['Consultas: **sin tope anual** en casi todas las especialidades', 'Tomografía y resonancia: **por persona**, con menos espera en la tomografía', 'Internación: **semi-suite**, hasta 25 días al año', 'Espera para internarte: **2 meses** si es por algo agudo', 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
 ];
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del

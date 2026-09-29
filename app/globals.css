@@ -634,6 +634,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 #bus-q:focus{border-color:var(--sp-teal);box-shadow:0 0 0 4px rgba(0,188,180,0.16)}
 /* El aspa nativa del type=search en WebKit pisa el borde redondeado */
 #bus-q::-webkit-search-cancel-button{cursor:pointer}
+/* Las tarjetas de planes miden lo mismo también apiladas (Arturo, 29/09/2026: «el mismo tamaño, sin variaciones»). */
+.planes-grid{grid-auto-rows:1fr}
 @media(max-width:900px){
   .planes-grid{grid-template-columns:1fr 1fr !important}
   .planes-grid-2{grid-template-columns:1fr !important}

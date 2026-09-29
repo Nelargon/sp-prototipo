@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, AUTO_PAY_DISCOUNT } from '../quote';
@@ -188,7 +188,7 @@ export default function Landing() {
                     {pl.lines.map((l, j) => (
                       <li key={j} style={css('display:flex;gap:9px;align-items:flex-start;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5')}>
                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:3px')} aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-                        <span>{annotate(l)}</span>
+                        <span>{l.split('**').map((seg, k) => (k % 2 ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{annotate(seg)}</b> : <Fragment key={k}>{annotate(seg)}</Fragment>))}</span>
                       </li>
                     ))}
                   </ul>
