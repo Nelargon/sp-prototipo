@@ -670,7 +670,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    dejar libre la columna: Arturo, «el muro no está insertado en el espacio de la
    guía, parece estar a los costados, lo cual no deseo». Las tarjetas y campos
    son blancos, así que se leen encima; el muro se ve entre ellos. */
-.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none}
+.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:#EBEDEF;text-align:justify;pointer-events:none;user-select:none}
 @media(min-width:1024px){.gm-tapiz{font-size:30px}}
 /* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
    la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
