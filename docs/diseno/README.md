@@ -1594,3 +1594,47 @@ en `/planes` y 13 en `/que-cubre` (medido antes del cambio).
 pregunta. Si una dice cuántas y otra dice cuánto paga, la persona compara cosas
 que no se comparan y no ve la diferencia que importa. Una explicación detrás de
 un toque no arregla una celda que pregunta otra cosa.
+
+## Parte 21 · Las tarjetas de planes: qué mejora en cada uno (29/09/2026)
+
+Arturo, mirando las tarjetas de `/que-cubre`: *«no sé si sería mejor mostrar lo
+que se va agregando en cada plan o lo que mejora en cada uno, en lugar de
+información aleatoria. El formato y el diseño son magníficos; debemos encontrar
+la manera de replicarlos»*, y pidió simplificar el espacio de la página. Los
+datos salen de `app/coverage.js` y `app/quote.js`; las láminas son maquetas con
+los estilos del sitio, no el sitio publicado.
+
+### 61 · Versión A: cada plan dice qué mejora frente al anterior
+
+![Tres tarjetas: Essential con lo que trae; Silver y Gold con lo que mejora, en frases «de … a …»](img/2026-09-29-planes-mejora-a-frases.webp)
+
+**Qué muestra.** La misma tarjeta de hoy. Essential cuenta lo que trae; Silver
+y Gold, solo lo que cambia a favor, con el «de 2 a 5 días».
+
+### 62 · Versión B: las mismas seis filas en los tres planes
+
+![Tres tarjetas con seis filas iguales y la etiqueta «mejora» donde sube](img/2026-09-29-planes-mejora-b-filas-iguales.webp)
+
+**Qué muestra.** Cada fila contesta la misma pregunta en los tres (lección de la
+lámina 60). Es la más completa y la más larga.
+
+### 63 · Versión C: la escalera con números grandes
+
+![Tres tarjetas en escalones; Silver y Gold abren con «+594» y «+275 cosas mejoran»](img/2026-09-29-planes-mejora-c-escalera.webp)
+
+**Qué muestra.** Cada tarjeta abre con cuántas cosas mejoran (594 y 275, los
+que ya cuenta la página) y lista solo el número que cambia, grande.
+
+### 64 · `/que-cubre` de 7.150 px a unos 3.100
+
+![Antes y después de las secciones de /que-cubre, con «Subir un escalón» absorbido por las tarjetas y las tres tablas plegadas](img/2026-09-29-que-cubre-simplificar.webp)
+
+**Qué muestra.** Las alturas de hoy (medidas en 1440 px; 10.731 px en el
+celular) y una propuesta estimada.
+
+**La lección (a confirmar con la elección de Arturo).** «Lo que se agrega» no se
+puede decir sin más: Essential es mejor en fisioterapia (no espera; Silver
+espera 90 días) y trae odontología básica en Lister, que las líneas de Silver
+y Gold no mencionan. Por eso las láminas dicen «lo que **mejora**», no «todo lo
+anterior y además». ⚠ «Por persona» en Silver y Gold sigue esperando la
+confirmación de SP (HANDOFF, cap. 126).
