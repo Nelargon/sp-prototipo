@@ -1664,3 +1664,24 @@ comparan: la auditoría (`sp-interno/project/AUDITORIA-planes-comparativo-2026-0
 encontró que solo tres temas se comparan limpio (tomografía y resonancia,
 internación y terapia intensiva, medicamentos en internación). BITACORA de
 `sp-interno`, cap. 28.
+
+### 69 · `/que-cubre` completa: tres estructuras para los cuatro planes
+
+![Tres estructuras de la página: de arriba abajo, un plan a la vez y por tema con índice](img/2026-09-29-que-cubre-completa-tres-estructuras.webp)
+
+**Qué muestra.** Arturo (29/09/2026): *«El /que-cubre debería ser un espacio de
+ver todos los detalles de los 3 planes, así como el vital. Toda la cobertura…
+No uses el etiquetado característico de la IA porfa»*. Tres formas de ordenar la
+página, con las alturas de hoy y el largo estimado de cada una: **1** de arriba
+abajo (~7.400 px), **2** un plan a la vez (~3.800 px) y **3** por tema con índice
+(~6.000 px). Vital entra en las tres, pero como bloque propio: tiene otra edad
+(65 o más), un solo nivel y sus coberturas agrupadas por tiempo de espera.
+
+**Qué se decidió.** Nada todavía: Arturo elige. Recomendación: la **3**, porque
+compara de un vistazo (lo que él pidió) y cada persona va a su tema; en el
+celular, el índice pasa a un selector arriba. La 2 es la segunda, por el celular.
+
+**La lección.** La lámina no lleva rótulos chicos sobre los títulos: el pedido
+del 29/09 es una regla de estilo, y las láminas también se hacen con ella. Ninguna
+estructura arregla los datos: «por persona» (sp-interno#110) y las esperas al
+revés (#111) frenan las tres.
