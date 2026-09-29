@@ -666,10 +666,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    24/09/2026 son de todo el sitio: ver «Sistema táctil», abajo. */
 .gm{--gm-fondo:#F4F5F6;--gm-linea:#E6E8EA;--gm-borde:#D4E0EE}
 /* El tapiz de la guía (Arturo eligió el 2a, docs/diseno n.º 38): el muro fijo
-   detrás de todo. En el celular, arriba y apagándose; desde 1024 px, solo en los
-   márgenes, con borde neto a 24 px de la columna (720 − 2×16 = 688; 344 + 24). */
-.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none;mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.55) 25%,transparent 45%)}
-@media(min-width:1024px){.gm-tapiz{font-size:30px;mask-image:linear-gradient(90deg,#000 calc(50% - 368px),transparent calc(50% - 368px),transparent calc(50% + 368px),#000 calc(50% + 368px))}}
+   detrás de todo. Desde el 29/09/2026 cubre toda la pantalla, sin fade y sin
+   dejar libre la columna: Arturo, «el muro no está insertado en el espacio de la
+   guía, parece estar a los costados, lo cual no deseo». Las tarjetas y campos
+   son blancos, así que se leen encima; el muro se ve entre ellos. */
+.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:var(--sp-muro);text-align:justify;pointer-events:none;user-select:none}
+@media(min-width:1024px){.gm-tapiz{font-size:30px}}
 /* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
    la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
 .gm-mapa-lado{display:none;position:absolute;top:96px;bottom:70px;left:calc(100% + 28px);width:300px}

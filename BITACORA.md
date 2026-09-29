@@ -4422,3 +4422,13 @@ persona percibe como el mismo objeto.
   sigue más grande porque tiene el muro solo en los márgenes).
 - Verificado en el navegador con estilos computados a 1440, 1000 y 390 px.
 
+**Segunda vuelta, el mismo día.** Con los tamaños parejos, Arturo miró la guía
+y pidió más: *«el muro en la guía médica se vea mejor. Actualmente hay un fade y
+el muro no está insertado en el espacio de la guía, parece estar a los costados,
+lo cual no deseo»*. El tapiz de los márgenes (n.º 38, 2a) protegía la columna
+con una máscara; ahora el muro cubre toda la pantalla, como en la home, y las
+tarjetas blancas se encargan de la lectura. **Lo que aprendimos:** proteger la
+lectura con un borde o un fade era resolver el problema con la niebla; las
+tarjetas opacas ya lo resuelven. Costo a mirar: el título y la bajada de la guía
+quedan sobre nombres.
+
