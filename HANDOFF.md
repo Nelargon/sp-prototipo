@@ -121,6 +121,26 @@ hable en más detalle de los planes sin manejar a la persona». Era un dictado,
 y él lo corrigió: *«Es "sin marear"»*. La vara es la claridad: lo principal a
 la vista, lo fino a un toque, nada que obligue a ir y volver.
 
+
+**Las tarjetas de planes de `/que-cubre` (29/09/2026, opción 1 de la lámina 65;
+BITACORA cap. 128).** Arturo eligió la 1 (*«andá con la opción 1»*): los
+**mismos cinco temas, en el mismo orden, en los tres planes** (consultas,
+tomografía y resonancia, internación, espera para internarte, terapia
+intensiva), un check y una frase, lo que cambia en negrita, y **tarjetas del
+mismo alto** también apiladas (`.planes-grid{grid-auto-rows:1fr}`, medido a
+1440, 1000, 390 y 360 px). El texto vive en `plans()` de `app/quote.js`
+(`**…**` marca la negrita; lo pinta `Landing.jsx`). Es un cambio chico y no
+reabre la guarda de arriba: el mismo contenido sirve a la comparativa nueva.
+- **Se sumó «Espera para internarte»** (no estaba en la lámina): sin ella, el
+  año de espera de Essential quedaba solo en el contrato (regla de claridad).
+- **Salieron de la tarjeta de Essential** urgencias 24 h, odontología en Lister
+  y laboratorio/radiografías/fisioterapia sin espera; siguen en el buscador y el
+  comparador del home. Si Arturo quiere la odontología a la vista, se suma.
+- ⚠ «Por persona» de Silver y Gold espera a SP (sp-interno#110). Los 37 puntos
+  que impiden decir «mejora tema por tema» están en
+  `sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md` (issues #110 a
+  #117).
+
 ---
 
 ## 🏥 «DÓNDE TE ATENDÉS»: LA RED MÉDICA EN EL HOME, Y EL MAPA EN LA GUÍA (25 sep 2026)

@@ -1654,9 +1654,10 @@ mejora de Silver y la de Gold de forma sencilla… las tarjetas deben tener el
 mismo tamaño, sin variaciones»*. Estas cuatro salen de ahí: tres o cinco
 checks, un solo tamaño (el alto lo iguala la grilla), sin flechas ni etiquetas.
 
-**Qué se decidió.** Nada todavía: Arturo elige. Recomendación: la 1, por los
-mismos temas en las tres. El punto naranja marca un dato que espera a SP y es
-solo de la lámina.
+**Qué se decidió.** Arturo eligió la **1** (29/09/2026, *«andá con la opción 1»*),
+construida en `/que-cubre` con una diferencia: se sumó «Espera para internarte»
+para que el año de espera de Essential no quede solo en el contrato. El punto
+naranja marca un dato que espera a SP y es solo de la lámina.
 
 **La lección.** Antes de diseñar una comparación hay que ver si los datos se
 comparan: la auditoría (`sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md`)

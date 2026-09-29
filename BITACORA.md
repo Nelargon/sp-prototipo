@@ -4432,3 +4432,30 @@ lectura con un borde o un fade era resolver el problema con la niebla; las
 tarjetas opacas ya lo resuelven. Costo a mirar: el título y la bajada de la guía
 quedan sobre nombres.
 
+## Capítulo 128 — La opción elegida se quedó sin lo que la regla pedía (29/09/2026)
+
+**Qué intentamos.** Arturo eligió la opción 1 de las tarjetas de planes: cinco
+temas iguales en los tres planes, un check y una frase, mismo tamaño (*«andá con
+la opción 1»*). La lámina 65 la mostraba con Consultas, Urgencias, Tomografía y
+resonancia, Internación y Terapia intensiva.
+
+**Qué pasó.** Al construirla apareció un agujero que la lámina no mostraba: la
+tarjeta de Essential ya no decía **«Internación, cirugías y parto, al año de
+afiliarte»**, la espera más larga y la que más caro sale descubrir tarde. La
+opción que Arturo eligió, tal cual, la sacaba de la vista. Contra la regla de
+claridad del 27/09: *«ninguna sorpresa grande puede estar solo en el contrato»*.
+Se cambió «Urgencias» por «Espera para internarte» (Essential: 1 año; Silver y
+Gold: 2 meses si es por algo agudo, con el texto que ya tiene el sitio). También
+se midió que apiladas las tarjetas no eran iguales (457, 458 y 478 px, en
+celular): se arregló con `grid-auto-rows:1fr` y quedaron iguales a 1440, 1000,
+390 y 360 px.
+
+**Qué aprendimos.**
+- **Una opción elegida en una lámina se revisa contra las reglas antes de
+  construirla.** La lámina decidía el formato; la regla decidía qué no puede
+  faltar. Se lo decimos a Arturo con lo que cambió y por qué.
+- **«Mismo tamaño» se mide en cada ancho**, no se mira en uno: apiladas, el
+  largo de las frases decide el alto.
+- **Lo que sale de una tarjeta hay que anotarlo**: urgencias, odontología y
+  laboratorio de Essential ya no están a la vista en `/que-cubre`.
+
