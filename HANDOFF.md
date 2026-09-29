@@ -276,13 +276,13 @@ estilos `.dta-*` en `globals.css`), entre «Quiénes somos» y los aliados:
 mapa; los dos probados contra el sitio viejo (fallan) y el nuevo (pasan).
 
 **Guía Médica — el tapiz** (26/09, Arturo eligió el 2a de docs/diseno n.º 38):
-el muro detrás de la guía, fijo, en `--sp-muro` sobre el gris de la guía. Desde
-1024 px se ve **solo en los márgenes** y se corta en seco a 24 px de la columna
-(sin degradé: lo que protege la columna es el borde, no la niebla); en menos,
-arriba y apagándose antes del buscador. `.gm-tapiz` en `globals.css`; los
+el muro detrás de la guía, fijo, sobre el gris de la guía. **Color propio `#EBEDEF` desde el 29/09** (un paso más suave que `--sp-muro`; Arturo: «bajar un chiqui la intensidad»). Desde
+⚠ **Cambiado el 29/09/2026 (BITACORA cap. 127):** el tapiz cubre **toda la
+pantalla**, sin máscara ni fade y sin dejar libre la columna (antes: solo en los
+márgenes desde 1024 px, y arriba y apagándose en el celular). Tarjetas y campos
+son blancos y se leen encima. Tamaño: 30 px en computadora, 22 en celular. `.gm-tapiz` en `globals.css`; los
 nombres, de `lib/red-home.json`. `aria-hidden` y sin puntero (lo prueba
-`qa-lanzamiento`). Si la columna de la guía cambia de ancho (hoy 720 − 2×16),
-cambian los `368px` de la máscara.
+`qa-lanzamiento`).
 
 **Home — el tramo bajo la tabla del comparador** (26/09, opción 4 de n.º 39;
 BITACORA cap. 117). Era una pila de siete cajas; ahora:
@@ -333,6 +333,9 @@ frecuentes del home → `Nelargon/sp-interno#68`.
 
 **Home — el muro, con letra chica y la red entera** (26/09, docs/diseno n.º 42,
 opción B; BITACORA cap. 121):
+- ⚠ **Tamaño corregido el 29/09/2026 (BITACORA cap. 127):** el muro de la home
+  pasó a **22 px** (15 en el celular) y el de la guía bajó a **30 px** en
+  computadora (22 en el celular). Lo de abajo es el razonamiento original.
 - Letra de **16 px** (13 en el celular), para que entre la red entera de
   Silver y Gold: a 16 px, una pantalla de computadora muestra unos 230 nombres,
   casi la red completa una vez.
