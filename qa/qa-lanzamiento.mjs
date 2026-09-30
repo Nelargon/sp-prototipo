@@ -293,9 +293,14 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   // (así falló el CI del PR #218, 26/09/2026). Se hace como una persona: el
   // botón al medio de la pantalla con scroll instantáneo, y el mouse que
   // entra desde afuera. Antes, que React haya activado los botones.
-  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const react = await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).then(() => true).catch(() => false);
   await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.waitForTimeout(300);
+  // Si falla, que diga por qué (29/09/2026: falló una vez a 360 px con
+  // {"t":null} y no se pudo reproducir en 36 intentos, ni con la CPU 8 veces
+  // más lenta). Se anotan los eventos que llegaron y adónde, sin cambiar lo
+  // que la prueba exige.
+  await page.evaluate(() => { window.__cmpEv = []; for (const t of ['pointerdown', 'pointerup', 'touchend', 'focusin', 'focusout', 'click']) document.addEventListener(t, (e) => window.__cmpEv.push(t + (e.pointerType ? '/' + e.pointerType : '') + '→' + (e.target.closest?.('.cmp2-srv') ? 'botón' : String(e.target.className || e.target.nodeName).slice(0, 24))), true); });
   if (movil) await btn.tap();
   else {
     const caja = await btn.boundingBox();
@@ -307,7 +312,8 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   await page.keyboard.press('Escape');
   await page.waitForTimeout(150);
   const cerrada = await page.evaluate(() => !document.querySelector('.cmp2-tarjeta'));
-  if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada }) + ')');
+  const ev = await page.evaluate(() => window.__cmpEv || []);
+  if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada, react, ev }) + ')');
   else bien(nombre + ': la tarjeta del servicio se abre ' + (movil ? 'al tocar' : 'al pasar el mouse') + ', con los tres planes, y se cierra');
   if (!movil) {
     await page.evaluate(() => { const e = document.querySelector('#cartilla'); window.scrollTo({ top: e.getBoundingClientRect().top + scrollY + 300, behavior: 'instant' }); });
