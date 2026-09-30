@@ -13,7 +13,28 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 27 sep 2026.*
+*Última actualización: 30 sep 2026.*
+
+---
+
+## 🧭 DECIDIDO EL 29/09/2026 Y SOLO ANOTADO EN ISSUES: DÓNDE MIRAR (30 sep 2026, Guardián)
+
+El 29/09 se tomaron cinco decisiones que cambian cómo se trabaja en este repo.
+Quedaron escritas solo en issues de `sp-interno`. Esto es un puntero: el
+detalle y lo que falta viven en cada issue.
+
+- **El sitio se publica desde este repo** (Cloudflare Pages), no desde un sitio
+  de Buenavista: `Nelargon/sp-interno#101`. Deja como historia la sección
+  «⚠ LEER PRIMERO — `/lanzamiento/` es una maqueta» (16/09), más abajo.
+- **Preparar el build para el dominio real**, que decide Claude:
+  `Nelargon/sp-interno#103`.
+- **La Guía Médica sale en el lanzamiento**, con datos verificados y con
+  condiciones: `Nelargon/sp-interno#105` (comentario del 29/09).
+- **Medición:** se suman herramientas externas, con la política de privacidad
+  publicada antes: `Nelargon/sp-interno#86` (comentario del 29/09). Incluye
+  `#98`.
+- **Datos semanales:** el equipo actualiza datos desde planillas oficiales;
+  el diseño queda con Arturo y Claude: `Nelargon/sp-interno#108`.
 
 ---
 
@@ -1778,6 +1799,11 @@ planilla.
 ---
 
 ## ⚠ LEER PRIMERO — `/lanzamiento/` ES UNA MAQUETA, NO NUESTRO SITIO (16 sep 2026)
+
+> ⚠ **Superado el 29/09/2026.** Esta sección es historia: Arturo decidió que
+> el sitio se publica desde este repo y no desde un sitio de Buenavista
+> (`Nelargon/sp-interno#101`). Lo que sigue sirve para entender de dónde venimos,
+> no como estado vigente.
 
 **Arturo, 16/09/2026, textual:**
 
