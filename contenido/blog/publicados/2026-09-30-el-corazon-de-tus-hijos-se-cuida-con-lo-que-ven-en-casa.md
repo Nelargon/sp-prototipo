@@ -12,7 +12,6 @@ sources:
   - "https://www.mspbs.gov.py/portal/36552/dia-mundial-del-corazon-iexclcuida-tu-corazon-y-vive-mas.html"
 status: "publicado"
 author: "Equipo Salud Protegida"
-afirmacion_riesgosa: "no"
 ---
 
 Pensemos en cómo un chico aprende a hablar en guaraní o en castellano. Nadie le da clases: repite lo que oye todos los días en la mesa, en el patio y en la cocina.
