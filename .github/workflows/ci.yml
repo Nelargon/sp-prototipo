@@ -31,6 +31,7 @@ jobs:
       - name: Pruebas rápidas (buscador, cobertura de páginas, mapa de la guía, links internos)
         run: |
           node scripts/test-buscador.mjs
+          node scripts/test-sintomas.mjs
           node qa/cobertura-rutas.mjs
           node qa/mapa-ciudades.mjs
           node qa/links-internos.mjs out /sp-prototipo

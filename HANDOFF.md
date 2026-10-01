@@ -1,3 +1,20 @@
+## Guía Médica: orientación y alertas — PR en borrador (01/10/2026)
+
+Criterio de producto autorizado: sugerencias modestas y orientativas, sin
+diagnóstico ni certeza excesiva; libre exploración de especialidades, zonas y
+planes; advertencias de urgencia claras. La ausencia de alerta no significa
+que sea seguro esperar.
+
+Este borrador ajusta textos y propone dos variantes de señales ya existentes
+(«me duele el pecho», «me falta el aire») y negaciones explícitas inmediatas.
+**Pendiente de Dirección Médica:** validar esos cambios de detección y los
+mensajes. No interpreta negaciones complejas ni amplía el catálogo clínico.
+Ante una alerta se conserva el aviso urgente y no se muestra la sugerencia
+ordinaria de consulta; la exploración de prestadores sigue disponible.
+No modifica datos de prestadores, teléfonos ni disponibilidad.
+**No fusionar ni publicar:** Arturo debe revisar el resultado; la aprobación
+de producto no equivale a validación clínica.
+
 # HANDOFF — Ecosistema digital de Salud Protegida
 
 **Documento de pase de posta.** Si sos una persona (o una IA) retomando este

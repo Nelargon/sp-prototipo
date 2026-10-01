@@ -4483,3 +4483,19 @@ y estuvo a punto de frenar el trabajo de las tarjetas.
   inmediato en el HANDOFF con sus palabras**, para que la próxima sesión no
   arranque con la guarda vieja.
 
+## Capítulo 130 — Un control verde no valida una orientación médica (01/10/2026)
+
+**Qué intentamos.** Preparar un borrador con sugerencias por síntomas modestas,
+libertad para explorar y advertencias urgentes claras.
+
+**Qué pasó.** El detector reconocía «dolor de pecho» pero no «me duele el pecho»,
+y aceptaba una frase negada por buscar un fragmento literal. El aviso urgente
+podía convivir con una recomendación ordinaria de consulta. La prueba llamada
+«buscador» revisaba coberturas, no este detector.
+
+**Qué aprendimos.** El criterio de producto no valida reglas clínicas. El
+borrador incorpora pruebas propias, separa el aviso urgente de la sugerencia
+ordinaria y explicita los límites del detector. Las variantes y negaciones
+propuestas esperan Dirección Médica; el merge y la publicación esperan
+revisión de Arturo. No se modifican contactos ni datos de la red.
+
