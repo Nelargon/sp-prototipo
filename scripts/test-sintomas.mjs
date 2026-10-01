@@ -11,6 +11,10 @@ const positivos = [
   'no tengo dolor de pecho y me falta el aire',
   'dolor de pecho, no tengo dolor de pecho',
   '¿Me duele el pecho?', 'no sé si es dolor de pecho',
+  'No, no puedo respirar', 'No: no puedo respirar', 'No — no puedo respirar',
+  'No - no puedo respirar', 'No – no puedo respirar',
+  'desmayos', 'tengo desmayos', 'tiene convulsiones',
+  'hay hemorragias', 'están inconscientes', 'accidentes', 'infartos',
 ];
 const negativos = [
   '', 'pediatra', 'dolor de cabeza', 'me duele la cabeza',
@@ -18,7 +22,7 @@ const negativos = [
   'sin dolor de pecho', 'no me duele el pecho',
   'no me falta el aire', 'no tengo falta de aire',
   'no siento dolor de pecho', 'no hay hemorragia',
-  'accidental', 'desmayos', 'infartologia',
+  'accidental', 'infartologia',
 ];
 for (const q of positivos) assert.equal(detectarUrgencia(q), true, q);
 for (const q of negativos) assert.equal(detectarUrgencia(q), false, q);
@@ -46,4 +50,4 @@ assert.ok(ui.includes('{sint.motivo && !sint.urg &&'));
 assert.ok(ui.includes('no son un diagnóstico ni indican que sea seguro esperar'));
 assert.ok(ui.includes('buscá ayuda urgente aunque no aparezca una alerta'));
 assert.ok(ui.includes('¿Es una emergencia? Llamá a la ambulancia, las 24 horas'));
-console.log('✓ Síntomas: 30 frases, integración, orientación, filtros y contrato de avisos');
+console.log('✓ Síntomas: 41 frases, integración, orientación, filtros y contrato de avisos');
