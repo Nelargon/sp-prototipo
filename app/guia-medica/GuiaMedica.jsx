@@ -484,7 +484,13 @@ export default function GuiaMedica() {
                 <span>¿Es una emergencia? Llamá a la ambulancia, las 24 horas</span><span className="num-tnum" style={css('white-space:nowrap')}>(021) 319 0000</span>
               </a>
             )}
-            {sint.motivo && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:-1px;display:flex')}><IconoSP nombre="consejo" size={24} /></span><span>{sint.motivo}</span></p>}
+            {sint.motivo && !sint.urg && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:-1px;display:flex')}><IconoSP nombre="consejo" size={24} /></span><span>{sint.motivo}</span></p>}
+            {f.q && (
+              <p style={css(INTER + 'margin:0;font-size:14px;line-height:1.5;color:var(--sp-text)')}>
+                Estas sugerencias son orientativas: no son un diagnóstico ni indican que sea seguro esperar.
+                Podés explorar otras especialidades. Si creés que es una emergencia, buscá ayuda urgente aunque no aparezca una alerta.
+              </p>
+            )}
             {f.esp && datos.notas[f.esp] && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14px;line-height:1.5;color:var(--sp-text);background:#fff;border:1px solid var(--gm-linea);padding:10px 12px')}>{datos.notas[f.esp]}.</p>}
             {f.q.toLowerCase().includes('lister') && datos.lister.length > 0 && (
               <details className="sq rel" style={css('--sq:var(--r-xs);background:#fff;border:1px solid var(--gm-linea);padding:10px 14px')}>
