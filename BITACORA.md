@@ -4519,3 +4519,31 @@ reproducir en local; la secuencia de eventos alcanza para saber qué pasó.
   que lo rodea, pero no deja margen. Si algún día molesta a personas reales, la
   celda entera podría ser el área que se toca. Eso es una decisión de diseño,
   no de esta prueba.
+
+
+## Capítulo 130 — Tres estructuras que eran una sola lista (02/10/2026)
+
+**Qué intentamos.** Para `/que-cubre` completa con los cuatro planes se mostraron
+tres estructuras (lámina 69): de arriba abajo, un plan a la vez y por tema con
+índice.
+
+**Qué pasó.** Arturo las descartó, y con razón: *«yo creo que no estamos
+entendiendo el punto… Si tenemos demasiadas herramientas para que el cliente
+escoja, se puede marear. Tenemos que tomar una decisión de qué pocas herramientas
+vamos a usar para mostrar algo que tenga alto impacto»*. Las tres tenían las mismas
+nueve secciones, en distinto orden: nunca se sacó nada. Al contar, el sitio compara
+los planes en **tres lugares** (el comparador del home, `/planes` y `/que-cubre`,
+de 9 secciones y 7.150 px), y el buscador de `/que-cubre`, la herramienta más
+original, no empuja al precio.
+
+**Qué aprendimos.**
+- **Tres variantes del mismo contenido no son tres opciones.** Una opción de
+  verdad saca algo. Se lo dijimos a Arturo: su presentimiento valía 9/10.
+- **Se parte de lo que preguntan, no de lo que hay.** Cuatro asesoras, de a una
+  y en papel, coincidieron en precio, diferencia y espera. Eso ordena la página.
+- **Una página que no lleva al precio no ayuda a convertir.** El buscador
+  registra la búsqueda y no ofrece un paso siguiente.
+- **Dos veces seguidas (los cuatro planes en la misma página y las tres
+  estructuras) se empezó por sumar.** El método nuevo empieza por decidir qué no
+  va.
+

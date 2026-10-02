@@ -1677,11 +1677,35 @@ abajo (~7.400 px), **2** un plan a la vez (~3.800 px) y **3** por tema con índi
 (~6.000 px). Vital entra en las tres, pero como bloque propio: tiene otra edad
 (65 o más), un solo nivel y sus coberturas agrupadas por tiempo de espera.
 
-**Qué se decidió.** Nada todavía: Arturo elige. Recomendación: la **3**, porque
-compara de un vistazo (lo que él pidió) y cada persona va a su tema; en el
-celular, el índice pasa a un selector arriba. La 2 es la segunda, por el celular.
+**Qué se decidió.** Arturo las descartó el 02/10/2026: *«todavía estamos ofreciendo
+demasiadas cosas o mostrando muchas cosas en esas opciones»*. Las tres eran la
+misma lista de secciones en otro orden. Lo que sigue es la lámina 70.
 
 **La lección.** La lámina no lleva rótulos chicos sobre los títulos: el pedido
 del 29/09 es una regla de estilo, y las láminas también se hacen con ella. Ninguna
 estructura arregla los datos: «por persona» (sp-interno#110) y las esperas al
 revés (#111) frenan las tres.
+
+
+### 70 · `/planes` con tres respuestas y pocas herramientas
+
+![/planes: tres tarjetas del mismo alto con precio, qué suma y cuánto esperás; el simulador, dos puertas y una línea para Vital](img/2026-10-02-planes-pagina-tres-respuestas.webp)
+
+**Qué muestra.** Arturo, 02/10/2026: *«Tenemos que tomar una decisión de qué pocas
+herramientas vamos a usar para mostrar algo que tenga alto impacto… Tengo el
+presentimiento de que todavía estamos ofreciendo demasiadas cosas»*. Salió de lo
+que preguntan las asesoras (4 de 4: precio, diferencia entre planes y espera, en
+`sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`): cada tarjeta
+responde esas tres, en ese orden, con la espera en grande; «Qué incluye» abre las
+seis líneas. Debajo, el simulador y dos puertas (el buscador y la Guía Médica), y
+una línea para Vital. Sin rótulos ni píldoras.
+
+**Qué se decidió.** El reparto: `/planes` es donde se decide, `/que-cubre` responde
+«¿está cubierto?» con el detalle a un toque, y Vital va aparte. Arturo: *«Me parece
+bien, si ambos espacios aportan un valor específico y ayudan a convertir»*. Falta
+que confirme esta lámina.
+
+**La lección.** Tres variantes de una misma lista no son tres opciones. Antes de
+diseñar, se decide qué se saca. Y una página que no empuja al precio no ayuda a
+convertir: hoy el buscador de `/que-cubre` registra la búsqueda pero no tiene
+ningún enlace al simulador ni a WhatsApp en sus resultados.

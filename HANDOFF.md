@@ -107,6 +107,35 @@ capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
 
+## 🎯 REPARTO DE PÁGINAS DE PLANES (02/10/2026, a confirmar con la lámina 70)
+
+Arturo vio las tres estructuras de `/que-cubre` (lámina 69) y las descartó:
+*«todavía estamos ofreciendo demasiadas cosas»*. Pidió decidir **pocas
+herramientas de alto impacto**. Propuesta suya aceptada con una condición: *«Me
+parece bien, si ambos espacios aportan un valor específico y ayudan a
+convertir»*.
+
+- **Cuatro herramientas y no más:** las tres tarjetas, el simulador, el buscador
+  de estudios y la Guía Médica. Cada una contesta una pregunta de cliente.
+- **Base medida:** las 4 asesoras de ventas coinciden en precio, diferencia entre
+  planes y espera (4 de 4); qué cubre, 3 de 4; descuentos, todo el país y «¿está
+  mi médico?», 2 de 4 (`sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`).
+- **`/planes`** es donde se decide: tarjetas del mismo alto con precio, qué suma y
+  cuánto esperás para internarte; simulador; dos puertas; una línea para Vital.
+- **`/que-cubre`** contesta «¿está cubierto lo que me pidió el doctor?»: buscador
+  arriba y el detalle a un toque. **Pendiente para que convierta:** los resultados
+  del buscador no tienen ningún enlace al precio ni a WhatsApp (medido en
+  `Buscador.jsx`: solo `track('planes_buscar')`). Hay que sumar «Ver mi precio con
+  ese plan» y, si no hay resultado, «Preguntanos por WhatsApp».
+- **Vital va en página propia y corta** (65 o más, un solo nivel, esperas propias).
+  Recomendación mía, **no confirmada**: Arturo había pedido a Vital dentro de
+  `/que-cubre`.
+- **Medir desde el primer día** con `track()` (sin datos personales): hoy el sitio
+  no mide nada (sp-interno#86).
+- **Frenan la frase «qué suma»:** #110 («por persona») y #111 (esperas al revés).
+- **Coordinar:** la comparativa de `/planes` la diseñó otra sesión (láminas 55 a 60,
+  pase del 27/09); esa página se construye con una sola sesión.
+
 ## 🔁 REABIERTO 29/09/2026: `/que-cubre` ES EL ESPACIO DE TODO EL DETALLE, NO ES OBSOLETA
 
 Arturo, 29/09/2026: *«El /que-cubre debería ser un espacio de ver todos los
