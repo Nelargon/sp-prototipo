@@ -295,11 +295,35 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   // entra desde afuera. Antes, que React haya activado los botones.
   const react = await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).then(() => true).catch(() => false);
   await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
-  await page.waitForTimeout(300);
+  // ⚠ Tocar recién cuando la sección terminó de entrar y el botón está quieto.
+  // El comparador entra con una animación (data-rv: sube 18 px en ~1 s). Con
+  // la máquina cargada, el botón se movía entre el toque y el click: el dedo
+  // caía en el botón y el click, en la celda de abajo. Así falló el CI el
+  // 29/09 y el 01/10 a 360 px, con el diagnóstico de abajo:
+  // {"ev":[…"touchend→botón","click/touch→cmp2-c"]}. Una persona toca lo que
+  // ya ve quieto: se espera que haya corrido el efecto que arma la animación
+  // (.rvon), que la sección no tenga una animación en curso, y tres lecturas
+  // seguidas, cada 100 ms, con el botón en el mismo lugar.
+  let yPrev = null, quietas = 0;
+  for (let i = 0; i < 60 && quietas < 3; i++) {
+    const y = await btn.evaluate((e) => {
+      const secs = [];
+      for (let n = e.closest('[data-rv]'); n; n = n.parentElement && n.parentElement.closest('[data-rv]')) secs.push(n);
+      const armado = !!document.querySelector('.rvon');
+      const anima = secs.some((n) => n.getAnimations().some((a) => a.playState === 'running'));
+      const pendiente = secs.some((n) => n.classList.contains('rv') && !n.classList.contains('in'));
+      return armado && !anima && !pendiente ? Math.round(e.getBoundingClientRect().top) : null;
+    });
+    quietas = y !== null && y === yPrev ? quietas + 1 : 0;
+    yPrev = y;
+    if (quietas < 3) await page.waitForTimeout(100);
+  }
+  const quieto = quietas >= 3;
   // Si falla, que diga por qué (29/09/2026: falló una vez a 360 px con
   // {"t":null} y no se pudo reproducir en 36 intentos, ni con la CPU 8 veces
   // más lenta). Se anotan los eventos que llegaron y adónde, sin cambiar lo
-  // que la prueba exige.
+  // que la prueba exige. El 01/10 volvió a fallar y esto mostró la causa: el
+  // click cayó en la celda, no en el botón (la espera de arriba).
   await page.evaluate(() => { window.__cmpEv = []; for (const t of ['pointerdown', 'pointerup', 'touchend', 'focusin', 'focusout', 'click']) document.addEventListener(t, (e) => window.__cmpEv.push(t + (e.pointerType ? '/' + e.pointerType : '') + '→' + (e.target.closest?.('.cmp2-srv') ? 'botón' : String(e.target.className || e.target.nodeName).slice(0, 24))), true); });
   if (movil) await btn.tap();
   else {
@@ -313,7 +337,7 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   await page.waitForTimeout(150);
   const cerrada = await page.evaluate(() => !document.querySelector('.cmp2-tarjeta'));
   const ev = await page.evaluate(() => window.__cmpEv || []);
-  if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada, react, ev }) + ')');
+  if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada, react, quieto, ev }) + ')');
   else bien(nombre + ': la tarjeta del servicio se abre ' + (movil ? 'al tocar' : 'al pasar el mouse') + ', con los tres planes, y se cierra');
   if (!movil) {
     await page.evaluate(() => { const e = document.querySelector('#cartilla'); window.scrollTo({ top: e.getBoundingClientRect().top + scrollY + 300, behavior: 'instant' }); });

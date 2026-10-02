@@ -4483,3 +4483,39 @@ y estuvo a punto de frenar el trabajo de las tarjetas.
   inmediato en el HANDOFF con sus palabras**, para que la próxima sesión no
   arranque con la guarda vieja.
 
+
+## Capítulo 131 — La falla que no se dejaba repetir trajo su causa la vez siguiente (02/10/2026)
+
+*(Va con el 131 porque el PR #233, todavía abierto, trae el 130.)*
+
+**Qué intentamos.** El 29/09 la salud nocturna falló una sola vez en una prueba
+de la v1, a 360 px: la tarjeta del servicio del comparador no se abrió al
+tocarla. El Guardián la quiso repetir y no pudo. Pasó 3 de 3 veces la suite
+completa en local y 36 de 36 veces el caso solo, aun con la CPU 8 veces más
+lenta. El código de la app no había cambiado. Llamarla «flake» y seguir era lo
+fácil.
+
+**Qué pasó.** En vez de adivinar, se le enseñó a la prueba a decir por qué
+falla (#231): qué eventos llegaron y a qué elemento. El 01/10 volvió a fallar y
+el mensaje trajo la causa:
+`["pointerdown/touch→botón","pointerup/touch→botón","touchend→botón","click/touch→cmp2-c"]`.
+El dedo cayó en el botón y el click, en la celda de abajo. En el celular, el
+click se calcula de nuevo después de soltar el dedo, en el mismo punto de la
+pantalla. Si en ese instante algo movió el botón, el click cae en otro lado.
+Lo único medido que mueve ese botón es la animación con que entra la sección
+(`data-rv`, que la sube 18 px en un segundo). En una máquina cargada puede
+arrancar tarde, justo entre el toque y el click. El momento exacto no se pudo
+reproducir en local; la secuencia de eventos alcanza para saber qué pasó.
+
+**Qué aprendimos.**
+- **Cuando una falla no se repite, no se adivina: se instrumenta.** Una línea
+  más en el mensaje de error convirtió una falla muda en una que se explica
+  sola la próxima vez.
+- **La prueba toca como una persona: lo que ya está quieto.** Ahora espera que
+  la sección haya terminado de entrar y que el botón lleve 300 ms en el mismo
+  lugar. Lo que exige no cambió, y el caso que debe fallar (no tocar) sigue
+  fallando.
+- **El botón mide 78 × 20 px.** Pasa la regla de tamaño mínimo por el espacio
+  que lo rodea, pero no deja margen. Si algún día molesta a personas reales, la
+  celda entera podría ser el área que se toca. Eso es una decisión de diseño,
+  no de esta prueba.
