@@ -4499,3 +4499,30 @@ ordinaria y explicita los límites del detector. Las variantes y negaciones
 propuestas esperan Dirección Médica; el merge y la publicación esperan
 revisión de Arturo. No se modifican contactos ni datos de la red.
 
+## Capítulo 132 — El límite de palabra que apagó «convulsiona» (02/10/2026)
+
+**Qué intentamos.** El borrador del detector de urgencias de la Guía Médica
+(`#233`) puso límite de palabra a las alarmas. La idea era razonable: necesitaba
+saber dónde empieza cada alarma para leer la negación de adelante («no tengo
+dolor de pecho»), y su prueba pedía que «infartologia» no diera la alerta.
+Conservó los plurales a mano («desmayos», «convulsiones») y probó 41 frases.
+
+**Qué pasó.** Las 41 frases pasaban, y aun así el borrador perdía alertas que
+el sitio publicado sí daba. Se comparó la versión publicada con la del
+borrador sobre las mismas frases. Con el borrador, «mi hijo convulsiona»,
+«está convulsionando», «tuvo un preinfarto» y «no no puedo respirar»
+(escrito apurado, sin coma) se quedaban sin cartel. El detector viejo
+encontraba la alarma dentro de cualquier palabra; el nuevo solo la palabra
+exacta y sus plurales. Y el «no» repetido se leía como la negación de una
+alarma que ya empezaba con «no».
+
+**Qué aprendimos.**
+- **Una prueba que arma el mismo que escribe el cambio cubre lo que él pensó,
+  no lo que el cambio rompe.** Lo que encontró las regresiones fue correr la
+  versión vieja y la nueva sobre las mismas frases. En una alerta de salud, un
+  cambio que mejora un caso se mide contra todos los que ya andaban.
+- **Ajustar un detector de seguridad tiene un precio, y se elige a la vista.**
+  Volver a reconocer la alarma dentro de la palabra trae de vuelta una falsa
+  alarma vieja («desahogo» contiene «ahogo»). Se eligió así: en salud, un
+  cartel de más cuesta poco y uno de menos puede costar mucho. Lo valida
+  Dirección Médica con el resto del borrador.

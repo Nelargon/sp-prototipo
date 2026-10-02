@@ -15,6 +15,18 @@ No modifica datos de prestadores, teléfonos ni disponibilidad.
 **No fusionar ni publicar:** Arturo debe revisar el resultado; la aprobación
 de producto no equivale a validación clínica.
 
+**Corrección encima del borrador (02/10/2026, con el OK de Arturo).** El límite
+de palabra del borrador dejaba sin alerta frases que hoy sí la dan: «mi hijo
+convulsiona», «está convulsionando», «tuvo un preinfarto» y «no no puedo
+respirar» (escrito apurado, sin coma). La corrección vuelve a reconocer una
+alarma de una palabra también dentro de otra, como el detector anterior, y no
+niega con otro «no» una alarma que ya empieza con «no». Las frases siguen con
+límite de palabra, y las negaciones del borrador no cambian. Lo que se paga:
+«desahogo» vuelve a mostrar el cartel, igual que antes del borrador (contiene
+«ahogo»). Ante la duda, la alerta se muestra. Prueba: `scripts/test-sintomas.mjs`.
+Sigue pendiente de Dirección Médica, junto con el resto del borrador (BITACORA
+cap. 132).
+
 # HANDOFF — Ecosistema digital de Salud Protegida
 
 **Documento de pase de posta.** Si sos una persona (o una IA) retomando este
