@@ -1699,8 +1699,9 @@ que preguntan las asesoras (4 de 4: precio, diferencia entre planes y espera, en
 responde esas tres, en ese orden; «Qué incluye» abre las seis líneas. **Las esperas
 van todas, en el mismo orden y con el mismo peso en los tres planes** (internación,
 cirugía programada, parto): ninguna se destaca. La primera versión ponía «2 meses»
-en grande y los plazos largos en letra chica; Arturo lo observó el 02/10 y se
-corrigió el énfasis. Debajo, el simulador y dos puertas (el buscador y la Guía
+en grande y los plazos largos en letra chica: engañosa por el énfasis (Arturo,
+02/10: *«la lámina sí fue deshonesta»*). Se detectó al discutir el riesgo de
+afiliarse para usar el plan y dejar de pagar, y se corrigió. Debajo, el simulador y dos puertas (el buscador y la Guía
 Médica), y una línea para Vital. Sin rótulos ni píldoras.
 
 **Qué se decidió.** El reparto: `/planes` es donde se decide, `/que-cubre` responde
