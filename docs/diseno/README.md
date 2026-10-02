@@ -1696,9 +1696,12 @@ herramientas vamos a usar para mostrar algo que tenga alto impacto… Tengo el
 presentimiento de que todavía estamos ofreciendo demasiadas cosas»*. Salió de lo
 que preguntan las asesoras (4 de 4: precio, diferencia entre planes y espera, en
 `sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`): cada tarjeta
-responde esas tres, en ese orden, con la espera en grande; «Qué incluye» abre las
-seis líneas. Debajo, el simulador y dos puertas (el buscador y la Guía Médica), y
-una línea para Vital. Sin rótulos ni píldoras.
+responde esas tres, en ese orden; «Qué incluye» abre las seis líneas. **Las esperas
+van todas, en el mismo orden y con el mismo peso en los tres planes** (internación,
+cirugía programada, parto): ninguna se destaca. La primera versión ponía «2 meses»
+en grande y los plazos largos en letra chica; Arturo lo observó el 02/10 y se
+corrigió el énfasis. Debajo, el simulador y dos puertas (el buscador y la Guía
+Médica), y una línea para Vital. Sin rótulos ni píldoras.
 
 **Qué se decidió.** El reparto: `/planes` es donde se decide, `/que-cubre` responde
 «¿está cubierto?» con el detalle a un toque, y Vital va aparte. Arturo: *«Me parece
