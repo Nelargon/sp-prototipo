@@ -107,6 +107,59 @@ capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
 
+## 🎯 REPARTO DE PÁGINAS DE PLANES (02/10/2026, a confirmar con la lámina 70)
+
+Arturo vio las tres estructuras de `/que-cubre` (lámina 69) y las descartó:
+*«todavía estamos ofreciendo demasiadas cosas»*. Pidió decidir **pocas
+herramientas de alto impacto**. Propuesta suya aceptada con una condición: *«Me
+parece bien, si ambos espacios aportan un valor específico y ayudan a
+convertir»*.
+
+- **Cuatro herramientas y no más:** las tres tarjetas, el simulador, el buscador
+  de estudios y la Guía Médica. Cada una contesta una pregunta de cliente.
+- **Base medida:** las 4 asesoras de ventas coinciden en precio, diferencia entre
+  planes y espera (4 de 4); qué cubre, 3 de 4; descuentos, todo el país y «¿está
+  mi médico?», 2 de 4 (`sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`).
+- **`/planes`** es donde se decide: tarjetas del mismo alto con precio y qué suma;
+  simulador; dos puertas; una línea para Vital. **Sin esperas** (ver «Las esperas»).
+- **`/que-cubre`** contesta «¿está cubierto lo que me pidió el doctor?»: buscador
+  arriba y el detalle a un toque. **Pendiente para que convierta:** los resultados
+  del buscador no tienen ningún enlace al precio ni a WhatsApp (medido en
+  `Buscador.jsx`: solo `track('planes_buscar')`). Hay que sumar «Ver mi precio con
+  ese plan» y, si no hay resultado, «Preguntanos por WhatsApp».
+- **Vital va en página propia y corta** (65 o más, un solo nivel, esperas propias).
+  Recomendación mía, **no confirmada**: Arturo había pedido a Vital dentro de
+  `/que-cubre`.
+- **Las esperas (carencias), decisión de Arturo del 02 y 03/10/2026.** *«Mostrar
+  esperas cortas atrae al cliente que me preocupa y que no quiero tener.»* Y: *«No
+  estoy en contra de mostrar los tiempos de carencia antes de la firma, pero
+  tampoco al principio como hook para la compra. Tiene que ser en otros momentos u
+  otras vistas. Tarde o temprano sí o sí se comunica.»* La primera versión de la
+  lámina 70 ponía «2 meses» en grande y los plazos largos en letra chica: era
+  engañosa por el énfasis (Arturo: *«la lámina sí fue deshonesta»*). Reglas:
+  **ninguna espera en la vista rápida** (home y `/planes`), **ninguna se usa de
+  gancho**, y **todas las que se muestran van con el mismo peso y orden**.
+  Riesgo del rubro a cuidar: afiliarse para usar el plan y dejar de pagar. No hay
+  dato propio todavía: se pidió a SP el dato y las reglas vigentes
+  (`sp-interno#128`).
+  **Mapa de momentos en que se comunican, antes de la firma:**
+
+  | # | Momento | Qué se dice | Estado |
+  |---|---|---|---|
+  | 1 | Vista rápida (home, `/planes`) | Nada | Hecho en las tarjetas; falta decidir la fila «Tiempo de espera» del comparador del home (la pidió Arturo el 26/09) |
+  | 2 | Vista detallada (`/que-cubre`) | Todas, parejas | Existe (tabla de servicios) |
+  | 3 | Simulador, antes de dejar datos | Las del plan que le tocó | Existe |
+  | 4 | Cotización por WhatsApp | «Cuánto esperás para usar cada cobertura» | Existe |
+  | 5 | Conversación con la asesora, antes de cerrar | Dichas en voz alta | A confirmar con SP (¿hay guion?) |
+  | 6 | Contrato, antes de firmar | Confirmación expresa | A confirmar con SP y Legal |
+  | 7 | Bienvenida | Fechas reales desde las que se usa cada cobertura | Idea, no existe |
+
+- **Medir desde el primer día** con `track()` (sin datos personales): hoy el sitio
+  no mide nada (sp-interno#86).
+- **Frenan la frase «qué suma»:** #110 («por persona») y #111 (esperas al revés).
+- **Coordinar:** la comparativa de `/planes` la diseñó otra sesión (láminas 55 a 60,
+  pase del 27/09); esa página se construye con una sola sesión.
+
 ## 🔁 REABIERTO 29/09/2026: `/que-cubre` ES EL ESPACIO DE TODO EL DETALLE, NO ES OBSOLETA
 
 Arturo, 29/09/2026: *«El /que-cubre debería ser un espacio de ver todos los
@@ -126,8 +179,8 @@ planes. No uses el etiquetado característico de la IA porfa.»*
 - **Sin el «etiquetado de la IA»**: nada de rótulos chicos en mayúsculas sobre
   los títulos, píldoras ni marcadores tipo «▲ mejora». La regla de etiquetas de
   `CLAUDE.md` ya pedía podar los que repiten el título.
-- **Las tarjetas** ya están: los mismos seis temas y el mismo alto (opción 1,
-  lámina 65, publicadas el 29/09).
+- **Las tarjetas** ya están: los mismos cinco temas y el mismo alto (opción 1,
+  lámina 65, publicadas el 29/09; sin la línea de esperas desde el 03/10).
 - **Pendientes de Arturo antes de construir la página entera:** qué pasa con
   `/planes` (recomendación: vista corta con tarjetas y simulador, sin tabla
   repetida), si Vital es cuarta columna o bloque aparte (recomendación: bloque
@@ -177,15 +230,14 @@ la vista, lo fino a un toque, nada que obligue a ir y volver.
 
 **Las tarjetas de planes de `/que-cubre` (29/09/2026, opción 1 de la lámina 65;
 BITACORA cap. 128).** Arturo eligió la 1 (*«andá con la opción 1»*): los
-**mismos seis temas, en el mismo orden, en los tres planes** (consultas,
-tomografía y resonancia, internación, espera para internarte, terapia
-intensiva, odontología), un check y una frase, lo que cambia en negrita, y **tarjetas del
+**mismos cinco temas, en el mismo orden, en los tres planes** (consultas,
+tomografía y resonancia, internación, terapia intensiva, odontología), un check y una frase, lo que cambia en negrita, y **tarjetas del
 mismo alto** también apiladas (`.planes-grid{grid-auto-rows:1fr}`, medido a
 1440, 1000, 390 y 360 px). El texto vive en `plans()` de `app/quote.js`
 (`**…**` marca la negrita; lo pinta `Landing.jsx`). Es un cambio chico y no
 reabre la guarda de arriba: el mismo contenido sirve a la comparativa nueva.
-- **Se sumó «Espera para internarte»** (no estaba en la lámina): sin ella, el
-  año de espera de Essential quedaba solo en el contrato (regla de claridad).
+- ~~Se sumó «Espera para internarte»~~ **Revertido el 03/10/2026** (Arturo): las
+  esperas no van en las tarjetas; ver «Las esperas» más abajo.
 - **Salieron de la tarjeta de Essential** urgencias 24 h y
   laboratorio/radiografías/fisioterapia sin espera; siguen en el buscador y el
   comparador del home. **La odontología volvió** a pedido de Arturo (*«sumá la

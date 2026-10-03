@@ -1664,3 +1664,53 @@ comparan: la auditoría (`sp-interno/project/AUDITORIA-planes-comparativo-2026-0
 encontró que solo tres temas se comparan limpio (tomografía y resonancia,
 internación y terapia intensiva, medicamentos en internación). BITACORA de
 `sp-interno`, cap. 28.
+
+### 69 · `/que-cubre` completa: tres estructuras para los cuatro planes
+
+![Tres estructuras de la página: de arriba abajo, un plan a la vez y por tema con índice](img/2026-09-29-que-cubre-completa-tres-estructuras.webp)
+
+**Qué muestra.** Arturo (29/09/2026): *«El /que-cubre debería ser un espacio de
+ver todos los detalles de los 3 planes, así como el vital. Toda la cobertura…
+No uses el etiquetado característico de la IA porfa»*. Tres formas de ordenar la
+página, con las alturas de hoy y el largo estimado de cada una: **1** de arriba
+abajo (~7.400 px), **2** un plan a la vez (~3.800 px) y **3** por tema con índice
+(~6.000 px). Vital entra en las tres, pero como bloque propio: tiene otra edad
+(65 o más), un solo nivel y sus coberturas agrupadas por tiempo de espera.
+
+**Qué se decidió.** Arturo las descartó el 02/10/2026: *«todavía estamos ofreciendo
+demasiadas cosas o mostrando muchas cosas en esas opciones»*. Las tres eran la
+misma lista de secciones en otro orden. Lo que sigue es la lámina 70.
+
+**La lección.** La lámina no lleva rótulos chicos sobre los títulos: el pedido
+del 29/09 es una regla de estilo, y las láminas también se hacen con ella. Ninguna
+estructura arregla los datos: «por persona» (sp-interno#110) y las esperas al
+revés (#111) frenan las tres.
+
+
+### 70 · `/planes` con tres respuestas y pocas herramientas
+
+![/planes: tres tarjetas del mismo alto con precio y qué suma; el simulador, dos puertas y una línea para Vital](img/2026-10-02-planes-pagina-tres-respuestas.webp)
+
+**Qué muestra.** Arturo, 02/10/2026: *«Tenemos que tomar una decisión de qué pocas
+herramientas vamos a usar para mostrar algo que tenga alto impacto… Tengo el
+presentimiento de que todavía estamos ofreciendo demasiadas cosas»*. Salió de lo
+que preguntan las asesoras (4 de 4: precio, diferencia entre planes y espera, en
+`sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`): cada tarjeta
+responde dos: cuánto sale y qué suma; «Qué incluye» abre las cinco líneas. **La
+espera no va en esta vista** (Arturo, 03/10: *«no estoy en contra de mostrar los
+tiempos de carencia antes de la firma, pero tampoco al principio como hook»*): se
+dice en el detalle, el simulador y la cotización. La primera versión ponía «2
+meses» en grande y los plazos largos en letra chica: engañosa por el énfasis
+(Arturo, 02/10: *«la lámina sí fue deshonesta»*). Debajo, el simulador y dos
+puertas (el buscador y la Guía Médica), y una línea para Vital. Sin rótulos ni
+píldoras.
+
+**Qué se decidió.** El reparto: `/planes` es donde se decide, `/que-cubre` responde
+«¿está cubierto?» con el detalle a un toque, y Vital va aparte. Arturo: *«Me parece
+bien, si ambos espacios aportan un valor específico y ayudan a convertir»*. Falta
+que confirme esta lámina.
+
+**La lección.** Tres variantes de una misma lista no son tres opciones. Antes de
+diseñar, se decide qué se saca. Y una página que no empuja al precio no ayuda a
+convertir: hoy el buscador de `/que-cubre` registra la búsqueda pero no tiene
+ningún enlace al simulador ni a WhatsApp en sus resultados.
