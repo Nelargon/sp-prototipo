@@ -140,8 +140,8 @@ convertir»*.
   **ninguna espera en la vista rápida** (home y `/planes`), **ninguna se usa de
   gancho**, y **todas las que se muestran van con el mismo peso y orden**.
   Riesgo del rubro a cuidar: afiliarse para usar el plan y dejar de pagar. No hay
-  dato propio todavía: se pidió a SP el dato y las reglas vigentes (issue de
-  `sp-interno`).
+  dato propio todavía: se pidió a SP el dato y las reglas vigentes
+  (`sp-interno#128`).
   **Mapa de momentos en que se comunican, antes de la firma:**
 
   | # | Momento | Qué se dice | Estado |
