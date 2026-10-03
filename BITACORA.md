@@ -4547,3 +4547,30 @@ original, no empuja al precio.
   estructuras) se empezó por sumar.** El método nuevo empieza por decidir qué no
   va.
 
+## Capítulo 131 — Las esperas, cuándo se dicen (03/10/2026)
+
+**Qué intentamos.** El 29/09 se sumó «Espera para internarte» a las tarjetas de
+`/que-cubre` (cap. 128), porque la regla de claridad pide que el año de espera de
+Essential no esté solo en el contrato. El 02/10, la lámina 70 de `/planes` puso
+las esperas debajo del precio, con «2 meses» en grande.
+
+**Qué pasó.** Arturo marcó dos cosas. Primera: la lámina era engañosa por el
+énfasis (*«la lámina sí fue deshonesta»*): el plazo corto en grande y los largos en
+chica. Segunda, sobre el riesgo de que alguien se afilie para usar el plan y dejar
+de pagar: *«Mostrar esperas cortas atrae al cliente que me preocupa y que no
+quiero tener»*. Y precisó: *«No estoy en contra de mostrar los tiempos de carencia
+antes de la firma, pero tampoco al principio como hook para la compra… Tarde o
+temprano sí o sí se comunica.»* Se sacó la línea de las tarjetas ya publicadas y el
+bloque de la lámina.
+
+**Qué aprendimos.**
+- **La regla de claridad no dice «a la vista y al principio».** Dice «antes de que
+  se lleve una sorpresa». Se puede cumplir con **momentos planificados** (detalle,
+  simulador, cotización, asesora, contrato) sin hacer de la espera un anzuelo.
+- **Mostrar algo con desigual peso es una forma de decir otra cosa.** Todas con el
+  mismo peso, o ninguna en esa vista.
+- **El efecto sobre quién se afilia es un criterio de negocio de Arturo, no un dato
+  medido.** Se anota con su nombre y se pide a SP el dato.
+- **Quedó una decisión suya pendiente:** la fila «Tiempo de espera» del comparador
+  del home, que él mismo pidió el 26/09.
+

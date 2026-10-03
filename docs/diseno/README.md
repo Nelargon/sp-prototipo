@@ -1689,20 +1689,21 @@ revés (#111) frenan las tres.
 
 ### 70 · `/planes` con tres respuestas y pocas herramientas
 
-![/planes: tres tarjetas del mismo alto con precio, qué suma y cuánto esperás; el simulador, dos puertas y una línea para Vital](img/2026-10-02-planes-pagina-tres-respuestas.webp)
+![/planes: tres tarjetas del mismo alto con precio y qué suma; el simulador, dos puertas y una línea para Vital](img/2026-10-02-planes-pagina-tres-respuestas.webp)
 
 **Qué muestra.** Arturo, 02/10/2026: *«Tenemos que tomar una decisión de qué pocas
 herramientas vamos a usar para mostrar algo que tenga alto impacto… Tengo el
 presentimiento de que todavía estamos ofreciendo demasiadas cosas»*. Salió de lo
 que preguntan las asesoras (4 de 4: precio, diferencia entre planes y espera, en
 `sp-interno/project/PREGUNTAS-FRECUENTES-asesores-2026-07.md`): cada tarjeta
-responde esas tres, en ese orden; «Qué incluye» abre las seis líneas. **Las esperas
-van todas, en el mismo orden y con el mismo peso en los tres planes** (internación,
-cirugía programada, parto): ninguna se destaca. La primera versión ponía «2 meses»
-en grande y los plazos largos en letra chica: engañosa por el énfasis (Arturo,
-02/10: *«la lámina sí fue deshonesta»*). Se detectó al discutir el riesgo de
-afiliarse para usar el plan y dejar de pagar, y se corrigió. Debajo, el simulador y dos puertas (el buscador y la Guía
-Médica), y una línea para Vital. Sin rótulos ni píldoras.
+responde dos: cuánto sale y qué suma; «Qué incluye» abre las cinco líneas. **La
+espera no va en esta vista** (Arturo, 03/10: *«no estoy en contra de mostrar los
+tiempos de carencia antes de la firma, pero tampoco al principio como hook»*): se
+dice en el detalle, el simulador y la cotización. La primera versión ponía «2
+meses» en grande y los plazos largos en letra chica: engañosa por el énfasis
+(Arturo, 02/10: *«la lámina sí fue deshonesta»*). Debajo, el simulador y dos
+puertas (el buscador y la Guía Médica), y una línea para Vital. Sin rótulos ni
+píldoras.
 
 **Qué se decidió.** El reparto: `/planes` es donde se decide, `/que-cubre` responde
 «¿está cubierto?» con el detalle a un toque, y Vital va aparte. Arturo: *«Me parece
