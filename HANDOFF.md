@@ -45,6 +45,18 @@ lámina 71 de `docs/diseno/`):
   llama al mismo número de SP (Arturo, 04/10/2026; cierra
   `Nelargon/sp-interno#93`). El link gris «Ambulancia y emergencias» de la
   línea de la fecha se sacó, porque duplicaba esta línea.
+- **Y una segunda puerta** (Arturo, 04/10/2026, la misma noche): *«si no atiende
+  el 31900000, creo que hay otro número a donde la persona puede llamar para
+  emergencias, igual, y es bueno que esté también ahí»*. Debajo va «Si no te
+  atienden, llamá gratis al 141, las ambulancias del Ministerio de Salud».
+  Cada renglón se toca entero. El 141 (`SEME_TEL` en `app/quote.js`) sale del
+  sitio del Ministerio de Salud: «línea gratuita 141» (01/12/2025). El 911 es de
+  la Policía, no de ambulancias.
+- **Sin resultados, el WhatsApp dice para qué es.** Antes decía «escribinos y te
+  decimos dónde atenderte», y con «me duele el pecho» se leía como el lugar para
+  pedir ayuda por un dolor. Ahora dice «¿Buscás un médico o un lugar que no
+  aparece? Escribinos y te ayudamos a encontrarlo». No adivina nada: solo aclara
+  qué hace el botón (lámina 72).
 - **El buscador de síntomas se queda solo para lo cotidiano.** Ya no hay un «me
   duele» genérico que mande al clínico: un dolor que no reconoce no recibe
   turno sugerido.
