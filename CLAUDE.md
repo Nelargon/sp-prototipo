@@ -204,6 +204,14 @@ pierde (BITACORA cap. 96).
   personales: si algo que importa casi nadie lo abre, sube a la vista. Es la
   lámina 51 («lo que cambia el dato no se esconde») dicha para toda la página
   (láminas 57 a 59).
+- **Sin preaprobación médica (4 oct 2026, decisión de Arturo).** No existe una
+  Dirección Médica que apruebe: hay una gerencia médica que todavía no responde.
+  Arturo: *«Si no se puede hacer algo bien, que no se haga»*. Lo que necesita
+  juicio médico para ser seguro (decidir qué es una urgencia, un consejo de salud,
+  una dosis) no se construye ni se publica. Lo que resuelve el sentido común,
+  como la muela al dentista, se hace sin esperar firma. Un dato (un teléfono, una
+  cobertura) no es una aprobación: se confirma con su fuente. Ver HANDOFF «🩺 SIN
+  PREAPROBACIÓN MÉDICA».
 - **Un solo texto para ir al simulador: «Simulá tu plan»** (25 sep 2026,
   decisión de Arturo, `sp-interno#57`). Había seis («Simulá tu precio»,
   «Simulá el tuyo en un minuto», «Mirá tu precio en el simulador»…). Dos excepciones con su porqué: «Ver mi

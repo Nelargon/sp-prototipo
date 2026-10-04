@@ -4547,7 +4547,9 @@ original, no empuja al precio.
   estructuras) se empezó por sumar.** El método nuevo empieza por decidir qué no
   va.
 
-## Capítulo 131 — Las esperas, cuándo se dicen (03/10/2026)
+## Capítulo 132 — Las esperas, cuándo se dicen (03/10/2026)
+
+*(Llegó como cap. 131, el mismo número que otro capítulo del 02/10; se renumeró el 04/10 y quedan los dos.)*
 
 **Qué intentamos.** El 29/09 se sumó «Espera para internarte» a las tarjetas de
 `/que-cubre` (cap. 128), porque la regla de claridad pide que el año de espera de
@@ -4574,3 +4576,43 @@ bloque de la lámina.
 - **Quedó una decisión suya pendiente:** la fila «Tiempo de espera» del comparador
   del home, que él mismo pidió el 26/09.
 
+---
+
+## Capítulo 133 — La aprobación que esperábamos no tenía quién la diera (04/10/2026)
+
+**Qué intentamos.** Desde el 23/09, la Guía Médica tenía un cartel rojo de
+emergencia que se prendía cuando la persona escribía ciertas frases. La guarda
+del HANDOFF pedía que antes de la v1 lo revisara un médico, «idealmente la
+dirección médica de Lister». El 30/09 se vio que reconocía «dolor de pecho» y no
+«me duele el pecho» (`sp-interno#122`). Dos borradores, uno de Codex (#233) y uno
+de otra sesión (#236), ampliaron la lista de frases y quedaron esperando que la
+Dirección Médica las validara.
+
+**Qué pasó.** El 04/10, Arturo contó que esa Dirección Médica no existe. Hay una
+gerencia médica que todavía no responde. Su respuesta no fue buscar otro
+aprobador:
+
+> *«Prefiero que no haya ningún tipo de preaprobación. Si no se puede hacer algo
+> bien, que no se haga, ¿no más?»*
+
+Aplicada a la Guía Médica, la regla sacó el cartel que se prendía por palabras.
+No faltaba quién lo aprobara: es la función la que no se puede hacer bien sin
+un médico. Cuando no se prende, la persona entiende que puede esperar. En su
+lugar quedó una línea fija debajo del buscador con el número al que se llama
+siempre. Arturo confirmó que es el mismo de SP. También salió el «me duele»
+genérico que mandaba al clínico: «me duele el pecho» recibía un turno sugerido.
+Las pruebas nuevas fallan contra el código anterior (siete de siete en el
+buscador, dos de dos en la v1) y pasan con el nuevo.
+
+**Qué aprendimos.**
+- **Una aprobación sin dueño no es un control, es un freno.** Durante una
+  semana, dos borradores y varias notas del blog esperaron una firma que nadie
+  iba a dar. Antes de poner a alguien como aprobador, hay que confirmar que
+  existe y que responde.
+- **Cuando una función no se puede validar, hay que mirar la función, no buscar
+  otro validador.** Un detector de urgencias que acierta a veces es peor que
+  ninguno, porque su silencio se lee como «no es urgente». Una línea fija dice
+  siempre lo mismo y no promete lo que no puede cumplir.
+- **Un dato no es una aprobación.** El número de urgencias no necesitaba un
+  médico: necesitaba que alguien de SP dijera cuál es. Lo dijo Arturo en una
+  frase.
