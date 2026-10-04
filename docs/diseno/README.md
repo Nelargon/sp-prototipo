@@ -1740,3 +1740,26 @@ línea fija. A una urgencia se llama al mismo número de SP.
 grave». Si no se puede saber cuándo mostrarlo, se muestra siempre, o no se
 muestra. El rojo sigue reservado para urgencias, y por eso la línea puede usarlo
 sin gritar: fondo claro, texto rojo oscuro.
+
+### 72 · Una sola puerta no alcanza
+
+![La Guía Médica con «me duele el pecho»: un número de emergencia contra dos, y el WhatsApp que dice para qué es](img/2026-10-04-guia-emergencia-dos-puertas.webp)
+
+**Qué muestra.** La misma búsqueda de la lámina 71, horas después. **Antes:**
+un solo número de emergencia, y sin resultados el WhatsApp decía «escribinos y
+te decimos dónde atenderte». **Después:** dos renglones que se tocan enteros, el
+número de SP y, si no atiende, el 141 de las ambulancias públicas. Sin
+resultados, el WhatsApp dice para qué es: encontrar un médico o un lugar que no
+aparece.
+
+**Qué se decidió y por qué.** Arturo, 04/10/2026: *«si no atiende el 31900000,
+creo que hay otro número a donde la persona puede llamar para emergencias,
+igual, y es bueno que esté también ahí»*. Eligió el 141, que se verificó en el
+sitio del Ministerio de Salud. Y pidió entender el problema del WhatsApp
+*«como a un niño de 9 años»*: un cartel que invita a dejar una notita no sirve
+para alguien que se golpeó.
+
+**La lección.** En una emergencia, cada salida necesita otra por si falla. Y un
+botón tiene que decir para qué es, sobre todo cuando aparece al lado de algo que
+no tiene nada que ver con él.
+

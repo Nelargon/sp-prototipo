@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { track } from '../track';
-import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from '../quote';
+import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY, SEME_TEL } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import MapaRed from './MapaRed';
@@ -414,11 +414,18 @@ export default function GuiaMedica() {
             (Arturo, 04/10/2026). Hasta esa fecha un cartel rojo se prendía con
             ciertas frases y callaba con otras; sin un médico que valide cuáles
             son urgencia, la guía no lo adivina: dice siempre a dónde llamar. A
-            una urgencia se llama al mismo número de SP (Arturo, 04/10/2026). */}
-        <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias' })} className="gm-emergencia sq" style={css(INTER + '--sq:var(--r-md);display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;background:#FEF3F2;border:1px solid #FDA29B;color:#912018;font-size:14.5px;line-height:1.4;font-weight:600')}>
-          <span style={css('display:flex;flex-shrink:0')}>{Icono.tel}</span>
-          <span>¿Es una emergencia? No la busques acá: llamá al <b className="num-tnum" style={css('white-space:nowrap')}>{SP_PHONE_DISPLAY}</b>, las 24 horas.</span>
-        </a>
+            una urgencia se llama al mismo número de SP, y si no atiende, al 141
+            de las ambulancias públicas (Arturo, 04/10/2026: un solo número es una
+            sola puerta). Cada renglón se toca entero. */}
+        <div role="group" aria-label="Emergencias" className="gm-emergencia sq" style={css(INTER + '--sq:var(--r-md);background:#FEF3F2;border:1px solid #FDA29B;color:#912018;overflow:hidden')}>
+          <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias' })} style={css('display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;color:inherit;font-size:14.5px;line-height:1.4;font-weight:600')}>
+            <span style={css('display:flex;flex-shrink:0')}>{Icono.tel}</span>
+            <span>¿Es una emergencia? No la busques acá: llamá al <b className="num-tnum" style={css('white-space:nowrap')}>{SP_PHONE_DISPLAY}</b>, las 24 horas.</span>
+          </a>
+          <a href={`tel:${SEME_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias_141' })} style={css('display:flex;align-items:center;min-height:44px;padding:9px 14px 10px 42px;border-top:1px solid #FDA29B;color:inherit;font-size:13.5px;line-height:1.4;font-weight:500')}>
+            <span>Si no te atienden, llamá gratis al <b className="num-tnum">{SEME_TEL}</b>, las ambulancias del Ministerio de Salud.</span>
+          </a>
+        </div>
 
         {/* Zona: la tira siempre visible */}
         <div role="group" aria-label="Zona" className="sq" style={css('--sq:var(--r-sm);display:flex;gap:4px;background:var(--gm-linea);padding:4px')}>
@@ -523,7 +530,7 @@ export default function GuiaMedica() {
               <div className="sq rel" style={css('--sq:var(--r-sm);background:#fff;border:1px solid var(--gm-linea);padding:22px 18px;text-align:center')}>
                 <h2 className="disp" style={css('font-size:19px;color:var(--sp-navy);margin:0 0 8px')}>{f.q ? <>No encontramos «{f.q}» en la red.</> : 'No hay resultados con estos filtros.'}</h2>
                 {sug && <p style={css(INTER + 'font-size:15px;margin:0 0 6px;color:var(--sp-text)')}>¿Quisiste decir <button type="button" onClick={() => setQ(sug)} className="disp" style={css('border:none;background:none;padding:0;color:var(--sp-teal-deep);font-weight:800;font-size:15px;cursor:pointer;text-decoration:underline;text-underline-offset:3px')}>{sug}</button>?</p>}
-                <p style={css(INTER + 'font-size:14.5px;line-height:1.55;color:var(--sp-muted);margin:0 auto 14px;max-width:420px')}>Probá con otra zona u otra palabra. Si no aparece, escribinos y te decimos dónde atenderte.</p>
+                <p style={css(INTER + 'font-size:14.5px;line-height:1.55;color:var(--sp-muted);margin:0 auto 14px;max-width:420px')}>Probá con otra zona u otra palabra. ¿Buscás un médico o un lugar que no aparece? Escribinos y te ayudamos a encontrarlo.</p>
                 <a href={f.q ? waSinResultado : waNoEncuentro} onClick={() => track('guia_whatsapp', { origen: 'sin_resultados' })} className="disp sq" style={css('--sq:var(--r-xs);height:44px;padding:0 18px;background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Preguntar por WhatsApp</a>
               </div>
             )}

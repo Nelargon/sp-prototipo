@@ -19,6 +19,13 @@ import { DEPT_AJUSTE } from './geo';
 export const WHATSAPP_NUMBER = '595 21 319 0000';
 export const SP_PHONE_DISPLAY = '(021) 319 0000';
 export const SP_TEL = '+595213190000';
+/* Ambulancias públicas del Ministerio de Salud (SEME): línea gratuita 141. Es
+   el segundo número de la línea de emergencias de la Guía Médica, para cuando
+   el de SP no atiende (Arturo, 04/10/2026). Fuente: mspbs.gov.py, «SEME brinda
+   cobertura en eventos masivos ante emergencias», 01/12/2025 («llamando a la
+   línea gratuita 141»). Antes (2016) se marcaba 021-141 desde el celular; desde
+   2019 el Ministerio dice 141 desde cualquier teléfono. */
+export const SEME_TEL = '141';
 
 /* HubSpot — canal del lead del simulador. El portal es el real de SP.
    HUBSPOT_FORM_ID queda vacío hasta que exista el formulario de leads en

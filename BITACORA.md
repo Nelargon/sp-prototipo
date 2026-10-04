@@ -4616,3 +4616,34 @@ buscador, dos de dos en la v1) y pasan con el nuevo.
 - **Un dato no es una aprobación.** El número de urgencias no necesitaba un
   médico: necesitaba que alguien de SP dijera cuál es. Lo dijo Arturo en una
   frase.
+
+---
+
+## Capítulo 134 — Una sola puerta, y un botón que decía otra cosa (04/10/2026)
+
+**Qué intentamos.** Horas antes había entrado la línea fija de emergencias de
+la Guía Médica (cap. 133), con un solo número: el de SP. El Guardián le avisó a
+Arturo de un detalle: con «me duele el pecho», debajo de la línea roja quedaba
+el mensaje de siempre para cuando no hay resultados, «escribinos y te decimos
+dónde atenderte».
+
+**Qué pasó.** Arturo no lo entendió en la explicación técnica y pidió otra:
+*«Explícame como a un niño de 9 años, por favor»*. La versión que sirvió fue la
+de los dos carteles en la puerta de la dirección: uno rojo que dice «llamá a la
+maestra ya» y otro que dice «dejá una notita en el buzón». Y él agregó lo que
+faltaba: *«si no atiende el 31900000, creo que hay otro número a donde la
+persona puede llamar»*. Se verificó en el sitio del Ministerio de Salud: el
+141, gratuito, de las ambulancias públicas (SEME). Arturo eligió ese.
+
+**Qué aprendimos.**
+- **Una línea de emergencia con un solo número es una sola puerta.** Si esa no
+  atiende, la persona se queda sin nada. La segunda puerta no la vio la sesión:
+  la vio Arturo.
+- **Un texto escrito para un caso se lee en todos los casos donde aparece.**
+  «Te decimos dónde atenderte» estaba bien para el «Dr. Pérez» que no aparece, y
+  mal para un dolor. El arreglo no fue detectar el dolor, que es lo que la regla
+  del 04/10 prohíbe adivinar, sino decir para qué es el botón.
+- **Si la explicación no se entiende, el problema es la explicación.** Contada
+  como para un chico de 9 años se entendió a la primera y se decidió en un
+  mensaje.
+
