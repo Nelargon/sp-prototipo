@@ -4519,3 +4519,58 @@ reproducir en local; la secuencia de eventos alcanza para saber qué pasó.
   que lo rodea, pero no deja margen. Si algún día molesta a personas reales, la
   celda entera podría ser el área que se toca. Eso es una decisión de diseño,
   no de esta prueba.
+
+
+## Capítulo 130 — Tres estructuras que eran una sola lista (02/10/2026)
+
+**Qué intentamos.** Para `/que-cubre` completa con los cuatro planes se mostraron
+tres estructuras (lámina 69): de arriba abajo, un plan a la vez y por tema con
+índice.
+
+**Qué pasó.** Arturo las descartó, y con razón: *«yo creo que no estamos
+entendiendo el punto… Si tenemos demasiadas herramientas para que el cliente
+escoja, se puede marear. Tenemos que tomar una decisión de qué pocas herramientas
+vamos a usar para mostrar algo que tenga alto impacto»*. Las tres tenían las mismas
+nueve secciones, en distinto orden: nunca se sacó nada. Al contar, el sitio compara
+los planes en **tres lugares** (el comparador del home, `/planes` y `/que-cubre`,
+de 9 secciones y 7.150 px), y el buscador de `/que-cubre`, la herramienta más
+original, no empuja al precio.
+
+**Qué aprendimos.**
+- **Tres variantes del mismo contenido no son tres opciones.** Una opción de
+  verdad saca algo. Se lo dijimos a Arturo: su presentimiento valía 9/10.
+- **Se parte de lo que preguntan, no de lo que hay.** Cuatro asesoras, de a una
+  y en papel, coincidieron en precio, diferencia y espera. Eso ordena la página.
+- **Una página que no lleva al precio no ayuda a convertir.** El buscador
+  registra la búsqueda y no ofrece un paso siguiente.
+- **Dos veces seguidas (los cuatro planes en la misma página y las tres
+  estructuras) se empezó por sumar.** El método nuevo empieza por decidir qué no
+  va.
+
+## Capítulo 131 — Las esperas, cuándo se dicen (03/10/2026)
+
+**Qué intentamos.** El 29/09 se sumó «Espera para internarte» a las tarjetas de
+`/que-cubre` (cap. 128), porque la regla de claridad pide que el año de espera de
+Essential no esté solo en el contrato. El 02/10, la lámina 70 de `/planes` puso
+las esperas debajo del precio, con «2 meses» en grande.
+
+**Qué pasó.** Arturo marcó dos cosas. Primera: la lámina era engañosa por el
+énfasis (*«la lámina sí fue deshonesta»*): el plazo corto en grande y los largos en
+chica. Segunda, sobre el riesgo de que alguien se afilie para usar el plan y dejar
+de pagar: *«Mostrar esperas cortas atrae al cliente que me preocupa y que no
+quiero tener»*. Y precisó: *«No estoy en contra de mostrar los tiempos de carencia
+antes de la firma, pero tampoco al principio como hook para la compra… Tarde o
+temprano sí o sí se comunica.»* Se sacó la línea de las tarjetas ya publicadas y el
+bloque de la lámina.
+
+**Qué aprendimos.**
+- **La regla de claridad no dice «a la vista y al principio».** Dice «antes de que
+  se lleve una sorpresa». Se puede cumplir con **momentos planificados** (detalle,
+  simulador, cotización, asesora, contrato) sin hacer de la espera un anzuelo.
+- **Mostrar algo con desigual peso es una forma de decir otra cosa.** Todas con el
+  mismo peso, o ninguna en esa vista.
+- **El efecto sobre quién se afilia es un criterio de negocio de Arturo, no un dato
+  medido.** Se anota con su nombre y se pide a SP el dato.
+- **Quedó una decisión suya pendiente:** la fila «Tiempo de espera» del comparador
+  del home, que él mismo pidió el 26/09.
+

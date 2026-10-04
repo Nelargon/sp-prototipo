@@ -125,22 +125,24 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // pública del `?plan=` del comparador. Ambas viven ACÁ (fuente única): el botón y
 // el simulador derivan de este mismo array, así el puente no se puede desincronizar.
 // LAS LÍNEAS DE LAS TARJETAS (29/09/2026, lámina 65, opción 1 de Arturo): los
-// MISMOS seis temas y en el mismo orden en los tres planes, para comparar
+// MISMOS cinco temas y en el mismo orden en los tres planes, para comparar
 // leyendo de lado a lado. Lo que cambia va entre `**`: /que-cubre lo pone en
-// negrita. Se sumó «Espera para internarte»: la regla de claridad pide que el
-// año de espera de Essential esté a la vista, no en el contrato. Salieron
-// urgencias y laboratorio/radiografías/fisioterapia de Essential (siguen en el
-// buscador y el comparador del home). La odontología volvió a pedido de Arturo
-// (29/09): es lo que Essential tiene y Silver y Gold no. ⚠ «Por persona» de Silver y
-// Gold espera confirmación de SP (sp-interno#110).
+// negrita. Salieron urgencias y laboratorio/radiografías/fisioterapia de
+// Essential (siguen en el buscador y el comparador del home). La odontología
+// volvió a pedido de Arturo (29/09): es lo que Essential tiene y Silver y Gold
+// no. ⚠ LAS ESPERAS NO VAN EN ESTAS TARJETAS (Arturo, 03/10/2026): el 29/09 se
+// había sumado «Espera para internarte» y se sacó. No es esconderlas: se dicen
+// antes de la firma en otros momentos (detalle, simulador, cotización), no al
+// principio como gancho. Mapa en HANDOFF («Reparto de páginas de planes»).
+// ⚠ «Por persona» de Silver y Gold espera confirmación de SP (sp-interno#110).
 export const plans = () => [
   // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
   { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
-    lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', 'Tomografía y resonancia: **por familia**', 'Internación: **habitación privada**, hasta 20 días por familia', 'Espera para internarte: **1 año** desde que te afiliás', 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
+    lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', 'Tomografía y resonancia: **por familia**', 'Internación: **habitación privada**, hasta 20 días por familia', 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
   { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía por persona',
-    lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', 'Tomografía y resonancia: **por persona**', 'Internación: **semi-suite**, hasta 20 días al año', 'Espera para internarte: **2 meses** si es por algo agudo', 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+    lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', 'Tomografía y resonancia: **por persona**', 'Internación: **semi-suite**, hasta 20 días al año', 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
   { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas: **sin tope anual** en casi todas las especialidades', 'Tomografía y resonancia: **por persona**, con menos espera en la tomografía', 'Internación: **semi-suite**, hasta 25 días al año', 'Espera para internarte: **2 meses** si es por algo agudo', 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+    lines: ['Consultas: **sin tope anual** en casi todas las especialidades', 'Tomografía y resonancia: **por persona**, con menos espera en la tomografía', 'Internación: **semi-suite**, hasta 25 días al año', 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
 ];
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del
