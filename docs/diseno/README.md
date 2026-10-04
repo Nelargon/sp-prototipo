@@ -1714,3 +1714,29 @@ que confirme esta lámina.
 diseñar, se decide qué se saca. Y una página que no empuja al precio no ayuda a
 convertir: hoy el buscador de `/que-cubre` registra la búsqueda pero no tiene
 ningún enlace al simulador ni a WhatsApp en sus resultados.
+
+---
+
+## Parte 22 · La Guía Médica sin adivinar urgencias (04/10/2026)
+
+### 71 · La emergencia no se adivina: se dice siempre
+
+![La Guía Médica con «me duele el pecho», antes y después, en celular](img/2026-10-04-guia-emergencia-fija.webp)
+
+**Qué muestra.** La Guía Médica en un celular de 390 px después de escribir «me
+duele el pecho». **Antes:** no aparecía el cartel de urgencia, porque la lista
+reconocía «dolor de pecho» y no esta forma de decirlo. En cambio sugería un turno
+con un médico clínico, y el teléfono de emergencias era un link gris al lado de
+la fecha. **Después:** una línea fija debajo del buscador dice a dónde llamar,
+escriba lo que escriba la persona, y como la guía no reconoce el dolor, no
+sugiere ningún turno.
+
+**Qué se decidió y por qué.** Arturo, 04/10/2026: *«Si no se puede hacer algo
+bien, que no se haga»*. Decidir qué es una urgencia necesita un médico, y no hay
+quién lo valide. Por eso salió el cartel que se prendía por palabras y quedó la
+línea fija. A una urgencia se llama al mismo número de SP.
+
+**La lección.** Un aviso que a veces aparece enseña a leer su silencio como «no es
+grave». Si no se puede saber cuándo mostrarlo, se muestra siempre, o no se
+muestra. El rojo sigue reservado para urgencias, y por eso la línea puede usarlo
+sin gritar: fondo claro, texto rojo oscuro.
