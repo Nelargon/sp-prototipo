@@ -13,7 +13,49 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 30 sep 2026.*
+*Última actualización: 4 oct 2026.*
+
+---
+
+## 🩺 SIN PREAPROBACIÓN MÉDICA: LO QUE NO SE PUEDE HACER BIEN, NO SE HACE (4 oct 2026)
+
+**Qué se supo.** La «Dirección Médica» que varios documentos ponían como la que
+aprueba lo médico **no existe**. Hay una gerencia médica que todavía no
+responde. Arturo, 04/10/2026:
+
+> *«Prefiero que no haya ningún tipo de preaprobación. Si no se puede hacer algo
+> bien, que no se haga, ¿no más? Que se sugieran cosas, por lo menos que el
+> sentido común ayude a sugerir cosas que se necesiten en la página para los
+> clientes.»*
+
+**La regla para toda sesión.** Nada espera la aprobación de una Dirección
+Médica. Si algo necesita juicio médico para ser seguro (decidir qué es una
+urgencia, dar un consejo de salud, una dosis), **no se construye ni se
+publica**. Lo que el sentido común resuelve, como mandar la muela al dentista,
+se hace sin pedir permiso. Un **dato**, como un número de teléfono o una
+cobertura, no es una aprobación: se confirma con SP o con su fuente.
+
+**Lo que cambió en la Guía Médica** (el detalle está en BITACORA cap. 133 y en la
+lámina 71 de `docs/diseno/`):
+- **Salió el cartel rojo que se prendía según lo que se escribía.** Reconocía
+  «dolor de pecho» y no «me duele el pecho» (`Nelargon/sp-interno#122`). Se
+  cerraron los dos borradores que lo ampliaban (#233 y #236).
+- **En su lugar, una línea fija debajo del buscador:** «¿Es una emergencia? No
+  la busques acá: llamá al (021) 319 0000, las 24 horas». A una urgencia se
+  llama al mismo número de SP (Arturo, 04/10/2026; cierra
+  `Nelargon/sp-interno#93`). El link gris «Ambulancia y emergencias» de la
+  línea de la fecha se sacó, porque duplicaba esta línea.
+- **El buscador de síntomas se queda solo para lo cotidiano.** Ya no hay un «me
+  duele» genérico que mande al clínico: un dolor que no reconoce no recibe
+  turno sugerido.
+- Pruebas: `scripts/test-buscador.mjs` (siete casos de síntomas) y
+  `qa/qa-lanzamiento.mjs`, que revisa que la línea esté siempre a la vista y
+  que «me duele el pecho» no sugiera un turno.
+
+**Lo que sigue en otros lados.** El blog deja de escribir lo que necesita un
+médico. Se lo pasamos al Orquestador por su bandeja, porque el motor es suyo.
+Los puntos de revisión que esperaban a «Dirección Médica» se resuelven con esta
+regla.
 
 ---
 
@@ -1568,6 +1610,9 @@ emergencia con la ambulancia. Es un diccionario, no IA: previsible, sin costo,
 el texto no sale del teléfono y no va a la analítica.
 **⚠ GUARDA: antes de la v1 real lo tiene que revisar un médico** (idealmente la
 dirección médica de Lister). La guía orienta a quién ir; no diagnostica.
+*⚠ Superado el 04/10/2026: no hay dirección médica que lo revise. El cartel rojo
+por palabras salió y quedó una línea fija de emergencias; los síntomas orientan
+solo lo cotidiano. Ver «🩺 SIN PREAPROBACIÓN MÉDICA», arriba.*
 
 **«Lo que más se busca» tiene un orden PROVISORIO** (no hay medición: `track()`
 no está conectado). Cuando lo esté, sale de `guia_filtro {campo:'esp'}` de la

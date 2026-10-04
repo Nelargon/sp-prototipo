@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { track } from '../track';
-import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
+import { WHATSAPP_NUMBER, SP_TEL, SP_PHONE_DISPLAY } from '../quote';
 import Header from '../Header';
 import PuntoRevisar from './PuntoRevisar';
 import MapaRed from './MapaRed';
@@ -132,6 +132,7 @@ const Icono = {
   check: <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>,
   pin: <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>,
   wa: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z" /></svg>,
+  tel: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg>,
 };
 
 // Una cápsula chica (filtro de segunda fila, plan, ciudad).
@@ -306,7 +307,7 @@ export default function GuiaMedica() {
   }, [f]);
 
   // Lo que la persona siente («me duele la cabeza») → a quién ir.
-  const sint = useMemo(() => (f.q ? interpretar(f.q) : { urg: false, esp: [], motivo: '' }), [f.q]);
+  const sint = useMemo(() => (f.q ? interpretar(f.q) : { esp: [], motivo: '' }), [f.q]);
 
   const res = useMemo(() => buscar(f, sint), [f, sint]);
   // El mapa: lo mismo, en todo el país (la ciudad elegida va marcada).
@@ -314,7 +315,7 @@ export default function GuiaMedica() {
   const sug = useMemo(() => (f.q && !res.length ? sugerir(P, f.q) : null), [f.q, res.length]);
 
   useEffect(() => {
-    if (f.q) track('guia_buscar', { largo: f.q.length, resultados: res.length, sintoma: sint.esp.length > 0, urgencia: sint.urg });
+    if (f.q) track('guia_buscar', { largo: f.q.length, resultados: res.length, sintoma: sint.esp.length > 0 });
   }, [f.q]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const set = (cambios, campo) => {
@@ -382,7 +383,7 @@ export default function GuiaMedica() {
             <button type="button" onClick={() => abrirVisar('encabezado')} className="disp" style={css('flex-shrink:0;margin-top:4px;height:36px;padding:0 12px;border-radius:var(--r-pill);border:1.5px solid var(--sp-teal-deep);background:#fff;color:var(--sp-teal-deep);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer')}>Visar una orden</button>
           </div>
           <p style={css(INTER + 'margin:0;font-size:15px;line-height:1.45;color:var(--sp-text-2)')}>Médicos, sanatorios y laboratorios, con dirección y teléfono.</p>
-          <div style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>Datos al <b style={css('color:var(--sp-navy)')}>{fecha}</b> · <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias' })} style={css('color:var(--sp-muted);text-decoration:underline;text-underline-offset:3px')}>Ambulancia y emergencias</a></div>
+          <div style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>Datos al <b style={css('color:var(--sp-navy)')}>{fecha}</b></div>
         </div>
 
         {/* Visar una orden */}
@@ -408,6 +409,16 @@ export default function GuiaMedica() {
           <input value={q} onChange={(e) => setQ(e.target.value)} type="search" autoComplete="off" aria-label="Buscar en la Guía Médica" placeholder="Nombre, especialidad o lo que sentís" style={css(INTER + 'flex:1;min-width:0;height:48px;border:none;outline:none;font-size:16.5px;background:transparent;color:var(--sp-ink)')} />
           {q && <button type="button" onClick={() => setQ('')} className="disp" style={css('border:none;background:none;color:var(--sp-muted);font-size:13px;font-weight:700;cursor:pointer;padding:0 8px')}>Borrar</button>}
         </label>
+
+        {/* Emergencias: siempre a la vista, no según lo que se escriba
+            (Arturo, 04/10/2026). Hasta esa fecha un cartel rojo se prendía con
+            ciertas frases y callaba con otras; sin un médico que valide cuáles
+            son urgencia, la guía no lo adivina: dice siempre a dónde llamar. A
+            una urgencia se llama al mismo número de SP (Arturo, 04/10/2026). */}
+        <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'emergencias' })} className="gm-emergencia sq" style={css(INTER + '--sq:var(--r-md);display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;background:#FEF3F2;border:1px solid #FDA29B;color:#912018;font-size:14.5px;line-height:1.4;font-weight:600')}>
+          <span style={css('display:flex;flex-shrink:0')}>{Icono.tel}</span>
+          <span>¿Es una emergencia? No la busques acá: llamá al <b className="num-tnum" style={css('white-space:nowrap')}>{SP_PHONE_DISPLAY}</b>, las 24 horas.</span>
+        </a>
 
         {/* Zona: la tira siempre visible */}
         <div role="group" aria-label="Zona" className="sq" style={css('--sq:var(--r-sm);display:flex;gap:4px;background:var(--gm-linea);padding:4px')}>
@@ -479,11 +490,6 @@ export default function GuiaMedica() {
         {/* Resultados */}
         {buscando && (
           <div aria-live="polite" style={css('display:flex;flex-direction:column;gap:10px')}>
-            {sint.urg && (
-              <a href={`tel:${SP_TEL}`} onClick={() => track('guia_llamar', { tipo: 'urgencia_detectada' })} className="disp sq" style={css('--sq:var(--r-sm);background:#B42318;color:#fff;padding:13px 16px;font-size:15.5px;font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:10px')}>
-                <span>¿Es una emergencia? Llamá a la ambulancia, las 24 horas</span><span className="num-tnum" style={css('white-space:nowrap')}>(021) 319 0000</span>
-              </a>
-            )}
             {sint.motivo && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14.5px;line-height:1.5;font-weight:500;color:var(--sp-teal-900);background:var(--sp-mint-bg);border:1px solid #C4EAE7;padding:10px 12px;display:flex;gap:10px;align-items:flex-start')}><span aria-hidden="true" style={css('flex-shrink:0;margin-top:-1px;display:flex')}><IconoSP nombre="consejo" size={24} /></span><span>{sint.motivo}</span></p>}
             {f.esp && datos.notas[f.esp] && <p className="sq" style={css(INTER + '--sq:var(--r-xs);margin:0;font-size:14px;line-height:1.5;color:var(--sp-text);background:#fff;border:1px solid var(--gm-linea);padding:10px 12px')}>{datos.notas[f.esp]}.</p>}
             {f.q.toLowerCase().includes('lister') && datos.lister.length > 0 && (

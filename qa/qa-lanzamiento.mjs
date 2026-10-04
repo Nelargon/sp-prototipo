@@ -135,6 +135,19 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   else bien(nombre + ': pediatras con Essential Interior desde la URL (' + n1 + ')');
   const puntos = await page.locator('[aria-label="Dato a revisar, marca interna"]').count();
   if (puntos) mal(nombre + ': la v1 muestra la marca interna de "Revisar"');
+  // Emergencias: siempre a la vista, no según lo que se escriba (Arturo,
+  // 04/10/2026). Hasta esa fecha un cartel se prendía con «dolor de pecho» y
+  // callaba con «me duele el pecho»; sin un médico que valide qué es urgencia,
+  // la guía no lo adivina y un dolor que no reconoce no recibe turno sugerido.
+  const fija = page.locator('a.gm-emergencia').first();
+  const fijaOk = async () => (await fija.count()) > 0 && (await fija.isVisible()) && /^tel:/.test((await fija.getAttribute('href')) || '');
+  if (!(await fijaOk())) mal(nombre + ': la línea fija de emergencias no está a la vista');
+  else bien(nombre + ': la línea de emergencias está siempre a la vista, con su teléfono');
+  await page.fill('input[type=search]', 'me duele el pecho');
+  await page.waitForTimeout(600);
+  const pecho = await page.evaluate(() => document.body.innerText);
+  if (/Para empezar, un médico clínico/.test(pecho) || !(await fijaOk())) mal(nombre + ': «me duele el pecho» sugiere un turno o esconde la línea de emergencias');
+  else bien(nombre + ': «me duele el pecho» no sugiere turno y la línea de emergencias sigue a la vista');
   await page.fill('input[type=search]', 'rezonancia');
   await page.waitForTimeout(600);
   const txt = await page.evaluate(() => document.body.innerText);

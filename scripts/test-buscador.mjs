@@ -14,6 +14,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buscar, indexar, norm } from '../lib/buscar-prestaciones.js';
+import { interpretar } from '../lib/red-medica.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const datos = JSON.parse(readFileSync(join(ROOT, 'lib/prestaciones.json'), 'utf8'));
@@ -109,6 +110,35 @@ for (const c of CASOS_ESPECIALES) {
   }
 }
 
+/* La Guía Médica: lo que la persona siente → a quién ir (lib/red-medica.js).
+   Solo lo cotidiano. Decidir qué es una urgencia necesita un médico y no hay
+   quién lo valide, así que la guía no lo intenta: no hay cartel que se prenda
+   por palabras y un dolor que no reconoce no recibe un turno sugerido (Arturo,
+   04/10/2026: «Si no se puede hacer algo bien, que no se haga»). La página
+   muestra siempre a qué número llamar (la prueba con navegador lo mira). */
+const SINTOMAS = [
+  ['me duele la muela', 'Odontología'],
+  ['me duele la cabeza', 'Clínica Médica'],
+  ['mi hijo tiene fiebre', 'Pediatría'],
+  ['manchas en la piel', 'Dermatología'],
+  ['me duele el pecho', null],
+  ['me falta el aire', null],
+  ['malestar general', null],
+];
+console.log('');
+let nSint = 0;
+for (const [q, esperado] of SINTOMAS) {
+  const r = interpretar(q);
+  const primero = r.esp[0] || null;
+  const ok = primero === esperado && !('urg' in r);
+  nSint++;
+  if (ok) console.log(`✔ ${q.padEnd(24)} → ${esperado || 'ninguna especialidad (sin turno sugerido)'}`);
+  else {
+    fallos++;
+    console.log(`✘ "${q}" — esperaba ${esperado || 'ninguna especialidad'}, dio ${JSON.stringify(r)}`);
+  }
+}
+
 /* Ninguna búsqueda razonable debería devolver cero: un cero en una página de
    transparencia se lee como "no lo cubre". */
 console.log('');
@@ -117,3 +147,4 @@ if (fallos) {
   process.exit(1);
 }
 console.log(`✔ ${CASOS.length + CASOS_ESPECIALES.length}/${CASOS.length + CASOS_ESPECIALES.length} — el buscador responde en el idioma del cliente.`);
+console.log(`✔ ${nSint}/${nSint} — la Guía Médica orienta lo cotidiano y no adivina urgencias.`);
