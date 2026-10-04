@@ -35,15 +35,15 @@ desde el 1° de ese mes
 En lo que va del año, esas cuotas acumulan entre 20% y 21% de aumento,
 por encima del 19,3% de inflación nacional del período
 ([Primera Edición](https://www.primeraedicion.com.ar/nota/101136672/prepagas-aumentos-septiembre-2026-inflacion/),
-sept. 2026). El número quedó registrado antes de llegarle a nadie por
-factura.
+sept. 2026). Las noticias citadas informan los porcentajes anunciados para ese mes.
 
 ## Qué significa reportarlo, en la práctica
 
 Reportarlo no es un trámite que se pierde en un cajón interno. La
 Superintendencia de Servicios de Salud es el organismo que en Argentina
-controla a las prepagas, y el aumento que autoriza queda documentado con
-fecha y porcentaje.
+controla a las prepagas, y recibe la información sobre los ajustes. **Informar un aumento no
+es lo mismo que obtener autorización para aplicarlo.** Las noticias citadas
+no bastan para afirmar que cada aumento requiere esa autorización.
 
 Eso cambia a quién le creés el número. Un afiliado no depende de lo que
 le diga su propia prepaga sobre por qué subió la cuota: puede rastrear
@@ -58,25 +58,25 @@ destinatario.
 
 **Un ajuste de precio no tiene que llegar de sorpresa.** Cuando existe
 una instancia —un regulador, una autoridad sanitaria— donde el aumento
-se declara antes de cobrarse, cualquiera puede rastrear que hubo un
-criterio detrás del número, no solo el número.
+se declara antes de cobrarse, queda un dato que se puede contrastar. Ese registro, por sí solo, no
+explica ni justifica el monto.
 
 ## La pregunta que vale hacerle a cualquier cobertura
 
-Esto no depende de qué cobertura tenés, pública o privada, ni de en qué
-país vivís: sirve como pregunta general. Antes de preguntar cuánto va a
-subir, conviene preguntar otra cosa.
+El ejemplo corresponde a Argentina. No establece una obligación para las
+prepagas de Paraguay: eso debe verificarse en la normativa y en el contrato
+aplicables. La pregunta práctica para tu empresa es cómo te comunica un
+aumento y dónde podés consultar sus condiciones.
 
-**Preguntá si el ajuste de tu cobertura se reporta en algún lugar antes
-de aplicarse.** Esa respuesta dice más sobre cómo funciona tu plan que
-el porcentaje del aumento en sí.
+**Pedí el aviso del ajuste, su fecha de aplicación y la condición del
+contrato que lo contempla.** Si te dicen que una autoridad lo aprobó, pedí
+también la referencia que permite comprobarlo.
 
-No hace falta entender de finanzas para hacer esa pregunta. Alcanza con
-pedir, la próxima vez que se hable de un ajuste, que te muestren dónde
-quedó declarado antes de que llegara a tu factura.
+Guardar el aviso junto al contrato te permite comparar lo comunicado con
+lo que después aparece en la factura.
 
-Si la respuesta es clara y con fecha, ya sabés algo valioso sobre esa
-cobertura. Si nadie sabe contestarla, también aprendiste algo.
+Si algo no coincide, consultalo con la empresa. La ausencia de un registro
+como el argentino no prueba, por sí sola, un incumplimiento en Paraguay.
 
 Un sistema que avisa antes no te ahorra la suba. Te ahorra la sorpresa,
 que es un problema distinto y, para una familia que arma su presupuesto

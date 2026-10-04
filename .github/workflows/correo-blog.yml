@@ -134,6 +134,8 @@ jobs:
           CORREO_BLOG_USUARIO: ${{ secrets.CORREO_BLOG_USUARIO }}
           CORREO_BLOG_CLAVE: ${{ secrets.CORREO_BLOG_CLAVE }}
           CORREO_BLOG_DESTINATARIOS: ${{ secrets.CORREO_BLOG_DESTINATARIOS }}
+          BLOG_FEEDBACK_URL: ${{ vars.BLOG_FEEDBACK_URL }}
+          BLOG_FEEDBACK_SECRET: ${{ secrets.BLOG_FEEDBACK_SECRET }}
           OMITIDOS: ${{ steps.pend.outputs.omitidos }}
         run: |
           if [ "$PRUEBA" = "true" ]; then

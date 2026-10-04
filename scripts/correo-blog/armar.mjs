@@ -22,6 +22,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { createHash } from 'node:crypto';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 import { readingMinutes, stripDupIntro, formatFecha, frasesClave } from '../../lib/blog-texto.mjs';
@@ -163,6 +164,7 @@ function armar(archivo) {
           <tr><td class="pad" style="padding:24px 40px 4px">
             ${cuerpoHtml}
           </td></tr>
+          <!-- BLOG_FEEDBACK -->
           <tr><td class="pad" style="padding:8px 40px 26px">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
               <td style="background:${NAVY};border-radius:8px">
@@ -191,6 +193,8 @@ function armar(archivo) {
     '',
     aTextoPlano(cuerpo),
     '',
+    '[BLOG_FEEDBACK]',
+    '',
     `Leer en el blog: ${url}`,
     ...(fuentes.length ? ['', 'Fuentes:', ...fuentes.map((f) => `- ${f}`)] : []),
     '',
@@ -201,6 +205,8 @@ function armar(archivo) {
   return {
     archivo,
     slug,
+    feedback_title: titulo,
+    feedback_version: createHash('sha256').update(JSON.stringify([titulo, intro, cuerpo, fuentes])).digest('hex'),
     asunto: `Nuevo en el blog: ${titulo}`,
     preheader,
     html,

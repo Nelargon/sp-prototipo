@@ -13,6 +13,9 @@
 *.pem
 npm-debug.log*
 .env*.local
+*.sqlite3
+*.sqlite3-*
+__pycache__/
 next-env.d.ts
 /public/guia
 
