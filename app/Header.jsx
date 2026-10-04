@@ -79,30 +79,25 @@ export default function Header({ variant = 'dark' }) {
         <div style={css('display:flex;align-items:center;gap:16px')}>
           <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill sq" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;--sq:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
+            {/* El detalle de los planes es UNA página, /planes/ (Arturo,
+                3/10/2026): «no tiene que llevar al home otra vez a la parte de
+                planes». Por eso ningún ítem de esta barra manda a #cartilla ni
+                a #comparar, y el buscador «¿Está cubierto lo que me pidieron?»
+                ya no tiene entrada (queda guardado, ver HANDOFF). Un destino no
+                vive en dos desplegables (guardián de qa-integral). */}
             <div className="navmenu-wrap">
-              <a href={`${BP}/#cartilla`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Cobertura {chev}</a>
+              <a href={`${BP}/planes/`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Planes {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
-                {/* ⚠ El subtítulo prometía "Elegí una cobertura y mirá qué te
-                    toca en cada plan" — el selector interactivo que había
-                    detrás se eliminó el 6/08 al fusionar las dos matrices del
-                    home, y la promesa quedó apuntando a una tabla fija (lo
-                    marcó la revisión del PR #91). Ahora hay dos entradas
-                    porque hay dos preguntas: la comparación vive en el home,
-                    la búsqueda por nombre en /que-cubre (ver el mapa de
-                    cobertura en HANDOFF). Un menú que promete una interacción
-                    que ya no existe es peor que uno escueto. */}
-                <Item href={`${BP}/#cartilla`} t="Qué cubre tu plan" s="Lo que cambia entre Essential, Silver y Gold, de un vistazo" />
-                <Item href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} t="¿Está cubierto lo que me pidieron?" s="Buscá el estudio, análisis o cirugía por su nombre" />
-                <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Qué significa copago y precio de convenio" />
-                <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Tiempos de espera, preexistencias, cambios de plan y más" />
+                <Item href={`${BP}/planes/`} onClick={() => track('nav_planes', { origen: 'nav_menu' })} t="Essential, Silver y Gold" s="Qué trae cada plan, cuánto sale y lo que no cubre" />
+                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
+                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu plan" s="Unas preguntas y ves el precio, en 1 minuto" />
               </div></div>
             </div>
             <div className="navmenu-wrap">
-              <a href={`${BP}/#comparar`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Planes {chev}</a>
+              <a href={`${BP}/#faq`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Cobertura {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
-                <Item href={`${BP}/#comparar`} t="Essential, Silver y Gold" s="Compará qué gana cada nivel y cuánto sale" />
-                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
-                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu plan" s="Unas preguntas y ves el precio, en 1 minuto" />
+                <Item href={`${BP}/#bolsillo`} t="Qué pagás de tu bolsillo" s="Qué significa copago y precio de convenio" />
+                <Item href={`${BP}/#faq`} t="Preguntas frecuentes" s="Tiempos de espera, preexistencias, cambios de plan y más" />
               </div></div>
             </div>
             {CON_BLOG && <a href={`${BP}/blog/`} className="nav-link" style={linkStyle}>Blog</a>}
@@ -136,16 +131,8 @@ export default function Header({ variant = 'dark' }) {
         <div id="mobile-menu" className="menu-overlay" role="dialog" aria-modal="true" aria-label="Menú">
           <nav style={css('display:flex;flex-direction:column')}>
             {CON_GUIA && <a href={GUIA} onClick={() => { tGuia('menu_movil'); close(); }} className="menu-item" style={{ animationDelay: '30ms' }}>Guía Médica</a>}
-            <a href={`${BP}/#cartilla`} onClick={close} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
-            <a href={`${BP}/#comparar`} onClick={close} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
-            <a href={`${BP}/#faq`} onClick={close} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
-            {/* El menú móvil es plano: no tiene los desplegables donde vive
-                "¿Está cubierto lo que me pidieron?" en escritorio. Sin esta
-                entrada, /que-cubre queda sin puerta de menú justo para el 77%
-                del tráfico. Va con LA MISMA PREGUNTA que en escritorio —
-                acortada para el ancho— y a menor cuerpo que los títulos: la
-                discreción que pidió el usuario, sin jerga interna. */}
-            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); close(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
+            <a href={`${BP}/planes/`} onClick={() => { track('nav_planes', { origen: 'menu_movil' }); close(); }} className="menu-item" style={{ animationDelay: '70ms' }}>Planes</a>
+            <a href={`${BP}/#faq`} onClick={close} className="menu-item" style={{ animationDelay: '110ms' }}>Preguntas</a>
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={close} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
             {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={close} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); close(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}

@@ -4574,3 +4574,39 @@ bloque de la lámina.
 - **Quedó una decisión suya pendiente:** la fila «Tiempo de espera» del comparador
   del home, que él mismo pidió el 26/09.
 
+## Capítulo 132 — Dos páginas casi iguales, y una de ellas no tenía que existir (04/10/2026)
+
+**Qué intentamos.** Pedimos inventariar todo lo que el lanzamiento tiene sobre
+planes y Guía Médica, para rehacer las páginas fuera del home. El inventario
+mostró dos páginas con la misma tabla de once servicios (`/planes` y
+`/que-cubre`), un menú «Cobertura» cuyas entradas volvían al home y un buscador
+de 983 respuestas encima de diez bloques.
+
+**Qué pasó.** Arturo dijo que «¿Qué cubre?» no tenía que existir: *«Debería ser
+solamente un espacio donde se detallan los planes. Hasta ahí.»* Y que esa página
+*«no tiene que llevar al home otra vez a la parte de planes»*. Después preguntó si
+tanto contenido era claro o paralizaba (*«a veces la persona se puede paralizar
+al encontrar tantas cosas en un lugar»*). La respuesta honesta fue que cada bloque
+era claro por separado y apilados complicaban. Se armó la versión liviana:
+`/planes/` única, lo que cambia la elección a la vista, lo que solo amplía a un
+toque, y `/que-cubre/` convertida en redirect.
+
+**El tropiezo.** Le propuse fusionar todo en `/planes/` **antes** de leer el
+HANDOFF, que traía tres decisiones de los días anteriores sobre estas mismas
+páginas (reabierta el 29/09, reparto del 02/10, esperas del 03/10) y la guarda
+«el PR que retire `/que-cubre` espera su OK». Las leí recién al construir y
+varias eran compatibles, pero una no: la regla de «ninguna espera en `/planes`»
+suponía que `/planes` era la vista rápida. Se resolvió declarando que desde hoy
+es la vista detallada, y quedó escrito en el HANDOFF.
+
+**Qué aprendimos.**
+- **Leer el HANDOFF antes de proponer, no antes de construir.** Una propuesta que
+  el usuario acepta sin saber que choca con otra decisión suya lo obliga a decidir
+  dos veces.
+- **Una página «que se pasa por WhatsApp» no se borra: se redirige.** En un
+  export estático el redirect es un meta refresh y no un 301; eso se anota y se
+  arregla el día que el sitio salga por Cloudflare.
+- **Sacar una herramienta no es borrarla.** El buscador quedó guardado y con su
+  pregunta pendiente (dónde vive), porque lo que respondía sigue siendo una
+  pregunta de cliente.
+

@@ -27,6 +27,7 @@ const SUITES = ['qa/qa-integral.mjs', 'qa/qa-lanzamiento.mjs'];
 // sin porqué es una prueba que alguien se ahorró.
 const EXENTAS = {
   // '/ruta/': 'motivo',
+  '/que-cubre/': 'es solo el redirect a /planes/ (3/10/2026); su prueba está en el bloque «/planes/: la página única de detalle» de qa-lanzamiento',
 };
 
 // ── las páginas que existen: app/**/page.{js,jsx} ──────────────────────

@@ -837,7 +837,7 @@ export default function Simulador() {
                       ? 'Grilla vigente del Plan Vital, julio 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
                       : sim.isEssential
                       ? 'Condiciones vigentes de Essential, marzo 2026. El detalle exacto lo confirmás con tu asesor antes de firmar.'
-                      : <>Grilla vigente, julio 2026. El detalle estudio por estudio está en <a href={`${BP}/que-cubre/`} className="link-teal" style={css('color:var(--sp-teal-deep);font-weight:700')}>Qué cubre</a>.</>}
+                      : <>Grilla vigente, julio 2026. El detalle de cada plan está en <a href={`${BP}/planes/`} className="link-teal" style={css('color:var(--sp-teal-deep);font-weight:700')}>Planes</a>.</>}
                   </div>
                 </div>
               )}

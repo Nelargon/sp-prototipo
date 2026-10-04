@@ -58,7 +58,7 @@ const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/histor
 // no visitaba: /que-cubre/ y /guia-medica/ (las dos más importantes de la v1),
 // /mi-sp/ y una nota y una guía del blog. Una página que ninguna prueba abre
 // puede estar rota sin que nadie se entere.
-const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/que-cubre/', '/guia-medica/', '/agendar/', '/blog/', '/historia/', '/mi-sp/', NOTA_BLOG, GUIA_BLOG].filter(Boolean);
+const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/guia-medica/', '/agendar/', '/blog/', '/historia/', '/mi-sp/', NOTA_BLOG, GUIA_BLOG].filter(Boolean);
 
 const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 
@@ -644,7 +644,7 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
      fuera el de alguien que entra por primera vez. Quien llega a /simulador/
      desde Google no tiene nada cacheado. Ahora cada ruta se mide en un contexto
      nuevo, con su propio throttling. */
-  for (const p of ['/', '/simulador/', '/planes/', '/que-cubre/']) {
+  for (const p of ['/', '/simulador/', '/planes/']) {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await ctx.newPage();
     await page.addInitScript(() => {

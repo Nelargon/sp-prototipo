@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 30 sep 2026.*
+*Última actualización: 4 oct 2026.*
 
 ---
 
@@ -106,6 +106,69 @@ están el `PASE.md` al día, las dos láminas navegables de esta conversación, 
 capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
+
+## 🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE, `/planes/`. `/que-cubre` YA NO EXISTE COMO PÁGINA
+
+> **Esto reemplaza lo que dicen «Reparto de páginas de planes» (02/10) y
+> «Reabierto 29/09» en lo que toca a `/que-cubre` y a `/planes`.** Esas
+> secciones quedan como historia. **PR en borrador, espera el OK de Arturo
+> antes de fusionar** (elimina trabajo existente y cambia el reparto de
+> herramientas).
+
+Arturo, 04/10/2026: *«el espacio de "¿Qué cubre?" realmente debería no existir.
+Debería ser solamente un espacio donde se detallan los planes. Hasta ahí. Ese
+espacio donde se detallan los planes tiene que ser una página aparte. No tiene
+que llevar al home otra vez a la parte de planes.»* Y sobre la cantidad de
+contenido: *«a veces la persona se puede paralizar al encontrar tantas cosas en
+un lugar»*. Pidió «la versión liviana».
+
+**Qué quedó:**
+- **`/planes/` es la única página de detalle.** Orden: encabezado · tres
+  tarjetas con precio (y el precio de Essential por zona) · los once servicios
+  con su espera, todas con el mismo peso · lo que no cubren (6 tarjetas) · dos
+  plegables a un toque (las 43 especialidades; internación, maternidad y topes)
+  · banda de Vital · cierre «Simulá tu plan». Sin rótulos en mayúsculas sobre
+  los títulos (29/09). Componente: `app/planes/Planes.jsx`.
+- **`/que-cubre/` es un redirect a `/planes/`** (meta refresh + `location.replace`
+  + link; `noindex`, canonical a `/planes/`; sale del sitemap). La dirección no
+  se rompe: circula por WhatsApp y anuncios. No hay un 301 real porque el sitio
+  es un export estático en Pages; **si el sitio se publica en Cloudflare Pages
+  (`sp-interno#101`), mover esto a una regla `_redirects`** con 301.
+- **El menú ya no manda al home por planes.** En `Header.jsx` (todas las
+  páginas menos el home): «Planes» → `/planes/`; «Cobertura» quedó con «Qué
+  pagás de tu bolsillo» y «Preguntas frecuentes»; en el móvil, «Planes» y
+  «Preguntas». En el home se sacó la entrada «¿Está cubierto lo que me
+  pidieron?» del menú y de las puertas del comparador (quedan dos: planes y
+  guía). Los anclas internos del home (`#cartilla`, `#comparar`) siguen para
+  quien ya está en el home.
+- **Sacado de la página:** el buscador «¿Está cubierto lo que me pidieron?» y
+  «Subir un escalón» (594/275 «cosas que mejoran»: un número que nadie puede
+  usar para decidir; opinión de Claude, no medido).
+- **El buscador queda guardado, sin página:** `app/que-cubre/Buscador.jsx` +
+  `lib/buscar-prestaciones.js` + `lib/prestaciones.json` (`scripts/test-buscador.mjs`
+  sigue pasando). **Decisión pendiente de Arturo:** si vive en la Guía Médica
+  (donde ya se visan las órdenes), en el simulador o no vuelve. Lo que respondía
+  —«¿está cubierto lo que me pidió el doctor?»— hoy no lo responde el sitio solo.
+  Los dos pendientes que tenía (enlace al precio y a WhatsApp en los resultados)
+  pasan con él.
+
+**Cómo se concilia con las decisiones de los días anteriores:**
+- *Las esperas (02 y 03/10).* La regla decía «ninguna espera en la vista rápida
+  (home y `/planes`)». Con esta decisión **`/planes/` pasa a ser la vista
+  detallada (momento 2 del mapa)** y la vista rápida es solo el home. Las
+  tarjetas siguen sin esperas; la tabla de once servicios las muestra todas con
+  el mismo peso, como ya hacía `/planes/`. Si Arturo quiere una vista rápida
+  aparte, hay que decidir dónde.
+- *Vital con la misma profundidad (29/09)* sigue pendiente: hoy es una banda.
+- *«Pocas herramientas»*: de las cuatro (tarjetas, simulador, buscador, guía),
+  el buscador queda fuera por ahora.
+
+**Verificado:** build de las dos ediciones; `qa-lanzamiento` verde con un bloque
+nuevo («/planes/: la página única de detalle»: la redirección, once servicios,
+lo que no cubren a la vista, plegables inert y que abren, ningún link vuelve al
+home por planes, menú), probado también contra un caso que debe fallar (el home
+sí tiene esos links); `links-internos` verde en las dos ediciones; sin
+desborde a 360/390/430.
 
 ## 🎯 REPARTO DE PÁGINAS DE PLANES (02/10/2026, a confirmar con la lámina 70)
 
