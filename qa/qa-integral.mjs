@@ -22,6 +22,7 @@ import { gzipSync } from 'node:zlib';
 import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { revisarCarpeta as revisarSeguro } from './seguro-propio.mjs';
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo';
 
@@ -601,6 +602,13 @@ console.log('\n== 5. CONTENIDO ==');
     }
   }
   if (limpio) ok('contenido', htmls.length + ' páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)');
+  // «Seguro» cuando SP habla de sí misma (sp-interno#136, P2; el detector se
+  // prueba a sí mismo en `node qa/seguro-propio.mjs`, que corre en el CI).
+  {
+    const { paginas, hallazgos } = revisarSeguro(OUT_DIR);
+    if (!hallazgos.length) ok('contenido', paginas + ' páginas sin «seguro» para SP (afuera: blog y /v1)');
+    for (const h of hallazgos) falla('contenido', 'confunde', 'SP se presenta como seguro: ' + h.nombre + ' («…' + h.cerca + '…»)', h.pagina);
+  }
   // lente Shapiro en la home: hero claro / prueba social / objeciones / CTA
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });

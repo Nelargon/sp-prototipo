@@ -71,9 +71,15 @@ export default function Page() {
     // apuntar a un lugar que no existe). Desde el 23/09 la guía está en las
     // dos ediciones y vuelven a "miralo vos mismo"; la rama de WhatsApp queda
     // por si la guía vuelve a apagarse.
+    // Sin el total de prestadores (04/10/2026, sp-interno#68), como el resto del
+    // home desde el 25/09. Además, «más de 600 en 79 ciudades» era la red de
+    // Silver y Gold: una persona de Essential leía un número que no era el suyo.
+    // La Guía Médica le muestra el suyo, por ciudad y por plan. «Casi todo el
+    // país»: la red tiene prestadores en 17 de las 18 jurisdicciones (ninguno en
+    // Alto Paraguay; lib/guia-medica.json, 05/10/2026).
     CON_GUIA
-      ? { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad y de tu plan: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
-      : { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y más de 600 médicos, sanatorios y laboratorios en 79 ciudades. Cuánto tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
+      ? { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en casi todo el país. Cuáles podés usar depende de tu plan (en Essential, de la zona que elijas), y cuáles tenés cerca, de tu ciudad: lo podés ver vos mismo en la Guía Médica.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
+      : { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en casi todo el país. Cuáles podés usar depende de tu plan (en Essential, de la zona que elijas): decinos tu ciudad y te pasamos los médicos y sanatorios de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
     CON_GUIA
       ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, escribinos y te decimos dónde atenderte: no te dejamos sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
       : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
@@ -97,7 +103,7 @@ export default function Page() {
     // extracciones, justo lo que Essential sí cubre.
     { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('cirugía bariátrica, tratamiento oncológico, hemodinamia ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Del dentista, Essential cubre lo básico en Lister (consulta, controles, extracciones simples y limpieza); Silver y Gold no lo cubren. Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
-    { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma a Lister más de 600 médicos, sanatorios y laboratorios en todo el país; cuáles te tocan depende del plan que elijas.' },
+    { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" es Lister más los médicos, sanatorios y laboratorios con los que trabajamos. Cuáles podés usar depende del plan que elijas y, en Essential, de tu zona.' },
     { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas; en Essential, también de tu zona. Siempre con IVA incluido.', cta: { label: 'Simulá tu plan →', sim: true } },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
@@ -687,7 +693,7 @@ export default function Page() {
           </div>
 
           <div data-rv>
-            <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un seguro no es un gasto: cambia una cuenta impredecible por <span style={css('color:var(--sp-teal)')}>una cuota que conocés</span>.</p>
+            <p className="disp" style={css('font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;letter-spacing:-0.01em;color:#fff;margin:0 auto 16px;max-width:680px')}>Un plan de salud no es un gasto: cambia una cuenta impredecible por <span style={css('color:var(--sp-teal)')}>una cuota que conocés</span>.</p>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;color:var(--sp-blue-soft);line-height:1.65;margin:0 auto 26px;max-width:620px')}>Por eso acá todo se responde en un minuto: qué plan te conviene, cuánto sale, qué te cubre y dónde te atendés. La protección real se construye <b style={css('color:#fff')}>antes</b> — antes de la llamada de madrugada, antes del «¿esto me cubre?».</p>
             <div style={css('display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 24px')}>
               {/* La nota vive en el blog, que la v1 no publica todavía. El dato no
@@ -790,9 +796,14 @@ export default function Page() {
               - SP Senior, una frase con su «Simulá Plan Vital». */}
 
           <div data-rv className="sq cmp-tarjeta">
+            {/* «Los tres planes cubren… Hasta cuánto, depende del plan» (04/10/2026,
+                sp-interno#112). Decía «En los tres planes: …» y se leía como «igual»,
+                pero ecografías, radiografías, parto, laboratorio y terapia
+                intensiva tienen topes y días distintos en cada plan. Sin números
+                acá: es la vista rápida; el detalle está a una puerta. */}
             <p className="cmp-igual">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-              <span>En los tres planes: {v.cmpIgual}.</span>
+              <span>Los tres planes cubren {v.cmpIgual}. Hasta cuánto, depende del plan.</span>
             </p>
             <div className="cmp-puertas">
               <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="disp">¿Qué cambia de un plan a otro? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
@@ -883,7 +894,7 @@ export default function Page() {
           <div style={css('max-width:1080px;margin:0 auto')}>
             <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
               <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
-              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que casi nadie te <span style={css('color:var(--sp-teal-deep)')}>garantiza</span>.</h2>
+              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que te <span style={css('color:var(--sp-teal-deep)')}>prometemos</span>.</h2>
               <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
             </div>
             <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
@@ -991,7 +1002,7 @@ export default function Page() {
         <div className="sq" data-rv style={css('max-width:1100px;margin:0 auto;background:var(--sp-teal-deep);--sq:var(--r-lg);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
             <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#A5EFEA')}>del otro lado</span>.</h2>
-            <p style={css('font-size:17px;color:rgba(255,255,255,0.96);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu seguro.</p>
+            <p style={css('font-size:17px;color:rgba(255,255,255,0.96);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu plan.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
             <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'cierre' })} target="_blank" rel="noopener" className="btn-white-teal sq" style={css('height:52px;padding:0 26px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:9px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>WhatsApp</a>

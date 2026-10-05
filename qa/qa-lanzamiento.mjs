@@ -135,6 +135,26 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   else bien(nombre + ': pediatras con Essential Interior desde la URL (' + n1 + ')');
   const puntos = await page.locator('[aria-label="Dato a revisar, marca interna"]').count();
   if (puntos) mal(nombre + ': la v1 muestra la marca interna de "Revisar"');
+  // Emergencias: siempre a la vista, no según lo que se escriba (Arturo,
+  // 04/10/2026). Hasta esa fecha un cartel se prendía con «dolor de pecho» y
+  // callaba con «me duele el pecho»; sin un médico que valide qué es urgencia,
+  // la guía no lo adivina y un dolor que no reconoce no recibe turno sugerido.
+  // Dos puertas (Arturo, 04/10/2026): el número de SP y, si no atiende, el 141
+  // de las ambulancias públicas. Un solo número es una sola puerta.
+  const fija = page.locator('.gm-emergencia').first();
+  const fijaOk = async () => (await fija.count()) > 0 && (await fija.isVisible())
+    && (await fija.locator('a[href^="tel:+595"]').count()) === 1 && (await fija.locator('a[href="tel:141"]').count()) === 1;
+  if (!(await fijaOk())) mal(nombre + ': la línea fija de emergencias no está a la vista con sus dos números (SP y 141)');
+  else bien(nombre + ': la línea de emergencias está siempre a la vista, con el número de SP y el 141');
+  await page.fill('input[type=search]', 'me duele el pecho');
+  await page.waitForTimeout(600);
+  const pecho = await page.evaluate(() => document.body.innerText);
+  if (/Para empezar, un médico clínico/.test(pecho) || !(await fijaOk())) mal(nombre + ': «me duele el pecho» sugiere un turno o esconde la línea de emergencias');
+  else bien(nombre + ': «me duele el pecho» no sugiere turno y la línea de emergencias sigue a la vista');
+  // Sin resultados, el WhatsApp es para encontrar un médico, no para un dolor:
+  // antes decía «escribinos y te decimos dónde atenderte» (04/10/2026).
+  if (/te decimos dónde atenderte/.test(pecho) || !/Buscás un médico o un lugar que no aparece/.test(pecho)) mal(nombre + ': sin resultados, el WhatsApp no dice que es para encontrar un médico');
+  else bien(nombre + ': sin resultados, el WhatsApp dice que es para encontrar un médico o un lugar');
   await page.fill('input[type=search]', 'rezonancia');
   await page.waitForTimeout(600);
   const txt = await page.evaluate(() => document.body.innerText);

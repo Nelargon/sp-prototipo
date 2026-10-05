@@ -13,7 +13,94 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 4 oct 2026.*
+*Última actualización: 5 oct 2026.*
+
+---
+
+## 🩺 SIN PREAPROBACIÓN MÉDICA: LO QUE NO SE PUEDE HACER BIEN, NO SE HACE (4 oct 2026)
+
+**Qué se supo.** La «Dirección Médica» que varios documentos ponían como la que
+aprueba lo médico **no existe**. Hay una gerencia médica que todavía no
+responde. Arturo, 04/10/2026:
+
+> *«Prefiero que no haya ningún tipo de preaprobación. Si no se puede hacer algo
+> bien, que no se haga, ¿no más? Que se sugieran cosas, por lo menos que el
+> sentido común ayude a sugerir cosas que se necesiten en la página para los
+> clientes.»*
+
+**La regla para toda sesión.** Nada espera la aprobación de una Dirección
+Médica. Si algo necesita juicio médico para ser seguro (decidir qué es una
+urgencia, dar un consejo de salud, una dosis), **no se construye ni se
+publica**. Lo que el sentido común resuelve, como mandar la muela al dentista,
+se hace sin pedir permiso. Un **dato**, como un número de teléfono o una
+cobertura, no es una aprobación: se confirma con SP o con su fuente.
+
+**Lo que cambió en la Guía Médica** (el detalle está en BITACORA cap. 133 y en la
+lámina 71 de `docs/diseno/`):
+- **Salió el cartel rojo que se prendía según lo que se escribía.** Reconocía
+  «dolor de pecho» y no «me duele el pecho» (`Nelargon/sp-interno#122`). Se
+  cerraron los dos borradores que lo ampliaban (#233 y #236).
+- **En su lugar, una línea fija debajo del buscador:** «¿Es una emergencia? No
+  la busques acá: llamá al (021) 319 0000, las 24 horas». A una urgencia se
+  llama al mismo número de SP (Arturo, 04/10/2026; cierra
+  `Nelargon/sp-interno#93`). El link gris «Ambulancia y emergencias» de la
+  línea de la fecha se sacó, porque duplicaba esta línea.
+- **Y una segunda puerta** (Arturo, 04/10/2026, la misma noche): *«si no atiende
+  el 31900000, creo que hay otro número a donde la persona puede llamar para
+  emergencias, igual, y es bueno que esté también ahí»*. Debajo va «Si no te
+  atienden, llamá gratis al 141, las ambulancias del Ministerio de Salud».
+  Cada renglón se toca entero. El 141 (`SEME_TEL` en `app/quote.js`) sale del
+  sitio del Ministerio de Salud: «línea gratuita 141» (01/12/2025). El 911 es de
+  la Policía, no de ambulancias.
+- **Sin resultados, el WhatsApp dice para qué es.** Antes decía «escribinos y te
+  decimos dónde atenderte», y con «me duele el pecho» se leía como el lugar para
+  pedir ayuda por un dolor. Ahora dice «¿Buscás un médico o un lugar que no
+  aparece? Escribinos y te ayudamos a encontrarlo». No adivina nada: solo aclara
+  qué hace el botón (lámina 72).
+- **El buscador de síntomas se queda solo para lo cotidiano.** Ya no hay un «me
+  duele» genérico que mande al clínico: un dolor que no reconoce no recibe
+  turno sugerido.
+- Pruebas: `scripts/test-buscador.mjs` (siete casos de síntomas) y
+  `qa/qa-lanzamiento.mjs`, que revisa que la línea esté siempre a la vista y
+  que «me duele el pecho» no sugiera un turno.
+
+**Lo que sigue en otros lados.** El blog deja de escribir lo que necesita un
+médico. Se lo pasamos al Orquestador por su bandeja, porque el motor es suyo.
+Los puntos de revisión que esperaban a «Dirección Médica» se resuelven con esta
+regla.
+
+---
+
+## 🗂 DECIDIDO EL 04/10/2026, DELEGADO EN CLAUDE: «MEDICINA PREPAGA», SIN EL TOTAL DE LA RED Y LA FRANJA DE LOS TRES PLANES
+
+Arturo delegó el 04/10 sus decisiones pendientes (*«dejo todo a tu mejor
+juicio»*). Claude tomó solo las seis que ya tenían el criterio escrito y se
+pueden deshacer (`sp-interno` BITACORA cap. 35). Tres tocan el home:
+
+- **«Medicina prepaga», nunca «seguro», cuando SP habla de sí misma**
+  (`sp-interno#104`; skill de marca v2; Legal P-004 sigue abierto). Cambian el
+  título y la descripción de la página, «Un plan de salud no es un gasto» y el
+  cierre («pero para tu plan»). «7 de cada 10 paraguayos no tienen ningún seguro
+  médico» queda: es la categoría del INE. Sin compararse con la competencia:
+  «Lo que casi nadie te garantiza» pasa a «Lo que te prometemos» (bloque solo
+  del prototipo). Las notas del blog las revisa el motor (`sp-contenido#238`).
+  Queda en la regla de lenguaje de `CLAUDE.md`, y desde el 05/10 la controla
+  `qa/seguro-propio.mjs` en el CI y en el QA integral (`sp-interno#136`, P2).
+- **Sin el total de prestadores** (`#68`). Las tres preguntas frecuentes que
+  decían «más de 600 … en 79 ciudades» ya no dan un número: dicen «en casi todo
+  el país» (hay prestadores en 17 de las 18 jurisdicciones; ninguno en Alto
+  Paraguay), que cuáles se pueden usar depende del plan y, en Essential, de la
+  zona, y mandan a la Guía Médica.
+- **La franja del comparador** (`#112`): «Los tres planes cubren urgencias 24 h,
+  … y terapia intensiva. Hasta cuánto, depende del plan.» Decía «En los tres
+  planes: …» y se leía como «igual». Sin números: es la vista rápida.
+
+Lo demás de las seis: #109 (el resumen viejo del Drive, archivado), #76 (la
+nota del dengue la corrige `#240`; le queda el 36 % sin fuente) y #55 (el
+límite de 3 consultas por mes ya estaba en el comparador desde el 26/09; la
+lista de estudios con copago espera a SP y, para la página de detalle, a
+`#238`). Las otras diez siguen con Arturo, con láminas o con la sesión de
+`/planes`.
 
 ---
 
@@ -1631,6 +1718,9 @@ emergencia con la ambulancia. Es un diccionario, no IA: previsible, sin costo,
 el texto no sale del teléfono y no va a la analítica.
 **⚠ GUARDA: antes de la v1 real lo tiene que revisar un médico** (idealmente la
 dirección médica de Lister). La guía orienta a quién ir; no diagnostica.
+*⚠ Superado el 04/10/2026: no hay dirección médica que lo revise. El cartel rojo
+por palabras salió y quedó una línea fija de emergencias; los síntomas orientan
+solo lo cotidiano. Ver «🩺 SIN PREAPROBACIÓN MÉDICA», arriba.*
 
 **«Lo que más se busca» tiene un orden PROVISORIO** (no hay medición: `track()`
 no está conectado). Cuando lo esté, sale de `guia_filtro {campo:'esp'}` de la

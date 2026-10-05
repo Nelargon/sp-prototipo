@@ -10,9 +10,11 @@ const INDEXABLE = process.env.NEXT_PUBLIC_INDEXABLE === 'true';
 
 export const metadata = {
   metadataBase: new URL(process.env.SITE_URL || 'https://saludprotegida.com.py'),
-  title: 'Salud Protegida — Planes de seguro médico familiar en Paraguay',
+  // «Medicina prepaga», nunca «seguro», mientras Legal no cierre P-004 (skill de
+  // marca v2, 22/09/2026; sp-interno#104, 04/10/2026).
+  title: 'Salud Protegida — Medicina prepaga para tu familia en Paraguay',
   description:
-    'Encontrá el plan de seguro médico ideal para tu familia. Cotizá en un minuto, mirá exactamente qué cubre cada plan y hablá con un asesor por WhatsApp.',
+    'Encontrá el plan de medicina prepaga para tu familia. Cotizá en un minuto, mirá exactamente qué cubre cada plan y hablá con un asesor por WhatsApp.',
   icons: { icon: `${BP}/assets/favicon.png` },
   alternates: { canonical: '/' },
   robots: INDEXABLE ? { index: true, follow: true } : { index: false, follow: false },

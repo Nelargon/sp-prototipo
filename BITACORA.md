@@ -4547,7 +4547,9 @@ original, no empuja al precio.
   estructuras) se empezó por sumar.** El método nuevo empieza por decidir qué no
   va.
 
-## Capítulo 131 — Las esperas, cuándo se dicen (03/10/2026)
+## Capítulo 132 — Las esperas, cuándo se dicen (03/10/2026)
+
+*(Llegó como cap. 131, el mismo número que otro capítulo del 02/10; se renumeró el 04/10 y quedan los dos.)*
 
 **Qué intentamos.** El 29/09 se sumó «Espera para internarte» a las tarjetas de
 `/que-cubre` (cap. 128), porque la regla de claridad pide que el año de espera de
@@ -4574,7 +4576,106 @@ bloque de la lámina.
 - **Quedó una decisión suya pendiente:** la fila «Tiempo de espera» del comparador
   del home, que él mismo pidió el 26/09.
 
-## Capítulo 132 — Dos páginas casi iguales, y una de ellas no tenía que existir (04/10/2026)
+---
+
+## Capítulo 133 — La aprobación que esperábamos no tenía quién la diera (04/10/2026)
+
+**Qué intentamos.** Desde el 23/09, la Guía Médica tenía un cartel rojo de
+emergencia que se prendía cuando la persona escribía ciertas frases. La guarda
+del HANDOFF pedía que antes de la v1 lo revisara un médico, «idealmente la
+dirección médica de Lister». El 30/09 se vio que reconocía «dolor de pecho» y no
+«me duele el pecho» (`sp-interno#122`). Dos borradores, uno de Codex (#233) y uno
+de otra sesión (#236), ampliaron la lista de frases y quedaron esperando que la
+Dirección Médica las validara.
+
+**Qué pasó.** El 04/10, Arturo contó que esa Dirección Médica no existe. Hay una
+gerencia médica que todavía no responde. Su respuesta no fue buscar otro
+aprobador:
+
+> *«Prefiero que no haya ningún tipo de preaprobación. Si no se puede hacer algo
+> bien, que no se haga, ¿no más?»*
+
+Aplicada a la Guía Médica, la regla sacó el cartel que se prendía por palabras.
+No faltaba quién lo aprobara: es la función la que no se puede hacer bien sin
+un médico. Cuando no se prende, la persona entiende que puede esperar. En su
+lugar quedó una línea fija debajo del buscador con el número al que se llama
+siempre. Arturo confirmó que es el mismo de SP. También salió el «me duele»
+genérico que mandaba al clínico: «me duele el pecho» recibía un turno sugerido.
+Las pruebas nuevas fallan contra el código anterior (siete de siete en el
+buscador, dos de dos en la v1) y pasan con el nuevo.
+
+**Qué aprendimos.**
+- **Una aprobación sin dueño no es un control, es un freno.** Durante una
+  semana, dos borradores y varias notas del blog esperaron una firma que nadie
+  iba a dar. Antes de poner a alguien como aprobador, hay que confirmar que
+  existe y que responde.
+- **Cuando una función no se puede validar, hay que mirar la función, no buscar
+  otro validador.** Un detector de urgencias que acierta a veces es peor que
+  ninguno, porque su silencio se lee como «no es urgente». Una línea fija dice
+  siempre lo mismo y no promete lo que no puede cumplir.
+- **Un dato no es una aprobación.** El número de urgencias no necesitaba un
+  médico: necesitaba que alguien de SP dijera cuál es. Lo dijo Arturo en una
+  frase.
+
+---
+
+## Capítulo 134 — Una sola puerta, y un botón que decía otra cosa (04/10/2026)
+
+**Qué intentamos.** Horas antes había entrado la línea fija de emergencias de
+la Guía Médica (cap. 133), con un solo número: el de SP. El Guardián le avisó a
+Arturo de un detalle: con «me duele el pecho», debajo de la línea roja quedaba
+el mensaje de siempre para cuando no hay resultados, «escribinos y te decimos
+dónde atenderte».
+
+**Qué pasó.** Arturo no lo entendió en la explicación técnica y pidió otra:
+*«Explícame como a un niño de 9 años, por favor»*. La versión que sirvió fue la
+de los dos carteles en la puerta de la dirección: uno rojo que dice «llamá a la
+maestra ya» y otro que dice «dejá una notita en el buzón». Y él agregó lo que
+faltaba: *«si no atiende el 31900000, creo que hay otro número a donde la
+persona puede llamar»*. Se verificó en el sitio del Ministerio de Salud: el
+141, gratuito, de las ambulancias públicas (SEME). Arturo eligió ese.
+
+**Qué aprendimos.**
+- **Una línea de emergencia con un solo número es una sola puerta.** Si esa no
+  atiende, la persona se queda sin nada. La segunda puerta no la vio la sesión:
+  la vio Arturo.
+- **Un texto escrito para un caso se lee en todos los casos donde aparece.**
+  «Te decimos dónde atenderte» estaba bien para el «Dr. Pérez» que no aparece, y
+  mal para un dolor. El arreglo no fue detectar el dolor, que es lo que la regla
+  del 04/10 prohíbe adivinar, sino decir para qué es el botón.
+- **Si la explicación no se entiende, el problema es la explicación.** Contada
+  como para un chico de 9 años se entendió a la primera y se decidió en un
+  mensaje.
+
+
+## Capítulo 135 — Sacar un número no vuelve verdadera la frase que queda (05/10/2026)
+
+**Qué intentamos.** Sacar «más de 600 médicos, sanatorios y laboratorios en 79
+ciudades» de tres preguntas frecuentes del home. Arturo ya había sacado el total
+de la red del resto del home el 25/09, y el 04/10 delegó esta decisión
+(`sp-interno#68`). En lugar del número quedó «en todo el país».
+
+**Qué pasó.** El UX Writer del comité revisó el cambio y contó los
+departamentos en `lib/guia-medica.json`: hay prestadores en 17 de las 18
+jurisdicciones y ninguno en Alto Paraguay. «En todo el país» era una afirmación
+nueva, más fuerte que la que reemplazaba, y la respuesta de una pregunta que dice
+literalmente «¿La cobertura vale en todo el país?». También notó que «cuáles
+tenés cerca» presentaba como distancia lo que en Essential es un límite de la
+zona elegida. Quedó «en casi todo el país», con la zona de Essential dicha.
+
+**Qué aprendimos.**
+- **Al sacar un número, la frase que lo reemplaza también es una afirmación, y
+  se mide igual.** Un número se puede contar; un «todo» no se cuenta, y por eso
+  pasa sin que nadie lo controle.
+- **La segunda mirada encontró lo que la primera no buscaba.** Quien escribe el
+  cambio piensa en lo que saca; el que revisa lee lo que queda.
+
+---
+
+## Capítulo 136 — Dos páginas casi iguales, y una de ellas no tenía que existir (04/10/2026)
+
+*(Llegó como «132» en el PR de la página de planes, escrito el 04/10; se
+renumeró al fusionarlo el 05/10, porque ese número ya lo tenía otro capítulo.)*
 
 **Qué intentamos.** Pedimos inventariar todo lo que el lanzamiento tiene sobre
 planes y Guía Médica, para rehacer las páginas fuera del home. El inventario
@@ -4609,4 +4710,3 @@ es la vista detallada, y quedó escrito en el HANDOFF.
 - **Sacar una herramienta no es borrarla.** El buscador quedó guardado y con su
   pregunta pendiente (dónde vive), porque lo que respondía sigue siendo una
   pregunta de cliente.
-

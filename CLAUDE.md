@@ -180,6 +180,11 @@ pierde (BITACORA cap. 96).
   pantalla y con el glosario. La palabra que va primero en la frase es la
   que la persona lee; un tooltip no arregla el orden. Ante una palabra nueva,
   preguntarse: ¿la dice una familia en su casa? Si no, buscar la que sí.
+  **Y SP es «medicina prepaga», nunca «seguro»** (4 oct 2026, `sp-interno#104`;
+  skill de marca v2, mientras Legal no cierre P-004): cuando SP habla de sí
+  misma o de lo que vende. «Seguro médico» queda solo como categoría en una
+  estadística con fuente. Y sin compararse con la competencia. Lo controla
+  `qa/seguro-propio.mjs` en el CI (5 oct 2026, `sp-interno#136`).
   **Y la voz es la de Arturo** (10 sep 2026): el registro de sus palabras,
   expresiones y creencias vive en `sp-contenido/knowledge/voz-de-arturo.md`
   (privado; ahí también lo leen los bots del blog) y se lee antes de escribir
@@ -204,6 +209,14 @@ pierde (BITACORA cap. 96).
   personales: si algo que importa casi nadie lo abre, sube a la vista. Es la
   lámina 51 («lo que cambia el dato no se esconde») dicha para toda la página
   (láminas 57 a 59).
+- **Sin preaprobación médica (4 oct 2026, decisión de Arturo).** No existe una
+  Dirección Médica que apruebe: hay una gerencia médica que todavía no responde.
+  Arturo: *«Si no se puede hacer algo bien, que no se haga»*. Lo que necesita
+  juicio médico para ser seguro (decidir qué es una urgencia, un consejo de salud,
+  una dosis) no se construye ni se publica. Lo que resuelve el sentido común,
+  como la muela al dentista, se hace sin esperar firma. Un dato (un teléfono, una
+  cobertura) no es una aprobación: se confirma con su fuente. Ver HANDOFF «🩺 SIN
+  PREAPROBACIÓN MÉDICA».
 - **Un solo texto para ir al simulador: «Simulá tu plan»** (25 sep 2026,
   decisión de Arturo, `sp-interno#57`). Había seis («Simulá tu precio»,
   «Simulá el tuyo en un minuto», «Mirá tu precio en el simulador»…). Dos excepciones con su porqué: «Ver mi
