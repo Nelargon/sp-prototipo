@@ -69,6 +69,14 @@ médico. Se lo pasamos al Orquestador por su bandeja, porque el motor es suyo.
 Los puntos de revisión que esperaban a «Dirección Médica» se resuelven con esta
 regla.
 
+**En el blog, hecho el 05/10** (`sp-contenido#243`, con el sí de Arturo a la
+propuesta del Orquestador). El semáforo del motor ya no tiene Dirección Médica.
+El bot del blog no elige temas de síntomas, urgencias ni dosis. Se archivaron
+tres borradores que daban consejo médico, y **se retiró de la web «Después de
+los 40, sumá la vista a tu chequeo anual»** (también de la guía «Chequeos a cada
+edad», `lib/series.js`). Su recomendación central era juicio médico, y la
+encuesta que citaba mide a mayores de 50, no a los 40.
+
 ---
 
 ## 🗂 DECIDIDO EL 04/10/2026, DELEGADO EN CLAUDE: «MEDICINA PREPAGA», SIN EL TOTAL DE LA RED Y LA FRANJA DE LOS TRES PLANES
