@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 4 oct 2026.*
+*Última actualización: 5 oct 2026.*
 
 ---
 
@@ -68,6 +68,38 @@ lámina 71 de `docs/diseno/`):
 médico. Se lo pasamos al Orquestador por su bandeja, porque el motor es suyo.
 Los puntos de revisión que esperaban a «Dirección Médica» se resuelven con esta
 regla.
+
+---
+
+## 🗂 DECIDIDO EL 04/10/2026, DELEGADO EN CLAUDE: «MEDICINA PREPAGA», SIN EL TOTAL DE LA RED Y LA FRANJA DE LOS TRES PLANES
+
+Arturo delegó el 04/10 sus decisiones pendientes (*«dejo todo a tu mejor
+juicio»*). Claude tomó solo las seis que ya tenían el criterio escrito y se
+pueden deshacer (`sp-interno` BITACORA cap. 35). Tres tocan el home:
+
+- **«Medicina prepaga», nunca «seguro», cuando SP habla de sí misma**
+  (`sp-interno#104`; skill de marca v2; Legal P-004 sigue abierto). Cambian el
+  título y la descripción de la página, «Un plan de salud no es un gasto» y el
+  cierre («pero para tu plan»). «7 de cada 10 paraguayos no tienen ningún seguro
+  médico» queda: es la categoría del INE. Sin compararse con la competencia:
+  «Lo que casi nadie te garantiza» pasa a «Lo que te prometemos» (bloque solo
+  del prototipo). Las notas del blog las revisa el motor (`sp-contenido#238`).
+  Queda en la regla de lenguaje de `CLAUDE.md`.
+- **Sin el total de prestadores** (`#68`). Las tres preguntas frecuentes que
+  decían «más de 600 … en 79 ciudades» ya no dan un número: dicen «en casi todo
+  el país» (hay prestadores en 17 de las 18 jurisdicciones; ninguno en Alto
+  Paraguay), que cuáles se pueden usar depende del plan y, en Essential, de la
+  zona, y mandan a la Guía Médica.
+- **La franja del comparador** (`#112`): «Los tres planes cubren urgencias 24 h,
+  … y terapia intensiva. Hasta cuánto, depende del plan.» Decía «En los tres
+  planes: …» y se leía como «igual». Sin números: es la vista rápida.
+
+Lo demás de las seis: #109 (el resumen viejo del Drive, archivado), #76 (la
+nota del dengue la corrige `#240`; le queda el 36 % sin fuente) y #55 (el
+límite de 3 consultas por mes ya estaba en el comparador desde el 26/09; la
+lista de estudios con copago espera a SP y, para la página de detalle, a
+`#238`). Las otras diez siguen con Arturo, con láminas o con la sesión de
+`/planes`.
 
 ---
 

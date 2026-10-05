@@ -74,10 +74,12 @@ export default function Page() {
     // Sin el total de prestadores (04/10/2026, sp-interno#68), como el resto del
     // home desde el 25/09. Además, «más de 600 en 79 ciudades» era la red de
     // Silver y Gold: una persona de Essential leía un número que no era el suyo.
-    // La Guía Médica le muestra el suyo, por ciudad y por plan.
+    // La Guía Médica le muestra el suyo, por ciudad y por plan. «Casi todo el
+    // país»: la red tiene prestadores en 17 de las 18 jurisdicciones (ninguno en
+    // Alto Paraguay; lib/guia-medica.json, 05/10/2026).
     CON_GUIA
-      ? { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en todo el país. Cuáles tenés cerca depende de tu ciudad y de tu plan: lo podés ver vos mismo en la Guía Médica, buscando por tu ciudad.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
-      : { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en todo el país. Cuáles tenés cerca depende de tu ciudad: decinos cuál es y te pasamos los prestadores de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
+      ? { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en casi todo el país. Cuáles podés usar depende de tu plan (en Essential, de la zona que elijas), y cuáles tenés cerca, de tu ciudad: lo podés ver vos mismo en la Guía Médica.', cta: { label: 'Buscá en tu ciudad →', to: 'guia' } }
+      : { q: '¿La cobertura vale en todo el país?', a: 'Silver y Gold cuestan lo mismo en todo el país. Essential tiene precio por zona: uno para Asunción y Central, otro para el interior, y una versión Nacional si querés atenderte en cualquier parte del país. La red suma Lister —nuestro centro médico propio en Asunción— y médicos, sanatorios y laboratorios en casi todo el país. Cuáles podés usar depende de tu plan (en Essential, de la zona que elijas): decinos tu ciudad y te pasamos los médicos y sanatorios de tu zona.', cta: { label: 'Preguntá por tu ciudad →', wa: 'Hola! Quiero saber qué prestadores tengo en mi ciudad.', tema: 'red_ciudad' } },
     CON_GUIA
       ? { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Lo podés verificar ahora mismo en la Guía Médica: buscás por nombre del profesional, por especialidad, por estudio o por sanatorio. Si no aparece quien buscás, escribinos y te decimos dónde atenderte: no te dejamos sin respuesta.', cta: { label: 'Abrí la Guía Médica →', to: 'guia' } }
       : { q: '¿Está mi médico o mi sanatorio en la red?', a: 'Escribinos el nombre del profesional o del sanatorio y te confirmamos si entra en tu plan. Si no está, te decimos quién sí, cerca tuyo: no te dejamos sin respuesta.', cta: { label: 'Consultá por tu médico →', wa: 'Hola! Quiero saber si mi médico o sanatorio está en la red.', tema: 'red_medico' } },
@@ -101,7 +103,7 @@ export default function Page() {
     // extracciones, justo lo que Essential sí cubre.
     { q: '¿Hay algo que los planes no cubran?', a: <>Sí, y preferimos que lo sepas ahora y no cuando lo necesites. Para que no haya sorpresas: nuestros planes no cubren {annotate('cirugía bariátrica, tratamiento oncológico, hemodinamia ni alta complejidad')} (cardiocirugía, neurocirugía y cirugía vascular). Del dentista, Essential cubre lo básico en Lister (consulta, controles, extracciones simples y limpieza); Silver y Gold no lo cubren. Si alguna de estas te preocupa, decíselo a tu asesor antes de firmar: te va a decir con qué contás y con qué no.</>, cta: { label: 'Consultá antes de firmar →', wa: 'Hola! Antes de afiliarme quiero saber qué cubre y qué no cubre el plan.', tema: 'exclusiones' } },
     { q: '¿Cómo doy de baja mi plan?', a: 'Podés dar de baja cuando quieras, escribiéndonos por WhatsApp o a atención al afiliado. Te explicamos el proceso y los plazos antes de confirmar la baja.' },
-    { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" suma a Lister los médicos, sanatorios y laboratorios con los que trabajamos en todo el país; cuáles te tocan depende del plan que elijas.' },
+    { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" es Lister más los médicos, sanatorios y laboratorios con los que trabajamos. Cuáles podés usar depende del plan que elijas y, en Essential, de tu zona.' },
     { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas; en Essential, también de tu zona. Siempre con IVA incluido.', cta: { label: 'Simulá tu plan →', sim: true } },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
   ];
@@ -799,14 +801,14 @@ export default function Page() {
               - SP Senior, una frase con su «Simulá Plan Vital». */}
 
           <div data-rv className="sq cmp-tarjeta">
-            {/* «Los tres planes cubren…; lo que cambia es cuánto» (04/10/2026,
+            {/* «Los tres planes cubren… Hasta cuánto, depende del plan» (04/10/2026,
                 sp-interno#112). Decía «En los tres planes: …» y se leía como «igual»,
                 pero ecografías, radiografías, parto, laboratorio y terapia
                 intensiva tienen topes y días distintos en cada plan. Sin números
                 acá: es la vista rápida; el detalle está a una puerta. */}
             <p className="cmp-igual">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-              <span>Los tres planes cubren {v.cmpIgual}; lo que cambia de uno a otro es cuánto.</span>
+              <span>Los tres planes cubren {v.cmpIgual}. Hasta cuánto, depende del plan.</span>
             </p>
             <div className="cmp-puertas">
               <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="disp">¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>

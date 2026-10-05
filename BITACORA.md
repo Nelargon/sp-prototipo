@@ -4647,3 +4647,25 @@ persona puede llamar»*. Se verificó en el sitio del Ministerio de Salud: el
   como para un chico de 9 años se entendió a la primera y se decidió en un
   mensaje.
 
+
+## Capítulo 135 — Sacar un número no vuelve verdadera la frase que queda (05/10/2026)
+
+**Qué intentamos.** Sacar «más de 600 médicos, sanatorios y laboratorios en 79
+ciudades» de tres preguntas frecuentes del home. Arturo ya había sacado el total
+de la red del resto del home el 25/09, y el 04/10 delegó esta decisión
+(`sp-interno#68`). En lugar del número quedó «en todo el país».
+
+**Qué pasó.** El UX Writer del comité revisó el cambio y contó los
+departamentos en `lib/guia-medica.json`: hay prestadores en 17 de las 18
+jurisdicciones y ninguno en Alto Paraguay. «En todo el país» era una afirmación
+nueva, más fuerte que la que reemplazaba, y la respuesta de una pregunta que dice
+literalmente «¿La cobertura vale en todo el país?». También notó que «cuáles
+tenés cerca» presentaba como distancia lo que en Essential es un límite de la
+zona elegida. Quedó «en casi todo el país», con la zona de Essential dicha.
+
+**Qué aprendimos.**
+- **Al sacar un número, la frase que lo reemplaza también es una afirmación, y
+  se mide igual.** Un número se puede contar; un «todo» no se cuenta, y por eso
+  pasa sin que nadie lo controle.
+- **La segunda mirada encontró lo que la primera no buscaba.** Quien escribe el
+  cambio piensa en lo que saca; el que revisa lee lo que queda.

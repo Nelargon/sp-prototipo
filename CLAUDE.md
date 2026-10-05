@@ -180,6 +180,10 @@ pierde (BITACORA cap. 96).
   pantalla y con el glosario. La palabra que va primero en la frase es la
   que la persona lee; un tooltip no arregla el orden. Ante una palabra nueva,
   preguntarse: ¿la dice una familia en su casa? Si no, buscar la que sí.
+  **Y SP es «medicina prepaga», nunca «seguro»** (4 oct 2026, `sp-interno#104`;
+  skill de marca v2, mientras Legal no cierre P-004): cuando SP habla de sí
+  misma o de lo que vende. «Seguro médico» queda solo como categoría en una
+  estadística con fuente. Y sin compararse con la competencia.
   **Y la voz es la de Arturo** (10 sep 2026): el registro de sus palabras,
   expresiones y creencias vive en `sp-contenido/knowledge/voz-de-arturo.md`
   (privado; ahí también lo leen los bots del blog) y se lee antes de escribir
