@@ -84,7 +84,8 @@ pueden deshacer (`sp-interno` BITACORA cap. 35). Tres tocan el home:
   médico» queda: es la categoría del INE. Sin compararse con la competencia:
   «Lo que casi nadie te garantiza» pasa a «Lo que te prometemos» (bloque solo
   del prototipo). Las notas del blog las revisa el motor (`sp-contenido#238`).
-  Queda en la regla de lenguaje de `CLAUDE.md`.
+  Queda en la regla de lenguaje de `CLAUDE.md`, y desde el 05/10 la controla
+  `qa/seguro-propio.mjs` en el CI y en el QA integral (`sp-interno#136`, P2).
 - **Sin el total de prestadores** (`#68`). Las tres preguntas frecuentes que
   decían «más de 600 … en 79 ciudades» ya no dan un número: dicen «en casi todo
   el país» (hay prestadores en 17 de las 18 jurisdicciones; ninguno en Alto
