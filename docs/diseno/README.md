@@ -1763,3 +1763,50 @@ para alguien que se golpeó.
 botón tiene que decir para qué es, sobre todo cuando aparece al lado de algo que
 no tiene nada que ver con él.
 
+
+## Parte 23 · Tres detalles del sistema visual, para decidir (05/10/2026)
+
+El 29/09 la auditoría del sistema de diseño dejó tres decisiones abiertas
+(`sp-interno#107`). Hasta el 05/10 estaban solo descritas con palabras. Estas
+láminas las muestran sobre el sitio real, cada una con la opción que recomienda
+Claude.
+
+### 73 · ¿Punto final en los títulos?
+
+![El hero, un título de sección y el cierre del home en un celular: hoy, A (sin punto) y B (punto solo en el título principal)](img/2026-10-05-titulos-punto-final.webp)
+
+**Qué muestra.** El home en un celular de 390 px. **Hoy:** 11 títulos terminan
+en punto y 42 no. **A:** ningún título lleva punto. **B:** lleva punto solo el
+título principal. Las preguntas mantienen su signo en las tres.
+
+**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
+A: es una sola regla y no hay que acordarse de la excepción.
+
+### 74 · ¿Cada plan con su propio color?
+
+![La cabecera de los planes en una computadora: hoy con bronce, plata y oro, y A con los tres en turquesa](img/2026-10-05-colores-de-plan.webp)
+
+**Qué muestra.** La página de planes en una computadora. **Hoy (y B):** cada
+plan con su punto de color (bronce, plata y oro); B los sumaría a la paleta
+oficial. **A:** los tres en turquesa, el color de la marca. Vale también para
+la página de planes nueva (`#238`), donde el color de cada plan es una franja
+arriba de su tarjeta.
+
+**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
+A, porque el equipo pidió que ningún plan tenga identidad propia. El naranja de
+la Guía Médica es una marca interna del prototipo que el cliente no ve. Con A
+pasa a ámbar.
+
+### 75 · ¿Cuánta sombra?
+
+![El borde de abajo de la tarjeta del simulador en un celular: hoy (60 px de difuminado), A (hasta 4 px) y B (los tres niveles de la web)](img/2026-10-05-sombras-tres-niveles.webp)
+
+**Qué muestra.** El borde de abajo de la tarjeta del simulador en el home, a
+390 px. **Hoy:** hasta 60 px de difuminado. **A:** hasta 4 px, como pide la
+marca. **B:** los tres niveles que ya existen para la web (lo que se toca, un
+control y una hoja que se abre).
+
+**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
+B: sigue la lámina 1 («la sombra dice "esto se toca"»), que Arturo ya eligió, y
+el cambio es actualizar la regla de marca para la web, en lugar de aplanar el
+sitio.
