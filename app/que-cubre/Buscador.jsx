@@ -256,7 +256,7 @@ export default function Buscador() {
              Por eso el estado vacío dice lo que sí sabemos y a dónde ir — nunca
              deja a alguien deduciendo del silencio. */
           <div className="sq" style={css('background:#fff;border:1px solid var(--sp-line);--sq:var(--r-md);padding:20px 22px')}>
-            <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:7px')}>No lo encontramos con ese nombre.</div>
+            <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:7px')}>No lo encontramos con ese nombre</div>
             <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.6')}>
               Que no aparezca acá <b>no quiere decir que no esté cubierto</b>: la grilla usa el nombre técnico del estudio. Probá con una palabra más corta ("rodilla", "sangre", "cirugía") o con el nombre del especialista. Si no aparece, preguntale a tu asesor antes de firmar — te va a decir con qué contás y con qué no.
             </div>

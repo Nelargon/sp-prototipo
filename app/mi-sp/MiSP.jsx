@@ -27,7 +27,7 @@ export default function MiSP() {
       <div style={css('flex:1;padding:118px 24px 80px')}>
         <div style={css('max-width:860px;margin:0 auto')}>
           <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px')}>Mi SP · tu espacio</div>
-          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,48px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 14px')}>Hola. Qué bueno<br />tenerte <span style={css('color:var(--sp-teal)')}>de vuelta</span>.</h1>
+          <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,48px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 14px')}>Hola. Qué bueno<br />tenerte <span style={css('color:var(--sp-teal)')}>de vuelta</span></h1>
           <p style={css('font-size:17px;line-height:1.65;color:var(--sp-blue-soft);max-width:560px;margin:0 0 34px')}>Estamos construyendo tu portal. Esto es lo que ya podés hacer hoy — y lo que viene en camino.</p>
 
           {/* Lo que ya funciona */}

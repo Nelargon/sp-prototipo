@@ -21,7 +21,7 @@ export default function NoEncontrada() {
       <Header variant="solid" />
       <div style={css('max-width:620px;margin:0 auto;padding:130px 20px 80px;text-align:center')}>
         <div className="disp" style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:12px')}>Error 404</div>
-        <h1 className="disp" style={css('font-size:clamp(30px,5vw,42px);line-height:1.15;color:var(--sp-navy);margin:0 0 14px;letter-spacing:-0.02em')}>No encontramos esta página.</h1>
+        <h1 className="disp" style={css('font-size:clamp(30px,5vw,42px);line-height:1.15;color:var(--sp-navy);margin:0 0 14px;letter-spacing:-0.02em')}>No encontramos esta página</h1>
         <p style={css(INTER + 'font-size:17px;line-height:1.6;color:var(--sp-text);margin:0 0 28px')}>Puede que el link esté mal escrito o que la página ya no exista. Desde acá seguís en un toque:</p>
         <div style={css('display:flex;flex-wrap:wrap;gap:10px;justify-content:center')}>
           <a href={`${BP}/simulador/`} className="disp sq" style={boton('var(--sp-teal-deep)', '#fff', 'var(--sp-teal-deep)')}>Simulá tu plan</a>

@@ -544,7 +544,7 @@ export default function Simulador() {
 
   return (
     <div style={css('display:flex;justify-content:center')}>
-      <div ref={cardRef} className="sim-card sq" style={css('width:760px;max-width:100%;display:flex;background:#fff;--sq:24px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 24px 60px rgba(0,59,113,0.10);border:0.5px solid var(--sp-line);scroll-margin-top:74px')}>
+      <div ref={cardRef} className="sim-card sq" style={css('width:760px;max-width:100%;display:flex;background:#fff;--sq:24px;overflow:hidden;box-shadow:var(--sombra-sup);border:0.5px solid var(--sp-line);scroll-margin-top:74px')}>
 
         <div className="sim-side" style={css('width:250px;flex:none;background:var(--sp-navy);color:#fff;padding:30px 26px;display:flex;flex-direction:column')}>
           <div style={css('display:flex;align-items:center;gap:10px;margin-bottom:26px')}><span className="sq" style={css('width:30px;height:30px;--sq:var(--r-xs);background:#fff;color:var(--sp-navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800')}>SP</span><span style={css('font-size:14px;font-weight:800')}>Salud Protegida</span></div>

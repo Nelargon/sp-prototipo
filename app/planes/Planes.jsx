@@ -114,7 +114,7 @@ export default function Planes() {
       <section style={css('padding:104px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto;text-align:center')}>
           <h1 className="disp" style={css('font-size:clamp(32px,4.6vw,46px);font-weight:800;color:var(--sp-navy);line-height:1.12;letter-spacing:-0.02em;margin:0 auto 14px;max-width:720px')}>
-            Essential, Silver y Gold, <span style={css('color:var(--sp-teal-deep)')}>plan por plan</span>.
+            Essential, Silver y Gold, <span style={css('color:var(--sp-teal-deep)')}>plan por plan</span>
           </h1>
           <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0 auto;max-width:640px')}>
             Qué trae cada uno, cuánto sale y lo que no entra en ninguno. Lo más fino lo abrís con un toque.
@@ -172,7 +172,7 @@ export default function Planes() {
       {/* ---- 3. LOS ONCE SERVICIOS -------------------------------------- */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {titulo('Los once servicios', 'que más se preguntan.', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
+          {titulo('Los once servicios', 'que más se preguntan', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
           {/* ⚠ LA FORMA DE ESTA TABLA EN EL CELULAR LA DECIDE ARTURO (05/10/2026).
               Ya descartó dos: deslizar de costado (26/09, lámina 45: al llegar
               Gold no se ve) y la fila partida (27/09, lámina 57: «demasiado
@@ -242,7 +242,7 @@ export default function Planes() {
           día se unifica, que sea sumando en el home, no restando acá. */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {titulo('Lo que nuestros planes', 'no cubren.', 'Preferimos que lo sepas ahora y no en la sala de espera. Valen para los tres planes, con una diferencia: Essential cubre la odontología básica en Lister.')}
+          {titulo('Lo que nuestros planes', 'no cubren', 'Preferimos que lo sepas ahora y no en la sala de espera. Valen para los tres planes, con una diferencia: Essential cubre la odontología básica en Lister.')}
           <div className="excl-grid" style={css('display:grid;grid-template-columns:1fr 1fr;gap:12px')}>
             {excluidos.map((e) => (
               <div className="sq" key={e.n} style={css('background:var(--sp-estado-bg);border:1px solid var(--sp-line-3);--sq:var(--r-md);padding:18px 20px')}>
@@ -264,7 +264,7 @@ export default function Planes() {
           tiene que armar nada. */}
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {titulo('Si necesitás más,', 'está acá.', 'Cada tema se abre con un toque.')}
+          {titulo('Si necesitás más,', 'está acá', 'Cada tema se abre con un toque.')}
           <div style={css('display:flex;flex-direction:column;gap:10px')}>
             <Detalle
               id="detalle-especialidades"
@@ -352,7 +352,7 @@ export default function Planes() {
       <section style={css('padding:44px 24px 80px')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div className="sq" style={css('background:var(--sp-navy);--sq:var(--r-lg);padding:44px 32px;text-align:center')}>
-            <h2 className="disp" style={css('font-size:clamp(24px,3.2vw,33px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.02em;margin:0 0 12px')}>Ya sabés qué cubre. Falta lo tuyo.</h2>
+            <h2 className="disp" style={css('font-size:clamp(24px,3.2vw,33px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.02em;margin:0 0 12px')}>Ya sabés qué cubre. Falta lo tuyo</h2>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-blue-soft);margin:0 auto 24px;max-width:520px')}>
               Unas preguntas y ves el precio real de tu grupo en los tres planes. Sin dejar el teléfono, sin que te llame nadie.
             </p>
