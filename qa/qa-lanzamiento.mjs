@@ -26,7 +26,7 @@ const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo/lanzamiento';
-const PAGINAS = ['/', '/guia-medica/', '/guia-medica/P-0001/', '/planes/', '/que-cubre/', '/simulador/'];
+const PAGINAS = ['/', '/guia-medica/', '/guia-medica/P-0001/', '/planes/', '/simulador/'];
 // 360/390/430: el piso de verificación móvil del proyecto (77% del tráfico).
 const ANCHOS = [['escritorio', 1440, 900], ['móvil 360', 360, 780], ['móvil 390', 390, 844], ['móvil 430', 430, 932]];
 
@@ -254,7 +254,7 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
       viejo: ['¿Dónde atenderte?', 'más de 600'].filter((t) => comp.textContent.includes(t)),
     };
   });
-  const destinos = ['/que-cubre/', '/planes/', '/guia-medica/'];
+  const destinos = ['/planes/', '/guia-medica/'];
   const faltan = destinos.filter((d) => !r.puertas.some((p) => p.h && p.h.endsWith(d)));
   const chicas = width < 600 ? r.puertas.filter((p) => p.alto < 44).length : 0;
   if (!r.espera) mal(nombre + ': la última fila de la tabla no es «Tiempo de espera» con «1 año» en Essential');
@@ -262,7 +262,7 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   if (!r.ley) mal(nombre + ': falta #bolsillo en el FAQ, con copago (lo enlaza el menú «Qué pagás de tu bolsillo»)');
   else bien(nombre + ': #bolsillo es una pregunta del FAQ que explica el copago');
   if (faltan.length || chicas) mal(nombre + ': puertas del comparador — faltan ' + (faltan.join(', ') || 'ninguna') + (chicas ? '; ' + chicas + ' miden menos de 44 px' : ''));
-  else bien(nombre + ': tres puertas (qué cubre, planes, guía)' + (width < 600 ? ', de 44 px o más' : ''));
+  else bien(nombre + ': dos puertas (planes, guía)' + (width < 600 ? ', de 44 px o más' : ''));
   if (r.viejo.length) mal(nombre + ': el comparador todavía dice ' + r.viejo.join(' y '));
   else bien(nombre + ': sin la banda «¿Dónde atenderte?» ni el total');
   // Desde el 26/09 lleva ?plan=vital: el simulador entra directo al carril de
@@ -270,6 +270,45 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   // arreglo deshecho.
   if (!r.senior || !r.senior.endsWith('/simulador/?plan=vital')) mal(nombre + ': falta «Simulá Plan Vital» hacia el simulador con ?plan=vital' + (r.senior ? ' (va a ' + r.senior + ')' : ''));
   else bien(nombre + ': SP Senior en una frase, con «Simulá Plan Vital» (?plan=vital)');
+  await page.close();
+}
+
+// ── /planes/ es la única página de detalle; /que-cubre/ es su redirect ──────
+// (3/10/2026, Arturo: «el espacio de "¿Qué cubre?" realmente debería no
+// existir […] No tiene que llevar al home otra vez a la parte de planes».)
+// Tres cosas que un HTML estático no prueba: que la dirección vieja llega a
+// /planes/ (circula por WhatsApp y anuncios), que ningún ítem del menú ni de la
+// página manda al home a #cartilla / #comparar, y que el detalle fino está
+// plegado (inert) y se abre con un toque.
+console.log('\n── /planes/: la página única de detalle');
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/que-cubre/');
+  await page.waitForURL(/\/planes\/$/, { timeout: 5000 }).catch(() => {});
+  if (/\/planes\/$/.test(page.url())) bien('/que-cubre/ lleva a /planes/');
+  else mal('/que-cubre/ no llega a /planes/ (queda en ' + page.url() + ')');
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const r = await page.evaluate(() => ({
+    filas: document.querySelectorAll('.pl-row').length,
+    buscador: !!document.getElementById('bus-q'),
+    escalon: /cosas mejoran|Subir un escalón/.test(document.body.textContent),
+    haciaHome: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')).filter((h) => /#(cartilla|comparar)|\/que-cubre\//.test(h)),
+    exclusiones: [...document.querySelectorAll('.excl-grid > div')].length,
+    plegables: [...document.querySelectorAll('.pleg')].map((e) => ({ abierto: e.dataset.abierto, inert: e.hasAttribute('inert'), alto: e.getBoundingClientRect().height })),
+  }));
+  if (r.filas !== 12) mal('/planes/: la tabla de servicios debería tener 11 filas más el encabezado (tiene ' + r.filas + ')'); else bien('/planes/: los once servicios a la vista');
+  if (r.buscador || r.escalon) mal('/planes/ todavía muestra el buscador o «Subir un escalón»'); else bien('/planes/: sin buscador ni «Subir un escalón»');
+  if (r.haciaHome.length) mal('/planes/ manda al home o a /que-cubre/: ' + r.haciaHome.join(', ')); else bien('/planes/: ningún link vuelve a la sección de planes del home');
+  if (r.exclusiones < 7) mal('/planes/: lo que no cubren debe estar a la vista (6 tarjetas + la nota)'); else bien('/planes/: lo que no cubren, a la vista');
+  if (r.plegables.length !== 2 || r.plegables.some((p) => p.abierto !== '0' || !p.inert || p.alto > 1)) mal('/planes/: el detalle fino debe arrancar plegado e inert'); else bien('/planes/: especialidades e internación, plegadas');
+  for (const id of ['detalle-especialidades', 'detalle-internacion']) await page.click(`button[aria-controls="${id}"]`);
+  await page.waitForTimeout(450);
+  const ab = await page.evaluate(() => [...document.querySelectorAll('.pleg')].map((e) => ({ inert: e.hasAttribute('inert'), alto: e.getBoundingClientRect().height })));
+  if (ab.some((p) => p.inert || p.alto < 100)) mal('/planes/: un toque no abre el detalle'); else bien('/planes/: con un toque se abren las dos tablas');
+  // El menú de la barra: el detalle de los planes es /planes/, no el home.
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const menu = await page.$$eval('.navmenu-card a', (as) => as.map((a) => a.getAttribute('href') || ''));
+  if (menu.some((h) => /#(cartilla|comparar)|\/que-cubre\//.test(h))) mal('el menú de la barra manda a #cartilla / #comparar o a /que-cubre/'); else bien('el menú de la barra no vuelve al home por planes');
   await page.close();
 }
 

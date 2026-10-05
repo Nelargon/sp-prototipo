@@ -1258,6 +1258,10 @@ plan a la vez con pestañas; cada fila dice cuánto tenía el plan anterior
 (Linear).
 
 **Qué se decidió.** Pendiente de la elección de Arturo (26/09/2026).
+*Actualizado el 05/10/2026:* para el home eligió las tarjetas apiladas (lámina
+50). La **fila partida** (la 1) la descartó el 27/09 para la comparativa de
+planes: *«demasiado ordenado en filas y columnas»* (lámina 57). No usarla sin
+su OK (BITACORA cap. 137).
 
 **La lección.** Una tabla de escritorio achicada no es una tabla de celular.
 Las marcas que lo hacen bien no la encogen: la cambian de forma. Y leer mejor
@@ -1825,3 +1829,12 @@ apareció algo para mirar antes de fusionar: la tabla de los once servicios se
 desliza de costado en el celular («Deslizá para ver Silver y Gold»). Es lo que
 el 26/09 se sacó del comparador del home, porque al llegar Gold no se veía
 (lámina 45 y siguientes).
+
+**Decidido el 05/10/2026.** Arturo dio el OK a la página, y la página se fusionó.
+El buscador no vuelve por ahora, porque lo que respondía ya se contesta de otras
+formas, como él había intuido el 04/10. La página muestra las esperas, porque
+pasa a ser la vista detallada. **La tabla del celular queda como estaba**, y
+su forma la decide Arturo. Claude la arregló primero con la fila partida y la
+deshizo antes de publicar, al encontrar que Arturo ya la había descartado el
+27/09 (lámina 57; BITACORA cap. 137). La lección: recomendar «arreglarla» sin
+decir con qué forma dejó la decisión importante sin tomar.

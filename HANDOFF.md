@@ -202,6 +202,83 @@ capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
 
+## 🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE, `/planes/`. `/que-cubre` YA NO EXISTE COMO PÁGINA
+
+> **Esto reemplaza lo que dicen «Reparto de páginas de planes» (02/10) y
+> «Reabierto 29/09» en lo que toca a `/que-cubre` y a `/planes`.** Esas
+> secciones quedan como historia. **Arturo dio el OK el 05/10/2026** y se
+> fusionó desde la rama `claude/planes-pagina-unica`, que tomó la del PR `#238`
+> y le trajo `main`.
+
+Arturo, 04/10/2026: *«el espacio de "¿Qué cubre?" realmente debería no existir.
+Debería ser solamente un espacio donde se detallan los planes. Hasta ahí. Ese
+espacio donde se detallan los planes tiene que ser una página aparte. No tiene
+que llevar al home otra vez a la parte de planes.»* Y sobre la cantidad de
+contenido: *«a veces la persona se puede paralizar al encontrar tantas cosas en
+un lugar»*. Pidió «la versión liviana».
+
+**Qué quedó:**
+- **`/planes/` es la única página de detalle.** Orden: encabezado · tres
+  tarjetas con precio (y el precio de Essential por zona) · los once servicios
+  con su espera, todas con el mismo peso · lo que no cubren (6 tarjetas) · dos
+  plegables a un toque (las 43 especialidades; internación, maternidad y topes)
+  · banda de Vital · cierre «Simulá tu plan». Sin rótulos en mayúsculas sobre
+  los títulos (29/09). Componente: `app/planes/Planes.jsx`.
+- **`/que-cubre/` es un redirect a `/planes/`** (meta refresh + `location.replace`
+  + link; `noindex`, canonical a `/planes/`; sale del sitemap). La dirección no
+  se rompe: circula por WhatsApp y anuncios. No hay un 301 real porque el sitio
+  es un export estático en Pages; **si el sitio se publica en Cloudflare Pages
+  (`sp-interno#101`), mover esto a una regla `_redirects`** con 301.
+- **El menú ya no manda al home por planes.** En `Header.jsx` (todas las
+  páginas menos el home): «Planes» → `/planes/`; «Cobertura» quedó con «Qué
+  pagás de tu bolsillo» y «Preguntas frecuentes»; en el móvil, «Planes» y
+  «Preguntas». En el home se sacó la entrada «¿Está cubierto lo que me
+  pidieron?» del menú y de las puertas del comparador (quedan dos: planes y
+  guía). Los anclas internos del home (`#cartilla`, `#comparar`) siguen para
+  quien ya está en el home.
+- **Sacado de la página:** el buscador «¿Está cubierto lo que me pidieron?» y
+  «Subir un escalón» (594/275 «cosas que mejoran»: un número que nadie puede
+  usar para decidir; opinión de Claude, no medido).
+- **El buscador queda guardado, sin página:** `app/que-cubre/Buscador.jsx` +
+  `lib/buscar-prestaciones.js` + `lib/prestaciones.json` (`scripts/test-buscador.mjs`
+  sigue pasando). **Decidido: no vuelve por ahora (05/10/2026).** Arturo había
+  preguntado el 04/10: *«¿No será que eso se está respondiendo de otra forma,
+  quizás no de la forma ideal que estabas pensando, pero quizás de otra forma sí
+  también lo hace?»*. Sí: la visación de órdenes de la Guía Médica, la tabla de
+  los once servicios, las 43 especialidades y las asesoras. Y no hay un solo
+  dato de uso del buscador. Los dos pendientes que tenía (enlace al precio y a
+  WhatsApp en los resultados) quedan guardados con él.
+  **Pendiente con SP:** si las asesoras le contestan a quien todavía no es
+  cliente si su orden médica entra. Si sí, en `/planes/` va una línea: «¿Tenés
+  una orden del médico? Mandanos la foto por WhatsApp y te decimos si entra».
+  Si la visación es solo para afiliados, esa línea no se puede prometer.
+
+**Cómo se concilia con las decisiones de los días anteriores:**
+- *Las esperas (02 y 03/10).* La regla decía «ninguna espera en la vista rápida
+  (home y `/planes`)». Con esta decisión **`/planes/` pasa a ser la vista
+  detallada (momento 2 del mapa)** y la vista rápida es solo el home. Las
+  tarjetas siguen sin esperas; la tabla de once servicios las muestra todas con
+  el mismo peso, como ya hacía `/planes/`. Si Arturo quiere una vista rápida
+  aparte, hay que decidir dónde.
+  **Arturo lo aceptó el 05/10/2026.**
+- *La tabla en el celular sigue deslizándose de costado*, como estaba en
+  `/planes` desde el 23/09. Al llegar, solo se ve Essential, lo mismo que el
+  26/09 se sacó del home. **La forma la decide Arturo:** ya descartó la fila
+  partida (27/09, lámina 57), y la dirección que aprobó, tarjetas iguales y el
+  detalle al tocar, espera que la revise en su celular (sección «📱 La
+  comparativa en el celular», más arriba). El código tiene el aviso al lado de
+  la tabla (`app/planes/Planes.jsx`).
+- *Vital con la misma profundidad (29/09)* sigue pendiente: hoy es una banda.
+- *«Pocas herramientas»*: de las cuatro (tarjetas, simulador, buscador, guía),
+  el buscador queda fuera por ahora.
+
+**Verificado:** build de las dos ediciones; `qa-lanzamiento` verde con un bloque
+nuevo («/planes/: la página única de detalle»: la redirección, once servicios,
+lo que no cubren a la vista, plegables inert y que abren, ningún link vuelve al
+home por planes, menú), probado también contra un caso que debe fallar (el home
+sí tiene esos links); `links-internos` verde en las dos ediciones; sin
+desborde a 360/390/430.
+
 ## 🎯 REPARTO DE PÁGINAS DE PLANES (02/10/2026, a confirmar con la lámina 70)
 
 Arturo vio las tres estructuras de `/que-cubre` (lámina 69) y las descartó:

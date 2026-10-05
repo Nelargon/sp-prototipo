@@ -1,9 +1,9 @@
 import Planes from './Planes';
 
 export const metadata = {
-  title: 'Planes Essential, Silver y Gold — todo el detalle · Salud Protegida',
+  title: 'Planes Essential, Silver y Gold, plan por plan · Salud Protegida',
   description:
-    'Compará los planes de Salud Protegida servicio por servicio: qué cubre Essential, Silver y Gold, y cuánto sale cada uno. Precios de lista vigentes.',
+    'Qué trae cada plan de Salud Protegida, cuánto sale y lo que no cubre: Essential, Silver y Gold servicio por servicio, con los topes y los tiempos de espera. Precios de lista vigentes.',
   alternates: { canonical: '/planes/' },
 };
 

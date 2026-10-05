@@ -478,7 +478,6 @@ export default function Page() {
                   {/* Ver la nota del mismo ítem en app/Header.jsx: el subtítulo
                       prometía un selector que ya no existe. */}
                   <a href="#cartilla" className="navmenu-item"><span className="navmenu-t">Qué cubre tu plan</span><span className="navmenu-s">Lo que cambia entre Essential, Silver y Gold, de un vistazo</span></a>
-                  <a href={`${BP}/que-cubre/`} onClick={() => track('nav_landing', { destino: 'que-cubre', origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">¿Está cubierto lo que me pidieron?</span><span className="navmenu-s">Buscá el estudio, análisis o cirugía por su nombre</span></a>
                   <a href="#bolsillo" className="navmenu-item"><span className="navmenu-t">Qué pagás de tu bolsillo</span><span className="navmenu-s">Qué significa copago y precio de convenio</span></a>
                   <a href="#faq" className="navmenu-item"><span className="navmenu-t">Preguntas frecuentes</span><span className="navmenu-s">Tiempos de espera, preexistencias, cambios de plan y más</span></a>
                 </div>
@@ -534,10 +533,6 @@ export default function Page() {
             <a href="#cartilla" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '70ms' }}>Cobertura</a>
             <a href="#comparar" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '110ms' }}>Planes</a>
             <a href="#faq" onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '150ms' }}>Preguntas</a>
-            {/* Ver la nota en app/Header.jsx: el menú móvil es plano y sin
-                esta entrada /que-cubre pierde su puerta en móvil. Misma
-                pregunta que en escritorio, en cuerpo menor. */}
-            <a href={`${BP}/que-cubre/`} onClick={() => { track('nav_landing', { destino: 'que-cubre', origen: 'menu_movil' }); v.closeMenu(); }} className="menu-item menu-item-sec" style={{ animationDelay: '170ms' }}>¿Está cubierto?</a>
             {CON_BLOG && <a href={`${BP}/blog/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '190ms' }}>Blog</a>}
             {CON_HISTORIA && <a href={`${BP}/historia/`} onClick={v.closeMenu} className="menu-item" style={{ animationDelay: '230ms' }}>Historia</a>}
             {CON_MI_SP && <a href={`${BP}/mi-sp/`} onClick={() => { track('puerta_home', { puerta: 'ya_soy_sp', origen: 'menu' }); v.closeMenu(); }} className="menu-item" style={{ animationDelay: '270ms', marginTop: '14px' }}>Mi SP →</a>}
@@ -811,7 +806,6 @@ export default function Page() {
               <span>Los tres planes cubren {v.cmpIgual}. Hasta cuánto, depende del plan.</span>
             </p>
             <div className="cmp-puertas">
-              <a href={`${BP}/que-cubre/`} onClick={() => track('ver_que_cubre', { origen: 'comparador' })} className="disp">¿Está cubierto lo que me pidieron? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               <a href={v.planesHref} onClick={() => track('ver_planes', { origen: 'comparador' })} className="disp">¿Qué cambia de un plan a otro? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
               {/* CON_GUIA es true en las dos ediciones desde el 23/09 (app/edicion.js). */}
               {CON_GUIA && <a href={v.guiaHome} onClick={() => v.trackGuia('cta_cobertura')} className="disp">¿Dónde me atiendo? <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>}

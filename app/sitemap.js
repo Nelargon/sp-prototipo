@@ -16,8 +16,7 @@ export default function sitemap() {
     u('/', 1.0),
     u('/simulador/', 0.9),
     u('/planes/', 0.85),
-    // Landing propia de los planes con el buscador de coberturas (6 ago 2026).
-    u('/que-cubre/', 0.85),
+    // /que-cubre/ ya no se enumera: es un redirect a /planes/ (3 oct 2026).
     ...(CON_AGENDA ? [u('/agendar/', 0.8)] : []),
     // Los módulos que una edición no publica tampoco se enumeran: un sitemap
     // que lista URLs podadas del export es un sitemap que miente (y le da a

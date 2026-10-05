@@ -4669,3 +4669,79 @@ zona elegida. Quedó «en casi todo el país», con la zona de Essential dicha.
   pasa sin que nadie lo controle.
 - **La segunda mirada encontró lo que la primera no buscaba.** Quien escribe el
   cambio piensa en lo que saca; el que revisa lee lo que queda.
+
+---
+
+## Capítulo 136 — Dos páginas casi iguales, y una de ellas no tenía que existir (04/10/2026)
+
+*(Llegó como «132» en el PR de la página de planes, escrito el 04/10; se
+renumeró al fusionarlo el 05/10, porque ese número ya lo tenía otro capítulo.)*
+
+**Qué intentamos.** Pedimos inventariar todo lo que el lanzamiento tiene sobre
+planes y Guía Médica, para rehacer las páginas fuera del home. El inventario
+mostró dos páginas con la misma tabla de once servicios (`/planes` y
+`/que-cubre`), un menú «Cobertura» cuyas entradas volvían al home y un buscador
+de 983 respuestas encima de diez bloques.
+
+**Qué pasó.** Arturo dijo que «¿Qué cubre?» no tenía que existir: *«Debería ser
+solamente un espacio donde se detallan los planes. Hasta ahí.»* Y que esa página
+*«no tiene que llevar al home otra vez a la parte de planes»*. Después preguntó si
+tanto contenido era claro o paralizaba (*«a veces la persona se puede paralizar
+al encontrar tantas cosas en un lugar»*). La respuesta honesta fue que cada bloque
+era claro por separado y apilados complicaban. Se armó la versión liviana:
+`/planes/` única, lo que cambia la elección a la vista, lo que solo amplía a un
+toque, y `/que-cubre/` convertida en redirect.
+
+**El tropiezo.** Le propuse fusionar todo en `/planes/` **antes** de leer el
+HANDOFF, que traía tres decisiones de los días anteriores sobre estas mismas
+páginas (reabierta el 29/09, reparto del 02/10, esperas del 03/10) y la guarda
+«el PR que retire `/que-cubre` espera su OK». Las leí recién al construir y
+varias eran compatibles, pero una no: la regla de «ninguna espera en `/planes`»
+suponía que `/planes` era la vista rápida. Se resolvió declarando que desde hoy
+es la vista detallada, y quedó escrito en el HANDOFF.
+
+**Qué aprendimos.**
+- **Leer el HANDOFF antes de proponer, no antes de construir.** Una propuesta que
+  el usuario acepta sin saber que choca con otra decisión suya lo obliga a decidir
+  dos veces.
+- **Una página «que se pasa por WhatsApp» no se borra: se redirige.** En un
+  export estático el redirect es un meta refresh y no un 301; eso se anota y se
+  arregla el día que el sitio salga por Cloudflare.
+- **Sacar una herramienta no es borrarla.** El buscador quedó guardado y con su
+  pregunta pendiente (dónde vive), porque lo que respondía sigue siendo una
+  pregunta de cliente.
+
+---
+
+## Capítulo 137 — Arreglé la tabla con la forma que Arturo ya había descartado (05/10/2026)
+
+**Qué intentamos.** Arturo dio el OK a la página única de planes (`#238`) con una
+condición que yo le había propuesto: arreglar antes la tabla de los once
+servicios, que en el celular se desliza de costado y al llegar muestra solo
+Essential (lámina 76). La arreglé con la «fila partida» de la lámina 45: el
+servicio a lo ancho y los tres planes debajo, con los nombres fijos al bajar.
+La construí, la medí a 360, 390 y 430 px y le escribí una prueba que fallaba
+contra la tabla vieja.
+
+**Qué pasó.** Antes de abrir el PR, al escribir el HANDOFF, encontré la sección
+«📱 La comparativa en el celular». El 27/09 Arturo había visto justo esa fila
+partida y la había descartado: *«quizás, al tratar de hacerlo demasiado ordenado
+en filas y columnas, se pierde un poquito de claridad»* (lámina 57). La dirección
+que aprobó es otra: tarjetas con las mismas líneas y el detalle al tocar (lámina
+59). Esa sigue con una guarda: no se construye hasta que él la revise en su
+celular. Deshice el arreglo antes de publicarlo. La página salió con la tabla
+como ya estaba en `/planes` desde el 23/09.
+
+**Qué aprendimos.**
+- **Es la misma lección del capítulo 136, un día después y en otra sesión:**
+  leer el HANDOFF antes de proponer, no antes de construir. Que un capítulo la
+  escriba no alcanza para que la siguiente sesión la cumpla. Por eso el aviso
+  quedó en el lugar donde se tropieza: al lado de la tabla, en
+  `app/planes/Planes.jsx`, con las dos formas descartadas y la que espera.
+- **Recomendar «arreglarla» sin decir cómo deja la decisión importante sin
+  tomar.** Arturo aceptó un arreglo; la forma del arreglo era lo que había que
+  decidir, y ya la había decidido él en otra conversación.
+- **Una decisión de forma se busca por la cosa, no por la fecha.** La fila
+  partida tenía su veredicto en la lámina 57, pero la lámina 45, donde se la
+  propone, no decía que se había descartado. Quien buscaba «cómo se ve una tabla
+  en el celular» encontraba la propuesta y no el veredicto.
