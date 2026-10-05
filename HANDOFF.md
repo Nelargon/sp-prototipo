@@ -37,11 +37,14 @@ Arturo eligió las tres recomendaciones de las láminas 73 a 75
 títulos del sitio construido y las sombras del código, y se prueba con 13 casos
 antes de opinar.
 
-**Pendiente de Arturo (no se puede hacer desde acá):** la skill de marca
-`sp-brand-identity` dice «Max 0-4px blur» (SKILL.md, «Soft shadows only») y
-mantiene colores por plan («Tier colors», `references/colors.md`). Para la web
-valen estas reglas. Hay que actualizar la skill desde su cuenta, porque llega
-sincronizada.
+**La skill de marca ya lo dice (05/10/2026).** Decía «Max 0-4px blur» y
+mantenía colores por plan. Desde ese día su fuente vive en
+`sp-interno/skills-cuenta/sp-brand-identity/` y la **v3.1** trae estas reglas
+(sombras en tres niveles en pantallas, ningún plan con color propio; el «hasta
+4 px» queda para impresos), con `sp-interno#143`. Se publica sola en el release
+`skills` de `sp-interno`. **Falta solo que Arturo la instale en su cuenta**
+(`sp-interno#144`). Hasta entonces, si una sesión lee la versión vieja, valen
+las reglas de acá.
 
 ---
 
