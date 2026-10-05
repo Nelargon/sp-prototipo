@@ -1810,3 +1810,18 @@ control y una hoja que se abre).
 B: sigue la lámina 1 («la sombra dice "esto se toca"»), que Arturo ya eligió, y
 el cambio es actualizar la regla de marca para la web, en lugar de aplanar el
 sitio.
+
+### 76 · La página de planes nueva, entera, en el celular
+
+![La página única de planes de #238 a 390 px, cortada en cuatro: las tarjetas, los once servicios, lo que no cubren con lo que se abre a un toque, y Vital con el cierre](img/2026-10-05-planes-pagina-unica.webp)
+
+**Qué muestra.** La página `/planes/` del PR `#238`, a 390 px, entera y cortada
+en cuatro de arriba abajo, con los plegables cerrados como los ve la persona al
+llegar. `/que-cubre/` redirige a esta página (verificado en el navegador).
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo*, junto con dónde
+vuelve el buscador de estudios y si esta página muestra las esperas. Al armarla
+apareció algo para mirar antes de fusionar: la tabla de los once servicios se
+desliza de costado en el celular («Deslizá para ver Silver y Gold»). Es lo que
+el 26/09 se sacó del comparador del home, porque al llegar Gold no se veía
+(lámina 45 y siguientes).
