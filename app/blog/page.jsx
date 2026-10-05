@@ -43,7 +43,7 @@ export default function BlogPage() {
       <div style={css('flex:1;padding:118px 24px 80px')}>
         <div style={css('max-width:1120px;margin:0 auto')}>
           <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px')}>Blog</div>
-          <h1 className="disp" style={css('font-size:clamp(32px,4.8vw,50px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 14px')}>Historias y consejos para cuidar a tu familia, <span style={css('color:var(--sp-teal)')}>antes</span>.</h1>
+          <h1 className="disp" style={css('font-size:clamp(32px,4.8vw,50px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 14px')}>Historias y consejos para cuidar a tu familia, <span style={css('color:var(--sp-teal)')}>antes</span></h1>
           <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.65;color:var(--sp-blue-soft);max-width:560px;margin:0 0 36px')}>Escrito en idioma de familia, no de contrato. Hay notas nuevas cada semana.</p>
           {notas.length === 0 ? (
             <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;color:var(--sp-blue-soft)')}>Las primeras notas están en camino.</p>

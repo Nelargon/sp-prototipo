@@ -51,7 +51,7 @@ export default function DondeTeAtendes() {
       <MuroFondo tono="pleno" />
 
       <div className="dta-tarjeta">
-        <h2 id="dta-titulo" className="disp dta-titulo">Dónde te <span>atendés</span>.</h2>
+        <h2 id="dta-titulo" className="disp dta-titulo">Dónde te <span>atendés</span></h2>
         <p className="dta-bajada">Sanatorios, laboratorios y médicos en {d.ciudades} ciudades del país.</p>
 
         <div className={'dta-cuadros n' + cuadros.length}>

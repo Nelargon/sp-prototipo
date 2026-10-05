@@ -65,7 +65,7 @@ export default function Agendar() {
       <div style={css('flex:1;padding:118px 24px 80px')}>
         <div style={css('max-width:680px;margin:0 auto')}>
           <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-mint);border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px')}>Agendá tu turno</div>
-          <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 14px')}>Pedí tu turno, <span style={css('color:var(--sp-teal)')}>sin vueltas</span>.</h1>
+          <h1 className="disp" style={css('font-size:clamp(30px,4.4vw,44px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 14px')}>Pedí tu turno, <span style={css('color:var(--sp-teal)')}>sin vueltas</span></h1>
           <p style={css('font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;font-size:17px;line-height:1.65;color:var(--sp-blue-soft);max-width:540px;margin:0 0 30px')}>Elegí qué necesitás y cuándo te queda cómodo. Un asesor te confirma día y hora — <b style={css('color:#e8f2fb')}>sin login ni vueltas</b>. Empezamos por el Centro Médico Lister, nuestro centro propio.</p>
 
           <div className="sq" style={css('background:#fff;color:var(--sp-ink);--sq:var(--r-lg);padding:28px 26px')}>

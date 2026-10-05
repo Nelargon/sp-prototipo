@@ -65,10 +65,10 @@ function MarcaEsp({ e }) {
   if (VACIAS.has(e)) return <span title="Sin prestadores publicados (marca interna)" aria-label="sin prestadores, marca interna" style={css('flex:none;width:10px;height:10px;border-radius:var(--r-pill);border:2px solid var(--sp-marca-interna);margin-right:8px')} />;
   const n = REVISAR[e];
   if (!n) return null;
-  return <span title={n + (n === 1 ? ' fila' : ' filas') + ' en «Revisar» en la planilla (marca interna)'} aria-label={n + ' a revisar, marca interna'} style={css(INTER + 'flex:none;display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px;font-weight:700;color:#B45F06')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:var(--sp-marca-interna)')} />{n}</span>;
+  return <span title={n + (n === 1 ? ' fila' : ' filas') + ' en «Revisar» en la planilla (marca interna)'} aria-label={n + ' a revisar, marca interna'} style={css(INTER + 'flex:none;display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:12px;font-weight:700;color:var(--sp-marca-interna-ink)')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:var(--sp-marca-interna)')} />{n}</span>;
 }
 const LeyendaMarcas = () => (CON_MARCA_REVISAR ? (
-  <p style={css(INTER + 'margin:0 2px 8px;font-size:12.5px;line-height:1.5;color:#8A4B08;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center')}>
+  <p style={css(INTER + 'margin:0 2px 8px;font-size:12.5px;line-height:1.5;color:var(--sp-marca-interna-ink);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center')}>
     <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:8px;height:8px;border-radius:var(--r-pill);background:var(--sp-marca-interna)')} />filas a revisar en la planilla</span>
     <span style={css('display:inline-flex;align-items:center;gap:5px')}><span style={css('width:10px;height:10px;border-radius:var(--r-pill);border:2px solid var(--sp-marca-interna)')} />sin prestadores</span>
     <span style={css('color:var(--sp-muted)')}>Marca interna: no se ve en la v1.</span>
@@ -136,7 +136,7 @@ const Icono = {
 };
 
 // Una cápsula chica (filtro de segunda fila, plan, ciudad).
-const chip = (on) => (on ? '' : 'box-shadow:0 1px 2px rgba(0,27,52,.10);') + 'height:34px;padding:0 13px;border-radius:var(--r-pill);font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;cursor:pointer;border:1.5px solid ' + (on ? 'var(--sp-navy);background:var(--sp-navy);color:#fff' : 'var(--gm-borde);background:#fff;color:var(--sp-navy)');
+const chip = (on) => (on ? '' : 'box-shadow:var(--sombra-ctrl);') + 'height:34px;padding:0 13px;border-radius:var(--r-pill);font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;cursor:pointer;border:1.5px solid ' + (on ? 'var(--sp-navy);background:var(--sp-navy);color:#fff' : 'var(--gm-borde);background:#fff;color:var(--sp-navy)');
 const KICKER = 'font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900)';
 
 function Tarjeta({ p, plan, abrirVisar }) {
@@ -242,7 +242,7 @@ function BuscaCiudad({ f, elegir, limpiar }) {
           : <span style={css('display:flex;padding:0 6px;color:var(--sp-blue-meta)')}>{Icono.abajo}</span>}
       </label>
       {abierto && (
-        <ul id="gm-lugares" role="listbox" aria-label="Ciudades" className="sq rel" style={css('--sq:var(--r-xs);position:absolute;z-index:60;left:0;right:0;top:50px;margin:0;padding:4px 0;list-style:none;background:#fff;border:1px solid var(--gm-linea);max-height:296px;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 10px 30px rgba(0,27,52,.14)')}>
+        <ul id="gm-lugares" role="listbox" aria-label="Ciudades" className="sq rel" style={css('--sq:var(--r-xs);position:absolute;z-index:60;left:0;right:0;top:50px;margin:0;padding:4px 0;list-style:none;background:#fff;border:1px solid var(--gm-linea);max-height:296px;overflow-y:auto;overscroll-behavior:contain;box-shadow:var(--sombra-abre)')}>
           {lista.length ? lista.map((l, i) => (
             <li
               key={l.c + '|' + l.dp}
@@ -431,7 +431,7 @@ export default function GuiaMedica() {
         <div role="group" aria-label="Zona" className="sq" style={css('--sq:var(--r-sm);display:flex;gap:4px;background:var(--gm-linea);padding:4px')}>
           {ZONAS.map((z) => {
             const on = f.z === z.k;
-            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{z.n}</button>;
+            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{z.n}</button>;
           })}
         </div>
         <BuscaCiudad f={f} elegir={elegirLugar} limpiar={() => set({ c: '', dp: '' }, 'ciudad')} />
@@ -510,7 +510,7 @@ export default function GuiaMedica() {
             {res.length > 0 && (
               <div role="group" aria-label="Ver los resultados en" className="gm-mapa-conmutador sq" style={css('--sq:var(--r-sm);gap:4px;background:var(--gm-linea);padding:4px')}>
                 {[['lista', 'Lista'], ['mapa', 'Mapa']].map(([k, t]) => (
-                  <button key={k} type="button" aria-pressed={vista === k} onClick={() => verVista(k)} className="disp sq" style={css('--sq:9px;flex:1;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;' + (vista === k ? 'background:#fff;color:var(--sp-navy);box-shadow:0 1px 2px rgba(0,0,0,.12)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{t}</button>
+                  <button key={k} type="button" aria-pressed={vista === k} onClick={() => verVista(k)} className="disp sq" style={css('--sq:9px;flex:1;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;' + (vista === k ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{t}</button>
                 ))}
               </div>
             )}
@@ -528,7 +528,7 @@ export default function GuiaMedica() {
               </div>
             ) : (
               <div className="sq rel" style={css('--sq:var(--r-sm);background:#fff;border:1px solid var(--gm-linea);padding:22px 18px;text-align:center')}>
-                <h2 className="disp" style={css('font-size:19px;color:var(--sp-navy);margin:0 0 8px')}>{f.q ? <>No encontramos «{f.q}» en la red.</> : 'No hay resultados con estos filtros.'}</h2>
+                <h2 className="disp" style={css('font-size:19px;color:var(--sp-navy);margin:0 0 8px')}>{f.q ? <>No encontramos «{f.q}» en la red</> : 'No hay resultados con estos filtros'}</h2>
                 {sug && <p style={css(INTER + 'font-size:15px;margin:0 0 6px;color:var(--sp-text)')}>¿Quisiste decir <button type="button" onClick={() => setQ(sug)} className="disp" style={css('border:none;background:none;padding:0;color:var(--sp-teal-deep);font-weight:800;font-size:15px;cursor:pointer;text-decoration:underline;text-underline-offset:3px')}>{sug}</button>?</p>}
                 <p style={css(INTER + 'font-size:14.5px;line-height:1.55;color:var(--sp-muted);margin:0 auto 14px;max-width:420px')}>Probá con otra zona u otra palabra. ¿Buscás un médico o un lugar que no aparece? Escribinos y te ayudamos a encontrarlo.</p>
                 <a href={f.q ? waSinResultado : waNoEncuentro} onClick={() => track('guia_whatsapp', { origen: 'sin_resultados' })} className="disp sq" style={css('--sq:var(--r-xs);height:44px;padding:0 18px;background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:700;display:inline-flex;align-items:center')}>Preguntar por WhatsApp</a>

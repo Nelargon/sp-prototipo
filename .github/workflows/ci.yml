@@ -28,13 +28,14 @@ jobs:
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.
-      - name: Pruebas rápidas (buscador, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP)
+      - name: Pruebas rápidas (buscador, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras)
         run: |
           node scripts/test-buscador.mjs
           node qa/cobertura-rutas.mjs
           node qa/mapa-ciudades.mjs
           node qa/links-internos.mjs out /sp-prototipo
           node qa/seguro-propio.mjs out
+          node qa/titulos-y-sombras.mjs out
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.
@@ -62,3 +63,5 @@ jobs:
         run: node qa/links-internos.mjs out /sp-prototipo/lanzamiento
       - name: «Seguro» para SP en la v1
         run: node qa/seguro-propio.mjs out
+      - name: Títulos sin punto y sombras de la v1
+        run: node qa/titulos-y-sombras.mjs out

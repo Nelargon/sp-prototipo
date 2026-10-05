@@ -44,7 +44,7 @@ export default function SimuladorPage() {
           móvil — se usa el mayor más aire. */}
       <section className="sim-hero" style={css('background:var(--sp-navy);color:#fff;padding:128px 24px 26px')}>
         <div style={css('max-width:720px;margin:0 auto;text-align:center')}>
-          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.025em;margin:0')}>Tu plan y tu precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h1>
+          <h1 className="disp sim-hero-h1" style={css('font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.025em;margin:0')}>Tu plan y tu precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span></h1>
         </div>
       </section>
 

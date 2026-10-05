@@ -62,14 +62,15 @@
   --sp-mint-line-strong:#CFE6E4; /* borde de control (input, chip) sobre blanco */
   --sp-gold-ink:#7a5f10;    /* texto sobre dorado — oportunidad, nunca ausencia */
   --sp-gold-bg:#F8F1DE;     /* fondo de la banda de oportunidad */
-  /* Planes: la identidad de cada nivel. Vivía clavada por separado en
-     quote.js, Buscador y Landing — cambiar el dorado en uno dejaba a los
-     otros dos en desacuerdo, sin que nada avisara. */
-  /* Essential heredó el tono de Bronze, el plan que reemplazó (24/09/2026):
-     mismo lugar en la escalera, mismo color. */
-  --sp-plan-essential:#A9724B;
-  --sp-plan-silver:#66717E;
-  --sp-plan-gold:#B8860B;
+  /* Planes: los tres en turquesa (lámina 74, decisión de Arturo del
+     05/10/2026): ningún plan tiene color propio. Hasta esa fecha eran bronce
+     #A9724B, plata #66717E y oro #B8860B. El turquesa es el que lleva texto
+     blanco (5,0:1), porque el simulador pinta su encabezado con este color; el
+     bronce daba 4,0:1 y el oro 3,3:1. Quedan tres nombres para que el código
+     siga diciendo de qué plan habla. */
+  --sp-plan-essential:var(--sp-teal-deep);
+  --sp-plan-silver:var(--sp-teal-deep);
+  --sp-plan-gold:var(--sp-teal-deep);
   /* Estados de cobertura: la escala gris del proyecto (gris = estado neutro;
      rojo = SOLO urgencias, nunca cobertura). */
   --sp-estado-bg:#F4F5F6;
@@ -83,7 +84,12 @@
      gris y claro, sin velo, para que la tarjeta blanca resalte sola. */
   --sp-muro:#E9EBED;
   --sp-muro-2:#E1E4E7;
-  --sp-marca-interna:#F28C28; /* punto «Revisar» y «sin prestadores» de la guía — solo prototipo, nunca de cara al cliente */
+  /* Marca interna de la guía («Revisar», «sin prestadores»): solo prototipo,
+     nunca de cara al cliente. Era naranja #F28C28; desde el 05/10/2026 es el
+     ámbar de la marca (lámina 74), y su texto, el ámbar oscuro del Centro de
+     Marca (5,9:1 sobre blanco). */
+  --sp-marca-interna:#F5A623;
+  --sp-marca-interna-ink:#8A5A00;
   /* Neutros semánticos */
   --sp-ink:#1D1D1B;         /* texto más fuerte */
   --sp-text:#3D3D3D;        /* cuerpo */
@@ -116,7 +122,17 @@
   --sombra-sup:0 1px 2px rgba(0,27,52,.06),0 3px 10px rgba(0,27,52,.05);  /* superficie que se toca o se abre */
   --sombra-ctrl:0 1px 2px rgba(0,27,52,.12),0 2px 6px rgba(0,27,52,.05);  /* control (botón que abre, selector) */
   --sombra-ctrl-apretado:0 0 1px rgba(0,27,52,.14);                       /* el control aplastado contra la página */
+  /* Los tres niveles de la web (lámina 75, opción B; decisión de Arturo del
+     05/10/2026). Toda sombra del sitio es una de estas, y ninguna otra:
+     1. --sombra-sup: lo que se toca (tarjetas, listas, el buscador);
+     2. --sombra-ctrl: un control (botón que abre, selector, perilla);
+     3. --sombra-hoja / --sombra-abre: lo que se abre encima de la página. Es el
+        mismo nivel en dos direcciones: la hoja sube desde abajo y la sombra va
+        hacia arriba; un menú, un globo o una lista bajan y la sombra va hacia
+        abajo.
+     Lo que solo informa no lleva sombra. Los anillos de foco no son sombras. */
   --sombra-hoja:0 -10px 40px rgba(0,27,52,.18);
+  --sombra-abre:0 10px 40px rgba(0,27,52,.18);
   --toque-gris:#F4F5F6;     /* la fila apretada se oscurece hasta acá */
   --mov-toque:.12s;         /* cuánto tarda el botón en hundirse */
   --toque-claro:rgba(255,255,255,.16);          /* pastilla del nav sobre el vidrio oscuro */
@@ -168,8 +184,7 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .mframe{position:absolute;inset:0;overflow:hidden;opacity:0;will-change:opacity}
 .mframe img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform}
 [data-mline]{text-shadow:0 2px 28px rgba(0,10,25,0.55)}
-@keyframes glowin{0%{box-shadow:0 1px 3px rgba(0,0,0,.06)}40%{box-shadow:0 0 0 4px rgba(0,188,180,.22),0 12px 36px rgba(0,188,180,.2)}100%{box-shadow:0 1px 3px rgba(0,0,0,.06)}}
-@keyframes spGlow{0%{box-shadow:0 1px 3px rgba(0,0,0,0.06)}35%{box-shadow:0 0 0 4px rgba(0,188,180,0.22),0 10px 34px rgba(0,188,180,0.20)}100%{box-shadow:0 1px 3px rgba(0,0,0,0.06)}}
+@keyframes spGlow{0%{box-shadow:var(--sombra-sup)}35%{box-shadow:0 0 0 4px rgba(0,188,180,0.22),var(--sombra-sup)}100%{box-shadow:var(--sombra-sup)}}
 @keyframes spRing{to{stroke-dashoffset:0}}
 @keyframes spCheckIn{0%{opacity:0;transform:scale(.4)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @keyframes spStepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -179,9 +194,9 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 @keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){[data-hero-content] *{animation:none !important}}
 input[type=range].sldr{-webkit-appearance:none;appearance:none;height:6px;border-radius:var(--r-pill);outline:none}
-input[type=range].sldr::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab;transition:transform .15s}
+input[type=range].sldr::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:var(--sombra-ctrl);cursor:grab;transition:transform .15s}
 input[type=range].sldr::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}
-input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:0 4px 14px rgba(0,59,113,.25);cursor:grab}
+input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:var(--r-pill);background:#fff;border:3px solid var(--sp-teal);box-shadow:var(--sombra-ctrl);cursor:grab}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1 !important;transform:none !important;transition:none}}
 @media(max-width:1150px){.mani-lines{width:100% !important}}
 @media(max-width:1250px){[data-hero-bg]{-webkit-mask:linear-gradient(90deg,transparent 12%,#000 55%) !important;mask:linear-gradient(90deg,transparent 12%,#000 55%) !important}}
@@ -243,7 +258,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .navmenu{position:absolute;top:100%;left:-16px;padding-top:14px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
 .navmenu-right{left:auto;right:-16px}
 .navmenu-wrap:hover .navmenu,.navmenu-wrap:focus-within .navmenu{opacity:1;transform:translateY(0);pointer-events:auto}
-.navmenu-card{min-width:290px;background:rgba(255,255,255,0.95);backdrop-filter:blur(18px);border:1px solid rgba(0,59,113,0.09);border-radius:var(--r-md);box-shadow:0 20px 48px rgba(0,25,48,0.2);padding:9px}
+.navmenu-card{min-width:290px;background:rgba(255,255,255,0.95);backdrop-filter:blur(18px);border:1px solid rgba(0,59,113,0.09);border-radius:var(--r-md);box-shadow:var(--sombra-abre);padding:9px}
 .navmenu-item{display:block;padding:10px 12px;border-radius:var(--r-xs);transition:background .15s ease}
 .navmenu-item:hover{background:var(--sp-mint-bg)}
 .navmenu-t{display:block;font-family:var(--font-display),sans-serif;font-weight:800;font-size:14px;color:var(--sp-navy);line-height:1.25}
@@ -357,7 +372,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 /* .blog-card es .tarjeta-toque: la transición y el toque los pone el sistema táctil.
    El levante es solo para mouse: en el celular el hover queda pegado después
    del toque, y ahí la señal es el hundirse. */
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.blog-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,20,40,0.35)}}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.blog-card:hover{transform:translateY(-3px);box-shadow:var(--sombra-sup)}}
 /* Portada editorial del blog (6 ago 2026): la destacada y el riel "Lo último".
    Señal de toque en las dos, con el mismo vocabulario de hover del resto del
    sitio (dec. 11u): la destacada levanta su título a teal claro, las filas del
@@ -467,7 +482,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .cmp2{position:relative}
 .cmp2-srv-wrap{position:relative;display:inline-block}
 .cmp2-srv{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;text-align:left;cursor:help;border-bottom:1.5px dotted var(--sp-teal-deep)}
-.cmp2-tarjeta{position:absolute;left:0;top:calc(100% + 8px);z-index:40;display:block;width:min(420px,calc(100vw - 48px));background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);box-shadow:0 18px 44px rgba(0,27,52,.18);padding:14px 16px 12px;text-align:left;pointer-events:none;font-family:var(--font-inter),sans-serif;font-weight:400;white-space:normal}
+.cmp2-tarjeta{position:absolute;left:0;top:calc(100% + 8px);z-index:40;display:block;width:min(420px,calc(100vw - 48px));background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-md);box-shadow:var(--sombra-abre);padding:14px 16px 12px;text-align:left;pointer-events:none;font-family:var(--font-inter),sans-serif;font-weight:400;white-space:normal}
 .cmp2-tarjeta-t{display:block;font-size:16px;font-weight:800;color:var(--sp-navy);margin-bottom:6px}
 .cmp2-tarjeta-p{display:grid;grid-template-columns:72px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--sp-line-2);font-size:13px;line-height:1.45;color:var(--sp-text)}
 .cmp2-tarjeta-p b{font-weight:800;color:var(--sp-navy)}
@@ -487,7 +502,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp2{display:grid;grid-template-columns:26% 1fr 1fr 1fr;background:#fff;border:1px solid var(--sp-line);border-radius:var(--r-lg);padding:0 10px}
   .cmp2-lab,.cmp2-plan{display:flex;flex-direction:column;min-width:0}
   .cmp2-lab{position:relative;z-index:5}
-  .cmp2-plan.rec{position:relative;z-index:2;margin:-14px 0;padding:12px 0;background:#fff;border:2px solid var(--sp-teal-deep);border-radius:var(--r-lg);box-shadow:0 16px 36px rgba(0,125,119,.15)}
+  .cmp2-plan.rec{position:relative;z-index:2;margin:-14px 0;padding:12px 0;background:#fff;border:2px solid var(--sp-teal-deep);border-radius:var(--r-lg);box-shadow:var(--sombra-sup)}
   /* Los nombres quedan fijos debajo del menú (88 px, como el mapa de la guía). */
   .cmp2-h{height:96px;position:sticky;top:88px;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
   .cmp2-lab .cmp2-h{align-items:flex-start;padding:0 14px}
@@ -505,8 +520,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @media(max-width:819px){
   .cmp2{display:flex;flex-direction:column;gap:16px}
   .cmp2-lab{display:none}
-  .cmp2-plan{background:#fff;border:1px solid var(--sp-line);border-top:4px solid var(--c);border-radius:var(--r-lg);padding:18px 16px 14px;box-shadow:0 6px 20px rgba(0,27,52,.05)}
-  .cmp2-plan.rec{border:2px solid var(--sp-teal-deep);border-top-width:4px;box-shadow:0 14px 32px rgba(0,125,119,.14)}
+  .cmp2-plan{background:#fff;border:1px solid var(--sp-line);border-top:4px solid var(--c);border-radius:var(--r-lg);padding:18px 16px 14px;box-shadow:var(--sombra-sup)}
+  .cmp2-plan.rec{border:2px solid var(--sp-teal-deep);border-top-width:4px;box-shadow:var(--sombra-sup)}
   .cmp2-nombre{font-size:24px}
   .cmp2-precio{font-size:14px;margin-top:4px}
   .cmp2-precio b{font-family:var(--font-display),sans-serif;font-size:22px;font-weight:800}
@@ -569,7 +584,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 @media(max-width:1250px){[data-hero]>.muro-marco{mask-image:linear-gradient(90deg,#000 40%,transparent 54%)}}
 @media(max-width:820px){[data-hero]>.muro-marco{mask-image:linear-gradient(90deg,#000 12%,transparent 36%)}}
 @media print{.muro-marco{display:none}}
-.dta-tarjeta{position:relative;max-width:960px;margin:0 auto;background:#fff;border-radius:var(--r-lg);padding:40px 44px 34px;box-shadow:var(--sombra-sup),0 24px 60px rgba(0,27,52,.07)}
+.dta-tarjeta{position:relative;max-width:960px;margin:0 auto;background:#fff;border-radius:var(--r-lg);padding:40px 44px 34px;box-shadow:var(--sombra-sup)}
 .dta-titulo{font-size:34px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 10px}
 .dta-titulo span{color:var(--sp-teal-deep)}
 .dta-bajada{font-family:var(--font-inter),sans-serif;font-size:16px;line-height:1.6;color:var(--sp-muted);margin:0 0 22px}

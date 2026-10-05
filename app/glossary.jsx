@@ -210,7 +210,7 @@ export function Term({ k, children, dict }) {
           'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);') + 'z-index:40;'
           + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
-          + 'box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;'
+          + 'box-shadow:var(--sombra-abre);pointer-events:none;'
           + (open ? 'display:block' : 'display:none')
         )}
       >

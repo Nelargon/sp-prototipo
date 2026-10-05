@@ -469,7 +469,7 @@ export default function Page() {
           <BotonRevision donde="nav" />
         </div>
         <div style={css('display:flex;align-items:center;gap:16px')}>
-          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill sq" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;--sq:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(225,25,0,0.28);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
+          <a href={'tel:' + SP_TEL} onClick={() => track('click_urgencias', { origen: 'header' })} aria-label={'Urgencias 24 h ' + SP_PHONE_DISPLAY} className="urg-pill sq" style={css('display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;--sq:var(--r-sm);background:#E11900;color:#fff;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:var(--sombra-ctrl);flex:none')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 3a5.5 5.5 0 0 1 5.5 5.5M15 7a2.5 2.5 0 0 1 2.5 2.5" /><path d="M21 16.9v2.6a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 3.7 3h2.6a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.5 10.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" /></svg><span className="urg-word">Urgencias</span><span className="num-tnum">{SP_PHONE_DISPLAY}</span></a>
           <div className="nav-links-desktop" style={css('display:flex;align-items:center;gap:26px')}>
             <div className="navmenu-wrap">
               <a href="#cartilla" className="nav-link nav-link-menu" style={css('color:var(--nl,rgba(255,255,255,0.9));font-size:14px;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:5px')}>Cobertura <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></a>
@@ -558,7 +558,7 @@ export default function Page() {
         <div data-hero-content style={css('position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 40px;color:#fff')}>
           <div style={css('max-width:720px')}>
             <div style={css('display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:22px;border:1px solid rgba(128,221,216,.4);padding:7px 14px;border-radius:var(--r-pill)')}>+{YEARS_CARING} años cuidando familias paraguayas</div>
-            <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:var(--sp-teal)')}>se siente</span>.</h1>
+            <h1 className="disp disp-hero" style={css('font-size:76px;line-height:1.02;letter-spacing:-0.025em;margin:0 0 22px')}>Protección que<br /><span style={css('color:var(--sp-teal)')}>se siente</span></h1>
             <p style={css('font-family:var(--font-inter),sans-serif;font-size:20px;line-height:1.6;color:var(--sp-blue-pale);max-width:520px;margin:0 0 34px')}>Entendé exactamente qué cubre tu plan, cómo usarlo y cuánto sale — antes de firmar, sin sorpresas de último momento.</p>
             {/* Dos puertas (PLAN-home-v2): el prospecto cotiza, el afiliado va a su red.
                 Un solo verbo para la acción comercial en todo el sitio: "Simulá tu plan"
@@ -621,12 +621,12 @@ export default function Page() {
             sombra dice la verdad: está en algo que se toca. El nombre para el
             lector de pantalla sigue siendo el del botón. */}
         <div data-rv>
-        <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:0 24px 60px rgba(0,20,45,0.28)')}>
+        <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:var(--sombra-sup)')}>
           <div style={css('position:absolute;z-index:-1;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('max-width:640px;margin:0 auto')}>
             {/* Sin etiqueta "Simulá tu plan" (Arturo, 24/09/2026): repetía el
                 botón de la misma tarjeta. Regla de etiquetas: si repite, se poda. */}
-            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span>.</h2>
+            <h2 className="disp" style={css('font-size:clamp(30px,4vw,42px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.02em;margin:0 0 14px')}>Conocé tu plan ideal y su precio, <span style={css('color:var(--sp-teal)')}>en un minuto</span></h2>
             <p style={css('font-size:17px;color:var(--sp-blue-soft);line-height:1.6;margin:0 auto 30px;max-width:520px')}>Unas pocas preguntas y ves el precio antes de dejar cualquier dato. Sin compromiso.</p>
             <div className="frases-sim" style={css('margin-bottom:34px')}>
               <span style={css('display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--sp-blue-ice)')}>En 1 minuto</span>
@@ -734,7 +734,7 @@ export default function Page() {
                 sobreexplicar»). Antes: «Qué te cubre cada plan y qué ponés vos»
                 + «Acá está todo lo que cambia entre los tres, de un vistazo». Son
                 las mismas palabras del menú que trae hasta acá. */}
-            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0')}>Qué te cubre <span style={css('color:var(--sp-teal-deep)')}>cada plan</span>.</h2>
+            <h2 className="disp" style={css('font-size:40px;font-weight:800;color:var(--sp-navy);line-height:1.14;letter-spacing:-0.02em;margin:0')}>Qué te cubre <span style={css('color:var(--sp-teal-deep)')}>cada plan</span></h2>
           </div>
 
           {/* EL DESCUENTO SALE DE LA LETRA CHICA (6 ago 2026, auditoría estratégica).
@@ -894,7 +894,7 @@ export default function Page() {
           <div style={css('max-width:1080px;margin:0 auto')}>
             <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
               <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
-              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que te <span style={css('color:var(--sp-teal-deep)')}>prometemos</span>.</h2>
+              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que te <span style={css('color:var(--sp-teal-deep)')}>prometemos</span></h2>
               <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
             </div>
             <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
@@ -920,7 +920,7 @@ export default function Page() {
           </div>
           <div>
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:12px')}>Quiénes somos</div>
-            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:var(--sp-navy);line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de {YEARS_CARING} años.</h3>
+            <h3 className="disp" style={css('font-size:26px;font-weight:800;color:var(--sp-navy);line-height:1.2;letter-spacing:-0.01em;margin:0 0 22px')}>Una empresa familiar paraguaya, cuidando familias hace más de {YEARS_CARING} años</h3>
             <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:24px 20px')}>
               <div><div className="disp" style={css('font-size:32px;color:var(--sp-navy)')}>2002</div><div style={css('font-size:13px;color:var(--sp-text);margin-top:3px')}>Fundada en Asunción</div></div>
               <div><div className="disp num-tnum" data-stat data-target="19000" data-prefix="~" data-thousands="1" style={css('font-size:32px;color:var(--sp-navy)')}>~19.000</div><div style={css('font-size:13px;color:var(--sp-text);margin-top:3px')}>Vidas aseguradas</div></div>
@@ -955,7 +955,7 @@ export default function Page() {
           («perfumería», HANDOFF). */}
       <section className="con-muro aliados" aria-labelledby="aliados-t" style={css('padding:36px 16px 40px;background:var(--sp-surface)')}>
         <MuroFondo tono="claro" />
-        <h2 id="aliados-t" data-rv className="disp aliados-t">Descuentos con aliados<span>Incluidos en tu plan.</span></h2>
+        <h2 id="aliados-t" data-rv className="disp aliados-t">Descuentos con aliados<span>Incluidos en tu plan</span></h2>
         <ul data-rv className="aliados-muro">
           {v.aliados.map((a) => (
             <li key={a.file}><img src={`${BP}/assets/aliados/${a.file}`} alt={a.name} loading="lazy" className="ally-logo" /></li>
@@ -1001,7 +1001,7 @@ export default function Page() {
             del usuario): var(--sp-teal) decora, var(--sp-teal-deep) carga texto blanco. */}
         <div className="sq" data-rv style={css('max-width:1100px;margin:0 auto;background:var(--sp-teal-deep);--sq:var(--r-lg);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap')}>
           <div style={css('max-width:560px')}>
-            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#A5EFEA')}>del otro lado</span>.</h2>
+            <h2 className="disp" style={css('font-size:34px;font-weight:800;color:#fff;line-height:1.16;letter-spacing:-0.01em;margin:0 0 12px')}>¿Hablamos? Estamos <span style={css('color:#A5EFEA')}>del otro lado</span></h2>
             <p style={css('font-size:17px;color:rgba(255,255,255,0.96);line-height:1.6;margin:0')}>Un asesor te acompaña a elegir, sin apuro y sin compromiso. Como el médico de la familia, pero para tu plan.</p>
           </div>
           <div style={css('display:flex;gap:12px;flex-wrap:wrap')}>
@@ -1048,7 +1048,7 @@ export default function Page() {
       </footer>
 
       {/* WHATSAPP FLOTANTE (solo desktop: en móvil lo reemplaza la barra) */}
-      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab boton" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,59,113,0.28)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
+      <a href={v.waHref} onClick={() => track('click_whatsapp', { origen: 'fab' })} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" className="btn-teal wa-fab boton" style={css('position:fixed;right:22px;bottom:22px;z-index:110;width:58px;height:58px;border-radius:var(--r-pill);background:var(--sp-teal-deep);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--sombra-ctrl)')}><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg></a>
 
       {/* BARRA CTA MÓVIL (auditoría de conversión, jul 2026): en ≤820px los dos
           flotantes formaban una columna que tapaba texto en casi toda la página;

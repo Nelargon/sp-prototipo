@@ -1783,8 +1783,9 @@ Claude.
 en punto y 42 no. **A:** ningún título lleva punto. **B:** lleva punto solo el
 título principal. Las preguntas mantienen su signo en las tres.
 
-**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
-A: es una sola regla y no hay que acordarse de la excepción.
+**Qué se decidió y por qué.** **La A** (Arturo, 05/10/2026): ningún título lleva
+punto. Es una sola regla y no hay que acordarse de la excepción. Construido el
+mismo día en 19 títulos del sitio. Los cuida `qa/titulos-y-sombras.mjs` en el CI.
 
 ### 74 · ¿Cada plan con su propio color?
 
@@ -1796,10 +1797,12 @@ oficial. **A:** los tres en turquesa, el color de la marca. Vale también para
 la página de planes nueva (`#238`), donde el color de cada plan es una franja
 arriba de su tarjeta.
 
-**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
-A, porque el equipo pidió que ningún plan tenga identidad propia. El naranja de
-la Guía Médica es una marca interna del prototipo que el cliente no ve. Con A
-pasa a ámbar.
+**Qué se decidió y por qué.** **La A** (Arturo, 05/10/2026): los tres planes, en
+turquesa, porque el equipo pidió que ningún plan tenga identidad propia. Es el
+turquesa que lleva texto blanco (5,0:1). El encabezado del simulador, que se
+pinta con el color del plan, mejoró de paso: con el bronce daba 4,0:1 y con el
+oro 3,3:1. La marca interna de la Guía Médica pasó del naranja al ámbar de la
+marca, y su texto, al ámbar oscuro del Centro de Marca (5,9:1).
 
 ### 75 · ¿Cuánta sombra?
 
@@ -1810,10 +1813,13 @@ pasa a ámbar.
 marca. **B:** los tres niveles que ya existen para la web (lo que se toca, un
 control y una hoja que se abre).
 
-**Qué se decidió y por qué.** *Pendiente: lo elige Arturo.* Claude recomienda la
-B: sigue la lámina 1 («la sombra dice "esto se toca"»), que Arturo ya eligió, y
-el cambio es actualizar la regla de marca para la web, en lugar de aplanar el
-sitio.
+**Qué se decidió y por qué.** **La B** (Arturo, 05/10/2026): sigue la lámina 1
+(«la sombra dice "esto se toca"»), que Arturo ya eligió. Las 18 sombras
+escritas a mano pasaron a los tres niveles: lo que se toca (`--sombra-sup`), un
+control (`--sombra-ctrl`) y lo que se abre encima (`--sombra-hoja` si sube desde
+abajo, `--sombra-abre` si baja). `qa/titulos-y-sombras.mjs` no deja entrar un
+cuarto nivel. La regla de marca que decía «hasta 4 px» es de impresos y piezas.
+Para la web vale esta, y la skill de marca hay que actualizarla (HANDOFF).
 
 ### 76 · La página de planes nueva, entera, en el celular
 

@@ -4745,3 +4745,33 @@ como ya estaba en `/planes` desde el 23/09.
   partida tenía su veredicto en la lámina 57, pero la lámina 45, donde se la
   propone, no decía que se había descartado. Quien buscaba «cómo se ve una tabla
   en el celular» encontraba la propuesta y no el veredicto.
+
+---
+
+## Capítulo 138 — Tres reglas que el sitio no cumplía porque nadie las medía (05/10/2026)
+
+**Qué intentamos.** La auditoría del sistema de diseño del 29/09 dejó tres
+preguntas abiertas (`sp-interno#107`): si los títulos llevan punto, si cada plan
+tiene su color y cuánta sombra se usa. El 05/10 se mostraron sobre el sitio real
+(láminas 73 a 75) y Arturo eligió las tres recomendaciones: títulos sin punto,
+los planes en turquesa y las sombras en los tres niveles de la web.
+
+**Qué pasó.** Al aplicarlas apareció cuánto se había alejado el sitio de reglas
+que ya estaban escritas en algún lado. Había 19 títulos con punto, mezclados
+con los que no lo llevan (solo en el home, 11 con y 42 sin). Había 18 sombras escritas a mano, hasta de 60 px,
+cuando la regla de relieve ya existía con sus tokens. Y el color de cada plan
+pintaba el encabezado del simulador con texto blanco: el oro daba 3,3:1 y el
+bronce 4,0:1, por debajo del 4,5 que pide la lectura. Ninguna de las tres cosas
+la vio nadie durante semanas, porque ningún control las medía.
+
+**Qué aprendimos.**
+- **Una regla sin guardián se cumple mientras alguien se acuerda.** Las tres
+  quedaron en `qa/titulos-y-sombras.mjs` (títulos sobre el sitio construido,
+  sombras sobre el código) y en el CI de las dos ediciones. El detector se
+  probó contra el código anterior: 16 títulos y 18 sombras marcados.
+- **Sacar el color de los planes arregló un contraste de paso.** El turquesa
+  que carga texto blanco da 5,0:1. Una decisión de marca («ningún plan tiene
+  identidad propia») resultó ser también una de lectura.
+- **Una regla de marca escrita para impresos no alcanza para la web.** La skill
+  de marca dice «hasta 4 px» de difuminado. La web necesita tres niveles para
+  decir qué se toca y qué se abre. Queda pedido actualizar la skill.

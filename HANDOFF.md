@@ -17,6 +17,34 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🎨 05/10/2026: TÍTULOS SIN PUNTO, PLANES EN TURQUESA Y TRES NIVELES DE SOMBRA
+
+Arturo eligió las tres recomendaciones de las láminas 73 a 75
+(`sp-interno#107`, `docs/diseno` Parte 23). Son reglas para todo lo que venga:
+- **Ningún título termina en punto** (lámina 73). Vale para h1, h2 y h3, también
+  para los estados vacíos («No encontramos esta página»). Las preguntas
+  conservan su signo. Las bajadas y los párrafos siguen con su punto.
+- **Ningún plan tiene color propio** (lámina 74). Los tokens `--sp-plan-*`
+  siguen existiendo, pero los tres valen `--sp-teal-deep`. No volver a darles
+  bronce, plata u oro. El dorado de «oportunidad» (`--sp-gold-*`) es otra cosa y
+  sigue igual. La marca interna de la guía es ámbar (`--sp-marca-interna`) y su
+  texto, `--sp-marca-interna-ink`.
+- **Toda sombra es uno de los tres niveles** (lámina 75): `--sombra-sup` (lo que
+  se toca), `--sombra-ctrl` (un control) y lo que se abre encima, `--sombra-hoja`
+  si sube desde abajo o `--sombra-abre` si baja. Nada de sombras escritas a mano.
+
+**Lo cuida** `qa/titulos-y-sombras.mjs`, en el CI de las dos ediciones. Mira los
+títulos del sitio construido y las sombras del código, y se prueba con 13 casos
+antes de opinar.
+
+**Pendiente de Arturo (no se puede hacer desde acá):** la skill de marca
+`sp-brand-identity` dice «Max 0-4px blur» (SKILL.md, «Soft shadows only») y
+mantiene colores por plan («Tier colors», `references/colors.md`). Para la web
+valen estas reglas. Hay que actualizar la skill desde su cuenta, porque llega
+sincronizada.
+
+---
+
 ## 🩺 SIN PREAPROBACIÓN MÉDICA: LO QUE NO SE PUEDE HACER BIEN, NO SE HACE (4 oct 2026)
 
 **Qué se supo.** La «Dirección Médica» que varios documentos ponían como la que

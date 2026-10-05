@@ -139,6 +139,12 @@ pierde (BITACORA cap. 96).
   cap. 119): el navegador la guarda en 255 pasos, así que un «5% más» sobre un
   alfa de .02 no cambia un solo píxel. Un ajuste fino se verifica midiendo los
   píxeles de la captura, no leyendo el CSS.
+- **Títulos sin punto, planes sin color propio, tres niveles de sombra** (5 oct
+  2026, láminas 73 a 75, `sp-interno#107`). Ningún h1, h2 ni h3 termina en
+  punto. Los tres planes van en turquesa (`--sp-plan-*` = `--sp-teal-deep`).
+  Toda sombra es `--sombra-sup` (lo que se toca), `--sombra-ctrl` (un control)
+  o `--sombra-hoja` / `--sombra-abre` (lo que se abre encima): nunca una escrita
+  a mano. Lo controla `qa/titulos-y-sombras.mjs` en el CI.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
   medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
