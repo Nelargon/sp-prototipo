@@ -206,9 +206,9 @@ capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 > **Esto reemplaza lo que dicen «Reparto de páginas de planes» (02/10) y
 > «Reabierto 29/09» en lo que toca a `/que-cubre` y a `/planes`.** Esas
-> secciones quedan como historia. **PR en borrador, espera el OK de Arturo
-> antes de fusionar** (elimina trabajo existente y cambia el reparto de
-> herramientas).
+> secciones quedan como historia. **Arturo dio el OK el 05/10/2026** y se
+> fusionó desde la rama `claude/planes-pagina-unica`, que tomó la del PR `#238`
+> y le trajo `main`.
 
 Arturo, 04/10/2026: *«el espacio de "¿Qué cubre?" realmente debería no existir.
 Debería ser solamente un espacio donde se detallan los planes. Hasta ahí. Ese
@@ -241,11 +241,17 @@ un lugar»*. Pidió «la versión liviana».
   usar para decidir; opinión de Claude, no medido).
 - **El buscador queda guardado, sin página:** `app/que-cubre/Buscador.jsx` +
   `lib/buscar-prestaciones.js` + `lib/prestaciones.json` (`scripts/test-buscador.mjs`
-  sigue pasando). **Decisión pendiente de Arturo:** si vive en la Guía Médica
-  (donde ya se visan las órdenes), en el simulador o no vuelve. Lo que respondía
-  —«¿está cubierto lo que me pidió el doctor?»— hoy no lo responde el sitio solo.
-  Los dos pendientes que tenía (enlace al precio y a WhatsApp en los resultados)
-  pasan con él.
+  sigue pasando). **Decidido: no vuelve por ahora (05/10/2026).** Arturo había
+  preguntado el 04/10: *«¿No será que eso se está respondiendo de otra forma,
+  quizás no de la forma ideal que estabas pensando, pero quizás de otra forma sí
+  también lo hace?»*. Sí: la visación de órdenes de la Guía Médica, la tabla de
+  los once servicios, las 43 especialidades y las asesoras. Y no hay un solo
+  dato de uso del buscador. Los dos pendientes que tenía (enlace al precio y a
+  WhatsApp en los resultados) quedan guardados con él.
+  **Pendiente con SP:** si las asesoras le contestan a quien todavía no es
+  cliente si su orden médica entra. Si sí, en `/planes/` va una línea: «¿Tenés
+  una orden del médico? Mandanos la foto por WhatsApp y te decimos si entra».
+  Si la visación es solo para afiliados, esa línea no se puede prometer.
 
 **Cómo se concilia con las decisiones de los días anteriores:**
 - *Las esperas (02 y 03/10).* La regla decía «ninguna espera en la vista rápida
@@ -254,6 +260,14 @@ un lugar»*. Pidió «la versión liviana».
   tarjetas siguen sin esperas; la tabla de once servicios las muestra todas con
   el mismo peso, como ya hacía `/planes/`. Si Arturo quiere una vista rápida
   aparte, hay que decidir dónde.
+  **Arturo lo aceptó el 05/10/2026.**
+- *La tabla en el celular sigue deslizándose de costado*, como estaba en
+  `/planes` desde el 23/09. Al llegar, solo se ve Essential, lo mismo que el
+  26/09 se sacó del home. **La forma la decide Arturo:** ya descartó la fila
+  partida (27/09, lámina 57), y la dirección que aprobó, tarjetas iguales y el
+  detalle al tocar, espera que la revise en su celular (sección «📱 La
+  comparativa en el celular», más arriba). El código tiene el aviso al lado de
+  la tabla (`app/planes/Planes.jsx`).
 - *Vital con la misma profundidad (29/09)* sigue pendiente: hoy es una banda.
 - *«Pocas herramientas»*: de las cuatro (tarjetas, simulador, buscador, guía),
   el buscador queda fuera por ahora.

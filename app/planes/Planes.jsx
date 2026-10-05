@@ -173,6 +173,14 @@ export default function Planes() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {titulo('Los once servicios', 'que más se preguntan.', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
+          {/* ⚠ LA FORMA DE ESTA TABLA EN EL CELULAR LA DECIDE ARTURO (05/10/2026).
+              Ya descartó dos: deslizar de costado (26/09, lámina 45: al llegar
+              Gold no se ve) y la fila partida (27/09, lámina 57: «demasiado
+              ordenado en filas y columnas»). La dirección que aprobó es otra:
+              tarjetas con las mismas líneas y el detalle al tocar (lámina 59,
+              HANDOFF «📱 La comparativa en el celular»), y espera que la revise
+              en su celular. Hasta entonces queda como estaba. No cambiar la
+              forma sin su OK (BITACORA cap. 137). */}
           {/* En celular la tabla se desliza de costado y solo se ve el primer
               plan: sin este aviso, la página que existe para comparar los tres
               muestra uno y medio (revisión del 23/09/2026). */}

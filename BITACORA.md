@@ -4710,3 +4710,38 @@ es la vista detallada, y quedó escrito en el HANDOFF.
 - **Sacar una herramienta no es borrarla.** El buscador quedó guardado y con su
   pregunta pendiente (dónde vive), porque lo que respondía sigue siendo una
   pregunta de cliente.
+
+---
+
+## Capítulo 137 — Arreglé la tabla con la forma que Arturo ya había descartado (05/10/2026)
+
+**Qué intentamos.** Arturo dio el OK a la página única de planes (`#238`) con una
+condición que yo le había propuesto: arreglar antes la tabla de los once
+servicios, que en el celular se desliza de costado y al llegar muestra solo
+Essential (lámina 76). La arreglé con la «fila partida» de la lámina 45: el
+servicio a lo ancho y los tres planes debajo, con los nombres fijos al bajar.
+La construí, la medí a 360, 390 y 430 px y le escribí una prueba que fallaba
+contra la tabla vieja.
+
+**Qué pasó.** Antes de abrir el PR, al escribir el HANDOFF, encontré la sección
+«📱 La comparativa en el celular». El 27/09 Arturo había visto justo esa fila
+partida y la había descartado: *«quizás, al tratar de hacerlo demasiado ordenado
+en filas y columnas, se pierde un poquito de claridad»* (lámina 57). La dirección
+que aprobó es otra: tarjetas con las mismas líneas y el detalle al tocar (lámina
+59). Esa sigue con una guarda: no se construye hasta que él la revise en su
+celular. Deshice el arreglo antes de publicarlo. La página salió con la tabla
+como ya estaba en `/planes` desde el 23/09.
+
+**Qué aprendimos.**
+- **Es la misma lección del capítulo 136, un día después y en otra sesión:**
+  leer el HANDOFF antes de proponer, no antes de construir. Que un capítulo la
+  escriba no alcanza para que la siguiente sesión la cumpla. Por eso el aviso
+  quedó en el lugar donde se tropieza: al lado de la tabla, en
+  `app/planes/Planes.jsx`, con las dos formas descartadas y la que espera.
+- **Recomendar «arreglarla» sin decir cómo deja la decisión importante sin
+  tomar.** Arturo aceptó un arreglo; la forma del arreglo era lo que había que
+  decidir, y ya la había decidido él en otra conversación.
+- **Una decisión de forma se busca por la cosa, no por la fecha.** La fila
+  partida tenía su veredicto en la lámina 57, pero la lámina 45, donde se la
+  propone, no decía que se había descartado. Quien buscaba «cómo se ve una tabla
+  en el celular» encontraba la propuesta y no el veredicto.
