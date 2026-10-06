@@ -4803,3 +4803,41 @@ de tres dígitos.
 - **Un hallazgo que aparece con tu propio cambio es tuyo,** aunque el cambio sea
   un arreglo. El PR no entra con un hallazgo nuevo: se entiende, se corrige y
   recién después se fusiona.
+
+## Capítulo 140 — La palabra con dos sentidos y la prueba que midió a mitad de la transición (06/10/2026)
+
+**Qué intentamos.** Cerrar tres puntos de la cita de decisiones del 06/10. Arturo
+contestó *«Adelante con todo»*: que «presión» no sugiera un turno cuando puede
+ser el pecho (`sp-interno#140`), que «Simulá Plan Vital» sea turquesa como todo
+botón lleno y que se lean los números del riel del simulador (`sp-interno#141`,
+puntos 5 y 4). Cada cambio entró con su prueba, y cada prueba se probó contra
+el caso que tiene que fallar.
+
+**Qué pasó.**
+- **«Presión» tenía dos sentidos.** En el diccionario de síntomas era la
+  presión arterial; escrita por una persona, también es «siento una presión en
+  el pecho». La prueba nueva lo reprodujo antes del arreglo: sugería
+  cardiología. Ahora la palabra necesita su compañera («alta», «baja» o
+  «arterial»). El punto ofrecía dos caminos, corregir ya o esperar la revisión
+  médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
+  preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
+  opción que ya no está.
+- **La prueba de la prueba no fallaba.** Para ver si los detectores nuevos
+  marcaban el caso malo, puse en el navegador los colores viejos (el azul
+  marino en el botón, `--sp-blue-meta` en los números) y medí. No marcaron
+  nada: el botón seguía «turquesa» y el riel, en 4,65:1. Los dos elementos
+  tienen una `transition`, y un estilo leído justo después de cambiarlo
+  devuelve el valor de partida. Esperando 600 ms, marcaron los dos, y el riel
+  dio 3,28:1, el mismo número que había medido la revisión visual.
+
+**Qué aprendimos.**
+- **Una palabra con dos sentidos lleva su compañera.** Antes de sumar una
+  palabra al diccionario de síntomas, la pregunta es si puede querer decir algo
+  urgente. Si puede, o no entra o entra acompañada.
+- **Medir justo después de cambiar un estilo es medir a mitad de la
+  transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
+  que termine, o se mide sin transición.
+- **Un detector que no falla en su caso malo no está probado,** aunque dé verde
+  en el bueno. Esta vez la falla estaba en cómo lo probé y no en el detector,
+  pero eso solo se supo porque no di el verde por bueno.
+

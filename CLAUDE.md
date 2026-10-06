@@ -146,7 +146,9 @@ pierde (BITACORA cap. 96).
   o `--sombra-hoja` / `--sombra-abre` (lo que se abre encima): nunca una escrita
   a mano. Lo controla `qa/titulos-y-sombras.mjs` en el CI.
 - Con `scroll-behavior:smooth`, medir después de `window.scrollTo()` es
-  medir a mitad de viaje: los tests scrollean con `behavior:'instant'`.
+  medir a mitad de viaje: los tests scrollean con `behavior:'instant'`. Lo
+  mismo con una `transition`: un estilo leído justo después de cambiarlo
+  devuelve el valor de partida (BITACORA cap. 140).
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.

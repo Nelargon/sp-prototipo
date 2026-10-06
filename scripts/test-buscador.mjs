@@ -124,6 +124,13 @@ const SINTOMAS = [
   ['me duele el pecho', null],
   ['me falta el aire', null],
   ['malestar general', null],
+  // «presión» sola puede ser el pecho, que puede ser una urgencia: sugiere
+  // cardiología solo si viene con «alta», «baja» o «arterial» (sp-interno#140,
+  // Arturo, 06/10/2026).
+  ['siento una presión en el pecho', null],
+  ['tengo la presión alta', 'Cardiología'],
+  ['control de presión arterial', 'Cardiología'],
+  ['se me baja la presión', 'Cardiología'],
 ];
 console.log('');
 let nSint = 0;

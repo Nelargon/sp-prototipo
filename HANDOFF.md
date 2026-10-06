@@ -28,7 +28,15 @@ Arturo eligió las tres recomendaciones de las láminas 73 a 75
   siguen existiendo, pero los tres valen `--sp-teal-deep`. No volver a darles
   bronce, plata u oro. El dorado de «oportunidad» (`--sp-gold-*`) es otra cosa y
   sigue igual. La marca interna de la guía es ámbar (`--sp-marca-interna`) y su
-  texto, `--sp-marca-interna-ink`.
+  texto, `--sp-marca-interna-ink`. **Tampoco Vital** (Arturo, 06/10/2026,
+  `sp-interno#141` punto 5): «Simulá Plan Vital» de `/planes/` era el único
+  botón lleno en azul marino y pasó a turquesa. La insignia «SP Senior» sigue
+  en azul marino porque es la marca, no un botón.
+- **Los números del riel del simulador se leen** (Arturo, 06/10/2026,
+  `sp-interno#141` punto 4): los pasos que faltan van en `--sp-blue-soft` (4,6:1
+  sobre su círculo; con `--sp-blue-meta` daban 3,3:1). Siguen apagados al lado
+  del paso activo, que es blanco. Lo miden `qa/qa-lanzamiento.mjs` y la
+  revisión visual nocturna.
 - **Toda sombra es uno de los tres niveles** (lámina 75): `--sombra-sup` (lo que
   se toca), `--sombra-ctrl` (un control) y lo que se abre encima, `--sombra-hoja`
   si sube desde abajo o `--sombra-abre` si baja. Nada de sombras escritas a mano.
@@ -91,7 +99,14 @@ lámina 71 de `docs/diseno/`):
 - **El buscador de síntomas se queda solo para lo cotidiano.** Ya no hay un «me
   duele» genérico que mande al clínico: un dolor que no reconoce no recibe
   turno sugerido.
-- Pruebas: `scripts/test-buscador.mjs` (siete casos de síntomas) y
+- **Una palabra con dos sentidos lleva su compañera** (Arturo, 06/10/2026,
+  `sp-interno#140`). «Presión» era la presión arterial, pero también saltaba
+  con «siento una presión en el pecho» y sugería un turno con cardiología.
+  Ahora sugiere cardiología solo si viene con «alta», «baja» o «arterial»
+  (`junto` en `lib/red-medica.js`). No necesitó un médico: solo saca una
+  sugerencia. Si se suma otra palabra al diccionario, la pregunta es la misma:
+  ¿puede querer decir algo urgente?
+- Pruebas: `scripts/test-buscador.mjs` (once casos de síntomas) y
   `qa/qa-lanzamiento.mjs`, que revisa que la línea esté siempre a la vista y
   que «me duele el pecho» no sugiera un turno.
 

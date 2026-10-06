@@ -322,6 +322,30 @@ console.log('\n── /planes/: la página única de detalle');
     if (!vital.length || vital.some((h) => !h.endsWith('/simulador/?plan=vital'))) mal(ruta + ': el ítem «Plan Vital» del menú no abre el simulador con Vital (' + vital.join(', ') + ')');
     else bien(ruta + ': el ítem «Plan Vital» del menú abre el simulador con Vital');
   }
+  // «Simulá Plan Vital» es turquesa como todo botón lleno: ningún plan tiene
+  // color propio, tampoco Vital (sp-interno#141 punto 5, Arturo, 06/10/2026).
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const fondoVital = await page.$$eval('a', (as) => { const a = as.find((x) => x.textContent.trim() === 'Simulá Plan Vital'); return a ? getComputedStyle(a).backgroundColor : null; });
+  if (fondoVital !== 'rgb(0, 125, 119)') mal('/planes/: «Simulá Plan Vital» no es turquesa (' + fondoVital + ')'); else bien('/planes/: «Simulá Plan Vital» en turquesa, como todo botón lleno');
+  // Los números del riel del simulador se leen: 4,5:1 o más sobre su círculo,
+  // que es translúcido y se compone sobre el azul del riel (sp-interno#141
+  // punto 4, 06/10/2026). Con --sp-blue-meta daban 3,3:1.
+  await page.goto(BASE + '/simulador/', { waitUntil: 'networkidle' });
+  const riel = await page.evaluate(() => {
+    const rgb = (t) => (t.match(/[\d.]+/g) || []).map(Number);
+    const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+    const fondoDe = (el) => { for (let e = el.parentElement; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c.length >= 3 && c[3] !== 0) return c; } return [255, 255, 255]; };
+    return [...document.querySelectorAll('.sim-steps > div > span:first-child')].filter((s) => /^\d$/.test(s.textContent.trim())).map((s) => {
+      const cs = getComputedStyle(s), t = rgb(cs.color), b = rgb(cs.backgroundColor), p = fondoDe(s);
+      const a = b.length < 3 ? 0 : (b[3] === undefined ? 1 : b[3]);
+      const f = [0, 1, 2].map((i) => (b[i] || 0) * a + p[i] * (1 - a));
+      const l1 = lum(t), l2 = lum(f);
+      return { n: s.textContent.trim(), cr: (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05) };
+    });
+  });
+  const bajos = riel.filter((x) => x.cr < 4.5);
+  if (riel.length < 3 || bajos.length) mal('/simulador/: números del riel por debajo de 4,5:1 (' + (bajos.map((x) => x.n + ': ' + x.cr.toFixed(2)).join(', ') || 'no se encontró el riel') + ')');
+  else bien('/simulador/: los números del riel se leen (' + Math.min(...riel.map((x) => x.cr)).toFixed(2) + ':1 o más)');
   await page.close();
 }
 
