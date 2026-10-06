@@ -4818,7 +4818,11 @@ el caso que tiene que fallar.
   presión arterial; escrita por una persona, también es «siento una presión en
   el pecho». La prueba nueva lo reprodujo antes del arreglo: sugería
   cardiología. Ahora la palabra necesita su compañera («alta», «baja» o
-  «arterial»). El punto ofrecía dos caminos, corregir ya o esperar la revisión
+  «arterial»). La primera versión la buscaba en toda la frase, y la revisión de
+  Codex encontró el hueco: en «siento presión en el pecho y fiebre alta», el
+  «alta» de la fiebre volvía a prender cardiología. Ahora la compañera tiene que
+  ir al lado (a dos palabras o menos), y si la frase habla del pecho no se
+  sugiere nada. El punto ofrecía dos caminos, corregir ya o esperar la revisión
   médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
   preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
   opción que ya no está.
@@ -4831,9 +4835,11 @@ el caso que tiene que fallar.
   dio 3,28:1, el mismo número que había medido la revisión visual.
 
 **Qué aprendimos.**
-- **Una palabra con dos sentidos lleva su compañera.** Antes de sumar una
-  palabra al diccionario de síntomas, la pregunta es si puede querer decir algo
-  urgente. Si puede, o no entra o entra acompañada.
+- **Una palabra con dos sentidos lleva su compañera, y la compañera va al
+  lado.** Antes de sumar una palabra al diccionario de síntomas, la pregunta es
+  si puede querer decir algo urgente. Si puede, o no entra o entra acompañada.
+  Y que la compañera esté en la frase no alcanza: tiene que estar hablando de
+  esa palabra.
 - **Medir justo después de cambiar un estilo es medir a mitad de la
   transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
   que termine, o se mide sin transición.

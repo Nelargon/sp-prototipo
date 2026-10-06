@@ -128,6 +128,10 @@ const SINTOMAS = [
   // cardiología solo si viene con «alta», «baja» o «arterial» (sp-interno#140,
   // Arturo, 06/10/2026).
   ['siento una presión en el pecho', null],
+  // La compañera tiene que ir al lado de «presión», y si la frase habla del
+  // pecho no se sugiere cardiología (lo encontró la revisión de Codex en #254).
+  ['siento presión en el pecho y fiebre alta', 'Clínica Médica'],
+  ['tengo presión alta y me duele el pecho', null],
   ['tengo la presión alta', 'Cardiología'],
   ['control de presión arterial', 'Cardiología'],
   ['se me baja la presión', 'Cardiología'],
