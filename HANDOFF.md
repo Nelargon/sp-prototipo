@@ -103,10 +103,12 @@ lámina 71 de `docs/diseno/`):
   `sp-interno#140`). «Presión» era la presión arterial, pero también saltaba
   con «siento una presión en el pecho» y sugería un turno con cardiología.
   Ahora sugiere cardiología solo si «alta», «baja» o «arterial» va al lado (a
-  dos palabras o menos), y nunca si la frase habla del pecho (`junto` en
-  `lib/red-medica.js`). Al lado, porque en «presión en el pecho y fiebre alta» el
-  «alta» es de la fiebre: lo encontró la revisión de Codex. No necesitó un
-  médico: solo saca una sugerencia. Si se suma otra palabra al diccionario, la pregunta es la misma:
+  dos palabras o menos; `junto` en `lib/red-medica.js`): en «presión en el pecho
+  y fiebre alta» el «alta» es de la fiebre. Y si la frase habla del pecho
+  (`nunca`), se apaga la entrada del corazón entera, también «palpitaciones», con
+  la misma tolerancia a errores de tipeo que el resto («pehco»). Esos tres
+  huecos los encontraron dos revisiones de Codex. No necesitó un médico: solo
+  saca sugerencias. Si se suma otra palabra al diccionario, la pregunta es la misma:
   ¿puede querer decir algo urgente?
 - Pruebas: `scripts/test-buscador.mjs` (once casos de síntomas) y
   `qa/qa-lanzamiento.mjs`, que revisa que la línea esté siempre a la vista y

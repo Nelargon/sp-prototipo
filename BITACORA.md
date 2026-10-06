@@ -4822,7 +4822,11 @@ el caso que tiene que fallar.
   Codex encontró el hueco: en «siento presión en el pecho y fiebre alta», el
   «alta» de la fiebre volvía a prender cardiología. Ahora la compañera tiene que
   ir al lado (a dos palabras o menos), y si la frase habla del pecho no se
-  sugiere nada. El punto ofrecía dos caminos, corregir ya o esperar la revisión
+  sugiere nada. Una segunda revisión encontró dos huecos más en esa guarda: con
+  «pehco» no reconocía el pecho, aunque el diccionario sí perdona errores de
+  tipeo, y «palpitaciones» volvía a prender la misma entrada por otra palabra.
+  Ahora el pecho apaga la entrada del corazón entera, con la misma tolerancia.
+  El punto ofrecía dos caminos, corregir ya o esperar la revisión
   médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
   preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
   opción que ya no está.
@@ -4840,6 +4844,10 @@ el caso que tiene que fallar.
   si puede querer decir algo urgente. Si puede, o no entra o entra acompañada.
   Y que la compañera esté en la frase no alcanza: tiene que estar hablando de
   esa palabra.
+- **Una guarda tiene que entender lo mismo que lo que vigila.** Si el
+  diccionario perdona un error de tipeo y la guarda no, el error de tipeo abre
+  la puerta. Y una guarda puesta en una palabra se saltea por otra palabra de
+  la misma entrada: va en la entrada.
 - **Medir justo después de cambiar un estilo es medir a mitad de la
   transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
   que termine, o se mide sin transición.

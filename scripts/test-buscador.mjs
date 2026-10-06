@@ -132,6 +132,12 @@ const SINTOMAS = [
   // pecho no se sugiere cardiología (lo encontró la revisión de Codex en #254).
   ['siento presión en el pecho y fiebre alta', 'Clínica Médica'],
   ['tengo presión alta y me duele el pecho', null],
+  // El pecho apaga toda la entrada del corazón, no solo «presión», y con la
+  // misma tolerancia a errores de tipeo que el resto (segunda revisión de Codex).
+  ['siento palpitaciones y dolor en el pecho', null],
+  ['tengo presión alta y dolor de pehco', null],
+  ['tengo palpitaciones', 'Cardiología'],
+  ['tengo la presión alta hace mucho', 'Cardiología'],
   ['tengo la presión alta', 'Cardiología'],
   ['control de presión arterial', 'Cardiología'],
   ['se me baja la presión', 'Cardiología'],
