@@ -41,6 +41,12 @@ sesiones, hoy y en el futuro:
   Toda decisión que otra sesión va a necesitar se escribe en `HANDOFF.md`
   en el mismo PR. Y si tu tarea depende de algo que no está escrito, no
   lo asumas: preguntale al usuario.
+- **Toda pregunta a Arturo lleva opciones o ejemplos de respuesta** (6 oct
+  2026, Arturo: *«Siempre dame ejemplos de respuestas o opciones»*). Cada
+  decisión va numerada, con dos a cuatro opciones con letra, la recomendada
+  primero y marcada con su porqué, y un ejemplo de cómo contestar en una
+  línea («1A, 2A, 3B»). Una pregunta abierta lo obliga a armar la respuesta
+  desde cero; con opciones, elige y, si quiere, agrega un matiz.
 - **Respetar las guardas ⚠ del HANDOFF** (ej. "motor de contenido — EN
   DISEÑO, no construir"): marcan trabajo que otra conversación está
   diseñando. Ignorarlas es construir en paralelo lo que otro ya está
