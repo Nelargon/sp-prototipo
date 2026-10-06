@@ -4775,3 +4775,31 @@ la vio nadie durante semanas, porque ningún control las medía.
 - **Una regla de marca escrita para impresos no alcanza para la web.** La skill
   de marca dice «hasta 4 px» de difuminado. La web necesita tres niveles para
   decir qué se toca y qué se abre. Queda pedido actualizar la skill.
+
+---
+
+## Capítulo 139 — El detector que leyó un número de issue como un color (06/10/2026)
+
+**Qué intentamos.** El Guardián arregló tres contrastes que la revisión visual
+nocturna había marcado (`sp-interno#141`, puntos 1 a 3): el hover de dos botones,
+el de los links turquesa, los titulillos del comparador en el celular y los
+números de «Lo que más se busca» en la Guía Médica. Todo con colores que ya
+existían, y el revisor de la skill del diseñador lo confirmó: el inicio pasó de
+6 🔴 a 0 y la Guía, de 8 a 0.
+
+**Qué pasó.** La QA integral sumó un hallazgo nuevo: «2 colores se repiten 3+
+veces sin token: #114411×4 · #00615C×3». El segundo era real: el hover nuevo
+estaba escrito a mano tres veces, y pasó a ser el token `--sp-teal-press`. El
+primero no existía en ningún lado. Era «sp-interno#141», el número del issue
+escrito en cuatro comentarios del CSS: el detector leía `#141` como un color
+de tres dígitos.
+
+**Qué aprendimos.**
+- **Un detector que lee el código también lee los comentarios.** Ahora el
+  conteo de colores se saltea los comentarios. Se probó con un caso que tiene
+  que marcar (un color real repetido tres veces) y otro que no (el número del
+  issue en comentarios). Al sacarlos, los «tintes de uso único» bajaron de 47 a
+  38: nueve eran números de issue o de PR.
+- **Un hallazgo que aparece con tu propio cambio es tuyo,** aunque el cambio sea
+  un arreglo. El PR no entra con un hallazgo nuevo: se entiende, se corrige y
+  recién después se fusiona.

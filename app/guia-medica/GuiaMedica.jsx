@@ -457,7 +457,7 @@ export default function GuiaMedica() {
             <div className="sq rel" style={css('--sq:var(--r-xs);background:#fff;border:1px solid var(--gm-linea);overflow:hidden')}>
               {MAS_BUSCADO.map((e, i) => (
                 <button key={e} type="button" onClick={() => elegirEsp(e, 'mas_buscado')} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;border-bottom:1px solid var(--sp-line-2);background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
-                  <span className="disp" style={css('width:16px;font-size:13.5px;font-weight:900;color:var(--sp-blue-meta)')}>{i + 1}</span>
+                  <span className="disp" style={css('width:16px;font-size:13.5px;font-weight:900;color:var(--sp-muted)')}>{i + 1}</span>
                   <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>{e}</span>
                   <MarcaEsp e={e} />
                   <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
