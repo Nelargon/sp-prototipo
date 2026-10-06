@@ -4829,7 +4829,11 @@ el caso que tiene que fallar.
   La tercera revisión encontró el exceso contrario: con esa tolerancia, «de
   hecho tengo palpitaciones» también apagaba cardiología, porque «hecho» está a
   una letra de «pecho». Las palabras comunes que quedan a una letra («hecho»,
-  «techo», «echo») ya no cuentan como pecho.
+  «techo», «echo») ya no cuentan como pecho. La cuarta trajo tres casos más
+  finos: «dolor torácico», «presión artrial» y «techito», que está a una letra
+  de «pechito». La lista de palabras comunes iba a crecer sin fin, así que se
+  cambió por una regla: la tolerancia vale solo para las palabras base
+  («pecho», «tórax»), y las formas largas van exactas.
   El punto ofrecía dos caminos, corregir ya o esperar la revisión
   médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
   preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
@@ -4854,6 +4858,13 @@ el caso que tiene que fallar.
   la misma entrada: va en la entrada. Y la tolerancia corta para los dos
   lados: si perdona de más, confunde palabras comunes («de hecho») con lo que
   vigila. Cada caso que se encontró quedó como prueba, para que no vuelva.
+- **Cuando una lista de excepciones empieza a crecer, hace falta una regla.**
+  Y hay que saber dónde está la red de verdad. Cuatro rondas de revisión
+  afinaron el diccionario, y ninguna podía volverlo seguro por sí solo: con
+  palabras sueltas siempre queda otra forma de decir lo mismo. No hace falta
+  que lo sea. La red es la línea de emergencias, que está fija y a la vista
+  escriba lo que escriba la persona. Por eso, después de la cuarta ronda, se
+  fusionó con la CI en verde y no se pidió una quinta.
 - **Medir justo después de cambiar un estilo es medir a mitad de la
   transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
   que termine, o se mide sin transición.

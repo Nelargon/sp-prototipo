@@ -140,6 +140,11 @@ const SINTOMAS = [
   ['tengo la presión alta hace mucho', 'Cardiología'],
   // La tolerancia no confunde palabras comunes con «pecho» (tercera revisión).
   ['de hecho tengo palpitaciones', 'Cardiología'],
+  // Cuarta revisión: «torácico» también es el pecho; la compañera perdona un
+  // error de tipeo; y las formas largas («pechito») se comparan exactas.
+  ['siento palpitaciones y dolor torácico', null],
+  ['tengo presión artrial', 'Cardiología'],
+  ['estaba arreglando el techito cuando sentí palpitaciones', 'Cardiología'],
   ['tengo la presión alta', 'Cardiología'],
   ['control de presión arterial', 'Cardiología'],
   ['se me baja la presión', 'Cardiología'],
