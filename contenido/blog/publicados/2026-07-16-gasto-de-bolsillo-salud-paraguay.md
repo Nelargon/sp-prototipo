@@ -1,12 +1,12 @@
 ---
-title: "Gasto de bolsillo: el número que explica para qué sirve un seguro de salud"
+title: "Cuando la salud se paga de tu bolsillo, la enfermedad pone el precio y la fecha"
 slug: "gasto-de-bolsillo-salud-paraguay"
 cover_dato: "36 % · sale del bolsillo"
 kicker: "El dato"
 categoria: "Entendé tu plan"
 date: "2026-07-16"
 minutes: 4
-description: "En Paraguay, más de un tercio del gasto en salud sale directo del bolsillo de las familias. Qué significa ese dato y cómo cambia con un seguro."
+description: "En Paraguay, más de un tercio del gasto en salud sale directo del bolsillo de las familias. Qué significa ese dato y cómo cambia con un plan de salud."
 intro: "Hay un número que los economistas de la salud miran antes que cualquier otro para entender cómo le va a un país: el gasto de bolsillo. Es la plata que las familias pagan directamente — en el momento — cuando alguien se enferma. Y el de Paraguay cuenta una historia que vale la pena conocer."
 tags: ["datos", "protección financiera"]
 sources:
@@ -59,9 +59,9 @@ La buena noticia: está cambiando. Según el
 [INE](https://www.ine.gov.py/noticias/2353/el-ine-comparte-los-datos-relevantes-sobre-el-acceso-a-la-salud-en-paraguay),
 la cobertura subió del 28,6 % en 2024 al 31 % en 2025.
 
-## Lo que hace un seguro, en una frase
+## Lo que hace un plan de salud, en una frase
 
-Un seguro de salud hace una sola cosa, y la hace bien: **convierte un
+Un plan de salud hace una sola cosa, y la hace bien: **convierte un
 gasto impredecible en una cuota predecible**.
 
 En lugar de que la enfermedad decida cuánto y cuándo pagás, lo decidís
@@ -76,5 +76,5 @@ más temprano, cuando tratarlos es más simple.
 ## Para los días malos, no los buenos
 
 El gasto de bolsillo es el número que mejor explica para qué existe un
-seguro de salud: **no para los días buenos, sino para que los días malos
+plan de salud: **no para los días buenos, sino para que los días malos
 no se lleven puesto todo lo demás.**
