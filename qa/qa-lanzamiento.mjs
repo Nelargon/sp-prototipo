@@ -294,12 +294,16 @@ console.log('\n── /planes/: la página única de detalle');
     escalon: /cosas mejoran|Subir un escalón/.test(document.body.textContent),
     haciaHome: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')).filter((h) => /#(cartilla|comparar)|\/que-cubre\//.test(h)),
     exclusiones: [...document.querySelectorAll('.excl-grid > div')].length,
+    orden: (() => { const a = [...document.querySelectorAll('.excl-grid a')].find((x) => /wa\.me\//.test(x.getAttribute('href') || '')); return a ? { href: a.getAttribute('href'), alto: a.getBoundingClientRect().height } : null; })(),
     plegables: [...document.querySelectorAll('.pleg')].map((e) => ({ abierto: e.dataset.abierto, inert: e.hasAttribute('inert'), alto: e.getBoundingClientRect().height })),
   }));
   if (r.filas !== 12) mal('/planes/: la tabla de servicios debería tener 11 filas más el encabezado (tiene ' + r.filas + ')'); else bien('/planes/: los once servicios a la vista');
   if (r.buscador || r.escalon) mal('/planes/ todavía muestra el buscador o «Subir un escalón»'); else bien('/planes/: sin buscador ni «Subir un escalón»');
   if (r.haciaHome.length) mal('/planes/ manda al home o a /que-cubre/: ' + r.haciaHome.join(', ')); else bien('/planes/: ningún link vuelve a la sección de planes del home');
-  if (r.exclusiones < 7) mal('/planes/: lo que no cubren debe estar a la vista (6 tarjetas + la nota)'); else bien('/planes/: lo que no cubren, a la vista');
+  if (r.exclusiones < 8) mal('/planes/: lo que no cubren debe estar a la vista (6 tarjetas + «¿Te preocupa alguna?» + la orden médica)'); else bien('/planes/: lo que no cubren, a la vista');
+  // «¿Tenés una orden del médico?» (6/10/2026): el buscador salió y esto es lo que
+  // lo reemplaza, con una persona. Tiene que ser un wa.me con el mensaje armado.
+  if (!r.orden || !/text=.*orden/i.test(decodeURIComponent(r.orden.href)) || r.orden.alto < 44) mal('/planes/: falta «Mandar la foto por WhatsApp» (wa.me con el mensaje de la orden, de 44 px o más)'); else bien('/planes/: «¿Tenés una orden del médico?» manda la foto por WhatsApp');
   if (r.plegables.length !== 2 || r.plegables.some((p) => p.abierto !== '0' || !p.inert || p.alto > 1)) mal('/planes/: el detalle fino debe arrancar plegado e inert'); else bien('/planes/: especialidades e internación, plegadas');
   for (const id of ['detalle-especialidades', 'detalle-internacion']) await page.click(`button[aria-controls="${id}"]`);
   await page.waitForTimeout(450);

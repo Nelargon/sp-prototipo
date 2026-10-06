@@ -279,10 +279,15 @@ un lugar»*. Pidió «la versión liviana».
   los once servicios, las 43 especialidades y las asesoras. Y no hay un solo
   dato de uso del buscador. Los dos pendientes que tenía (enlace al precio y a
   WhatsApp en los resultados) quedan guardados con él.
-  **Pendiente con SP:** si las asesoras le contestan a quien todavía no es
-  cliente si su orden médica entra. Si sí, en `/planes/` va una línea: «¿Tenés
-  una orden del médico? Mandanos la foto por WhatsApp y te decimos si entra».
-  Si la visación es solo para afiliados, esa línea no se puede prometer.
+  **Resuelto el 06/10/2026.** Se le preguntó a Arturo si las asesoras le
+  contestan por WhatsApp a quien todavía no es cliente si su orden entra; contestó:
+  *«Sí, las asesoras contestan órdenes por WhatsApp»*. Entró a `/planes/` la
+  tarjeta «¿Tenés una orden del médico?» con «Mandar la foto por WhatsApp»
+  (`wa.me` con el mensaje armado, `track('click_whatsapp', {origen:'planes_orden'})`),
+  junto a «¿Te preocupa alguna?». ⚠ Es la respuesta humana a lo que hacía el
+  buscador: si las asesoras dejaran de contestar órdenes de no clientes, esa
+  tarjeta no se puede dejar prometiéndolo. Medir cuánta gente la toca antes de
+  decidir si hace falta algo más.
 
 **Cómo se concilia con las decisiones de los días anteriores:**
 - *Las esperas (02 y 03/10).* La regla decía «ninguna espera en la vista rápida

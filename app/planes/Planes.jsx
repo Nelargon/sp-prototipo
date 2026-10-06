@@ -3,7 +3,7 @@
 import { Fragment, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
-import { fmt, plans, essentialTitular, AUTO_PAY_DISCOUNT } from '../quote';
+import { fmt, plans, essentialTitular, AUTO_PAY_DISCOUNT, WHATSAPP_NUMBER } from '../quote';
 import { coverage } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track } from '../track';
@@ -38,6 +38,12 @@ import datos from '../../lib/prestaciones.json';
    usuario NUNCA se nombra así (HANDOFF dec. 11o). */
 
 const PLAN_KEYS = ['e', 's', 'o'];
+
+// «¿Tenés una orden del médico?»: la respuesta a lo que hacía el buscador de
+// estudios («¿Está cubierto lo que me pidieron?»), dada por una persona. Las
+// asesoras contestan órdenes por WhatsApp (Arturo, 6/10/2026). Ver HANDOFF.
+const waDigits = String(WHATSAPP_NUMBER).replace(/\D/g, '');
+const WA_ORDEN = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Tengo una orden del médico y quiero saber si entra en un plan de Salud Protegida. Te mando la foto.');
 
 const titulo = (h, resalte, bajada) => (
   <div style={css('text-align:center;max-width:700px;margin:0 auto 26px')}>
@@ -253,6 +259,21 @@ export default function Planes() {
             <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);--sq:var(--r-md);padding:18px 20px;display:flex;flex-direction:column;justify-content:center')}>
               <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:6px')}>¿Te preocupa alguna?</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.6')}>Decíselo a tu asesor <b>antes de firmar</b>: te va a decir con qué contás y con qué no.</div>
+            </div>
+            <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line-strong);--sq:var(--r-md);padding:18px 20px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start')}>
+              <div className="disp" style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:6px')}>¿Tenés una orden del médico?</div>
+              <div style={css('font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.6')}>Mandanos la foto por WhatsApp y una asesora te dice si entra, antes de que elijas.</div>
+              <a
+                href={WA_ORDEN}
+                onClick={() => track('click_whatsapp', { origen: 'planes_orden' })}
+                target="_blank"
+                rel="noopener"
+                className="btn-wa-outline disp sq"
+                style={css('margin-top:12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;height:44px;padding:0 18px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-teal);font-size:14px;font-weight:700')}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>
+                Mandar la foto por WhatsApp
+              </a>
             </div>
           </div>
         </div>
