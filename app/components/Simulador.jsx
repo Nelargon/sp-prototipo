@@ -406,10 +406,14 @@ export default function Simulador() {
   ];
   const stepsList = checkNames.map((n, i) => {
     // Con plan pre-elegido, "Cobertura" (paso 2) queda marcado desde el arranque.
+    // El número de un paso que falta va en --sp-blue-soft: con --sp-blue-meta
+    // daba 3,3:1 sobre su círculo y se leía mal. Así da 4,6:1 y sigue apagado
+    // al lado del paso activo, que es blanco (sp-interno#141 punto 4, Arturo,
+    // 06/10/2026).
     const stepOf = i + 1, done = (planPreset && stepOf === 2) || d.step > stepOf || d.step >= 6, active = d.step === stepOf;
     return {
       name: n, num: String(i + 1), isDone: done, showNum: !done, value: done ? stepValueList[i] : '',
-      dot: 'flex:none;width:25px;height:25px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:var(--sp-teal-deep);color:#fff;' : active ? 'background:#fff;color:var(--sp-navy);box-shadow:inset 0 0 0 2px var(--sp-teal);' : 'background:rgba(255,255,255,0.12);color:var(--sp-blue-meta);'),
+      dot: 'flex:none;width:25px;height:25px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 220ms cubic-bezier(0.22,1,0.36,1);' + (done ? 'background:var(--sp-teal-deep);color:#fff;' : active ? 'background:#fff;color:var(--sp-navy);box-shadow:inset 0 0 0 2px var(--sp-teal);' : 'background:rgba(255,255,255,0.12);color:var(--sp-blue-soft);'),
       label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:#9fb8d2;font-weight:500;'),
     };
   });

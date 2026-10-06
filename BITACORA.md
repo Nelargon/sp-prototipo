@@ -4803,3 +4803,72 @@ de tres dígitos.
 - **Un hallazgo que aparece con tu propio cambio es tuyo,** aunque el cambio sea
   un arreglo. El PR no entra con un hallazgo nuevo: se entiende, se corrige y
   recién después se fusiona.
+
+## Capítulo 140 — La palabra con dos sentidos y la prueba que midió a mitad de la transición (06/10/2026)
+
+**Qué intentamos.** Cerrar tres puntos de la cita de decisiones del 06/10. Arturo
+contestó *«Adelante con todo»*: que «presión» no sugiera un turno cuando puede
+ser el pecho (`sp-interno#140`), que «Simulá Plan Vital» sea turquesa como todo
+botón lleno y que se lean los números del riel del simulador (`sp-interno#141`,
+puntos 5 y 4). Cada cambio entró con su prueba, y cada prueba se probó contra
+el caso que tiene que fallar.
+
+**Qué pasó.**
+- **«Presión» tenía dos sentidos.** En el diccionario de síntomas era la
+  presión arterial; escrita por una persona, también es «siento una presión en
+  el pecho». La prueba nueva lo reprodujo antes del arreglo: sugería
+  cardiología. Ahora la palabra necesita su compañera («alta», «baja» o
+  «arterial»). La primera versión la buscaba en toda la frase, y la revisión de
+  Codex encontró el hueco: en «siento presión en el pecho y fiebre alta», el
+  «alta» de la fiebre volvía a prender cardiología. Ahora la compañera tiene que
+  ir al lado (a dos palabras o menos), y si la frase habla del pecho no se
+  sugiere nada. Una segunda revisión encontró dos huecos más en esa guarda: con
+  «pehco» no reconocía el pecho, aunque el diccionario sí perdona errores de
+  tipeo, y «palpitaciones» volvía a prender la misma entrada por otra palabra.
+  Ahora el pecho apaga la entrada del corazón entera, con la misma tolerancia.
+  La tercera revisión encontró el exceso contrario: con esa tolerancia, «de
+  hecho tengo palpitaciones» también apagaba cardiología, porque «hecho» está a
+  una letra de «pecho». Las palabras comunes que quedan a una letra («hecho»,
+  «techo», «echo») ya no cuentan como pecho. La cuarta trajo tres casos más
+  finos: «dolor torácico», «presión artrial» y «techito», que está a una letra
+  de «pechito». La lista de palabras comunes iba a crecer sin fin, así que se
+  cambió por una regla: la tolerancia vale solo para las palabras base
+  («pecho», «tórax»), y las formas largas van exactas.
+  El punto ofrecía dos caminos, corregir ya o esperar la revisión
+  médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
+  preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
+  opción que ya no está.
+- **La prueba de la prueba no fallaba.** Para ver si los detectores nuevos
+  marcaban el caso malo, puse en el navegador los colores viejos (el azul
+  marino en el botón, `--sp-blue-meta` en los números) y medí. No marcaron
+  nada: el botón seguía «turquesa» y el riel, en 4,65:1. Los dos elementos
+  tienen una `transition`, y un estilo leído justo después de cambiarlo
+  devuelve el valor de partida. Esperando 600 ms, marcaron los dos, y el riel
+  dio 3,28:1, el mismo número que había medido la revisión visual.
+
+**Qué aprendimos.**
+- **Una palabra con dos sentidos lleva su compañera, y la compañera va al
+  lado.** Antes de sumar una palabra al diccionario de síntomas, la pregunta es
+  si puede querer decir algo urgente. Si puede, o no entra o entra acompañada.
+  Y que la compañera esté en la frase no alcanza: tiene que estar hablando de
+  esa palabra.
+- **Una guarda tiene que entender lo mismo que lo que vigila.** Si el
+  diccionario perdona un error de tipeo y la guarda no, el error de tipeo abre
+  la puerta. Y una guarda puesta en una palabra se saltea por otra palabra de
+  la misma entrada: va en la entrada. Y la tolerancia corta para los dos
+  lados: si perdona de más, confunde palabras comunes («de hecho») con lo que
+  vigila. Cada caso que se encontró quedó como prueba, para que no vuelva.
+- **Cuando una lista de excepciones empieza a crecer, hace falta una regla.**
+  Y hay que saber dónde está la red de verdad. Cuatro rondas de revisión
+  afinaron el diccionario, y ninguna podía volverlo seguro por sí solo: con
+  palabras sueltas siempre queda otra forma de decir lo mismo. No hace falta
+  que lo sea. La red es la línea de emergencias, que está fija y a la vista
+  escriba lo que escriba la persona. Por eso, después de la cuarta ronda, se
+  fusionó con la CI en verde y no se pidió una quinta.
+- **Medir justo después de cambiar un estilo es medir a mitad de la
+  transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
+  que termine, o se mide sin transición.
+- **Un detector que no falla en su caso malo no está probado,** aunque dé verde
+  en el bueno. Esta vez la falla estaba en cómo lo probé y no en el detector,
+  pero eso solo se supo porque no di el verde por bueno.
+

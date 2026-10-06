@@ -356,7 +356,10 @@ export default function Planes() {
         </div>
       </section>
 
-      {/* ---- 6. VITAL + CIERRE ------------------------------------------ */}
+      {/* ---- 6. VITAL + CIERRE ------------------------------------------
+          «Simulá Plan Vital» va en turquesa como todo botón lleno: ningún plan
+          tiene color propio, tampoco Vital (lámina 74 A; Arturo confirmó que
+          Vital sigue la regla el 06/10/2026, sp-interno#141 punto 5). */}
       <section style={css('padding:60px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           <div className="two-col sq" style={css('background:var(--sp-blue-bg);border:0.5px solid var(--sp-blue-line);--sq:var(--r-md);padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center')}>
@@ -365,7 +368,7 @@ export default function Planes() {
               <div className="disp" style={css('font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900);margin-bottom:6px')}>Plan aparte · 65 años o más</div>
               <div style={css('font-family:var(--font-inter),sans-serif;font-size:16px;color:var(--sp-text);line-height:1.55')}>¿Buscás para tus padres o un adulto mayor? <b style={css('color:var(--sp-navy)')}>Plan Vital</b> está pensado para ellos: consultas, urgencias 24 h y ambulancia a domicilio.</div>
             </div>
-            <a href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'planes_senior' })} className="btn-navy sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-navy);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap')}>Simulá Plan Vital</a>
+            <a href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'planes_senior' })} className="btn-teal sq" style={css('height:46px;padding:0 22px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap')}>Simulá Plan Vital</a>
           </div>
         </div>
       </section>

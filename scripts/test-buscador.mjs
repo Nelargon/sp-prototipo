@@ -124,6 +124,30 @@ const SINTOMAS = [
   ['me duele el pecho', null],
   ['me falta el aire', null],
   ['malestar general', null],
+  // «presión» sola puede ser el pecho, que puede ser una urgencia: sugiere
+  // cardiología solo si viene con «alta», «baja» o «arterial» (sp-interno#140,
+  // Arturo, 06/10/2026).
+  ['siento una presión en el pecho', null],
+  // La compañera tiene que ir al lado de «presión», y si la frase habla del
+  // pecho no se sugiere cardiología (lo encontró la revisión de Codex en #254).
+  ['siento presión en el pecho y fiebre alta', 'Clínica Médica'],
+  ['tengo presión alta y me duele el pecho', null],
+  // El pecho apaga toda la entrada del corazón, no solo «presión», y con la
+  // misma tolerancia a errores de tipeo que el resto (segunda revisión de Codex).
+  ['siento palpitaciones y dolor en el pecho', null],
+  ['tengo presión alta y dolor de pehco', null],
+  ['tengo palpitaciones', 'Cardiología'],
+  ['tengo la presión alta hace mucho', 'Cardiología'],
+  // La tolerancia no confunde palabras comunes con «pecho» (tercera revisión).
+  ['de hecho tengo palpitaciones', 'Cardiología'],
+  // Cuarta revisión: «torácico» también es el pecho; la compañera perdona un
+  // error de tipeo; y las formas largas («pechito») se comparan exactas.
+  ['siento palpitaciones y dolor torácico', null],
+  ['tengo presión artrial', 'Cardiología'],
+  ['estaba arreglando el techito cuando sentí palpitaciones', 'Cardiología'],
+  ['tengo la presión alta', 'Cardiología'],
+  ['control de presión arterial', 'Cardiología'],
+  ['se me baja la presión', 'Cardiología'],
 ];
 console.log('');
 let nSint = 0;
