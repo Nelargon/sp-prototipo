@@ -1211,9 +1211,17 @@ auténtico en eso»* (BITACORA cap. 98).
 
 **Cómo se usa.** `IconoSP` (`app/components/IconoSP.jsx`) con `nombre` y
 `size`; el mismo ícono sirve en cualquier fondo. Los dibujos están en
-`app/components/iconos-sp.js`: 19 dibujos en un cuadro de 48×48. Un dibujo
+`app/components/iconos-sp.js`: 25 dibujos en un cuadro de 48×48. Un dibujo
 nuevo va ahí, en la misma mano y simple: lo que limita el tamaño es el
 detalle, no el estilo.
+
+**También son los de las presentaciones (06/10/2026, decisión de Arturo).**
+Ese archivo es la fuente de los íconos de todo SP: la skill
+`sp-presentaciones` (`sp-interno/skills-cuenta/`) los exporta a SVG para los
+decks con su `iconos/exportar.py`. Seis dibujos nuevos entraron por los
+informes: `megafono`, `celular`, `personas`, `uno`, `dos` y `tres`. El sitio
+todavía no los usa. Si un deck necesita un ícono que no existe, se dibuja con
+la misma mano y entra acá (lámina 77 de `docs/diseno/`).
 
 **Dónde se aplicó (9 lugares):**
 - Inicio: «Lo que casi nadie te garantiza» (papel con lupa, casa con la cruz,

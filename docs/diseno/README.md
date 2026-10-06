@@ -1844,3 +1844,32 @@ su forma la decide Arturo. Claude la arregló primero con la fila partida y la
 deshizo antes de publicar, al encontrar que Arturo ya la había descartado el
 27/09 (lámina 57; BITACORA cap. 137). La lección: recomendar «arreglarla» sin
 decir con qué forma dejó la decisión importante sin tomar.
+
+## Parte 24 · Los íconos salen del sitio y llegan a las presentaciones (06/10/2026)
+
+Al rehacer un informe mensual de Instagram en el formato de presentaciones de
+SP (skill `sp-presentaciones`, en `sp-interno`), Arturo pidió los íconos
+propios también en los decks: *«tenemos que tener como un motor de iconos en
+nuestro repositorio y ir agregando a medida que la necesidad surge»*. Y al ver
+el trazo a mano en una diapositiva: *«Esa es la línea gráfica de nuestros
+iconos, entonces podemos ir usándolos»*.
+
+### 77 · Una sola mano para todo SP
+
+![Los seis íconos nuevos (megáfono, celular, personas y los números 1, 2 y 3) a 96 px sobre fondo claro y sobre navy, y abajo tres del sitio para comparar la mano](img/2026-10-06-iconos-presentaciones.webp)
+
+**Qué muestra.** Los seis dibujos que pidió el informe: el megáfono (la pauta),
+el celular (el feed), dos personas (la audiencia) y los números 1, 2 y 3 (los
+hallazgos). Van a 96 px, el tamaño de una diapositiva de 1920 × 1080, sobre los
+dos fondos de un deck. Abajo, tres íconos que ya estaban en el sitio, para ver
+que la mano es la misma.
+
+**Qué se decidió y por qué.** **Los dibujos viven en
+`app/components/iconos-sp.js`, también los de las presentaciones**, y la skill
+los exporta a SVG desde ahí (Arturo, 06/10/2026, entre esta opción, una
+biblioteca en el Centro de Marca y dejarlos solo en la skill). Si cada lugar
+dibujara los suyos, en un año habría dos manos. Y la regla para sumar uno es la
+del sitio: si ninguno sirve, se dibuja. Arturo: *«si un icono ya obedece a una
+necesidad, se puede usar ese icono. Si vemos que no obedece muy bien a esa
+necesidad, te pido que hagas un nuevo icono»*. El sitio todavía no usa estos
+seis; están para cuando les toque.
