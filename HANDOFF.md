@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 5 oct 2026.*
+*Última actualización: 6 oct 2026.*
 
 ---
 
@@ -50,9 +50,10 @@ mantenía colores por plan. Desde ese día su fuente vive en
 `sp-interno/skills-cuenta/sp-brand-identity/` y la **v3.1** trae estas reglas
 (sombras en tres niveles en pantallas, ningún plan con color propio; el «hasta
 4 px» queda para impresos), con `sp-interno#143`. Se publica sola en el release
-`skills` de `sp-interno`. **Falta solo que Arturo la instale en su cuenta**
-(`sp-interno#144`). Hasta entonces, si una sesión lee la versión vieja, valen
-las reglas de acá.
+`skills` de `sp-interno`. **Arturo la instaló en su cuenta el 06/10/2026**,
+junto con el diseñador v1.1 (`sp-interno#144`, cerrado). Cuando una de las dos
+cambie, el CI la vuelve a publicar en el mismo release y se reinstala igual. Si
+una sesión lee una versión vieja, valen las reglas de acá.
 
 ---
 
