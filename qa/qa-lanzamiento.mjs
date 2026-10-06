@@ -313,6 +313,15 @@ console.log('\n── /planes/: la página única de detalle');
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const menu = await page.$$eval('.navmenu-card a', (as) => as.map((a) => a.getAttribute('href') || ''));
   if (menu.some((h) => /#(cartilla|comparar)|\/que-cubre\//.test(h))) mal('el menú de la barra manda a #cartilla / #comparar o a /que-cubre/'); else bien('el menú de la barra no vuelve al home por planes');
+  // «Plan Vital · 65 años o más» abre el simulador con Vital elegido, como los
+  // botones «Simulá Plan Vital» (sp-interno#139, 06/10/2026). El home tiene su
+  // propio menú: se miran los dos.
+  for (const ruta of ['/planes/', '/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const vital = await page.$$eval('.navmenu-card a', (as) => as.filter((a) => /Plan Vital/.test(a.textContent)).map((a) => a.getAttribute('href') || ''));
+    if (!vital.length || vital.some((h) => !h.endsWith('/simulador/?plan=vital'))) mal(ruta + ': el ítem «Plan Vital» del menú no abre el simulador con Vital (' + vital.join(', ') + ')');
+    else bien(ruta + ': el ítem «Plan Vital» del menú abre el simulador con Vital');
+  }
   await page.close();
 }
 

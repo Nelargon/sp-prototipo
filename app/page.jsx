@@ -488,7 +488,7 @@ export default function Page() {
               <div className="navmenu">
                 <div className="navmenu-card">
                   <a href="#comparar" className="navmenu-item"><span className="navmenu-t">Essential, Silver y Gold</span><span className="navmenu-s">Compará qué gana cada nivel y cuánto sale</span></a>
-                  <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
+                  <a href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'nav_menu_vital' })} className="navmenu-item"><span className="navmenu-t">Plan Vital · 65 años o más</span><span className="navmenu-s">Pensado para tus padres o un adulto mayor</span></a>
                   <a href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} className="navmenu-item"><span className="navmenu-t">Simulá tu plan</span><span className="navmenu-s">Unas preguntas y ves el precio, en 1 minuto</span></a>
                                   </div>
               </div>
