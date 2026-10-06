@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 5 oct 2026.*
+*Última actualización: 6 oct 2026.*
 
 ---
 
