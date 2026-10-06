@@ -1873,3 +1873,15 @@ del sitio: si ninguno sirve, se dibuja. Arturo: *«si un icono ya obedece a una
 necesidad, se puede usar ese icono. Si vemos que no obedece muy bien a esa
 necesidad, te pido que hagas un nuevo icono»*. El sitio todavía no usa estos
 seis; están para cuando les toque.
+
+### 78 · Si ninguno sirve, se dibuja
+
+![Los números 1, 2, 3 y el 4 nuevo, a 96 px, sobre fondo claro y sobre navy](img/2026-10-06-iconos-cuatro.webp)
+
+**Qué muestra.** El 4 al lado del 1, el 2 y el 3. Se dibujó el mismo 06/10, cuando
+una lámina de decisiones tuvo cuatro preguntas y solo había tres números.
+
+**Qué se decidió y por qué.** **Entra** (Arturo, 06/10/2026). Es la primera
+vuelta del flujo de la lámina 77: el dibujo se hizo con la misma mano, se probó
+en su lugar y a su tamaño real como borrador de la skill, y recién con el OK pasó
+a `iconos-sp.js`. Los números del 5 al 9 se dibujan cuando una lámina los pida.
