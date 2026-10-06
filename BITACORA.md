@@ -4826,6 +4826,10 @@ el caso que tiene que fallar.
   «pehco» no reconocía el pecho, aunque el diccionario sí perdona errores de
   tipeo, y «palpitaciones» volvía a prender la misma entrada por otra palabra.
   Ahora el pecho apaga la entrada del corazón entera, con la misma tolerancia.
+  La tercera revisión encontró el exceso contrario: con esa tolerancia, «de
+  hecho tengo palpitaciones» también apagaba cardiología, porque «hecho» está a
+  una letra de «pecho». Las palabras comunes que quedan a una letra («hecho»,
+  «techo», «echo») ya no cuentan como pecho.
   El punto ofrecía dos caminos, corregir ya o esperar la revisión
   médica. El segundo ya no existía: el 04/10 Arturo dijo que no hay
   preaprobación. Un punto escrito antes de una regla nueva puede ofrecer una
@@ -4847,7 +4851,9 @@ el caso que tiene que fallar.
 - **Una guarda tiene que entender lo mismo que lo que vigila.** Si el
   diccionario perdona un error de tipeo y la guarda no, el error de tipeo abre
   la puerta. Y una guarda puesta en una palabra se saltea por otra palabra de
-  la misma entrada: va en la entrada.
+  la misma entrada: va en la entrada. Y la tolerancia corta para los dos
+  lados: si perdona de más, confunde palabras comunes («de hecho») con lo que
+  vigila. Cada caso que se encontró quedó como prueba, para que no vuelva.
 - **Medir justo después de cambiar un estilo es medir a mitad de la
   transición.** Es el mismo golpe que el `scroll-behavior:smooth`: se espera a
   que termine, o se mide sin transición.

@@ -138,6 +138,8 @@ const SINTOMAS = [
   ['tengo presión alta y dolor de pehco', null],
   ['tengo palpitaciones', 'Cardiología'],
   ['tengo la presión alta hace mucho', 'Cardiología'],
+  // La tolerancia no confunde palabras comunes con «pecho» (tercera revisión).
+  ['de hecho tengo palpitaciones', 'Cardiología'],
   ['tengo la presión alta', 'Cardiología'],
   ['control de presión arterial', 'Cardiología'],
   ['se me baja la presión', 'Cardiología'],
