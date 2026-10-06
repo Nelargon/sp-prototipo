@@ -762,8 +762,11 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
     usosToken += (t.match(/var\(--sp-|var\(--r-/g) || []).length;
     // El bloque :root es la DECLARACIÓN de los tokens: sus hex son el sistema,
     // no una fuga del sistema. Contarlos sería castigar al que define.
-    const cuerpo = /globals\.css$/.test(f) ? t.replace(bloqueRoot, '') : t;
+    // Los comentarios no son colores: «sp-interno#141» en un comentario se leía
+    // como #114411 y armó un hallazgo falso el 06/10/2026 (BITACORA cap. 139).
+    const cuerpo = (/globals\.css$/.test(f) ? t.replace(bloqueRoot, '') : t).replace(/\/\*[\s\S]*?\*\//g, '');
     for (const ln of cuerpo.split('\n')) {
+      if (/^\s*\/\//.test(ln)) continue;
       for (const m of ln.matchAll(/#([0-9A-Fa-f]{3,8})\b/g)) {
         const h = m[1];
         if (![3, 4, 6, 8].includes(h.length)) continue;

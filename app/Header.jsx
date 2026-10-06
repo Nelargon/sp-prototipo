@@ -89,7 +89,7 @@ export default function Header({ variant = 'dark' }) {
               <a href={`${BP}/planes/`} className="nav-link nav-link-menu" style={menuTriggerStyle}>Planes {chev}</a>
               <div className="navmenu"><div className="navmenu-card">
                 <Item href={`${BP}/planes/`} onClick={() => track('nav_planes', { origen: 'nav_menu' })} t="Essential, Silver y Gold" s="Qué trae cada plan, cuánto sale y lo que no cubre" />
-                <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
+                <Item href={`${BP}/simulador/?plan=vital`} onClick={() => track('cta_simulador', { origen: 'nav_menu_vital' })} t="Plan Vital · 65 años o más" s="Pensado para tus padres o un adulto mayor" />
                 <Item href={`${BP}/simulador/`} onClick={() => track('cta_simulador', { origen: 'nav_menu' })} t="Simulá tu plan" s="Unas preguntas y ves el precio, en 1 minuto" />
               </div></div>
             </div>
