@@ -17,6 +17,45 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🎨 07/10/2026: LA MARCA EN TRES ARTEFACTOS (VITRINA, MOTOR Y CAPA INTERNA)
+
+Arturo pidió el sistema de diseño en un artefacto, *«con todos los detalles,
+inclusive con lo del brand center»*, para promocionar la marca y hacer piezas
+(«1C, 2C, 3C, 4A, 5A» y «1B, 2A, 3A, 4A, 5A», 07/10/2026). Quedaron tres partes,
+cada una con su fuente:
+
+- **Marca Salud Protegida**, la vitrina con el taller:
+  https://claude.ai/artifact/EbRBjVG8FpLZa7mfDsnWkM.
+  - Fuente: `sp-brandcenter/vitrina.html` y `vitrina/`. Es privada hasta que
+    Arturo la comparta.
+  - El taller arma post, historia, cuadrado, imagen para compartir de
+    1200 × 630, diapositivas, membrete A4, tarjeta, firma de correo y WhatsApp.
+  - Antes de dejar bajar una pieza, revisa el texto con las reglas de este
+    CLAUDE.md. Frena con las palabras prohibidas, «seguro», los superlativos,
+    una cifra sin fuente o una cita sin consentimiento. Marca para mirar
+    «carencia» antes de «tiempo de espera», el formato de las cifras, y voseo o
+    usted según el canal.
+- **Sistema visual de SP**, el motor:
+  https://claude.ai/artifact/PUAvBZBLoWwyiCDxYCHVTq.
+  - Ahora trae la marca completa del Centro de Marca en las secciones 09 a 22.
+  - Es el que leen las diapositivas y los diseños de Claude.
+- **La capa interna** vive en `sp-interno/marca-interna/`. Este repo no la enlaza.
+
+Lo que queda para quien siga:
+
+- **Regla nueva (Arturo, 07/10/2026): ningún dibujo, patrón ni recurso gráfico
+  sale del isotipo** (lámina 80, BITACORA cap. 142). El porqué está en
+  `sp-interno`.
+- **El logo de las piezas vive en un solo lugar:** `SP_LOGOS`, en
+  `sp-brandcenter/vitrina/marca.js`. Si el sitio cambia de logo, se cambia también
+  ahí y se vuelven a publicar los artefactos.
+- **El Centro de Marca y el sitio dicen distinto en seis reglas:** el ámbar
+  como botón, «Gs.» o «₲», la forma del teléfono, el color de los títulos
+  chicos, el tamaño de los íconos y los narrativos juntos. Decide Arturo en
+  `sp-interno#164`. Hasta entonces el sitio no cambia.
+
+---
+
 ## 🎨 05/10/2026: TÍTULOS SIN PUNTO, PLANES EN TURQUESA Y TRES NIVELES DE SOMBRA
 
 Arturo eligió las tres recomendaciones de las láminas 73 a 75

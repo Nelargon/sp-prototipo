@@ -1918,3 +1918,42 @@ antes de mostrarla. Y cuando una tabla no entra, conviene separar lo que no
 entra (las descripciones) de lo que sí (las esperas), que además es lo que
 cambia la elección (BITACORA cap. 141).
 
+## Parte 26 · La vitrina de la marca (07/10/2026)
+
+Arturo pidió pasar el sistema de diseño a un artefacto *«con todos los detalles,
+inclusive con lo del brand center»*, que sirviera para promocionar la marca y
+trajera los recursos para hacer piezas: *«Quiero que sea nivel dios»*. Eligió
+una vitrina adelante y un kit detrás, en dos capas (una pública y una interna),
+y un taller de plantillas *«tipo Canva dentro del artefacto»* («1C, 2C, 3C, 4A,
+5A», 07/10/2026).
+
+### 80 · Una vitrina enseña con lo que muestra
+
+![La vitrina contada de tres maneras en el celular: A · La línea, B · La muestra (recomendada) y C · El taller](img/2026-10-07-vitrina-direcciones-celular.webp)
+
+![Las mismas tres direcciones en la computadora, a 1280 px](img/2026-10-07-vitrina-direcciones-compu.webp)
+
+**Qué muestra.** La misma vitrina, con la portada, el color y el taller, contada
+de tres maneras en el celular y en la computadora:
+
+- **A · La línea:** un trazo turquesa recorre la página y une cada parte.
+- **B · La muestra:** bandas de color a todo el ancho y letras enormes, como el
+  muestrario de una imprenta.
+- **C · El taller:** la página abre haciendo una pieza y explica el sistema
+  después.
+
+**Qué se decidió y por qué.** **B**, la recomendada (Arturo, 07/10/2026, «1B»):
+solo usa lo que ya existe. La A cayó antes de elegir. Su portada tenía un dibujo
+armado con la construcción del isotipo (el arco abierto y tres personas con la
+cabeza en anillo), y era lo primero que se veía. Arturo: *«Esta imagen que es
+realmente? Nada que ver. No entiendo por qué está esto»*, y *«yo sé que quiere
+ser creativo con estas cosas, pero en este caso no tiene mucho sentido y se ve
+feo»*. Desde ese día ningún dibujo, patrón ni recurso gráfico sale del isotipo.
+El porqué completo está en `sp-interno`.
+
+**La lección.** Un recurso nuevo con la forma del logo se lee como un logo
+falso: no es la marca y se le parece a propósito. Y en una vitrina de marca todo
+lo que aparece se copia como regla, así que lo que no está aprobado no entra ni
+como adorno. Si una opción depende de un recurso nuevo, ese recurso se muestra
+aparte y rotulado, no en la portada (BITACORA cap. 142).
+
