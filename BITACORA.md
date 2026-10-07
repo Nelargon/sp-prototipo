@@ -4916,3 +4916,49 @@ encabezado, que también llevaba la clase `solo-cel`.
   ve.** «El primero que encuentres» puede ser el escondido. Se usa `:visible` o
   una clase propia de cada forma. Es el mismo golpe del cap. 90: al cambiar
   cómo se escribe algo, se revisan los guardianes que leían la forma vieja.
+
+## Capítulo 142 — El dibujo que se parecía al logo (07/10/2026)
+
+**Qué intentamos.** Arturo pidió pasar el sistema de diseño a un artefacto con
+todo lo del Centro de Marca, para promocionar la marca y para hacer piezas. Se
+armó en tres partes, sin copiar datos. El **motor** es el «Sistema visual de
+SP», el artefacto que leen las diapositivas de Claude, completado con las 14
+secciones del Centro de Marca, los 18 logos, los 26 íconos y los 12 aliados.
+La **vitrina** es «Marca Salud Protegida», que tiene la fuente en
+`sp-brandcenter/vitrina.html` y trae un taller de piezas. La **capa interna**
+vive en `sp-interno/marca-interna/`. Antes de construir la vitrina se le mostraron
+tres direcciones en la lámina 80.
+
+**Qué pasó.** La dirección A abría con un dibujo nuevo: el arco abierto y tres
+personas con la cabeza en anillo, la misma construcción del isotipo. La nota
+de la columna decía «si se elige, lo valida quien diseñe», pero eso no
+alcanzaba. El dibujo estaba en la portada y era lo primero que se veía. Arturo
+preguntó qué era (*«Nada que ver. No entiendo por qué está esto»*) y cerró el
+tema: *«se ve feo»*, y lo que tenga que ver con el isotipo, *«olvidate»*. La
+misma idea estaba ya publicada: la portada del «Sistema visual de SP» del 06/10
+usaba como dibujo a las personas del isotipo. Se cambió por bandas de color y la
+escala de esquinas del sistema, que es la regla que el sistema más repite.
+
+En el camino aparecieron otras cosas:
+- **Seis reglas que el Centro de Marca y el sitio dicen distinto.** El ámbar
+  como botón, «Gs.» o «₲», la forma del teléfono, el color de los títulos
+  chicos, el tamaño de los íconos y los narrativos juntos. Quedaron marcadas
+  «Sin resolver» y van a `sp-interno#164`.
+- **Tres errores medidos, corregidos** (`sp-brandcenter#7`): blanco sobre
+  Turquesa 500 da 2,37:1; el gris de las notas da 2,97:1; y el diagrama de
+  resguardo rotulaba una «a» minúscula.
+- **El artefacto no acepta `.zip`.** Los paquetes se bajan del Centro de Marca,
+  que sigue siendo la única fuente.
+
+**Qué aprendimos.**
+- **Un recurso nuevo con la forma del logo se lee como un logo falso.** No es la
+  marca y se le parece a propósito. Una nota al pie no lo arregla si el dibujo
+  es lo primero que se ve.
+- **En una vitrina de marca, todo lo que aparece se copia como regla.** Lo que
+  no está aprobado no entra ni como adorno. La dirección elegida (B) es la que
+  solo usa lo que ya existe.
+- **Si una opción depende de un recurso nuevo, ese recurso se muestra aparte y
+  rotulado.** Primero se pregunta si sirve. Recién después se ve dónde va.
+- **Antes de dibujar con el logo, se mira qué pasa con el logo.** Este no se
+  toca como recurso gráfico hasta nuevo aviso (el porqué está en `sp-interno`).
+
