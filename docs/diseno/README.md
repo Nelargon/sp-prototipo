@@ -1885,3 +1885,36 @@ una lámina de decisiones tuvo cuatro preguntas y solo había tres números.
 vuelta del flujo de la lámina 77: el dibujo se hizo con la misma mano, se probó
 en su lugar y a su tamaño real como borrador de la skill, y recién con el OK pasó
 a `iconos-sp.js`. Los números del 5 al 9 se dibujan cuando una lámina los pida.
+
+## Parte 25 · La comparativa del celular, confirmada y construida (07/10/2026)
+
+El 06/10 Arturo pidió ver la maqueta de la lámina 59 para revisarla en su
+celular. Antes de mandársela, se puso al día con lo que él había decidido
+después (las cinco líneas del 29/09, las esperas fuera de las tarjetas del
+03/10, sin buscador desde el 04/10). La maqueta del 06/10 está en
+`sp-interno/project/comparativa-2026-09-27/maqueta-celular-2026-10-06.html`.
+
+### 79 · Tarjetas iguales, el detalle al tocar y las esperas aparte
+
+![La página /planes a 390 px en tres pantallas: quiénes entran, lo que tienen los tres y la tarjeta de Essential; la hoja de Internación con los tres planes y su espera; y el cuadro «Cuánto esperás para usarlo»](img/2026-10-07-comparativa-celular-construida.webp)
+
+**Qué muestra.** La comparativa ya construida en `/planes/`, a 390 px. A la
+izquierda, los cuatro grupos de «quiénes entran», lo que tienen los tres y la
+primera tarjeta, con sus cinco líneas. En el medio, lo que se abre al tocar
+«Internación» en Essential: el tema en los tres planes, con su espera, y el plan
+tocado marcado. A la derecha, las nueve esperas en un cuadro aparte.
+
+**Qué se decidió y por qué.** Arturo contestó «1A, 2A, 3A, 4A» (07/10/2026):
+la forma tal cual, los once servicios en una hoja que sube y no plegados al
+final (no alarga la página y se cierra volviendo al mismo lugar), el botón «Vos
+con tus hijos» (sin él, una madre o un padre con dos hijos veía el precio de
+una pareja con dos hijos) y la pregunta de precios a SP como punto de revisión.
+La única pieza nueva frente a la lámina 59 es el cuadro de esperas: la tabla de
+once servicios no entra en el celular, pero las esperas son palabras cortas y
+sí entran. En la computadora la tabla sigue igual (lámina 46).
+
+**La lección.** Una maqueta que espera una decisión envejece: se pone al día
+antes de mostrarla. Y cuando una tabla no entra, conviene separar lo que no
+entra (las descripciones) de lo que sí (las esperas), que además es lo que
+cambia la elección (BITACORA cap. 141).
+

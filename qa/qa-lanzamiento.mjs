@@ -352,7 +352,9 @@ console.log('\n── /planes/: la página única de detalle');
   // track() hasta que haya backend.
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
-  const pal = page.locator('button.txt', { hasText: 'carencia' }).first();
+  // :visible — la comparativa del celular también tiene su «carencia», escondida
+  // en la computadora (07/10/2026).
+  const pal = page.locator('button.txt:visible', { hasText: 'carencia' }).first();
   const aExpl = async () => (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
   if (!(await pal.count())) mal('/planes/: no está la palabra «carencia» con su explicación');
   else {
@@ -368,6 +370,86 @@ console.log('\n── /planes/: la página única de detalle');
     if (ev.length !== 1 || ev[0].datos?.tipo !== 'glosario' || ev[0].datos?.clave !== 'carencia') mal('/planes/: abrir «carencia» dos veces tiene que mandar un solo abre_explicacion de glosario (' + JSON.stringify(ev) + ')');
     else bien('/planes/: abrir «carencia» se mide, una sola vez por página');
   }
+  await page.close();
+}
+
+// ── /planes/ en el celular: tarjetas iguales y el detalle al tocar ─────────
+// (lámina 59; Arturo la confirmó el 07/10/2026 con «1A, 2A, 3A, 4A».) Hasta
+// 640 px la tabla de once servicios no se ve: se deslizaba de costado y al
+// llegar mostraba solo Essential. En su lugar, quiénes entran (cuatro grupos),
+// tres tarjetas con las mismas cinco líneas en el mismo orden, cada línea abre
+// el tema en los tres planes, las esperas en un cuadro que entra y los once
+// servicios en una hoja. Se prueba con el dedo, en 360 y 390.
+console.log('\n── /planes/ en el celular: tarjetas iguales y el detalle al tocar');
+for (const width of [360, 390]) {
+  const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  await page.addInitScript(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const n = 'móvil ' + width;
+  const r = await page.evaluate(() => {
+    const cel = document.querySelector('.cmp-cel');
+    const tabla = document.querySelector('.pl-inner');
+    const cards = cel ? [...cel.querySelectorAll('article')] : [];
+    const temas = cards.map((c) => [...c.querySelectorAll('.linea-cel')].map((l) => l.textContent.split(':')[0]).join('|'));
+    const celdas = [...document.querySelectorAll('.esp-f [role=cell]')];
+    return {
+      cel: !!cel && getComputedStyle(cel).display !== 'none',
+      tablaVisible: !!tabla && tabla.getClientRects().length > 0,
+      cards: cards.length,
+      lineas: cards.map((c) => c.querySelectorAll('.linea-cel').length),
+      mismoOrden: temas.length === 3 && temas.every((t) => t === temas[0]),
+      grupos: cel ? cel.querySelectorAll('[role=group] button[aria-pressed]').length : 0,
+      precios: cards.map((c) => c.querySelector('.num-tnum')?.textContent),
+      esperas: document.querySelectorAll('.esp-f[role=row]').length,
+      celdasQueSeSalen: celdas.filter((e) => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > e.parentElement.getBoundingClientRect().right + 0.5).length,
+    };
+  });
+  if (!r.cel || r.tablaVisible) mal(n + ': /planes/ tiene que mostrar la comparativa del celular y no la tabla que se desliza (' + JSON.stringify({ cel: r.cel, tabla: r.tablaVisible }) + ')');
+  else bien(n + ': la comparativa del celular reemplaza a la tabla que se deslizaba');
+  if (r.cards !== 3 || r.lineas.some((x) => x !== 5) || !r.mismoOrden) mal(n + ': las tres tarjetas tienen que tener las mismas cinco líneas, en el mismo orden (' + JSON.stringify({ cards: r.cards, lineas: r.lineas, mismoOrden: r.mismoOrden }) + ')');
+  else bien(n + ': tres tarjetas con las mismas cinco líneas, en el mismo orden');
+  if (r.esperas !== 10 || r.celdasQueSeSalen) mal(n + ': el cuadro de esperas tiene que traer las nueve esperas del simulador y entrar entero (' + JSON.stringify({ filas: r.esperas, seSalen: r.celdasQueSeSalen }) + ')');
+  else bien(n + ': las nueve esperas, a la vista y sin salirse del cuadro');
+  if (r.grupos !== 4) { mal(n + ': faltan los cuatro grupos de «quiénes entran» (hay ' + r.grupos + ')'); }
+  else {
+    await page.locator('.cmp-cel [role=group] button', { hasText: 'Vos con tus hijos' }).tap();
+    const hijos = await page.$$eval('.cmp-cel article .num-tnum', (es) => es.map((e) => e.textContent));
+    if (hijos.some((x, i) => x === r.precios[i])) mal(n + ': «Vos con tus hijos» no cambia el precio de las tres tarjetas (' + r.precios.join(', ') + ' → ' + hijos.join(', ') + ')');
+    else bien(n + ': «Vos con tus hijos» cambia el precio de las tres tarjetas');
+  }
+  // Una línea se toca y abre el tema en los tres planes, en la hoja; se cierra y queda inert.
+  const linea = page.locator('.cmp-cel article').nth(1).locator('.linea-cel').nth(1);
+  if (!(await linea.count())) mal(n + ': no hay líneas para tocar');
+  else {
+    await linea.scrollIntoViewIfNeeded();
+    await linea.tap();
+    await page.waitForTimeout(450);
+    const h = await page.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"]'); return d ? { bloques: d.querySelectorAll('.hoja-cuerpo .sq').length, actual: [...d.querySelectorAll('.hoja-cuerpo .sq')].findIndex((b) => /0 0 0 1px/.test(b.getAttribute('style') || '')) } : null; });
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(450);
+    const inert = await page.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja'); return d && d.dataset.abierta === '0' && d.hasAttribute('inert'); });
+    const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion' && t.datos?.tipo === 'servicio');
+    if (!h || h.bloques !== 3 || h.actual !== 1 || !inert || !ev.length) mal(n + ': tocar una línea tiene que abrir el tema en los tres planes, marcar el plan tocado, medirse y cerrarse inert (' + JSON.stringify({ h, inert, ev: ev.length }) + ')');
+    else bien(n + ': tocar una línea abre el tema en los tres planes, se mide y se cierra');
+  }
+  const once = page.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' });
+  let lista = 0;
+  if (await once.count()) {
+    await once.tap();
+    await page.waitForTimeout(450);
+    lista = await page.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"]'); return d ? d.querySelectorAll('.hoja-cuerpo button.fila').length : 0; });
+  }
+  if (lista !== 11) mal(n + ': «Los once servicios» tiene que abrir una hoja con los once (abrió ' + lista + ')');
+  else bien(n + ': los once servicios, a pedido, en una hoja');
+  await ctx.close();
+}
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const cel = await page.evaluate(() => { const e = document.querySelector('.cmp-cel'); return e ? getComputedStyle(e).display : 'no está'; });
+  if (cel !== 'none') mal('escritorio: la comparativa del celular no se tiene que ver en la computadora (' + cel + ')');
+  else bien('escritorio: en la computadora sigue la tabla de once servicios');
   await page.close();
 }
 

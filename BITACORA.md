@@ -4872,3 +4872,47 @@ el caso que tiene que fallar.
   en el bueno. Esta vez la falla estaba en cómo lo probé y no en el detector,
   pero eso solo se supo porque no di el verde por bueno.
 
+
+## Capítulo 141 — La maqueta que esperaba una decisión se había quedado vieja (07/10/2026)
+
+**Qué intentamos.** Arturo pidió ver la maqueta de la lámina 59 para revisarla
+en su celular, como había quedado el 27/09: tarjetas con las mismas líneas y el
+detalle al tocar, en lugar de la tabla que se deslizaba de costado. Desde ese
+día la forma esperaba su OK, con la guarda «NO construir todavía».
+
+**Qué pasó.** Al abrir la maqueta para publicarla, tres decisiones posteriores
+la contradecían. Las cinco líneas ya se habían elegido el 29/09 (lámina 65), y
+eran otras. Las esperas habían salido de las tarjetas el 03/10, y la maqueta
+las tenía ahí. Y el buscador al que mandaban dos líneas ya no existía desde el
+04/10. Si Arturo confirmaba esa maqueta, confirmaba algo que ya no era el
+sitio. Se rehízo con los datos del sitio de hoy y con una sola pieza nueva: un
+cuadro con las esperas. La tabla de once servicios no entra en 390 px, pero
+las esperas son palabras cortas y sí entran, así el año de espera de Essential
+queda a la vista sin ser el gancho. Se le mandó con cuatro preguntas con
+opciones, y contestó en una línea: «1A, 2A, 3A, 4A». De ahí salió también una
+regla de método: *«Siempre dame ejemplos de respuestas o opciones»* (CLAUDE.md).
+
+Construida, midió 5,4 pantallas del título al final de «lo que no cubren»,
+contra 5,7 de antes. La maqueta medía 4,7: el sitio real suma el encabezado,
+títulos más grandes y la tarjeta de la orden médica que entró el 06/10. Y dos
+pruebas que andaban bien fallaron por la misma causa: el HTML ahora trae las
+dos formas, una escondida. La prueba de «carencia» tomaba la primera palabra,
+que era la escondida, y la nueva tomaba como comparativa el texto del
+encabezado, que también llevaba la clase `solo-cel`.
+
+**Qué aprendimos.**
+- **Una maqueta que espera una decisión envejece.** Antes de mostrarla, se pone
+  al día con lo que se decidió después. Si no, la persona confirma algo que ya
+  no existe y el trabajo se hace dos veces. Cada cambio se le dice, con la
+  fecha de la decisión que lo trajo.
+- **Cuando una tabla no entra, se separa lo que no entra de lo que sí.** Lo que
+  no entraba eran las descripciones. Las esperas, que son lo que cambia la
+  elección, son cortas y entraban. Separarlas dejó a la vista lo que importa,
+  sin deslizar de costado.
+- **Se informa el número del sitio, no el de la maqueta.** El largo mejoró
+  menos de lo que prometía la maqueta, y se dice así. Lo que más cambia es otra
+  cosa: los tres planes se leen enteros.
+- **Si una página trae dos versiones de lo mismo, las pruebas buscan lo que se
+  ve.** «El primero que encuentres» puede ser el escondido. Se usa `:visible` o
+  una clase propia de cada forma. Es el mismo golpe del cap. 90: al cambiar
+  cómo se escribe algo, se revisan los guardianes que leían la forma vieja.

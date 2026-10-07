@@ -388,22 +388,19 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .blog-ult-t{transition:color .18s}
 .blog-ult:hover .blog-ult-t{color:var(--sp-mint)}
 @media(prefers-reduced-motion:reduce){.blog-hero h2,.blog-ult,.blog-ult-t{transition:none}.blog-ult:hover{padding-left:0}}
-/* Aviso «Deslizá para ver Silver y Gold» de /planes (solo en el celular). */
-.cmp-hint{display:none}
+/* /planes tiene dos formas de comparar (07/10/2026, lámina 59): hasta 640 px,
+   las tarjetas iguales con el detalle al tocar (app/planes/ComparativaCelular);
+   desde ahí, las tarjetas y la tabla de once servicios, que en la computadora
+   entra entera. */
+.solo-cel{display:none}
+.esp-f{position:relative;display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:4px;padding:10px 12px;align-items:center}
+@media(max-width:640px){.solo-cel{display:block}.solo-compu{display:none}}
 /* Las frases del bloque «Simulá tu plan» (inicio). Sin ícono desde el 24/09
    (el texto ya lo dice): en una línea van separadas por un punto; en el
    celular van una debajo de la otra, porque un punto al final de la línea
    queda colgando. */
 .frases-sim{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px}
 @media (max-width:560px){.frases-sim{flex-direction:column;gap:8px}.frases-sim .punto{display:none}}
-@media(max-width:640px){
-  .cmp-hint{display:flex}
-  /* /planes en celular: la columna del servicio se angosta y queda fija al
-     deslizar, así cada plan se lee al lado de su servicio (23/09/2026). */
-  .pl-inner{min-width:560px !important}
-  .pl-row{grid-template-columns:118px repeat(3,minmax(146px,1fr)) !important}
-  .pl-lbl{padding-left:12px !important;padding-right:8px !important;box-shadow:1px 0 0 var(--sp-line)}
-}
 /* El tramo bajo la tabla del comparador (26/09/2026, docs/diseno n.º 39,
    opción 4; BITACORA cap. 117): la leyenda en una línea pegada a la tabla, una
    tarjeta con lo que es igual en los tres planes y las tres preguntas que
