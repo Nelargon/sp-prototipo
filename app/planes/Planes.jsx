@@ -1,14 +1,15 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
-import { fmt, plans, essentialTitular, AUTO_PAY_DISCOUNT, WHATSAPP_NUMBER } from '../quote';
-import { coverage } from '../coverage';
-import { Term, waitLabel, annotate } from '../glossary';
+import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
+import { coverage, carencias } from '../coverage';
+import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
 import Plegable from '../components/Plegable';
+import Comparador from '../components/Comparador';
 import ComparativaCelular from './ComparativaCelular';
 import datos from '../../lib/prestaciones.json';
 
@@ -33,7 +34,9 @@ import datos from '../../lib/prestaciones.json';
    Sin rótulos en mayúsculas sobre los títulos (Arturo, 29/09: «no uses el
    etiquetado característico de la IA»). Las esperas van en la tabla, todas
    con el mismo peso y orden, nunca de gancho en las tarjetas (3/10). En el
-   celular, en su propio cuadro (ComparativaCelular.jsx, 07/10).
+   celular, en su propio cuadro (ComparativaCelular.jsx, 07/10); en la
+   computadora, en su grupo de la tabla, que desde el 07/10 es el comparador
+   del home con todo adentro (lámina 81).
 
    e = Essential (su cuadernillo) · s = Silver · o = Gold (la grilla). Silver y
    Gold son de la familia que internamente se llama "Privilege": de cara al
@@ -90,7 +93,52 @@ export default function Planes() {
     return { ...a, [k]: !a[k] };
   });
 
-  const badge = (c) => 'display:inline-flex;align-items:center;font-size:12px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);white-space:nowrap;' + (c.ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)');
+  /* LA TABLA DE LA COMPUTADORA (07/10/2026, lámina 81, la A que eligió Arturo:
+     «un diseño un poquito más sencillo, un poco más minimalista […] una mejor
+     línea y algo un poco más completo»). Es el comparador del home
+     (components/Comparador.jsx), con lo que /planes suma: once servicios en vez
+     de nueve y las nueve esperas en su propio grupo, con el mismo peso. El
+     precio va arriba de cada columna y la letra chica de cada servicio, en su
+     tarjeta, al pasar el mouse o tocar el nombre.
+     Los valores cortos (`t`) son la forma corta de lo que dicen coverage() y
+     plans(); «por familia» va siempre a la vista (lección 51). La tarjeta (`d`)
+     es el texto de coverage() con la espera de carencias(), así las dos fuentes
+     son las de siempre y nada se escribe dos veces. */
+  const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
+  const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
+  const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
+    const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
+    return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
+  });
+  const odonto = excluidosOdonto();
+  function excluidosOdonto() {
+    const d = datos.items.find((i) => i.t === 'x' && i.n === 'Odontología');
+    const linea = (i) => (plansArr[i].lines.find((l) => l.startsWith('Odontología:')) || '').replace(/\*\*/g, '').replace(/^Odontología:\s*/, '');
+    return { d: [0, 1, 2].map((i) => { const t = linea(i); return t.charAt(0).toUpperCase() + t.slice(1) + '.'; }), pie: d ? d.d : null };
+  }
+  const filasCompu = [
+    { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias') },
+    { name: 'Sesiones de psicología', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }], d: conEspera('Sesión de psicología') },
+    { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia') },
+    { name: 'Ecografía', kind: 'num', cells: [{ t: '4', n: 'por familia' }, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }], d: conEspera('Ecografía', 'Ecografías') },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia' }, { t: '2 por persona' }, { t: '2 por persona' }], d: conEspera('Tomografía (TAC)', 'Tomografía') },
+    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia' }, { t: '1 por persona' }, { t: '1 por persona' }], d: conEspera('Resonancia (RM)', 'Resonancia') },
+    { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
+    { g: 'Si te internan', name: 'Internación', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }], d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
+    { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
+    { name: 'Medicamentos internado', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }], d: conEspera('Medicamentos en internación') },
+    // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }], d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
+    // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
+    // el simulador. Sin tarjeta: el número ya es el dato.
+    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
+  ];
+  const planesCompu = plansArr.map((pl, i) => ({
+    short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: pl.tag, recommended: i === 1,
+    zona: pl.nivel === 'esencial' ? 'según tu zona' : null,
+    href: `${BP}/simulador/?plan=${pl.short.toLowerCase()}`,
+    onCta: () => track('cta_simulador', { origen: 'planes_tabla', plan: pl.name }),
+  }));
 
   const especialidades = datos.items.filter((i) => i.t === 'c');
   const excluidos = datos.items.filter((i) => i.t === 'x');
@@ -132,116 +180,30 @@ export default function Planes() {
       </section>
 
       {/* ---- 2 Y 3, EN EL CELULAR: TARJETAS IGUALES Y EL DETALLE AL TOCAR --
-          Hasta 640 px, las tarjetas y la tabla de abajo se reemplazan por la
-          comparativa de la lámina 59, que Arturo confirmó el 07/10/2026
-          (ComparativaCelular.jsx). La tabla se deslizaba de costado y al
-          llegar mostraba solo Essential. Desde 641 px, todo sigue igual. */}
+          Hasta 819 px va la comparativa de la lámina 59, que Arturo confirmó
+          el 07/10/2026 (ComparativaCelular.jsx). La tabla vieja se deslizaba de
+          costado y al llegar mostraba solo Essential. */}
       <ComparativaCelular />
 
+      {/* ---- 2. EN LA COMPUTADORA: LA TABLA DEL HOME, CON TODO ADENTRO ----
+          Desde 820 px, el corte del home. Reemplaza a las tres tarjetas y a la tabla de once
+          servicios con barra azul y un «Cubierta» en cada celda (lámina 81, la
+          A). Las cinco líneas de las tarjetas siguen en la comparativa del
+          celular; acá lo que dicen está en las filas. */}
       <div className="solo-compu">
-      {/* ---- 2. LAS TRES TARJETAS --------------------------------------- */}
       <section style={css('padding:40px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          <div className="planes-grid" style={css('display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px')}>
-            {plansArr.map((pl) => (
-              <div key={pl.short} className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;background:#fff;display:flex;flex-direction:column')}>
-                <div style={css('height:5px;background:' + pl.color)}></div>
-                <div style={css('padding:22px 22px 24px;display:flex;flex-direction:column;flex:1')}>
-                  <div style={css('display:flex;align-items:center;gap:8px;margin-bottom:5px')}>
-                    <span style={css('width:10px;height:10px;border-radius:var(--r-pill);background:' + pl.color)}></span>
-                    <span className="disp" style={css('font-size:21px;font-weight:800;color:var(--sp-navy)')}>{pl.short}</span>
-                  </div>
-                  <div style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.45;margin-bottom:14px')}>{pl.tag}</div>
-                  <div style={css('display:flex;align-items:baseline;gap:7px;flex-wrap:wrap')}>
-                    <span style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted)')}>desde</span>
-                    <span className="disp num-tnum" style={css('font-size:27px;font-weight:800;color:var(--sp-navy);letter-spacing:-0.02em')}>{fmt(pl.price)}</span>
-                    <span style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted)')}>por mes</span>
-                  </div>
-                  <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-teal-900);margin-top:5px')}>
-                    <span className="num-tnum">{fmt(Math.round(pl.price * (1 - AUTO_PAY_DISCOUNT)))}</span> con pago automático
-                  </div>
-                  <ul style={css('list-style:none;padding:0;margin:17px 0 0;display:flex;flex-direction:column;gap:9px;flex:1')}>
-                    {pl.lines.map((l, j) => (
-                      <li key={j} style={css('display:flex;gap:9px;align-items:flex-start;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5')}>
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:3px')} aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-                        <span>{l.split('**').map((seg, k) => (k % 2 ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{annotate(seg)}</b> : <Fragment key={k}>{annotate(seg)}</Fragment>))}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href={`${BP}/simulador/?plan=${pl.short.toLowerCase()}`}
-                    onClick={() => track('cta_simulador', { origen: 'planes_tarjeta', plan: pl.name })}
-                    className="btn-teal sq"
-                    style={css('margin-top:20px;height:46px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px')}
-                  >
-                    Ver mi precio
-                  </a>
-                </div>
-              </div>
-            ))}
+          {/* El débito, como en el home: es plata que la familia ve, no letra chica. */}
+          <div style={css('display:flex;justify-content:center;margin-bottom:22px')}>
+            <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:640px')}>
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
+              <span>Pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo.</span>
+            </span>
           </div>
-          <p style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);text-align:center;margin:13px auto 0;line-height:1.6;max-width:760px')}>
-            El precio es el de una persona sola, con IVA incluido; el tuyo depende de quiénes entran y de la edad. Essential varía según tu zona: {fmt(essentialTitular('interior'))} en el interior, {fmt(essentialTitular('asuncion_central'))} en Asunción y Central y {fmt(essentialTitular('nacional'))} en su versión Nacional. Con débito automático o tarjeta de crédito, 10% menos.
+          <Comparador planes={planesCompu} filas={filasCompu} notas id="comparar-planes" />
+          <p style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);text-align:center;margin:16px auto 0;line-height:1.6;max-width:760px')}>
+            El precio es el de una persona sola, con IVA incluido; el tuyo depende de quiénes entran y de la edad. Essential varía según tu zona: {fmt(essentialTitular('interior'))} en el interior, {fmt(essentialTitular('asuncion_central'))} en Asunción y Central y {fmt(essentialTitular('nacional'))} en su versión Nacional. Los tiempos de espera son la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás.
           </p>
-        </div>
-      </section>
-
-      {/* ---- 3. LOS ONCE SERVICIOS -------------------------------------- */}
-      <section style={css('padding:70px 24px 0')}>
-        <div style={css('max-width:1080px;margin:0 auto')}>
-          {titulo('Los once servicios', 'que más se preguntan', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
-          {/* ⚠ ESTA TABLA YA NO SE VE EN EL CELULAR (07/10/2026). Ahí va la
-              comparativa de la lámina 59 (ComparativaCelular.jsx), la forma que
-              Arturo confirmó después de descartar dos: deslizar de costado
-              (26/09, lámina 45: al llegar Gold no se ve) y la fila partida
-              (27/09, lámina 57: «demasiado ordenado en filas y columnas»). No
-              volver a mostrar la tabla en el celular sin su OK (BITACORA caps.
-              137 y 141). */}
-          <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
-            <div className="pl-inner" style={css('min-width:720px')}>
-              <div className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
-                <div className="pl-lbl disp" style={css('position:sticky;left:0;z-index:1;background:var(--sp-navy);padding:16px 18px;display:flex;align-items:flex-end;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>Servicio</div>
-                {plansArr.map((pl, i) => (
-                  <div key={i} style={css('padding:14px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>
-                    <div style={css('display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:' + pl.color + ';margin-bottom:6px')}></div>
-                    <div className="disp" style={css('font-size:18px;font-weight:800;line-height:1')}>{pl.short}</div>
-                    <div style={css('font-size:12px;opacity:.85;margin-top:5px')}>desde <span className="num-tnum">{fmt(pl.price)}</span>{pl.nivel === 'esencial' && <span style={css('display:block;font-size:11px;opacity:.9;margin-top:2px')}>según tu zona</span>}</div>
-                  </div>
-                ))}
-              </div>
-              {cov.map((item, r) => (
-                <div key={r} className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                  <div className="pl-lbl" style={css('position:sticky;left:0;z-index:1;background:inherit;padding:15px 18px;display:flex;flex-direction:column;justify-content:center')}>
-                    <span className="disp" style={css('font-size:14px;font-weight:700;color:var(--sp-navy)')}>{item.name}</span>
-                    {item.waitNote && (
-                      <span style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:4px')}>{item.waitNote}</span>
-                    )}
-                  </div>
-                  {item.cov.map((c, j) => {
-                    // La espera solo se muestra donde HAY cobertura: en un plan que
-                    // no cubre el servicio no hay nada que esperar (regla AD, ver
-                    // app/coverage.js y BITACORA cap. 55).
-                    const espera = c.ok && item.wait ? waitLabel(item.wait[j]) : null;
-                    return (
-                      <div key={j} style={css('padding:14px 12px;text-align:center;border-left:1px solid var(--sp-line-2)')}>
-                        <div className="disp" style={css(badge(c))}>{c.s}</div>
-                        <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);line-height:1.4;margin-top:6px')}>{annotate(c.d)}</div>
-                        {espera && (
-                          <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);line-height:1.4;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:4px')}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-                            <span>{espera}</span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-muted);margin-top:13px;text-align:center;line-height:1.6')}>
-            Los tiempos de espera son la <Term k="carencia">carencia</Term> de cada servicio: el reloj arranca el día que te afiliás, no el día que lo necesitás. El detalle final lo confirmás con tu asesor.
-          </div>
         </div>
       </section>
       </div>

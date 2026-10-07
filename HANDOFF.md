@@ -17,6 +17,40 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🧮 07/10/2026: `/planes/` EN LA COMPUTADORA ES LA TABLA DEL HOME, CON TODO ADENTRO
+
+Arturo, mirando la tabla del home al lado de `/planes/`: *«Queremos un diseño un
+poquito más sencillo, un poco más minimalista, como el que le estoy pasando
+ahora: una mejor línea y algo un poco más completo también para esta parte»*.
+Entre tres opciones (lámina 81) eligió la A: *«Vamos con la A»*. BITACORA cap.
+143.
+
+- **Desde 820 px** (el corte del home), `/planes/` muestra **el comparador del
+  home** (`components/Comparador.jsx`) con lo que la página suma: once servicios
+  en vez de nueve (más ecografía y odontología) y **las nueve esperas en su
+  propio grupo**, las de `carencias()`, todas con el mismo peso. El precio va
+  arriba de cada columna, Silver se levanta como en el home, «Ver mi precio» al
+  pie, y la letra chica de cada servicio (con su espera) se abre al pasar el
+  mouse por el nombre. Las filas viven en `Planes.jsx` (`filasCompu`): los
+  valores cortos, a mano y con su fuente; la tarjeta, el texto de `coverage()`
+  más la espera.
+- **Salieron en la computadora** las tres tarjetas con sus cinco líneas y la
+  tabla con barra azul y un «Cubierta» en cada una de sus 33 celdas. Las cinco
+  líneas siguen en la comparativa del celular.
+- **Hasta 819 px** va la comparativa del celular (lámina 79). El corte pasó de
+  640 a 819 para que una tablet no vea la tabla del home apilada en tarjetas de
+  20 filas (4.005 px a 700 px).
+- **El comparador ahora sirve a las dos páginas sin cambiar el home:** `notas`
+  (muestra la nota de cada celda), `apagado` («No entra» en gris), filas sin
+  tarjeta (las esperas), `zona` bajo el precio e `id` (en `/planes/` es
+  `#comparar-planes`; el home conserva `#cartilla`).
+- **Pruebas:** `qa/qa-lanzamiento.mjs` mira en la computadora los tres planes
+  lado a lado, las 20 filas, que no quede ningún «Cubierta» y que la tarjeta de
+  «Internación» se abra con su espera y se mida; probado también contra la página
+  vieja.
+
+---
+
 ## 🎨 07/10/2026: LA MARCA EN TRES ARTEFACTOS (VITRINA, MOTOR Y CAPA INTERNA)
 
 Arturo pidió el sistema de diseño en un artefacto, *«con todos los detalles,
@@ -260,8 +294,9 @@ pareja del pase de la comparativa, en `sp-interno`):
 > celular el 06/10 (puesta al día con lo que había decidido después; lámina 79)
 > y contestó «1A, 2A, 3A, 4A»: la forma tal cual, los once servicios en una
 > hoja, el botón «Vos con tus hijos» y la pregunta de precios a SP como punto de
-> revisión. Está en `/planes/` hasta 640 px
-> (`app/planes/ComparativaCelular.jsx`); en la computadora sigue la tabla.
+> revisión. Está en `/planes/` hasta 819 px
+> (`app/planes/ComparativaCelular.jsx`); desde 820, la tabla del home con todo
+> adentro (sección «🧮», arriba).
 > Detalle en «Cómo quedó construida», al final de esta sección.
 
 **Qué pasó.** La revisión integral (`sp-interno#91`) y el pase de la
@@ -405,9 +440,10 @@ un lugar»*. Pidió «la versión liviana».
   aparte, hay que decidir dónde.
   **Arturo lo aceptó el 05/10/2026.**
 - ~~*La tabla en el celular sigue deslizándose de costado*~~ **Resuelto el
-  07/10/2026:** hasta 640 px, la tabla se reemplazó por la comparativa de la
+  07/10/2026:** hasta 819 px, la tabla se reemplazó por la comparativa de la
   lámina 59, que Arturo confirmó en su celular (sección «📱 La comparativa en
-  el celular», más arriba). En la computadora la tabla sigue igual.
+  el celular», más arriba). En la computadora, ese mismo día, por la tabla del
+  home con todo adentro (sección «🧮», lámina 81).
 - *Vital con la misma profundidad (29/09)* sigue pendiente: hoy es una banda.
 - *«Pocas herramientas»*: de las cuatro (tarjetas, simulador, buscador, guía),
   el buscador queda fuera por ahora.
