@@ -35,10 +35,10 @@ export const coverage = () => [
   // Parto: 365 días en Essential y 300 en Silver y Gold. Cesárea: 150 en Gold.
   // Es la espera más larga y la que más caro sale descubrir tarde; por eso
   // además tiene aviso propio en el home.
-  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], waitNote: 'La cesárea espera 5 meses en Gold.', cov: [yes('Con el bebé en nursery · medicamentos hasta ₲ 350 mil'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1 millón'), yes('Con el bebé en nursery · medicamentos hasta ₲ 1,5 millones')] },
-  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta ₲ 150 mil'), yes('Consulta 24 h · remedios hasta ₲ 200 mil')] },
+  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], waitNote: 'La cesárea espera 5 meses en Gold.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
+  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
   { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes('20 sesiones al año')] },
-  { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta ₲ 350 mil por evento'), yes('Hasta ₲ 1 millón por evento'), yes('Hasta ₲ 1,5 millones por evento')] },
+  { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
 ];
 
 // LAS ESPERAS QUE IMPORTAN AL DECIDIR (7 sep 2026 — "Sería bueno ser ya

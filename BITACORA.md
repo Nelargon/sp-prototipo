@@ -4994,3 +4994,33 @@ urgencias del header, que a 430 px muestra solo el número y no lo reconocía.
   extiende el que ya está elegido, con opciones que el otro no usa.
 - **Al reusar un componente, se prueba en los anchos donde cambia de forma, no
   solo en los extremos.** A 390 y a 1280 todo estaba bien; a 700 había 4.000 px.
+
+## Capítulo 144 — La moneda que estaba en dos formas (07/10/2026)
+
+**Qué intentamos.** Al pasar el Centro de Marca al «Sistema visual de SP»
+salieron seis reglas que el centro y el sitio decían distinto. La más visible
+era la moneda: el centro pedía «Gs. 1.250.000» y ponía «₲» en la columna
+«Nunca», mientras el sitio escribía «₲350.000». El boletín de calidad
+(`qa/CRITERIO-PUERTAS.md`, §3.2) la tenía anotada como conflicto desde agosto,
+esperando una decisión.
+
+**Qué pasó.** Se le llevaron a Arturo las seis, cada una con dos o tres
+opciones, la recomendada primero y su porqué, y contestó en una línea: «1A, 2A,
+3A, 4A, 5A, 6A». La moneda quedó «Gs.» en todo, también en el sitio. El cambio
+pasó por cinco archivos y por el generador de `lib/prestaciones.json`. Los
+cuadernillos de Essential traen «₲» en sus textos y no se tocaron: el generador
+corrige la forma al escribir el índice, y el índice regenerado cambió solo esas
+siete líneas. Con «Gs.» la celda más larga de la tabla del celular («Gs.
+1.500.000») sigue entrando en sus 120 px.
+
+**Qué aprendimos.**
+- **Una contradicción anotada no se resuelve sola.** Estuvo dos meses en el
+  boletín. Se cerró en un minuto cuando llegó a quien decide, con opciones y
+  una recomendada.
+- **Cuando el dato de la fuente tiene la forma vieja, la forma se corrige al
+  mostrar.** El generador ya hacía eso con «H.M.» y «ses.». La moneda es una
+  regla más de la misma lista, y la fuente queda como vino.
+- **Un cambio de texto que alarga una celda se mide en el celular.** «Gs.» suma
+  tres caracteres, y en una tabla de 120 px tres caracteres pueden ser una
+  segunda línea.
+
