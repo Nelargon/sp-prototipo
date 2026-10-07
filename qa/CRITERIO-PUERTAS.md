@@ -70,7 +70,7 @@ que construye.
 | Criterio | Cómo se verificó | Resultado |
 |---|---|---|
 | **1.2** Lugar permanente para lo que NO cubrimos, sin PDF ni enlace externo | **Inspección manual** de la sección de planes: contiene exclusiones ("Para que no haya sorpresas"), carencias por servicio y el aviso de los 10 meses de parto, en la misma página, sin abrir nada | ✅ *(no automatizado)* |
-| **1.3** Precio con piso real, no "consultanos" | **Inspección manual** del hero (publica "desde ₲ 238.000") + **automatizado** el recorrido del simulador hasta ver un precio sin dejar datos | ✅ *(el origen del "desde" NO está verificado — ver abajo)* |
+| **1.3** Precio con piso real, no "consultanos" | **Inspección manual** del hero (publicaba "desde ₲ 238.000"; desde el 07/10/2026 la forma es "desde Gs. …") + **automatizado** el recorrido del simulador hasta ver un precio sin dejar datos | ✅ *(el origen del "desde" NO está verificado — ver abajo)* |
 | **1.4** Lenguaje de paciente, cero jerga | **Automatizado**: la suite busca `cartilla`, `prestación` y `práctica` (como sustantivo: «la práctica», «prácticas») en el HTML publicado de todo el export | ✅ **PASA** desde el 24/09/2026 — ver abajo. Antes decía: ⚠️ 3 notas del blog dicen "práctica"; 2 tienen placeholders "a confirmar" |
 | **1.5** El flujo que pide datos avisa antes de pedirlos | **Automatizado** (7 sep 2026): la suite llega al resultado del simulador y verifica sobre el DOM que el bloque de esperas existe, tiene tamaño, **precede al formulario** y trae la espera más cara de descubrir tarde (parto, 10 meses); en 390px, además, que entra sin desborde | ✅ **PASA** — ver abajo |
 | **1.1** Prueba de las diez preguntas | **No se puede correr todavía**: la lista de las 10 preguntas reales no está cerrada. Existe material previo en `sp-interno` (`PREGUNTAS-FRECUENTES-asesores-2026-07.md`, 4 asesores) — no se arranca de cero | ⏸ Pendiente |
@@ -312,9 +312,8 @@ mire con ojos de diseño.
 | Formato de moneda | ✅ **`Gs. 1.250.000`** en todo, también el sitio (Arturo, 07/10/2026, `sp-interno#164`) |
 
 > **Dos cosas para cerrar antes de que el criterio se comparta:**
-> 1. **`₲` vs `Gs.`** — hay que elegir uno. Es el mismo tipo de contradicción que
->    el criterio ya detectó con la tipografía, y se resuelve igual: decidir y
->    actualizar los dos lados.
+> 1. ~~**`₲` vs `Gs.`** — hay que elegir uno.~~ **Cerrado el 07/10/2026:** `Gs.`
+>    en todo, en el sitio y en el Centro de Marca (`sp-interno#164`).
 > 2. **La fecha de Nunito Sans**: el criterio dice 17/07; el registro del proyecto
 >    dice **20/07** (BITÁCORA cap. 29). En un documento hecho para zanjar
 >    discusiones, las fechas tienen que estar bien.
