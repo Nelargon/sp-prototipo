@@ -14,7 +14,7 @@ import IconoSP from '../components/IconoSP';
 import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
 import red from '../../lib/red-home.json';
-import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
+import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, telVisible, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
 
 /* El tapiz (25/09/2026, docs/diseno n.º 36 y 38; Arturo eligió el 2a): el muro
    de «Dónde te atendés» detrás de la guía, en gris casi blanco. En pantallas
@@ -162,7 +162,7 @@ function Tarjeta({ p, plan, abrirVisar }) {
       {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
       <div style={css('display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:4px')}>
         {p.tel[0] && (
-          <a href={telHref(p.tel[0])} onClick={() => track('guia_llamar', { tipo: p.t })} className="disp num-tnum" style={css('height:36px;padding:0 14px;border-radius:var(--r-pill);background:var(--sp-mint-bg);border:1px solid #BFE6E3;color:var(--sp-teal-ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center')}>{p.tel[0]}</a>
+          <a href={telHref(p.tel[0])} onClick={() => track('guia_llamar', { tipo: p.t })} className="disp num-tnum" style={css('height:36px;padding:0 14px;border-radius:var(--r-pill);background:var(--sp-mint-bg);border:1px solid #BFE6E3;color:var(--sp-teal-ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center')}>{telVisible(p.tel[0])}</a>
         )}
         <a href={mapaHref(p)} target="_blank" rel="noopener" onClick={() => track('guia_mapa', { tipo: p.t })} style={css(INTER + 'font-size:14px;font-weight:600;color:var(--sp-navy);display:inline-flex;align-items:center;gap:4px')}>{Icono.pin} Cómo llegar</a>
         {PIDE_ORDEN.has(p.e) && (

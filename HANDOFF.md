@@ -91,9 +91,13 @@ Lo que queda para quien siga:
      coberturas y `lib/prestaciones.json` escriben «Gs.». Los datos fuente no se
      tocaron: el generador corrige la forma al mostrar.
   3. **El teléfono va «(021) 319 0000» en lo que lee un cliente;** «+595» solo
-     en los enlaces (`tel:`, WhatsApp). El sitio ya estaba así. Los teléfonos
-     de la Guía Médica, que vienen de la planilla con +595, quedan para una
-     decisión aparte: tocarlos es tocar la Guía.
+     en los enlaces (`tel:`, WhatsApp). El sitio ya estaba así. **La Guía
+     Médica también** (Arturo, «1A», 07/10/2026): la planilla sigue trayendo
+     los teléfonos con +595 y no se toca; `telVisible()` de `lib/red-medica.js`
+     los muestra como «(0981) 427 544» o «(021) 319 0000», y el `tel:` sigue
+     con +595. `scripts/test-telefonos.mjs` compara cada número cifra por
+     cifra en el CI: un teléfono con una forma nueva en la planilla se
+     muestra tal cual y corta la prueba, para que alguien lo mire.
   4. **Todos los títulos en navy,** también H2 y H3.
   5. **Íconos en pantalla, de 40 a 60 px.**
   6. **Dos colores narrativos juntos, solo en los gráficos de informes

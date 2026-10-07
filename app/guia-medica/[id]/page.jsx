@@ -4,7 +4,7 @@ import { WHATSAPP_NUMBER } from '../../quote';
 import Header from '../../Header';
 import PuntoRevisar from '../PuntoRevisar';
 import datos from '../../../lib/guia-medica.json';
-import { REDES, telHref, mapaHref, condicionTexto } from '../../../lib/red-medica';
+import { REDES, telHref, telVisible, mapaHref, condicionTexto } from '../../../lib/red-medica';
 
 /* Ficha de un prestador de la red (una por "ID prestador" de la planilla).
    Estática: se genera en el build, así cada médico tiene su página con
@@ -89,7 +89,7 @@ export default async function Ficha({ params }) {
               <div style={css('display:flex;flex-wrap:wrap;gap:8px;margin-top:12px')}>
                 {f.tel.map((t) => (
                   <a key={t} href={telHref(t)} className="disp sq" style={css('--sq:var(--r-xs);height:42px;padding:0 16px;background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>
-                    Llamar <span className="num-tnum" style={css('margin-left:6px')}>{t}</span>
+                    Llamar <span className="num-tnum" style={css('margin-left:6px')}>{telVisible(t)}</span>
                   </a>
                 ))}
                 {f.d && <a href={mapaHref(f)} target="_blank" rel="noopener" className="disp sq" style={css('--sq:var(--r-xs);height:42px;padding:0 16px;border:1.5px solid var(--sp-mint-line-strong);color:var(--sp-navy);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center')}>Cómo llegar</a>}
