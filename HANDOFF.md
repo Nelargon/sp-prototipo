@@ -245,15 +245,17 @@ Medido: del título al final de la comparación, 3,3 pantallas del celular contr
 ninguna sorpresa grande puede estar solo en el contrato.
 
 **Las explicaciones que se abren al tocar ya se miden** (07/10/2026,
-`sp-interno#98`). Las palabras del glosario (`Term`) y la tarjeta del servicio
-del comparador del home mandan `abre_explicacion` con `{tipo: 'glosario' |
-'servicio', clave}`: la palabra o el nombre del servicio, nunca nada de la
-persona. Cuentan una vez por visita (`trackExplicacion` en `app/track.js`),
-porque con mouse se abren al pasar. Hoy `track()` solo escribe en la consola:
+`sp-interno#98`). Las palabras del glosario (`Term`), la tarjeta del servicio
+del comparador del home y «¿Cómo calculamos esto?» del simulador mandan
+`abre_explicacion` con `{tipo: 'glosario' | 'servicio' | 'calculo', clave}`: la
+palabra, el nombre del servicio o `precio`, nunca nada de la persona. Cuentan
+una vez por página vista (`trackExplicacion` en `app/track.js`), porque con
+mouse se abren al pasar. El evento está en el contrato
+(`guia/ANEXO-requisitos-backend.md` §2). Hoy `track()` solo escribe en la consola:
 el número aparece cuando se conecte a una herramienta (PR-12 del plan de la
 revisión integral, todavía sin hacer). Una explicación nueva que se abra al
 tocar usa `trackExplicacion`; `qa/qa-lanzamiento.mjs` lo prueba en «carencia» y
-en Fisioterapia.
+en Fisioterapia, y `qa/qa-integral.mjs` en el cálculo del simulador.
 
 **Pendiente de Arturo:**
 1. Revisar la maqueta y confirmar la forma.

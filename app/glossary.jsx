@@ -116,7 +116,7 @@ export function Term({ k, children, dict }) {
   const [abajo, setAbajo] = useState(false);
   const id = useId();
 
-  // Cuántas personas abren cada palabra (sp-interno#98): una vez por visita.
+  // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
   useEffect(() => { if (open) trackExplicacion('glosario', k); }, [open, k]);
 
   useEffect(() => {

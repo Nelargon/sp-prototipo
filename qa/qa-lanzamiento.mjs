@@ -348,7 +348,7 @@ console.log('\n── /planes/: la página única de detalle');
   else bien('/simulador/: los números del riel se leen (' + Math.min(...riel.map((x) => x.cr)).toFixed(2) + ':1 o más)');
   // Las explicaciones que se abren al tocar se miden (regla de claridad,
   // sp-interno#98): abrir «carencia» manda un abre_explicacion, una sola vez
-  // aunque se vuelva a abrir. Se escucha console.debug, que es por donde sale
+  // por página aunque se vuelva a abrir. Se escucha console.debug, que es por donde sale
   // track() hasta que haya backend.
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
@@ -366,7 +366,7 @@ console.log('\n── /planes/: la página única de detalle');
     }
     const ev = await aExpl();
     if (ev.length !== 1 || ev[0].datos?.tipo !== 'glosario' || ev[0].datos?.clave !== 'carencia') mal('/planes/: abrir «carencia» dos veces tiene que mandar un solo abre_explicacion de glosario (' + JSON.stringify(ev) + ')');
-    else bien('/planes/: abrir «carencia» se mide, una sola vez por visita');
+    else bien('/planes/: abrir «carencia» se mide, una sola vez por página');
   }
   await page.close();
 }

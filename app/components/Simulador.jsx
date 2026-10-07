@@ -10,7 +10,7 @@ import {
 } from '../quote';
 import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { redEnZona, guiaHref } from '../../lib/red-zona';
-import { track } from '../track';
+import { track, trackExplicacion } from '../track';
 import { carencias, carenciasVital } from '../coverage';
 import Plegable from './Plegable';
 import { Term, waitLabel } from '../glossary';
@@ -84,6 +84,9 @@ export default function Simulador() {
   const vitalPresetRef = useRef(false);
 
   const toggleCalc = () => setShowCalc((v) => !v);
+  // «¿Cómo calculamos esto?» es una explicación que se abre al tocar: se mide
+  // como las del glosario (sp-interno#98).
+  useEffect(() => { if (showCalc) trackExplicacion('calculo', 'precio'); }, [showCalc]);
 
   // ===== Simulador (nativo) =====
   // Con plan pre-elegido (viene del comparador) salteamos el paso "nivel":

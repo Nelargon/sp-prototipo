@@ -11,8 +11,10 @@ export function track(evento, datos) {
 // Las explicaciones que se abren al tocar se miden (regla de claridad de
 // CLAUDE.md, sp-interno#98): si algo que importa casi nadie lo abre, sube a la
 // vista. Con mouse se abren al pasar, y contar cada pasada inflaría el número:
-// cada explicación cuenta una sola vez por visita. Lleva qué se abrió (la
-// palabra o el servicio), nunca nada de la persona.
+// cada explicación cuenta una sola vez por página vista (el sitio navega
+// recargando la página, así que el Set arranca vacío en cada una). Lleva qué se
+// abrió (la palabra, el servicio o el cálculo), nunca nada de la persona. El
+// evento está en el contrato: guia/ANEXO-requisitos-backend.md §2.
 const abiertas = new Set();
 export function trackExplicacion(tipo, clave) {
   const id = tipo + '|' + clave;
