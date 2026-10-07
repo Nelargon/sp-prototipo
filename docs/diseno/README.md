@@ -1985,6 +1985,11 @@ la A: es la misma tabla que ya eligió para el home, así que el sitio compara d
 una sola manera, y es la más corta. Lo que cambia la elección queda a la vista
 («por familia», las esperas y lo que no cubren); el detalle, a un toque.
 
+**Decidido el 07/10/2026.** Arturo: *«Vamos con la A»*, la recomendada, en una
+vuelta. Se construyó con el mismo componente del home (no una copia), y en el
+camino el corte entre celular y computadora pasó de 640 a 820 px, el del home:
+entre esos anchos la tabla del home se apila en tarjetas de 20 filas.
+
 **La lección.** Una celda que repite lo mismo en todas las filas («Cubierta» ×33)
 no informa: ocupa el lugar del dato que sí cambia.
 

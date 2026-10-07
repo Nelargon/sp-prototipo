@@ -26,10 +26,22 @@ import { trackExplicacion } from '../track';
 
    La tarjeta se comporta como el glosario (app/glossary.jsx): con mouse se
    abre al pasar; con el dedo, al tocar; con teclado, al enfocar. Escape o un
-   toque afuera la cierran. Una sola abierta a la vez. */
+   toque afuera la cierran. Una sola abierta a la vez.
+
+   TAMBIÉN ES LA TABLA DE /planes EN LA COMPUTADORA (07/10/2026, lámina 81, la A
+   que eligió Arturo: «una mejor línea»). Una sola manera de comparar en todo el
+   sitio. Lo que /planes suma, sin cambiar el home:
+   - `notas`: muestra la nota de cada celda («en Lister», «la mayoría»), no solo
+     «por familia»;
+   - una celda con `apagado` va en gris («No entra»: ausencia neutra, nunca rojo
+     ni dorado);
+   - una fila sin `d` no abre tarjeta (las esperas: el número ya es el dato);
+   - `zona` en un plan dice debajo del precio que cambia según la zona;
+   - `id`, para que /planes no repita el ancla #cartilla del home. */
 
 function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   const puntero = useRef('mouse');
+  if (!fila.d) return <span className="cmp2-srv-sin">{fila.name}</span>;
   return (
     <span className="cmp2-srv-wrap">
       <button
@@ -65,14 +77,14 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   );
 }
 
-const valor = (fila, c) => (
+const valor = (fila, c, notas) => (
   <>
-    {fila.kind === 'status' ? <span className="cmp2-chip disp">{c.t}</span> : <span className="cmp2-val disp num-tnum">{c.t}</span>}
-    {c.n === 'por familia' && <span className="cmp2-fam">por familia</span>}
+    {fila.kind === 'status' ? <span className="cmp2-chip disp">{c.t}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{c.t}</span>}
+    {(c.n === 'por familia' || (notas && c.n)) && <span className="cmp2-fam">{c.n}</span>}
   </>
 );
 
-export default function Comparador({ planes, filas }) {
+export default function Comparador({ planes, filas, notas = false, id = 'cartilla' }) {
   const [abierta, setAbierta] = useState(null);
   useEffect(() => {
     if (abierta === null) return;
@@ -93,7 +105,7 @@ export default function Comparador({ planes, filas }) {
   );
 
   return (
-    <div id="cartilla" data-rv className="cmp2">
+    <div id={id} data-rv className="cmp2">
       {/* La columna de nombres: solo en la computadora. */}
       <div className="cmp2-lab">
         <div className="cmp2-h"><span className="cmp2-hint">Pasá el mouse o tocá un servicio para ver el detalle de los tres planes.</span></div>
@@ -112,6 +124,7 @@ export default function Comparador({ planes, filas }) {
             <span className="cmp2-tag disp">{p.recommended ? 'La más elegida' : ''}</span>
             <b className="cmp2-nombre disp">{p.short}</b>
             <span className="cmp2-precio">desde <b className="num-tnum">{p.price}</b><span className="cmp2-mes"> por mes</span></span>
+            {p.zona && <span className="cmp2-zona">{p.zona}</span>}
             <span className="cmp2-para">{p.forWhom}</span>
           </div>
           {filas.map((f, k) => (
@@ -120,7 +133,7 @@ export default function Comparador({ planes, filas }) {
               <div className={'cmp2-c' + (abierta === i + '-' + k ? ' sobre' : '')}>
                 {/* En el celular cada tarjeta nombra sus filas. */}
                 <span className="cmp2-l">{srv(k, String(i))}</span>
-                <span className="cmp2-v">{valor(f, f.cells[i])}</span>
+                <span className="cmp2-v">{valor(f, f.cells[i], notas)}</span>
               </div>
             </div>
           ))}

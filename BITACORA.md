@@ -4962,3 +4962,35 @@ En el camino aparecieron otras cosas:
 - **Antes de dibujar con el logo, se mira qué pasa con el logo.** Este no se
   toca como recurso gráfico hasta nuevo aviso (el porqué está en `sp-interno`).
 
+
+## Capítulo 143 — La misma tabla en el home y en /planes (07/10/2026)
+
+**Qué intentamos.** Arturo puso la tabla del home al lado de `/planes/` en la
+computadora y pidió *«un diseño un poquito más sencillo, un poco más
+minimalista, como el que le estoy pasando ahora: una mejor línea y algo un poco
+más completo también para esta parte»*. Se le mostraron tres opciones (lámina
+81): la tabla del home con todo adentro, la misma con la letra chica a la vista,
+y la de hoy sin ruido.
+
+**Qué pasó.** Eligió la recomendada en una vuelta: *«Vamos con la A»*. Hoy
+`/planes/` tenía tres tarjetas con cinco líneas y debajo una tabla con barra
+azul, rayado y un «Cubierta» en cada una de sus 33 celdas: la palabra que más se
+repetía era la única que no decía nada. Se construyó con el mismo componente del
+home, sumándole lo que `/planes/` necesita (más filas, las esperas en su grupo,
+la nota de cada celda) sin cambiar cómo se ve el home. Al probarla en varios
+anchos apareció un hueco: entre 641 y 819 px la tabla del home se apila en
+tarjetas, y con 20 filas cada tarjeta medía 4.005 px. El corte entre las dos
+formas de `/planes/` pasó de 640 a 820, el mismo del home. Y el revisor del
+diseñador encontró dos cosas: los botones de «quiénes entran» del celular medían
+40 px (se tocan con el dedo: 44), y una falsa alarma que ya estaba, el botón de
+urgencias del header, que a 430 px muestra solo el número y no lo reconocía.
+
+**Qué aprendimos.**
+- **Una celda que repite lo mismo en todas las filas no informa: ocupa el lugar
+  del dato que cambia.** El «Cubierta» ×33 era la tabla más cargada del sitio
+  sin decir una sola diferencia.
+- **Una mejor línea es una sola manera de comparar.** Si el home y `/planes/`
+  muestran lo mismo con dos componentes distintos, en un año son dos sitios. Se
+  extiende el que ya está elegido, con opciones que el otro no usa.
+- **Al reusar un componente, se prueba en los anchos donde cambia de forma, no
+  solo en los extremos.** A 390 y a 1280 todo estaba bien; a 700 había 4.000 px.

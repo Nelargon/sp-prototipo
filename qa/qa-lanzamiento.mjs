@@ -289,7 +289,9 @@ console.log('\n── /planes/: la página única de detalle');
   else mal('/que-cubre/ no llega a /planes/ (queda en ' + page.url() + ')');
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const r = await page.evaluate(() => ({
-    filas: document.querySelectorAll('.pl-row').length,
+    // La tabla de la computadora es el comparador del home con todo adentro
+    // (lámina 81, 07/10/2026): once servicios y nueve esperas, tres columnas.
+    tabla: (() => { const t = document.getElementById('comparar-planes'); if (!t) return null; const cols = [...t.querySelectorAll('.cmp2-plan')]; const tops = cols.map((c) => c.getBoundingClientRect().top); return { planes: cols.length, filas: cols.map((c) => c.querySelectorAll('.cmp2-c').length), enFila: tops.every((y) => Math.abs(y - tops[0]) < 20), cubierta: (t.textContent.match(/Cubierta/g) || []).length }; })(),
     buscador: !!document.getElementById('bus-q'),
     escalon: /cosas mejoran|Subir un escalón/.test(document.body.textContent),
     haciaHome: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')).filter((h) => /#(cartilla|comparar)|\/que-cubre\//.test(h)),
@@ -297,7 +299,8 @@ console.log('\n── /planes/: la página única de detalle');
     orden: (() => { const a = [...document.querySelectorAll('.excl-grid a')].find((x) => /wa\.me\//.test(x.getAttribute('href') || '')); return a ? { href: a.getAttribute('href'), alto: a.getBoundingClientRect().height } : null; })(),
     plegables: [...document.querySelectorAll('.pleg')].map((e) => ({ abierto: e.dataset.abierto, inert: e.hasAttribute('inert'), alto: e.getBoundingClientRect().height })),
   }));
-  if (r.filas !== 12) mal('/planes/: la tabla de servicios debería tener 11 filas más el encabezado (tiene ' + r.filas + ')'); else bien('/planes/: los once servicios a la vista');
+  if (!r.tabla || r.tabla.planes !== 3 || r.tabla.filas.some((x) => x !== 20) || !r.tabla.enFila || r.tabla.cubierta) mal('/planes/: en la computadora tiene que estar la tabla del home con los tres planes lado a lado, once servicios y nueve esperas, sin «Cubierta» (' + JSON.stringify(r.tabla) + ')');
+  else bien('/planes/: la tabla del home, con los once servicios y las nueve esperas');
   if (r.buscador || r.escalon) mal('/planes/ todavía muestra el buscador o «Subir un escalón»'); else bien('/planes/: sin buscador ni «Subir un escalón»');
   if (r.haciaHome.length) mal('/planes/ manda al home o a /que-cubre/: ' + r.haciaHome.join(', ')); else bien('/planes/: ningún link vuelve a la sección de planes del home');
   if (r.exclusiones < 8) mal('/planes/: lo que no cubren debe estar a la vista (6 tarjetas + «¿Te preocupa alguna?» + la orden médica)'); else bien('/planes/: lo que no cubren, a la vista');
@@ -389,7 +392,7 @@ for (const width of [360, 390]) {
   const n = 'móvil ' + width;
   const r = await page.evaluate(() => {
     const cel = document.querySelector('.cmp-cel');
-    const tabla = document.querySelector('.pl-inner');
+    const tabla = document.getElementById('comparar-planes');
     const cards = cel ? [...cel.querySelectorAll('article')] : [];
     const temas = cards.map((c) => [...c.querySelectorAll('.linea-cel')].map((l) => l.textContent.split(':')[0]).join('|'));
     const celdas = [...document.querySelectorAll('.esp-f [role=cell]')];
@@ -405,8 +408,8 @@ for (const width of [360, 390]) {
       celdasQueSeSalen: celdas.filter((e) => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > e.parentElement.getBoundingClientRect().right + 0.5).length,
     };
   });
-  if (!r.cel || r.tablaVisible) mal(n + ': /planes/ tiene que mostrar la comparativa del celular y no la tabla que se desliza (' + JSON.stringify({ cel: r.cel, tabla: r.tablaVisible }) + ')');
-  else bien(n + ': la comparativa del celular reemplaza a la tabla que se deslizaba');
+  if (!r.cel || r.tablaVisible) mal(n + ': /planes/ tiene que mostrar la comparativa del celular y no la tabla de la computadora (' + JSON.stringify({ cel: r.cel, tabla: r.tablaVisible }) + ')');
+  else bien(n + ': la comparativa del celular, sin la tabla de la computadora');
   if (r.cards !== 3 || r.lineas.some((x) => x !== 5) || !r.mismoOrden) mal(n + ': las tres tarjetas tienen que tener las mismas cinco líneas, en el mismo orden (' + JSON.stringify({ cards: r.cards, lineas: r.lineas, mismoOrden: r.mismoOrden }) + ')');
   else bien(n + ': tres tarjetas con las mismas cinco líneas, en el mismo orden');
   if (r.esperas !== 10 || r.celdasQueSeSalen) mal(n + ': el cuadro de esperas tiene que traer las nueve esperas del simulador y entrar entero (' + JSON.stringify({ filas: r.esperas, seSalen: r.celdasQueSeSalen }) + ')');
@@ -449,7 +452,23 @@ for (const width of [360, 390]) {
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const cel = await page.evaluate(() => { const e = document.querySelector('.cmp-cel'); return e ? getComputedStyle(e).display : 'no está'; });
   if (cel !== 'none') mal('escritorio: la comparativa del celular no se tiene que ver en la computadora (' + cel + ')');
-  else bien('escritorio: en la computadora sigue la tabla de once servicios');
+  else bien('escritorio: en la computadora, la tabla y no la comparativa del celular');
+  // La letra chica de cada servicio se abre al pasar el mouse por su nombre,
+  // con los tres planes y su espera, y se mide (como en el home).
+  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  const srv = page.locator('#comparar-planes .cmp2-lab .cmp2-srv', { hasText: 'Internación' });
+  let t = null;
+  if (await srv.count()) {
+    await srv.scrollIntoViewIfNeeded();
+    const c = await srv.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+    await page.waitForTimeout(300);
+    t = await page.evaluate(() => { const e = document.querySelector('#comparar-planes .cmp2-tarjeta'); return e ? { planes: e.querySelectorAll('.cmp2-tarjeta-p').length, espera: /de espera/.test(e.textContent) } : null; });
+  }
+  const evS = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'servicio' && x.datos?.clave === 'Internación');
+  if (!t || t.planes !== 3 || !t.espera || evS.length !== 1) mal('escritorio: pasar el mouse por «Internación» tiene que abrir su tarjeta con los tres planes y la espera, y medirse una vez (' + JSON.stringify({ t, ev: evS.length }) + ')');
+  else bien('escritorio: la letra chica de cada servicio se abre al pasar el mouse, con su espera, y se mide');
   await page.close();
 }
 

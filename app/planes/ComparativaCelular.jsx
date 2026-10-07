@@ -12,10 +12,10 @@ import IconoSP from '../components/IconoSP';
 import datos from '../../lib/prestaciones.json';
 
 /* La comparativa de /planes en el celular (lámina 59; Arturo la confirmó el
-   07/10/2026 con «1A, 2A, 3A, 4A»). Reemplaza, solo hasta 640 px, a las
-   tarjetas con precio «desde» y a la tabla de once servicios que se deslizaba
-   de costado y al llegar mostraba solo Essential. En la computadora la tabla
-   entra y sigue igual (lámina 46).
+   07/10/2026 con «1A, 2A, 3A, 4A»). Va hasta 819 px; desde 820, la
+   computadora muestra la tabla del comparador del home con todo adentro
+   (lámina 81, también del 07/10). Reemplazó a la tabla de once servicios que
+   se deslizaba de costado y al llegar mostraba solo Essential.
 
    Por qué tiene esta forma (BITACORA cap. 141, docs/diseno n.º 79):
    - Quiénes entran se elige una vez, arriba, y cambia el precio de las tres
@@ -214,7 +214,7 @@ export default function ComparativaCelular() {
                 aria-pressed={quien === g.k}
                 onClick={() => setQuien(g.k)}
                 className={'disp' + (quien === g.k ? ' rel-btn' : '')}
-                style={css('font-size:13.5px;font-weight:800;line-height:1.15;padding:12px 6px;border:0;border-radius:var(--r-sm);cursor:pointer;' + (quien === g.k ? 'background:#fff;color:var(--sp-navy)' : 'background:none;color:var(--sp-muted)'))}
+                style={css('font-size:13.5px;font-weight:800;line-height:1.15;min-height:44px;padding:10px 6px;border:0;border-radius:var(--r-sm);cursor:pointer;' + (quien === g.k ? 'background:#fff;color:var(--sp-navy)' : 'background:none;color:var(--sp-muted)'))}
               >
                 {g.l}
               </button>
@@ -283,7 +283,7 @@ export default function ComparativaCelular() {
         </div>
         <div role="table" aria-label="Cuánto esperás para usarlo" className="sq" style={css('--sq:var(--r-lg);border:1px solid var(--sp-line);overflow:hidden')}>
           <div role="row" className="esp-f" style={css('background:var(--sp-navy)')}>
-            <span role="columnheader" style={css('position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)')}>Servicio</span>
+            <span role="columnheader" style={css('position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);color:#fff')}>Servicio</span>
             <span aria-hidden="true" />
             {planes.map((p) => <span key={p.short} role="columnheader" className="disp" style={css('font-size:12.5px;font-weight:800;color:#fff;text-align:center')}>{p.short}</span>)}
           </div>

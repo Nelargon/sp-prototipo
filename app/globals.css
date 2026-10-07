@@ -388,13 +388,14 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .blog-ult-t{transition:color .18s}
 .blog-ult:hover .blog-ult-t{color:var(--sp-mint)}
 @media(prefers-reduced-motion:reduce){.blog-hero h2,.blog-ult,.blog-ult-t{transition:none}.blog-ult:hover{padding-left:0}}
-/* /planes tiene dos formas de comparar (07/10/2026, lámina 59): hasta 640 px,
-   las tarjetas iguales con el detalle al tocar (app/planes/ComparativaCelular);
-   desde ahí, las tarjetas y la tabla de once servicios, que en la computadora
-   entra entera. */
+/* /planes tiene dos formas de comparar (07/10/2026): hasta 819 px, las
+   tarjetas iguales con el detalle al tocar (lámina 59,
+   app/planes/ComparativaCelular); desde 820, la tabla del comparador del home
+   con todo adentro (lámina 81). El corte es el mismo del home: por debajo de
+   820 su tabla se apila en tarjetas de 20 filas (4.005 px a 700 px). */
 .solo-cel{display:none}
 .esp-f{position:relative;display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:4px;padding:10px 12px;align-items:center}
-@media(max-width:640px){.solo-cel{display:block}.solo-compu{display:none}}
+@media(max-width:819px){.solo-cel{display:block}.solo-compu{display:none}}
 /* Las frases del bloque «Simulá tu plan» (inicio). Sin ícono desde el 24/09
    (el texto ya lo dice): en una línea van separadas por un punto; en el
    celular van una debajo de la otra, porque un punto al final de la línea
@@ -492,6 +493,9 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .cmp2-chip{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);background:var(--sp-mint-bg);color:var(--sp-teal-deep)}
 .cmp2-val{font-size:15.5px;font-weight:800;color:var(--sp-ink)}
 .cmp2-fam{font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-left:6px}
+.cmp2-val.apagado{color:var(--sp-muted);font-weight:700}
+.cmp2-zona{display:block;font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);margin-top:1px}
+.cmp2-srv-sin{font-weight:700}
 .cmp2-cta{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:14.5px;font-weight:800}
 .cmp2-cta:hover{background:var(--sp-teal-press)} /* con el hover claro, el blanco quedaba en 3,6:1 (punto de revisión 141 de sp-interno) */
 .cmp2-tag{display:block;min-height:14px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sp-teal-deep)}
