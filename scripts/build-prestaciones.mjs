@@ -206,7 +206,7 @@ const aliasIdx = (set) => {
 /* Cómo se MUESTRA una cantidad del master, sin cambiar lo que dice (auditoría
    del 25/09/2026). El master trae tipeos ("Hasta1", "ao", "d contrato",
    "bene- ficiario"), abreviaturas que una familia no lee ("H.M." = honorarios
-   médicos, "ses."), la moneda en "Gs." (el sitio usa ₲) y referencias a un
+   médicos, "ses.") y referencias a un
    "Cuadro 3" que el cliente nunca vio. Se corrige la forma, a la vista; si
    mañana aparece otra variante, se suma acá. */
 const LIMPIEZA = [
@@ -216,7 +216,7 @@ const LIMPIEZA = [
   [/bene-\s*ficiario/, 'beneficiario'],
   [/\bses\. /, 'sesiones '],
   [/^Hasta el 50% de H\.M\.$/, 'Hasta el 50% de los honorarios médicos'],
-  [/^H\.M\. hasta Gs\. /, 'Honorarios médicos hasta ₲ '],
+  [/^H\.M\. hasta Gs\. /, 'Honorarios médicos hasta Gs. '],
   [/^\*Según detalle de cirugías( Cuadro 3)?$/, 'Según la cirugía: buscala por su nombre'],
   // El sitio dice «sin tope» en todos lados; la grilla, «Ilimitada».
   [/^Ilimitada$/, 'Sin tope'],
@@ -485,7 +485,10 @@ const serializar = (o) => {
   }
   return '{\n' + partes.join(',\n') + '\n}\n';
 };
-const texto = serializar(out);
+/* La moneda se muestra «Gs. 1.250.000» en todo el sitio (Arturo, 07/10/2026,
+   sp-interno#164). Los cuadernillos de Essential la traen como «₲»: se corrige
+   la forma acá, al mostrarla, sin tocar el dato de la fuente. */
+const texto = serializar(out).replace(/₲\s?/g, 'Gs. ');
 writeFileSync(OUT, texto);
 
 const size = Buffer.byteLength(texto);

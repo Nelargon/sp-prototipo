@@ -28,7 +28,7 @@ que construye.
 |---|---|---|
 | **1 · Claridad** | A | **NO PASA todavía** — 1.5 pasa desde el 7 sep; 1.4 pasa desde el 24 sep (sus hallazgos eran falsos positivos del detector); 1.1 no se pudo correr |
 | **2 · Accesibilidad y rendimiento** | A | **Pasa lo medible**; una métrica no es medible en laboratorio |
-| **3 · Craft, marca y futuro** | B+ | **Pasa 3.1 y 3.3**; 3.2 espera una decisión de marca (`₲` vs `Gs.`) |
+| **3 · Craft, marca y futuro** | B+ | **Pasa 3.1 y 3.3**; en 3.2 la moneda ya está decidida (`Gs.`, 07/10/2026) |
 
 > ⚠️ **La primera versión de este resumen decía que la Puerta 1 "pasa, con una
 > salvedad de contenido del blog"** — mientras la tabla de abajo, en la misma
@@ -54,8 +54,8 @@ que construye.
 2. **La Puerta 3 pasa por tokens, y no era gratis.** Cuando este boletín se
    escribió, no la pasábamos: 970 colores a mano. Se hizo la pasada (§3.1) y hoy
    el guardián está verde con una vara más exigente que la que tenía. Lo que
-   queda de la puerta no es deuda técnica: es una decisión de marca sin tomar
-   (`₲` vs `Gs.`).
+   queda de la puerta no era deuda técnica sino una decisión de marca
+   (`₲` vs `Gs.`), y se tomó el 07/10/2026: `Gs.` en todo.
 
 ---
 
@@ -309,7 +309,7 @@ mire con ojos de diseño.
 |---|---|
 | Tipografía Nunito Sans (display) + Inter (lectura) | ✅ Auto-hospedadas, decisión del **20/07/2026** |
 | Un solo color narrativo por pieza | ✅ El blog aplica un ancla por categoría (5 categorías, 5 anclas) |
-| Formato de moneda | ⚠️ **Conflicto**: el sitio renderiza **`₲ 238.000`**; el criterio fija **`Gs. 1.250.000`** |
+| Formato de moneda | ✅ **`Gs. 1.250.000`** en todo, también el sitio (Arturo, 07/10/2026, `sp-interno#164`) |
 
 > **Dos cosas para cerrar antes de que el criterio se comparta:**
 > 1. **`₲` vs `Gs.`** — hay que elegir uno. Es el mismo tipo de contradicción que
@@ -335,7 +335,7 @@ mire con ojos de diseño.
 1. ~~**Pasada de tokens** (color, radio, espaciado)~~ — **hecha** (§3.1, 6 ago
    2026). Queda abierto un solo punto y es de diseño, no mecánico: los pasos de
    radio de 14px y 18px, que caen a mitad de camino entre dos tokens.
-2. **Decidir `₲` vs `Gs.`** y aplicarlo en los dos lados.
+2. ~~**Decidir `₲` vs `Gs.`** y aplicarlo en los dos lados.~~ — **hecho** (07/10/2026): `Gs.` en todo.
 3. **Agregar `#007d77` a la tabla de contraste** del criterio, o cambiar la
    decisión del sitio. Una de las dos, no las dos.
 4. **Cerrar la lista de las 10 preguntas** para poder correr la Puerta 1.1 —

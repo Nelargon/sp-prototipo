@@ -45,7 +45,7 @@ const _now = new Date();
 export const YEARS_CARING = _now.getFullYear() - FOUNDED_YEAR - (_now.getMonth() < 7 ? 1 : 0);
 
 export const fmt = (n) =>
-  '₲ ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  'Gs. ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 /* Tarifario vigente (IVA incluido). Tramos de edad: 0-54 / 55-64 / 65-69 /
    70+ (el tramo 70+ es de renovación, no de venta nueva; se usa solo como

@@ -83,10 +83,21 @@ Lo que queda para quien siga:
 - **El logo de las piezas vive en un solo lugar:** `SP_LOGOS`, en
   `sp-brandcenter/vitrina/marca.js`. Si el sitio cambia de logo, se cambia también
   ahí y se vuelven a publicar los artefactos.
-- **El Centro de Marca y el sitio dicen distinto en seis reglas:** el ámbar
-  como botón, «Gs.» o «₲», la forma del teléfono, el color de los títulos
-  chicos, el tamaño de los íconos y los narrativos juntos. Decide Arturo en
-  `sp-interno#164`. Hasta entonces el sitio no cambia.
+- **Las seis reglas que el Centro de Marca y el sitio decían distinto, decididas**
+  (Arturo, 07/10/2026, «1A, 2A, 3A, 4A, 5A, 6A», `sp-interno#164`):
+  1. **El ámbar no es botón:** es solo acento. El botón es turquesa profundo.
+  2. **La moneda es «Gs. 1.250.000» en todo, también en el sitio.** Desde ese
+     día `fmt()` de `app/quote.js`, las tablas de `/planes/` y del home, las
+     coberturas y `lib/prestaciones.json` escriben «Gs.». Los datos fuente no se
+     tocaron: el generador corrige la forma al mostrar.
+  3. **El teléfono va «(021) 319 0000» en lo que lee un cliente;** «+595» solo
+     en los enlaces (`tel:`, WhatsApp). El sitio ya estaba así. Los teléfonos
+     de la Guía Médica, que vienen de la planilla con +595, quedan para una
+     decisión aparte: tocarlos es tocar la Guía.
+  4. **Todos los títulos en navy,** también H2 y H3.
+  5. **Íconos en pantalla, de 40 a 60 px.**
+  6. **Dos colores narrativos juntos, solo en los gráficos de informes
+     internos.** En el resto, uno por pieza.
 
 ---
 

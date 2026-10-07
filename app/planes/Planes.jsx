@@ -126,9 +126,9 @@ export default function Planes() {
     { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
     { g: 'Si te internan', name: 'Internación', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }], d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
     { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
-    { name: 'Medicamentos internado', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }], d: conEspera('Medicamentos en internación') },
+    { name: 'Medicamentos internado', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }], d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }], d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }], d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
     // el simulador. Sin tarjeta: el número ya es el dato.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
@@ -146,12 +146,12 @@ export default function Planes() {
   /* Cómo se MUESTRA un parámetro del master, sin tocar el dato:
      - "Carencia…" va después de lo que la persona entiende (regla del
        8/09/2026: "carencia" no va primero; la palabra del contrato, detrás).
-     - El master escribe "Gs."; el resto del sitio, "₲". Una sola moneda. */
+     - El master escribe "Gs." y el sitio también (Arturo, 07/10/2026, sp-interno#164). Una sola moneda. */
   const etiquetaParam = (t) => {
     const m = /^Carencia\s*(?:–|-|de)\s*(.+)$/i.exec(t);
     return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
   };
-  const valorParam = (v) => String(v).replace(/^Gs\.\s*/, '₲ ');
+  const valorParam = (v) => String(v).replace(/^Gs\.\s*/, 'Gs. ');
 
   // Las secciones de parámetros vienen agrupadas del master (Internación,
   // Topes…). Se respeta ese agrupamiento: es como lo lee quien vende.

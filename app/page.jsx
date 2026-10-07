@@ -373,11 +373,11 @@ export default function Page() {
       pie: 'Semi-suite: habitación privada, con baño propio y lugar para un acompañante.' },
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
       d: ['Hasta 2 días al año por persona, a los 365 días de afiliarte.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
-    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: '₲350 mil' }, { t: '₲1 millón' }, { t: '₲1,5 mill.' }],
-      d: ['Hasta ₲350.000 en medicamentos en cada internación.', 'Hasta ₲1.000.000 en medicamentos y descartables en cada internación.', 'Hasta ₲1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }],
+      d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
-    { g: 'Urgencias y espera', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: '₲150 mil' }, { t: '₲200 mil' }],
-      d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta ₲150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta ₲200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
+    { g: 'Urgencias y espera', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }],
+      d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
     // LA ESPERA, COMO FILA (26/09/2026, pregunta de Arturo: «¿no se podría
     // simplemente poner como una fila más en el comparativo?»). Essential: 365
     // días en todo lo nombrado (essential.json, carencias_dias). Silver y Gold:
