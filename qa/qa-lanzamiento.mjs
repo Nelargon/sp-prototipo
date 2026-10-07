@@ -346,6 +346,28 @@ console.log('\n── /planes/: la página única de detalle');
   const bajos = riel.filter((x) => x.cr < 4.5);
   if (riel.length < 3 || bajos.length) mal('/simulador/: números del riel por debajo de 4,5:1 (' + (bajos.map((x) => x.n + ': ' + x.cr.toFixed(2)).join(', ') || 'no se encontró el riel') + ')');
   else bien('/simulador/: los números del riel se leen (' + Math.min(...riel.map((x) => x.cr)).toFixed(2) + ':1 o más)');
+  // Las explicaciones que se abren al tocar se miden (regla de claridad,
+  // sp-interno#98): abrir «carencia» manda un abre_explicacion, una sola vez
+  // aunque se vuelva a abrir. Se escucha console.debug, que es por donde sale
+  // track() hasta que haya backend.
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  const pal = page.locator('button.txt', { hasText: 'carencia' }).first();
+  const aExpl = async () => (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
+  if (!(await pal.count())) mal('/planes/: no está la palabra «carencia» con su explicación');
+  else {
+    await pal.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(300);
+    for (let vez = 0; vez < 2; vez++) {
+      const c = await pal.boundingBox();
+      await page.mouse.move(5, 5);
+      await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+      await page.waitForTimeout(300);
+    }
+    const ev = await aExpl();
+    if (ev.length !== 1 || ev[0].datos?.tipo !== 'glosario' || ev[0].datos?.clave !== 'carencia') mal('/planes/: abrir «carencia» dos veces tiene que mandar un solo abre_explicacion de glosario (' + JSON.stringify(ev) + ')');
+    else bien('/planes/: abrir «carencia» se mide, una sola vez por visita');
+  }
   await page.close();
 }
 
@@ -421,6 +443,7 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   // que la prueba exige. El 01/10 volvió a fallar y esto mostró la causa: el
   // click cayó en la celda, no en el botón (la espera de arriba).
   await page.evaluate(() => { window.__cmpEv = []; for (const t of ['pointerdown', 'pointerup', 'touchend', 'focusin', 'focusout', 'click']) document.addEventListener(t, (e) => window.__cmpEv.push(t + (e.pointerType ? '/' + e.pointerType : '') + '→' + (e.target.closest?.('.cmp2-srv') ? 'botón' : String(e.target.className || e.target.nodeName).slice(0, 24))), true); });
+  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
   if (movil) await btn.tap();
   else {
     const caja = await btn.boundingBox();
@@ -435,6 +458,10 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   const ev = await page.evaluate(() => window.__cmpEv || []);
   if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada, react, quieto, ev }) + ')');
   else bien(nombre + ': la tarjeta del servicio se abre ' + (movil ? 'al tocar' : 'al pasar el mouse') + ', con los tres planes, y se cierra');
+  // Abrir la tarjeta se mide una vez, con el nombre del servicio (sp-interno#98).
+  const evSrv = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion');
+  if (evSrv.length !== 1 || evSrv[0].datos?.tipo !== 'servicio' || evSrv[0].datos?.clave !== 'Fisioterapia') mal(nombre + ': abrir la tarjeta de Fisioterapia tiene que mandar un solo abre_explicacion de servicio (' + JSON.stringify(evSrv) + ')');
+  else bien(nombre + ': abrir la tarjeta del servicio se mide, con su nombre');
   if (!movil) {
     await page.evaluate(() => { const e = document.querySelector('#cartilla'); window.scrollTo({ top: e.getBoundingClientRect().top + scrollY + 300, behavior: 'instant' }); });
     await page.waitForTimeout(200);
