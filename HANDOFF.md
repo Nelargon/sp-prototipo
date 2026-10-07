@@ -217,10 +217,13 @@ pareja del pase de la comparativa, en `sp-interno`):
 
 ## 📱 LA COMPARATIVA EN EL CELULAR: TARJETAS IGUALES Y EL DETALLE AL TOCAR (27 sep 2026)
 
-> ⚠ **Propuesta aprobada en su dirección, NO construir todavía.** Arturo dijo
-> que sí a la forma, pero va a revisar la maqueta en su celular antes de
-> confirmarla (27/09/2026). Cuando la confirme, la construye **una sola
-> sesión**, acordada con él.
+> ✅ **Confirmada y construida (07/10/2026).** Arturo revisó la maqueta en su
+> celular el 06/10 (puesta al día con lo que había decidido después; lámina 79)
+> y contestó «1A, 2A, 3A, 4A»: la forma tal cual, los once servicios en una
+> hoja, el botón «Vos con tus hijos» y la pregunta de precios a SP como punto de
+> revisión. Está en `/planes/` hasta 640 px
+> (`app/planes/ComparativaCelular.jsx`); en la computadora sigue la tabla.
+> Detalle en «Cómo quedó construida», al final de esta sección.
 
 **Qué pasó.** La revisión integral (`sp-interno#91`) y el pase de la
 comparativa recomendaban para el celular la tabla en «fila partida» (láminas 56
@@ -258,14 +261,42 @@ revisión integral, todavía sin hacer). Una explicación nueva que se abra al
 tocar usa `trackExplicacion`; `qa/qa-lanzamiento.mjs` lo prueba en «carencia» y
 en Fisioterapia, y `qa/qa-integral.mjs` en el simulador (el primer «por qué» y el cálculo).
 
-**Pendiente de Arturo:**
-1. Revisar la maqueta y confirmar la forma.
-2. Las cinco líneas. Hoy son consultas con especialistas, psicología,
-   resonancia, internación y dentista; el parto es candidato a entrar.
-3. Si la tabla completa se abre como hoja o queda plegada al final.
+**Cómo quedó construida (07/10/2026; BITACORA cap. 141, lámina 79).** Lo que
+antes estaba pendiente se resolvió así:
+- **La forma:** la de la maqueta, tal cual (1A).
+- **Las cinco líneas** ya las había elegido Arturo el 29/09 (lámina 65): son
+  las de `plans()` en `app/quote.js` (consultas, tomografía y resonancia,
+  internación, terapia intensiva y odontología). Cada línea abre el tema en los
+  tres planes, con su espera, en la hoja (`Hoja.jsx`).
+- **Las esperas** no van en las tarjetas (03/10): van en un cuadro aparte,
+  «Cuánto esperás para usarlo», con las nueve de `carencias()`, las mismas del
+  simulador, todas con el mismo peso. La tabla de once servicios no entra en
+  390 px, pero las esperas son palabras cortas y sí entran. El parto ya no
+  necesitó una línea: su espera está ahí.
+- **Los once servicios**, a pedido, en una hoja que sube (2A). Cada uno se toca
+  y abre su detalle con «‹ Los once servicios» para volver.
+- **Quiénes entran:** cuatro grupos (3A). Los precios salen de `engine()` de
+  `quote.js` (ninguno se escribe en el componente), con la edad hasta la que
+  vale cada uno. Essential muestra Asunción y Central; «Otras zonas» explica el
+  Interior y el Nacional.
+- **Se mide:** cada tema, la lista y cada servicio mandan `abre_explicacion`
+  de tipo `servicio` (la clave es el tema, el servicio u «once servicios»).
+- **Pruebas:** `qa/qa-lanzamiento.mjs`, bloque «/planes/ en el celular», en 360
+  y 390, probado también contra la página vieja (13 fallas). Ojo al escribir
+  pruebas de `/planes/`: el HTML trae las dos formas, una escondida. Se busca
+  con `:visible` o con la clase propia (`.cmp-cel`), no «el primero».
+- **Medido** a 390 px, del título al final de «lo que no cubren»: 5,4 pantallas
+  contra 5,7 de antes. Lo que cambia no es tanto el largo como lo que se ve: los
+  tres planes enteros. La maqueta medía 4,7: el sitio real suma el encabezado,
+  títulos más grandes y la tarjeta de la orden médica.
+
+**Pendiente con SP (4A):** una pareja de 46 a 54 años paga menos en Silver
+(₲ 456.000) que en Essential (₲ 475.000, Asunción y Central). Va como punto de
+revisión (`sp-interno#162`) para que SP diga si es así o si es un error del
+tarifario.
 
 **Dónde está todo:** en `sp-interno/project/comparativa-2026-09-27/`. Ahí
-están el `PASE.md` al día, las dos láminas navegables de esta conversación, las
+están el `PASE.md` al día, las láminas navegables, la maqueta del 06/10, las
 capturas y los pendientes con SP que salieron de revisar la maqueta.
 
 ---
@@ -334,13 +365,10 @@ un lugar»*. Pidió «la versión liviana».
   el mismo peso, como ya hacía `/planes/`. Si Arturo quiere una vista rápida
   aparte, hay que decidir dónde.
   **Arturo lo aceptó el 05/10/2026.**
-- *La tabla en el celular sigue deslizándose de costado*, como estaba en
-  `/planes` desde el 23/09. Al llegar, solo se ve Essential, lo mismo que el
-  26/09 se sacó del home. **La forma la decide Arturo:** ya descartó la fila
-  partida (27/09, lámina 57), y la dirección que aprobó, tarjetas iguales y el
-  detalle al tocar, espera que la revise en su celular (sección «📱 La
-  comparativa en el celular», más arriba). El código tiene el aviso al lado de
-  la tabla (`app/planes/Planes.jsx`).
+- ~~*La tabla en el celular sigue deslizándose de costado*~~ **Resuelto el
+  07/10/2026:** hasta 640 px, la tabla se reemplazó por la comparativa de la
+  lámina 59, que Arturo confirmó en su celular (sección «📱 La comparativa en
+  el celular», más arriba). En la computadora la tabla sigue igual.
 - *Vital con la misma profundidad (29/09)* sigue pendiente: hoy es una banda.
 - *«Pocas herramientas»*: de las cuatro (tarjetas, simulador, buscador, guía),
   el buscador queda fuera por ahora.

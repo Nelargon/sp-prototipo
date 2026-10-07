@@ -9,6 +9,7 @@ import { Term, waitLabel, annotate } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
 import Plegable from '../components/Plegable';
+import ComparativaCelular from './ComparativaCelular';
 import datos from '../../lib/prestaciones.json';
 
 /* /planes — la ÚNICA página donde se detallan los planes (3/10/2026).
@@ -31,7 +32,8 @@ import datos from '../../lib/prestaciones.json';
 
    Sin rótulos en mayúsculas sobre los títulos (Arturo, 29/09: «no uses el
    etiquetado característico de la IA»). Las esperas van en la tabla, todas
-   con el mismo peso y orden, nunca de gancho en las tarjetas (3/10).
+   con el mismo peso y orden, nunca de gancho en las tarjetas (3/10). En el
+   celular, en su propio cuadro (ComparativaCelular.jsx, 07/10).
 
    e = Essential (su cuadernillo) · s = Silver · o = Gold (la grilla). Silver y
    Gold son de la familia que internamente se llama "Privilege": de cara al
@@ -123,11 +125,20 @@ export default function Planes() {
             Essential, Silver y Gold, <span style={css('color:var(--sp-teal-deep)')}>plan por plan</span>
           </h1>
           <p style={css('font-family:var(--font-inter),sans-serif;font-size:17px;line-height:1.6;color:var(--sp-muted);margin:0 auto;max-width:640px')}>
-            Qué trae cada uno, cuánto sale y lo que no entra en ninguno. Lo más fino lo abrís con un toque.
+            <span className="solo-compu">Qué trae cada uno, cuánto sale y lo que no entra en ninguno. Lo más fino lo abrís con un toque.</span>
+            <span className="solo-cel">Elegí quiénes entran y mirá cuánto pagás. Tocá cualquier línea para verla en los tres planes.</span>
           </p>
         </div>
       </section>
 
+      {/* ---- 2 Y 3, EN EL CELULAR: TARJETAS IGUALES Y EL DETALLE AL TOCAR --
+          Hasta 640 px, las tarjetas y la tabla de abajo se reemplazan por la
+          comparativa de la lámina 59, que Arturo confirmó el 07/10/2026
+          (ComparativaCelular.jsx). La tabla se deslizaba de costado y al
+          llegar mostraba solo Essential. Desde 641 px, todo sigue igual. */}
+      <ComparativaCelular />
+
+      <div className="solo-compu">
       {/* ---- 2. LAS TRES TARJETAS --------------------------------------- */}
       <section style={css('padding:40px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
@@ -179,18 +190,13 @@ export default function Planes() {
       <section style={css('padding:70px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
           {titulo('Los once servicios', 'que más se preguntan', 'La comparación de un vistazo, con la letra chica al lado y no escondida.')}
-          {/* ⚠ LA FORMA DE ESTA TABLA EN EL CELULAR LA DECIDE ARTURO (05/10/2026).
-              Ya descartó dos: deslizar de costado (26/09, lámina 45: al llegar
-              Gold no se ve) y la fila partida (27/09, lámina 57: «demasiado
-              ordenado en filas y columnas»). La dirección que aprobó es otra:
-              tarjetas con las mismas líneas y el detalle al tocar (lámina 59,
-              HANDOFF «📱 La comparativa en el celular»), y espera que la revise
-              en su celular. Hasta entonces queda como estaba. No cambiar la
-              forma sin su OK (BITACORA cap. 137). */}
-          {/* En celular la tabla se desliza de costado y solo se ve el primer
-              plan: sin este aviso, la página que existe para comparar los tres
-              muestra uno y medio (revisión del 23/09/2026). */}
-          <div className="cmp-hint" style={css('align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-family:var(--font-inter),sans-serif;font-size:12.5px;font-weight:600;color:var(--sp-teal-900)')}>Deslizá para ver Silver y Gold <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
+          {/* ⚠ ESTA TABLA YA NO SE VE EN EL CELULAR (07/10/2026). Ahí va la
+              comparativa de la lámina 59 (ComparativaCelular.jsx), la forma que
+              Arturo confirmó después de descartar dos: deslizar de costado
+              (26/09, lámina 45: al llegar Gold no se ve) y la fila partida
+              (27/09, lámina 57: «demasiado ordenado en filas y columnas»). No
+              volver a mostrar la tabla en el celular sin su OK (BITACORA caps.
+              137 y 141). */}
           <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-lg);overflow:hidden;overflow-x:auto')}>
             <div className="pl-inner" style={css('min-width:720px')}>
               <div className="pl-row" style={css('display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff')}>
@@ -238,6 +244,7 @@ export default function Planes() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* ---- 4. LO QUE NO CUBREN NINGÚN PLAN -----------------------------
           A la vista, no a un toque: si la persona no lo ve, puede elegir mal

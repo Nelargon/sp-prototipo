@@ -7,6 +7,9 @@ import { css } from '../css';
    ver «Sistema táctil» en app/globals.css). Nació en la Guía Médica el
    23/09/2026, para especialidad y plan: «esto es temporal, volvés a donde
    estabas». Solo para listas largas; no es un modal para cualquier cosa.
+   Desde el 07/10/2026 también la usa /planes en el celular
+   (planes/ComparativaCelular.jsx): los once servicios y cada tema en los tres
+   planes, que en 390 px son listas largas (lámina 79).
 
    Fondo oscurecido, asa, «×», Escape o tocar afuera la cierran, y bloquea el
    scroll de atrás. Cerrada queda inert.

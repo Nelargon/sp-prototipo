@@ -82,7 +82,7 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 | `click_whatsapp`      | origen (comparador / cierre / fab / simulador_resultado / barra_movil / faq) + tema en faq | conversión a conversación (el mensaje va prellenado con el contexto: plan del comparador, tema de la FAQ) |
 | `click_urgencias`     | origen (header / menú móvil)             | uso del acceso de urgencias |
 | `faq_open`            | pregunta                                 | objeciones reales → contenido y guiones de venta |
-| `abre_explicacion`    | tipo (glosario / servicio / calculo / por_que), clave (la palabra, el nombre del servicio, `precio`, o el paso del simulador: quien / edades / nivel / zona) — una vez por página vista | qué explicaciones abre la gente: si algo que importa casi nadie lo abre, sube a la vista (regla de claridad, 07/10/2026) |
+| `abre_explicacion`    | tipo (glosario / servicio / calculo / por_que), clave (la palabra, el nombre del servicio —en `/planes/` del celular, también el tema de una tarjeta u «once servicios» para la lista—, `precio`, o el paso del simulador: quien / edades / nivel / zona) — una vez por página vista | qué explicaciones abre la gente: si algo que importa casi nadie lo abre, sube a la vista (regla de claridad, 07/10/2026) |
 
 **Privacidad**: no guardar cédulas ni asociar búsquedas a personas
 identificadas. Las búsquedas de síntomas son datos sensibles: solo agregados
