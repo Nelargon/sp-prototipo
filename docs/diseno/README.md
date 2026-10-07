@@ -1993,3 +1993,41 @@ entre esos anchos la tabla del home se apila en tarjetas de 20 filas.
 **La lección.** Una celda que repite lo mismo en todas las filas («Cubierta» ×33)
 no informa: ocupa el lugar del dato que sí cambia.
 
+## Parte 28 · La firma de correo (07/10/2026)
+
+Arturo, mirando la firma que arma el taller de la vitrina al lado de la suya:
+*«Quizás podemos mejorar, pero me gusta que el Nombre esté en Negrita, y el
+Apellido no»*. La del taller apilaba el logo arriba, el nombre, el cargo y los
+datos; la suya va en dos columnas con un divisor.
+
+### 82 · La firma se ve en Arial y en un celular
+
+![La firma de correo en la computadora: hoy (la de Arturo, recreada), A · La tuya, al día, B · La tuya, sin íconos (recomendada) y C · Una columna](img/2026-10-07-firma-correo-compu.webp)
+
+![Las mismas cuatro a 390 px: la de hoy se sale de la pantalla; A y B se apilan solas](img/2026-10-07-firma-correo-celular.webp)
+
+**Qué muestra.** La firma dentro de un correo, en Arial: el correo no carga las
+fuentes de la marca, así que así la ve quien la recibe. El teléfono es la línea
+de SP y no el celular de Arturo, porque esta carpeta es pública.
+
+- **Hoy** es su firma, recreada: el nombre entero en negrita, «+595 21 319 00
+  00» a la vista, «SALUD PROTEGIDA» tipeado en mayúsculas en vez del logo y
+  cuatro íconos. Mide 479 px de ancho: en un celular de 390 px se sale 40 px y
+  corta el correo.
+- **A · La tuya, al día** conserva su estructura y cambia lo que choca con la
+  marca: «**Arturo** González», «(021) 319 0000» con el +595 solo en el enlace,
+  y el logo real. Los íconos quedan, pero en un correo tienen que ser imágenes
+  alojadas, y Outlook las bloquea hasta que la persona las permite.
+- **B · La tuya, sin íconos** es la A con los datos solos: la única imagen es
+  el logo. Los cuatro datos se reconocen por su forma.
+- **C · Una columna** es la del taller, ordenada: entra en cualquier pantalla
+  sin depender de nada, pero mide 327 px de alto contra 215.
+
+A y B usan dos bloques que se acomodan solos: dos columnas en la computadora y
+una debajo de la otra en el celular. Una tabla fija de dos columnas se salía de
+la pantalla en todas las versiones (de 99 a 127 px a 390). Medido en Chromium;
+falta probarlo enviando la firma a Gmail y a Outlook.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación es
+la B: es la suya, con la marca, y tiene una sola cosa que se puede romper (el
+logo, con su texto alternativo).
