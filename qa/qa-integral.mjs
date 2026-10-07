@@ -86,6 +86,22 @@ console.log('\n== 1. FUNCIONAL ==');
   }
   if (!rotos) ok('funcional', 'crawler: ' + links.size + ' links internos únicos, todos responden');
 
+  // 1a. «¿Por qué te preguntamos esto?» se mide al abrirse, como toda
+  // explicación que se abre al tocar (regla de claridad, sp-interno#98).
+  await page.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(800);
+  const empezar = page.locator('button:visible', { hasText: /Empecemos/ }).first();
+  if (await empezar.count()) { await empezar.click().catch(() => {}); await page.waitForTimeout(450); }
+  const porque = page.locator('details.sim-why:visible summary').first();
+  if (await porque.count()) {
+    await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+    await porque.click();
+    await page.waitForTimeout(300);
+    const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
+    if (ev.length === 1 && ev[0].datos?.tipo === 'por_que') ok('funcional', 'simulador: abrir «¿Por qué te preguntamos esto?» se mide');
+    else falla('funcional', 'confunde', 'abrir «¿Por qué te preguntamos esto?» tiene que mandar un abre_explicacion de por_que (' + JSON.stringify(ev) + ')', '/simulador/');
+  } else falla('funcional', 'confunde', 'el simulador no muestra «¿Por qué te preguntamos esto?» en su primer paso', '/simulador/');
+
   // 1b. Simulador de punta a punta (caminante adaptativo hasta el precio y el lead)
   await page.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(800);
