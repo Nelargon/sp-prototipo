@@ -1957,3 +1957,34 @@ lo que aparece se copia como regla, así que lo que no está aprobado no entra n
 como adorno. Si una opción depende de un recurso nuevo, ese recurso se muestra
 aparte y rotulado, no en la portada (BITACORA cap. 142).
 
+## Parte 27 · La comparativa de /planes en la computadora (07/10/2026)
+
+Arturo, mirando la tabla del comparador del home (lámina 49, la 1.5) al lado de
+`/planes/`: *«Queremos un diseño un poquito más sencillo, un poco más
+minimalista, como el que le estoy pasando ahora: una mejor línea y algo un poco
+más completo también para esta parte»*. Pidió tres opciones, para el prototipo y
+para la versión de lanzamiento (usan el mismo código). En el celular no cambia:
+sigue la comparativa de la lámina 79.
+
+### 81 · Una sola línea para comparar en todo el sitio
+
+![/planes a 1280 px: hoy, y tres opciones con la línea de la tabla del home: A con todo adentro y el detalle al pasar el mouse, B con todo a la vista, C la de hoy sin ruido](img/2026-10-07-planes-computadora-tres-opciones.webp)
+
+**Qué muestra.** `/planes/` en una computadora de 1280 px, con datos del sitio.
+**Hoy** (2.031 px): tres tarjetas con precio y cinco líneas, y una tabla con
+barra azul, rayado y un «Cubierta» en cada una de sus 33 celdas, que no dice
+nada porque todas dicen lo mismo. **A · Como el home, con todo adentro**
+(1.461 px): la tabla del home con 11 servicios en vez de 9 y las nueve esperas
+en su propio grupo; el precio va arriba de cada columna y el detalle se abre al
+pasar el mouse. **B · Todo a la vista** (1.777 px): la misma tabla, con una línea
+que agrega lo que el valor no dice y la espera en cada celda. **C · La de hoy,
+sin ruido** (1.727 px): las tarjetas y la tabla de hoy, con la línea del home.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación es
+la A: es la misma tabla que ya eligió para el home, así que el sitio compara de
+una sola manera, y es la más corta. Lo que cambia la elección queda a la vista
+(«por familia», las esperas y lo que no cubren); el detalle, a un toque.
+
+**La lección.** Una celda que repite lo mismo en todas las filas («Cubierta» ×33)
+no informa: ocupa el lugar del dato que sí cambia.
+
