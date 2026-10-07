@@ -27,6 +27,7 @@
 
 import { useState, useRef, useEffect, useId } from 'react';
 import { css } from './css';
+import { trackExplicacion } from './track';
 
 // Definiciones en idioma de familia (regla de lenguaje del CLAUDE.md): sin
 // jerga, sin "prestación", sin "cartilla". Si una definición necesita otra
@@ -114,6 +115,9 @@ export function Term({ k, children, dict }) {
   // Arriba por defecto; abajo cuando arriba no hay lugar. Ver el efecto.
   const [abajo, setAbajo] = useState(false);
   const id = useId();
+
+  // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
+  useEffect(() => { if (open) trackExplicacion('glosario', k); }, [open, k]);
 
   useEffect(() => {
     if (!open) { setShift(0); setAbajo(false); return; }

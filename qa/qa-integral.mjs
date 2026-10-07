@@ -86,6 +86,22 @@ console.log('\n== 1. FUNCIONAL ==');
   }
   if (!rotos) ok('funcional', 'crawler: ' + links.size + ' links internos únicos, todos responden');
 
+  // 1a. «¿Por qué te preguntamos esto?» se mide al abrirse, como toda
+  // explicación que se abre al tocar (regla de claridad, sp-interno#98).
+  await page.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(800);
+  const empezar = page.locator('button:visible', { hasText: /Empecemos/ }).first();
+  if (await empezar.count()) { await empezar.click().catch(() => {}); await page.waitForTimeout(450); }
+  const porque = page.locator('details.sim-why:visible summary').first();
+  if (await porque.count()) {
+    await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+    await porque.click();
+    await page.waitForTimeout(300);
+    const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
+    if (ev.length === 1 && ev[0].datos?.tipo === 'por_que') ok('funcional', 'simulador: abrir «¿Por qué te preguntamos esto?» se mide');
+    else falla('funcional', 'confunde', 'abrir «¿Por qué te preguntamos esto?» tiene que mandar un abre_explicacion de por_que (' + JSON.stringify(ev) + ')', '/simulador/');
+  } else falla('funcional', 'confunde', 'el simulador no muestra «¿Por qué te preguntamos esto?» en su primer paso', '/simulador/');
+
   // 1b. Simulador de punta a punta (caminante adaptativo hasta el precio y el lead)
   await page.goto(BASE + '/simulador/', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(800);
@@ -118,6 +134,19 @@ console.log('\n== 1. FUNCIONAL ==');
     });
     if (tilde && tilde.dx <= 2 && tilde.dy <= 2) ok('funcional', 'resultado: tilde del match centrado en el aro (±2px)');
     else falla('funcional', 'confunde', 'el tilde del resultado no está centrado en el aro' + (tilde ? ' (dx=' + tilde.dx.toFixed(1) + ', dy=' + tilde.dy.toFixed(1) + ')' : ' (no encontrado)'), '/simulador/');
+    // «¿Cómo calculamos esto?» se mide al abrirse, como toda explicación que se
+    // abre al tocar (regla de claridad, sp-interno#98). Se escucha console.debug,
+    // que es por donde sale track() hasta que haya backend.
+    const calc = page.locator('button', { hasText: '¿Cómo calculamos esto?' }).first();
+    if (await calc.count()) {
+      await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+      await calc.click();
+      await page.waitForTimeout(400);
+      const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
+      if (ev.length === 1 && ev[0].datos?.tipo === 'calculo') ok('funcional', 'resultado: abrir «¿Cómo calculamos esto?» se mide');
+      else falla('funcional', 'confunde', 'abrir «¿Cómo calculamos esto?» tiene que mandar un abre_explicacion de cálculo (' + JSON.stringify(ev) + ')', '/simulador/');
+      await calc.click();
+    } else falla('funcional', 'confunde', 'el resultado no tiene «¿Cómo calculamos esto?»', '/simulador/');
     /* Puerta 1.5 del criterio: el flujo que pide nombre y teléfono nombra la
        carencia ANTES de pedirlos. Hasta el 7 sep 2026 esta fila fallaba y era
        el hallazgo más accionable de la Puerta 1. Se verifica sobre el DOM

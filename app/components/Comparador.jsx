@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { trackExplicacion } from '../track';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -85,7 +86,8 @@ export default function Comparador({ planes, filas }) {
     <Servicio
       fila={filas[k]} planes={planes} id={'cmp2-t-' + donde + '-' + k}
       abierta={abierta === donde + '-' + k}
-      abrir={() => setAbierta(donde + '-' + k)}
+      // Cuántas personas abren la tarjeta de cada servicio (sp-interno#98).
+      abrir={() => { setAbierta(donde + '-' + k); trackExplicacion('servicio', filas[k].name); }}
       cerrar={() => setAbierta((a) => (a === donde + '-' + k ? null : a))}
     />
   );

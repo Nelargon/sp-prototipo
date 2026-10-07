@@ -10,7 +10,11 @@ import {
 } from '../quote';
 import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { redEnZona, guiaHref } from '../../lib/red-zona';
-import { track } from '../track';
+import { track, trackExplicacion } from '../track';
+
+// «¿Por qué te preguntamos esto?» de cada paso es una explicación que se abre al
+// tocar: se mide al abrirse, con el paso como clave (sp-interno#98).
+const porQue = (clave) => (e) => { if (e.currentTarget.open) trackExplicacion('por_que', clave); };
 import { carencias, carenciasVital } from '../coverage';
 import Plegable from './Plegable';
 import { Term, waitLabel } from '../glossary';
@@ -84,6 +88,9 @@ export default function Simulador() {
   const vitalPresetRef = useRef(false);
 
   const toggleCalc = () => setShowCalc((v) => !v);
+  // «¿Cómo calculamos esto?» es una explicación que se abre al tocar: se mide
+  // como las del glosario (sp-interno#98).
+  useEffect(() => { if (showCalc) trackExplicacion('calculo', 'precio'); }, [showCalc]);
 
   // ===== Simulador (nativo) =====
   // Con plan pre-elegido (viene del comparador) salteamos el paso "nivel":
@@ -619,7 +626,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Para quién es el plan?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
+              <details className="sim-why" onToggle={porQue('quien')} style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyWho}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.whoOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt sq rel-btn" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid var(--sp-line);--sq:var(--r-sm);background:#fff;color:var(--sp-ink);font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:var(--sp-muted);line-height:1.35')}>{opt.note}</span>}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none')}><path d="m9 18 6-6-6-6" /></svg></button>
@@ -632,7 +639,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Qué edades tienen?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
+              <details className="sim-why" onToggle={porQue('edades')} style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyEdades}</p></details>
               <div style={css('display:flex;flex-direction:column')}>
                 {sim.people.map((person, i) => (
                   <div key={i} style={css('margin-bottom:14px')}>
@@ -676,7 +683,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>{sim.nivelTitle}</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
+              <details className="sim-why" onToggle={porQue('nivel')} style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyNivel}</p></details>
               <div style={css('display:flex;flex-direction:column;gap:10px')}>
                 {sim.nivelOpts.map((opt, i) => (
                   <button key={i} onClick={opt.onClick} className="sim-opt sq rel-btn" style={css('display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 17px;border:1.5px solid var(--sp-line);--sq:var(--r-sm);background:#fff;color:var(--sp-ink);font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms cubic-bezier(0.22,1,0.36,1)')}><span style={css('display:flex;flex-direction:column;gap:3px;min-width:0')}><span>{opt.label}</span>{opt.hasNote && <span style={css('font-size:12px;font-weight:400;color:var(--sp-muted);line-height:1.35')}>{opt.note}</span>}</span><span style={css('display:flex;align-items:center;gap:9px;flex:none')}><span style={css('font-size:12.5px;font-weight:800;color:var(--sp-teal-deep);white-space:nowrap')}>{opt.from}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg></span></button>
@@ -689,7 +696,7 @@ export default function Simulador() {
             <div style={css(sim.stepAnim)}>
               <button onClick={sim.back} className="link-teal" style={css('display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--sp-muted);font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px')}>← Volver</button>
               <h3 className="sim-q-title" style={css('font-size:22px;font-weight:800;color:var(--sp-navy);line-height:1.25;letter-spacing:-0.01em;margin:0 0 8px')}>¿Dónde querés tu cobertura?</h3>
-              <details className="sim-why" style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
+              <details className="sim-why" onToggle={porQue('zona')} style={css('margin:0 0 14px')}><summary style={css('cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sp-teal-deep);font-weight:600;list-style:none')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:0')}><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4" /><path d="M12 17h.01" /></svg>¿Por qué te preguntamos esto?</summary><p style={css('font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-muted);line-height:1.5;margin:7px 0 0')}>{sim.whyGeo}</p></details>
               {/* Buscador de ciudades: la persona escribe SU ciudad y el
                   departamento se resuelve solo (geo.js — HANDOFF 11h). */}
               <div style={css('position:relative')}>
