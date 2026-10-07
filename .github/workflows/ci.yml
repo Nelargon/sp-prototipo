@@ -28,9 +28,10 @@ jobs:
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.
-      - name: Pruebas rápidas (buscador, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras)
+      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras)
         run: |
           node scripts/test-buscador.mjs
+          node scripts/test-telefonos.mjs
           node qa/cobertura-rutas.mjs
           node qa/mapa-ciudades.mjs
           node qa/links-internos.mjs out /sp-prototipo
