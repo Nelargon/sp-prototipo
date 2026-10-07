@@ -2031,3 +2031,16 @@ falta probarlo enviando la firma a Gmail y a Outlook.
 **Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación es
 la B: es la suya, con la marca, y tiene una sola cosa que se puede romper (el
 logo, con su texto alternativo).
+
+**Decidido el 07/10/2026.** Arturo: *«Está bien sin íconos»*, la B, en una
+vuelta. Preguntó si el logo no iba a llegar como adjunto. La respuesta salió del
+código de Roundcube 1.6.19, que es el correo del equipo (él usa Gmail): solo
+adjunta las imágenes subidas dentro de la firma, y una dirección `https` queda
+como enlace. La firma pasó por el mismo limpiador que Roundcube aplica al
+guardarla y salió intacta. Se construyó en el taller (`sp-brandcenter#10`), con
+Nombre y Apellido en campos separados por los nombres compuestos, la dirección
+como campo opcional y un botón «Copiar el código» para Roundcube.
+
+**La lección.** Una firma de correo no es una pantalla del sitio: se lee en
+Arial, en el programa de otro, a veces con las imágenes bloqueadas y a veces en
+un celular. Se diseña para ese lugar, no para la vitrina donde se arma.
