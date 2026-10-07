@@ -41,6 +41,8 @@ jobs:
       # sin envíos— se prueban acá con un servidor de mentira, sin red.
       - name: Pruebas del correo del blog
         run: python3 scripts/correo-blog/test_correo_blog.py
+      - name: Opiniones del blog (sin envíos ni red)
+        run: python3 services/blog-feedback/test_feedback.py
       # La v1 pública se construye del mismo código (app/edicion.js). Si esta
       # rama esconde un módulo pero deja un link apuntándole, el postbuild
       # (scripts/podar-edicion.mjs) corta acá y el PR no se puede fusionar.

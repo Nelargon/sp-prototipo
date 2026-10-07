@@ -45,6 +45,7 @@ from datetime import datetime, timezone
 from email.message import EmailMessage
 from email.utils import formataddr, formatdate, make_msgid
 from pathlib import Path
+from feedback import config as feedback_config, personalize
 
 PUBLICADOS = Path('contenido/blog/publicados')
 LOGO = Path('public/assets/isologo-04-crop.png')
@@ -196,7 +197,8 @@ def conectar(usuario, clave, hosts):
     raise ConexionFallida('No se pudo conectar a ningún servidor:\n  ' + '\n  '.join(errores))
 
 
-def construir(correo, usuario, destinatario, logo):
+def construir(correo, usuario, destinatario, logo, *, prueba=False):
+    correo = personalize(correo, destinatario, test=prueba)
     msg = EmailMessage()
     msg['Subject'] = correo['asunto']
     msg['From'] = formataddr((NOMBRE_REMITENTE, usuario))
@@ -244,6 +246,14 @@ def cmd_enviar(args):
     if not correos:
         print('✗ No hay correos armados en', args.correos)
         return 1
+    try:
+        settings = feedback_config()
+        if settings and any(not c.get('feedback_version') or not c.get('feedback_title')
+                            or '<!-- BLOG_FEEDBACK -->' not in c['html'] for c in correos):
+            raise ValueError('Rearmá los correos con la versión actual de armar.mjs antes de activar las opiniones.')
+    except ValueError as e:
+        print(f'✗ {e}')
+        return 1
     logo = LOGO.read_bytes()
     dominio = usuario.split('@')[1]
     hosts = os.environ.get('CORREO_SMTP_HOSTS', '').split() or [f'mail.{dominio}']
@@ -262,7 +272,7 @@ def cmd_enviar(args):
             enviados, rechazados = 0, []
             try:
                 for dest in destinatarios:
-                    msg = construir(correo, usuario, dest, logo)
+                    msg = construir(correo, usuario, dest, logo, prueba=args.prueba)
                     try:
                         smtp.send_message(msg)
                         enviados += 1

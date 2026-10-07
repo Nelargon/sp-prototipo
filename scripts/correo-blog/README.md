@@ -8,6 +8,13 @@ Arturo y a los líderes de área de SP, el mismo día que se publica.
 
 ## Cómo funciona
 
+**Opiniones por etiquetas (04/10/2026):** el correo puede incluir «Me sirvió»,
+«Ya lo sabía», «Se entendió bien», «Me costó entender» y «Me faltó algo concreto».
+El primer clic abre una página para elegir varias y confirmar. La implementación
+y la activación del receptor están en `services/blog-feedback/README.md`.
+Sin URL y secreto configurados, el envío conserva su funcionamiento anterior.
+Las pruebas de envío generan enlaces de prueba que no cuentan como votos reales.
+
 1. El Publicador (o una sesión) sube la nota a `contenido/blog/publicados/`.
 2. Termina el deploy a Pages → se dispara `.github/workflows/correo-blog.yml`.
 3. `correo_blog.py pendientes` compara lo publicado con el registro
