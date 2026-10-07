@@ -5024,3 +5024,33 @@ siete líneas. Con «Gs.» la celda más larga de la tabla del celular («Gs.
   tres caracteres, y en una tabla de 120 px tres caracteres pueden ser una
   segunda línea.
 
+---
+
+## Capítulo 145 — La página que el auditor no recorría (07/10/2026)
+
+**Qué intentamos.** La vitrina de la marca (`sp-brandcenter/vitrina.html`,
+lámina 80) se verificó al publicarla: sin desborde a cuatro anchos, sin errores
+y con las 25 combinaciones del taller dibujando. El Centro de Marca tiene su
+auditor de contraste (`qa/revisar.mjs`), que dio 144 vistas sin fallas.
+
+**Qué pasó.** Arturo abrió la vitrina y vio que en «Todo, para bajar» el texto
+de las tarjetas casi no se leía. Las tarjetas son blancas, pero heredaban el
+celeste de la sección navy: 1,15:1. El auditor no lo vio porque no recorría la
+vitrina, solo las rutas del Centro de Marca. Al sumársela encontró otras tres
+cosas. Una era la etiqueta «Así no» de la escena «No lo encierres en otro
+color»: la regla `.x-box span`, que pinta la caja violeta, también agarraba la
+etiqueta, que es otro `span`, y la dejaba en 1,34:1. Era el mismo error que el
+Centro de Marca ya tenía anotado, un selector que gana en silencio. Las otras
+dos eran muestras de la escala de color en 3,64 y 4,31:1. Y había una cuarta,
+en el propio auditor: servía los archivos sin `charset`, y la vitrina, que no
+trae `<meta charset>`, se leía con los acentos rotos.
+
+**Qué aprendimos.**
+- **Una página que el auditor no recorre no está aprobada: está sin
+  revisar.** «144 vistas sin fallas» era verdad y no decía nada de la vitrina.
+  Antes de creerle a un verde, mirar qué recorrió.
+- **Un color que se hereda es un color que nadie eligió.** Una tarjeta blanca
+  dentro de una sección oscura declara su propio color de texto.
+- **Un selector de escena se acota a lo que pinta**: `span:not(.asi-no)`, no
+  `span`.
+
