@@ -571,6 +571,61 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   await page.close();
 }
 
+// ── Lo que el sitio no afirma sin fuente (decisión 2A de Arturo, 13/10/2026) ─
+// Mientras SP no conteste, lo que no tiene fuente sale o manda al asesor
+// (sp-interno #80, #110 y #52). Se controlan las tres que se pueden volver a
+// colar sin que nadie lo note: el 10% calculado en el precio de Essential,
+// «por persona» en la tomografía y la resonancia de Silver y Gold, y «La más
+// elegida» sobre Silver. Probado contra el main del 13/10 (fallan las tres) y
+// contra la rama que las saca (pasan).
+console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  // El simulador hasta el precio: una persona sola, en Asunción.
+  const resultado = async (plan) => {
+    await page.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+    for (let i = 0; i < 14 && !(await page.locator('[data-sp-price]').count()); i++) {
+      let hecho = false;
+      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) {
+        const b = page.locator('button:visible', { hasText: t }).first();
+        if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; }
+      }
+      if (!hecho) break;
+      await page.waitForTimeout(500);
+    }
+    return page.evaluate(() => {
+      const p = document.querySelector('[data-sp-price]');
+      const c = p && p.closest('div.sq');
+      return c ? { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.textContent } : null;
+    });
+  };
+  const ess = await resultado('essential');
+  if (!ess || ess.plan !== 'Essential') mal('/simulador/: no llegué al resultado de Essential (' + JSON.stringify(ess && ess.plan) + ')');
+  else if (/10% de descuento/.test(ess.texto) || !/preguntale a tu asesor si Essential tiene descuento/.test(ess.texto)) mal('/simulador/: el resultado de Essential calcula el 10% por débito o no manda al asesor (sp-interno#80)');
+  else bien('/simulador/: Essential no calcula el 10% por débito y manda a preguntarle al asesor');
+  const sil = await resultado('silver');
+  if (!sil || sil.plan !== 'Silver' || !/10% de descuento/.test(sil.texto)) mal('/simulador/: el resultado de Silver tiene que seguir mostrando el 10% por débito (' + JSON.stringify(sil && sil.plan) + ')');
+  else bien('/simulador/: Silver sigue mostrando su 10% por débito');
+  // «Por persona» en las celdas de tomografía y resonancia (home) y en las
+  // tarjetas del celular de /planes. textContent: el CSS no cambia el texto.
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const home = await page.evaluate(() => {
+    const t = document.getElementById('cartilla');
+    return t ? { chips: [...t.querySelectorAll('.cmp2-chip')].map((c) => c.textContent), etiqueta: /La más elegida/i.test(t.textContent) } : null;
+  });
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const planes = await page.evaluate(() => ({
+    lineas: [...document.querySelectorAll('.cmp-cel article .linea-cel')].map((l) => l.textContent).filter((l) => /^Tomografía y resonancia/.test(l)),
+    etiqueta: /La más elegida/i.test((document.getElementById('comparar-planes') || {}).textContent || ''),
+  }));
+  const porPersona = [...(home ? home.chips : []), ...planes.lineas].filter((t) => /por persona/i.test(t));
+  if (!home || !home.chips.length || planes.lineas.length !== 3 || porPersona.length) mal('tomografía y resonancia no pueden decir «por persona» en Silver y Gold hasta que SP lo confirme (sp-interno#110): ' + JSON.stringify(porPersona.length ? porPersona : { chips: home && home.chips.length, lineas: planes.lineas.length }));
+  else bien('tomografía y resonancia de Silver y Gold dicen cuántas, sin «por persona» (home y /planes)');
+  if (!home || home.etiqueta || planes.etiqueta) mal('«La más elegida» sigue sobre Silver sin un dato de ventas confirmado (sp-interno#52)');
+  else bien('sin «La más elegida» en el home ni en /planes');
+  await page.close();
+}
+
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────
 // Los 12 a la vista y sin movimiento: la tira tardaba 54 s en mostrarlos.
 console.log('\n── Los aliados');

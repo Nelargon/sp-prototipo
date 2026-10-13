@@ -5054,3 +5054,49 @@ trae `<meta charset>`, se leía con los acentos rotos.
 - **Un selector de escena se acota a lo que pinta**: `span:not(.asi-no)`, no
   `span`.
 
+
+---
+
+## Capítulo 146 — Lo que el sitio decía sin fuente, y el resumen que no era el contrato (13/10/2026)
+
+**Qué intentamos.** Seis puntos de revisión (sp-interno #80, #110, #116, #89,
+#82 y #52) esperaban la respuesta de SP desde fines de septiembre, y mientras
+tanto el sitio seguía afirmando cosas sin fuente: el 10% por débito en Essential,
+«por persona» en la tomografía y la resonancia de Silver y Gold, la cesárea a 5
+meses en Gold, visar desde la App, la semi-suite «privada, con baño propio» y
+«La más elegida» sobre Silver. La cita del Guardián le preguntó a Arturo qué
+hacer mientras tanto y contestó «2A»: lo que no tiene fuente sale o manda al
+asesor, con una sola forma, «preguntale a tu asesor».
+
+**Qué pasó.** Casi todo fue sacar o acotar texto. Dos cosas no salieron como se
+pensaba:
+- **La semi-suite.** El comentario de #89 (29/09) decía que Essential «no
+  menciona acompañante ni baño», y el primer borrador del cambio escribía la cama
+  para el acompañante como algo de Silver y Gold. Ese comentario se apoyaba en
+  `essential.json`, que resume la internación en una línea («habitación
+  privada»). Leído el cuadernillo el 13/10, la cláusula 4.3.1 dice «habitación
+  privada con aire acondicionado, televisión, baño privado, cama para
+  acompañante». El texto nuevo dice lo contrario de lo que iba a decir: en los
+  tres planes hay cama para acompañante, y qué cambia entre la privada y la
+  semi-suite se le pregunta al asesor.
+- **El 10%.** La línea «Pagá con débito… y ahorrás 10%» y la FAQ se escribieron
+  cuando los planes eran Bronze, Silver y Gold, y la confirmación del 17/07 era
+  de ese tarifario. El 24/09 Essential reemplazó a Bronze con su propia lista de
+  precios, y las frases que decían «todos» siguieron valiendo para un plan que
+  la fuente no nombraba. El simulador le calculaba el descuento sin que nadie lo
+  hubiera decidido.
+
+**Qué aprendimos.**
+- **El resumen no es el contrato.** Un JSON curado sirve para leer rápido, pero
+  una ausencia en el resumen no es una ausencia en la fuente. Antes de escribir
+  «esto lo tiene un plan y el otro no», se lee la cláusula del otro.
+- **Una frase que dice «todos» hereda la fuente más angosta.** Cuando entra un
+  plan nuevo, se revisan las frases generales: las que hablan de un plan solo se
+  revisan solas, las que hablan de todos no.
+- **Sacar una etiqueta no es mover la cabecera.** «La más elegida» salió y su
+  renglón quedó vacío en los tres planes: las cabeceras miden lo mismo. Lo que se
+  saca por falta de fuente no tiene que cambiar el diseño que Arturo eligió.
+- **El cambio queda con su guardia.** `qa-lanzamiento` controla las tres
+  afirmaciones que se podían volver a colar (el 10% de Essential, «por persona»
+  y «La más elegida»). Se probó contra el main del 13/10, donde falla, y contra
+  la rama, donde pasa.

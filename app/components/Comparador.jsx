@@ -21,8 +21,9 @@ import { trackExplicacion } from '../track';
    en la computadora; en el celular cada tarjeta trae sus propios nombres.
 
    ⚠ «por familia» queda a la vista (no va a la tarjeta): cambia la
-   comparación. 5 sesiones por familia contra 15 por persona no es el triple,
-   es más (docs/diseno, lección 51).
+   comparación. 5 sesiones por familia contra 15 no es el triple: si las 15
+   fueran para cada persona, sería más (docs/diseno, lección 51). Si lo son,
+   lo tiene que confirmar SP (sp-interno#110).
 
    La tarjeta se comporta como el glosario (app/glossary.jsx): con mouse se
    abre al pasar; con el dedo, al tocar; con teclado, al enfocar. Escape o un
@@ -121,7 +122,11 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       {planes.map((p, i) => (
         <div key={p.short} className={'cmp2-plan' + (p.recommended ? ' rec' : '')} style={{ '--c': p.color }}>
           <div className="cmp2-h">
-            <span className="cmp2-tag disp">{p.recommended ? 'La más elegida' : ''}</span>
+            {/* «La más elegida» salió el 13/10/2026 (decisión 2A de Arturo,
+                sp-interno#52): no hay un dato de ventas confirmado por
+                Comercial. El renglón queda vacío en los tres planes para que
+                las cabeceras sigan alineadas; Silver sigue resaltado. */}
+            <span className="cmp2-tag disp" />
             <b className="cmp2-nombre disp">{p.short}</b>
             <span className="cmp2-precio">desde <b className="num-tnum">{p.price}</b><span className="cmp2-mes"> por mes</span></span>
             {p.zona && <span className="cmp2-zona">{p.zona}</span>}

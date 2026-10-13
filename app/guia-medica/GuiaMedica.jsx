@@ -399,7 +399,9 @@ export default function GuiaMedica() {
               {REQUISITOS.map((r) => <div key={r} style={css(INTER + 'display:flex;gap:8px;font-size:13.5px;line-height:1.45;color:var(--sp-text)')}><span style={css('color:var(--sp-teal-deep);display:flex;margin-top:3px')}>{Icono.check}</span>{r}</div>)}
             </div>
             <a href={WA_VISAR} target="_blank" rel="noopener" onClick={() => track('guia_whatsapp', { origen: 'visar' })} className="disp sq" style={css('--sq:var(--r-xs);height:46px;background:var(--sp-teal-deep);color:#fff;font-size:15.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px')}>{Icono.wa} Enviar mi orden por WhatsApp</a>
-            <div style={css(INTER + 'font-size:12.5px;color:var(--sp-muted);text-align:center')}>También podés visarla desde la App de Salud Protegida.</div>
+            {/* «También podés visarla desde la App de Salud Protegida» salió el
+                13/10/2026 (decisión 2A de Arturo): no hay fuente de que la App
+                lo permita (sp-interno#89). Vuelve si SP lo confirma. */}
           </section>
         </Plegable>
 

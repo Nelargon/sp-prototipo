@@ -130,7 +130,9 @@ export default function ComparativaCelular() {
   // lámina 51, con la espera de cada uno.
   const enLosTres = (nombres, actual) => {
     const varios = nombres.length > 1;
-    const notas = nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean);
+    // Sin repetir: la tomografía y la resonancia traen la misma nota (la del
+    // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
+    const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean))];
     return (
       <>
         {planes.map((p, i) => (
@@ -220,7 +222,7 @@ export default function ComparativaCelular() {
               </button>
             ))}
           </div>
-          <p style={css(inter + 'font-size:12.5px;line-height:1.5;color:var(--sp-muted);text-align:center;margin:-8px 0 0')}>Precio por mes, con IVA. Con débito automático o tarjeta de crédito, 10% menos.</p>
+          <p style={css(inter + 'font-size:12.5px;line-height:1.5;color:var(--sp-muted);text-align:center;margin:-8px 0 0')}>Precio por mes, con IVA. En Silver y Gold, con débito automático o tarjeta de crédito, pagás 10% menos. En Essential, preguntale a tu asesor si también tiene el descuento.</p>
 
           <div className="sq" style={css('--sq:var(--r-md);background:var(--sp-mint-bg);padding:14px;display:flex;flex-direction:column;gap:10px')}>
             <span className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-teal-900)')}>Lo que tienen los tres</span>

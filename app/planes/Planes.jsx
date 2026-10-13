@@ -119,10 +119,13 @@ export default function Planes() {
   const filasCompu = [
     { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
     { name: 'Sesiones de psicología', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }], d: conEspera('Sesión de psicología') },
-    { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia') },
+    { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia'), pie: cv['Fisioterapia'].nota },
     { name: 'Ecografía', kind: 'num', cells: [{ t: '4', n: 'por familia' }, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }], d: conEspera('Ecografía', 'Ecografías') },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia' }, { t: '2 por persona' }, { t: '2 por persona' }], d: conEspera('Tomografía (TAC)', 'Tomografía') },
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia' }, { t: '1 por persona' }, { t: '1 por persona' }], d: conEspera('Resonancia (RM)', 'Resonancia') },
+    // Silver y Gold dicen cuántas y no para quién: la grilla dice «por año de
+    // contrato», no «por beneficiario» (sp-interno#110, decisión 2A de Arturo,
+    // 13/10/2026). El pie, la `nota` de coverage.js, manda al asesor.
+    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia' }, { t: '2 al año' }, { t: '2 al año' }], d: conEspera('Tomografía (TAC)', 'Tomografía'), pie: cv['Tomografía (TAC)'].nota },
+    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia' }, { t: '1 al año' }, { t: '1 al año' }], d: conEspera('Resonancia (RM)', 'Resonancia'), pie: cv['Resonancia (RM)'].nota },
     { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
     { g: 'Si te internan', name: 'Internación', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }], d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
     { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
@@ -193,11 +196,12 @@ export default function Planes() {
       <div className="solo-compu">
       <section style={css('padding:40px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {/* El débito, como en el home: es plata que la familia ve, no letra chica. */}
+          {/* El débito, como en el home: es plata que la familia ve, no letra chica.
+              Solo Silver y Gold: en Essential no hay fuente (sp-interno#80). */}
           <div style={css('display:flex;justify-content:center;margin-bottom:22px')}>
             <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:640px')}>
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
-              <span>Pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo.</span>
+              <span>En Silver y Gold, pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo. En Essential, preguntale a tu asesor si también tiene el descuento.</span>
             </span>
           </div>
           <Comparador planes={planesCompu} filas={filasCompu} notas id="comparar-planes" />

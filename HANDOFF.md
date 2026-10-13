@@ -30,7 +30,64 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    botones de opinión del correo ni la revisión factual por nota.
 2. **Lo que el sitio afirma sin fuente sale o manda al asesor mientras SP no
    conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Va en un PR propio
-   que Arturo ve antes de fusionar.
+   que Arturo ve antes de fusionar (rama `claude/dazzling-keller-l0torp`). Una
+   sola forma de mandar al asesor, la de #80: «preguntale a tu asesor…».
+   Aplicado:
+   - **#80, el 10% en Essential.** El simulador ya no le calcula a Essential
+     un precio con débito (`autoPay` en `quote.js`): en su lugar va una línea
+     gris, «Si pagás con débito automático o tarjeta de crédito, preguntale a tu
+     asesor si Essential tiene descuento», también en la cotización que se
+     descarga. La FAQ, la línea del débito del home y de `/planes`, la nota de
+     precios del celular y la viñeta del inicio del simulador dicen «En Silver y
+     Gold» y mandan Essential al asesor. La confirmación del 17/07 fue para el
+     tarifario Privilege; Essential tiene su propia lista de precios.
+   - **#110, «por persona».** Sale de la tomografía y la resonancia de Silver y
+     Gold en el home, `/planes`, el simulador y la FAQ: las celdas dicen cuántas
+     («2 al año», «1 al año») y la línea de abajo (la `nota` de `coverage.js`,
+     también en fisioterapia) dice «En Silver y Gold, preguntale a tu asesor si
+     son para cada persona o para todo el grupo». Las tarjetas del celular dicen
+     «hasta 2 tomografías y 1 resonancia al año» en los tres planes, y solo
+     Essential lleva la negrita («por familia», que su cuadernillo sí dice). La
+     frase de Silver pasó a «El equilibrio entre precio y cobertura», la del
+     simulador. La línea de Gold perdió «con menos espera en la tomografía»: las
+     esperas no van en esas tarjetas (regla del 03/10) y la diferencia sigue en
+     el cuadro de esperas. Internación y terapia intensiva quedan «por persona»:
+     ahí la fuente dice «por beneficiario».
+   - **#116.** La ambulancia de Silver y Gold ya no se lee «sin tope» (tarjeta
+     «Médico a domicilio», solo en el prototipo). La «cesárea a 5 meses en Gold»
+     salió de la FAQ, la caja del parto, la hoja y el cuadro de esperas del
+     celular, el simulador y la cotización; el parto sigue en 10 meses. La unidad
+     de las cirugías de Silver y Gold no la afirmaba ningún texto.
+   - **#89.** Sale «También podés visarla desde la App» de la Guía Médica. La
+     semi-suite ya no es «privada, con baño propio»: el glosario dice lo que trae
+     el contrato de Silver y Gold («con cama para un acompañante, según lo que
+     tenga el sanatorio»). La tarjeta de Internación del home dice que en los tres
+     planes hay cama para acompañante (cuadernillo de Essential, 4.3.1, leído el
+     13/10) y manda al asesor qué cambia entre la privada y la semi-suite. Las
+     interconsultas de `/planes` salen de la grilla y no se tocaron.
+   - **#82.** En el home, la internación de Silver y Gold dice «A los 60 días de
+     afiliarte si es por algo agudo» (no se suma ninguna espera a la vista
+     rápida; las esperas de las tarjetas del home están preguntadas aparte). En
+     `/planes`, la nota agrega «si es programada, preguntale a tu asesor cuánto
+     esperás». La espera de la terapia intensiva había salido con la 5A, y el
+     sitio no daba ninguna del dentista de Essential.
+   - **#52.** «La más elegida» salió de la cabecera de Silver (home y `/planes`).
+     El renglón queda vacío en los tres para no mover las cabeceras, y Silver
+     sigue resaltado.
+   - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
+     controla el 10% de Essential, «por persona» y «La más elegida». Falla en el
+     main del 13/10 y pasa con esto.
+
+   **Sigue esperando a SP** (los seis issues quedan abiertos; el PR los nombra
+   con «Refs»): si Essential tiene el 10% (#80); si tomografía, resonancia y
+   fisioterapia de Silver y Gold son para cada persona o para el grupo (#110);
+   el tope de la ambulancia, la unidad de las cirugías y la espera de la cesárea
+   en Gold (#116); visar desde la App, qué cambia entre la habitación privada y
+   la semi-suite, y las interconsultas (#89); las esperas de la internación
+   programada, la terapia intensiva y el dentista de Essential (#82). #52 espera
+   a Comercial (la cifra de ventas del Drive, sin confirmar) y a Arturo (si
+   Silver sigue resaltado). Cuando un dato llega, el texto vuelve con su fuente y
+   su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
    (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45).
@@ -639,7 +696,9 @@ reabre la guarda de arriba: el mismo contenido sirve a la comparativa nueva.
   comparador del home. **La odontología volvió** a pedido de Arturo (*«sumá la
   odontología»*): Essential, sin costo y solo en Lister; Silver y Gold, «la
   atención del dentista no entra» (la palabra del propio sitio).
-- ⚠ «Por persona» de Silver y Gold espera a SP (sp-interno#110). Los 37 puntos
+- ⚠ «Por persona» de Silver y Gold espera a SP (sp-interno#110). Desde el
+  13/10/2026 (decisión 2A) las tarjetas no lo dicen: dicen cuántas, en los tres
+  planes. Los 37 puntos
   que impiden decir «mejora tema por tema» están en
   `sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md` (issues #110 a
   #117).
@@ -2241,7 +2300,7 @@ planilla.
 | ~~Aliados en el home y comparador: qué forma~~ Construidos el 26/09 (muro continuo; 1.5 + 4.1 con tarjeta del servicio) | — |
 | Logos de los aliados en buena calidad (hoy de 19 a 63 px de alto) | SP |
 | Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
-| "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
+| "La más elegida" en Silver: ¿hay dato de ventas? *(Salió el 13/10/2026, decisión 2A. Vuelve si Comercial confirma la cifra, con fuente y fecha.)* | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
 | Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |
 | Ecocardiograma, dos dudas: (1) ¿"ECOCARDIOGRAMA CON DOPPLER DE BASOS DE CUELLO" estaba en rojo? Sigue publicado. (2) En Gold, la fila borrada decía "Ilimitada" y la que queda dice "1 por año": ¿cuál vale? | SP (quien mandó la corrección) |
