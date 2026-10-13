@@ -2071,12 +2071,87 @@ septiembre (sp-interno #80, #110, #116, #89, #82 y #52).
 6. Sale «También podés visarla desde la App».
 7. Las interconsultas mandan al asesor si son por año o por internación.
 
-**Qué se decidió y por qué.** *Pendiente: Arturo lo ve antes de fusionar.* La
-pregunta de diseño es la 3: sin el rótulo, ¿Silver sigue resaltado? La
-recomendación es dejarlo, porque el resaltado no afirma ningún dato y es el
-diseño que él eligió.
+**Qué se decidió y por qué.** La pregunta de diseño era la 3: sin el rótulo,
+¿Silver sigue resaltado? **Decidido el 13/10/2026: sí** (Arturo, «P1A»). El
+resaltado no afirma ningún dato y es el diseño que él eligió. El resto del PR
+espera su OK, y dos preguntas siguieron en láminas aparte: dónde aparecen las
+esperas del home (85) y cómo se ve «por familia» frente a «al año» (84).
 
 **La lección.** Sacar un dato no es neutral si deja otro a la vista. El primer
 cambio sacó «la cesárea espera 5 meses en Gold» y la hoja quedó diciendo 10
 meses, que era tomar partido por el otro lado del mismo contrato. Cuando dos
 fuentes se contradicen, se manda al asesor hasta que se aclaren.
+
+## Parte 30 · Para quién cuenta cada tope (13/10/2026)
+
+Con la decisión 2A, «por persona» salió de la tomografía, la resonancia y la
+fisioterapia de Silver y Gold, porque la grilla dice «por año de contrato» y no
+para quién (sp-interno#110, espera a SP). Quedó un contraste: Essential dice
+«1 por familia» y Silver y Gold, «1 al año», y eso se lee como «por persona».
+Arturo, el 13/10: *«Sé que esto se ve diferente, dame 3 opciones de cómo se
+podría ver esto»*.
+
+### 84 · Una duda se escribe con la misma forma que el dato
+
+![La tabla del home en el celular: Hoy y las opciones A, B y C, en las tarjetas de Essential y Silver](img/2026-10-13-p3-para-quien-celular.webp)
+
+![La tabla del home en la computadora: Hoy, A, B y C](img/2026-10-13-p3-para-quien-computadora.webp)
+
+![Las tarjetas de /planes en el celular: Hoy, A, B y C](img/2026-10-13-p3-para-quien-planes-celular.webp)
+
+**Qué muestra.** Las tres construidas sobre la rama del PR #271, medidas en el
+navegador:
+
+- **A · La unidad en la celda.** El mismo número en los tres planes («1 al
+  año») y debajo, para quién: «por familia» en Essential y «¿por familia?
+  Preguntale a tu asesor» en Silver y Gold. Suma 273 px en el celular y 104 en
+  la computadora.
+- **B · Para quién, en la línea del grupo.** Las celdas quedan iguales, y una
+  línea a la vista arriba del grupo lo explica una vez. Suma 375 px en el
+  celular, y saca «por familia» de al lado del número (lámina 21).
+- **C · La duda debajo del número.** Como A, pero en Silver y Gold va una marca
+  gris «¿para quién?» que se explica al tocarla. Suma 288 px en el celular y 16
+  marcas entre el home y `/planes`.
+
+En las tres, la internación de Silver y Gold pasa a decir «por persona» a la
+vista, porque ahí la fuente sí lo dice («por beneficiario»). El revisor de la
+skill dio 0 🔴 en las tres.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* El comité se
+partió en dos. El diseñador y el estratega eligieron A, con un ajuste:
+«Preguntale a tu asesor» no se repite en cada celda (8 veces en la tabla), sino
+que va una vez por grupo. El redactor y el auditor de datos eligieron C sin la
+marca, que termina siendo la misma forma con otra palabra («¿para quién?»). La
+recomendación es A con ese ajuste.
+
+**La lección.** Cuando un dato está confirmado en un plan y en duda en otro, la
+duda se escribe con la misma forma y el mismo peso que el dato, en el mismo
+lugar. Si un lado dice para quién y el otro calla, el silencio se lee como la
+respuesta que más vende.
+
+## Parte 31 · Dónde aparecen las esperas del home (13/10/2026)
+
+La 5A sacó la fila «Tiempo de espera» de la tabla del home. La revisión de
+Codex vio que algunas tarjetas de servicio seguían diciendo esperas. Arturo
+preguntó: *«esto sale en la portada, o al hacer mousehover (no sé cómo se
+llamaba esto)»*.
+
+### 85 · Antes de preguntar por un lugar, mostrarlo
+
+![El home en la computadora al entrar, con la tarjeta de Internación abierta al pasar el mouse, y en el celular al tocarla](img/2026-10-13-esperas-home-donde-aparecen.webp)
+
+**Qué muestra.** Al entrar, la tabla no dice ninguna espera. Las esperas salen
+en la «tarjeta del servicio», que aparece al pasar el mouse por el nombre
+subrayado (en la computadora) o al tocarlo (en el celular). En la web se le
+dice *tooltip* o *popover*. Las marcas en ámbar son de la lámina, no de la
+página.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación
+es sacarlas también de la tarjeta, por la regla del 03/10: hoy unas tarjetas
+tienen espera y otras no. Terapia intensiva, por ejemplo, dice «a los 365
+días» en Essential y nada en Silver y Gold, y eso se puede leer como que ahí no
+hay espera.
+
+**La lección.** Una pregunta sobre un lugar de la pantalla se contesta con la
+pantalla. Arturo no sabía cómo se llamaba la tarjeta, y no tenía por qué: el
+nombre técnico lo necesitamos nosotros, no él.

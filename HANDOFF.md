@@ -83,7 +83,12 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
      sitio no daba ninguna del dentista de Essential.
    - **#52.** «La más elegida» salió de la cabecera de Silver (home y `/planes`).
      El renglón queda vacío en los tres para no mover las cabeceras, y Silver
-     sigue resaltado.
+     sigue resaltado (**Arturo, 13/10: «P1A»**, se queda así).
+   - **Preguntas que siguen abiertas en el PR:** P2, si las esperas salen también
+     de la tarjeta del servicio del home (lámina 85; la recomendación es que
+     sí), y P3, cómo se ve «por familia» frente a «al año» (lámina 84, tres
+     opciones; la recomendación es A con «Preguntale a tu asesor» una vez por
+     grupo).
    - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
      controla el 10% de Essential; «por persona» en las celdas del home y de la
      tabla de `/planes`, en las tarjetas del celular y en la FAQ; «La más
@@ -100,7 +105,7 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    la semi-suite, y las interconsultas (#89); las esperas de la internación
    programada, la terapia intensiva y el dentista de Essential (#82). #52 espera
    a Comercial (la cifra de ventas del Drive, sin confirmar) y a Arturo (si
-   Silver sigue resaltado). Cuando un dato llega, el texto vuelve con su fuente y
+   Silver sigue resaltado: decidido el 13/10, sí). Cuando un dato llega, el texto vuelve con su fuente y
    su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
