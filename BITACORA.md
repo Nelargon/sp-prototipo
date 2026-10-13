@@ -5115,3 +5115,38 @@ pensaba:
   donde falla, y contra la rama, donde pasa. La primera versión miraba solo las
   celdas del home y las tarjetas del celular: la verificación encontró cuatro
   lugares de donde había salido «por persona» que la guardia no veía.
+
+## Capítulo 147 — El cliente escanea antes de leer (13/10/2026)
+
+**Qué intentamos.** Con la decisión 2A, «por persona» salió de la tomografía,
+la resonancia y la fisioterapia de Silver y Gold, y quedó un contraste: «1 por
+familia» en Essential contra «1 al año» en Silver y Gold. Arturo pidió tres
+opciones (lámina 84). Las tres resolvían el contraste sumando palabras: la A
+ponía «¿por familia? Preguntale a tu asesor» debajo de cada número, la B una
+línea de explicación arriba del grupo y la C una marca con su globo.
+
+**Qué pasó.** Arturo vio el problema de fondo antes de elegir: *«Si ponemos más
+palabras de las que tenemos que poner, podemos restar claridad al cliente que
+escanea la información, no es que la lea solamente de forma narrativa. Por
+ejemplo, donde pones 1 por familia por año, en vez de escribir y que quede
+largo, podría ser simplemente "1/familia/año"»*. Se le marcaron dos riesgos:
+dos barras seguidas pueden leerse más lento para quien no está acostumbrado (una
+parte del público es mayor; es una suposición, no una medición) y un lector de
+pantalla leería «barra». Decidió igual: *«Entiendo tu preocupación, pero vamos a
+igual ir con el tema de las barras, cómo tiene que ser»*. El segundo riesgo se
+arregla con un texto oculto; el primero queda para la prueba con personas
+(sp-interno#90).
+
+**Qué aprendimos.**
+- **Hay dos formas de leer la misma pantalla.** Una tabla, un chip o el precio
+  de una tarjeta se escanean; una tarjeta abierta o una pregunta frecuente se
+  leen. Lo que se escanea pide la cifra y su unidad, nada más. Ya lo hacíamos a
+  medias con la tipografía (cifras en Nunito Sans, oraciones en Inter): ahora
+  la regla tiene nombre.
+- **Una duda también se escribe corta.** Las tres opciones de la lámina 84
+  eran honestas pero largas, y en una tabla la palabra de más tapa el número.
+  Las opciones nuevas de la P3 tienen que decir «no sabemos» con el mismo largo
+  que el dato.
+- **La forma corta hace más visible el contraste.** «1/familia/año» contra
+  «1/año» deja un hueco donde iba la unidad, y ese hueco se lee como «por
+  persona». La regla no resuelve la duda: obliga a decir algo en ese lugar.

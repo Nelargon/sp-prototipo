@@ -158,6 +158,22 @@ pierde (BITACORA cap. 96).
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Regla de tono: nunca "No cubierto", nunca rojo para cobertura (rojo =
   solo urgencias). Nombres en Tipo Oración.
+- **Regla de escaneo (13 oct 2026, Arturo)**: *«Si ponemos más palabras de
+  las que tenemos que poner, podemos restar claridad al cliente que escanea la
+  información, no es que la lea solamente de forma narrativa»*. Lo que se
+  **escanea** (celdas de tablas, chips, líneas de tarjetas, precios, topes) va
+  en **forma corta: la cifra con su unidad, separadas por barras**, sin
+  palabras de relleno: «1/familia/año», «Gs. 220.000/mes», «Gs. 350
+  mil/evento», «3/mes en la red», «20 días/persona/año». Lo que se **lee** (la
+  tarjeta que se abre al tocar, las preguntas frecuentes, las notas, el blog)
+  va en oraciones. Es la misma línea de la regla tipográfica: la forma corta
+  vive en la capa de cifras y etiquetas (Nunito Sans); las oraciones, en Inter.
+  Arturo eligió las barras, también dos seguidas, sabiendo que pueden leerse
+  más lento para quien no está acostumbrado: *«vamos a igual ir con el tema de
+  las barras»*. Cada forma corta lleva su texto para lectores de pantalla
+  (`aria-label`, por ejemplo «1 por familia al año»). La barra no se usa donde
+  ya significa otra cosa (fechas, fracciones). Y *«hay casos y hay casos»*: si
+  la forma corta deja una duda, se muestra en lámina antes de publicarla.
 - **Regla de etiquetas (jul 2026, de la observación del usuario)**: una
   etiqueta (kicker, badge, tag) se gana su lugar solo si hace al menos
   una de tres cosas — da un **veredicto** ("Cubierta", "Desde Plan
