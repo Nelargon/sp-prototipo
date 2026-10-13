@@ -2155,3 +2155,81 @@ hay espera.
 **La lección.** Una pregunta sobre un lugar de la pantalla se contesta con la
 pantalla. Arturo no sabía cómo se llamaba la tarjeta, y no tenía por qué: el
 nombre técnico lo necesitamos nosotros, no él.
+
+## Parte 32 · La P3 en forma corta (13/10/2026)
+
+Las tres opciones de la lámina 84 sumaban palabras a la tabla. Arturo lo vio y
+de ahí salió la regla de escaneo: *«si ponemos más palabras de las que tenemos
+que poner, podemos restar claridad al cliente que escanea la información»*.
+Con su E1A, la P3 se rehízo en forma corta, con barras.
+
+### 86 · Acortar deja más a la vista lo que falta
+
+![La tabla del home en la computadora: Hoy y las opciones A, B y C en forma corta](img/2026-10-13-p3-forma-corta-computadora.webp)
+
+![La tabla del home en el celular: Hoy, A, B y C, en las tarjetas de Essential y Silver](img/2026-10-13-p3-forma-corta-celular.webp)
+
+![Las tarjetas de /planes en el celular: Hoy, A, B y C](img/2026-10-13-p3-forma-corta-planes-celular.webp)
+
+**Qué muestra.** Las tres, construidas sobre la rama del PR #271 y medidas en
+el navegador:
+
+- **A · El hueco dicho en su lugar.** «1/familia/año» en Essential y
+  «1/¿?/año» en Silver y Gold: la duda va donde va «familia», con la misma
+  letra. Al tocarla se abre la tarjeta del servicio, que lo explica y manda al
+  asesor. Cero px más en las tablas del home y de `/planes`; +49 px en las
+  tarjetas de `/planes` del celular. La internación pasa a «20 días/persona/año»
+  en Silver y Gold, porque ahí la fuente lo dice («por beneficiario»).
+- **B · Lo confirmado corto y la duda debajo.** «1/año» en la celda y
+  «¿para quién?» en gris chico abajo. Suma 141 px en el home del celular, y las
+  tarjetas de Silver y Gold quedan 70 px más altas que la de Essential.
+- **C · La unidad, una vez por fila.** «/año» junto al nombre del servicio y
+  «1/familia» o «1/¿quién?» en la celda. Cero px más, pero separa la cifra de
+  su unidad.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* El comité votó
+unánime A, con la palabra de C: «1/¿quién?/año» en vez de «1/¿?/año». Medido,
+«¿?» ocupa 51 px contra 81 de «familia»: la duda se ve más chica que el dato y
+puede leerse como un dato que no cargó. «¿quién?» ocupa 84 px y se lee como lo
+que es, una pregunta abierta (eso último es inferido, sin probarlo con
+personas). B deja en la celda justo «1/año», la forma que se lee «por
+persona», y la duda queda en un gris que el que escanea se saltea. C rompe la
+regla recién escrita: la cifra va con su unidad. Lo que ninguna opción arregla
+es el hueco mismo: la forma corta de verdad es la que llega cuando SP contesta
+sp-interno#110, y es cambiar una línea.
+
+**La lección.** Acortar no es neutral. Con menos palabras alrededor, lo que no
+se dice se nota más: «1/año» al lado de «1/familia/año» grita «por persona»
+más fuerte que «1 al año» al lado de «1 por familia». La forma corta obliga a
+escribir la duda, no la esconde.
+
+## Parte 33 · Dónde más va la forma corta (13/10/2026)
+
+La E1A pedía, además, traer en lámina dónde más aplica la regla antes de tocar
+nada (*«hay casos y hay casos»*).
+
+### 87 · Una regla nueva se barre antes de aplicarse
+
+![La forma corta en el home y en /planes: seis lugares, Hoy y Corto](img/2026-10-13-escaneo-barrido-home-y-planes.webp)
+
+![La forma corta en el simulador: tres pantallas, Hoy y Corto](img/2026-10-13-escaneo-barrido-simulador.webp)
+
+**Qué muestra.** Nueve lugares de los 76 que encontró el barrido, en su sitio y
+a tamaño real, con solo el texto cambiado. De los 76, 27 son claros (el precio
+«Gs. 220.000/mes», «3/mes en la red», «2 días/año», «4/familia/año»), 34 tienen
+una duda y 15 no aplican, porque se leen o porque la barra ya significa otra
+cosa. Los marcados «Dudoso» llevan su duda escrita en la lámina.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* Los 34 dudosos se
+juntan en pocas preguntas: las celdas de la P3, la unidad «/evento» que la
+grilla tiene y la celda no muestra (suma un renglón en la tarjeta de Gold), y
+«/mes» en el paso del nivel del simulador (suma 141 px en el celular, porque el
+precio no se parte y aprieta el texto). Lo demás lo resuelve la regla: no se
+agrega una unidad que la fuente no tiene (el parto queda «hasta Gs. 350 mil»), y
+la barra que hoy hace de «o» («urgencia / emergencia») pasa a «o».
+
+**La lección.** Antes de aplicar una regla a todo el sitio, se cuentan los
+lugares. La mayoría son claros, y los dudosos, que parecían muchos, son pocas
+preguntas repetidas. Y el barrido encuentra de paso lo que nadie buscaba: en la
+computadora, el precio de cada plan no dice «por mes», porque una regla de
+estilo lo esconde.

@@ -86,9 +86,12 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
      sigue resaltado (**Arturo, 13/10: «P1A»**, se queda así).
    - **Preguntas que siguen abiertas en el PR:** P2, si las esperas salen también
      de la tarjeta del servicio del home (lámina 85; la recomendación es que
-     sí), y P3, cómo se ve «por familia» frente a «al año» (lámina 84, tres
-     opciones; la recomendación es A con «Preguntale a tu asesor» una vez por
-     grupo).
+     sí), y P3, cómo se ve «por familia» frente a «al año». Las tres opciones de
+     la lámina 84 sumaban palabras; con la regla de escaneo se rehicieron en
+     forma corta (lámina 86). La recomendación es A con la palabra de C:
+     «1/familia/año» en Essential y «1/¿quién?/año» en Silver y Gold, con la
+     explicación a un toque. La fisioterapia de Gold (20 o 10, #50) no se
+     publica como segura hasta que Arturo decida.
    - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
      controla el 10% de Essential; «por persona» en las celdas del home y de la
      tabla de `/planes`, en las tarjetas del celular y en la FAQ; «La más
@@ -127,7 +130,17 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    escanea va en forma corta, con barras («1/familia/año», «Gs. 220.000/mes»);
    lo que se lee, en oraciones. Está en `CLAUDE.md`. Se aplica primero a las
    opciones de la P3 del PR de la 2A y después, con una lámina antes de tocar
-   nada, al resto del sitio (BITACORA cap. 147).
+   nada, al resto del sitio (BITACORA cap. 147). **El barrido está hecho**
+   (lámina 87): 76 lugares, 27 claros, 34 dudosos y 15 que no aplican. Nada se
+   tocó todavía: los claros y las dudas («/evento» en medicamentos y remedios,
+   «/mes» en el paso del nivel del simulador) esperan a Arturo. Lo que resuelve
+   la regla sin preguntar: no se agrega una unidad que la fuente no tiene, y la
+   barra que hace de «o» («urgencia / emergencia») pasa a «o». Para quien lo
+   construya: la forma corta va en una capa de vista, no en el dato
+   (`coverage.js` alimenta también las hojas que se leen, y
+   `lib/prestaciones.json` es generado), y el texto para lectores de pantalla
+   va oculto, como en `app/glossary.jsx`, porque las celdas son `<span>` sin
+   rol y ahí un `aria-label` no se lee de forma confiable.
 
 Con el punto 5 se aplicó además lo decidido el 04/10 en sp-interno #55, que
 estaba pendiente: el tope de **3 consultas por mes en cada especialidad** en
