@@ -236,17 +236,15 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   const r = await page.evaluate(() => {
     const comp = document.getElementById('comparar');
-    // La última fila de Essential (la primera tarjeta o columna de plan).
-    const essential = document.querySelector('#cartilla .cmp2-plan');
-    const filas = essential ? [...essential.querySelectorAll('.cmp2-c')] : [];
-    const ultima = filas.length ? filas[filas.length - 1] : null;
-    const nombre = ultima ? ultima.querySelector('.cmp2-srv')?.textContent.trim() : '';
-    const celdas = ultima ? [nombre, ultima.querySelector('.cmp2-v')?.textContent.trim() || ''] : [];
+    // La tabla del home es la vista rápida: no lleva esperas (regla del
+    // 03/10; la fila «Tiempo de espera» salió el 13/10, decisión 5A de Arturo).
+    const tabla = document.getElementById('cartilla');
+    const srv = tabla ? [...tabla.querySelectorAll('.cmp2-srv')].map((x) => x.textContent.trim()) : [];
     const ley = document.getElementById('bolsillo');
     const puertas = [...document.querySelectorAll('#comparar .cmp-puertas a')].map((a) => ({ h: a.getAttribute('href'), alto: a.getBoundingClientRect().height }));
     const senior = [...comp.querySelectorAll('a')].find((a) => a.textContent.includes('Simulá Plan Vital'));
     return {
-      espera: celdas[0] && celdas[0].startsWith('Tiempo de espera') && /1 año/.test(celdas[1] || ''),
+      espera: srv.length > 0 && !srv.some((t) => /espera/i.test(t)) && !/2 a 10 meses/.test(tabla.textContent),
       ley: !!ley && !!ley.closest('#faq') && /Copago/.test(ley.textContent),
       puertas, senior: senior && senior.getAttribute('href'),
       // textContent y no innerText: el rótulo viejo iba en mayúsculas por CSS,
@@ -257,8 +255,8 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   const destinos = ['/planes/', '/guia-medica/'];
   const faltan = destinos.filter((d) => !r.puertas.some((p) => p.h && p.h.endsWith(d)));
   const chicas = width < 600 ? r.puertas.filter((p) => p.alto < 44).length : 0;
-  if (!r.espera) mal(nombre + ': la última fila de la tabla no es «Tiempo de espera» con «1 año» en Essential');
-  else bien(nombre + ': la espera de Essential es una fila de la tabla');
+  if (!r.espera) mal(nombre + ': la tabla del home muestra una espera (la vista rápida no lleva esperas: regla del 03/10, decisión del 13/10)');
+  else bien(nombre + ': la tabla del home no muestra esperas');
   if (!r.ley) mal(nombre + ': falta #bolsillo en el FAQ, con copago (lo enlaza el menú «Qué pagás de tu bolsillo»)');
   else bien(nombre + ': #bolsillo es una pregunta del FAQ que explica el copago');
   if (faltan.length || chicas) mal(nombre + ': puertas del comparador — faltan ' + (faltan.join(', ') || 'ninguna') + (chicas ? '; ' + chicas + ' miden menos de 44 px' : ''));

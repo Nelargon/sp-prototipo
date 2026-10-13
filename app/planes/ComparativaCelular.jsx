@@ -130,7 +130,7 @@ export default function ComparativaCelular() {
   // lámina 51, con la espera de cada uno.
   const enLosTres = (nombres, actual) => {
     const varios = nombres.length > 1;
-    const notas = nombres.map((n) => (n === 'Odontología' ? odonto && odonto.d : COV[n] && COV[n].waitNote)).filter(Boolean);
+    const notas = nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean);
     return (
       <>
         {planes.map((p, i) => (

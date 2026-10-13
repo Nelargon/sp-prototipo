@@ -117,7 +117,7 @@ export default function Planes() {
     return { d: [0, 1, 2].map((i) => { const t = linea(i); return t.charAt(0).toUpperCase() + t.slice(1) + '.'; }), pie: d ? d.d : null };
   }
   const filasCompu = [
-    { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias') },
+    { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
     { name: 'Sesiones de psicología', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }], d: conEspera('Sesión de psicología') },
     { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia') },
     { name: 'Ecografía', kind: 'num', cells: [{ t: '4', n: 'por familia' }, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }], d: conEspera('Ecografía', 'Ecografías') },

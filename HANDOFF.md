@@ -13,9 +13,42 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 7 oct 2026.*
+*Última actualización: 13 oct 2026.*
 
 ---
+
+## ✅ DECIDIDO EL 13/10/2026 (cita del Guardián, «1A, 2A, 3A, 4A, 5A»)
+
+Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue cada una:
+
+1. **Borradores de Codex (sp-prototipo #240 y sp-contenido #236): se cierran sin
+   fusionar.** Las ramas quedan guardadas. De todo eso se rescatan solo las
+   correcciones de tres notas del blog (el dengue, los aumentos de prepagas y la
+   calificadora), por el camino normal: el Orquestador corrige la cocina y el
+   Publicador lo copia a la web. Se sacan además el «36 %» de hospitalizados,
+   que la fuente no trae, y el párrafo de más de 320 caracteres. No entran los
+   botones de opinión del correo ni la revisión factual por nota.
+2. **Lo que el sitio afirma sin fuente sale o manda al asesor mientras SP no
+   conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Va en un PR propio
+   que Arturo ve antes de fusionar.
+3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
+   Privilege y Vital, porque el chequeo quincenal corre sin Drive
+   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45).
+4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
+   computadora de Arturo, y le deja los pasos.
+5. **La fila «Tiempo de espera» sale de la tabla del home.** Es la regla del
+   03/10: ninguna espera en la vista rápida. Las esperas, todas con el mismo
+   peso, quedan en `/planes`, el simulador y la cotización. El grupo de la
+   tabla pasa de «Urgencias y espera» a «Urgencias», y `qa-lanzamiento` ahora
+   controla que la tabla del home no muestre esperas.
+
+Con el punto 5 se aplicó además lo decidido el 04/10 en sp-interno #55, que
+estaba pendiente: el tope de **3 consultas por mes en cada especialidad** en
+Silver y Gold, que el comparador del home ya decía a un toque, ahora va también
+en `/planes` (la página de detalle). Sale de `coverage.js` como `nota` de
+«Consulta con especialista»; en la computadora es el pie de la tarjeta y en el
+celular, la nota de la hoja del servicio. La lista de estudios con copago sigue
+esperando a SP.
 
 ## 🧮 07/10/2026: `/planes/` EN LA COMPUTADORA ES LA TABLA DEL HOME, CON TODO ADENTRO
 
@@ -509,7 +542,7 @@ convertir»*.
 
   | # | Momento | Qué se dice | Estado |
   |---|---|---|---|
-  | 1 | Vista rápida (home, `/planes`) | Nada | Hecho en las tarjetas; falta decidir la fila «Tiempo de espera» del comparador del home (la pidió Arturo el 26/09) |
+  | 1 | Vista rápida (home, `/planes`) | Nada | Hecho en las tarjetas. La fila «Tiempo de espera» del comparador del home (la pidió Arturo el 26/09) salió el 13/10: ver «Decidido el 13/10/2026» |
   | 2 | Vista detallada (`/que-cubre`) | Todas, parejas | Existe (tabla de servicios) |
   | 3 | Simulador, antes de dejar datos | Las del plan que le tocó | Existe |
   | 4 | Cotización por WhatsApp | «Cuánto esperás para usar cada cobertura» | Existe |
@@ -776,7 +809,7 @@ nombres, de `lib/red-home.json`. `aria-hidden` y sin puntero (lo prueba
 
 **Home — el tramo bajo la tabla del comparador** (26/09, opción 4 de n.º 39;
 BITACORA cap. 117). Era una pila de siete cajas; ahora:
-- **La espera es la última fila de la tabla**, «Tiempo de espera» (pregunta de
+- ~~**La espera es la última fila de la tabla**~~ **Sale el 13/10/2026** (decisión 5A, regla del 03/10: ninguna espera en la vista rápida). Lo que sigue es historia: «Tiempo de espera» (pregunta de
   Arturo: *«¿no se podría simplemente poner como una fila más en el
   comparativo?»*): Essential 1 año; Silver y Gold, 2 a 10 meses según el
   servicio. Sale de `datos/planes-vigentes/` (el comentario de `cmp` dice de
