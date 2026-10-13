@@ -573,11 +573,13 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
 
 // ── Lo que el sitio no afirma sin fuente (decisión 2A de Arturo, 13/10/2026) ─
 // Mientras SP no conteste, lo que no tiene fuente sale o manda al asesor
-// (sp-interno #80, #110 y #52). Se controlan las tres que se pueden volver a
-// colar sin que nadie lo note: el 10% calculado en el precio de Essential,
-// «por persona» en la tomografía y la resonancia de Silver y Gold, y «La más
-// elegida» sobre Silver. Probado contra el main del 13/10 (fallan las tres) y
-// contra la rama que las saca (pasan).
+// (sp-interno #80, #110, #116, #89 y #52). Se controlan las que se pueden
+// volver a colar sin que nadie lo note: el 10% calculado en el precio de
+// Essential, «por persona» en la tomografía y la resonancia de Silver y Gold
+// (home, tabla y tarjetas de /planes y la FAQ), «La más elegida» sobre Silver,
+// la cesárea de Gold a 5 meses, visar desde la App y la semi-suite «con baño
+// propio». Probado contra el main del 13/10 (fallan todas) y contra la rama que
+// las saca (pasan).
 console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -616,13 +618,30 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const planes = await page.evaluate(() => ({
     lineas: [...document.querySelectorAll('.cmp-cel article .linea-cel')].map((l) => l.textContent).filter((l) => /^Tomografía y resonancia/.test(l)),
+    chips: [...document.querySelectorAll('#comparar-planes .cmp2-chip')].map((c) => c.textContent),
     etiqueta: /La más elegida/i.test((document.getElementById('comparar-planes') || {}).textContent || ''),
   }));
-  const porPersona = [...(home ? home.chips : []), ...planes.lineas].filter((t) => /por persona/i.test(t));
+  const porPersona = [...(home ? home.chips : []), ...planes.lineas, ...planes.chips].filter((t) => /por persona/i.test(t));
   if (!home || !home.chips.length || planes.lineas.length !== 3 || porPersona.length) mal('tomografía y resonancia no pueden decir «por persona» en Silver y Gold hasta que SP lo confirme (sp-interno#110): ' + JSON.stringify(porPersona.length ? porPersona : { chips: home && home.chips.length, lineas: planes.lineas.length }));
   else bien('tomografía y resonancia de Silver y Gold dicen cuántas, sin «por persona» (home y /planes)');
   if (!home || home.etiqueta || planes.etiqueta) mal('«La más elegida» sigue sobre Silver sin un dato de ventas confirmado (sp-interno#52)');
   else bien('sin «La más elegida» en el home ni en /planes');
+  // Lo que salió y no tiene que volver, en todo el texto que trae cada página:
+  // el textContent incluye lo que se ve recién al tocar (FAQ, glosario, hojas).
+  const frases = [
+    [/por persona y no por familia/i, '«por persona y no por familia» (sp-interno#110)'],
+    [/cesárea (?:espera|baja a) 5/i, 'la cesárea de Gold a 5 meses (sp-interno#116)'],
+    [/visarla desde la App/i, 'visar la orden desde la App (sp-interno#89)'],
+    [/con baño propio/i, 'la semi-suite «con baño propio» (sp-interno#89)'],
+  ];
+  const vuelven = [];
+  for (const ruta of ['/', '/planes/', '/guia-medica/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const texto = await page.evaluate(() => document.body.textContent);
+    for (const [re, que] of frases) if (re.test(texto)) vuelven.push(ruta + ': ' + que);
+  }
+  if (vuelven.length) mal('vuelve una afirmación sin fuente: ' + vuelven.join(' · '));
+  else bien('sin «por persona y no por familia», cesárea a 5 meses, visar desde la App ni «con baño propio» (home, /planes y Guía Médica)');
   await page.close();
 }
 

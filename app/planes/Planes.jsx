@@ -151,6 +151,12 @@ export default function Planes() {
        8/09/2026: "carencia" no va primero; la palabra del contrato, detrás).
      - El master escribe "Gs." y el sitio también (Arturo, 07/10/2026, sp-interno#164). Una sola moneda. */
   const etiquetaParam = (t) => {
+    // Interconsultas: la grilla dice «por año; + hasta 3 visitas por
+    // especialidad», y los contratos de Silver y Gold (2.3.5) dicen «por
+    // internación», con 3 visitas en Silver y 4 en Gold. Hasta que SP lo aclare,
+    // el rótulo manda al asesor y el número queda (sp-interno#89, decisión 2A de
+    // Arturo, 13/10/2026).
+    if (/^Interconsultas en internación/i.test(t)) return 'Interconsultas en internación (si son por año o por internación, preguntale a tu asesor)';
     const m = /^Carencia\s*(?:–|-|de)\s*(.+)$/i.exec(t);
     return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
   };

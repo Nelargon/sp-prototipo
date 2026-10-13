@@ -152,6 +152,9 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // negrita, porque «por familia» sí está escrito en su cuadernillo. Vuelve si SP
 // confirma que es para cada persona (sp-interno#110). La espera de la tomografía
 // de Gold también salió de su línea: va en el cuadro de esperas (regla del 03/10).
+// En Essential, las 2 tomografías comparten cupo con el ecocardiograma y la
+// ergometría (cuadernillo 3.2, sp-interno#113): la línea dice «hasta» y la hoja
+// del servicio lo aclara.
 export const plans = () => [
   // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
   { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',

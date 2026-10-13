@@ -2044,3 +2044,39 @@ como campo opcional y un botón «Copiar el código» para Roundcube.
 **La lección.** Una firma de correo no es una pantalla del sitio: se lee en
 Arial, en el programa de otro, a veces con las imágenes bloqueadas y a veces en
 un celular. Se diseña para ese lugar, no para la vitrina donde se arma.
+
+## Parte 29 · Lo que el sitio decía sin fuente (13/10/2026)
+
+Arturo contestó la cita del Guardián con «2A»: mientras SP no conteste, lo que
+el sitio afirma sin fuente sale o manda al asesor, con una sola forma,
+«preguntale a tu asesor». Seis puntos de revisión esperaban a SP desde fines de
+septiembre (sp-interno #80, #110, #116, #89, #82 y #52).
+
+### 83 · Lo que no tiene fuente sale o manda al asesor
+
+![Siete lugares antes y ahora: el 10% de Essential en el simulador, «por persona» en las celdas del home, «La más elegida» sobre Silver, la cesárea de Gold, la tarjeta de Internación, visar desde la App y las interconsultas](img/2026-10-13-sin-fuente-antes-despues.webp)
+
+**Qué muestra.** A la izquierda (o arriba), el `main` del 13/10; a la derecha
+(o abajo), la rama del PR. Son siete de los lugares que cambian:
+
+1. Essential deja de mostrar un precio con 10% de descuento: no hay fuente de
+   que lo tenga. En su lugar, una línea gris lo manda al asesor.
+2. Las celdas de Silver y Gold dicen cuántas («1 al año») y no «por persona».
+3. Sale «La más elegida». El renglón queda vacío para que las tres cabeceras
+   midan lo mismo, y Silver sigue resaltado.
+4. La cesárea de Gold manda al asesor: su contrato dice 150 días en un cuadro y
+   300 en la cláusula de maternidad.
+5. La semi-suite ya no es «privada, con baño propio», y la internación de Silver
+   y Gold dice «si es por algo agudo».
+6. Sale «También podés visarla desde la App».
+7. Las interconsultas mandan al asesor si son por año o por internación.
+
+**Qué se decidió y por qué.** *Pendiente: Arturo lo ve antes de fusionar.* La
+pregunta de diseño es la 3: sin el rótulo, ¿Silver sigue resaltado? La
+recomendación es dejarlo, porque el resaltado no afirma ningún dato y es el
+diseño que él eligió.
+
+**La lección.** Sacar un dato no es neutral si deja otro a la vista. El primer
+cambio sacó «la cesárea espera 5 meses en Gold» y la hoja quedó diciendo 10
+meses, que era tomar partido por el otro lado del mismo contrato. Cuando dos
+fuentes se contradicen, se manda al asesor hasta que se aclaren.

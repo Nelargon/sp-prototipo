@@ -56,15 +56,23 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    - **#116.** La ambulancia de Silver y Gold ya no se lee «sin tope» (tarjeta
      «Médico a domicilio», solo en el prototipo). La «cesárea a 5 meses en Gold»
      salió de la FAQ, la caja del parto, la hoja y el cuadro de esperas del
-     celular, el simulador y la cotización; el parto sigue en 10 meses. La unidad
-     de las cirugías de Silver y Gold no la afirmaba ningún texto.
+     celular, el simulador y la cotización. El parto sigue en 10 meses, y la
+     cesárea de Gold manda al asesor (hoja del celular, cuadro de esperas,
+     simulador y cotización): no estaba sin fuente, tenía la fuente contradicha
+     (Cuadro 3 del contrato de Gold: 150 días; cláusula de maternidad 2.5.2: 300).
+     Dejar los 10 meses sin más tomaba el otro lado. La unidad de las cirugías de
+     Silver y Gold no la afirmaba ningún texto.
    - **#89.** Sale «También podés visarla desde la App» de la Guía Médica. La
      semi-suite ya no es «privada, con baño propio»: el glosario dice lo que trae
      el contrato de Silver y Gold («con cama para un acompañante, según lo que
      tenga el sanatorio»). La tarjeta de Internación del home dice que en los tres
      planes hay cama para acompañante (cuadernillo de Essential, 4.3.1, leído el
      13/10) y manda al asesor qué cambia entre la privada y la semi-suite. Las
-     interconsultas de `/planes` salen de la grilla y no se tocaron.
+     interconsultas del plegable de internación de `/planes` mandan al asesor
+     si son por año o por internación: la grilla dice «por año; + hasta 3
+     visitas» y los contratos de Silver y Gold (2.3.5) dicen «por internación»,
+     con 3 visitas en Silver y 4 en Gold. El dato generado no se tocó: cambia el
+     rótulo (`etiquetaParam` de `Planes.jsx`).
    - **#82.** En el home, la internación de Silver y Gold dice «A los 60 días de
      afiliarte si es por algo agudo» (no se suma ninguna espera a la vista
      rápida; las esperas de las tarjetas del home están preguntadas aparte). En
@@ -75,8 +83,12 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
      El renglón queda vacío en los tres para no mover las cabeceras, y Silver
      sigue resaltado.
    - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
-     controla el 10% de Essential, «por persona» y «La más elegida». Falla en el
-     main del 13/10 y pasa con esto.
+     controla el 10% de Essential; «por persona» en las celdas del home y de la
+     tabla de `/planes`, en las tarjetas del celular y en la FAQ; «La más
+     elegida»; y, en todo el texto del home, `/planes` y la Guía Médica, la
+     cesárea a 5 meses, visar desde la App y la semi-suite «con baño propio».
+     No controla las interconsultas ni la ambulancia. Falla en el main del 13/10
+     y pasa con esto.
 
    **Sigue esperando a SP** (los seis issues quedan abiertos; el PR los nombra
    con «Refs»): si Essential tiene el 10% (#80); si tomografía, resonancia y
@@ -371,7 +383,7 @@ detalle y lo que falta viven en cada issue.
 comparador de planes»*. En resonancia y tomografía, Essential decía «1 por
 familia» y Silver y Gold decían «Al 100%»: dos preguntas distintas en la misma
 fila, y la diferencia real (por familia contra por persona) escondida. Ahora:
-- **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona».
+- **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona». *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*
   «No ponés nada» va en la tarjeta del servicio, solo en Silver y Gold, y el pie
   explica por familia y por persona. En el FAQ, «por persona y no por familia».
 - **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador) y
@@ -385,7 +397,7 @@ pareja del pase de la comparativa, en `sp-interno`):
 1. **¿Essential cubre la resonancia y la tomografía sin que la persona ponga
    nada?** Su fuente dice «1 al año por grupo familiar» y no declara
    porcentaje. Hasta saberlo, «no ponés nada» no se dice de Essential.
-2. **¿El tope de Silver y Gold es por persona?** El cuadernillo dice
+2. **¿El tope de Silver y Gold es por persona?** *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)* El cuadernillo dice
    «Cobertura total (100%), hasta 1 por año (cualquiera de la lista)», sin
    decir por persona. El sitio ya lo decía antes de este cambio (FAQ,
    etiqueta de Silver, simulador); ahora se ve en la celda, así que conviene
@@ -1083,7 +1095,7 @@ una firme y se regenera.
   sin preocupaciones», una promesa absoluta (ningún plan cubre todo); ahora dice
   «La cobertura más amplia, con los topes más altos». Silver decía «La más
   elegida. Cobertura equilibrada…» justo debajo del badge «La más elegida»: se
-  quitó la repetición (regla de etiquetas). **El badge queda**; sigue abierta la
+  quitó la repetición (regla de etiquetas). **El badge queda** *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*; sigue abierta la
   pregunta de siempre para Comercial (¿hay dato de ventas que lo sostenga?, ver
   la tabla de pendientes).
 - **Título de la tabla del home** (Arturo, 25/09: *«La transparencia no implica
@@ -1365,7 +1377,9 @@ reemplaza a Bronze»). Lámina:
 - **El descuento, en plata:** *«Pagá con débito automático o tarjeta de crédito y
   ahorrás 10% todos los meses: en un año, es más de una cuota que te queda en el
   bolsillo.»* La cuenta vale para cualquier plan y precio (10% × 12 = 1,2
-  cuotas de lista), así que no envejece cuando cambie la grilla.
+  cuotas de lista), así que no envejece cuando cambie la grilla. *(⚠ 13/10/2026:
+  desde la decisión 2A dice «En Silver y Gold» y manda Essential al asesor; ver
+  el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*
 - **Las dos puertas, simétricas.** «El detalle fila por fila» pasó a *«¿Qué
   cambia de un plan a otro?»* con la bajada *«Los tres, servicio por servicio y
   con sus esperas.»*: dos preguntas de la persona, del mismo largo, bajadas de
@@ -4051,7 +4065,9 @@ dato que ya estaba estructurado en las 935 filas de
    descripción nueva que diga "semi-suite" se explica sola.
 
 **Los datos** (grilla de julio 2026, verificada por el usuario): parto
-**300 días en los tres planes**; cesárea 300/300 y **150 en Gold**;
+**300 días en los tres planes**; cesárea 300/300 y **150 en Gold** *(⚠ 13/10/2026:
+el contrato de Gold se contradice, Cuadro 3: 150 y cláusula 2.5.2: 300; la web
+manda la cesárea de Gold al asesor, decisión 2A)*;
 cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
 cubre); fisioterapia 90; tomografía 60/60/30 *(⚠ corregido el 25/09/2026:
 ese 60/30 era de la ortopantomografía; la tomografía es 120 en Silver y 90 en
@@ -4083,7 +4099,8 @@ la espera importa más ahí que en ningún lado:
   regla: solo donde HAY cobertura (Resonancia no muestra espera en Bronce,
   porque Bronce no la cubre).
 - **`waitNote`** por fin visible: la fila de parto aclara que *"la cesárea
-  espera 150 días en Gold"*. El campo estaba en `app/coverage.js` desde la
+  espera 150 días en Gold"* *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2
+  de «✅ DECIDIDO EL 13/10/2026»)*. El campo estaba en `app/coverage.js` desde la
   tanda anterior y nunca se había mostrado.
 - **Glosario** en los detalles de cobertura (`annotate`) y en la nota al pie,
   que ahora explica de dónde arranca el reloj.

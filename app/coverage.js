@@ -45,9 +45,11 @@ export const coverage = () => [
   // Parto: 365 días en Essential y 300 en Silver y Gold. Es la espera más larga
   // y la que más caro sale descubrir tarde; por eso además tiene aviso propio en
   // el home. «La cesárea espera 5 meses en Gold» salió el 13/10/2026 (decisión
-  // 2A de Arturo): los 150 días salían de una sola fila de la grilla, contra la
-  // cláusula de maternidad (300). Vuelve si SP lo confirma (sp-interno#116).
-  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
+  // 2A de Arturo): el contrato de Gold se contradice (Cuadro 3: 150 días;
+  // cláusula de maternidad 2.5.2: 300). Mostrar los 10 meses sin más tomaba el
+  // otro lado, así que la cesárea de Gold manda al asesor. Vuelve con su número
+  // si SP lo aclara (sp-interno#116).
+  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], nota: 'En Gold, preguntale a tu asesor cuánto esperás para una cesárea.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
   { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
   { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: NOTA_UNIDAD, cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes('20 sesiones al año')] },
   { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
@@ -86,9 +88,11 @@ export const carencias = () => [
   // Silver espera 6 y Gold 5. Se corrigió el 7 sep 2026.
   // Essential: una cirugía al año por familia, de una lista de 26, a los 365.
   { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null] },
-  // Parámetros clave: "Carencia de maternidad: 300 días". La cesárea de Gold no
-  // lleva nota propia hasta que SP confirme sus 150 días (sp-interno#116).
-  { que: 'Parto', dias: [365, 300, 300] },
+  // Parámetros clave: "Carencia de maternidad: 300 días". La cesárea de Gold
+  // tiene la fuente contradicha: el Cuadro 3 de su contrato dice 150 días y la
+  // cláusula de maternidad (2.5.2), 300. Hasta que SP lo aclare, en Gold manda
+  // al asesor (sp-interno#116, decisión 2A de Arturo, 13/10/2026).
+  { que: 'Parto', dias: [365, 300, 300], notaPlan: [null, null, 'para una cesárea, preguntale a tu asesor cuánto esperás'] },
 ];
 
 // Plan Vital (65+) tiene grilla propia y agrupa las coberturas POR carencia

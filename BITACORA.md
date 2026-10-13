@@ -5063,8 +5063,9 @@ trae `<meta charset>`, se leía con los acentos rotos.
 #82 y #52) esperaban la respuesta de SP desde fines de septiembre, y mientras
 tanto el sitio seguía afirmando cosas sin fuente: el 10% por débito en Essential,
 «por persona» en la tomografía y la resonancia de Silver y Gold, la cesárea a 5
-meses en Gold, visar desde la App, la semi-suite «privada, con baño propio» y
-«La más elegida» sobre Silver. La cita del Guardián le preguntó a Arturo qué
+meses en Gold (que tenía fuente, pero contradicha dentro del mismo contrato),
+visar desde la App, la semi-suite «privada, con baño propio» y «La más elegida»
+sobre Silver. La cita del Guardián le preguntó a Arturo qué
 hacer mientras tanto y contestó «2A»: lo que no tiene fuente sale o manda al
 asesor, con una sola forma, «preguntale a tu asesor».
 
@@ -5085,8 +5086,19 @@ pensaba:
   precios, y las frases que decían «todos» siguieron valiendo para un plan que
   la fuente no nombraba. El simulador le calculaba el descuento sin que nadie lo
   hubiera decidido.
+- **La cesárea de Gold.** El primer cambio sacó «la cesárea espera 5 meses en
+  Gold» y la hoja «Parto o cesárea» quedó mostrando 10 meses en Gold. La
+  verificación leyó el contrato de Gold: el Cuadro 3 dice 150 días para la
+  cesárea y la cláusula de maternidad (2.5.2), 300. No era un dato sin fuente,
+  era una fuente que se contradice, y mostrar solo los 10 meses tomaba partido
+  por el otro lado. Ahora la cesárea de Gold manda al asesor. Lo mismo pasó con
+  las interconsultas: la grilla dice «por año» y los contratos, «por
+  internación».
 
 **Qué aprendimos.**
+- **Sacar un dato no es neutral si deja otro a la vista.** Cuando dos fuentes
+  se contradicen, borrar una deja a la otra como verdad. Lo honesto es mandar al
+  asesor hasta que la fuente se aclare.
 - **El resumen no es el contrato.** Un JSON curado sirve para leer rápido, pero
   una ausencia en el resumen no es una ausencia en la fuente. Antes de escribir
   «esto lo tiene un plan y el otro no», se lee la cláusula del otro.
@@ -5096,7 +5108,10 @@ pensaba:
 - **Sacar una etiqueta no es mover la cabecera.** «La más elegida» salió y su
   renglón quedó vacío en los tres planes: las cabeceras miden lo mismo. Lo que se
   saca por falta de fuente no tiene que cambiar el diseño que Arturo eligió.
-- **El cambio queda con su guardia.** `qa-lanzamiento` controla las tres
-  afirmaciones que se podían volver a colar (el 10% de Essential, «por persona»
-  y «La más elegida»). Se probó contra el main del 13/10, donde falla, y contra
-  la rama, donde pasa.
+- **El cambio queda con su guardia.** `qa-lanzamiento` controla las
+  afirmaciones que se podían volver a colar: el 10% de Essential, «por persona»
+  (celdas, tarjetas y FAQ), «La más elegida», la cesárea a 5 meses, visar desde
+  la App y la semi-suite «con baño propio». Se probó contra el main del 13/10,
+  donde falla, y contra la rama, donde pasa. La primera versión miraba solo las
+  celdas del home y las tarjetas del celular: la verificación encontró cuatro
+  lugares de donde había salido «por persona» que la guardia no veía.
