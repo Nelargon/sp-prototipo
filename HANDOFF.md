@@ -27,7 +27,9 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    calificadora), por el camino normal: el Orquestador corrige la cocina y el
    Publicador lo copia a la web. Se sacan además el «36 %» de hospitalizados,
    que la fuente no trae, y el párrafo de más de 320 caracteres. No entran los
-   botones de opinión del correo ni la revisión factual por nota.
+   botones de opinión del correo ni la revisión factual por nota. **Hecho el
+   13/10:** #240 y sp-contenido#236 cerrados sin fusionar; el pedido al
+   Orquestador, con el texto exacto de cada cambio, es sp-contenido#268.
 2. **Lo que el sitio afirma sin fuente sale o manda al asesor mientras SP no
    conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Va en un PR propio
    que Arturo ve antes de fusionar (rama `claude/dazzling-keller-l0torp`). Una
@@ -102,9 +104,15 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
-   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45).
+   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso nuevo del
+   manual está en sp-interno#177. Si un master cambió, el PR de datos espera el
+   OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
+   `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
+   minutos después de su última ingestión: la primera corrida lo va a marcar.
+   Pausar el quincenal es otra pregunta (sp-interno#176).
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
-   computadora de Arturo, y le deja los pasos.
+   computadora de Arturo, y le deja los pasos. **Puede, con cambios:** los
+   pasos y tres detalles para decidir están en sp-interno#178.
 5. **La fila «Tiempo de espera» sale de la tabla del home.** Es la regla del
    03/10: ninguna espera en la vista rápida. Las esperas, todas con el mismo
    peso, quedan en `/planes`, el simulador y la cotización. El grupo de la
