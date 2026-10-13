@@ -376,16 +376,12 @@ export default function Page() {
     { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }],
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
-    { g: 'Urgencias y espera', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }],
+    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }],
       d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
-    // LA ESPERA, COMO FILA (26/09/2026, pregunta de Arturo: «¿no se podría
-    // simplemente poner como una fila más en el comparativo?»). Essential: 365
-    // días en todo lo nombrado (essential.json, carencias_dias). Silver y Gold:
-    // de 60 días (internación) a 300 (parto) según el servicio (silver.json y
-    // gold.json); el detalle servicio por servicio está en /planes.
-    { name: 'Tiempo de espera', unit: 'internación, terapia intensiva, cirugías, resonancia y parto', kind: 'num', cells: [{ t: '1 año', n: 'desde que te afiliás' }, { t: '2 a 10 meses', n: 'según el servicio' }, { t: '2 a 10 meses', n: 'según el servicio' }],
-      d: ['1 año desde que te afiliás para internación, terapia intensiva, cirugías, resonancia y parto. Consultas, urgencias y fisioterapia, desde el primer día.', 'Según el servicio: internación a los 60 días, resonancia a los 150, la mayoría de las cirugías a los 180 y parto a los 300.', 'Según el servicio: internación a los 60 días, resonancia y la mayoría de las cirugías a los 150, y parto a los 300.'],
-      pie: 'Es lo que el contrato llama carencia: se cuenta desde el día que te afiliás, no desde el día que lo necesitás.' },
+    // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
+    // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada
+    // otra vez el 05/10). Las esperas, todas con el mismo peso, están en /planes,
+    // el simulador y la cotización. Antes de eso fue una fila (26/09).
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero

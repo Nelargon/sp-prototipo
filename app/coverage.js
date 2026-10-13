@@ -22,7 +22,10 @@ const no = (s, d) => ({ s, ok: false, d });
 // null = la grilla no declara carencia para ese servicio → no se muestra nada.
 
 export const coverage = () => [
-  { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', cov: [yes('Sin tope en Lister; en la red, hasta 3 por mes'), yes('Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto'), yes('Sin tope anual en casi todas')] },
+  // nota (04/10/2026, decisión de Arturo en sp-interno#55): el tope mensual de
+  // Silver y Gold va en la página de detalle (/planes), no en la vista rápida del
+  // home. La lista de estudios con copago espera a SP.
+  { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', nota: 'En Silver y Gold, hasta 3 consultas por mes en cada especialidad; después, con copago.', cov: [yes('Sin tope en Lister; en la red, hasta 3 por mes'), yes('Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto'), yes('Sin tope anual en casi todas')] },
   { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', wait: [90, 60, 60], cov: [yes('Hasta 4 al año por familia'), yes('La mayoría, sin tope'), yes('La mayoría, sin tope')] },
   // Tomografía: 120 días en Silver y 90 en Gold, como TODAS las filas TAC-TCMS
   // de la grilla. Decía 60/30: eran los de ORTOPANTOMOGRAFIA (una placa dental)
