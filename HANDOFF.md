@@ -118,16 +118,16 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
    computadora de Arturo, y le deja los pasos. **Puede, con cambios:** los
    pasos y tres detalles para decidir están en sp-interno#178.
-6. **Regla de escaneo** (después de la cita, el mismo 13/10): lo que se
-   escanea va en forma corta, con barras («1/familia/año», «Gs. 220.000/mes»);
-   lo que se lee, en oraciones. Está en `CLAUDE.md`. Se aplica primero a las
-   opciones de la P3 del PR de la 2A y después, con una lámina antes de tocar
-   nada, al resto del sitio (BITACORA cap. 147).
 5. **La fila «Tiempo de espera» sale de la tabla del home.** Es la regla del
    03/10: ninguna espera en la vista rápida. Las esperas, todas con el mismo
    peso, quedan en `/planes`, el simulador y la cotización. El grupo de la
    tabla pasa de «Urgencias y espera» a «Urgencias», y `qa-lanzamiento` ahora
    controla que la tabla del home no muestre esperas.
+6. **Regla de escaneo** (después de la cita, el mismo 13/10): lo que se
+   escanea va en forma corta, con barras («1/familia/año», «Gs. 220.000/mes»);
+   lo que se lee, en oraciones. Está en `CLAUDE.md`. Se aplica primero a las
+   opciones de la P3 del PR de la 2A y después, con una lámina antes de tocar
+   nada, al resto del sitio (BITACORA cap. 147).
 
 Con el punto 5 se aplicó además lo decidido el 04/10 en sp-interno #55, que
 estaba pendiente: el tope de **3 consultas por mes en cada especialidad** en
