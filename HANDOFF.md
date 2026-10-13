@@ -542,8 +542,8 @@ convertir»*.
 
   | # | Momento | Qué se dice | Estado |
   |---|---|---|---|
-  | 1 | Vista rápida (home, `/planes`) | Nada | Hecho en las tarjetas. La fila «Tiempo de espera» del comparador del home (la pidió Arturo el 26/09) salió el 13/10: ver «Decidido el 13/10/2026» |
-  | 2 | Vista detallada (`/que-cubre`) | Todas, parejas | Existe (tabla de servicios) |
+  | 1 | Vista rápida (el home; desde el 05/10, `/planes` ya no lo es) | Nada | Hecho en las tarjetas. La fila «Tiempo de espera» del comparador del home (la pidió Arturo el 26/09) salió el 13/10: ver «Decidido el 13/10/2026». Las tarjetas de servicio del comparador del home, que se abren al tocar, todavía nombran algunas esperas: está preguntado a Arturo |
+  | 2 | Vista detallada (`/planes`, desde el 04 y el 05/10; `/que-cubre` ahora lleva ahí) | Todas, parejas | Existe (el grupo «Cuánto esperás para usarlo» de la tabla) |
   | 3 | Simulador, antes de dejar datos | Las del plan que le tocó | Existe |
   | 4 | Cotización por WhatsApp | «Cuánto esperás para usar cada cobertura» | Existe |
   | 5 | Conversación con la asesora, antes de cerrar | Dichas en voz alta | A confirmar con SP (¿hay guion?) |
