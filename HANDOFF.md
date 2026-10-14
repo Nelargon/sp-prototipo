@@ -117,7 +117,8 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
    `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
    minutos después de su última ingestión: la primera corrida lo va a marcar.
-   Pausar el quincenal es otra pregunta (sp-interno#176).
+   El quincenal quedó pausado ese mismo día a las 10:33, por decisión de
+   Arturo (sp-interno#176, opción A).
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
    computadora de Arturo, y le deja los pasos. **Puede, con cambios:** los
    pasos y tres detalles para decidir están en sp-interno#178.

@@ -77,10 +77,13 @@ el usuario actualiza un master:
 > Nota: los atajos `.lnk` en Drive **no** funcionan como puntero (son atajos de
 > Windows); se trackea el **fileId** del master.
 
-**Chequeo quincenal automatizado (26 jul 2026):** una Routine compara el
-`modifiedTime` de cada master contra las fechas de esta tabla los días 1 y 15.
-Si un master cambió, re-ingiere y abre PR; si no, no molesta a nadie. Reemplaza
-al chequeo mensual que estaba solo propuesto.
+**Chequeo quincenal automatizado (26 jul 2026) — pausado el 13/10/2026.** Una
+Routine iba a comparar el `modifiedTime` de cada master contra las fechas de
+esta tabla los días 1 y 15. Nunca tuvo el conector de Drive, así que no midió
+nada (sp-interno, BITACORA cap. 45), y Arturo la pausó el 13/10 a las 10:33
+(sp-interno#176, opción A). Desde la decisión 3A del 13/10, los masters los
+mide el Guardián cada mañana; el paso nuevo de su manual está en
+sp-interno#177.
 
 ### Ingestión del 26 jul 2026 (master modificado el 24/07)
 
