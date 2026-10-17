@@ -13,6 +13,7 @@
    es vieja y hoy quiere decir Essential. */
 
 import { DEPT_AJUSTE } from './geo';
+import { coverage } from './coverage';
 
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
@@ -148,22 +149,41 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // principio como gancho. Mapa en HANDOFF («Reparto de páginas de planes»).
 // ⚠ «Por persona» salió de la tomografía y la resonancia de Silver y Gold el
 // 13/10/2026 (decisión 2A de Arturo): la grilla dice «por año de contrato» y no
-// «por beneficiario». Las tres tarjetas dicen cuántas, y solo Essential lleva la
-// negrita, porque «por familia» sí está escrito en su cuadernillo. Vuelve si SP
-// confirma que es para cada persona (sp-interno#110). La espera de la tomografía
-// de Gold también salió de su línea: va en el cuadro de esperas (regla del 03/10).
-// En Essential, las 2 tomografías comparten cupo con el ecocardiograma y la
-// ergometría (cuadernillo 3.2, sp-interno#113): la línea dice «hasta» y la hoja
-// del servicio lo aclara.
-export const plans = () => [
-  // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
-  { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
-    lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', 'Tomografía y resonancia: hasta 2 tomografías y 1 resonancia al año, **por familia**', 'Internación: **habitación privada**, hasta 20 días por familia', 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
-  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'El equilibrio entre precio y cobertura',
-    lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', 'Tomografía y resonancia: hasta 2 tomografías y 1 resonancia al año', 'Internación: **semi-suite**, hasta 20 días al año', 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
-  { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas: **sin tope anual** en casi todas las especialidades', 'Tomografía y resonancia: hasta 2 tomografías y 1 resonancia al año', 'Internación: **semi-suite**, hasta 25 días al año', 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
-];
+// «por beneficiario». «Persona» vuelve si SP confirma que es para cada uno
+// (sp-interno#110). La espera de la tomografía de Gold también salió de su
+// línea: va en el cuadro de esperas (regla del 03/10).
+// LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+// elegida el 17/10 con «Todo A»): en la tomografía, la resonancia y la
+// internación, la línea dice cuántas, para quién y cada cuánto con barras,
+// igual en las tres tarjetas. Los números salen de `corta` en coverage.js, no se
+// escriben acá (sp-interno#117): Essential dice «familia», porque está escrito
+// en su cuadernillo; Silver y Gold, «¿quién?» (QUIEN_SG) donde la fuente no dice
+// para quién; la internación lo tiene escrito en las tres («persona» en Silver y
+// Gold: «por beneficiario»). Sin «hasta»: un tope ya es un máximo.
+// En Essential, los 2 son estudios compartidos entre tomografía, ecocardiograma y
+// ergometría (cuadernillo 3.2, essential.json; sp-interno#113): la línea no dice
+// «2 tomografías», dice «2 estudios» y cuáles. ComparativaCelular dibuja cada
+// forma corta con su frase completa para los lectores de pantalla.
+const nombrar = (t, cosa) => t.replace(/^([^/]+)/, '$1 ' + cosa); // «2/familia/año» → «2 tomografías/familia/año»
+const lineasCortas = (i) => {
+  const c = Object.fromEntries(coverage().map((s) => [s.name, s.corta]));
+  const tom = i === 0
+    ? nombrar(c['Tomografía (TAC)'][0], 'estudios') + ' (tomografía, ecocardiograma o ergometría)'
+    : nombrar(c['Tomografía (TAC)'][i], 'tomografías');
+  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia'), internacion: c['Internación'][i] };
+};
+export const plans = () => {
+  const [e, s, g] = [0, 1, 2].map(lineasCortas);
+  return [
+    // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
+    { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
+      lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', e.estudios, 'Internación: **habitación privada**, ' + e.internacion, 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
+    { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'El equilibrio entre precio y cobertura',
+      lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', s.estudios, 'Internación: **semi-suite**, ' + s.internacion, 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+    { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
+      lines: ['Consultas: **sin tope anual** en casi todas las especialidades', g.estudios, 'Internación: **semi-suite**, ' + g.internacion, 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+  ];
+};
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del
 // `?plan=` es `short.toLowerCase()` (essential/silver/gold); `bronze` y

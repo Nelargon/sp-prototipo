@@ -10,6 +10,7 @@ import { track } from '../track';
 import Header from '../Header';
 import Plegable from '../components/Plegable';
 import Comparador from '../components/Comparador';
+import Corta from '../components/Corta';
 import ComparativaCelular from './ComparativaCelular';
 import datos from '../../lib/prestaciones.json';
 
@@ -106,6 +107,13 @@ export default function Planes() {
      son las de siempre y nada se escribe dos veces. */
   const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
   const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
+  // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+  // elegida el 17/10 con «Todo A»): las celdas que dicen cuántas, para quién y
+  // cada cuánto van con barras («1/familia/año»), de `corta` en coverage.js, las
+  // mismas que el home. Donde la fuente no dice para quién (Silver y Gold,
+  // sp-interno#110), «¿quién?»; el pie de la tarjeta, la `nota` de coverage.js,
+  // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t } : resto[i]));
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
     return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
@@ -118,16 +126,16 @@ export default function Planes() {
   }
   const filasCompu = [
     { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
-    { name: 'Sesiones de psicología', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }], d: conEspera('Sesión de psicología') },
-    { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia'), pie: cv['Fisioterapia'].nota },
-    { name: 'Ecografía', kind: 'num', cells: [{ t: '4', n: 'por familia' }, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }], d: conEspera('Ecografía', 'Ecografías') },
-    // Silver y Gold dicen cuántas y no para quién: la grilla dice «por año de
-    // contrato», no «por beneficiario» (sp-interno#110, decisión 2A de Arturo,
-    // 13/10/2026). El pie, la `nota` de coverage.js, manda al asesor.
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia' }, { t: '2 al año' }, { t: '2 al año' }], d: conEspera('Tomografía (TAC)', 'Tomografía'), pie: cv['Tomografía (TAC)'].nota },
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia' }, { t: '1 al año' }, { t: '1 al año' }], d: conEspera('Resonancia (RM)', 'Resonancia'), pie: cv['Resonancia (RM)'].nota },
+    { name: 'Sesiones de psicología', kind: 'num', cells: corta('Sesión de psicología'), d: conEspera('Sesión de psicología'), pie: cv['Sesión de psicología'].nota },
+    { name: 'Fisioterapia', kind: 'num', cells: corta('Fisioterapia'), d: conEspera('Fisioterapia', 'Fisioterapia'), pie: cv['Fisioterapia'].nota },
+    { name: 'Ecografía', kind: 'num', cells: corta('Ecografía', [null, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }]), d: conEspera('Ecografía', 'Ecografías') },
+    // Silver y Gold no dicen para quién: la grilla dice «por año de contrato»,
+    // no «por beneficiario» (sp-interno#110, decisión 2A de Arturo, 13/10/2026).
+    // Su celda lleva «¿quién?» y el pie, la `nota` de coverage.js, manda al asesor.
+    { name: 'Tomografía (TAC)', kind: 'status', cells: corta('Tomografía (TAC)'), d: conEspera('Tomografía (TAC)', 'Tomografía'), pie: cv['Tomografía (TAC)'].nota },
+    { name: 'Resonancia (RM)', kind: 'status', cells: corta('Resonancia (RM)'), d: conEspera('Resonancia (RM)', 'Resonancia'), pie: cv['Resonancia (RM)'].nota },
     { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
-    { g: 'Si te internan', name: 'Internación', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }], d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
+    { g: 'Si te internan', name: 'Internación', kind: 'num', cells: corta('Internación'), d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
     { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
     { name: 'Medicamentos internado', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }], d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
@@ -161,6 +169,14 @@ export default function Planes() {
     return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
   };
   const valorParam = (v) => String(v).replace(/^Gs\.\s*/, 'Gs. ');
+  // Una sola forma por página (P3A, 17/10/2026): el tope de días de internación
+  // dice lo mismo que la tabla, «20 días/familia | 20 días/persona | 25
+  // días/persona», sin «/año» porque el rótulo ya dice «por año». Sale de
+  // `corta` en coverage.js; el dato generado no se toca.
+  const vistaParam = (f, j) => {
+    if (/^Tope de días de internación/i.test(f.p)) return <Corta t={cv['Internación'].corta[j].replace(/\/año$/, '')} />;
+    return f.v[j] ? valorParam(f.v[j]) : '—';
+  };
 
   // Las secciones de parámetros vienen agrupadas del master (Internación,
   // Topes…). Se respeta ese agrupamiento: es como lo lee quien vende.
@@ -322,7 +338,7 @@ export default function Planes() {
                         <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
                           <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
                           {f.v.map((v, j) => (
-                            <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v ? valorParam(v) : '—'}</div>
+                            <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{vistaParam(f, j)}</div>
                           ))}
                         </div>
                       ))}

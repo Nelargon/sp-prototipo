@@ -4,11 +4,12 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, engine } from '../quote';
-import { coverage, carencias } from '../coverage';
+import { coverage, carencias, NOTA_UNIDAD } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
+import Corta, { conCortas } from '../components/Corta';
 import datos from '../../lib/prestaciones.json';
 
 /* La comparativa de /planes en el celular (lámina 59; Arturo la confirmó el
@@ -31,7 +32,16 @@ import datos from '../../lib/prestaciones.json';
    - Los once servicios, a pedido, en una hoja que sube (decisión 2A).
    Lo que no cubren, el detalle fino, Vital y el cierre son los de la página.
 
-   Todos los números salen de quote.js y coverage.js: ninguno se escribe acá. */
+   Todos los números salen de quote.js y coverage.js: ninguno se escribe acá.
+
+   LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+   elegida el 17/10 con «Todo A»): lo que se escanea (las líneas de las
+   tarjetas y las celdas de «Los once servicios») dice la cifra, para quién y
+   cada cuánto con barras, dibujado por components/Corta.jsx con su frase
+   completa para los lectores de pantalla. Lo que se lee (la hoja del tema)
+   sigue en oraciones. Donde la fuente no dice para quién, «¿quién?»; la hoja
+   lo explica arriba de todo, antes de los tres planes, para que la respuesta
+   no quede debajo del pliegue. */
 
 // Las personas con las que se calcula cada grupo: la edad más joven de cada
 // tarifa, así el precio es el «desde» de ese grupo y la condición lo dice.
@@ -79,9 +89,10 @@ const NOTA_EXTRA = { 'Internación por algo agudo': 'En Essential, toda internac
 
 const tema = (linea) => linea.split(':')[0];
 const sinMarcas = (t) => t.replace(/\*\*/g, '');
+// La negrita entre `**` y, adentro o afuera de ella, cada forma corta con barras.
 const conNegrita = (texto) => texto.split('**').map((seg, k) => (k % 2
-  ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{annotate(seg)}</b>
-  : <Fragment key={k}>{annotate(seg)}</Fragment>));
+  ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{conCortas(seg, annotate)}</b>
+  : <Fragment key={k}>{conCortas(seg, annotate)}</Fragment>));
 
 const CHECK = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:3px')} aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>;
 const FLECHA = <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:4px;color:var(--sp-muted)')} aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
@@ -133,8 +144,11 @@ export default function ComparativaCelular() {
     // Sin repetir: la tomografía y la resonancia traen la misma nota (la del
     // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
     const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean))];
+    // La que explica «¿quién?» va primero: es lo que la persona vino a preguntar.
+    const arriba = notas.filter((t) => t === NOTA_UNIDAD);
     return (
       <>
+        {arriba.map((t) => <p key={t} style={css(inter + 'font-size:13.5px;line-height:1.5;color:var(--sp-text-2);margin:0 0 12px')}>{t}</p>)}
         {planes.map((p, i) => (
           <div key={p.short} className="sq" style={css('--sq:var(--r-md);border:1px solid ' + (i === actual ? 'var(--sp-teal-deep);box-shadow:0 0 0 1px var(--sp-teal-deep)' : 'var(--sp-line)') + ';padding:14px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px')}>
             <span className="disp" style={css('display:flex;align-items:center;gap:7px;font-size:16px;font-weight:800;color:var(--sp-navy)')}>
@@ -149,7 +163,7 @@ export default function ComparativaCelular() {
             ))}
           </div>
         ))}
-        {notas.map((t) => <p key={t} style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{t}</p>)}
+        {notas.filter((t) => !arriba.includes(t)).map((t) => <p key={t} style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{t}</p>)}
         <p style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.</p>
       </>
     );
@@ -168,7 +182,11 @@ export default function ComparativaCelular() {
               const e = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]].dias[i];
               return (
                 <span key={i} style={css('display:flex;flex-direction:column;gap:3px')}>
-                  {c.d}
+                  {/* La forma corta donde la hay (P3A): esto se escanea. La
+                      cola conserva lo que Essential decía después del número
+                      («2/familia/año, junto con ecocardiograma y ergometría»). */}
+                  {s.corta && s.corta[i] ? <span><Corta t={s.corta[i]} partir />{s.cola && s.cola[i]}</span> : c.d}
+                  {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
                   {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
                 </span>
               );

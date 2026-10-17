@@ -22,6 +22,8 @@
      3. PW_PATH=<dir-externo>/node_modules/playwright-core/index.js \
         node qa/qa-lanzamiento.mjs http://localhost:8080/sp-prototipo/lanzamiento */
 
+import { readFileSync } from 'node:fs';
+
 const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 
@@ -484,7 +486,9 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
     const box = document.querySelector('#cartilla.cmp2');
     if (!box) return null;
     const planes = [...box.querySelectorAll('.cmp2-plan')].map((p) => p.getBoundingClientRect());
-    const fam = [...box.querySelector('.cmp2-plan').querySelectorAll('.cmp2-fam')].filter((e) => e.offsetParent).length;
+    // Desde la forma corta (P3, 13/10/2026) «familia» va adentro de la celda
+    // («1/familia/año», .corta); antes iba en su nota (.cmp2-fam).
+    const fam = [...box.querySelector('.cmp2-plan').querySelectorAll('.cmp2-fam, .corta')].filter((e) => e.offsetParent && /familia/.test(e.textContent)).length;
     return {
       planes: planes.length,
       apiladas: planes.every((r, i) => i === 0 || r.top > planes[i - 1].bottom - 1),
@@ -499,8 +503,8 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   const forma = movil ? base.apiladas : base.enFila;
   if (base.planes !== 3 || !forma || !base.dentro || base.desborde > 0) mal(nombre + ': los tres planes no se ven ' + (movil ? 'uno debajo del otro' : 'uno al lado del otro') + ' dentro de la pantalla (' + JSON.stringify(base) + ')');
   else bien(nombre + ': tres planes ' + (movil ? 'apilados' : 'lado a lado') + ', sin deslizar de costado');
-  if (!base.fam) mal(nombre + ': «por familia» no está a la vista en Essential (cambia la comparación)');
-  else bien(nombre + ': «por familia» a la vista en Essential');
+  if (!base.fam) mal(nombre + ': «familia» no está a la vista en Essential (cambia la comparación)');
+  else bien(nombre + ': «familia» a la vista en Essential');
   if (base.vieja) mal(nombre + ': quedan restos de la tabla vieja (.cmp-row o la leyenda)');
   // La tarjeta del servicio: con el dedo en el celular, con el mouse en la compu.
   const btn = movil ? page.locator('.cmp2-plan').nth(1).locator('.cmp2-srv', { hasText: 'Fisioterapia' }) : page.locator('.cmp2-lab .cmp2-srv', { hasText: 'Fisioterapia' });
@@ -608,22 +612,15 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   const sil = await resultado('silver');
   if (!sil || sil.plan !== 'Silver' || !/10% de descuento/.test(sil.texto)) mal('/simulador/: el resultado de Silver tiene que seguir mostrando el 10% por débito (' + JSON.stringify(sil && sil.plan) + ')');
   else bien('/simulador/: Silver sigue mostrando su 10% por débito');
-  // «Por persona» en las celdas de tomografía y resonancia (home) y en las
-  // tarjetas del celular de /planes. textContent: el CSS no cambia el texto.
+  // «Por persona» en tomografía y resonancia de Silver y Gold: desde la P3A
+  // (17/10/2026) lo controla la sección «La forma corta», con la constante.
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   const home = await page.evaluate(() => {
     const t = document.getElementById('cartilla');
-    return t ? { chips: [...t.querySelectorAll('.cmp2-chip')].map((c) => c.textContent), etiqueta: /La más elegida/i.test(t.textContent) } : null;
+    return t ? { etiqueta: /La más elegida/i.test(t.textContent) } : null;
   });
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
-  const planes = await page.evaluate(() => ({
-    lineas: [...document.querySelectorAll('.cmp-cel article .linea-cel')].map((l) => l.textContent).filter((l) => /^Tomografía y resonancia/.test(l)),
-    chips: [...document.querySelectorAll('#comparar-planes .cmp2-chip')].map((c) => c.textContent),
-    etiqueta: /La más elegida/i.test((document.getElementById('comparar-planes') || {}).textContent || ''),
-  }));
-  const porPersona = [...(home ? home.chips : []), ...planes.lineas, ...planes.chips].filter((t) => /por persona/i.test(t));
-  if (!home || !home.chips.length || planes.lineas.length !== 3 || porPersona.length) mal('tomografía y resonancia no pueden decir «por persona» en Silver y Gold hasta que SP lo confirme (sp-interno#110): ' + JSON.stringify(porPersona.length ? porPersona : { chips: home && home.chips.length, lineas: planes.lineas.length }));
-  else bien('tomografía y resonancia de Silver y Gold dicen cuántas, sin «por persona» (home y /planes)');
+  const planes = await page.evaluate(() => ({ etiqueta: /La más elegida/i.test((document.getElementById('comparar-planes') || {}).textContent || '') }));
   if (!home || home.etiqueta || planes.etiqueta) mal('«La más elegida» sigue sobre Silver sin un dato de ventas confirmado (sp-interno#52)');
   else bien('sin «La más elegida» en el home ni en /planes');
   // Lo que salió y no tiene que volver, en todo el texto que trae cada página:
@@ -643,6 +640,196 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   if (vuelven.length) mal('vuelve una afirmación sin fuente: ' + vuelven.join(' · '));
   else bien('sin «por persona y no por familia», cesárea a 5 meses, visar desde la App ni «con baño propio» (home, /planes y Guía Médica)');
   await page.close();
+}
+
+// ── La forma corta (P3A: regla de escaneo de Arturo del 13/10/2026, elegida ──
+// el 17/10/2026 con «Todo A»; components/Corta.jsx). Lo que se escanea dice la
+// cifra, para quién y cada cuánto con barras («1/familia/año»), y donde la
+// fuente no dice para quién (sp-interno#110), el hueco DUDA («¿quién?») en el
+// lugar de «familia», con la misma letra, color y peso, y nunca «persona» hasta
+// que SP lo confirme. Las constantes se leen de app/coverage.js, no de un
+// literal: si SP contesta y QUIEN_SG pasa a 'persona', la prueba la sigue. Se
+// controla: las celdas de tomografía, resonancia, psicología y fisioterapia
+// (home y tabla de /planes), con su texto para lectores; la internación con su
+// para quién también en el plegable; la ecografía; que «¿quién?» herede el
+// estilo de «familia»; que la celda con la duda se abra con un clic, un toque y
+// el teclado y NO al pasar el mouse; las líneas de las tarjetas del celular
+// (Essential: «2 estudios», no «2 tomografías»), en navy; la lista de los once
+// servicios con las condiciones de Essential; que ningún renglón termine en
+// «/»; y que la nota no afirme nada del contrato. Probado contra la rama sin la
+// P3A (falla) y con ella (pasa).
+console.log('\n── La forma corta (P3A)');
+{
+  const fuente = readFileSync(new URL('../app/coverage.js', import.meta.url), 'utf8');
+  const { DUDA, QUIEN_SG, QUIEN_PSICO, NOTA_UNIDAD } = await import('data:text/javascript;base64,' + Buffer.from(fuente).toString('base64'));
+  const FILAS = [['Tomografía (TAC)', QUIEN_SG], ['Resonancia (RM)', QUIEN_SG], ['Sesiones de psicología', QUIEN_PSICO], ['Fisioterapia', QUIEN_SG]];
+  // Cada celda de una fila, por el nombre (.cmp2-l está en el HTML también en la
+  // computadora). La primera fila con ese nombre: /planes tiene otra
+  // «Fisioterapia» en las esperas.
+  const leerFila = ([sel, nombre]) => {
+    const t = document.querySelector(sel);
+    if (!t) return null;
+    return [...t.querySelectorAll('.cmp2-plan')].map((pl) => {
+      const c = [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === nombre);
+      if (!c) return null;
+      const k = c.querySelector('.cmp2-v .corta');
+      // La forma corta une la cifra y su unidad con espacio duro: se compara con espacio común.
+      return { t: (k ? k.textContent : (c.querySelector('.cmp2-v') || {}).textContent || '').replace(/\u00a0/g, ' '), sr: ((c.querySelector('.cmp2-v .sr-solo') || {}).textContent || ''), duda: !!c.querySelector('.cmp2-v .cmp2-duda'), corta: !!k };
+    });
+  };
+  const celdaBien = (c, i, quien) => !!c && c.corta && (i === 0
+    ? c.t.includes('/familia/') && c.sr.includes('por familia')
+    : c.t.includes('/' + quien + '/') && (quien === DUDA ? c.duda && /sin confirmar para quién/.test(c.sr) && !/persona/i.test(c.t + c.sr) : c.sr.includes('por ' + quien)));
+  // Los renglones de un elemento, como se ven: cada carácter con su caja,
+  // agrupados por altura. Lo oculto para lectores no cuenta.
+  const RENGLONES = `(el) => {
+    const lineas = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (n.parentElement.closest('.sr-solo')) continue;
+      for (let i = 0; i < n.length; i++) {
+        const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1);
+        const b = r.getClientRects()[0];
+        if (!b || !b.width) continue;
+        let l = lineas.find((x) => Math.abs(x.top - b.top) < 8);
+        if (!l) { l = { top: b.top, t: '' }; lineas.push(l); }
+        l.t += n.data[i];
+      }
+    }
+    return lineas.sort((a, b) => a.top - b.top).map((x) => x.t);
+  }`;
+  const terminaEnBarra = async (page, sel) => page.evaluate(([sel, fn]) => {
+    const renglones = eval(fn);
+    return [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => renglones(e)).filter((ls) => ls.slice(0, -1).some((t) => /\/\s*$/.test(t))).map((ls) => ls.join(' ⏎ '));
+  }, [sel, RENGLONES]);
+
+  // 1. Computadora: las celdas, el estilo del hueco y cómo se abre.
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.addInitScript(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  const malas = [];
+  for (const ruta of ['/', '/planes/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const sel = ruta === '/' ? '#cartilla' : '#comparar-planes';
+    for (const [nombre, quien] of FILAS) {
+      const fila = await page.evaluate(leerFila, [sel, nombre]);
+      if (!fila || fila.length !== 3 || !fila.every((c, i) => celdaBien(c, i, quien))) malas.push(ruta + ' ' + nombre + ': ' + JSON.stringify(fila));
+    }
+    const int = await page.evaluate(leerFila, [sel, 'Internación']);
+    const intEsperada = ['20 días/familia/año', '20 días/persona/año', '25 días/persona/año'];
+    if (!int || int.some((c, i) => !c || c.t !== intEsperada[i] || !c.sr.includes(intEsperada[i].split('/')[1] === 'familia' ? 'por familia' : 'por persona'))) malas.push(ruta + ' Internación: ' + JSON.stringify(int));
+  }
+  // /planes: la ecografía de Essential y el plegable de internación dicen lo mismo que la tabla.
+  const eco = await page.evaluate(leerFila, ['#comparar-planes', 'Ecografía']);
+  if (!eco || !eco[0] || eco[0].t !== '4/familia/año') malas.push('/planes/ Ecografía: ' + JSON.stringify(eco));
+  const pleg = await page.evaluate(() => {
+    const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => /^Tope de días de internación/.test((d.firstElementChild || {}).textContent || '') && d.children.length === 4);
+    return f ? [...f.children].slice(1).map((c) => (c.querySelector('.corta') || c).textContent.replace(/\u00a0/g, ' ')) : null;
+  });
+  if (JSON.stringify(pleg) !== JSON.stringify(['20 días/familia', '20 días/persona', '25 días/persona'])) malas.push('/planes/ plegable, tope de días de internación: ' + JSON.stringify(pleg));
+  const menosEspera = await page.evaluate(() => /menos espera/.test(document.body.textContent));
+  if (menosEspera) malas.push('/planes/: la tomografía de Gold dice «y menos espera» (regla de esperas del 03/10)');
+  if (malas.length) mal('forma corta: Essential dice «/familia/» y Silver y Gold «/' + QUIEN_SG + '/» (que se toca), con su frase completa y sin «persona» hasta que SP lo confirme (sp-interno#110) · ' + malas.join(' · '));
+  else bien('forma corta en tomografía, resonancia, psicología, fisioterapia, internación y ecografía: «familia» en Essential y «' + QUIEN_SG + '» en Silver y Gold, con su frase para lectores (home, tabla y plegable de /planes)');
+  // El hueco con la letra, el color y el peso de «familia», más el subrayado punteado.
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const estilo = await page.evaluate(() => {
+    const filas = [...document.querySelectorAll('#cartilla .cmp2-plan')];
+    const enFila = (pl) => [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === 'Resonancia (RM)');
+    const fam = enFila(filas[0]) && enFila(filas[0]).querySelector('.corta-r');
+    const duda = enFila(filas[1]) && enFila(filas[1]).querySelector('.corta-duda');
+    if (!fam || !duda) return null;
+    const q = (e) => { const c = getComputedStyle(e); return { familia: c.fontFamily, color: c.color, peso: c.fontWeight, tamaño: c.fontSize }; };
+    return { familia: q(fam), duda: q(duda), subrayado: getComputedStyle(duda).borderBottomStyle, texto: duda.textContent };
+  });
+  if (QUIEN_SG === DUDA && (!estilo || JSON.stringify(estilo.familia) !== JSON.stringify(estilo.duda) || estilo.subrayado !== 'dotted' || estilo.texto !== DUDA)) mal('«' + DUDA + '» no tiene la letra, el color y el peso de «familia», o le falta el subrayado punteado: ' + JSON.stringify(estilo));
+  else bien('«' + DUDA + '» con la misma letra, color y peso que «familia», y subrayado punteado');
+  // Se abre con un clic y con el teclado, no al pasar el mouse (ajuste 4 del comité).
+  const celdaDuda = page.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Resonancia (RM)' }) }).locator('.cmp2-duda');
+  let abre = null;
+  if (QUIEN_SG === DUDA && (await celdaDuda.count())) {
+    await page.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+    await celdaDuda.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(1200);
+    const caja = await celdaDuda.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+    await page.waitForTimeout(500);
+    const conHover = await page.evaluate(() => !!document.querySelector('#cartilla .cmp2-tarjeta'));
+    await page.mouse.click(caja.x + caja.width / 2, caja.y + caja.height / 2);
+    await page.waitForTimeout(200);
+    const conClic = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); return t ? { planes: t.querySelectorAll('.cmp2-tarjeta-p').length, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' } : null; });
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+    const cerrada = await page.evaluate(() => !document.querySelector('#cartilla .cmp2-tarjeta'));
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+    await page.waitForTimeout(200);
+    const conTeclado = await page.evaluate(() => !!document.querySelector('#cartilla .cmp2-tarjeta') && document.activeElement.classList.contains('cmp2-duda'));
+    const ev = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'duda');
+    abre = { conHover, conClic, cerrada, conTeclado, ev: ev.length };
+  }
+  const pieBien = (p) => p === 'Por familia: un cupo que comparten todos los del grupo. ' + NOTA_UNIDAD && !/contrato/i.test(p);
+  if (QUIEN_SG === DUDA && (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || abre.ev !== 1)) mal('computadora: la celda con «' + DUDA + '» tiene que abrir la tarjeta con un clic y con el teclado, no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda» (' + JSON.stringify(abre) + ')');
+  else bien('computadora: la celda con «' + DUDA + '» abre la tarjeta con un clic y con el teclado, no al pasar el mouse; el pie manda al asesor y se mide como «duda»');
+  await page.close();
+
+  // 2. Celular: el toque, las líneas de las tarjetas y la lista de los once.
+  for (const width of [360, 390]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+    const n = 'móvil ' + width;
+    let toque = null;
+    const dudaCel = cel.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-duda').first();
+    if (QUIEN_SG === DUDA && (await dudaCel.count())) {
+      await cel.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+      await dudaCel.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await cel.waitForTimeout(1200);
+      await dudaCel.tap();
+      await cel.waitForTimeout(200);
+      toque = await cel.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const r = t.getBoundingClientRect(); return { planes: t.querySelectorAll('.cmp2-tarjeta-p').length, dentro: r.left >= 0 && r.right <= innerWidth + 1 }; });
+    }
+    if (QUIEN_SG === DUDA && (!toque || toque.planes !== 3 || !toque.dentro)) mal(n + ': tocar la celda con «' + DUDA + '» tiene que abrir la tarjeta del servicio, dentro de la pantalla (' + JSON.stringify(toque) + ')');
+    else bien(n + ': tocar la celda con «' + DUDA + '» abre la tarjeta del servicio');
+    await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    const lineas = await cel.evaluate(() => [...document.querySelectorAll('.cmp-cel article')].map((a) => {
+      const l = (re) => [...a.querySelectorAll('.linea-cel')].find((x) => re.test(x.textContent));
+      const tr = l(/^Tomografía y resonancia/), it = l(/^Internación/);
+      const negrita = it && it.querySelector('b'), corta = it && it.querySelector('.corta');
+      return {
+        t: tr ? [...tr.querySelectorAll('.corta')].map((k) => k.textContent.replace(/\u00a0/g, ' ')) : null,
+        sr: tr ? [...tr.querySelectorAll('.sr-solo')].map((k) => k.textContent).join(' | ') : '',
+        texto: tr ? tr.textContent : '',
+        navy: !!negrita && !!corta && getComputedStyle(corta).color === getComputedStyle(negrita).color,
+      };
+    }));
+    const lineaBien = (l, i) => !!l.t && l.t.length === 2 && l.navy && (i === 0
+      ? l.t[0] === '2 estudios/familia/año' && l.t[1] === '1 resonancia/familia/año' && /por familia/.test(l.sr) && !/2 tomografías/.test(l.texto) && /ecocardiograma o ergometría/.test(l.texto)
+      : l.t[0] === '2 tomografías/' + QUIEN_SG + '/año' && l.t[1] === '1 resonancia/' + QUIEN_SG + '/año' && (QUIEN_SG !== DUDA || (/sin confirmar para quién/.test(l.sr) && !/persona/i.test(l.texto + l.sr))));
+    if (lineas.length !== 3 || !lineas.every(lineaBien)) mal(n + ': las líneas «Tomografía y resonancia» de las tarjetas: Essential «2 estudios/familia/año (…)», Silver y Gold «2 tomografías/' + QUIEN_SG + '/año», con su frase y la forma corta en navy (' + JSON.stringify(lineas) + ')');
+    else bien(n + ': las líneas de las tarjetas en forma corta, en navy, con «2 estudios» en Essential');
+    await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+    await cel.waitForTimeout(450);
+    const lista = await cel.evaluate(() => {
+      const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"]');
+      if (!d) return null;
+      const o = {};
+      for (const b of d.querySelectorAll('.hoja-cuerpo button.fila')) {
+        const nombre = b.querySelector('b').textContent.replace(/ ›$/, '');
+        // Lo que se ve de cada celda: sin el texto para lectores.
+        o[nombre] = [...b.querySelectorAll(':scope > span > span')].map((c) => { const k = c.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((x) => x.remove()); return k.textContent.replace(/\u00a0/g, ' '); });
+      }
+      return o;
+    });
+    const esperado = { 'Tomografía (TAC)': '2/familia/año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1/familia/año, sin contraste', 'Sesión de psicología': '3/familia/año, en el mismo cupo que otras especialidades', 'Ecografía': '4/familia/año' };
+    const faltan = Object.entries(esperado).filter(([k, v]) => !lista || !lista[k] || !lista[k][0].startsWith(v)).map(([k]) => k + ': ' + JSON.stringify(lista && lista[k]));
+    if (faltan.length) mal(n + ': la lista de los once servicios tiene que conservar las condiciones de Essential con la forma corta · ' + faltan.join(' · '));
+    else bien(n + ': la lista de los once servicios conserva lo que Essential decía («2/familia/año, junto con ecocardiograma y ergometría»…)');
+    const barras = [...await terminaEnBarra(cel, '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila > span > span'), ...await terminaEnBarra(cel, '.cmp-cel article .linea-cel')];
+    if (barras.length) mal(n + ': un renglón termina en «/» (la forma corta corta antes de la barra) · ' + barras.slice(0, 4).join(' · '));
+    else bien(n + ': ningún renglón de la lista ni de las tarjetas termina en «/»');
+    await ctx.close();
+  }
 }
 
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────

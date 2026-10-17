@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
+import Corta from './Corta';
+import { DUDA } from '../coverage';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -24,6 +26,22 @@ import { trackExplicacion } from '../track';
    comparación. 5 sesiones por familia contra 15 no es el triple: si las 15
    fueran para cada persona, sería más (docs/diseno, lección 51). Si lo son,
    lo tiene que confirmar SP (sp-interno#110).
+
+   LA FORMA CORTA EN LA CELDA (P3, opción A: regla de escaneo de Arturo del
+   13/10/2026, elegida el 17/10 con «Todo A»). Una celda con barras
+   («1/familia/año», «Gs. 350 mil/evento») se dibuja con Corta: la cifra, para
+   quién y cada cuánto, con la frase completa para los lectores de pantalla
+   (la celda puede traer la suya en `dicho`). Donde la fuente no dice para
+   quién (Silver y Gold en tomografía, resonancia, psicología y fisioterapia,
+   sp-interno#110), el lugar de «familia» dice DUDA («¿quién?», coverage.js),
+   con la misma letra, el mismo color y el mismo peso. Esa celda, y la que
+   manda al asesor (`asesor`: la fisioterapia de Gold, sp-interno#50, o los
+   remedios en urgencias de Essential), es un botón que abre la misma tarjeta
+   que el nombre del servicio, donde el pie lo explica en oraciones. Se abre
+   con un clic, un toque o el teclado, NO al pasar el mouse: al cruzar la
+   tabla se abrían tarjetas sin querer, lejos del puntero (ajuste 4 del
+   comité del 13/10). Pasar el mouse queda para el nombre, como dice la ayuda
+   de la tabla. Se mide aparte (`duda`), para saber cuánta gente se frena ahí.
 
    La tarjeta se comporta como el glosario (app/glossary.jsx): con mouse se
    abre al pasar; con el dedo, al tocar; con teclado, al enfocar. Escape o un
@@ -78,19 +96,40 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   );
 }
 
+// Una celda con barras es una forma corta.
+const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} /> : c.t);
 const valor = (fila, c, notas) => (
   <>
-    {fila.kind === 'status' ? <span className="cmp2-chip disp">{c.t}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{c.t}</span>}
+    {fila.kind === 'status' ? <span className="cmp2-chip disp">{texto(c)}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{texto(c)}</span>}
     {(c.n === 'por familia' || (notas && c.n)) && <span className="cmp2-fam">{c.n}</span>}
   </>
 );
+
+// La celda con el hueco o que manda al asesor: se toca como el nombre del
+// servicio y abre su tarjeta (la de la fila: en la computadora vive en la
+// columna de nombres). Clic, toque o teclado; sin hover (ver arriba).
+function Duda({ abierta, controla, abrir, cerrar, children }) {
+  return (
+    <button
+      type="button"
+      className="cmp2-duda"
+      aria-expanded={abierta}
+      aria-controls={abierta ? controla : undefined}
+      onClick={(e) => { e.stopPropagation(); if (abierta) cerrar(); else abrir(); }}
+      onFocus={(e) => { if (e.target.matches?.(':focus-visible')) abrir(); }}
+      onBlur={cerrar}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function Comparador({ planes, filas, notas = false, id = 'cartilla' }) {
   const [abierta, setAbierta] = useState(null);
   useEffect(() => {
     if (abierta === null) return;
     const tecla = (e) => { if (e.key === 'Escape') setAbierta(null); };
-    const afuera = (e) => { if (!e.target.closest?.('.cmp2-srv-wrap')) setAbierta(null); };
+    const afuera = (e) => { if (!e.target.closest?.('.cmp2-srv-wrap, .cmp2-duda')) setAbierta(null); };
     document.addEventListener('keydown', tecla);
     document.addEventListener('pointerdown', afuera);
     return () => { document.removeEventListener('keydown', tecla); document.removeEventListener('pointerdown', afuera); };
@@ -104,6 +143,25 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       cerrar={() => setAbierta((a) => (a === donde + '-' + k ? null : a))}
     />
   );
+  // La tarjeta que abre una celda con «¿quién?» o «Preguntale a tu asesor»: la
+  // de la fila en la columna de nombres (computadora) o la de la tarjeta del
+  // plan (celular).
+  const dondeDuda = (i) => (typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches ? 'c' : String(i));
+  const celda = (f, i, k) => {
+    const v = valor(f, f.cells[i], notas);
+    const c = f.cells[i];
+    if (!f.d || !(c.asesor || c.t.includes('/' + DUDA + '/'))) return v;
+    const aqui = abierta === 'c-' + k || abierta === i + '-' + k;
+    return (
+      <Duda
+        abierta={aqui} controla={'cmp2-t-' + abierta}
+        abrir={() => { const d = dondeDuda(i); setAbierta(d + '-' + k); trackExplicacion('duda', f.name); }}
+        cerrar={() => setAbierta((a) => (a === 'c-' + k || a === i + '-' + k ? null : a))}
+      >
+        {v}
+      </Duda>
+    );
+  };
 
   return (
     <div id={id} data-rv className="cmp2">
@@ -138,7 +196,7 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
               <div className={'cmp2-c' + (abierta === i + '-' + k ? ' sobre' : '')}>
                 {/* En el celular cada tarjeta nombra sus filas. */}
                 <span className="cmp2-l">{srv(k, String(i))}</span>
-                <span className="cmp2-v">{valor(f, f.cells[i], notas)}</span>
+                <span className="cmp2-v">{celda(f, i, k)}</span>
               </div>
             </div>
           ))}

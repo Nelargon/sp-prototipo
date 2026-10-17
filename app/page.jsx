@@ -362,23 +362,38 @@ export default function Page() {
   // 13/10/2026 (decisión 2A de Arturo) las celdas dicen cuántas y no para quién,
   // y la línea de abajo manda al asesor. Internación y terapia intensiva sí dicen
   // «por beneficiario» en la fuente: ahí «por persona» queda.
-  const PIE_QUIEN = 'Por familia: las comparten todos. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.';
+  // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+  // elegida el 17/10 con «Todo A»): las celdas de resonancia, tomografía,
+  // psicología, fisioterapia e internación dicen cuántas, para quién y cada
+  // cuánto, con barras («1/familia/año»). Salen de `corta` en coverage.js, las
+  // mismas que /planes. Donde la fuente no dice para quién (Silver y Gold,
+  // sp-interno#110), el lugar de «familia» dice «¿quién?» (DUDA), con la misma
+  // letra, color y peso; la celda se toca y la tarjeta lo explica. El pie no
+  // afirma nada del contrato: la fuente registrada es la grilla (comité, 13/10).
+  const cartDe = Object.fromEntries(cartArr.map((s) => [s.name, s]));
+  const celdas = (servicio) => cartDe[servicio].corta.map((t) => ({ t, ok: true }));
+  // El pie de la fila: qué es «por familia» y, mientras SP no conteste, a quién
+  // preguntarle lo de Silver y Gold (la `nota` de coverage.js, que se va sola
+  // cuando el interruptor de ese servicio deja de ser DUDA).
+  const pieQuien = (servicio) => 'Por familia: un cupo que comparten todos los del grupo.' + (cartDe[servicio].nota ? ' ' + cartDe[servicio].nota : '');
   const PIE_TOPE = 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.';
   const cmp = [
-    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: '1 al año', ok: true }, { t: '1 al año', ok: true }],
-      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.'], pie: PIE_QUIEN },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: '2 al año', ok: true }, { t: '2 al año', ok: true }],
-      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 120 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 90 días de afiliarte.'], pie: PIE_QUIEN },
+    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: celdas('Resonancia (RM)'),
+      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.'], pie: pieQuien('Resonancia (RM)') },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: celdas('Tomografía (TAC)'),
+      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 120 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 90 días de afiliarte.'], pie: pieQuien('Tomografía (TAC)') },
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).
     { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }],
       d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
       pie: 'Copago: vos pagás una parte y Salud Protegida la otra.' },
-    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }],
-      d: ['3 sesiones al año para toda la familia, no por persona.', '5 sesiones al año.', '6 sesiones al año.'] },
-    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }],
-      d: ['5 sesiones al año para toda la familia, desde el primer día.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.', '20 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.'], pie: PIE_QUIEN },
+    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: celdas('Sesión de psicología'),
+      // Essential (comité, 13/10): con «3/familia/año» a la vista, la sorpresa es
+      // que el cupo se comparte con otras especialidades (essential.json).
+      d: ['Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.', '5 sesiones al año.', '6 sesiones al año.'], pie: pieQuien('Sesión de psicología') },
+    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: celdas('Fisioterapia'),
+      d: ['5 sesiones al año para toda la familia, desde el primer día.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.', '20 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.'], pie: pieQuien('Fisioterapia') },
     // Internación (13/10/2026, decisión 2A de Arturo): los 60 días de Silver y
     // Gold son de la «internación clínica por evento agudo» (parámetros clave);
     // la programada no tiene espera escrita (sp-interno#82) y no se deduce. Y la
@@ -387,7 +402,7 @@ export default function Page() {
     // Silver y Gold (2.4.4.1), «semi suite, incluye cama para el acompañante,
     // según disponibilidad del prestador», sin baño. No se pueden ordenar: qué
     // cambia entre las dos lo dice SP (sp-interno#89).
-    { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }],
+    { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: celdas('Internación'),
       d: ['20 días al año para toda la familia, en habitación privada. A los 365 días de afiliarte.', '20 días al año por persona, en semi-suite. A los 60 días de afiliarte si es por algo agudo.', '25 días al año por persona, en semi-suite. A los 60 días de afiliarte si es por algo agudo.'],
       pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.' },
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
