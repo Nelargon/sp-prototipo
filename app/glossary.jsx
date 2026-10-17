@@ -41,9 +41,13 @@ export const TERMS = {
     t: 'Copago',
     d: 'Vos pagás una parte y Salud Protegida la otra. Cuando dice "copago 50%", pagás la mitad.',
   },
+  // Semi-suite (13/10/2026, decisión 2A de Arturo, sp-interno#89): decía
+  // «privada, con baño propio». Los cuadernillos de Silver y Gold (2.4.4.1)
+  // dicen «semi suite, incluye cama para el acompañante, según disponibilidad
+  // del prestador»: ni «privada» ni baño. Se define con lo que está escrito.
   semisuite: {
     t: 'Semi-suite',
-    d: 'El tipo de habitación en la que te internás: privada, con baño propio y lugar para un acompañante.',
+    d: 'Así llama el contrato de Silver y Gold a la habitación donde te internás, con cama para un acompañante, según lo que tenga el sanatorio.',
   },
   nursery: {
     t: 'Nursery',

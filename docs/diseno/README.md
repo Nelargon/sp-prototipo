@@ -2044,3 +2044,192 @@ como campo opcional y un botón «Copiar el código» para Roundcube.
 **La lección.** Una firma de correo no es una pantalla del sitio: se lee en
 Arial, en el programa de otro, a veces con las imágenes bloqueadas y a veces en
 un celular. Se diseña para ese lugar, no para la vitrina donde se arma.
+
+## Parte 29 · Lo que el sitio decía sin fuente (13/10/2026)
+
+Arturo contestó la cita del Guardián con «2A»: mientras SP no conteste, lo que
+el sitio afirma sin fuente sale o manda al asesor, con una sola forma,
+«preguntale a tu asesor». Seis puntos de revisión esperaban a SP desde fines de
+septiembre (sp-interno #80, #110, #116, #89, #82 y #52).
+
+### 83 · Lo que no tiene fuente sale o manda al asesor
+
+![Siete lugares antes y ahora: el 10% de Essential en el simulador, «por persona» en las celdas del home, «La más elegida» sobre Silver, la cesárea de Gold, la tarjeta de Internación, visar desde la App y las interconsultas](img/2026-10-13-sin-fuente-antes-despues.webp)
+
+**Qué muestra.** A la izquierda (o arriba), el `main` del 13/10; a la derecha
+(o abajo), la rama del PR. Son siete de los lugares que cambian:
+
+1. Essential deja de mostrar un precio con 10% de descuento: no hay fuente de
+   que lo tenga. En su lugar, una línea gris lo manda al asesor.
+2. Las celdas de Silver y Gold dicen cuántas («1 al año») y no «por persona».
+3. Sale «La más elegida». El renglón queda vacío para que las tres cabeceras
+   midan lo mismo, y Silver sigue resaltado.
+4. La cesárea de Gold manda al asesor: su contrato dice 150 días en un cuadro y
+   300 en la cláusula de maternidad.
+5. La semi-suite ya no es «privada, con baño propio», y la internación de Silver
+   y Gold dice «si es por algo agudo».
+6. Sale «También podés visarla desde la App».
+7. Las interconsultas mandan al asesor si son por año o por internación.
+
+**Qué se decidió y por qué.** La pregunta de diseño era la 3: sin el rótulo,
+¿Silver sigue resaltado? **Decidido el 13/10/2026: sí** (Arturo, «P1A»). El
+resaltado no afirma ningún dato y es el diseño que él eligió. El resto del PR
+espera su OK, y dos preguntas siguieron en láminas aparte: dónde aparecen las
+esperas del home (85) y cómo se ve «por familia» frente a «al año» (84).
+
+**La lección.** Sacar un dato no es neutral si deja otro a la vista. El primer
+cambio sacó «la cesárea espera 5 meses en Gold» y la hoja quedó diciendo 10
+meses, que era tomar partido por el otro lado del mismo contrato. Cuando dos
+fuentes se contradicen, se manda al asesor hasta que se aclaren.
+
+## Parte 30 · Para quién cuenta cada tope (13/10/2026)
+
+Con la decisión 2A, «por persona» salió de la tomografía, la resonancia y la
+fisioterapia de Silver y Gold, porque la grilla dice «por año de contrato» y no
+para quién (sp-interno#110, espera a SP). Quedó un contraste: Essential dice
+«1 por familia» y Silver y Gold, «1 al año», y eso se lee como «por persona».
+Arturo, el 13/10: *«Sé que esto se ve diferente, dame 3 opciones de cómo se
+podría ver esto»*.
+
+### 84 · Una duda se escribe con la misma forma que el dato
+
+![La tabla del home en el celular: Hoy y las opciones A, B y C, en las tarjetas de Essential y Silver](img/2026-10-13-p3-para-quien-celular.webp)
+
+![La tabla del home en la computadora: Hoy, A, B y C](img/2026-10-13-p3-para-quien-computadora.webp)
+
+![Las tarjetas de /planes en el celular: Hoy, A, B y C](img/2026-10-13-p3-para-quien-planes-celular.webp)
+
+**Qué muestra.** Las tres construidas sobre la rama del PR #271, medidas en el
+navegador:
+
+- **A · La unidad en la celda.** El mismo número en los tres planes («1 al
+  año») y debajo, para quién: «por familia» en Essential y «¿por familia?
+  Preguntale a tu asesor» en Silver y Gold. Suma 273 px en el celular y 104 en
+  la computadora.
+- **B · Para quién, en la línea del grupo.** Las celdas quedan iguales, y una
+  línea a la vista arriba del grupo lo explica una vez. Suma 375 px en el
+  celular, y saca «por familia» de al lado del número (lámina 21).
+- **C · La duda debajo del número.** Como A, pero en Silver y Gold va una marca
+  gris «¿para quién?» que se explica al tocarla. Suma 288 px en el celular y 16
+  marcas entre el home y `/planes`.
+
+En las tres, la internación de Silver y Gold pasa a decir «por persona» a la
+vista, porque ahí la fuente sí lo dice («por beneficiario»). El revisor de la
+skill dio 0 🔴 en las tres.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* El comité se
+partió en dos. El diseñador y el estratega eligieron A, con un ajuste:
+«Preguntale a tu asesor» no se repite en cada celda (8 veces en la tabla), sino
+que va una vez por grupo. El redactor y el auditor de datos eligieron C sin la
+marca, que termina siendo la misma forma con otra palabra («¿para quién?»). La
+recomendación es A con ese ajuste.
+
+**La lección.** Cuando un dato está confirmado en un plan y en duda en otro, la
+duda se escribe con la misma forma y el mismo peso que el dato, en el mismo
+lugar. Si un lado dice para quién y el otro calla, el silencio se lee como la
+respuesta que más vende.
+
+## Parte 31 · Dónde aparecen las esperas del home (13/10/2026)
+
+La 5A sacó la fila «Tiempo de espera» de la tabla del home. La revisión de
+Codex vio que algunas tarjetas de servicio seguían diciendo esperas. Arturo
+preguntó: *«esto sale en la portada, o al hacer mousehover (no sé cómo se
+llamaba esto)»*.
+
+### 85 · Antes de preguntar por un lugar, mostrarlo
+
+![El home en la computadora al entrar, con la tarjeta de Internación abierta al pasar el mouse, y en el celular al tocarla](img/2026-10-13-esperas-home-donde-aparecen.webp)
+
+**Qué muestra.** Al entrar, la tabla no dice ninguna espera. Las esperas salen
+en la «tarjeta del servicio», que aparece al pasar el mouse por el nombre
+subrayado (en la computadora) o al tocarlo (en el celular). En la web se le
+dice *tooltip* o *popover*. Las marcas en ámbar son de la lámina, no de la
+página.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación
+es sacarlas también de la tarjeta, por la regla del 03/10: hoy unas tarjetas
+tienen espera y otras no. Terapia intensiva, por ejemplo, dice «a los 365
+días» en Essential y nada en Silver y Gold, y eso se puede leer como que ahí no
+hay espera.
+
+**La lección.** Una pregunta sobre un lugar de la pantalla se contesta con la
+pantalla. Arturo no sabía cómo se llamaba la tarjeta, y no tenía por qué: el
+nombre técnico lo necesitamos nosotros, no él.
+
+## Parte 32 · La P3 en forma corta (13/10/2026)
+
+Las tres opciones de la lámina 84 sumaban palabras a la tabla. Arturo lo vio y
+de ahí salió la regla de escaneo: *«si ponemos más palabras de las que tenemos
+que poner, podemos restar claridad al cliente que escanea la información»*.
+Con su E1A, la P3 se rehízo en forma corta, con barras.
+
+### 86 · Acortar deja más a la vista lo que falta
+
+![La tabla del home en la computadora: Hoy y las opciones A, B y C en forma corta](img/2026-10-13-p3-forma-corta-computadora.webp)
+
+![La tabla del home en el celular: Hoy, A, B y C, en las tarjetas de Essential y Silver](img/2026-10-13-p3-forma-corta-celular.webp)
+
+![Las tarjetas de /planes en el celular: Hoy, A, B y C](img/2026-10-13-p3-forma-corta-planes-celular.webp)
+
+**Qué muestra.** Las tres, construidas sobre la rama del PR #271 y medidas en
+el navegador:
+
+- **A · El hueco dicho en su lugar.** «1/familia/año» en Essential y
+  «1/¿?/año» en Silver y Gold: la duda va donde va «familia», con la misma
+  letra. Al tocarla se abre la tarjeta del servicio, que lo explica y manda al
+  asesor. Cero px más en las tablas del home y de `/planes`; +49 px en las
+  tarjetas de `/planes` del celular. La internación pasa a «20 días/persona/año»
+  en Silver y Gold, porque ahí la fuente lo dice («por beneficiario»).
+- **B · Lo confirmado corto y la duda debajo.** «1/año» en la celda y
+  «¿para quién?» en gris chico abajo. Suma 141 px en el home del celular, y las
+  tarjetas de Silver y Gold quedan 70 px más altas que la de Essential.
+- **C · La unidad, una vez por fila.** «/año» junto al nombre del servicio y
+  «1/familia» o «1/¿quién?» en la celda. Cero px más, pero separa la cifra de
+  su unidad.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* El comité votó
+unánime A, con la palabra de C: «1/¿quién?/año» en vez de «1/¿?/año». Medido,
+«¿?» ocupa 51 px contra 81 de «familia»: la duda se ve más chica que el dato y
+puede leerse como un dato que no cargó. «¿quién?» ocupa 84 px y se lee como lo
+que es, una pregunta abierta (eso último es inferido, sin probarlo con
+personas). B deja en la celda justo «1/año», la forma que se lee «por
+persona», y la duda queda en un gris que el que escanea se saltea. C rompe la
+regla recién escrita: la cifra va con su unidad. Lo que ninguna opción arregla
+es el hueco mismo: la forma corta de verdad es la que llega cuando SP contesta
+sp-interno#110, y es cambiar una línea.
+
+**La lección.** Acortar no es neutral. Con menos palabras alrededor, lo que no
+se dice se nota más: «1/año» al lado de «1/familia/año» grita «por persona»
+más fuerte que «1 al año» al lado de «1 por familia». La forma corta obliga a
+escribir la duda, no la esconde.
+
+## Parte 33 · Dónde más va la forma corta (13/10/2026)
+
+La E1A pedía, además, traer en lámina dónde más aplica la regla antes de tocar
+nada (*«hay casos y hay casos»*).
+
+### 87 · Una regla nueva se barre antes de aplicarse
+
+![La forma corta en el home y en /planes: seis lugares, Hoy y Corto](img/2026-10-13-escaneo-barrido-home-y-planes.webp)
+
+![La forma corta en el simulador: tres pantallas, Hoy y Corto](img/2026-10-13-escaneo-barrido-simulador.webp)
+
+**Qué muestra.** Nueve lugares de los 76 que encontró el barrido, en su sitio y
+a tamaño real, con solo el texto cambiado. De los 76, 27 son claros (el precio
+«Gs. 220.000/mes», «3/mes en la red», «2 días/año», «4/familia/año»), 34 tienen
+una duda y 15 no aplican, porque se leen o porque la barra ya significa otra
+cosa. Los marcados «Dudoso» llevan su duda escrita en la lámina.
+
+**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* Los 34 dudosos se
+juntan en pocas preguntas: las celdas de la P3, la unidad «/evento» que la
+grilla tiene y la celda no muestra (suma un renglón en la tarjeta de Gold), y
+«/mes» en el paso del nivel del simulador (suma 141 px en el celular, porque el
+precio no se parte y aprieta el texto). Lo demás lo resuelve la regla: no se
+agrega una unidad que la fuente no tiene (el parto queda «hasta Gs. 350 mil»), y
+la barra que hoy hace de «o» («urgencia / emergencia») pasa a «o».
+
+**La lección.** Antes de aplicar una regla a todo el sitio, se cuentan los
+lugares. La mayoría son claros, y los dudosos, que parecían muchos, son pocas
+preguntas repetidas. Y el barrido encuentra de paso lo que nadie buscaba: en la
+computadora, el precio de cada plan no dice «por mes», porque una regla de
+estilo lo esconde.

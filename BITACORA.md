@@ -5054,3 +5054,99 @@ trae `<meta charset>`, se leía con los acentos rotos.
 - **Un selector de escena se acota a lo que pinta**: `span:not(.asi-no)`, no
   `span`.
 
+
+---
+
+## Capítulo 146 — Lo que el sitio decía sin fuente, y el resumen que no era el contrato (13/10/2026)
+
+**Qué intentamos.** Seis puntos de revisión (sp-interno #80, #110, #116, #89,
+#82 y #52) esperaban la respuesta de SP desde fines de septiembre, y mientras
+tanto el sitio seguía afirmando cosas sin fuente: el 10% por débito en Essential,
+«por persona» en la tomografía y la resonancia de Silver y Gold, la cesárea a 5
+meses en Gold (que tenía fuente, pero contradicha dentro del mismo contrato),
+visar desde la App, la semi-suite «privada, con baño propio» y «La más elegida»
+sobre Silver. La cita del Guardián le preguntó a Arturo qué
+hacer mientras tanto y contestó «2A»: lo que no tiene fuente sale o manda al
+asesor, con una sola forma, «preguntale a tu asesor».
+
+**Qué pasó.** Casi todo fue sacar o acotar texto. Dos cosas no salieron como se
+pensaba:
+- **La semi-suite.** El comentario de #89 (29/09) decía que Essential «no
+  menciona acompañante ni baño», y el primer borrador del cambio escribía la cama
+  para el acompañante como algo de Silver y Gold. Ese comentario se apoyaba en
+  `essential.json`, que resume la internación en una línea («habitación
+  privada»). Leído el cuadernillo el 13/10, la cláusula 4.3.1 dice «habitación
+  privada con aire acondicionado, televisión, baño privado, cama para
+  acompañante». El texto nuevo dice lo contrario de lo que iba a decir: en los
+  tres planes hay cama para acompañante, y qué cambia entre la privada y la
+  semi-suite se le pregunta al asesor.
+- **El 10%.** La línea «Pagá con débito… y ahorrás 10%» y la FAQ se escribieron
+  cuando los planes eran Bronze, Silver y Gold, y la confirmación del 17/07 era
+  de ese tarifario. El 24/09 Essential reemplazó a Bronze con su propia lista de
+  precios, y las frases que decían «todos» siguieron valiendo para un plan que
+  la fuente no nombraba. El simulador le calculaba el descuento sin que nadie lo
+  hubiera decidido.
+- **La cesárea de Gold.** El primer cambio sacó «la cesárea espera 5 meses en
+  Gold» y la hoja «Parto o cesárea» quedó mostrando 10 meses en Gold. La
+  verificación leyó el contrato de Gold: el Cuadro 3 dice 150 días para la
+  cesárea y la cláusula de maternidad (2.5.2), 300. No era un dato sin fuente,
+  era una fuente que se contradice, y mostrar solo los 10 meses tomaba partido
+  por el otro lado. Ahora la cesárea de Gold manda al asesor. Lo mismo pasó con
+  las interconsultas: la grilla dice «por año» y los contratos, «por
+  internación».
+
+**Qué aprendimos.**
+- **Sacar un dato no es neutral si deja otro a la vista.** Cuando dos fuentes
+  se contradicen, borrar una deja a la otra como verdad. Lo honesto es mandar al
+  asesor hasta que la fuente se aclare.
+- **El resumen no es el contrato.** Un JSON curado sirve para leer rápido, pero
+  una ausencia en el resumen no es una ausencia en la fuente. Antes de escribir
+  «esto lo tiene un plan y el otro no», se lee la cláusula del otro.
+- **Una frase que dice «todos» hereda la fuente más angosta.** Cuando entra un
+  plan nuevo, se revisan las frases generales: las que hablan de un plan solo se
+  revisan solas, las que hablan de todos no.
+- **Sacar una etiqueta no es mover la cabecera.** «La más elegida» salió y su
+  renglón quedó vacío en los tres planes: las cabeceras miden lo mismo. Lo que se
+  saca por falta de fuente no tiene que cambiar el diseño que Arturo eligió.
+- **El cambio queda con su guardia.** `qa-lanzamiento` controla las
+  afirmaciones que se podían volver a colar: el 10% de Essential, «por persona»
+  (celdas, tarjetas y FAQ), «La más elegida», la cesárea a 5 meses, visar desde
+  la App y la semi-suite «con baño propio». Se probó contra el main del 13/10,
+  donde falla, y contra la rama, donde pasa. La primera versión miraba solo las
+  celdas del home y las tarjetas del celular: la verificación encontró cuatro
+  lugares de donde había salido «por persona» que la guardia no veía.
+
+## Capítulo 147 — El cliente escanea antes de leer (13/10/2026)
+
+**Qué intentamos.** Con la decisión 2A, «por persona» salió de la tomografía,
+la resonancia y la fisioterapia de Silver y Gold, y quedó un contraste: «1 por
+familia» en Essential contra «1 al año» en Silver y Gold. Arturo pidió tres
+opciones (lámina 84). Las tres resolvían el contraste sumando palabras: la A
+ponía «¿por familia? Preguntale a tu asesor» debajo de cada número, la B una
+línea de explicación arriba del grupo y la C una marca con su globo.
+
+**Qué pasó.** Arturo vio el problema de fondo antes de elegir: *«Si ponemos más
+palabras de las que tenemos que poner, podemos restar claridad al cliente que
+escanea la información, no es que la lea solamente de forma narrativa. Por
+ejemplo, donde pones 1 por familia por año, en vez de escribir y que quede
+largo, podría ser simplemente "1/familia/año"»*. Se le marcaron dos riesgos:
+dos barras seguidas pueden leerse más lento para quien no está acostumbrado (una
+parte del público es mayor; es una suposición, no una medición) y un lector de
+pantalla leería «barra». Decidió igual: *«Entiendo tu preocupación, pero vamos a
+igual ir con el tema de las barras, cómo tiene que ser»*. El segundo riesgo se
+arregla con un texto oculto; el primero queda para la prueba con personas
+(sp-interno#90).
+
+**Qué aprendimos.**
+- **Hay dos formas de leer la misma pantalla.** Una tabla, un chip o el precio
+  de una tarjeta se escanean; una tarjeta abierta o una pregunta frecuente se
+  leen. Lo que se escanea pide la cifra y su unidad, nada más. Ya lo hacíamos a
+  medias con la tipografía (cifras en Nunito Sans, oraciones en Inter): ahora
+  la regla tiene nombre.
+- **Una duda también se escribe corta.** Las tres opciones de la lámina 84
+  eran honestas pero largas, y en una tabla la palabra de más tapa el número.
+  Las opciones nuevas de la P3 tienen que decir «no sabemos» con el mismo largo
+  que el dato.
+- **La forma corta hace más visible el contraste.** «1/familia/año» contra
+  «1/año» deja un hueco donde iba la unidad, y ese hueco se lee como «por
+  persona». La regla no resuelve la duda: obliga a decir algo en ese lugar.

@@ -204,6 +204,8 @@ export default function Simulador() {
     const esperas = carenciasDe(d);
     if (esperas.length) { L.push(''); L.push('Cuánto esperás para usar cada cobertura:'); esperas.forEach((c) => L.push('  · ' + c.que + ': ' + c.label + (c.nota ? ' (' + c.nota + ')' : ''))); }
     if (r.autoPay) L.push('Con débito automático o tarjeta de crédito: ' + fmt(r.autoPay) + ' / mes (10% de descuento)');
+    // Essential no tiene fuente para el descuento (sp-interno#80, decisión 2A).
+    else if (r.key === 'essential') L.push('Con débito automático o tarjeta de crédito: preguntale a tu asesor si Essential tiene descuento.');
     if (r.vitalParticular) L.push('Sin débito automático ni tarjeta: ' + fmt(r.vitalParticular) + ' / mes');
     L.push('');
     L.push('Precios de lista vigentes, IVA incluido — un asesor de Salud Protegida confirma el detalle.');
@@ -610,7 +612,9 @@ export default function Simulador() {
                 {[
                   'Planes desde ' + fmt(plans()[0].price) + ' al mes',
                   sim.totalSteps + ' pasos, menos de un minuto',
-                  '10% de descuento pagando con débito automático o tarjeta',
+                  // «Planes desde» es el precio de Essential: el 10% se acota a
+                  // los planes donde está confirmado (sp-interno#80).
+                  'En Silver y Gold, 10% de descuento pagando con débito automático o tarjeta',
                 ].map((t, i) => (
                   <div key={i} style={css('display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--sp-text);font-family:var(--font-inter),sans-serif')}><span style={css('width:20px;height:20px;border-radius:var(--r-pill);background:var(--sp-mint-bg);display:flex;align-items:center;justify-content:center;flex:none')}><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#009690" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span><span>{t}</span></div>
                 ))}
@@ -775,6 +779,11 @@ export default function Simulador() {
                   <div style={css('display:flex;align-items:baseline;gap:8px;flex-wrap:wrap')}><span data-sp-price className="num-tnum" style={css('font-size:31px;font-weight:800;color:var(--sp-navy);letter-spacing:-0.01em;line-height:1')}>{sim.resPrice}</span><span style={css('font-size:14px;color:var(--sp-muted);font-weight:500')}>/ mes estimado</span></div>
                   <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin:6px 0 12px')}>{sim.resGroup} · titular de {sim.titularAge} años. El precio final lo confirma un asesor.</div>
                   {sim.resAutoPay && <div className="sq" style={css('font-family:var(--font-inter),sans-serif;display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Con débito automático o tarjeta de crédito: <b className="num-tnum" style={css('color:var(--sp-navy)')}>{sim.resAutoPay}</b> /mes — 10% de descuento.</span></div>}
+                  {/* Essential: sin fuente para el descuento (sp-interno#80). Hasta
+                      que SP conteste (decisión 2A de Arturo, 13/10/2026) no se
+                      calcula: se manda al asesor, en gris (estado neutro), sin
+                      el tilde turquesa de lo que sí está confirmado. */}
+                  {sim.isEssential && !sim.resAutoPay && <div className="sq" data-sp-debito-essential style={css('font-family:var(--font-inter),sans-serif;background:var(--sp-estado-bg);border:1px solid var(--sp-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-text-2);line-height:1.45')}>Si pagás con débito automático o tarjeta de crédito, preguntale a tu asesor si Essential tiene descuento.</div>}
                   {sim.resEsDebito && <div className="sq" style={css('font-family:var(--font-inter),sans-serif;display:flex;align-items:flex-start;gap:7px;background:var(--sp-mint-soft);border:1px solid var(--sp-mint-line);--sq:var(--r-xs);padding:9px 12px;margin:0 0 14px;font-size:13px;color:var(--sp-teal-ink);line-height:1.45')}><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')}><path d="M20 6 9 17l-5-5" /></svg><span>Este es el precio con débito automático o tarjeta de crédito. Sin débito ni tarjeta: <b className="num-tnum">{sim.resVitalParticular}</b> /mes.</span></div>}
                   {/* Nota de red honesta por zona (geo.js): confirma en
                       Asunción/Central, registra y acompaña en el resto —
