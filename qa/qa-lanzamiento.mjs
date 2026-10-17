@@ -875,8 +875,11 @@ console.log('\n── La forma corta (P3A)');
 // por el número en la tabla del home, la de /planes, la lista de los once
 // servicios y los dos renglones de fisioterapia del plegable, y los cuatro
 // dicen lo mismo (ASESOR de coverage.js). La tarjeta y la hoja no le dan a Gold
-// ningún número, y la línea de la nota lo dice. Probado contra la rama con la
-// P3A sin la G1A (falla) y con ella (pasa).
+// ningún número, y la línea de la nota lo dice. La celda es texto, no botón:
+// solo «¿quién?» es botón (P3A); la tarjeta se abre desde el nombre del
+// servicio, como la cesárea de Gold de la 2A (comité, vuelta 1, 17/10).
+// Probado contra la rama con la P3A sin la G1A (falla) y con ella (pasa), y
+// contra la rama con la celda como botón (falla).
 console.log('\n── La fisioterapia de Gold (G1A)');
 {
   const { ASESOR } = COV;
@@ -897,19 +900,22 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
     await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     const f = await page.evaluate(visible, [sel, 'Fisioterapia']);
-    if (!f || !f[2] || f[2].t !== ASESOR || !f[2].boton || /\d/.test(f[2].t)) malas.push(ruta + ' tabla: ' + JSON.stringify(f && f[2]));
+    if (!f || !f[2] || f[2].t !== ASESOR || f[2].boton || /\d/.test(f[2].t)) malas.push(ruta + ' tabla (texto, no botón): ' + JSON.stringify(f && f[2]));
   }
-  // La tarjeta que abre la celda de Gold: sin número para Gold y con la línea del asesor.
+  // La tarjeta que abre el nombre del servicio: sin número para Gold y con la línea del asesor.
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
-  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
-  const gold = page.locator('#cartilla .cmp2-plan').nth(2).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Fisioterapia' }) }).locator('.cmp2-duda');
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const srvFisio = page.locator('#cartilla .cmp2-lab .cmp2-srv', { hasText: 'Fisioterapia' });
   let tarjeta = null;
-  if (await gold.count()) {
-    await gold.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  if (await srvFisio.count()) {
+    await srvFisio.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
     await page.waitForTimeout(1200);
-    await gold.click();
+    const caja = await srvFisio.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
     tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
+    await page.mouse.move(5, 5);
   }
   if (!tarjeta || tarjeta.gold === null || /\d/.test(tarjeta.gold.replace(/\b\d+ días de afiliarte/, '')) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta: ' + JSON.stringify(tarjeta));
   // El plegable de /planes: los dos renglones de fisioterapia.
@@ -1009,8 +1015,9 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
 // traen las páginas de la v1 (con lo que se abre al tocar) y el código de app/
 // sin comentarios, porque el buscador de estudios guardado no tiene página. Y
 // la fila de remedios en urgencias de Essential: la celda del home y la de
-// /planes, y el «—» del plegable, que se leía «no cubre». Probado contra la
-// rama sin la R1A (falla) y con ella (pasa).
+// /planes (texto, no botón: solo «¿quién?» es botón), y el «—» del plegable,
+// que se leía «no cubre». Probado contra la rama sin la R1A (falla) y con ella
+// (pasa), y contra la rama con la celda como botón (falla).
 console.log('\n── Una sola forma de mandar al asesor (R1A)');
 {
   const { ASESOR } = COV;
@@ -1042,7 +1049,8 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
     await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     const c = await page.evaluate(celda, [sel]);
-    if (!c || c.t !== ASESOR || !c.boton) malas.push(ruta + ' remedios en urgencias de Essential: ' + JSON.stringify(c));
+    // Texto, no botón: solo «¿quién?» es botón (P3A; comité, vuelta 1, 17/10).
+    if (!c || c.t !== ASESOR || c.boton) malas.push(ruta + ' remedios en urgencias de Essential (texto, no botón): ' + JSON.stringify(c));
   }
   const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
   if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));

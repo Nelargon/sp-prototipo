@@ -34,10 +34,14 @@ import { DUDA } from '../coverage';
    (la celda puede traer la suya en `dicho`). Donde la fuente no dice para
    quién (Silver y Gold en tomografía, resonancia, psicología y fisioterapia,
    sp-interno#110), el lugar de «familia» dice DUDA («¿quién?», coverage.js),
-   con la misma letra, el mismo color y el mismo peso. Esa celda, y la que
-   manda al asesor (`asesor`: la fisioterapia de Gold, sp-interno#50, o los
-   remedios en urgencias de Essential), es un botón que abre la misma tarjeta
-   que el nombre del servicio, donde el pie lo explica en oraciones. Se abre
+   con la misma letra, el mismo color y el mismo peso. Esa celda es un botón
+   que abre la misma tarjeta que el nombre del servicio, donde el pie lo
+   explica en oraciones. Solo esa: la que dice «Preguntale a tu asesor» (la
+   fisioterapia de Gold, sp-interno#50, o los remedios en urgencias de
+   Essential) es texto, como la cesárea de Gold de la 2A, y su tarjeta se abre
+   desde el nombre del servicio. Como botón prometía llevar al asesor y solo
+   abría una tarjeta, y ninguna decisión lo pidió (comité, vuelta 1, 17/10:
+   si Arturo lo quiere, que lleve a WhatsApp, PR #271). Se abre
    con un clic, un toque o el teclado, NO al pasar el mouse: al cruzar la
    tabla se abrían tarjetas sin querer, lejos del puntero (ajuste 4 del
    comité del 13/10). Pasar el mouse queda para el nombre, como dice la ayuda
@@ -156,14 +160,13 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       cerrar={() => setAbierta((a) => (a === donde + '-' + k ? null : a))}
     />
   );
-  // La tarjeta que abre una celda con «¿quién?» o «Preguntale a tu asesor»: la
-  // de la fila en la columna de nombres (computadora) o la de la tarjeta del
-  // plan (celular).
+  // La tarjeta que abre una celda con «¿quién?»: la de la fila en la columna de
+  // nombres (computadora) o la de la tarjeta del plan (celular).
   const dondeDuda = (i) => (typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches ? 'c' : String(i));
   const celda = (f, i, k) => {
     const v = valor(f, f.cells[i], notas);
     const c = f.cells[i];
-    if (!f.d || !(c.asesor || c.t.includes('/' + DUDA + '/'))) return v;
+    if (!f.d || !c.t.includes('/' + DUDA + '/')) return v;
     const aqui = (abierta === 'c-' + k && desde === i) || abierta === i + '-' + k;
     return (
       <Duda

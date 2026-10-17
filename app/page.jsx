@@ -371,8 +371,9 @@ export default function Page() {
   // letra, color y peso; la celda se toca y la tarjeta lo explica. El pie no
   // afirma nada del contrato: la fuente registrada es la grilla (comité, 13/10).
   const cartDe = Object.fromEntries(cartArr.map((s) => [s.name, s]));
-  // Una celda sin barras que dice ASESOR manda al asesor y se toca (G1A).
-  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, asesor: t === ASESOR, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i] }));
+  // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
+  // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
+  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i] }));
   // El pie de la fila: qué es «por familia» y, mientras SP no conteste, a quién
   // preguntarle lo de Silver y Gold (la `nota` de coverage.js, que se va sola
   // cuando el interruptor de ese servicio deja de ser DUDA).
@@ -414,7 +415,7 @@ export default function Page() {
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
     // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo»).
-    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: ASESOR, asesor: true }, ...celdas('Urgencia 24 h').slice(1)],
+    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: ASESOR }, ...celdas('Urgencia 24 h').slice(1)],
       d: ['El cuadernillo de Essential no fija este tope: preguntale a tu asesor.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia.'], pie: PIE_TOPE },
     // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
     // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada

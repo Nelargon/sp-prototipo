@@ -113,8 +113,9 @@ export default function Planes() {
   // mismas que el home. Donde la fuente no dice para quién (Silver y Gold,
   // sp-interno#110), «¿quién?»; el pie de la tarjeta, la `nota` de coverage.js,
   // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
-  // Una celda sin barras que dice ASESOR manda al asesor y se toca (G1A).
-  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, asesor: t === ASESOR, dicho: cv[servicio].dicho && cv[servicio].dicho[i] } : resto[i]));
+  // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
+  // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, dicho: cv[servicio].dicho && cv[servicio].dicho[i] } : resto[i]));
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
     return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
@@ -142,8 +143,8 @@ export default function Planes() {
     { name: 'Medicamentos internado', kind: 'num', cells: corta('Medicamentos en internación'), d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
     // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo
-    // con tu asesor»). La celda abre la tarjeta y el pie dice por qué.
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: ASESOR, asesor: true }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: 'El cuadernillo de Essential no fija este tope: preguntale a tu asesor.' },
+    // con tu asesor»). El nombre de la fila abre la tarjeta y el pie dice por qué.
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: ASESOR }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: 'El cuadernillo de Essential no fija este tope: preguntale a tu asesor.' },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
     // el simulador. Sin tarjeta: el número ya es el dato.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
