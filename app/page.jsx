@@ -380,9 +380,9 @@ export default function Page() {
   const PIE_TOPE = 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.';
   const cmp = [
     { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: celdas('Resonancia (RM)'),
-      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.', '1 al año, y no ponés nada. Se puede usar a los 150 días de afiliarte.'], pie: pieQuien('Resonancia (RM)') },
+      d: ['1 al año para toda la familia. Sin contraste ni sedación.', '1 al año, y no ponés nada.', '1 al año, y no ponés nada.'], pie: pieQuien('Resonancia (RM)') },
     { name: 'Tomografía (TAC)', kind: 'status', cells: celdas('Tomografía (TAC)'),
-      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 120 días de afiliarte.', 'Hasta 2 al año, y no ponés nada. Se puede usar a los 90 días de afiliarte.'], pie: pieQuien('Tomografía (TAC)') },
+      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.', 'Hasta 2 al año, y no ponés nada.', 'Hasta 2 al año, y no ponés nada.'], pie: pieQuien('Tomografía (TAC)') },
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).
@@ -395,7 +395,7 @@ export default function Page() {
       d: ['Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.', '5 sesiones al año.', '6 sesiones al año.'], pie: pieQuien('Sesión de psicología') },
     // Gold: sin número hasta que SP aclare si son 20 + 5 o 10 + 3 (G1A, sp-interno#50).
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: celdas('Fisioterapia'),
-      d: ['5 sesiones al año para toda la familia, desde el primer día.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias. A los 90 días de afiliarte.'], pie: pieQuien('Fisioterapia') },
+      d: ['5 sesiones al año para toda la familia.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias.'], pie: pieQuien('Fisioterapia') },
     // Internación (13/10/2026, decisión 2A de Arturo): los 60 días de Silver y
     // Gold son de la «internación clínica por evento agudo» (parámetros clave);
     // la programada no tiene espera escrita (sp-interno#82) y no se deduce. Y la
@@ -405,21 +405,25 @@ export default function Page() {
     // según disponibilidad del prestador», sin baño. No se pueden ordenar: qué
     // cambia entre las dos lo dice SP (sp-interno#89).
     { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: celdas('Internación'),
-      d: ['20 días al año para toda la familia, en habitación privada. A los 365 días de afiliarte.', '20 días al año por persona, en semi-suite. A los 60 días de afiliarte si es por algo agudo.', '25 días al año por persona, en semi-suite. A los 60 días de afiliarte si es por algo agudo.'],
+      d: ['20 días al año para toda la familia, en habitación privada.', '20 días al año por persona, en semi-suite.', '25 días al año por persona, en semi-suite.'],
       pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.' },
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
-      d: ['Hasta 2 días al año por persona, a los 365 días de afiliarte.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
+      d: ['Hasta 2 días al año por persona.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
     // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
     { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: celdas('Medicamentos en internación'),
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
     // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo»).
     { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: ASESOR, asesor: true }, ...celdas('Urgencia 24 h').slice(1)],
-      d: ['El cuadernillo de Essential no fija este tope: preguntale a tu asesor. La urgencia se atiende desde el primer día.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
+      d: ['El cuadernillo de Essential no fija este tope: preguntale a tu asesor.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia.'], pie: PIE_TOPE },
     // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
     // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada
     // otra vez el 05/10). Las esperas, todas con el mismo peso, están en /planes,
     // el simulador y la cotización. Antes de eso fue una fila (26/09).
+    // P2A (Arturo, 17/10/2026, «Todo A»): tampoco van en la tarjeta que se abre
+    // al tocar un servicio. Salieron «a los 365 días de afiliarte», «se puede
+    // usar a los 150 días», «a los 60 días si es por algo agudo» y «desde el
+    // primer día» de estas oraciones; /planes las sigue diciendo con su número.
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero

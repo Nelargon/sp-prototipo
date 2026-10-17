@@ -1019,6 +1019,42 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas, el código y la fila de remedios en urgencias de Essential (tablas y plegable)');
 }
 
+// ── La tarjeta del servicio del home no muestra esperas (P2A, Arturo, 17/10) ─
+// La regla del 03/10 (ninguna espera en la vista rápida) vale también para la
+// tarjeta que se abre al pasar el mouse por el nombre de un servicio de la
+// tabla del home. Se abre cada una, como una persona (el mouse que entra desde
+// afuera, con el botón quieto), y se busca cualquier espera: «a los N días»,
+// «de afiliarte», «desde el primer día», «día uno», «N meses», «sin espera».
+// Las esperas siguen en /planes (lo controla «/planes/ en el celular» y la
+// tarjeta de Internación de la computadora). Probado contra la rama sin la P2A
+// (falla) y con ella (pasa).
+console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
+{
+  const ESPERA = /a los \d+ días|afiliarte|primer día|día uno|\d+ mes(?:es)?\b|sin espera|de espera|carencia/i;
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const nombres = await page.$$eval('#cartilla .cmp2-lab .cmp2-srv', (bs) => bs.map((b) => b.textContent.trim()));
+  const conEspera = [];
+  let abiertas = 0;
+  for (const n of nombres) {
+    const btn = page.locator('#cartilla .cmp2-lab .cmp2-srv', { hasText: n }).first();
+    await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(250);
+    const c = await btn.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+    await page.waitForTimeout(150);
+    const t = await page.evaluate(() => (document.querySelector('#cartilla .cmp2-tarjeta') || {}).textContent || null);
+    if (t) abiertas++;
+    if (t && ESPERA.test(t)) conEspera.push(n + ': «' + t.match(ESPERA)[0] + '»');
+  }
+  await page.mouse.move(5, 5);
+  await page.close();
+  if (nombres.length !== 9 || abiertas !== 9 || conEspera.length) mal('la tarjeta del servicio del home no lleva esperas (regla del 03/10, P2A): ' + JSON.stringify({ servicios: nombres.length, abiertas, conEspera }));
+  else bien('las nueve tarjetas de servicio del home se abren sin esperas');
+}
+
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────
 // Los 12 a la vista y sin movimiento: la tira tardaba 54 s en mostrarlos.
 console.log('\n── Los aliados');
