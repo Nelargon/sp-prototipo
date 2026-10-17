@@ -141,7 +141,9 @@ export default function Planes() {
     // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
     { name: 'Medicamentos internado', kind: 'num', cells: corta('Medicamentos en internación'), d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: 'Consultalo', n: 'con tu asesor' }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
+    // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo
+    // con tu asesor»). La celda abre la tarjeta y el pie dice por qué.
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: ASESOR, asesor: true }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: 'El cuadernillo de Essential no fija este tope: preguntale a tu asesor.' },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
     // el simulador. Sin tarjeta: el número ya es el dato.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
@@ -180,6 +182,9 @@ export default function Planes() {
     // Fisioterapia de Gold: la grilla dice 10 y 3; gold.json, 20 y 5. Hasta que SP
     // lo aclare, manda al asesor como la tabla de arriba (G1A, sp-interno#50).
     if (/^Fisioterapia/i.test(f.p) && j === 2) return ASESOR;
+    // Remedios en urgencias de Essential: el cuadernillo no fija el tope. Un «—»
+    // se lee «no cubre»; manda al asesor como la tabla (R1A, 17/10/2026).
+    if (/^En urgencia/i.test(f.p) && !f.v[j]) return ASESOR;
     return f.v[j] ? valorParam(f.v[j]) : '—';
   };
 

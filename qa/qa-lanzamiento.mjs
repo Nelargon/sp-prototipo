@@ -971,6 +971,54 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
   else bien('«/evento» en medicamentos y remedios (tablas del home y /planes, y la lista), con los millones enteros y «guaraníes» para el lector; el parto con «hasta»; a 360 px el nombre baja entre palabras');
 }
 
+// ── Una sola forma de mandar al asesor (R1A, Arturo, 17/10/2026) ────────────
+// «Consultalo», «Consultalo con tu asesor» y «Confirmalo con tu asesor» pasaron
+// a «Preguntale a tu asesor» (ASESOR de coverage.js). Se mira el texto que
+// traen las páginas de la v1 (con lo que se abre al tocar) y el código de app/
+// sin comentarios, porque el buscador de estudios guardado no tiene página. Y
+// la fila de remedios en urgencias de Essential: la celda del home y la de
+// /planes, y el «—» del plegable, que se leía «no cubre». Probado contra la
+// rama sin la R1A (falla) y con ella (pasa).
+console.log('\n── Una sola forma de mandar al asesor (R1A)');
+{
+  const { ASESOR } = COV;
+  // Sin \b: textContent pega celdas vecinas («urgenciasConsultalo») y el límite de palabra no se ve.
+  const VIEJAS = /(?:consult|confirm)[aá]lo/i;
+  const malas = [];
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  for (const ruta of ['/', '/planes/', '/simulador/', '/guia-medica/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const m = await page.evaluate((re) => (document.body.textContent.match(new RegExp(re, 'gi')) || []), VIEJAS.source);
+    if (m.length) malas.push(ruta + ': ' + [...new Set(m)].join(', '));
+  }
+  // El código: sin comentarios, cada «Consultalo»/«Confirmalo» que quede es texto de cara al usuario.
+  const { readdirSync } = await import('node:fs');
+  const raiz = new URL('../app/', import.meta.url);
+  const archivos = readdirSync(raiz, { recursive: true }).filter((f) => /\.(jsx?|mjs)$/.test(f) && !/^blog[\\/]/.test(f));
+  for (const f of archivos) {
+    const sin = readFileSync(new URL(f, raiz), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/[^\n]*/g, '$1');
+    if (VIEJAS.test(sin)) malas.push('app/' + f);
+  }
+  const celda = ([sel]) => {
+    const pl = document.querySelectorAll(sel + ' .cmp2-plan')[0];
+    const c = pl && [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === 'Remedios en urgencias');
+    if (!c) return null;
+    const v = c.querySelector('.cmp2-v').cloneNode(true);
+    v.querySelectorAll('.sr-solo').forEach((x) => x.remove());
+    return { t: v.textContent.trim(), boton: !!c.querySelector('.cmp2-v .cmp2-duda') };
+  };
+  for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const c = await page.evaluate(celda, [sel]);
+    if (!c || c.t !== ASESOR || !c.boton) malas.push(ruta + ' remedios en urgencias de Essential: ' + JSON.stringify(c));
+  }
+  const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
+  if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));
+  await page.close();
+  if (malas.length) mal('una sola forma de mandar al asesor, «' + ASESOR + '»: quedan «Consultalo» o «Confirmalo», o la celda o el plegable de remedios en urgencias de Essential no lo dicen · ' + malas.join(' · '));
+  else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas, el código y la fila de remedios en urgencias de Essential (tablas y plegable)');
+}
+
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────
 // Los 12 a la vista y sin movimiento: la tira tardaba 54 s en mostrarlos.
 console.log('\n── Los aliados');
