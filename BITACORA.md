@@ -283,12 +283,18 @@ razón para mostrar el trabajo seguido y temprano.
 
 ## Capítulo 16 — Llegaron los primeros datos reales (y me corrigieron)
 
+*(17/10/2026: las cifras de este capítulo pasaron a un puntero por decisión
+de Arturo, sp-interno#180: las cifras de Google Analytics de la web de SP
+están en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`. Es
+una excepción decidida a la regla de no reescribir la bitácora; lo aprendido
+no cambió.)*
+
 El usuario trajo el Google Analytics de la web activa de SP: dos meses de
 datos reales, los primeros del proyecto. Confirmaron tres decisiones
-tomadas por intuición y teoría: **el 77% del tráfico entra por celular**
+tomadas por intuición y teoría: **la mayoría del tráfico entra por celular**
 (la ponderación móvil no era perfeccionismo), **"Guía para el asegurado"
-es la tercera página más visitada** (la puerta 2 del hero atiende una
-demanda que ya existía), y la atención media es de **50 segundos**
+está entre las páginas más visitadas** (la puerta 2 del hero atiende una
+demanda que ya existía), y la atención media es **corta**
 ("resolver en un minuto" es la vara correcta, y cualquier peaje de siete
 pantallas estaba condenado por los datos antes que por la mesa de
 advisors).
@@ -297,17 +303,17 @@ Pero el capítulo se gana su lugar por dos cosas más incómodas. Primera:
 la captura inicial (un embudo con "100% de finalización" en cada paso) me
 llevó a concluir que "un tercio de los clientes ya usa el canal digital".
 Con el informe completo quedó claro que ese embudo se auto-calificaba —
-el Login real tuvo 132 usuarios, no 2.900. **Los datos merecen la misma
+el Login real tuvo una fracción mínima de lo que el embudo daba a entender.
+**Los datos merecen la misma
 desconfianza metódica que el código**: un embudo perfecto es tan
 sospechoso como un test que nunca falla. Corregido en el mismo día,
 gracias a que el usuario trajo más capturas en vez de conformarse.
 
-Segunda: el dato más valioso no confirmaba nada — revelaba. **El 91% de
+Segunda: el dato más valioso no confirmaba nada — revelaba. **Casi todos
 los usuarios son nuevos: casi nadie vuelve.** El sitio actual no le da a
 nadie un motivo de regreso, mientras SP paga tráfico social que aterriza
-ahí. Esa cifra (recurrencia ~9%) quedó registrada en el HANDOFF como *la
-métrica a vencer* — el día que la guía nueva y el portal existan, este
-número es el juez.
+ahí. Esa cifra (la recurrencia) quedó registrada como *la métrica a vencer*
+— el día que la guía nueva y el portal existan, este número es el juez.
 
 **Lo aprendido:** los datos reales hacen tres trabajos — confirman (barato),
 corrigen (incómodo pero sano) y revelan lo que nadie preguntó (lo más
@@ -1776,6 +1782,10 @@ razón distinta:
 
 ## Capítulo 57 — Fuimos a endurecer una frase y descubrimos que era falsa
 
+*(17/10/2026: los nombres pasaron a la categoría por decisión de Arturo,
+sp-interno#180; el detalle vive en el repo privado. Es una excepción decidida
+a la regla de no reescribir la bitácora.)*
+
 **Qué intentamos.** Cerrar el ⚠ pendiente 12c. Desde el capítulo 54 el bloque
 *"Dónde termina la medicina prepaga"* decía que odontología, bariátrica,
 oncológico y alta complejidad *"en general"* no las cubre la medicina prepaga,
@@ -1789,11 +1799,13 @@ endurecerla**. Ese era literalmente el pendiente escrito.
 
 **Qué pasó.** El relevamiento salió y no endureció nada: **tumbó la frase**.
 
-- **SPS** (Superior Plus) cubre, con cita textual de su propio folleto,
-  tratamiento oncológico —quimioterapia en pensión y honorarios, radioterapia,
-  cirugías oncológicas— y **alta complejidad**: *"Cirugía de alta complejidad:
-  Neurológicas, torácicas, cardiacas y vascular periférica"*.
-- **SPS y MediLife** cubren odontología general básica.
+- **Una prepaga sin sanatorio propio** (en uno de sus planes altos) cubre,
+  con cita textual de su propio folleto, tratamiento oncológico —quimioterapia
+  en pensión y honorarios, radioterapia, cirugías oncológicas— y **alta
+  complejidad**: *"Cirugía de alta complejidad: Neurológicas, torácicas,
+  cardiacas y vascular periférica"*.
+- **Esa misma y otra prepaga sin sanatorio propio** cubren odontología
+  general básica.
 - **Bariátrica** no se puede afirmar en ninguna dirección: nadie confirma
   cubrirla, nadie la excluye.
 
@@ -1803,10 +1815,10 @@ puede. Y el folleto de un competidor decía que sí.
 
 Y de paso cayó la hipótesis que habíamos anotado con confianza: creíamos que
 los competidores **con sanatorio propio** cubrirían más en alta complejidad,
-por costo marginal. **Santa Clara**, con la cabecera de mayor nivel del
-relevamiento (Británico, Nivel III), declara textual *"Alta Complejidad:
-Opcional"* — no viene en el plan base. **Promed**, con sanatorio propio, no la
-menciona en ningún plan publicado. Y **SPS, sin sanatorio, la cubre.**
+por costo marginal. **Una prepaga con sanatorio propio**, con la cabecera de
+mayor nivel del relevamiento (Nivel III), declara textual *"Alta Complejidad:
+Opcional"* — no viene en el plan base. **Otra con sanatorio propio** no la
+menciona en ningún plan publicado. Y **la que no tiene sanatorio la cubre.**
 
 **Qué aprendimos.**
 
@@ -1816,8 +1828,8 @@ menciona en ningún plan publicado. Y **SPS, sin sanatorio, la cubre.**
    oración por separado**, no el párrafo como bloque — la prudencia no se
    contagia entre frases.
 2. **El daño habría caído justo donde más importa.** Este bloque existe para
-   demostrar honestidad. Una familia que compare y encuentre que SPS cubre
-   oncología no lee "SP se equivocó": lee "SP me presentó sus propios límites
+   demostrar honestidad. Una familia que compare y encuentre que otra prepaga
+   cubre oncología no lee "SP se equivocó": lee "SP me presentó sus propios límites
    como límites del rubro". **La pieza construida para generar confianza era la
    que más confianza podía destruir.**
 3. **Verificar puede empeorar tu posición, y hay que ir igual.** Salimos a

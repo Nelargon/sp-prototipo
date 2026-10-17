@@ -2962,15 +2962,19 @@ integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
 
 **Línea de base de datos reales (GA de la web activa de SP,
-15 may – 13 jul 2026, aportada por el usuario):** ~3.200 usuarios
-activos, **2.900 nuevos (recurrencia ~9% — la métrica a vencer con la
-guía nueva y el portal)**, 50 s de interacción media, **77% móvil**, 94%
-Paraguay. "Guía para el asegurado" es la **3ª página más visitada** (783
-usuarios — valida la puerta 2 del hero); Login solo 132 usuarios.
-Canales: Organic Search #1 (282 sesiones/semana), Paid Social pagado
-creciendo (+33%). Pregunta abierta para SIP: el embudo que mostraba
+15 may – 13 jul 2026, aportada por el usuario):** (las cifras de Google
+Analytics de la web de SP están en el repo privado,
+`sp-interno/project/metricas-web-ga-2026.md`). Lo que dicen, sin las
+cifras: la mayoría del tráfico entra por celular y casi todo desde
+Paraguay; **casi nadie vuelve (la recurrencia es la métrica a vencer con la
+guía nueva y el portal)**; la atención es corta; "Guía para el asegurado"
+está entre las páginas más visitadas (valida la puerta 2 del hero) y el
+Login, muy abajo. Organic Search es el canal #1 y Paid Social pagado crece.
+Pregunta abierta para SIP: el embudo que mostraba
 "100% inicio de sesión" parece auto-calificarse — ¿la app/portal mide en
 otra propiedad de GA? El `BRANDSCRIPT.md` está escrito con estos números.
+*(17/10/2026: las cifras pasaron a un puntero por decisión de Arturo,
+sp-interno#180.)*
 
 **Historia git:** PR #1 (rediseño de la guía + publicación en Pages),
 PR #2 (QA móvil + menú + cobertura por plan + upsell), PR #3 (HANDOFF),
@@ -4014,8 +4018,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    prohibido lorem ipsum — el copy dicta el diseño.
 8b. **SEO** (sube de prioridad baja → media, jul 2026): los datos reales
    muestran que **Organic Search ya es el canal #1** de la web activa
-   (282 sesiones/semana) y hay Paid Social pagado aterrizando en un
-   sitio con ~9% de recurrencia. Sitemap, metadatos, schema.org (ejemplo
+   y hay Paid Social pagado aterrizando en un sitio al que casi nadie
+   vuelve (las cifras de Google Analytics de la web de SP están en el repo
+   privado, `sp-interno/project/metricas-web-ga-2026.md`; 17/10/2026,
+   sp-interno#180). Sitemap, metadatos, schema.org (ejemplo
    en la ficha de la guía) valen más de lo presupuestado. La decisión de
    dominio de la guía (#9) se evalúa junto con esto.
    **Estado (jul 2026): infraestructura ✔ lista, indexación apagada a
@@ -4157,11 +4163,13 @@ El relevamiento de los 7 competidores está hecho
 **No permitió endurecer la frase: obligó a corregirla.**
 
 **Lo que se encontró, con cita textual de folletos propios de cada empresa:**
-SPS (Superior Plus) cubre tratamiento oncológico —quimio en pensión y
-honorarios, radioterapia, cirugías oncológicas— y **alta complejidad**
-(*"Neurológicas, torácicas, cardiacas y vascular periférica"*). SPS y MediLife
-cubren odontología general básica. Bariátrica no se puede afirmar en ninguna
-dirección.
+una prepaga sin sanatorio propio, en uno de sus planes altos, cubre
+tratamiento oncológico —quimio en pensión y honorarios, radioterapia,
+cirugías oncológicas— y **alta complejidad** (*"Neurológicas, torácicas,
+cardiacas y vascular periférica"*). Esa misma y otra prepaga sin sanatorio
+propio cubren odontología general básica. Bariátrica no se puede afirmar en
+ninguna dirección. *(17/10/2026: los nombres pasaron a la categoría por
+decisión de Arturo, sp-interno#180; el detalle vive en el repo privado)*
 
 **Consecuencia:** la frase *"es hasta dónde llega este tipo de producto"* era
 **falsa**. El "en general" protegía la primera oración, pero esa última
