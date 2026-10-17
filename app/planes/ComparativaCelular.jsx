@@ -4,7 +4,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, engine } from '../quote';
-import { coverage, carencias, NOTA_UNIDAD } from '../coverage';
+import { coverage, carencias, NOTA_UNIDAD, ASESOR } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
@@ -144,8 +144,9 @@ export default function ComparativaCelular() {
     // Sin repetir: la tomografía y la resonancia traen la misma nota (la del
     // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
     const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota, COV[n] && COV[n].notaAsesor])).filter(Boolean))];
-    // La que explica «¿quién?» va primero: es lo que la persona vino a preguntar.
-    const arriba = notas.filter((t) => t === NOTA_UNIDAD);
+    // Las que mandan al asesor van primero: es lo que la persona vino a
+    // preguntar («¿quién?» y, en fisioterapia, cuántas sesiones tiene Gold).
+    const arriba = notas.filter((t) => t === NOTA_UNIDAD || nombres.some((n) => COV[n] && COV[n].notaAsesor === t));
     return (
       <>
         {arriba.map((t) => <p key={t} style={css(inter + 'font-size:13.5px;line-height:1.5;color:var(--sp-text-2);margin:0 0 12px')}>{t}</p>)}
@@ -184,8 +185,13 @@ export default function ComparativaCelular() {
                 <span key={i} style={css('display:flex;flex-direction:column;gap:3px')}>
                   {/* La forma corta donde la hay (P3A): esto se escanea. La
                       cola conserva lo que Essential decía después del número
-                      («2/familia/año, junto con ecocardiograma y ergometría»). */}
-                  {s.corta && s.corta[i] && s.corta[i].includes('/') ? <span>{s.pre && s.pre[i]}<Corta t={s.corta[i]} partir dicho={s.dicho && s.dicho[i]} />{s.cola && s.cola[i]}</span> : c.d}
+                      («2/familia/año, junto con ecocardiograma y ergometría»).
+                      La celda que manda al asesor (G1A) también sale de
+                      `corta` y va en la misma capa de cifras que el dato de al
+                      lado: la duda se dice con el mismo peso (lámina 84). */}
+                  {s.corta && s.corta[i] === ASESOR
+                    ? <span className="disp" style={css('font-weight:700')}>{ASESOR}</span>
+                    : s.corta && s.corta[i] && s.corta[i].includes('/') ? <span>{s.pre && s.pre[i]}<Corta t={s.corta[i]} partir dicho={s.dicho && s.dicho[i]} />{s.cola && s.cola[i]}</span> : c.d}
                   {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
                   {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
                 </span>

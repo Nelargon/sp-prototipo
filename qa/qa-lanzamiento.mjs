@@ -874,8 +874,10 @@ console.log('\n── La forma corta (P3A)');
 // grilla, 10 + 3. Mientras SP no lo aclare, la celda de Gold manda al asesor
 // por el número en la tabla del home, la de /planes, la lista de los once
 // servicios y los dos renglones de fisioterapia del plegable, y los cuatro
-// dicen lo mismo (ASESOR de coverage.js). La tarjeta y la hoja no le dan a Gold
-// ningún número, y la línea de la nota lo dice. La celda es texto, no botón:
+// dicen lo mismo (ASESOR de coverage.js); en la lista, con la letra y el peso
+// de la forma corta de al lado. La tarjeta y la hoja (lo que se lee) no le dan a
+// Gold ningún número ni repiten el pedido: la línea de Gold dice qué cubre y la
+// nota manda al asesor (comité, vuelta 1). La celda es texto, no botón:
 // solo «¿quién?» es botón (P3A); la tarjeta se abre desde el nombre del
 // servicio, como la cesárea de Gold de la 2A (comité, vuelta 1, 17/10).
 // Probado contra la rama con la P3A sin la G1A (falla) y con ella (pasa), y
@@ -918,8 +920,26 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
   }
   if (!tarjeta || tarjeta.gold === null || /\d/.test(tarjeta.gold.replace(/\b\d+ días de afiliarte/, '')) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta: ' + JSON.stringify(tarjeta));
-  // El plegable de /planes: los dos renglones de fisioterapia.
+  // La tarjeta de /planes en la computadora: sin número para Gold y sin repetir
+  // el pedido (comité, vuelta 1, 17/10: «Preguntale a tu asesor» salía tres
+  // veces, una como línea de Gold que no decía qué preguntar).
+  const VECES = /preguntale a tu asesor/gi;
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const srvPlanes = page.locator('#comparar-planes .cmp2-lab .cmp2-srv', { hasText: 'Fisioterapia' });
+  let tarjetaPlanes = null;
+  if (await srvPlanes.count()) {
+    await srvPlanes.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(800);
+    const caja = await srvPlanes.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+    await page.waitForTimeout(200);
+    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
+    await page.mouse.move(5, 5);
+  }
+  if (!tarjetaPlanes || !tarjetaPlanes.gold || /\b(?:10|20)\b/.test(tarjetaPlanes.gold) || /asesor/i.test(tarjetaPlanes.gold) || !tarjetaPlanes.pie.includes(nota) || (tarjetaPlanes.todo.match(VECES) || []).length > 2) malas.push('/planes/ tarjeta: ' + JSON.stringify(tarjetaPlanes));
+  // El plegable de /planes: los dos renglones de fisioterapia.
   const pleg = await page.evaluate(() => [...document.querySelectorAll('#detalle-internacion div')].filter((d) => d.children.length === 4 && /^Fisioterapia/.test((d.firstElementChild || {}).textContent || '')).map((d) => d.children[3].textContent.trim()));
   if (pleg.length !== 2 || pleg.some((t) => t !== ASESOR)) malas.push('/planes/ plegable: ' + JSON.stringify(pleg));
   await page.close();
@@ -929,21 +949,33 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
   await cel.waitForTimeout(450);
+  // En la lista, la celda de Gold dice ASESOR con la letra y el peso de la
+  // forma corta de Silver de al lado: la duda, con el mismo peso que el dato
+  // (lámina 84; comité, vuelta 1: iba en la letra de lectura, Inter 400).
   const lista = await cel.evaluate(() => {
     const b = [...document.querySelectorAll('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila')].find((x) => /^Fisioterapia/.test(x.querySelector('b').textContent));
     if (!b) return null;
-    const c = b.querySelectorAll(':scope > span > span')[2].cloneNode(true);
+    const celdas = b.querySelectorAll(':scope > span > span');
+    const c = celdas[2].cloneNode(true);
     c.querySelectorAll('.sr-solo, i').forEach((x) => x.remove());
-    return c.textContent.trim();
+    const w = document.createTreeWalker(celdas[2], NodeFilter.SHOW_TEXT);
+    let n = w.nextNode();
+    while (n && !n.data.trim()) n = w.nextNode();
+    const silver = celdas[1].querySelector('.corta');
+    // La familia que usa el navegador (la primera; los respaldos pueden variar) y el peso.
+    const q = (e) => { const k = getComputedStyle(e); return k.fontFamily.split(',')[0].trim() + ' ' + k.fontWeight; };
+    return { t: c.textContent.trim(), gold: n ? q(n.parentElement) : null, silver: silver ? q(silver) : null };
   });
-  if (lista !== ASESOR) malas.push('lista de los once: ' + JSON.stringify(lista));
+  if (!lista || lista.t !== ASESOR || !lista.silver || lista.gold !== lista.silver) malas.push('lista de los once (texto y peso de la forma corta de Silver): ' + JSON.stringify(lista));
   await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila', { hasText: 'Fisioterapia' }).tap();
   await cel.waitForTimeout(450);
+  // La hoja se lee: la línea de Gold dice qué cubre, sin número, y el pedido
+  // al asesor va en las notas, sin repetirse.
   const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
-  if (!hoja || !hoja.gold || !hoja.gold.includes(ASESOR) || /\b(?:10|20)\b/.test(hoja.gold) || !hoja.notas.includes(nota)) malas.push('hoja del servicio: ' + JSON.stringify(hoja));
+  if (!hoja || !hoja.gold || /\b(?:10|20)\b/.test(hoja.gold) || /asesor/i.test(hoja.gold) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio: ' + JSON.stringify(hoja));
   await ctx.close();
   if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50) · ' + malas.join(' · '));
-  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista, el plegable y la hoja, sin número para Gold');
+  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin número para Gold y sin repetir el pedido');
 }
 
 // ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────

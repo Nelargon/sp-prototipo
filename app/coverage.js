@@ -107,7 +107,11 @@ export const coverage = () => [
   // /planes), 10 y 3. Hasta que SP lo aclare, la celda de Gold manda al asesor
   // por el número, igual que la cesárea de Gold (#116): ninguna forma corta le
   // da a Gold un número seguro. `notaAsesor` es la línea que lo dice.
-  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes(ASESOR)] },
+  // Lo que se escanea (la celda de las tablas y de la lista, `corta`) dice
+  // ASESOR; lo que se lee (la tarjeta y la hoja, `cov`) dice qué cubre, sin
+  // número, igual que la tarjeta del home: la nota ya manda al asesor y
+  // repetirlo en la línea de Gold lo decía tres veces (comité, vuelta 1, 17/10).
+  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes('Traumatológica, neurológica o después de una cirugía, más respiratorias')] },
   { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', corta: ['Gs. 350 mil/evento', 'Gs. 1 millón/evento', 'Gs. 1,5 millones/evento'], dicho: ['hasta 350 mil guaraníes cada vez que te internan', 'hasta 1 millón de guaraníes cada vez que te internan', 'hasta 1,5 millones de guaraníes cada vez que te internan'], cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
 ];
 
