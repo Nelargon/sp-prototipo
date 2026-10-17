@@ -869,6 +869,66 @@ console.log('\n── La forma corta (P3A)');
   }
 }
 
+// ── La forma corta, para los lectores de pantalla (P3A; comité, vuelta 1) ──
+// La decisión fija cómo se oye: la forma visible («1/¿quién?/año») va con
+// aria-hidden y al lado, un texto oculto (.sr-solo) con la frase completa; sin
+// role="img", porque algunos lectores le suman «imagen». Las otras secciones
+// leen la frase, no el atributo: si alguien sacaba el aria-hidden, el lector
+// decía «uno barra quién barra año» y además la frase, y todo seguía en verde.
+// Se mira cada forma corta visible del home y /planes en la computadora y en
+// el celular (con la lista de los once abierta). El detector se prueba antes
+// contra tres formas mal armadas (sin aria-hidden, con role="img", sin su
+// frase), que tiene que encontrar, y una bien armada, que no.
+console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
+{
+  const REVISAR = `(raiz) => [...raiz.querySelectorAll('.corta')].filter((k) => k.getClientRects().length).map((k) => {
+    const sr = k.nextElementSibling;
+    const mal = [];
+    if (k.getAttribute('aria-hidden') !== 'true') mal.push('sin aria-hidden');
+    if (k.hasAttribute('role')) mal.push('role=' + k.getAttribute('role'));
+    if (!sr || !sr.classList.contains('sr-solo') || !sr.textContent.trim()) mal.push('sin su frase');
+    return mal.length ? k.textContent + ': ' + mal.join(', ') : null;
+  }).filter(Boolean)`;
+  const malas = [];
+  let revisadas = 0;
+  const revisar = async (pg, donde) => {
+    const r = await pg.evaluate((fn) => { const f = eval(fn); return { malas: f(document), total: [...document.querySelectorAll('.corta')].filter((k) => k.getClientRects().length).length }; }, REVISAR);
+    revisadas += r.total;
+    if (!r.total) malas.push(donde + ': ninguna forma corta visible');
+    r.malas.forEach((m) => malas.push(donde + ' · ' + m));
+  };
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  // El caso que tiene que fallar y el que no, armados en la misma página.
+  const prueba = await page.evaluate((fn) => {
+    const f = eval(fn);
+    const caja = (html) => { const d = document.createElement('div'); d.innerHTML = html; document.body.appendChild(d); const r = f(d); d.remove(); return r; };
+    return {
+      malas: caja('<span class="corta">1/familia/año</span><span class="sr-solo">1 por familia al año</span>'
+        + '<span class="corta" aria-hidden="true" role="img">1/¿quién?/año</span><span class="sr-solo">1 al año, sin confirmar para quién</span>'
+        + '<span class="corta" aria-hidden="true">2/familia/año</span>').length,
+      buenas: caja('<span class="corta" aria-hidden="true">4/familia/año</span><span class="sr-solo">4 por familia al año</span>').length,
+    };
+  }, REVISAR);
+  if (prueba.malas !== 3 || prueba.buenas !== 0) mal('el detector de la forma corta para lectores no distingue el caso malo del bueno: ' + JSON.stringify(prueba));
+  else bien('el detector encuentra las tres formas cortas mal armadas (sin aria-hidden, con role="img", sin su frase) y deja pasar la bien armada');
+  await revisar(page, 'home 1280');
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await revisar(page, '/planes 1280');
+  await page.close();
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await revisar(cel, 'home 390');
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  await revisar(cel, '/planes 390 con la lista abierta');
+  await ctx.close();
+  if (malas.length) mal('cada forma corta visible va con aria-hidden="true", sin role y con su frase al lado (.sr-solo) · ' + malas.slice(0, 6).join(' · '));
+  else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular) con aria-hidden, sin role y con su frase al lado');
+}
+
 // ── La fisioterapia de Gold va al asesor (G1A, Arturo, 17/10/2026, «Todo A») ─
 // La fuente se contradice (sp-interno#50): gold.json dice 20 + 5 sesiones y la
 // grilla, 10 + 3. Mientras SP no lo aclare, la celda de Gold manda al asesor
