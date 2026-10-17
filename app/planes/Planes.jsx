@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
-import { coverage, carencias } from '../coverage';
+import { coverage, carencias, ASESOR } from '../coverage';
 import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
@@ -113,7 +113,8 @@ export default function Planes() {
   // mismas que el home. Donde la fuente no dice para quién (Silver y Gold,
   // sp-interno#110), «¿quién?»; el pie de la tarjeta, la `nota` de coverage.js,
   // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
-  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t } : resto[i]));
+  // Una celda sin barras que dice ASESOR manda al asesor y se toca (G1A).
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, asesor: t === ASESOR } : resto[i]));
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
     return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
@@ -127,7 +128,7 @@ export default function Planes() {
   const filasCompu = [
     { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
     { name: 'Sesiones de psicología', kind: 'num', cells: corta('Sesión de psicología'), d: conEspera('Sesión de psicología'), pie: cv['Sesión de psicología'].nota },
-    { name: 'Fisioterapia', kind: 'num', cells: corta('Fisioterapia'), d: conEspera('Fisioterapia', 'Fisioterapia'), pie: cv['Fisioterapia'].nota },
+    { name: 'Fisioterapia', kind: 'num', cells: corta('Fisioterapia'), d: conEspera('Fisioterapia', 'Fisioterapia'), pie: [cv['Fisioterapia'].nota, cv['Fisioterapia'].notaAsesor].filter(Boolean).join(' ') },
     { name: 'Ecografía', kind: 'num', cells: corta('Ecografía', [null, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }]), d: conEspera('Ecografía', 'Ecografías') },
     // Silver y Gold no dicen para quién: la grilla dice «por año de contrato»,
     // no «por beneficiario» (sp-interno#110, decisión 2A de Arturo, 13/10/2026).
@@ -175,6 +176,9 @@ export default function Planes() {
   // `corta` en coverage.js; el dato generado no se toca.
   const vistaParam = (f, j) => {
     if (/^Tope de días de internación/i.test(f.p)) return <Corta t={cv['Internación'].corta[j].replace(/\/año$/, '')} />;
+    // Fisioterapia de Gold: la grilla dice 10 y 3; gold.json, 20 y 5. Hasta que SP
+    // lo aclare, manda al asesor como la tabla de arriba (G1A, sp-interno#50).
+    if (/^Fisioterapia/i.test(f.p) && j === 2) return ASESOR;
     return f.v[j] ? valorParam(f.v[j]) : '—';
   };
 

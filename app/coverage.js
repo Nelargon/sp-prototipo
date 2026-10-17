@@ -47,6 +47,9 @@ const anual = (cuanto, quien) => cuanto + '/' + quien + '/año';
 // del contrato sin haberlo leído es otro dato sin fuente (comité del 13/10).
 export const NOTA_UNIDAD = 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.';
 const notaDe = (quien) => (quien === DUDA ? NOTA_UNIDAD : undefined);
+// La celda que manda al asesor, una sola forma en todo el sitio (R1A, 17/10).
+// Va donde la fuente no fija el dato o se contradice, en lugar del número.
+export const ASESOR = 'Preguntale a tu asesor';
 
 // Carencia = días de espera desde la afiliación hasta poder usar la cobertura.
 // Fuente: las 935 filas de datos/planes-vigentes/grilla-coberturas-precios-jul2026.json,
@@ -90,7 +93,13 @@ export const coverage = () => [
   // si SP lo aclara (sp-interno#116).
   { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], nota: 'En Gold, preguntale a tu asesor cuánto esperás para una cesárea.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
   { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
-  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), corta: [anual(5, 'familia'), anual(15, QUIEN_SG), anual(20, QUIEN_SG)], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes('20 sesiones al año')] },
+  // Fisioterapia de Gold (G1A, decisión de Arturo del 17/10/2026, sp-interno#50):
+  // la fuente se contradice. gold.json dice «20 sesiones/año […] + 5
+  // respiratorias» y los parámetros clave de la grilla (y el plegable de
+  // /planes), 10 y 3. Hasta que SP lo aclare, la celda de Gold manda al asesor
+  // por el número, igual que la cesárea de Gold (#116): ninguna forma corta le
+  // da a Gold un número seguro. `notaAsesor` es la línea que lo dice.
+  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes(ASESOR)] },
   { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
 ];
 

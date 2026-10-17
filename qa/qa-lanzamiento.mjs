@@ -38,6 +38,10 @@ const bien = (m) => console.log('  ✓ ' + m);
 
 const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 
+// Las constantes de cobertura se leen de app/coverage.js (no importa nada), no
+// de un literal: si SP contesta y una cambia, las pruebas la siguen (P3A y G1A).
+const COV = await import('data:text/javascript;base64,' + Buffer.from(readFileSync(new URL('../app/coverage.js', import.meta.url), 'utf8')).toString('base64'));
+
 for (const [nombre, width, height] of ANCHOS) {
   console.log('\n── ' + nombre);
   const page = await browser.newPage({ viewport: { width, height } });
@@ -660,9 +664,10 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // P3A (falla) y con ella (pasa).
 console.log('\n── La forma corta (P3A)');
 {
-  const fuente = readFileSync(new URL('../app/coverage.js', import.meta.url), 'utf8');
-  const { DUDA, QUIEN_SG, QUIEN_PSICO, NOTA_UNIDAD } = await import('data:text/javascript;base64,' + Buffer.from(fuente).toString('base64'));
-  const FILAS = [['Tomografía (TAC)', QUIEN_SG], ['Resonancia (RM)', QUIEN_SG], ['Sesiones de psicología', QUIEN_PSICO], ['Fisioterapia', QUIEN_SG]];
+  const { DUDA, QUIEN_SG, QUIEN_PSICO, NOTA_UNIDAD } = COV;
+  // La tercera columna: los planes cuya celda manda al asesor en lugar de dar
+  // un número (la fisioterapia de Gold, G1A): esa la controla su sección.
+  const FILAS = [['Tomografía (TAC)', QUIEN_SG, []], ['Resonancia (RM)', QUIEN_SG, []], ['Sesiones de psicología', QUIEN_PSICO, []], ['Fisioterapia', QUIEN_SG, [2]]];
   // Cada celda de una fila, por el nombre (.cmp2-l está en el HTML también en la
   // computadora). La primera fila con ese nombre: /planes tiene otra
   // «Fisioterapia» en las esperas.
@@ -710,9 +715,9 @@ console.log('\n── La forma corta (P3A)');
   for (const ruta of ['/', '/planes/']) {
     await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     const sel = ruta === '/' ? '#cartilla' : '#comparar-planes';
-    for (const [nombre, quien] of FILAS) {
+    for (const [nombre, quien, aparte] of FILAS) {
       const fila = await page.evaluate(leerFila, [sel, nombre]);
-      if (!fila || fila.length !== 3 || !fila.every((c, i) => celdaBien(c, i, quien))) malas.push(ruta + ' ' + nombre + ': ' + JSON.stringify(fila));
+      if (!fila || fila.length !== 3 || !fila.every((c, i) => aparte.includes(i) || celdaBien(c, i, quien))) malas.push(ruta + ' ' + nombre + ': ' + JSON.stringify(fila));
     }
     const int = await page.evaluate(leerFila, [sel, 'Internación']);
     const intEsperada = ['20 días/familia/año', '20 días/persona/año', '25 días/persona/año'];
@@ -830,6 +835,77 @@ console.log('\n── La forma corta (P3A)');
     else bien(n + ': ningún renglón de la lista ni de las tarjetas termina en «/»');
     await ctx.close();
   }
+}
+
+// ── La fisioterapia de Gold va al asesor (G1A, Arturo, 17/10/2026, «Todo A») ─
+// La fuente se contradice (sp-interno#50): gold.json dice 20 + 5 sesiones y la
+// grilla, 10 + 3. Mientras SP no lo aclare, la celda de Gold manda al asesor
+// por el número en la tabla del home, la de /planes, la lista de los once
+// servicios y los dos renglones de fisioterapia del plegable, y los cuatro
+// dicen lo mismo (ASESOR de coverage.js). La tarjeta y la hoja no le dan a Gold
+// ningún número, y la línea de la nota lo dice. Probado contra la rama con la
+// P3A sin la G1A (falla) y con ella (pasa).
+console.log('\n── La fisioterapia de Gold (G1A)');
+{
+  const { ASESOR } = COV;
+  const nota = 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.';
+  const malas = [];
+  const visible = ([sel, nombre]) => {
+    const t = document.querySelector(sel);
+    if (!t) return null;
+    return [...t.querySelectorAll('.cmp2-plan')].map((pl) => {
+      const c = [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === nombre);
+      if (!c) return null;
+      const v = c.querySelector('.cmp2-v').cloneNode(true);
+      v.querySelectorAll('.sr-solo').forEach((x) => x.remove());
+      return { t: v.textContent.replace(/ /g, ' ').trim(), boton: !!c.querySelector('.cmp2-v .cmp2-duda') };
+    });
+  };
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const f = await page.evaluate(visible, [sel, 'Fisioterapia']);
+    if (!f || !f[2] || f[2].t !== ASESOR || !f[2].boton || /\d/.test(f[2].t)) malas.push(ruta + ' tabla: ' + JSON.stringify(f && f[2]));
+  }
+  // La tarjeta que abre la celda de Gold: sin número para Gold y con la línea del asesor.
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const gold = page.locator('#cartilla .cmp2-plan').nth(2).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Fisioterapia' }) }).locator('.cmp2-duda');
+  let tarjeta = null;
+  if (await gold.count()) {
+    await gold.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(1200);
+    await gold.click();
+    await page.waitForTimeout(200);
+    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
+  }
+  if (!tarjeta || tarjeta.gold === null || /\d/.test(tarjeta.gold.replace(/\b\d+ días de afiliarte/, '')) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta: ' + JSON.stringify(tarjeta));
+  // El plegable de /planes: los dos renglones de fisioterapia.
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const pleg = await page.evaluate(() => [...document.querySelectorAll('#detalle-internacion div')].filter((d) => d.children.length === 4 && /^Fisioterapia/.test((d.firstElementChild || {}).textContent || '')).map((d) => d.children[3].textContent.trim()));
+  if (pleg.length !== 2 || pleg.some((t) => t !== ASESOR)) malas.push('/planes/ plegable: ' + JSON.stringify(pleg));
+  await page.close();
+  // La lista de los once servicios y la hoja del servicio, en el celular.
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  const lista = await cel.evaluate(() => {
+    const b = [...document.querySelectorAll('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila')].find((x) => /^Fisioterapia/.test(x.querySelector('b').textContent));
+    if (!b) return null;
+    const c = b.querySelectorAll(':scope > span > span')[2].cloneNode(true);
+    c.querySelectorAll('.sr-solo, i').forEach((x) => x.remove());
+    return c.textContent.trim();
+  });
+  if (lista !== ASESOR) malas.push('lista de los once: ' + JSON.stringify(lista));
+  await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila', { hasText: 'Fisioterapia' }).tap();
+  await cel.waitForTimeout(450);
+  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
+  if (!hoja || !hoja.gold || !hoja.gold.includes(ASESOR) || /\b(?:10|20)\b/.test(hoja.gold) || !hoja.notas.includes(nota)) malas.push('hoja del servicio: ' + JSON.stringify(hoja));
+  await ctx.close();
+  if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50) · ' + malas.join(' · '));
+  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista, el plegable y la hoja, sin número para Gold');
 }
 
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────

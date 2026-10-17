@@ -143,7 +143,7 @@ export default function ComparativaCelular() {
     const varios = nombres.length > 1;
     // Sin repetir: la tomografía y la resonancia traen la misma nota (la del
     // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
-    const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean))];
+    const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota, COV[n] && COV[n].notaAsesor])).filter(Boolean))];
     // La que explica «¿quién?» va primero: es lo que la persona vino a preguntar.
     const arriba = notas.filter((t) => t === NOTA_UNIDAD);
     return (
@@ -185,7 +185,7 @@ export default function ComparativaCelular() {
                   {/* La forma corta donde la hay (P3A): esto se escanea. La
                       cola conserva lo que Essential decía después del número
                       («2/familia/año, junto con ecocardiograma y ergometría»). */}
-                  {s.corta && s.corta[i] ? <span><Corta t={s.corta[i]} partir />{s.cola && s.cola[i]}</span> : c.d}
+                  {s.corta && s.corta[i] && s.corta[i].includes('/') ? <span><Corta t={s.corta[i]} partir />{s.cola && s.cola[i]}</span> : c.d}
                   {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
                   {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
                 </span>
