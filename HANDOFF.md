@@ -32,7 +32,10 @@ aprendió en el camino: BITACORA cap. 148.
    (`QUIEN_SG` y, aparte, `QUIEN_PSICO`): cuando SP conteste #110, se cambia
    ahí. Tiene la letra, el color y el peso de «familia», con subrayado punteado,
    y es un botón que abre la tarjeta del servicio con clic, toque o teclado (no
-   al pasar el mouse). El pie no afirma nada del contrato (`NOTA_UNIDAD`: «En
+   al pasar el mouse). Con el teclado, Enter y Espacio no la cierran; el lector
+   de pantalla oye la fila y el plan («Tomografía (TAC), Silver: 2 al año, sin
+   confirmar para quién») y la tarjeta como descripción. Solo esa celda es
+   botón (vuelta 1, abajo). El pie no afirma nada del contrato (`NOTA_UNIDAD`: «En
    Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el
    grupo.»). La lista «Los once servicios» conserva las condiciones de
    Essential. La forma corta va en `app/components/Corta.jsx`: el corte de
@@ -46,15 +49,22 @@ aprendió en el camino: BITACORA cap. 148.
 2. **G1A, la fisioterapia de Gold va al asesor** (sp-interno#50: la tabla decía
    20 y el plegable, 10). La celda dice «Preguntale a tu asesor» en el home, la
    tabla y la lista de `/planes` y el plegable, como la cesárea de Gold de la
-   2A. Ninguna forma corta le da a Gold un número hasta que SP lo aclare.
+   2A: es texto (en la capa de cifras, con el peso del dato de al lado), no
+   botón, y la tarjeta se abre desde el nombre del servicio. Lo que se lee (la
+   tarjeta de `/planes` y la hoja del celular) dice para Gold qué cubre, sin
+   número, como la tarjeta del home, y la nota manda al asesor. Ninguna forma
+   corta le da a Gold un número hasta que SP lo aclare.
 3. **E3A, «/evento»** donde la grilla dice «por evento»: «Gs. 350 mil/evento»,
    «Gs. 1 millón/evento», «Gs. 1,5 millones/evento» (nunca «1,5 mill.»), y
    los remedios en urgencias de Silver y Gold. El parto queda con «hasta» y
    sin unidad: su fuente no la trae.
 4. **R1A, una sola forma de mandar al asesor: «Preguntale a tu asesor»**
    (`ASESOR` de `coverage.js`). Salieron «Consultalo», «Consultalo con tu
-   asesor» y «Confirmalo con tu asesor», y el «—» del plegable de topes que se
-   leía «no cubre».
+   asesor» y «Confirmalo con tu asesor», y el «—» de esa misma fila
+   (urgencia) en el plegable de topes, que se leía «no cubre». ⚠ La fila de
+   abajo, «En estudios y procedimientos – Cuadro 2», tiene el mismo hueco en
+   Essential (`null` en la fuente) y **sigue en «—»**: la R1A nombró solo la
+   fila de urgencia, y extenderla lo decide Arturo (PR #271).
 5. **P2A, la tarjeta del servicio del home no muestra esperas** (regla del
    03/10). Las esperas siguen en `/planes`, el simulador y la cotización.
 6. **P4A, se bajó la copia congelada `/v1/`** (sp-interno#181). `public/v1/`
@@ -89,6 +99,22 @@ de tráfico móvil (trece lugares: nueve en el código y la QA, y dos pasajes
 viejos de este archivo y dos de la BITACORA) y los «50 segundos de paciencia»
 del personaje del `BRANDSCRIPT.md` también pasan al puntero; la decisión
 nombró solo los cuatro lugares de arriba.
+
+**Vuelta 1 del QA y el comité (17/10, BITACORA cap. 149).** Arreglado en la
+misma rama, cada arreglo con su prueba en `qa-lanzamiento` (falla en la build
+de 56d4d9e y pasa con el cambio): la celda «¿quién?» con teclado y lector de
+pantalla; solo esa celda es botón (la de «Preguntale a tu asesor» lo era sin
+que nadie lo decidiera); la fisioterapia de Gold en la lista con el peso del
+dato y sin repetir el asesor en la tarjeta y la hoja; un control del
+`aria-hidden` de la forma corta; y ningún renglón termina en «/» en el
+plegable de topes («urgencia o emergencia», «traumatológica, neurológica o
+post-quirúrgica»: la barra que hace de «o» pasa a «o») ni en el pie del home
+(«c/ Azara» con espacio duro). **Quedan para Arturo, con opciones en el PR
+#271:** si la celda «Preguntale a tu asesor» lleva a WhatsApp; un solo pie
+para fisioterapia; el «por persona» de la tarjeta de consultas de Silver del
+home al lado de «5/¿quién?/año» en psicología (#110); la condición de la
+tomografía de Essential en las tablas; el «—» de «Cuadro 2» de Essential; y
+«y/o» y «post-quirúrgica» en los rótulos del plegable.
 
 ---
 

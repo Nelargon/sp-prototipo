@@ -5217,3 +5217,53 @@ lo que se lee hoy, no la historia.
   en la noche.
 - **Lo que le sirve a un competidor no se escribe en el repo público**, ni
   siquiera en la bitácora. Va al privado, y acá queda un puntero.
+
+## Capítulo 149 — La prueba de teclado que no apretaba ninguna tecla (17/10/2026)
+
+**Qué intentamos.** Pasarle la rama del «Todo A» (PR #271) al QA y al comité
+evaluador antes de que la vea Arturo. Todas las pruebas de `qa-lanzamiento`
+estaban en verde.
+
+**Qué pasó.** El QA y el comité encontraron seis cosas que las pruebas no veían,
+y en cada una la prueba miraba otra cosa que lo que importaba:
+
+- **Enter cerraba la tarjeta.** La celda «¿quién?» se abría al recibir el foco
+  con el teclado, y su clic alternaba entre abrir y cerrar. Quien llegaba con
+  Tab y apretaba Enter, como en cualquier botón, cerraba lo que se le acababa de
+  abrir (medido por el Dev: Tab la abre, Enter la cierra, Espacio la vuelve a
+  abrir). La prueba hacía Shift+Tab y Tab y miraba el foco: nunca apretaba la
+  tecla de un botón.
+- **El lector de pantalla no sabía de qué fila era la celda.** En la
+  computadora oía «2 al año, sin confirmar para quién», sin la fila ni el plan,
+  y dos celdas decían «expandido» a la vez. La prueba leía el texto oculto, no
+  el nombre que calcula el navegador.
+- **La prueba fijó lo que nadie decidió.** La rama hizo botón también a la
+  celda «Preguntale a tu asesor». Ninguna decisión lo pedía, el botón prometía
+  llevar al asesor y solo abría una tarjeta, y la prueba exigía `boton`:
+  deshacerlo la ponía en rojo. Una ocurrencia de la implementación había
+  quedado con forma de regla.
+- **El `aria-hidden` no lo miraba nadie.** Con `Corta.jsx` cambiado a
+  `role="img"` y sin `aria-hidden`, el lector diría «uno barra quién barra año»
+  y además la frase, y todo seguía en verde. Ahora falla una sola sección: la
+  que se sumó.
+- **La duda en la letra de lectura.** En la lista de los once servicios, la
+  celda de Gold decía «Preguntale a tu asesor» en Inter 400, al lado de
+  «15/¿quién?/año» en Nunito Sans 700. La prueba comparaba el texto, no el
+  estilo.
+- **«Ningún renglón termina en «/»» se medía solo donde lo pusimos.** El
+  plegable de topes de la misma página cortaba «Fisioterapia traumatológica / ⏎
+  neurológica» y el pie del home, «c/ ⏎ Azara». Las dos ya estaban en `main`.
+
+**Qué aprendimos.**
+- **Una prueba de teclado aprieta las teclas.** Enfocar no es usar: Enter y
+  Espacio son el botón. Un control que se abre al enfocar y alterna al hacer
+  clic se cierra con la tecla que lo activa.
+- **Lo que oye un lector se mide con el nombre que calcula el navegador**
+  (`getByRole` con `name`), no leyendo el texto oculto: ese texto puede estar y
+  no ser lo que se anuncia.
+- **Antes de fijar algo en una prueba, buscar la decisión que lo pide.** Si no
+  la hay, eso no se prueba como regla: se pregunta.
+- **«La misma forma y el mismo peso» se prueba con el estilo computado**, no con
+  el texto (lámina 84).
+- **Una regla de forma vale para toda la página**, no solo para el componente
+  que la trajo. Y lo que viene de `main` también se mide.
