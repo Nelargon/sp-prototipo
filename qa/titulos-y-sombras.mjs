@@ -14,7 +14,8 @@
 // Uso:  node qa/titulos-y-sombras.mjs out
 // Antes de mirar el sitio se prueba a sí mismo con casos que tienen que marcar
 // y casos que no (CLAUDE.md, BITACORA cap. 89).
-// Afuera: el blog (sus títulos los escribe el motor), /v1 y la guía vieja.
+// Afuera: el blog (sus títulos los escribe el motor) y la guía vieja. /v1
+// también quedaba afuera hasta que se bajó (17/10/2026, sp-interno#181).
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -87,7 +88,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (fallas.length) { console.error('✗ el detector de títulos y sombras falla en sus propios casos:\n  ' + fallas.join('\n  ')); process.exit(1); }
   const dir = process.argv[2] || 'out';
   const hallazgos = [];
-  const paginas = archivos(dir, /\.html$/, /\/(v1|blog|guia|_next)(\/|$)/);
+  const paginas = archivos(dir, /\.html$/, /\/(blog|guia|_next)(\/|$)/);
   for (const f of paginas) for (const t of titulosConPunto(readFileSync(f, 'utf8'))) hallazgos.push(`título con punto en ${f.slice(dir.length) || '/'}: «${t}»`);
   const codigo = archivos('app', /\.(jsx?|css)$/, /node_modules/);
   for (const f of codigo) {

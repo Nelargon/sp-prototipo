@@ -7,7 +7,8 @@ name: Salud nocturna
 #   1. el sitio se construye (las dos ediciones)
 #   2. las pruebas rápidas: buscador, cobertura de páginas, links internos
 #   3. las pruebas con navegador: qa-integral (cero «roto») y qa-lanzamiento
-#   4. el sitio EN VIVO responde, y la v1 no publica lo que no se lanza
+#   4. el sitio EN VIVO responde, la v1 no publica lo que no se lanza y la
+#      copia congelada /v1/ ya no existe (se bajó el 17/10/2026)
 #   5. producción = main: el último commit de main está publicado
 #   6. el Guardián (capa 2) está vivo: actualizó su tablero en las últimas 30 h
 #
@@ -162,9 +163,17 @@ jobs:
           done
           # La v1 no publica lo que no se lanza (app/edicion.js): si responde,
           # es una página huérfana que Google puede encontrar.
-          for p in /lanzamiento/blog/ /lanzamiento/mi-sp/ /lanzamiento/agendar/ /lanzamiento/historia/; do
+          for p in /lanzamiento/blog/ /lanzamiento/mi-sp/ /lanzamiento/agendar/ /lanzamiento/historia/ /lanzamiento/v1/; do
             mirar "$p" 404
           done
+          # La copia congelada /v1/ se bajó el 17/10/2026 (sp-interno#181): si
+          # vuelve a responder, alguien la repuso. En un PR no se mira: el sitio
+          # en vivo todavía es main, y el PR que la baja la vería responder.
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "· /v1/ en vivo no se mira en un PR (el sitio en vivo todavía es main)"
+          else
+            mirar /v1/ 404
+          fi
           exit $fallas
 
       - id: fresco

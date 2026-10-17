@@ -68,7 +68,15 @@ console.log('\n== 1. FUNCIONAL ==');
 {
   // 1a. Crawler: todos los links internos responden
   const page = await browser.newPage();
-  const porVisitar = [...PAGINAS, '/v1/'];
+  // Hasta el 17/10/2026 se recorría también la copia congelada /v1/. Se bajó
+  // (sp-interno#181): ahora tiene que dar 404, y si vuelve a responder alguien
+  // la repuso (servía Gilroy sin licencia, cifras sin confirmar y «seguro»).
+  const porVisitar = [...PAGINAS];
+  {
+    const r = await page.request.get(BASE + '/v1/').catch(() => null);
+    if (r && r.status() === 404) ok('funcional', '/v1/ da 404: la copia congelada no se publica');
+    else falla('funcional', 'roto', 'la copia congelada /v1/ responde (' + (r ? r.status() : 'sin respuesta') + '): se bajó el 17/10/2026, sp-interno#181', '/v1/');
+  }
   const links = new Set();
   for (const p of porVisitar) {
     await page.goto(BASE + p, { waitUntil: 'domcontentloaded' }).catch(() => falla('funcional', 'roto', 'no carga', p));
@@ -604,7 +612,7 @@ console.log('\n== 4. RENDIMIENTO ==');
 console.log('\n== 5. CONTENIDO ==');
 {
   const htmls = [];
-  const walk = (d) => { for (const f of readdirSync(d)) { const full = join(d, f); if (statSync(full).isDirectory()) { if (!full.includes('/v1') && !full.includes('_next')) walk(full); } else if (f.endsWith('.html')) htmls.push(full); } };
+  const walk = (d) => { for (const f of readdirSync(d)) { const full = join(d, f); if (statSync(full).isDirectory()) { if (!full.includes('_next')) walk(full); } else if (f.endsWith('.html')) htmls.push(full); } };
   walk(OUT_DIR);
   const visible = (html) => html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ');
   const patrones = [
@@ -630,12 +638,12 @@ console.log('\n== 5. CONTENIDO ==');
       if (m) { limpio = false; falla('contenido', 'confunde', nombre + ' visible ("…' + txt.slice(Math.max(0, m.index - 30), m.index + 34).replace(/\s+/g, ' ').trim() + '…")', f.replace(OUT_DIR, '')); }
     }
   }
-  if (limpio) ok('contenido', htmls.length + ' páginas sin placeholders ni jerga prohibida (excluido /v1, congelado a propósito)');
+  if (limpio) ok('contenido', htmls.length + ' páginas sin placeholders ni jerga prohibida');
   // «Seguro» cuando SP habla de sí misma (sp-interno#136, P2; el detector se
   // prueba a sí mismo en `node qa/seguro-propio.mjs`, que corre en el CI).
   {
     const { paginas, hallazgos } = revisarSeguro(OUT_DIR);
-    if (!hallazgos.length) ok('contenido', paginas + ' páginas sin «seguro» para SP (afuera: blog y /v1)');
+    if (!hallazgos.length) ok('contenido', paginas + ' páginas sin «seguro» para SP (afuera: el blog)');
     for (const h of hallazgos) falla('contenido', 'confunde', 'SP se presenta como seguro: ' + h.nombre + ' («…' + h.cerca + '…»)', h.pagina);
   }
   // lente Shapiro en la home: hero claro / prueba social / objeciones / CTA

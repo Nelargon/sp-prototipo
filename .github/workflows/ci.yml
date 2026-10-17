@@ -25,6 +25,12 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /sp-prototipo
       - name: Verificar que la guía quedó en el export
         run: test -f out/guia/guia_home.html && echo "✓ guía presente en el build"
+      # La copia congelada /v1/ se bajó el 17/10/2026 (sp-interno#181). Next
+      # copia public/ entero a out/: si alguien la repone, aparece acá.
+      - name: Verificar que la copia congelada /v1/ no volvió
+        run: |
+          if [ -e out/v1 ]; then echo "✗ out/v1 quedó publicado en el prototipo (se bajó el 17/10/2026, sp-interno#181)"; exit 1; fi
+          echo "✓ sin /v1/ en el prototipo"
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.

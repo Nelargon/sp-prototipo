@@ -19,15 +19,15 @@ if (!LANZAMIENTO) process.exit(0);
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const OUT = 'out';
 
-// Qué se poda y por qué. El snapshot /v1/ entra también: es referencia
-// congelada del home viejo, material interno, no una página del sitio.
+// Qué se poda y por qué. La copia congelada /v1/ ya no se poda: desde el
+// 17/10/2026 no existe en ninguna edición (sp-interno#181; queda en el
+// historial de git). Un link a /v1/ lo ataja qa/links-internos.mjs.
 const PODAR = [
   ['mi-sp', 'Mi SP — no se lanza en la v1'],
   ['blog', 'el blog — no se lanza en la v1'],
   ['guia', 'el molde viejo de la Guía Médica (datos ilustrativos) — la v1 usa /guia-medica/'],
   ['agendar', 'agendar un turno — sale de la v1 el 23/09/2026 (versión preliminar, solo prototipo)'],
   ['historia', 'el manifiesto en scrollytelling — 720vh, no entra en la v1'],
-  ['v1', 'snapshot congelado del home viejo — referencia interna'],
 ];
 
 for (const [dir, porque] of PODAR) {

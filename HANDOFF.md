@@ -2539,7 +2539,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (bajado el 17/10/2026, sp-interno#181) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página
@@ -2951,7 +2951,7 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
-| **Snapshot del home v1** (referencia congelada, pre-rediseño) | `public/v1/` → [/v1/](https://nelargon.github.io/sp-prototipo/v1/) | Solo referencia — no editar (fuente: commit `b8289a8`) |
+| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) |
 | **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
@@ -3096,6 +3096,9 @@ usa `npm ci`).
     Nunito Sans y la web el variable woff2 (subset latin). Ojo: `/v1/`
     (congelado) todavía sirve los TTF viejos de Gilroy — decidir si el
     snapshot se baja o se tolera mientras sea demo interna.
+    *Historia (17/10/2026): decidido. Arturo eligió bajarlo (P4A,
+    sp-interno#181); `public/v1/` salió del repo y queda en el historial de
+    git. Ver la sección del 17/10 arriba.*
 11h. **El paso "Zona" se volvió "¿Dónde querés tu cobertura?" (21 jul
     2026, decisión del usuario tras la reunión MKT/Ventas del 20 jul;
     BITACORA cap. 31)**: la persona escribe SU CIUDAD (buscador tolerante

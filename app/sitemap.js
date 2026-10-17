@@ -1,5 +1,4 @@
 // sitemap.xml del ecosistema completo (web Next + guía estática).
-// /v1/ queda afuera a propósito: es el snapshot congelado de referencia.
 
 import { getPublishedPosts } from '../lib/blog';
 import { SERIES } from '../lib/series';

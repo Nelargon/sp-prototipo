@@ -18,7 +18,9 @@ export default function robots() {
     return { rules: { userAgent: '*', disallow: '/' } };
   }
   return {
-    rules: { userAgent: '*', allow: '/', disallow: '/v1/' },
+    // Sin disallow de /v1/: la copia congelada se bajó el 17/10/2026
+    // (sp-interno#181).
+    rules: { userAgent: '*', allow: '/' },
     sitemap: SITE + '/sitemap.xml',
   };
 }

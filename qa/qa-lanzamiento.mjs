@@ -22,7 +22,7 @@
      3. PW_PATH=<dir-externo>/node_modules/playwright-core/index.js \
         node qa/qa-lanzamiento.mjs http://localhost:8080/sp-prototipo/lanzamiento */
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
@@ -1053,6 +1053,32 @@ console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
   await page.close();
   if (nombres.length !== 9 || abiertas !== 9 || conEspera.length) mal('la tarjeta del servicio del home no lleva esperas (regla del 03/10, P2A): ' + JSON.stringify({ servicios: nombres.length, abiertas, conEspera }));
   else bien('las nueve tarjetas de servicio del home se abren sin esperas');
+}
+
+// ── La copia congelada /v1/ ya no existe (P4A, Arturo, 17/10/2026) ─────────
+// sp-interno#181: public/v1/ servía los TTF de Gilroy sin licencia, una cifra
+// de contratos sin confirmar que decía «hoy» y «seguro médico». Se bajó del
+// repo y queda en el historial de git. Next copia public/ entero a out/ en las
+// dos ediciones (la de lanzamiento la podaba después), así que se mira en tres
+// lugares: el repo no tiene public/v1/, esta edición da 404 en /v1/ y, si el
+// prototipo se sirve en el prefijo de arriba (la salud nocturna lo monta así),
+// el prototipo también. Falla con public/v1/ de vuelta y pasa sin ella.
+console.log('\n── La copia congelada /v1/ ya no existe (P4A)');
+{
+  if (existsSync(new URL('../public/v1', import.meta.url))) mal('el repo todavía tiene public/v1/: cada build la copia a out/v1/ (sp-interno#181)');
+  else bien('el repo no tiene public/v1/');
+  const page = await browser.newPage();
+  const estado = async (url) => { const r = await page.request.get(url).catch(() => null); return r ? r.status() : 'sin respuesta'; };
+  const aca = await estado(BASE + '/v1/');
+  if (aca === 404) bien('/v1/ da 404 en esta edición');
+  else mal('/v1/ responde ' + aca + ' en esta edición: la copia congelada se bajó el 17/10/2026 (sp-interno#181)');
+  const PROTO = BASE.replace(/\/lanzamiento\/?$/, '');
+  if (PROTO !== BASE && (await estado(PROTO + '/')) === 200) {
+    const alla = await estado(PROTO + '/v1/');
+    if (alla === 404) bien('/v1/ da 404 también en el prototipo (' + PROTO.replace(/^https?:\/\/[^/]+/, '') + '/)');
+    else mal('/v1/ responde ' + alla + ' en el prototipo: la copia congelada se bajó el 17/10/2026 (sp-interno#181)');
+  } else console.log('    · el prototipo no se sirve al lado: su /v1/ lo mira qa-integral');
+  await page.close();
 }
 
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────
