@@ -869,6 +869,45 @@ console.log('\n── La forma corta (P3A)');
   }
 }
 
+// ── Ningún renglón termina en «/» (QA y writer, vuelta 1, 17/10/2026) ──────
+// La regla de la P3A (ningún renglón termina en «/») valía también fuera de la
+// forma corta: el plegable de topes de /planes cortaba «Fisioterapia
+// traumatológica / ⏎ neurológica…» a 360, 390, 430 y 820 px, y el pie del home,
+// «Pa'í Pérez 630 c/ ⏎ Azara» a 360. La barra que hacía de «o» pasó a «o»
+// (regla de escaneo) y «c/» se une a la calle con un espacio duro. Se miran los
+// rótulos y las celdas de cada fila del plegable abierto (cada celda por
+// separado, no la fila entera) y la dirección del pie, en cinco anchos. El detector se prueba antes contra un renglón que termina en «/» (lo
+// encuentra) y el mismo texto con espacio duro (no). Falla en la build de
+// 56d4d9e y pasa con el cambio.
+console.log('\n── Ningún renglón termina en «/» (pie del home y plegable de topes)');
+{
+  const CON_BARRA = `(r, els) => els.filter((e) => e.getClientRects().length).map((e) => r(e)).filter((ls) => ls.slice(0, -1).some((t) => /\\/\\s*$/.test(t))).map((ls) => ls.join(' ⏎ '))`;
+  const malas = [];
+  for (const width of [360, 390, 430, 820, 1280]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    if (width === 360) {
+      const prueba = await page.evaluate(([fn, cb]) => {
+        const r = eval(fn), f = eval(cb);
+        const caja = (html) => { const d = document.createElement('div'); d.style.cssText = 'width:1ch;font-size:16px'; d.innerHTML = html; document.body.appendChild(d); const x = f(r, [d]).length; d.remove(); return x; };
+        return { mala: caja('Pérez 630 c/ Azara'), buena: caja('Pérez 630 c/&nbsp;Azara') };
+      }, [RENGLONES, CON_BARRA]);
+      if (prueba.mala !== 1 || prueba.buena !== 0) malas.push('el detector no distingue «c/ ⏎ Azara» de «c/ Azara» con espacio duro: ' + JSON.stringify(prueba));
+    }
+    const pie = await page.evaluate(([fn, cb]) => { const r = eval(fn), f = eval(cb); return f(r, [...document.querySelectorAll('footer *')].filter((e) => !e.children.length && /Azara/.test(e.textContent))); }, [RENGLONES, CON_BARRA]);
+    pie.forEach((t) => malas.push(width + ' px, pie del home: ' + t));
+    await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+    await page.evaluate(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); if (b && b.getAttribute('aria-expanded') === 'false') b.click(); });
+    await page.waitForTimeout(500);
+    const pleg = await page.evaluate(([fn, cb]) => { const r = eval(fn), f = eval(cb); return f(r, [...document.querySelectorAll('#detalle-internacion div')].filter((d) => d.children.length === 4 && getComputedStyle(d).display === 'grid').flatMap((d) => [...d.children])); }, [RENGLONES, CON_BARRA]);
+    pleg.forEach((t) => malas.push(width + ' px, plegable de topes: ' + t));
+    await page.close();
+  }
+  if (malas.length) mal('un renglón termina en «/» · ' + malas.slice(0, 6).join(' · '));
+  else bien('ningún renglón del pie del home ni del plegable de topes termina en «/» (360, 390, 430, 820 y 1280 px); el detector distingue el caso malo del bueno');
+}
+
 // ── La forma corta, para los lectores de pantalla (P3A; comité, vuelta 1) ──
 // La decisión fija cómo se oye: la forma visible («1/¿quién?/año») va con
 // aria-hidden y al lado, un texto oculto (.sr-solo) con la frase completa; sin

@@ -163,7 +163,17 @@ export default function Planes() {
      - "Carencia…" va después de lo que la persona entiende (regla del
        8/09/2026: "carencia" no va primero; la palabra del contrato, detrás).
      - El master escribe "Gs." y el sitio también (Arturo, 07/10/2026, sp-interno#164). Una sola moneda. */
-  const etiquetaParam = (t) => {
+  // La barra que hace de «o» pasa a «o», solo en la vista (el dato generado no
+  // se toca): «En urgencia o emergencia», «Fisioterapia traumatológica,
+  // neurológica o post-quirúrgica». Lo resuelve la regla de escaneo sin
+  // preguntar (HANDOFF, 13/10, punto 6). En este plegable la barra ya dice «por»
+  // («20 días/familia», P3A): con los dos sentidos se leía mal, y a 360, 390,
+  // 430 y 820 px un renglón terminaba en «traumatológica /» (QA y writer,
+  // vuelta 1, 17/10). «y/o» queda: si «clínica o quirúrgica» dice lo mismo lo
+  // confirma Arturo (barrido del 13/10, PR #271).
+  const barraO = (t) => { const p = t.split(' / '); return p.length < 2 ? t : p.slice(0, -1).join(', ') + ' o ' + p[p.length - 1]; };
+  const etiquetaParam = (crudo) => {
+    const t = barraO(crudo);
     // Interconsultas: la grilla dice «por año; + hasta 3 visitas por
     // especialidad», y los contratos de Silver y Gold (2.3.5) dicen «por
     // internación», con 3 visitas en Silver y 4 en Gold. Hasta que SP lo aclare,

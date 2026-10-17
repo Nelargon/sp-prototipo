@@ -1069,7 +1069,8 @@ export default function Page() {
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Contacto</div>
             <div style={css('font-size:14px;color:var(--sp-blue-pale);line-height:2')}>
               <div>Sede Administrativa · Perú 222 esq. Eligio Ayala, Asunción</div>
-              <div>Centro Médico Lister · Pa'í Pérez 630 c/ Azara, Asunción</div>
+              {/* «c/» es «casi» y no se separa de la calle: a 360 px el renglón terminaba en «c/» (QA, 17/10). */}
+              <div>Centro Médico Lister · Pa'í Pérez 630 c/&nbsp;Azara, Asunción</div>
               <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:var(--sp-blue-pale);font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
               <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:var(--sp-blue-pale)')}>hola@saludprotegida.com.py</a></div>
             </div>
