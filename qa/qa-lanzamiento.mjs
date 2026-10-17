@@ -770,12 +770,44 @@ console.log('\n── La forma corta (P3A)');
     await page.keyboard.press('Tab');
     await page.waitForTimeout(200);
     const conTeclado = await page.evaluate(() => !!document.querySelector('#cartilla .cmp2-tarjeta') && document.activeElement.classList.contains('cmp2-duda'));
+    // Enter y Espacio son las teclas de un botón: no pueden cerrar lo que el
+    // foco acaba de abrir (vuelta 1 del comité, 17/10: con Enter se cerraba).
+    const sigueAbierta = () => page.evaluate(() => !!document.querySelector('#cartilla .cmp2-tarjeta') && document.activeElement.getAttribute('aria-expanded') === 'true');
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(200);
+    const conEnter = await sigueAbierta();
+    await page.keyboard.press('Space');
+    await page.waitForTimeout(200);
+    const conEspacio = await sigueAbierta();
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
     const ev = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'duda');
-    abre = { conHover, conClic, cerrada, conTeclado, ev: ev.length };
+    abre = { conHover, conClic, cerrada, conTeclado, conEnter, conEspacio, ev: ev.length };
   }
   const pieBien = (p) => p === 'Por familia: un cupo que comparten todos los del grupo. ' + NOTA_UNIDAD && !/contrato/i.test(p);
-  if (QUIEN_SG === DUDA && (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || abre.ev !== 1)) mal('computadora: la celda con «' + DUDA + '» tiene que abrir la tarjeta con un clic y con el teclado, no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda» (' + JSON.stringify(abre) + ')');
-  else bien('computadora: la celda con «' + DUDA + '» abre la tarjeta con un clic y con el teclado, no al pasar el mouse; el pie manda al asesor y se mide como «duda»');
+  if (QUIEN_SG === DUDA && (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || abre.ev !== 1)) mal('computadora: la celda con «' + DUDA + '» tiene que abrir la tarjeta con un clic y con el teclado (y Enter o Espacio no la cierran), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda» (' + JSON.stringify(abre) + ')');
+  else bien('computadora: la celda con «' + DUDA + '» abre la tarjeta con un clic y con el teclado, y Enter o Espacio no la cierran; no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
+  // Lo que oye el lector de pantalla (vuelta 1 del comité, 17/10). En la
+  // computadora la columna de nombres está lejos: el nombre del botón (el que
+  // calcula el navegador, no un atributo leído a mano) dice la fila y el plan;
+  // la tarjeta abierta es su descripción, y «expandido» lo dice solo la celda
+  // que la abrió, no las de los otros planes de la misma fila.
+  let lector = null;
+  const tomSilver = page.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Tomografía (TAC)' }) }).locator('.cmp2-duda');
+  if (QUIEN_SG === DUDA && (await tomSilver.count())) {
+    await tomSilver.click();
+    await page.waitForTimeout(200);
+    lector = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('#cartilla .cmp2-duda[aria-expanded="true"]')];
+      const d = b[0] && document.getElementById(b[0].getAttribute('aria-describedby') || '');
+      return { expandidos: b.length, describe: !!d && d.classList.contains('cmp2-tarjeta') && /Tomografía/.test(d.textContent) };
+    });
+    lector.nombre = await page.getByRole('button', { name: /^Tomografía \(TAC\), Silver: 2 al año, sin confirmar para quién$/ }).count();
+    lector.sinFila = await page.getByRole('button', { name: /^\d+ al año, sin confirmar para quién$/ }).count();
+    await page.keyboard.press('Escape');
+  }
+  if (QUIEN_SG === DUDA && (!lector || lector.expandidos !== 1 || !lector.describe || lector.nombre !== 1 || lector.sinFila)) mal('computadora: el lector de pantalla tiene que oír la fila y el plan en la celda con «' + DUDA + '», la tarjeta como su descripción, y «expandido» solo en la celda que la abrió (' + JSON.stringify(lector) + ')');
+  else bien('computadora: el lector oye «Tomografía (TAC), Silver: …» en la celda con «' + DUDA + '», la tarjeta como descripción y «expandido» solo ahí');
   await page.close();
 
   // 2. Celular: el toque, las líneas de las tarjetas y la lista de los once.

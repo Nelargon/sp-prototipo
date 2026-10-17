@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
-import Corta from './Corta';
+import Corta, { frase } from './Corta';
 import { DUDA } from '../coverage';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
@@ -105,17 +105,27 @@ const valor = (fila, c, notas) => (
   </>
 );
 
-// La celda con el hueco o que manda al asesor: se toca como el nombre del
-// servicio y abre su tarjeta (la de la fila: en la computadora vive en la
-// columna de nombres). Clic, toque o teclado; sin hover (ver arriba).
-function Duda({ abierta, controla, abrir, cerrar, children }) {
+// La celda con el hueco: se toca como el nombre del servicio y abre su tarjeta
+// (la de la fila: en la computadora vive en la columna de nombres). Clic, toque
+// o teclado; sin hover (ver arriba).
+// - Con el teclado, el foco la abre y Enter o Espacio (un clic sin puntero,
+//   `detail` 0) solo abren: la tecla de un botón no puede cerrar lo que el foco
+//   acaba de abrir (vuelta 1 del comité, 17/10). Escape o salir la cierran.
+//   Con el dedo o el mouse, el clic abre y cierra.
+// - El lector de pantalla oye la fila y el plan («Tomografía (TAC), Silver: 2
+//   al año, sin confirmar para quién»): en la computadora la columna de nombres
+//   está lejos y la celda sola no dice de qué es. La tarjeta, que queda antes en
+//   el orden de la página, es su descripción mientras está abierta.
+function Duda({ abierta, controla, nombre, abrir, cerrar, children }) {
   return (
     <button
       type="button"
       className="cmp2-duda"
+      aria-label={nombre}
       aria-expanded={abierta}
       aria-controls={abierta ? controla : undefined}
-      onClick={(e) => { e.stopPropagation(); if (abierta) cerrar(); else abrir(); }}
+      aria-describedby={abierta ? controla : undefined}
+      onClick={(e) => { e.stopPropagation(); if (e.detail === 0 || !abierta) abrir(); else cerrar(); }}
       onFocus={(e) => { if (e.target.matches?.(':focus-visible')) abrir(); }}
       onBlur={cerrar}
     >
@@ -126,6 +136,9 @@ function Duda({ abierta, controla, abrir, cerrar, children }) {
 
 export default function Comparador({ planes, filas, notas = false, id = 'cartilla' }) {
   const [abierta, setAbierta] = useState(null);
+  // Qué columna abrió la tarjeta de la fila (en la computadora todas abren la
+  // misma, la de la columna de nombres): solo esa celda dice «expandido».
+  const [desde, setDesde] = useState(null);
   useEffect(() => {
     if (abierta === null) return;
     const tecla = (e) => { if (e.key === 'Escape') setAbierta(null); };
@@ -139,7 +152,7 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       fila={filas[k]} planes={planes} id={'cmp2-t-' + donde + '-' + k}
       abierta={abierta === donde + '-' + k}
       // Cuántas personas abren la tarjeta de cada servicio (sp-interno#98).
-      abrir={() => { setAbierta(donde + '-' + k); trackExplicacion('servicio', filas[k].name); }}
+      abrir={() => { setDesde(null); setAbierta(donde + '-' + k); trackExplicacion('servicio', filas[k].name); }}
       cerrar={() => setAbierta((a) => (a === donde + '-' + k ? null : a))}
     />
   );
@@ -151,11 +164,12 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
     const v = valor(f, f.cells[i], notas);
     const c = f.cells[i];
     if (!f.d || !(c.asesor || c.t.includes('/' + DUDA + '/'))) return v;
-    const aqui = abierta === 'c-' + k || abierta === i + '-' + k;
+    const aqui = (abierta === 'c-' + k && desde === i) || abierta === i + '-' + k;
     return (
       <Duda
         abierta={aqui} controla={'cmp2-t-' + abierta}
-        abrir={() => { const d = dondeDuda(i); setAbierta(d + '-' + k); trackExplicacion('duda', f.name); }}
+        nombre={f.name + ', ' + planes[i].short + ': ' + (c.dicho || frase(c.t))}
+        abrir={() => { const d = dondeDuda(i); setDesde(i); setAbierta(d + '-' + k); trackExplicacion('duda', f.name); }}
         cerrar={() => setAbierta((a) => (a === 'c-' + k || a === i + '-' + k ? null : a))}
       >
         {v}
