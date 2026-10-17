@@ -2122,7 +2122,8 @@ partió en dos. El diseñador y el estratega eligieron A, con un ajuste:
 «Preguntale a tu asesor» no se repite en cada celda (8 veces en la tabla), sino
 que va una vez por grupo. El redactor y el auditor de datos eligieron C sin la
 marca, que termina siendo la misma forma con otra palabra («¿para quién?»). La
-recomendación es A con ese ajuste.
+recomendación es A con ese ajuste. *(17/10/2026: la pregunta se rehízo en forma
+corta en la lámina 86, y ahí la decidió Arturo.)*
 
 **La lección.** Cuando un dato está confirmado en un plan y en duda en otro, la
 duda se escribe con la misma forma y el mismo peso que el dato, en el mismo
@@ -2150,7 +2151,9 @@ página.
 es sacarlas también de la tarjeta, por la regla del 03/10: hoy unas tarjetas
 tienen espera y otras no. Terapia intensiva, por ejemplo, dice «a los 365
 días» en Essential y nada en Silver y Gold, y eso se puede leer como que ahí no
-hay espera.
+hay espera. **Decidido el 17/10/2026** (Arturo, «Todo A», P2A): las esperas
+salen también de la tarjeta del servicio del home. Siguen en `/planes`, el
+simulador y la cotización.
 
 **La lección.** Una pregunta sobre un lugar de la pantalla se contesta con la
 pantalla. Arturo no sabía cómo se llamaba la tarjeta, y no tenía por qué: el
@@ -2198,6 +2201,17 @@ regla recién escrita: la cifra va con su unidad. Lo que ninguna opción arregla
 es el hueco mismo: la forma corta de verdad es la que llega cuando SP contesta
 sp-interno#110, y es cambiar una línea.
 
+**Decidido el 17/10/2026** (Arturo, «Todo A», P3A): la A con la palabra de C,
+«1/familia/año» en Essential y «1/¿quién?/año» en Silver y Gold, con los
+ajustes del comité. «¿quién?» lleva la letra, el color y el peso de «familia»,
+con subrayado punteado, y es un botón que abre la tarjeta del servicio con un
+clic, un toque o el teclado, no al pasar el mouse. El pie manda al asesor sin
+afirmar nada del contrato, y la lista «Los once servicios» de `/planes` conserva
+las condiciones de Essential («1/familia/año, sin contraste»). «¿quién?» es la
+constante `DUDA` de `app/coverage.js`: cuando SP conteste #110, se cambia ahí y
+cambia en todo el sitio. La fisioterapia de Gold no lleva forma corta: va al
+asesor hasta que SP aclare si son 20 o 10 sesiones (G1A, sp-interno#50).
+
 **La lección.** Acortar no es neutral. Con menos palabras alrededor, lo que no
 se dice se nota más: «1/año» al lado de «1/familia/año» grita «por persona»
 más fuerte que «1 al año» al lado de «1 por familia». La forma corta obliga a
@@ -2227,6 +2241,13 @@ grilla tiene y la celda no muestra (suma un renglón en la tarjeta de Gold), y
 precio no se parte y aprieta el texto). Lo demás lo resuelve la regla: no se
 agrega una unidad que la fuente no tiene (el parto queda «hasta Gs. 350 mil»), y
 la barra que hoy hace de «o» («urgencia / emergencia») pasa a «o».
+
+**Decidido el 17/10/2026** (Arturo, «Todo A»). Las celdas de la P3, con la
+lámina 86 (P3A). «/evento» entra donde la grilla lo dice, con los millones
+escritos enteros: «Gs. 350 mil/evento», «Gs. 1,5 millones/evento», nunca «1,5
+mill.» (E3A); el parto sigue con «hasta» y sin unidad. El «/mes» del paso del
+nivel del simulador se resuelve con el precio en su propio renglón, que primero
+va en lámina (E4A). Los 27 claros van en un PR aparte, después del #271 (E2A).
 
 **La lección.** Antes de aplicar una regla a todo el sitio, se cuentan los
 lugares. La mayoría son claros, y los dudosos, que parecían muchos, son pocas

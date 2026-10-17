@@ -13,7 +13,82 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 13 oct 2026.*
+*Última actualización: 17 oct 2026.*
+
+---
+
+## ✅ DECIDIDO EL 17/10/2026 («Todo A»: lo que toca al sitio)
+
+Arturo contestó «Todo A» a la tabla de decisiones pendientes, en la sesión del
+Guardián. Lo registran el PR #271 (comentario del 17/10) y sp-interno #50,
+#110, #180 y #181. Todo va en la rama `claude/dazzling-keller-l0torp`
+(PR #271), un commit por decisión, cada una con su sección en
+`qa/qa-lanzamiento.mjs` que falla sin el cambio y pasa con él. Lo que se
+aprendió en el camino: BITACORA cap. 148.
+
+1. **P3A, la forma corta con «¿quién?»** (tomografía, resonancia, psicología y
+   fisioterapia). Essential dice «1/familia/año»; Silver y Gold,
+   «1/¿quién?/año». «¿quién?» es la constante `DUDA` de `app/coverage.js`
+   (`QUIEN_SG` y, aparte, `QUIEN_PSICO`): cuando SP conteste #110, se cambia
+   ahí. Tiene la letra, el color y el peso de «familia», con subrayado punteado,
+   y es un botón que abre la tarjeta del servicio con clic, toque o teclado (no
+   al pasar el mouse). El pie no afirma nada del contrato (`NOTA_UNIDAD`: «En
+   Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el
+   grupo.»). La lista «Los once servicios» conserva las condiciones de
+   Essential. La forma corta va en `app/components/Corta.jsx`: el corte de
+   renglón solo antes de la barra, la cifra con su unidad en espacio duro, y la
+   frase completa para lectores de pantalla en un texto oculto (sin
+   `role="img"`, y nunca con `position:absolute`, que se escapaba del plegable
+   y hacía desbordar `/planes`). Internación: «20 días/familia/año | 20
+   días/persona/año | 25 días/persona/año». Las líneas de las tarjetas del
+   celular (`plans()` de `quote.js`) salen de `corta`, no de números a mano
+   (sp-interno#117).
+2. **G1A, la fisioterapia de Gold va al asesor** (sp-interno#50: la tabla decía
+   20 y el plegable, 10). La celda dice «Preguntale a tu asesor» en el home, la
+   tabla y la lista de `/planes` y el plegable, como la cesárea de Gold de la
+   2A. Ninguna forma corta le da a Gold un número hasta que SP lo aclare.
+3. **E3A, «/evento»** donde la grilla dice «por evento»: «Gs. 350 mil/evento»,
+   «Gs. 1 millón/evento», «Gs. 1,5 millones/evento» (nunca «1,5 mill.»), y
+   los remedios en urgencias de Silver y Gold. El parto queda con «hasta» y
+   sin unidad: su fuente no la trae.
+4. **R1A, una sola forma de mandar al asesor: «Preguntale a tu asesor»**
+   (`ASESOR` de `coverage.js`). Salieron «Consultalo», «Consultalo con tu
+   asesor» y «Confirmalo con tu asesor», y el «—» del plegable de topes que se
+   leía «no cubre».
+5. **P2A, la tarjeta del servicio del home no muestra esperas** (regla del
+   03/10). Las esperas siguen en `/planes`, el simulador y la cotización.
+6. **P4A, se bajó la copia congelada `/v1/`** (sp-interno#181). `public/v1/`
+   salió del repo: servía los TTF de Gilroy sin licencia, «Contratos activos
+   hoy» con una cifra sin confirmar y «Planes de seguro médico familiar».
+   Queda en el historial de git. Los guardianes que la exceptuaban
+   (`seguro-propio`, `titulos-y-sombras`, `qa-integral`) ya no lo hacen; el
+   CI corta si `out/v1` aparece, `qa-integral` y `qa-lanzamiento` piden 404 y
+   la salud nocturna mira `/v1/` en vivo (no en un PR, porque ahí el sitio en
+   vivo todavía es main). Las menciones viejas de este archivo quedan como
+   historia, con nota.
+7. **U4A, lo que el repo público no dice** (sp-interno#180). Los nombres de
+   competidores del cap. 57 de la BITACORA y del pendiente 12c de este archivo
+   pasaron a su categoría («una prepaga sin sanatorio propio»), con nota
+   fechada. Las cifras de Google Analytics de la web de SP (la línea de base de
+   la sección 2, el 8b de SEO, el cap. 16 y el `BRANDSCRIPT.md`) pasaron a un
+   puntero: `sp-interno/project/metricas-web-ga-2026.md`. No se tocan
+   `lib/guia-medica.json` ni la lista DESTACADOS de `scripts/red-home.mjs`: son
+   la red de SP. **Regla para lo que venga:** un nombre de competidor o una
+   cifra de tráfico de la web de SP no se escribe en este repo; va al privado
+   y acá, un puntero (CLAUDE.md de sp-interno, «¿esto le sirve a un
+   competidor?»).
+
+**Fuera de este PR:** E2A (los 27 cambios claros del barrido de la regla de
+escaneo) va en un PR aparte, después de que se fusione este. E4A (el precio del
+simulador en su propio renglón) espera su lámina antes del cambio.
+
+**Sigue esperando a SP:** si tomografía, resonancia, psicología y fisioterapia
+de Silver y Gold son por persona o por grupo (#110); cuántas sesiones de
+fisioterapia tiene Gold (#50). **Pregunta abierta en el PR #271:** si el 77%
+de tráfico móvil (trece lugares: nueve en el código y la QA, y dos pasajes
+viejos de este archivo y dos de la BITACORA) y los «50 segundos de paciencia»
+del personaje del `BRANDSCRIPT.md` también pasan al puntero; la decisión
+nombró solo los cuatro lugares de arriba.
 
 ---
 
@@ -92,6 +167,8 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
      «1/familia/año» en Essential y «1/¿quién?/año» en Silver y Gold, con la
      explicación a un toque. La fisioterapia de Gold (20 o 10, #50) no se
      publica como segura hasta que Arturo decida.
+     *(17/10: decididas las tres con «Todo A»: P2A, P3A y G1A. Ver la sección
+     del 17/10 arriba.)*
    - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
      controla el 10% de Essential; «por persona» en las celdas del home y de la
      tabla de `/planes`, en las tarjetas del celular y en la FAQ; «La más
@@ -134,7 +211,9 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    nada, al resto del sitio (BITACORA cap. 147). **El barrido está hecho**
    (lámina 87): 76 lugares, 27 claros, 34 dudosos y 15 que no aplican. Nada se
    tocó todavía: los claros y las dudas («/evento» en medicamentos y remedios,
-   «/mes» en el paso del nivel del simulador) esperan a Arturo. Lo que resuelve
+   «/mes» en el paso del nivel del simulador) esperan a Arturo. *(17/10:
+   «/evento» quedó decidido con la E3A; los 27 claros van en un PR aparte con
+   la E2A, después del #271. Ver la sección del 17/10 arriba.)* Lo que resuelve
    la regla sin preguntar: no se agrega una unidad que la fuente no tiene, y la
    barra que hace de «o» («urgencia / emergencia») pasa a «o». Para quien lo
    construya: la forma corta va en una capa de vista, no en el dato

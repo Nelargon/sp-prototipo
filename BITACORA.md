@@ -5162,3 +5162,58 @@ arregla con un texto oculto; el primero queda para la prueba con personas
 - **La forma corta hace más visible el contraste.** «1/familia/año» contra
   «1/año» deja un hueco donde iba la unidad, y ese hueco se lee como «por
   persona». La regla no resuelve la duda: obliga a decir algo en ese lugar.
+
+## Capítulo 148 — Lo que se borra se lleva sus excepciones (17/10/2026)
+
+**Qué intentamos.** Aplicar el «Todo A» de Arturo en el sitio: siete decisiones
+en una rama (la del PR #271), un commit por decisión y cada una con su prueba en
+`qa-lanzamiento`, que falla sin el cambio y pasa con él. Cinco cambian lo que se
+ve (la forma corta con «¿quién?», la fisioterapia de Gold al asesor, «/evento»,
+una sola forma de mandar al asesor y las esperas fuera de la tarjeta del home).
+Dos sacan cosas: la copia congelada `/v1/` (P4A) y, del repo público, los
+nombres de competidores y las cifras de Google Analytics (U4A).
+
+**Qué pasó.** Cuatro tropiezos, ninguno visible en el diff:
+
+- **El texto oculto para lectores de pantalla se escapaba.** La forma corta
+  lleva al lado su frase completa, oculta. Escrita con `position:absolute`, se
+  escapaba del plegable con scroll de `/planes`, y la página desbordaba 150 a
+  220 px en el celular (medido en la primera mitad de la tanda). Pasó a
+  `inline-block` de 1 px.
+- **`textContent` no es lo que se ve.** La prueba de la R1A buscaba
+  «Consultalo» con borde de palabra (`\b`), y no lo encontraba aunque estaba:
+  `textContent` pega las celdas vecinas sin espacio («urgenciasConsultalo»).
+  Con `\b`, la prueba habría pasado en la rama vieja, donde tenía que fallar.
+  La búsqueda va sin `\b`.
+- **`/v1/` tenía tres excepciones.** `seguro-propio`, `titulos-y-sombras` y
+  `qa-integral` la salteaban porque estaba «congelada a propósito». Borrar la
+  carpeta y dejar las excepciones dejaba una puerta abierta: si alguien la
+  reponía, ningún guardián la veía. Sin las excepciones y con la copia repuesta
+  a propósito, los tres la marcan («plan de seguro», tres títulos con punto,
+  «Nombre Apellido» y «práctica»), `qa-lanzamiento` da 3 fallas y `qa-integral`
+  un «roto». Sin ella, todo pasa.
+- **La prueba en vivo no puede juzgar un PR.** La salud nocturna mira el sitio
+  publicado, que es `main`. Si pidiera `/v1/` en 404 también en los PR, el PR
+  que la baja saldría en rojo: en vivo responde 200 hasta que se publica. En
+  un PR no se mira; el build y las pruebas con navegador sí la miran.
+
+Y U4A es la primera vez que se reescriben entradas viejas de esta bitácora (cap.
+16 y cap. 57). Lo decidió Arturo, y cada una lleva su nota fechada. El
+historial de git del repo público conserva los textos viejos: la decisión cambia
+lo que se lee hoy, no la historia.
+
+**Qué aprendimos.**
+- **Una excepción en un guardián vive más que lo exceptuado.** Al borrar algo,
+  se borran también sus excepciones, y se prueba que, si vuelve, se ve. Es la
+  regla de «revisar los guardianes que leían la forma vieja» (cap. 90) del lado
+  de lo que se va.
+- **Lo oculto también ocupa lugar.** Un texto «invisible» puede agrandar la
+  página. El desborde se mide en el navegador, con el plegable abierto, y no se
+  deduce del CSS.
+- **Un detector se prueba en el estado donde tiene que fallar.** Con `\b`, la
+  prueba de la R1A habría dado verde en la rama vieja, y para siempre.
+- **Una prueba en vivo mide lo publicado, no lo propuesto.** Lo que un PR
+  cambia del sitio en vivo se controla en el build del PR y, después del merge,
+  en la noche.
+- **Lo que le sirve a un competidor no se escribe en el repo público**, ni
+  siquiera en la bitácora. Va al privado, y acá queda un puntero.
