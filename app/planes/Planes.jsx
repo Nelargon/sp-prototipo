@@ -114,7 +114,7 @@ export default function Planes() {
   // sp-interno#110), «¿quién?»; el pie de la tarjeta, la `nota` de coverage.js,
   // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
   // Una celda sin barras que dice ASESOR manda al asesor y se toca (G1A).
-  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, asesor: t === ASESOR } : resto[i]));
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, asesor: t === ASESOR, dicho: cv[servicio].dicho && cv[servicio].dicho[i] } : resto[i]));
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
     return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
@@ -138,9 +138,10 @@ export default function Planes() {
     { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
     { g: 'Si te internan', name: 'Internación', kind: 'num', cells: corta('Internación'), d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
     { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
-    { name: 'Medicamentos internado', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }], d: conEspera('Medicamentos en internación') },
+    // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
+    { name: 'Medicamentos internado', kind: 'num', cells: corta('Medicamentos en internación'), d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }], d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: 'Consultalo', n: 'con tu asesor' }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
     // el simulador. Sin tarjeta: el número ya es el dato.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),

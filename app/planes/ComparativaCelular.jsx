@@ -185,7 +185,7 @@ export default function ComparativaCelular() {
                   {/* La forma corta donde la hay (P3A): esto se escanea. La
                       cola conserva lo que Essential decía después del número
                       («2/familia/año, junto con ecocardiograma y ergometría»). */}
-                  {s.corta && s.corta[i] && s.corta[i].includes('/') ? <span><Corta t={s.corta[i]} partir />{s.cola && s.cola[i]}</span> : c.d}
+                  {s.corta && s.corta[i] && s.corta[i].includes('/') ? <span>{s.pre && s.pre[i]}<Corta t={s.corta[i]} partir dicho={s.dicho && s.dicho[i]} />{s.cola && s.cola[i]}</span> : c.d}
                   {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
                   {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
                 </span>

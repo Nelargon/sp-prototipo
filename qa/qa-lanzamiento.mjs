@@ -41,6 +41,24 @@ const browser = await chromium.launch({ executablePath: process.env.PW_CHROME ||
 // Las constantes de cobertura se leen de app/coverage.js (no importa nada), no
 // de un literal: si SP contesta y una cambia, las pruebas la siguen (P3A y G1A).
 const COV = await import('data:text/javascript;base64,' + Buffer.from(readFileSync(new URL('../app/coverage.js', import.meta.url), 'utf8')).toString('base64'));
+// Los renglones de un elemento, como se ven: cada carácter con su caja,
+// agrupados por altura. Lo oculto para lectores no cuenta.
+const RENGLONES = `(el) => {
+  const lineas = [];
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    if (n.parentElement.closest('.sr-solo')) continue;
+    for (let i = 0; i < n.length; i++) {
+      const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1);
+      const b = r.getClientRects()[0];
+      if (!b || !b.width) continue;
+      let l = lineas.find((x) => Math.abs(x.top - b.top) < 8);
+      if (!l) { l = { top: b.top, t: '' }; lineas.push(l); }
+      l.t += n.data[i];
+    }
+  }
+  return lineas.sort((a, b) => a.top - b.top).map((x) => x.t);
+}`;
 
 for (const [nombre, width, height] of ANCHOS) {
   console.log('\n── ' + nombre);
@@ -685,24 +703,6 @@ console.log('\n── La forma corta (P3A)');
   const celdaBien = (c, i, quien) => !!c && c.corta && (i === 0
     ? c.t.includes('/familia/') && c.sr.includes('por familia')
     : c.t.includes('/' + quien + '/') && (quien === DUDA ? c.duda && /sin confirmar para quién/.test(c.sr) && !/persona/i.test(c.t + c.sr) : c.sr.includes('por ' + quien)));
-  // Los renglones de un elemento, como se ven: cada carácter con su caja,
-  // agrupados por altura. Lo oculto para lectores no cuenta.
-  const RENGLONES = `(el) => {
-    const lineas = [];
-    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    for (let n = w.nextNode(); n; n = w.nextNode()) {
-      if (n.parentElement.closest('.sr-solo')) continue;
-      for (let i = 0; i < n.length; i++) {
-        const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1);
-        const b = r.getClientRects()[0];
-        if (!b || !b.width) continue;
-        let l = lineas.find((x) => Math.abs(x.top - b.top) < 8);
-        if (!l) { l = { top: b.top, t: '' }; lineas.push(l); }
-        l.t += n.data[i];
-      }
-    }
-    return lineas.sort((a, b) => a.top - b.top).map((x) => x.t);
-  }`;
   const terminaEnBarra = async (page, sel) => page.evaluate(([sel, fn]) => {
     const renglones = eval(fn);
     return [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => renglones(e)).filter((ls) => ls.slice(0, -1).some((t) => /\/\s*$/.test(t))).map((ls) => ls.join(' ⏎ '));
@@ -906,6 +906,69 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   await ctx.close();
   if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50) · ' + malas.join(' · '));
   else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista, el plegable y la hoja, sin número para Gold');
+}
+
+// ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────
+// Donde la fuente dice «por evento», la celda lo dice en forma corta, con los
+// millones enteros («Gs. 1,5 millones/evento», nunca «1,5 mill.»), y el lector
+// de pantalla oye «guaraníes» y cuándo («cada vez que te internan»). Va en la
+// tabla del home y la de /planes (medicamentos internado y los remedios en
+// urgencias de Silver y Gold) y en la lista de los once servicios. El parto
+// queda con «hasta» y sin «/evento». A 360 px el nombre de la fila puede bajar
+// de renglón, pero entre palabras, y el monto no se sale de la celda. Probado
+// contra la rama sin la E3A (falla) y con ella (pasa).
+console.log('\n── «/evento» en medicamentos y remedios (E3A)');
+{
+  const MED = ['Gs. 350 mil/evento', 'Gs. 1 millón/evento', 'Gs. 1,5 millones/evento'];
+  const REM = [null, 'Gs. 150 mil/evento', 'Gs. 200 mil/evento'];
+  const malas = [];
+  const fila = ([sel, nombre]) => [...document.querySelectorAll(sel + ' .cmp2-plan')].map((pl) => {
+    const c = [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === nombre);
+    const k = c && c.querySelector('.cmp2-v .corta');
+    return k ? { t: k.textContent.replace(/ /g, ' '), sr: (c.querySelector('.cmp2-v .sr-solo') || {}).textContent || '' } : null;
+  });
+  const bien3 = (f, esperado, cuando) => f.length === 3 && esperado.every((e, i) => e === null || (f[i] && f[i].t === e && /guaraníes/.test(f[i].sr) && !/Gs\./.test(f[i].sr) && f[i].sr.includes(cuando)));
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const med = await page.evaluate(fila, [sel, 'Medicamentos internado']);
+    const rem = await page.evaluate(fila, [sel, 'Remedios en urgencias']);
+    if (!bien3(med, MED, 'cada vez que te internan')) malas.push(ruta + ' medicamentos: ' + JSON.stringify(med));
+    if (!bien3(rem, REM, 'cada vez que vas a urgencias')) malas.push(ruta + ' remedios: ' + JSON.stringify(rem));
+    if (await page.evaluate(() => /\d mill\./.test(document.body.textContent))) malas.push(ruta + ': queda «mill.»');
+  }
+  await page.close();
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  const lista = await cel.evaluate(() => {
+    const o = {};
+    for (const b of document.querySelectorAll('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila')) {
+      o[b.querySelector('b').textContent.replace(/ ›$/, '')] = [...b.querySelectorAll(':scope > span > span')].map((c) => { const k = c.cloneNode(true); k.querySelectorAll('.sr-solo, i').forEach((x) => x.remove()); return k.textContent.replace(/ /g, ' '); });
+    }
+    return o;
+  });
+  const m = lista['Medicamentos en internación'] || [], u = lista['Urgencia 24 h'] || [], pa = lista['Parto o cesárea'] || [];
+  if (!MED.every((e, i) => m[i] === e)) malas.push('lista, medicamentos: ' + JSON.stringify(m));
+  if (!REM.every((e, i) => e === null || (u[i] || '').endsWith('remedios ' + e))) malas.push('lista, urgencias: ' + JSON.stringify(u));
+  if (pa.length !== 3 || pa.some((t) => /\/evento/.test(t) || !/hasta Gs\./.test(t))) malas.push('lista, parto (queda con «hasta», sin «/evento»): ' + JSON.stringify(pa));
+  // A 360 px, en las tarjetas del home: el nombre baja entre palabras y el monto entra.
+  await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const nombres = await cel.evaluate((fn) => {
+    const renglones = eval(fn);
+    return [...document.querySelectorAll('#cartilla .cmp2-plan .cmp2-c')].filter((c) => /^(Medicamentos internado|Remedios en urgencias)$/.test(((c.querySelector('.cmp2-l') || {}).textContent || '').trim())).map((c) => {
+      const l = c.querySelector('.cmp2-l .cmp2-srv'), k = c.querySelector('.cmp2-v .corta');
+      const ls = renglones(l);
+      return { nombre: l.textContent, renglones: ls, enteras: ls.map((x) => x.trim()).join(' ') === l.textContent.trim(), dentro: !k || k.getBoundingClientRect().right <= c.getBoundingClientRect().right + 0.5 };
+    });
+  }, RENGLONES);
+  const rotos = nombres.filter((x) => !x.enteras || !x.dentro);
+  if (nombres.length !== 6 || rotos.length) malas.push('360 px, nombre o monto: ' + JSON.stringify(rotos.length ? rotos : nombres.length));
+  await ctx.close();
+  if (malas.length) mal('«/evento»: medicamentos y remedios de Silver y Gold en forma corta, con los millones enteros y «guaraníes» para el lector, en las tablas y la lista; el parto con «hasta» · ' + malas.join(' · '));
+  else bien('«/evento» en medicamentos y remedios (tablas del home y /planes, y la lista), con los millones enteros y «guaraníes» para el lector; el parto con «hasta»; a 360 px el nombre baja entre palabras');
 }
 
 // ── Los aliados, quietos (26/09/2026, docs/diseno n.º 53) ───────────────────

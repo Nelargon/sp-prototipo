@@ -92,7 +92,15 @@ export const coverage = () => [
   // otro lado, así que la cesárea de Gold manda al asesor. Vuelve con su número
   // si SP lo aclara (sp-interno#116).
   { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], nota: 'En Gold, preguntale a tu asesor cuánto esperás para una cesárea.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
-  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
+  // Los topes «por evento» (E3A, decisión de Arturo del 17/10/2026): donde la
+  // fuente dice «por evento» (la grilla en Silver y Gold; essential.json, «hasta
+  // ₲ 350.000 por evento», en la internación de Essential), lo que se escanea lo
+  // dice en forma corta, con los millones enteros: «Gs. 1,5 millones/evento»,
+  // nunca «1,5 mill.». `pre` es lo que va delante en la hoja de los once
+  // servicios y `dicho`, lo que oye el lector de pantalla. La oración de `cov`
+  // sigue para la tarjeta. El parto queda con «hasta» y sin «/evento»: su fuente
+  // no trae unidad.
+  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', corta: [null, 'Gs. 150 mil/evento', 'Gs. 200 mil/evento'], pre: [null, 'Consulta 24 h · remedios ', 'Consulta 24 h · remedios '], dicho: [null, 'hasta 150 mil guaraníes cada vez que vas a urgencias', 'hasta 200 mil guaraníes cada vez que vas a urgencias'], cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
   // Fisioterapia de Gold (G1A, decisión de Arturo del 17/10/2026, sp-interno#50):
   // la fuente se contradice. gold.json dice «20 sesiones/año […] + 5
   // respiratorias» y los parámetros clave de la grilla (y el plegable de
@@ -100,7 +108,7 @@ export const coverage = () => [
   // por el número, igual que la cesárea de Gold (#116): ninguna forma corta le
   // da a Gold un número seguro. `notaAsesor` es la línea que lo dice.
   { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cov: [yes('Hasta 5 sesiones al año por familia'), yes('15 sesiones al año'), yes(ASESOR)] },
-  { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
+  { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', corta: ['Gs. 350 mil/evento', 'Gs. 1 millón/evento', 'Gs. 1,5 millones/evento'], dicho: ['hasta 350 mil guaraníes cada vez que te internan', 'hasta 1 millón de guaraníes cada vez que te internan', 'hasta 1,5 millones de guaraníes cada vez que te internan'], cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
 ];
 
 // LAS ESPERAS QUE IMPORTAN AL DECIDIR (7 sep 2026 — "Sería bueno ser ya

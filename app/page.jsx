@@ -372,7 +372,7 @@ export default function Page() {
   // afirma nada del contrato: la fuente registrada es la grilla (comité, 13/10).
   const cartDe = Object.fromEntries(cartArr.map((s) => [s.name, s]));
   // Una celda sin barras que dice ASESOR manda al asesor y se toca (G1A).
-  const celdas = (servicio) => cartDe[servicio].corta.map((t) => ({ t, ok: true, asesor: t === ASESOR }));
+  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, asesor: t === ASESOR, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i] }));
   // El pie de la fila: qué es «por familia» y, mientras SP no conteste, a quién
   // preguntarle lo de Silver y Gold (la `nota` de coverage.js, que se va sola
   // cuando el interruptor de ese servicio deja de ser DUDA).
@@ -409,10 +409,11 @@ export default function Page() {
       pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.' },
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
       d: ['Hasta 2 días al año por persona, a los 365 días de afiliarte.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
-    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }],
+    // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: celdas('Medicamentos en internación'),
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
-    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }],
+    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, ...celdas('Urgencia 24 h').slice(1)],
       d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
     // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
     // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada
