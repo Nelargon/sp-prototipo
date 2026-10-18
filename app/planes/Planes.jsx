@@ -189,7 +189,21 @@ export default function Planes() {
     const m = /^Carencia\s*(?:–|-|de)\s*(.+)$/i.exec(t);
     return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
   };
-  const valorParam = (v) => String(v).replace(/^Gs\.\s*/, 'Gs. ');
+  // Los montos, con la forma de la E3A (comité, vuelta 3, 17/10): «Gs. 1,5
+  // millones», «Gs. 350 mil», como la tabla («Gs. 1,5 millones/evento») y la
+  // tarjeta. El plegable decía «Gs. 1.500.000»: el mismo tope, de tres formas en
+  // la misma página. Sin «/evento»: el rótulo ya dice «(por evento)», como la
+  // internación dice «20 días/persona» bajo «(por año)». Va con Corta: el lector
+  // oye «guaraníes» y la cifra no se parte.
+  const montoCorto = (v) => {
+    const m = /^Gs\.\s*([\d.]+)$/.exec(String(v).trim());
+    if (!m) return null;
+    const n = Number(m[1].replace(/\./g, ''));
+    if (n >= 1e6 && n % 1e5 === 0) { const x = n / 1e6; return 'Gs. ' + String(x).replace('.', ',') + (x === 1 ? ' millón' : ' millones'); }
+    if (n >= 1000 && n % 1000 === 0) return 'Gs. ' + n / 1000 + ' mil';
+    return null;
+  };
+  const valorParam = (v) => { const corto = montoCorto(v); return corto ? <Corta t={corto} /> : String(v).replace(/^Gs\.\s*/, 'Gs. '); };
   // Una sola forma por página (P3A, 17/10/2026): el tope de días de internación
   // dice lo mismo que la tabla, «20 días/familia | 20 días/persona | 25
   // días/persona», sin «/año» porque el rótulo ya dice «por año». Sale de

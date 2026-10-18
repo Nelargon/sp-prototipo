@@ -15,7 +15,12 @@
 // (NOTA_UNIDAD, la `nota` de esos servicios). En psicología pasa lo mismo:
 // «5 sesiones/año» y «6 sesiones/año», sin decir para quién (la pregunta ya
 // está en sp-interno#110).
-const yes = (d) => ({ s: 'Cubierta', ok: true, d });
+// Las cifras con plata no se parten por dentro (P3A; comité, vuelta 3, 17/10):
+// «Gs.», la cifra y «mil», «millón» o «millones» van unidos con espacio duro en
+// toda oración de `cov`, como en la forma corta. La lista de los once servicios
+// del celular partía «hasta Gs. 1,5 ⏎ millones» a 360 y 390 px.
+export const duro = (t) => t.replace(/Gs\.\s(\d[\d.,]*)(\s(?:mil|millón|millones)\b)?/g, (_, n, u) => 'Gs. ' + n + (u ? ' ' + u.trim() : ''));
+const yes = (d) => ({ s: 'Cubierta', ok: true, d: duro(d) });
 const no = (s, d) => ({ s, ok: false, d });
 export const minuscula = (x) => x.charAt(0).toLowerCase() + x.slice(1);
 

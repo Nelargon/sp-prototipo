@@ -1519,6 +1519,107 @@ console.log('\n── Las esperas llevan su condición (lista, tabla de /planes 
   else bien('las esperas llevan su condición: en la lista («2 meses de espera si es por algo agudo», «10 meses de espera para el parto» y «Cesárea: preguntale a tu asesor», también para el lector), en la tabla de /planes (la nota de cada espera, la del simulador) y, en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
 }
 
+// ── La plata no se parte por dentro (P3A; comité, vuelta 3, 17/10/2026) ─────
+// «Las cifras con plata no se cortan por dentro (espacio duro)». La forma corta
+// lo cumplía, pero la lista de los once muestra oraciones de coverage.js con
+// espacios comunes y partía «hasta Gs. 1,5 ⏎ millones» a 360 y 390 px. Ahora
+// `duro` de coverage.js une «Gs.», la cifra y «mil/millón/millones». Se mide
+// cada monto visible, carácter por carácter, en la lista, las líneas de las
+// tarjetas y la tabla del home, a 360, 390 y 430: todo el monto en un renglón.
+// El detector se prueba antes en una caja angosta: el monto con espacios comunes
+// se parte (lo encuentra) y con espacio duro no. Falla en la build de 02c733a y
+// pasa con el cambio.
+console.log('\n── La plata no se parte por dentro (360, 390 y 430 px)');
+{
+  const PARTIDA = `(els) => els.filter((e) => e.getClientRects().length).flatMap((e) => {
+    const cs = [];
+    const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (n.parentElement.closest('.sr-solo')) continue;
+      for (let i = 0; i < n.length; i++) {
+        const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1);
+        const b = r.getClientRects()[0];
+        cs.push({ c: n.data[i], top: b && b.width ? b.top : null });
+      }
+    }
+    const t = cs.map((x) => x.c).join('');
+    const out = [];
+    for (const m of t.matchAll(/Gs\\.[\\s\\u00a0]*\\d[\\d.,]*(?:[\\s\\u00a0](?:mil|millón|millones)(?![a-záéíóúñ]))?/g)) {
+      const tops = cs.slice(m.index, m.index + m[0].length).map((x) => x.top).filter((y) => y !== null);
+      if (tops.some((y) => Math.abs(y - tops[0]) > 4)) out.push(m[0].replace(/\\u00a0/g, ' '));
+    }
+    return out;
+  })`;
+  const malas = [];
+  for (const width of [360, 390, 430]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+    if (width === 360) {
+      const prueba = await cel.evaluate((fn) => {
+        const f = eval(fn);
+        const caja = (t) => { const d = document.createElement('div'); d.style.cssText = 'width:9ch;font-size:16px'; d.textContent = t; document.body.appendChild(d); const r = f([d]).length; d.remove(); return r; };
+        return { mala: caja('medicamentos hasta Gs. 1,5 millones'), buena: caja('medicamentos hasta Gs. 1,5 millones') };
+      }, PARTIDA);
+      if (prueba.mala !== 1 || prueba.buena !== 0) malas.push('el detector no distingue «Gs. 1,5 ⏎ millones» del monto con espacio duro: ' + JSON.stringify(prueba));
+    }
+    const home = await cel.evaluate((fn) => eval(fn)([...document.querySelectorAll('#cartilla .cmp2-plan .cmp2-v')]), PARTIDA);
+    home.forEach((m) => malas.push(width + ' px, tabla del home: «' + m + '»'));
+    await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    const lineas = await cel.evaluate((fn) => eval(fn)([...document.querySelectorAll('.cmp-cel article .linea-cel')]), PARTIDA);
+    lineas.forEach((m) => malas.push(width + ' px, tarjetas de /planes: «' + m + '»'));
+    await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+    await cel.waitForTimeout(450);
+    const lista = await cel.evaluate((fn) => eval(fn)([...document.querySelectorAll('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila > span > span')]), PARTIDA);
+    lista.forEach((m) => malas.push(width + ' px, lista de los once: «' + m + '»'));
+    await ctx.close();
+  }
+  if (malas.length) mal('un monto con plata se parte por dentro · ' + malas.slice(0, 6).join(' · '));
+  else bien('ningún monto con plata se parte por dentro en la tabla del home, las tarjetas de /planes ni la lista de los once (360, 390 y 430 px); el detector distingue el caso malo del bueno');
+}
+
+// ── Los montos, con la forma de la E3A en lo que se escanea (vuelta 3) ──────
+// El mismo tope aparecía de tres formas en /planes: «Gs. 1,5 millones/evento» en
+// la tabla, «Hasta Gs. 1,5 millones por evento» en la tarjeta y «Gs. 1.500.000»
+// en el plegable de topes. La E3A pidió una sola forma, con los millones
+// enteros: el plegable dice ahora «Gs. 1,5 millones», «Gs. 350 mil» (sin
+// «/evento», porque su rótulo ya dice «(por evento)», como la internación dice
+// «20 días/persona» bajo «(por año)»). Se mira todo monto de lo que se escanea
+// (las celdas de las tablas del home y de /planes, el plegable abierto y la lista
+// de los once): ninguno con puntos de miles ni «mill.». Los precios de la
+// cabecera quedan fuera: son la E2A. Con su caso malo y su caso bueno. Falla en
+// la build de 02c733a y pasa con el cambio.
+console.log('\n── Los montos, con la forma de la E3A en lo que se escanea');
+{
+  const VIEJA = /Gs\.[\s ]*\d{1,3}(?:\.\d{3})+|\d mill\./;
+  const auto = { malas: ['Gs. 1.500.000', 'Gs. 350.000', 'Gs. 1,5 mill.'].filter((t) => !VIEJA.test(t)), buenas: ['Gs. 1,5 millones', 'Gs. 350 mil/evento', 'Gs. 1 millón'].filter((t) => VIEJA.test(t)) };
+  const malas = [];
+  if (auto.malas.length || auto.buenas.length) malas.push('el detector no distingue la forma vieja de la de la E3A: ' + JSON.stringify(auto));
+  const visible = (sel) => [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => { const k = e.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((x) => x.remove()); return k.textContent; });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  for (const [ruta, sel] of [['/', '#cartilla .cmp2-plan .cmp2-c'], ['/planes/', '#comparar-planes .cmp2-plan .cmp2-c']]) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    (await page.evaluate(visible, sel)).filter((t) => VIEJA.test(t)).forEach((t) => malas.push(ruta + ' tabla: «' + t.match(VIEJA)[0] + '»'));
+  }
+  await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  await page.click('button[aria-controls="detalle-internacion"]');
+  await page.waitForTimeout(500);
+  const pleg = await page.evaluate(visible, '#detalle-internacion .disp');
+  pleg.filter((t) => VIEJA.test(t)).forEach((t) => malas.push('/planes plegable: «' + t.match(VIEJA)[0] + '»'));
+  const montos = pleg.filter((t) => /Gs\./.test(t)).length;
+  if (montos < 10) malas.push('/planes plegable: se esperaban los montos de los topes y de maternidad, hay ' + montos);
+  await page.close();
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  (await cel.evaluate(visible, '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila > span > span')).filter((t) => VIEJA.test(t)).forEach((t) => malas.push('lista: «' + t.match(VIEJA)[0] + '»'));
+  await ctx.close();
+  if (malas.length) mal('los montos de lo que se escanea van con la forma de la E3A («Gs. 1,5 millones», «Gs. 350 mil»), sin puntos de miles · ' + malas.slice(0, 6).join(' · '));
+  else bien('los montos de las tablas, del plegable (' + montos + ') y de la lista van con la forma de la E3A, sin puntos de miles ni «mill.»; el detector distingue el caso malo del bueno');
+}
+
 // ── Una sola forma de mandar al asesor (R1A, Arturo, 17/10/2026) ────────────
 // «Consultalo», «Consultalo con tu asesor» y «Confirmalo con tu asesor» pasaron
 // a «Preguntale a tu asesor» (ASESOR de coverage.js). Se mira el texto que
