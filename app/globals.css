@@ -492,7 +492,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .cmp2-tarjeta-pie{display:block;font-size:12px;line-height:1.45;color:var(--sp-muted);margin-top:6px}
 .cmp2-chip{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);background:var(--sp-mint-bg);color:var(--sp-teal-deep)}
 .cmp2-val{font-size:15.5px;font-weight:800;color:var(--sp-ink)}
-.cmp2-fam{font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-left:6px}
+/* La nota de una celda (en la tabla, «en Lister», «la mayoría»; en el plegable de
+   /planes, la cesárea de Gold). Declara su peso: en el plegable heredaba el 700
+   de la celda (cierre de la vuelta 3, 18/10). */
+.cmp2-fam{font-family:var(--font-inter),sans-serif;font-size:12px;font-weight:400;color:var(--sp-muted);margin-left:6px}
 .cmp2-val.apagado{color:var(--sp-muted);font-weight:700}
 /* LA FORMA CORTA (P3A, 17/10/2026; regla de escaneo de Arturo; components/Corta.jsx):
    la cifra con su unidad, separadas por barras. Es capa de cifras: Nunito Sans.

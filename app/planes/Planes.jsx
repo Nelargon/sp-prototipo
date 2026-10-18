@@ -239,11 +239,17 @@ export default function Planes() {
     // Sale de `alAsesor` de carencias(), como la lista; el dato generado no se
     // toca. Para el lector, una coma entre el número y lo que manda al asesor,
     // como la nota de la tabla.
+    // La nota va con la letra de la nota de la tabla (.cmp2-fam: Inter 400, 12 px,
+    // --sp-muted), no con la de la celda: heredaba .disp y el peso 700 y se veía
+    // en Nunito Sans Bold, mientras la misma frase de la tabla de arriba va en
+    // Inter (regla tipográfica; verificador, cierre de la vuelta 3, 18/10). El
+    // margen de la clase es para la nota que sigue al valor en el mismo renglón;
+    // acá va debajo, centrada.
     const parto = esp['Parto'];
     if (/^Carencia de maternidad/i.test(f.p) && f.v[j] && parto && parto.alAsesor && parto.alAsesor[j]) return (
       <span style={css('display:flex;flex-direction:column;align-items:center;gap:3px')}>
         <span>{valorParam(f.v[j])}<span className="sr-solo">,{' '}</span></span>
-        <span style={css('font-size:12px;color:var(--sp-estado-ink-2)')}>{conAsesor(parto.alAsesor[j])}</span>
+        <span className="cmp2-fam" style={css('margin-left:0')}>{conAsesor(parto.alAsesor[j])}</span>
       </span>
     );
     return f.v[j] ? valorParam(f.v[j]) : '—';

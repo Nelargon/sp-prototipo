@@ -1818,6 +1818,84 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
   else bien('las reglas distinguen lo que mostraba 02c733a de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '» y Silver en «Internación», «' + visto.internacion + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
 }
 
+// ── La nota de la cesárea del plegable, con letra de nota (cierre de la vuelta 3, 18/10) ──
+// «Cesárea: preguntale a tu asesor» en el plegable «Internación, maternidad y
+// topes» de /planes heredaba .disp y el 700 de la celda: se veía en Nunito Sans
+// Bold, 12 px, #4F5C5B, mientras la misma frase en la tabla de esperas de arriba
+// va con la nota de la celda (.cmp2-fam: Inter 400, 12 px, --sp-muted). Es una
+// nota, y las notas van en Inter (regla tipográfica de CLAUDE.md). Se mide con
+// getComputedStyle, que llama a la familia por su alias («inter» o «display»,
+// BITACORA cap. 120), a 1280, 820, 430, 390 y 360 px: la nota del plegable con
+// la letra, el peso, el tamaño y el color de la nota de la tabla, y ni la celda
+// ni la página desbordan. El detector se prueba antes en la misma celda: una nota
+// armada como la de antes (sin la clase, con el estilo escrito a mano) tiene que
+// fallar, y una con la clase, pasar.
+console.log('\n── La nota de la cesárea del plegable, con letra de nota (Inter)');
+{
+  const LETRA = `(e) => { const s = getComputedStyle(e); return { familia: s.fontFamily.split(',')[0].trim().replace(/^["']|["']$/g, '').toLowerCase(), peso: s.fontWeight, tamaño: s.fontSize, color: s.color }; }`;
+  // Inter 400 de 12 px y, si hay con qué comparar, lo mismo que la nota de la tabla.
+  const esNota = (l, ref) => !!l && l.familia === 'inter' && l.peso === '400' && l.tamaño === '12px' && (!ref || JSON.stringify(l) === JSON.stringify(ref));
+  const CELDA = `() => { const f = [...document.querySelectorAll('#detalle-internacion [role="row"]')].find((r) => /^Tiempo de espera para maternidad/.test((r.querySelector('[role="rowheader"]') || {}).textContent || '')); return f ? f.querySelectorAll('[role="cell"]')[2] : null; }`;
+  const malas = [];
+  const visto = [];
+  let ref = null, auto = null;
+  for (const width of [1280, 820, 430, 390, 360]) {
+    const movil = width < 820;
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, isMobile: movil, hasTouch: movil });
+    const page = await ctx.newPage();
+    await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    // La misma frase en la tabla de esperas (solo en la computadora): la referencia.
+    if (!movil) {
+      const r = await page.evaluate((fn) => { const n = [...document.querySelectorAll('#comparar-planes .cmp2-fam')].find((e) => /^Ces[aá]rea: /.test(e.textContent) && e.getClientRects().length); return n ? eval(fn)(n) : null; }, LETRA);
+      if (!r) malas.push(width + ': la tabla de esperas no muestra la nota de la cesárea de Gold');
+      else if (!ref) ref = r;
+      else if (JSON.stringify(r) !== JSON.stringify(ref)) malas.push(width + ': la nota de la tabla cambia de letra con el ancho ' + JSON.stringify(r));
+    }
+    await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+    const btn = page.locator('button[aria-controls="detalle-internacion"]');
+    await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    if (movil) await btn.tap(); else await btn.click();
+    await page.waitForTimeout(600);
+    // El caso malo y el bueno, en la misma celda y leídos con la misma función.
+    if (!auto) auto = await page.evaluate(([fl, fc]) => {
+      const letra = eval(fl), celda = eval(fc)();
+      if (!celda) return null;
+      const caja = celda.firstElementChild || celda;
+      const mala = document.createElement('span');
+      mala.setAttribute('style', 'font-size:12px;color:var(--sp-estado-ink-2)');
+      mala.textContent = 'Cesárea: preguntale a tu asesor';
+      const buena = document.createElement('span');
+      buena.className = 'cmp2-fam';
+      buena.textContent = 'Cesárea: preguntale a tu asesor';
+      caja.append(mala, buena);
+      const r = { mala: letra(mala), buena: letra(buena) };
+      mala.remove(); buena.remove();
+      return r;
+    }, [LETRA, CELDA]);
+    const r = await page.evaluate(([fl, fc, fr]) => {
+      const letra = eval(fl), celda = eval(fc)(), renglones = eval(fr);
+      if (!celda) return null;
+      const w = document.createTreeWalker(celda, NodeFilter.SHOW_TEXT);
+      let nota = null;
+      for (let n = w.nextNode(); n && !nota; n = w.nextNode()) if (/^Ces[aá]rea: /.test(n.data.trim())) nota = n.parentElement;
+      return {
+        letra: nota && letra(nota), renglones: nota ? renglones(nota).length : 0,
+        celdaDesborda: celda.scrollWidth > celda.clientWidth + 1,
+        pagina: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    }, [LETRA, CELDA, RENGLONES]);
+    await ctx.close();
+    if (!r || !r.letra) { malas.push(width + ': el plegable no muestra la nota de la cesárea en la maternidad de Gold'); continue; }
+    if (!esNota(r.letra, ref)) malas.push(width + ': la nota del plegable va en ' + JSON.stringify(r.letra) + ' y la de la tabla, en ' + JSON.stringify(ref));
+    if (r.celdaDesborda || r.pagina > 0) malas.push(width + ': desborda (' + JSON.stringify(r) + ')');
+    visto.push(width + ' px, ' + r.renglones + (r.renglones === 1 ? ' renglón' : ' renglones'));
+  }
+  const autoBien = !!auto && !!ref && !esNota(auto.mala, ref) && esNota(auto.buena, ref);
+  if (!autoBien) malas.unshift('el detector no distingue la nota armada como antes de la que lleva la clase: ' + JSON.stringify({ ref, auto }));
+  if (malas.length) mal('la nota «Cesárea: preguntale a tu asesor» del plegable tiene que ir con la letra de la nota de la tabla (Inter 400, 12 px, el mismo color), sin desbordar · ' + malas.join(' · '));
+  else bien('la nota de la cesárea del plegable va como la de la tabla (' + ref.familia + ' ' + ref.peso + ', ' + ref.tamaño + ', ' + ref.color + '), sin desbordar: ' + visto.join(' · ') + '; el detector rechaza la nota armada como antes (' + auto.mala.familia + ' ' + auto.mala.peso + ') y acepta la de la clase');
+}
+
 // ── La plata no se parte por dentro (P3A; comité, vuelta 3, 17/10/2026) ─────
 // «Las cifras con plata no se cortan por dentro (espacio duro)». La forma corta
 // lo cumplía, pero la lista de los once muestra oraciones de coverage.js con
