@@ -1,12 +1,23 @@
 # Cómo publicar la v1 del sitio de Salud Protegida
 
+> **Nota del 18/10/2026: quién publica cambió.** Este documento se escribió el
+> 23/09/2026 (última revisión, 24/09) para la agencia (Buenavista), cuando la idea era que ella copiara
+> la v1 en su sitio. El 29/09 Arturo decidió otra cosa: que SP la publique
+> desde este repo, en Cloudflare Pages (`Nelargon/sp-interno#101`). Todavía no
+> salió: hoy `main` se publica en GitHub Pages (`.github/workflows/deploy.yml`),
+> con las dos ediciones del prototipo. Y «qué cubre» ya
+> no es una página: desde el 05/10, `/que-cubre/` redirige a `/planes/`. El
+> resto se conserva como se escribió. Lo vigente sigue en el `HANDOFF.md`:
+> «🧭 DECIDIDO EL 29/09/2026» y «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».
+
 **Para el equipo que la publica (Buenavista).** Una página, sin supuestos.
 Última revisión: 24/09/2026.
 
 ## 1. Qué es esto
 
 La v1 es la **edición de lanzamiento** del sitio: inicio, simulador, planes,
-qué cubre y la Guía Médica. La maqueta de referencia está en
+qué cubre *(desde el 05/10, redirige a `/planes/`)* y la Guía Médica. La
+maqueta de referencia está en
 `https://nelargon.github.io/sp-prototipo/lanzamiento/`.
 
 **No hace falta reprogramarla.** El sitio es HTML estático: se construye una

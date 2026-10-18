@@ -1714,6 +1714,11 @@ píldoras.
 bien, si ambos espacios aportan un valor específico y ayudan a convertir»*. Falta
 que confirme esta lámina.
 
+*(Nota del 18/10/2026: la decisión del 04/10 dejó sin efecto este reparto.
+`/que-cubre/` ya no es una página: desde el 05/10 redirige a `/planes/`, la
+única página de detalle, y el buscador quedó guardado sin página. Ver la lámina
+76.)*
+
 **La lección.** Tres variantes de una misma lista no son tres opciones. Antes de
 diseñar, se decide qué se saca. Y una página que no empuja al precio no ayuda a
 convertir: hoy el buscador de `/que-cubre` registra la búsqueda pero no tiene

@@ -356,8 +356,8 @@ exactamente esto:
   «¿quién?» (es la misma que abre el nombre, pero no se lee desde ahí); ningún
   otro ancho (ni la tableta); de las tarjetas y las hojas, lo que el lector oye
   por un `aria-label` o una descripción, que no es texto dibujado (se lee el
-  `innerText`, que sí incluye el texto `.sr-solo`); y el simulador,
-  `/que-cubre` y la cotización.
+  `innerText`, que sí incluye el texto `.sr-solo`); y el simulador y la
+  cotización. (`/que-cubre/` no cuenta: es solo el redirect a `/planes/`.)
 - **Autoprueba en cada superficie nueva, en cada ancho y desde cada tarjeta:**
   una espera en cada una de las 81 tarjetas del home abiertas con el dedo y una
   unidad en Silver o Gold de las 36 de filas con «¿quién?»; una espera y una
@@ -801,7 +801,8 @@ Quedaron escritas solo en issues de `sp-interno`. Esto es un puntero: el
 detalle y lo que falta viven en cada issue.
 
 - **El sitio se publica desde este repo** (Cloudflare Pages), no desde un sitio
-  de Buenavista: `Nelargon/sp-interno#101`. Deja como historia la sección
+  de Buenavista: `Nelargon/sp-interno#101`. *(18/10/2026: es lo decidido;
+  todavía no salió. Hoy `main` se publica en GitHub Pages, con el prototipo.)* Deja como historia la sección
   «⚠ LEER PRIMERO — `/lanzamiento/` es una maqueta» (16/09), más abajo.
 - **Preparar el build para el dominio real**, que decide Claude:
   `Nelargon/sp-interno#103`.
@@ -824,7 +825,7 @@ fila, y la diferencia real (por familia contra por persona) escondida. Ahora:
 - **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona». *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*
   «No ponés nada» va en la tarjeta del servicio, solo en Silver y Gold, y el pie
   explica por familia y por persona. En el FAQ, «por persona y no por familia».
-- **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador) y
+- **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador; *18/10/2026: `/que-cubre` redirige a `/planes/` desde el 05/10*) y
   **`app/quote.js`** (etiqueta, líneas y textos del simulador): sin «Al 100%».
 
 «Al 100%» aparecía 5 veces en el home, 10 en `/planes` y 13 en `/que-cubre`;
@@ -1435,6 +1436,10 @@ absolutamente conectado»*.
   cap. 112). Está en las **dos ediciones** por decisión de Arturo (Buenavista
   sabe que no va en el sitio real). Se apaga con `CON_REVISION` en
   `app/edicion.js`. Quien no tiene acceso al repo privado ve «no encontrado».
+  *(18/10/2026: con la decisión del 29/09, ese motivo ya no existe. La v1 la
+  va a publicar SP desde este repo, no la agencia (`Nelargon/sp-interno#101`):
+  si `CON_REVISION` sigue en `true`, el botón sale con el sitio. Si se apaga
+  antes del lanzamiento lo decide Arturo en `Nelargon/sp-interno#192`.)*
 - **El barrido:** el Guardián lo hace cada mañana (`sp-interno/salud/
   GUARDIAN.md`, paso 2b). Resuelve lo que puede resolver Claude, con PRs que
   cierran el issue, y sube al tablero lo que espera a una persona hace más de 7
@@ -2761,7 +2766,7 @@ planilla.
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
 | Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |
 | Ecocardiograma, dos dudas: (1) ¿"ECOCARDIOGRAMA CON DOPPLER DE BASOS DE CUELLO" estaba en rojo? Sigue publicado. (2) En Gold, la fila borrada decía "Ilimitada" y la que queda dice "1 por año": ¿cuál vale? | SP (quien mandó la corrección) |
-| 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` | llegan así de la grilla: corregir con la grilla nueva |
+| 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` *(18/10/2026: hoy es el buscador guardado, sin página)* | llegan así de la grilla: corregir con la grilla nueva |
 
 **Guardas que siguen valiendo:**
 - La **Guía Médica pública no incluye "Ver mi red" por cédula**: eso es Mi SP,
@@ -2770,7 +2775,9 @@ planilla.
   abajo (Bronze dado de baja, grilla oficial pendiente). No renombrar planes a
   mano.
 - La reserva de turnos por cédula de la web vieja (la que Buenavista está
-  migrando) no se toca desde acá.
+  migrando) no se toca desde acá. *(18/10/2026: después de la decisión del
+  29/09 (`Nelargon/sp-interno#101`), falta confirmar si la agencia sigue
+  migrando la web vieja.)*
 
 ---
 
@@ -2953,6 +2960,10 @@ sitios**, no uno:
 | Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (bajado el 17/10/2026, sp-interno#181) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
+*(18/10/2026: «qué cubre» ya no es una página en ninguna de las dos ediciones.
+Desde el 05/10, `/que-cubre/` redirige a `/planes/`; ver «🔁 04/10/2026: UNA
+SOLA PÁGINA DE DETALLE».)*
+
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página
 web de SP. Quiero crear otra versión del prototipo para esto sin tocar el
 prototipo original. Porque todavía no lanzaremos la guía médica, o la sección
@@ -3052,9 +3063,31 @@ agendar en la v1 son: `hero`, `nav`, `menu_movil`, `cobertura`.
 > ellos. El `noindex` de nuestra copia se queda como está: nuestra copia es
 > una referencia, no el sitio.
 
+> **Nota del 18/10/2026: lo de arriba también es historia.** El 29/09 Arturo
+> decidió que esta edición la publique SP desde este repo, en Cloudflare Pages,
+> con el dominio de SP, y no la agencia (`Nelargon/sp-interno#101`; ver «🧭
+> DECIDIDO EL 29/09/2026»). El dominio, el hosting y la indexación pasan a ser
+> nuestros. Todavía no salió: hoy `main` se publica en GitHub Pages
+> (`.github/workflows/deploy.yml`), con las dos ediciones del prototipo, y la
+> v1 sigue con `noindex`. Entre lo que falta:
+> - conectar Cloudflare Pages para la producción: en el repo no hay ningún
+>   deploy a Cloudflare;
+> - preparar el build para el dominio real (`Nelargon/sp-interno#103`);
+> - prender la indexación (`NEXT_PUBLIC_INDEXABLE=true` y `SITE_URL`, pendiente
+>   8b) cuando se decida salir;
+> - pasar el redirect de `/que-cubre/` a un 301 en `_redirects` (ver «🔁
+>   04/10/2026: UNA SOLA PÁGINA DE DETALLE»).
+
 ---
 
 ## 🆕 `/que-cubre` — la landing de los planes, en espacio propio (6 ago 2026)
+
+> **Nota del 18/10/2026: `/que-cubre` como página es historia.** Desde el 05/10
+> redirige a `/planes/`, la única página de detalle, y el buscador quedó
+> guardado sin página (`app/que-cubre/Buscador.jsx`). Lo vigente: «🔁 04/10/2026:
+> UNA SOLA PÁGINA DE DETALLE». **Siguen valiendo** dos cosas de esta sección: la
+> guarda «⚠ NO reponer el bloque 45/66/93 en ningún lado» y lo que dice sobre el
+> buscador guardado («Lo que una sesión futura tiene que saber»).
 
 Ruta nueva: **`/que-cubre/`** (`app/que-cubre/`). Es **la página donde la
 promesa de transparencia se puede verificar**: abre con un buscador — escribís
@@ -3074,6 +3107,10 @@ porcentajes.** Ver BITACORA cap. 65.
 > busca una sola comparativa completa de los tres planes. Ver la sección
 > «`/que-cubre` QUEDA OBSOLETA» al principio de este documento. Lo de abajo
 > queda como historia de cómo se llegó.
+>
+> *(18/10/2026: el 04/10 Arturo cerró este reparto: `/que-cubre` no existe
+> como página y `/planes/` es la única página de detalle. Ver «🔁 04/10/2026:
+> UNA SOLA PÁGINA DE DETALLE».)*
 
 Decisión del usuario (6 ago 2026), textual: **"que sea un espacio aparte"**.
 
@@ -3280,7 +3317,9 @@ para la web, más allá del #2 ya arrancado:
 ### Índice — dónde vive cada cosa
 Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-puesto)
 · Planes `app/planes/Planes.jsx` · **Landing `app/que-cubre/Landing.jsx` + buscador
-`app/que-cubre/Buscador.jsx`** · Motor de
+`app/que-cubre/Buscador.jsx`** *(18/10/2026: `Landing.jsx` se borró con «🔁
+04/10/2026: UNA SOLA PÁGINA DE DETALLE». Hoy está `app/que-cubre/page.jsx`, el
+redirect a `/planes/`, y el buscador quedó guardado sin página)* · Motor de
 precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
 `datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
 `scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
@@ -3702,7 +3741,11 @@ usa `npm ci`).
     el trabajo siguiente". Textual: *"el prototipo va a ser la web… a muchísimos
     les está gustando cómo está quedando"*. Se descarta WordPress como
     plataforma; BuenaVista, si entra, es implementador/hosting, no dueño del
-    diseño. **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
+    diseño. *(18/10/2026: el 29/09 Arturo decidió que el sitio lo publique SP
+    desde este repo, en Cloudflare Pages, con el dominio de SP
+    (`Nelargon/sp-interno#101`): la publicación y el hosting no pasan por la
+    agencia. Todavía no salió: hoy `main` se publica en GitHub Pages.)*
+    **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
     la infra de las páginas Next.js ya está lista (robots/noindex/sitemap/
     canonicals/OG/JSON-LD, se prende con `NEXT_PUBLIC_INDEXABLE=true` +
     `SITE_URL`). Faltan, concretas: (a) el **hostname público del sitio** (para
@@ -4418,7 +4461,12 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 8. ⚠ **Superado el 16/09/2026** — ver "LEER PRIMERO" arriba: la v1 la publica
    **Buenavista**, en su sitio, a partir de nuestra maqueta. Lo de abajo es la
    decisión de julio, que se conserva como historia. Guía de publicación para
-   ellos: `docs/IMPLEMENTAR-v1.md`.
+   ellos: `docs/IMPLEMENTAR-v1.md`. *(18/10/2026: lo del 16/09 también es
+   historia. El 29/09 Arturo decidió que la v1 la publique SP desde este repo,
+   en Cloudflare Pages, y no la agencia en su sitio (`Nelargon/sp-interno#101`;
+   ver «🧭 DECIDIDO EL 29/09/2026»). Todavía no salió: hoy `main` se publica
+   en GitHub Pages (`.github/workflows/deploy.yml`), con las dos ediciones del
+   prototipo.)*
    ~~**Decisión de plataforma de la web pública**~~ ✔ **RESUELTO (23 jul 2026,
    dec. 11p): el prototipo Next.js ES la web.** Se descarta WordPress/BuenaVista
    como plataforma. Quedan quién hospeda y el dominio (#9); el backend (ANEXO)
@@ -4480,7 +4528,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     `marked`/`gray-matter`, mismo diseño de lectura `Articulo.jsx`).
     Meta acordada: 2-3 notas publicadas por semana; publicar = copiar
     el markdown aprobado a `publicados/` vía PR — revisión humana
-    siempre. El contenido es portable: el día que la web oficial pase a
+    siempre. *(18/10/2026: ya no es así; ver la nota al final de este
+    punto.)* El contenido es portable: el día que la web oficial pase a
     WordPress/HubSpot (BuenaVista), la biblioteca de notas migra tal
     cual.
     **✔ Motor de contenido — CONSTRUIDO (20 jul 2026, guarda
@@ -4497,6 +4546,20 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     — los mergea un humano, SIEMPRE (el merge automático de este repo
     no aplica a PRs de contenido). Ninguna sesión de la web coordina
     contenido: eso es del Master Orquestador en `sp-contenido`.
+    *(18/10/2026: lo de arriba sobre cómo se publica es historia. Desde el
+    05/08 el Publicador fusiona sin espera humana las notas 🟢 que pasan la
+    compuerta (`sp-contenido/GOVERNANCE.md`, §3b). Desde el 25/09, las de
+    «Entendé tu plan» y «Salud en Paraguay» esperan una lectura humana antes
+    de salir (§3b, punto 7; acá, «📬 EL BLOG LLEGA POR CORREO»). Los
+    borradores del blog se escriben cada día (RTN-002, diario desde el 22/07),
+    no cada semana. El Minero de reuniones se retiró el 30/09
+    (`sp-contenido/routines/registry.yml`). `sp-interno` es un repo activo: el
+    privado del ecosistema. Y el 29/09 Arturo decidió que la web se publique
+    desde este repo, en Cloudflare Pages, y no desde un sitio de la agencia
+    (`Nelargon/sp-interno#101`; ver «🧭 DECIDIDO EL 29/09/2026»). Todavía no
+    salió: hoy `main` se publica en GitHub Pages
+    (`.github/workflows/deploy.yml`), con las dos ediciones del prototipo. Lo
+    vigente del motor vive en `sp-contenido`.)*
 
 ### Carencias visibles y glosario en contexto (26 jul 2026)
 
@@ -5068,6 +5131,10 @@ puerta, se mira acá.
 | **`/que-cubre`** | *¿Está cubierto **esto** que me pidió el médico?* | Buscador sobre 983 respuestas de la grilla oficial |
 | **`/guia`** | *¿Dónde y con quién me atiendo?* | Directorio de prestadores |
 
+*(18/10/2026: la fila de `/que-cubre` es historia. Desde el 05/10,
+`/que-cubre/` redirige a `/planes/` y el buscador quedó guardado sin página;
+ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
+
 **No son redundantes: son cuatro preguntas distintas.** Por eso el arreglo nunca
 fue fusionar páginas — fue **que cada puerta diga qué pregunta responde**. La
 puerta genérica ("¿Querés ver más?") es la que rompe el sistema: manda a la
@@ -5077,13 +5144,19 @@ persona que llega con una orden médica en la mano a la comparación de planes.
 lado, nunca por el lugar al que lleva.* El home tiene ahora dos puertas bajo la
 matriz — "¿Está cubierto lo que me pidieron?" → `/que-cubre` y "El detalle fila
 por fila" → `/planes` — en vez de una sola que decía "ver todos los planes".
+*(18/10/2026: la regla sigue; la puerta a `/que-cubre` salió del home el
+05/10. Ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
 
 🔁 **26/09/2026: Arturo reabrió este reparto** (ver «`/que-cubre` QUEDA
 OBSOLETA» al principio). El mapa se redibuja con la comparativa completa.
+*(18/10/2026: se cerró el 04/10, con el OK de Arturo el 05/10: `/planes/` es la
+única página de detalle. Ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
 
 ⚠ Que `/planes` y `/que-cubre` sean cosas distintas **es decisión de Arturo**,
 registrada al construir `/que-cubre`: *"que sea un espacio aparte"*. No
-re-litigar sin él.
+re-litigar sin él. *(18/10/2026: la cambió Arturo mismo el 04/10: «el espacio
+de "¿Qué cubre?" realmente debería no existir». Ver «🔁 04/10/2026: UNA SOLA
+PÁGINA DE DETALLE».)*
 
 ### ⚠ EL CAÑO DE PUBLICACIÓN SE ROMPIÓ EN SILENCIO (6 ago 2026)
 
@@ -5120,6 +5193,9 @@ del árbol actual y no lo es**. La evidencia se genera corriendo la suite.
   direcciones/horarios? → SP + empresa desarrolladora.
 - ~~¿WordPress o Next.js para la web pública?~~ ✔ RESUELTO (dec. 11p): Next.js
   (el prototipo). BuenaVista, si entra, es implementador/hosting.
+  *(18/10/2026: el 29/09 Arturo decidió que lo publique SP desde este repo, en
+  Cloudflare Pages (`Nelargon/sp-interno#101`), no la agencia. Todavía no
+  salió: hoy `main` se publica en GitHub Pages.)*
 - ¿Dominio **del sitio** (hostname para `SITE_URL`) y **de la guía**? → SP.
 
 ---
