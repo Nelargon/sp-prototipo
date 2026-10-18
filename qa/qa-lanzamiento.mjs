@@ -703,7 +703,7 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // (falla con un NOTA_UNIDAD que dice «En Silver y Gold son para cada persona.»).
 console.log('\n── La forma corta (P3A)');
 {
-  const { DUDA, QUIEN_SG, QUIEN_PSICO, ASESOR: ASESOR_P3 } = COV;
+  const { DUDA, QUIEN_SG, QUIEN_PSICO } = COV;
   // La tercera columna: los planes cuya celda manda al asesor en lugar de dar
   // un número (la fisioterapia de Gold, G1A): esa la controla su sección.
   const FILAS = [['Tomografía (TAC)', QUIEN_SG, []], ['Resonancia (RM)', QUIEN_SG, []], ['Sesiones de psicología', QUIEN_PSICO, []], ['Fisioterapia', QUIEN_SG, [2]]];
@@ -858,29 +858,46 @@ console.log('\n── La forma corta (P3A)');
   // Silver o Gold con una unidad («por persona», «para todo el grupo»…) la dice
   // después de «preguntale a tu asesor si», como pregunta, no como dato. «Por
   // familia: …» es la definición de la unidad de Essential y queda.
-  const UNIDAD = /por persona|para cada persona|cada uno|por familia|para toda la familia|para todo el grupo|por grupo|por beneficiario/i;
-  const pregunta = minus(ASESOR_P3) + ' si ';
+  // Corrección del 18/10 (verificador de accesibilidad): la lista de unidades
+  // enumeraba formas conocidas («por persona», «cada uno»…) y pasaban «En Silver
+  // y Gold, cada persona tiene su propio cupo: preguntale a tu asesor si querés
+  // saber cuántos son.», «son individuales», «cada integrante tiene los suyos» o
+  // «son por afiliado». Ahora el pie se compara con los textos que fijó Arturo
+  // el 17/10, escritos acá como literales (no leídos de coverage.js, que es lo
+  // que dibuja la página): la pregunta por la unidad tiene que estar tal cual, la
+  // definición de «por familia» puede estar, y cualquier otra oración solo puede
+  // ser otra pregunta al asesor («En Gold, preguntale a tu asesor cuántas
+  // sesiones de fisioterapia tiene.»): nada dicho antes de «preguntale» y ninguna
+  // palabra de unidad.
+  const DEFINICION = 'Por familia: un cupo que comparten todos los del grupo.';
+  const PREGUNTA_UNIDAD = 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.';
+  const OTRA_PREGUNTA = /^En (?:Essential|Silver|Gold|Silver y Gold), preguntale a tu asesor (?:cuánt[oa]s?|qué|cuál|cómo|si)\b[^.:;]*\.$/;
+  const DE_UNIDAD = /persona|familia|grupo|individual|integrante|afiliad|beneficiari|\bcada\b|cupo|\bsuy[oa]s\b/i;
   const pieBien = (p) => {
     if (!p || /contrato/i.test(p)) return false;
     const oraciones = p.replace(/\s+/g, ' ').trim().split(/(?<=\.)\s+/);
-    const pide = oraciones.some((o) => /Silver|Gold/.test(o) && o.toLowerCase().includes(pregunta));
-    return pide && oraciones.every((o) => {
-      const u = o.search(UNIDAD);
-      if (u < 0) return true;
-      if (!/Silver|Gold/.test(o)) return /^Por familia:/.test(o);
-      const q = o.toLowerCase().indexOf(pregunta);
-      return q >= 0 && q < u;
-    });
+    return oraciones.includes(PREGUNTA_UNIDAD) && oraciones.every((o) => o === DEFINICION || o === PREGUNTA_UNIDAD || (OTRA_PREGUNTA.test(o) && !DE_UNIDAD.test(o)));
   };
+  const P = DEFINICION + ' ';
   const pieAuto = {
-    deHoy: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
-    afirma: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold son para cada persona.'),
-    afirmaYPregunta: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold son por persona; preguntale a tu asesor si cambia.'),
-    contrato: pieBien('Por familia: un cupo que comparten todos los del grupo. Según el contrato, en Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
-    noPregunta: pieBien('Por familia: un cupo que comparten todos los del grupo.'),
+    deHoy: pieBien(P + PREGUNTA_UNIDAD),
+    fisioterapia: pieBien(P + PREGUNTA_UNIDAD + ' En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.'),
+    afirma: pieBien(P + 'En Silver y Gold son para cada persona.'),
+    afirmaYPregunta: pieBien(P + 'En Silver y Gold son por persona; preguntale a tu asesor si cambia.'),
+    contrato: pieBien(P + 'Según el contrato, en Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
+    noPregunta: pieBien(P.trim()),
+    cadaPersona: pieBien(P + 'En Silver y Gold, cada persona tiene su propio cupo: preguntale a tu asesor si querés saber cuántos son.'),
+    cadaPersonaYPregunta: pieBien(P + 'En Silver y Gold, cada persona tiene su propio cupo. ' + PREGUNTA_UNIDAD),
+    individuales: pieBien(P + 'En Silver y Gold son individuales. ' + PREGUNTA_UNIDAD),
+    integrante: pieBien(P + 'En Silver y Gold cada integrante tiene los suyos. ' + PREGUNTA_UNIDAD),
+    afiliado: pieBien(P + 'En Silver y Gold son por afiliado. ' + PREGUNTA_UNIDAD),
+    preguntaQueAfirma: pieBien(P + 'En Silver y Gold, preguntale a tu asesor si querés: son para cada persona.'),
+    afirmaDespues: pieBien(P + PREGUNTA_UNIDAD + ' Son para cada persona.'),
+    otraQueAfirma: pieBien(P + PREGUNTA_UNIDAD + ' En Gold, preguntale a tu asesor si son más, porque son por persona.'),
   };
-  if (!pieAuto.deHoy || pieAuto.afirma || pieAuto.afirmaYPregunta || pieAuto.contrato || pieAuto.noPregunta) mal('el detector del pie no distingue la pregunta al asesor de una afirmación de unidad o del contrato: ' + JSON.stringify(pieAuto));
-  else bien('el detector del pie deja pasar la pregunta al asesor y rechaza «son para cada persona», la unidad dicha antes de la pregunta, «contrato» y un pie sin la pregunta');
+  const pieMalos = Object.entries(pieAuto).filter(([k, v]) => !['deHoy', 'fisioterapia'].includes(k) && v).map(([k]) => k);
+  if (!pieAuto.deHoy || !pieAuto.fisioterapia || pieMalos.length) mal('el detector del pie no distingue la pregunta al asesor de una afirmación de unidad o del contrato: ' + JSON.stringify(pieAuto));
+  else bien('el detector del pie deja pasar los dos pies de hoy (con la pregunta que fijó Arturo) y rechaza las ' + (Object.keys(pieAuto).length - 2) + ' afirmaciones de unidad o del contrato («son para cada persona», «cada persona tiene su propio cupo», «son individuales», «por afiliado», la unidad antes o después de la pregunta, «contrato» y un pie sin la pregunta)');
   if (!HAY_DUDA) salta('la celda que se abre con clic y teclado');
   else if (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || !abre.cierraEscape || !abre.abreEnter || !abre.abreEspacio || !abre.veMudas || abre.ev !== 1) mal('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') tiene que abrir la tarjeta con un clic y con el teclado (Enter o Espacio no la cierran, y con la tarjeta cerrada la abren), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda»; la prueba tiene que ver las teclas mudas (' + JSON.stringify(abre) + ')');
   else bien('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') abre la tarjeta con un clic y con el teclado; Enter o Espacio no la cierran y, con la tarjeta cerrada, la abren (la prueba ve las teclas mudas); no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
@@ -1017,43 +1034,68 @@ console.log('\n── Ningún renglón termina en «/» (pie del home y plegable
 // que expone el navegador. Con `.corta + .sr-solo{display:none}` en el CSS el
 // lector no oía nada y todo seguía en verde (lo midió el revisor de Dev). Ahora,
 // para cada forma corta visible (no inerte ni escondida para el lector) se
-// cuenta su frase en el árbol de accesibilidad (ariaSnapshot): tiene que estar
-// al menos tantas veces como formas cortas la llevan, y la forma con barras no
-// se oye nunca. Del DOM queda solo lo que el árbol no dice: el role. Se mira el
-// home y /planes en la computadora (con los plegables abiertos) y en el celular
-// (con la lista de los once abierta). El detector se prueba antes, en la misma
-// página, contra cuatro formas mal armadas (sin aria-hidden, con role="img", sin
-// frase y con la frase escondida con display:none) y una bien armada. Falla en
-// una copia del sitio con la frase silenciada en el CSS y pasa en la rama.
+// cuenta su frase en el árbol de accesibilidad (ariaSnapshot) de su celda, su
+// botón o su línea: tiene que estar al menos tantas veces como formas cortas la
+// llevan ahí, y la forma con barras no se oye nunca. Del DOM queda solo lo que
+// el árbol no dice: el role. Se mira el home y /planes en la computadora (con
+// los plegables abiertos) y en el celular (con la lista de los once abierta).
+// El detector se prueba antes, en la misma página, contra cinco formas mal
+// armadas (sin aria-hidden, con role="img", sin frase, con la frase escondida
+// con display:none, y escondida al lado de otra celda que la contiene) y dos
+// bien armadas. Falla en una copia del sitio con la frase silenciada en el CSS,
+// en todo el sitio o en una sola fila del plegable, y pasa en la rama.
+// Corrección del 18/10: se contaba en todo el body, y con las tres celdas de
+// «Tope de días de internación» del plegable mudas seguía en verde, porque
+// «20 días por familia» está dentro de «20 días por familia al año».
 console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
 {
   const BARRAS = /\d[\d.,]*(?:\s\S+)?\/(?:familia|persona|año|mes|evento|¿quién\?)/;
   const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Cada frase se cuenta en lo que oye el lector de SU contenedor (la celda, el
+  // botón o la línea que trae la forma corta), no en todo el body (corrección
+  // del 18/10, verificador de accesibilidad): una frase que es el comienzo de
+  // otra que se oye en otra parte de la página («20 días por familia» del
+  // plegable, dentro de «20 días por familia al año» de la tabla de arriba) se
+  // daba por oída aunque su celda estuviera muda.
+  const CONTENEDOR = '[role="cell"], [role="button"], button, a, .cmp2-v, .linea-cel, li, p';
   const revisar = async (pg, sel) => {
-    const esperado = await pg.evaluate((sel) => [...document.querySelectorAll(sel + ' .corta')]
-      .filter((k) => k.getClientRects().length && !k.parentElement.closest('[inert], [aria-hidden="true"]'))
-      .map((k) => { const sr = k.nextElementSibling; return { t: k.textContent, frase: sr && sr.classList.contains('sr-solo') ? sr.textContent.trim() : '', role: k.getAttribute('role') }; }), sel);
-    const leido = oido(await pg.locator(sel).first().ariaSnapshot());
+    const esperado = await pg.evaluate(([sel, cont]) => {
+      document.querySelectorAll('[data-qa-corta]').forEach((e) => e.removeAttribute('data-qa-corta'));
+      let n = 0;
+      return [...document.querySelectorAll(sel + ' .corta')]
+        .filter((k) => k.getClientRects().length && !k.parentElement.closest('[inert], [aria-hidden="true"]'))
+        .map((k) => {
+          const sr = k.nextElementSibling;
+          const c = k.closest(cont) || k.parentElement;
+          if (!c.hasAttribute('data-qa-corta')) c.setAttribute('data-qa-corta', String(n++));
+          return { t: k.textContent, frase: sr && sr.classList.contains('sr-solo') ? sr.textContent.trim() : '', role: k.getAttribute('role'), c: c.getAttribute('data-qa-corta') };
+        });
+    }, [sel, CONTENEDOR]);
     const malas = [];
-    const veces = {};
+    const porContenedor = {};
     for (const e of esperado) {
       if (e.role) malas.push(e.t + ': role=' + e.role);
       if (!e.frase) { malas.push(e.t + ': sin su frase'); continue; }
-      veces[e.frase] = (veces[e.frase] || 0) + 1;
+      const f = (porContenedor[e.c] = porContenedor[e.c] || {});
+      f[e.frase] = (f[e.frase] || 0) + 1;
     }
-    for (const [f, n] of Object.entries(veces)) {
-      const hay = (leido.match(new RegExp('(?<![\\d,])' + escRe(f), 'g')) || []).length;
-      if (hay < n) malas.push('«' + f + '»: el lector la oye ' + hay + ' de ' + n + ' veces');
+    for (const [c, frases] of Object.entries(porContenedor)) {
+      const leido = oido(await pg.locator('[data-qa-corta="' + c + '"]').ariaSnapshot());
+      for (const [f, n] of Object.entries(frases)) {
+        const hay = (leido.match(new RegExp('(?<![\\d,])' + escRe(f), 'g')) || []).length;
+        if (hay < n) malas.push('«' + f + '»: el lector la oye ' + hay + ' de ' + n + ' veces en su celda, que dice ' + JSON.stringify(leido.slice(0, 70)));
+      }
     }
-    const barra = leido.match(BARRAS);
+    const barra = oido(await pg.locator(sel).first().ariaSnapshot()).match(BARRAS);
     if (barra) malas.push('el lector oye la forma con barras: «' + barra[0] + '»');
-    return { total: esperado.length, malas };
+    return { total: esperado.length, contenedores: Object.keys(porContenedor).length, malas };
   };
   const malas = [];
-  let revisadas = 0;
+  let revisadas = 0, contenedores = 0;
   const pagina = async (pg, donde) => {
     const r = await revisar(pg, 'body');
     revisadas += r.total;
+    contenedores += r.contenedores;
     if (!r.total) malas.push(donde + ': ninguna forma corta visible');
     r.malas.forEach((m) => malas.push(donde + ' · ' + m));
   };
@@ -1067,14 +1109,18 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
       + '<p id="qa-c2"><span class="corta" aria-hidden="true" role="img">2/familia/año</span><span class="sr-solo">2 por familia al año</span></p>'
       + '<p id="qa-c3"><span class="corta" aria-hidden="true">3/familia/año</span></p>'
       + '<p id="qa-c4"><span class="corta" aria-hidden="true">4/familia/año</span><span class="sr-solo" style="display:none">4 por familia al año</span></p>'
-      + '<p id="qa-c5"><span class="corta" aria-hidden="true">5/familia/año</span><span class="sr-solo">5 por familia al año</span></p>';
+      + '<p id="qa-c5"><span class="corta" aria-hidden="true">5/familia/año</span><span class="sr-solo">5 por familia al año</span></p>'
+      // La frase escondida al lado de otra celda que la contiene (tiene que
+      // fallar) y la misma, bien armada (tiene que pasar).
+      + '<div id="qa-c6" role="table" aria-label="qa"><div role="row"><div role="cell">20 días por familia al año</div><div role="cell"><span class="corta" aria-hidden="true">20 días/familia</span><span class="sr-solo" style="display:none">20 días por familia</span></div></div></div>'
+      + '<div id="qa-c7" role="table" aria-label="qa"><div role="row"><div role="cell">20 días por familia al año</div><div role="cell"><span class="corta" aria-hidden="true">20 días/familia</span><span class="sr-solo">20 días por familia</span></div></div></div>';
     document.body.appendChild(d);
   });
   const caso = async (id) => (await revisar(page, '#' + id)).malas.length;
-  const prueba = { sinAriaHidden: await caso('qa-c1'), conRole: await caso('qa-c2'), sinFrase: await caso('qa-c3'), fraseEscondida: await caso('qa-c4'), bienArmada: await caso('qa-c5') };
+  const prueba = { sinAriaHidden: await caso('qa-c1'), conRole: await caso('qa-c2'), sinFrase: await caso('qa-c3'), fraseEscondida: await caso('qa-c4'), bienArmada: await caso('qa-c5'), mudaAlLadoDeOtra: await caso('qa-c6'), alLadoDeOtraBien: await caso('qa-c7') };
   await page.evaluate(() => document.getElementById('qa-corta').remove());
-  if (!prueba.sinAriaHidden || !prueba.conRole || !prueba.sinFrase || !prueba.fraseEscondida || prueba.bienArmada) mal('el detector de la forma corta para lectores no distingue el caso malo del bueno: ' + JSON.stringify(prueba));
-  else bien('el detector, sobre el árbol de accesibilidad, encuentra las cuatro formas cortas mal armadas (sin aria-hidden, con role="img", sin frase y con la frase escondida) y deja pasar la bien armada');
+  if (!prueba.sinAriaHidden || !prueba.conRole || !prueba.sinFrase || !prueba.fraseEscondida || prueba.bienArmada || !prueba.mudaAlLadoDeOtra || prueba.alLadoDeOtraBien) mal('el detector de la forma corta para lectores no distingue el caso malo del bueno: ' + JSON.stringify(prueba));
+  else bien('el detector, sobre el árbol de accesibilidad de cada celda, encuentra las cinco formas cortas mal armadas (sin aria-hidden, con role="img", sin frase, con la frase escondida y muda al lado de otra celda que la contiene) y deja pasar las bien armadas');
   await pagina(page, 'home 1280');
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
@@ -1092,7 +1138,7 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
   await pagina(cel, '/planes 390 con la lista abierta');
   await ctx.close();
   if (malas.length) mal('cada forma corta visible se oye con su frase, sin las barras y sin role (árbol de accesibilidad) · ' + malas.slice(0, 6).join(' · '));
-  else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular): el lector oye cada frase y ninguna forma con barras');
+  else bien(revisadas + ' formas cortas visibles en ' + contenedores + ' celdas, botones y líneas (home y /planes, computadora y celular): el lector oye cada frase en su celda y ninguna forma con barras');
 }
 
 // ── Lo que oye el lector: cada valor con su fila y su plan ──────────────────
@@ -1107,7 +1153,11 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
 //   del asesor dice la constante ASESOR (no un texto escrito a mano), y el link
 //   de cada columna, de qué plan es («Ver mi precio en Gold»). En el celular la
 //   fila está al lado y el plan arriba de la tarjeta: ahí no se repite.
-// - Los dos plegables de /planes son tablas para el lector (roles de tabla):
+//   Corrección del 18/10 (W1): en la banda de esperas de /planes cada valor dice
+//   que es una espera («Resonancia, Essential: 1 año de espera»); se oía «1 año»
+//   y se entendía como un cupo.
+// - Los dos plegables de /planes son tablas para el lector (roles de tabla), sin
+//   celdas mudas (una `cell` sin nombre falla; corrección del 18/10):
 //   cada valor está en la columna de su plan y en la fila de lo que es, y la
 //   fisioterapia de Gold y la urgencia de Essential mandan al asesor en la
 //   columna de su plan. Antes eran divs y se oía «… Preguntale a tu asesor Gs.
@@ -1144,9 +1194,17 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
     const vacias = lista.filter(([, v]) => !v).map(([f]) => f);
     const antes = pos.length ? leido.slice(0, pos[0][1]) : leido;
     const sueltos = /\d/.test(antes.replace(/Gs\.\s*[\d.]+/, '')) || /asesor/i.test(antes);
-    return { faltan, vacias, sueltos, valores };
+    return { faltan, vacias, sueltos, valores, lista };
   };
   const columnaBien = (r) => !r.faltan.length && !r.vacias.length && !r.sueltos;
+  // La banda de esperas de /planes (corrección del 18/10, W1): el título «Cuánto
+  // esperás para usarlo» no llega al lector en las columnas, y varias filas se
+  // llaman casi igual que un servicio («Resonancia, Essential: 1 año», al lado de
+  // «Resonancia (RM), Essential: 1 por familia al año»). Cada valor de la banda
+  // tiene que decir que es una espera («1 año de espera», «Sin espera»): el
+  // valor, antes de la coma de su nota (un «sin espera» de la nota, «los de
+  // rutina, sin espera», no dice nada de los 3 meses de al lado).
+  const esperasMudas = (r, desde) => r.lista.slice(desde).filter(([, v]) => v !== '—' && !/\bespera\b/i.test(v.split(/\s,\s/)[0])).map(([f, v]) => f + ': ' + v);
   // Las tablas que expone el navegador, con sus filas y los roles de cada celda.
   const tablas = (snap) => {
     const out = [];
@@ -1163,9 +1221,11 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
     return out;
   };
   const roles = (f) => f.map(([r]) => r).join(',');
+  // Y ninguna celda muda: una `cell` sin nombre no le dice nada al lector
+  // (corrección del 18/10, V1).
   const tablaBien = (t) => t.filas.length > 1 && roles(t.filas[0]) === 'columnheader,columnheader,columnheader,columnheader'
     && t.filas[0].slice(1).map(([, n]) => n).join(',') === 'Essential,Silver,Gold'
-    && t.filas.slice(1).every((f) => roles(f) === 'rowheader,cell,cell,cell');
+    && t.filas.slice(1).every((f) => roles(f) === 'rowheader,cell,cell,cell' && f.every(([, n]) => n.trim()));
   // «Fisioterapia. Essential: …. Silver: …. Gold: ….», sin «›», barras, «·» ni «Gs.».
   const nombreBien = (n, servicio) => n.startsWith(servicio + '. Essential: ') && /\. Silver: .+\. Gold: .+\.$/.test(n)
     && !/[›/·]/.test(n) && !/Gs\./.test(n) && !/Preguntale/.test(n) && !/\b24 h\b/.test(n.slice(servicio.length));
@@ -1181,6 +1241,7 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
     d.id = 'qa-lector';
     d.innerHTML = '<div id="qa-grilla-mala"><div><div>Topes</div><div>Essential</div><div>Silver</div><div>Gold</div></div><div><div>Fisioterapia</div><div>5</div><div>15</div><div>Preguntale a tu asesor</div></div></div>'
       + '<div id="qa-grilla-buena" role="table" aria-label="Topes"><div role="row"><div role="columnheader">Topes</div><div role="columnheader">Essential</div><div role="columnheader">Silver</div><div role="columnheader">Gold</div></div><div role="row"><div role="rowheader">Fisioterapia</div><div role="cell">5</div><div role="cell">15</div><div role="cell">Preguntale a tu asesor</div></div></div>'
+      + '<div id="qa-grilla-muda" role="table" aria-label="Topes"><div role="row"><div role="columnheader">Topes</div><div role="columnheader">Essential</div><div role="columnheader">Silver</div><div role="columnheader">Gold</div></div><div role="row"><div role="rowheader">Fisioterapia</div><div role="cell">5</div><div role="cell"><span aria-hidden="true">15</span></div><div role="cell">Preguntale a tu asesor</div></div></div>'
       + '<p id="qa-boton-malo"><button aria-label="Parto. Essential: hasta Gs. 350 mil">x</button></p><p id="qa-boton-bueno"><button aria-label="Parto. Essential: hasta 350 mil guaraníes">x</button></p>';
     document.body.appendChild(d);
   });
@@ -1189,6 +1250,10 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
     columnaNueva: columnaBien(conFilas('Essential desde Gs. 220.000 Resonancia (RM), Essential: 1 por familia al año Días de terapia intensiva, Essential: 2 Remedios en urgencias, Essential: Preguntale a tu asesor Ver mi precio en Essential', filas, 'Essential')),
     grillaSinRoles: tablas(await page.locator('#qa-grilla-mala').ariaSnapshot()).some(tablaBien),
     grillaConRoles: tablas(await page.locator('#qa-grilla-buena').ariaSnapshot()).every(tablaBien),
+    grillaConCeldaMuda: tablas(await page.locator('#qa-grilla-muda').ariaSnapshot()).some(tablaBien),
+    esperaComoCupo: esperasMudas(conFilas('Resonancia (RM), Essential: 1 por familia al año Consultas y urgencias, Essential: Sin espera Resonancia, Essential: 1 año Ver mi precio en Essential', ['Resonancia (RM)', 'Consultas y urgencias', 'Resonancia'], 'Essential'), 1).length,
+    esperaConNotaQueDiceEspera: esperasMudas(conFilas('Resonancia (RM), Essential: 1 por familia al año Análisis de laboratorio, Essential: 3 meses , los de rutina, sin espera Ver mi precio en Essential', ['Resonancia (RM)', 'Análisis de laboratorio'], 'Essential'), 1).length,
+    esperaDicha: esperasMudas(conFilas('Resonancia (RM), Essential: 1 por familia al año Consultas y urgencias, Essential: Sin espera Análisis de laboratorio, Essential: 3 meses de espera , los de rutina, sin espera Resonancia, Essential: 1 año de espera Ver mi precio en Essential', ['Resonancia (RM)', 'Consultas y urgencias', 'Análisis de laboratorio', 'Resonancia'], 'Essential'), 1).length,
     filaVuelta1: nombreBien('Fisioterapia › 5 por familia al año Sin espera 15 al año, sin confirmar para quién 3 meses de espera Preguntale a tu asesor 3 meses de espera', 'Fisioterapia'),
     filaVuelta2: nombreBien('Urgencia 24 h. Essential: Consulta 24 h · remedios Preguntale a tu asesor, sin espera. Silver: Consulta 24 h · remedios hasta 150 mil guaraníes cada vez que vas a urgencias, sin espera. Gold: Consulta 24 h · remedios hasta 200 mil guaraníes cada vez que vas a urgencias, sin espera.', 'Urgencia 24 h'),
     filaConGs: nombreBien('Parto o cesárea. Essential: con el bebé en nursery, medicamentos hasta Gs. 350 mil, 1 año de espera. Silver: x. Gold: y.', 'Parto o cesárea'),
@@ -1197,13 +1262,17 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
     botonBueno: nombres(await page.locator('#qa-boton-bueno').ariaSnapshot()).some((n) => /Gs\./.test(n)),
   };
   await page.evaluate(() => document.getElementById('qa-lector').remove());
-  if (prueba.columnaVieja || !prueba.columnaNueva || prueba.grillaSinRoles || !prueba.grillaConRoles || prueba.filaVuelta1 || prueba.filaVuelta2 || prueba.filaConGs || !prueba.filaBuena || !prueba.botonConGs || prueba.botonBueno) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(prueba));
+  if (prueba.columnaVieja || !prueba.columnaNueva || prueba.grillaSinRoles || !prueba.grillaConRoles || prueba.grillaConCeldaMuda || !prueba.esperaComoCupo || !prueba.esperaConNotaQueDiceEspera || prueba.esperaDicha || prueba.filaVuelta1 || prueba.filaVuelta2 || prueba.filaConGs || !prueba.filaBuena || !prueba.botonConGs || prueba.botonBueno) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(prueba));
 
   // 1. La computadora: cada columna de la tabla del home y de /planes.
   const conGs = [];
+  let esperasOidas = 0;
   for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
     if (ruta !== '/') await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     const nombresFila = await page.$$eval(sel + ' .cmp2-lab .cmp2-c', (cs) => cs.map((c) => c.textContent.trim()));
+    // Dónde empieza la banda de esperas (solo en /planes).
+    const desdeEsperas = await page.$$eval(sel + ' .cmp2-lab .cmp2-grupo-y-fila', (gs) => gs.findIndex((g) => /Cuánto esperás/.test((g.querySelector('.cmp2-gt') || {}).textContent || '')));
+    if (ruta !== '/' && desdeEsperas < 0) malas.push(ruta + ': no encuentro la banda «Cuánto esperás para usarlo»');
     const cols = page.locator(sel + ' .cmp2-plan');
     for (let i = 0; i < 3; i++) {
       const plan = (await cols.nth(i).locator('.cmp2-nombre').textContent()).trim();
@@ -1213,6 +1282,11 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
       if (plan === 'Gold' && r.valores['Fisioterapia'] !== ASESOR) malas.push(ruta + ' fisioterapia de Gold: ' + JSON.stringify(r.valores['Fisioterapia']));
       if (plan === 'Essential' && r.valores['Remedios en urgencias'] !== ASESOR) malas.push(ruta + ' remedios en urgencias de Essential: ' + JSON.stringify(r.valores['Remedios en urgencias']));
       if (!nombres(snap, 'link').includes('Ver mi precio en ' + plan)) malas.push(ruta + ' columna de ' + plan + ': el link no dice de qué plan es');
+      if (desdeEsperas >= 0) {
+        const mudas = esperasMudas(r, desdeEsperas);
+        if (mudas.length) malas.push(ruta + ' columna de ' + plan + ': la espera no dice que es una espera · ' + mudas.slice(0, 3).join(' · '));
+        else if (plan === 'Essential') esperasOidas = r.lista.slice(desdeEsperas).length;
+      }
     }
     nombres(await page.locator('body').ariaSnapshot()).filter((n) => /Gs\./.test(n)).forEach((n) => conGs.push(ruta + ' 1280: ' + n));
   }
@@ -1278,7 +1352,7 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
   await ctx.close();
   if (conGs.length) malas.push('nombres de botones o links con «Gs.»: ' + conGs.slice(0, 3).join(' | '));
   if (malas.length) mal('el lector tiene que oír de qué fila y de qué plan es cada valor (tablas de la computadora, plegables y lista de los once), con la plata en guaraníes · ' + malas.slice(0, 6).join(' · '));
-  else bien('el lector oye cada valor con su fila y su plan en las tablas del home y de /planes («Días de terapia intensiva, Essential: 2»; la celda del asesor dice ASESOR), los links dicen de qué plan son, los plegables son tablas (' + Object.values(plegables).reduce((a, b) => a + b, 0) + ') con el asesor en la columna de su plan, el celular no repite la fila, y las ' + deLaLista.length + ' filas de la lista se nombran con su plan, en guaraníes y sin «·»; los detectores distinguen el caso malo del bueno');
+  else bien('el lector oye cada valor con su fila y su plan en las tablas del home y de /planes («Días de terapia intensiva, Essential: 2»; la celda del asesor dice ASESOR), en /planes las ' + esperasOidas + ' esperas de cada columna se oyen como espera («1 año de espera»), los links dicen de qué plan son, los plegables son tablas (' + Object.values(plegables).reduce((a, b) => a + b, 0) + ') sin celdas mudas, con el asesor en la columna de su plan, el celular no repite la fila, y las ' + deLaLista.length + ' filas de la lista se nombran con su plan, en guaraníes y sin «·»; los detectores distinguen el caso malo del bueno');
 }
 
 // ── La fisioterapia de Gold va al asesor (G1A, Arturo, 17/10/2026, «Todo A») ─
@@ -1488,50 +1562,112 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
 
 // ── Las esperas llevan su condición (comité, vuelta 3, 17/10/2026) ─────────
 // Un número de espera fuera de su fila perdía la condición que el resto del
-// sitio ya dice, con la fuente en coverage.js:
+// sitio ya dice:
 // - la lista «Los once servicios» del celular nombra «Parto o cesárea» e
 //   «Internación» y daba a la cesárea de Gold los 10 meses que la 2A le sacó
 //   (sp-interno#116), y a toda internación de Silver y Gold los 2 meses de la
-//   aguda (la programada no tiene espera escrita, #82). Ahora la espera lleva su
-//   `cuando` («2 meses de espera si es por algo agudo», «10 meses de espera para
-//   el parto»), la cesárea de Gold dice «Cesárea: preguntale a tu asesor», y el
-//   lector oye la oración entera;
+//   aguda (la programada no tiene espera escrita, #82);
 // - la tabla de esperas de /planes en la computadora no traía ninguna nota: el
-//   laboratorio de Essential decía «3 meses» sin «los de rutina, sin espera», las
-//   cirugías no decían «una al año por familia» y el parto de Gold, nada de la
-//   cesárea. Ahora cada celda lleva la nota que muestran el simulador y el cuadro
-//   del celular (`notaCorta` de coverage.js, en forma corta donde es una cifra);
-// - en la hoja del celular, toda nota que manda al asesor va arriba, antes de los
-//   tres planes (la de la cesárea y la de la internación programada quedaban
-//   abajo, en gris).
-// Todo se lee de coverage.js, no de un literal. Falla en la build de 02c733a y
-// pasa con el cambio.
-console.log('\n── Las esperas llevan su condición (lista, tabla de /planes y hoja)');
+//   laboratorio de Essential decía «3 meses» sin los de rutina, las cirugías no
+//   decían «una al año por familia» y el parto de Gold, nada de la cesárea;
+// - el plegable «Internación, maternidad y topes» decía para Gold «300 días» de
+//   maternidad, sin la cesárea (vuelta 3, corrección, 18/10);
+// - en la hoja del celular, la nota de la cesárea y la de la internación
+//   programada quedaban abajo, en gris, debajo de los tres planes.
+// Corrección del 18/10 (verificador de datos): la prueba armaba lo que esperaba
+// con los mismos campos de coverage.js que dibujan la página (`cuando`,
+// `alAsesor`, `notaCorta`) y, con el campo vacío, se salteaba la comprobación:
+// sacando `cuando` y `alAsesor` volvía el defecto y la prueba seguía en verde,
+// con un ✓ de texto fijo. «Una prueba no compara la página con la constante que
+// la arma» (cap. 151). Ahora las reglas están escritas acá y rechazan la clase
+// de error en lo que se ve y en lo que oye el lector, haya o no campo:
+// - en «Parto o cesárea», Gold nombra la cesárea con ASESOR, y todo plazo de
+//   espera de Gold dice que es del parto;
+// - en «Internación», todo plazo de espera de Silver y Gold dice «algo agudo»
+//   (un tope por año, «20 días/persona/año», no es un plazo);
+// - en la tabla de /planes: el parto de Gold nombra la cesárea con ASESOR, el
+//   laboratorio de Essential dice «rutina», las cirugías de Essential dicen
+//   cirugía y familia, y las de Silver y Gold, «la mayoría»;
+// - en el plegable, la maternidad de Gold nombra la cesárea con ASESOR.
+// Cada regla se prueba antes contra lo que mostraba 02c733a (tiene que fallar) y
+// contra lo de hoy (tiene que pasar), y el ✓ dice lo que vio.
+console.log('\n── Las esperas llevan su condición (lista, tabla y plegable de /planes, y hoja)');
 {
   const { ASESOR } = COV;
-  const CAR = Object.fromEntries(COV.carencias().map((c) => [c.que, c]));
-  // Las filas de la lista cuya espera viene de una fila de carencias() con condición.
-  const DE = { 'Internación': 'Internación por algo agudo', 'Parto o cesárea': 'Parto' };
+  const asesor = ASESOR.toLowerCase();
+  const sinDuro = (t) => t.replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
+  // Un plazo de espera: «10 meses», «2 meses de espera», «1 año». Un tope por año
+  // («20 días/persona/año», «20 días por persona al año») no lo es.
+  const PLAZO = /\b\d+ (?:d[ií]as?|semanas?|mes(?:es)?|años?)\b/i;
+  const esPlazo = (t) => PLAZO.test(t) && !/\b(?:al|por) año\b|\/\S/i.test(t);
+  // Cada trozo (un renglón de la celda, o lo que oye el lector cortado en comas y
+  // punto y coma) que dice un plazo tiene que decir también su condición.
+  const plazosSin = (trozos, condicion) => trozos.map(sinDuro).filter((t) => esPlazo(t) && !condicion.test(t));
+  const cesarea = (t) => /ces[aá]rea/i.test(t) && t.toLowerCase().includes(asesor);
+  const enTrozos = (t) => t.split(/[;,]\s+/);
+  const reglas = {
+    partoGold: (renglones) => cesarea(renglones.join(' ')) && !plazosSin(renglones, /parto/i).length,
+    internacion: (renglones) => !plazosSin(renglones, /algo agudo/i).length,
+    partoGoldOido: (t) => cesarea(t) && !plazosSin(enTrozos(t), /parto/i).length,
+    internacionOida: (t) => !plazosSin(enTrozos(t), /algo agudo/i).length,
+  };
+  // Las notas de la tabla de esperas de /planes, por fila y por plan.
+  const TABLA = {
+    'Parto': [null, null, cesarea],
+    'Análisis de laboratorio': [(t) => /rutina/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
+    'Cirugías programadas': [(t) => /cirug[ií]a/i.test(t) && /familia/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
+  };
+  const tablaMala = (tabla) => Object.entries(TABLA).flatMap(([fila, rs]) => rs.map((r, i) => (r && !r(sinDuro((tabla[fila] || [])[i] || '')) ? fila + ', plan ' + (i + 1) + ': ' + JSON.stringify((tabla[fila] || [])[i] || null) : null)).filter(Boolean));
+  // Lo que mostraba 02c733a (tiene que fallar) y lo de hoy (tiene que pasar).
+  const auto = {
+    partoGoldViejo: reglas.partoGold(['Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones', '10 meses de espera']),
+    partoGoldSinCesarea: reglas.partoGold(['Con el bebé en nursery', '10 meses de espera para el parto']),
+    partoGoldBueno: reglas.partoGold(['Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones', '10 meses de espera para el parto', 'Cesárea: preguntale a tu asesor']),
+    internacionVieja: reglas.internacion(['20 días/persona/año', 'Semi-suite', '2 meses de espera']),
+    internacionBuena: reglas.internacion(['20 días/persona/año', 'Semi-suite', '2 meses de espera si es por algo agudo']),
+    oidoViejo: reglas.partoGoldOido('con el bebé en nursery, medicamentos hasta 1,5 millones de guaraníes, 10 meses de espera'),
+    oidoBueno: reglas.partoGoldOido('con el bebé en nursery, medicamentos hasta 1,5 millones de guaraníes, 10 meses de espera para el parto; para una cesárea, preguntale a tu asesor cuánto esperás'),
+    internacionOidaVieja: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera'),
+    internacionOidaBuena: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera si es por algo agudo'),
+    tablaVieja: tablaMala({ 'Parto': [null, null, null], 'Análisis de laboratorio': [null, 'la mayoría', 'la mayoría'], 'Cirugías programadas': [null, 'la mayoría', 'la mayoría'] }).length,
+    tablaBuena: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'] }).length,
+  };
   const malas = [];
-  // 1. La tabla de /planes en la computadora: cada espera con su nota.
+  if (auto.partoGoldViejo || auto.partoGoldSinCesarea || !auto.partoGoldBueno || auto.internacionVieja || !auto.internacionBuena || auto.oidoViejo || !auto.oidoBueno || auto.internacionOidaVieja || !auto.internacionOidaBuena || !auto.tablaVieja || auto.tablaBuena) malas.push('las reglas no distinguen lo que mostraba 02c733a de lo de hoy: ' + JSON.stringify(auto));
+  const visto = {};
+  // 1. La tabla de /planes en la computadora y el plegable, abierto.
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const tabla = await page.evaluate(() => {
     const o = {};
-    const planes = [...document.querySelectorAll('#comparar-planes .cmp2-plan')];
     const filas = [...document.querySelectorAll('#comparar-planes .cmp2-lab .cmp2-c')].map((c) => c.textContent.trim());
-    planes.forEach((pl, i) => [...pl.querySelectorAll('.cmp2-c')].forEach((c, k) => {
+    // Las filas de la banda de esperas: desde el título «Cuánto esperás para usarlo».
+    const grupos = [...document.querySelectorAll('#comparar-planes .cmp2-lab .cmp2-grupo-y-fila')];
+    const desde = grupos.findIndex((g) => /Cuánto esperás/.test((g.querySelector('.cmp2-gt') || {}).textContent || ''));
+    [...document.querySelectorAll('#comparar-planes .cmp2-plan')].forEach((pl, i) => [...pl.querySelectorAll('.cmp2-c')].forEach((c, k) => {
+      if (desde < 0 || k < desde) return;
       const n = c.querySelector('.cmp2-fam');
       const v = n ? n.cloneNode(true) : null;
       if (v) v.querySelectorAll('.sr-solo').forEach((x) => x.remove());
-      (o[filas[k]] = o[filas[k]] || [])[i] = v ? v.textContent.replace(/ /g, ' ').trim() : null;
+      (o[filas[k]] = o[filas[k]] || [null, null, null])[i] = v ? v.textContent.trim() : null;
     }));
     return o;
   });
-  for (const c of COV.carencias()) {
-    const esperado = [0, 1, 2].map((i) => COV.notaCorta(c, i));
-    const visto = (tabla[c.que] || []).slice(0, 3);
-    if (JSON.stringify(visto) !== JSON.stringify(esperado)) malas.push('/planes 1280, ' + c.que + ': ' + JSON.stringify(visto) + ' (tendría que ser ' + JSON.stringify(esperado) + ')');
+  tablaMala(tabla).forEach((m) => malas.push('/planes 1280, tabla de esperas, ' + m));
+  visto.tabla = (tabla['Parto'] || [])[2];
+  await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  await page.click('button[aria-controls="detalle-internacion"]');
+  await page.waitForTimeout(500);
+  const fila = page.locator('#detalle-internacion [role="row"]', { has: page.locator('[role="rowheader"]', { hasText: /^Tiempo de espera para maternidad/ }) });
+  if (!(await fila.count())) malas.push('plegable: falta la fila «Tiempo de espera para maternidad»');
+  else {
+    const gold = fila.first().locator('[role="cell"]').nth(2);
+    // Lo que se ve, texto por texto (sin el de los lectores), separado por espacios.
+    const seVe = await gold.evaluate((c) => { const out = []; const w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT); for (let n = w.nextNode(); n; n = w.nextNode()) if (!n.parentElement.closest('.sr-solo')) out.push(n.data); return out.join(' '); });
+    const seOye = oido(await gold.ariaSnapshot());
+    if (!cesarea(sinDuro(seVe))) malas.push('plegable, maternidad de Gold: ' + JSON.stringify(sinDuro(seVe)) + ' no nombra la cesárea con «' + ASESOR + '»');
+    if (!cesarea(seOye)) malas.push('plegable, maternidad de Gold: el lector oye ' + JSON.stringify(seOye));
+    visto.plegable = sinDuro(seVe);
   }
   await page.close();
   // 2. La lista de los once y la hoja de cada servicio, en el celular.
@@ -1541,21 +1677,28 @@ console.log('\n── Las esperas llevan su condición (lista, tabla de /planes 
   await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
   await cel.waitForTimeout(450);
   const FILA = '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila';
+  // Cada columna, renglón por renglón, como se ve (sin el texto para lectores),
+  // y lo que oye el lector de cada plan (el nombre del botón, cortado por plan).
   const lista = await cel.evaluate((sel) => Object.fromEntries([...document.querySelectorAll(sel)].map((b) => [b.querySelector('b').textContent.replace(/ ›$/, ''), {
     nombre: b.getAttribute('aria-label') || '',
-    esperas: [...b.querySelectorAll(':scope > span > span')].map((c) => [...c.querySelectorAll(':scope > i')].map((x) => x.textContent.replace(/ /g, ' ').trim())),
+    cols: [...b.querySelectorAll(':scope > span > span')].map((c) => [...c.children].map((x) => { const k = x.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((s) => s.remove()); return k.textContent; })),
   }])), FILA);
-  for (const [servicio, fila] of Object.entries(DE)) {
-    const c = CAR[fila], l = lista[servicio];
-    if (!l) { malas.push('lista: falta ' + servicio); continue; }
-    [0, 1, 2].forEach((i) => {
-      const e = l.esperas[i] || [];
-      const cuando = c.cuando && c.cuando[i], aparte = c.alAsesor && c.alAsesor[i];
-      if (cuando && !(e[0] || '').endsWith(' de espera ' + cuando)) malas.push('lista, ' + servicio + ', plan ' + (i + 1) + ': la espera sin «' + cuando + '» (' + JSON.stringify(e) + ')');
-      if (aparte && e[1] !== COV.conAsesor(aparte)) malas.push('lista, ' + servicio + ', plan ' + (i + 1) + ': falta «' + COV.conAsesor(aparte) + '» (' + JSON.stringify(e) + ')');
-      if (cuando && !l.nombre.includes('de espera ' + cuando)) malas.push('lista, ' + servicio + ': el lector no oye «' + cuando + '»');
-      if (aparte && !l.nombre.includes(c.notaPlan[i])) malas.push('lista, ' + servicio + ': el lector no oye «' + c.notaPlan[i] + '»');
+  const oidoDe = (nombre, plan) => { const m = new RegExp('(?:^|\\. )' + plan + ': (.*?)(?=\\. (?:Essential|Silver|Gold): |\\.$)').exec(nombre); return m ? m[1] : ''; };
+  const parto = lista['Parto o cesárea'], inter = lista['Internación'];
+  if (!parto) malas.push('lista: falta «Parto o cesárea»');
+  else {
+    if (!reglas.partoGold(parto.cols[2] || [])) malas.push('lista, Parto o cesárea, Gold: ' + JSON.stringify((parto.cols[2] || []).map(sinDuro)) + ' (la cesárea con «' + ASESOR + '» y la espera, del parto)');
+    if (!reglas.partoGoldOido(oidoDe(parto.nombre, 'Gold'))) malas.push('lista, Parto o cesárea: el lector oye para Gold ' + JSON.stringify(oidoDe(parto.nombre, 'Gold')));
+    visto.lista = (parto.cols[2] || []).map(sinDuro).slice(-2).join(' ⏎ ');
+  }
+  if (!inter) malas.push('lista: falta «Internación»');
+  else {
+    [1, 2].forEach((i) => {
+      const plan = ['Essential', 'Silver', 'Gold'][i];
+      if (!reglas.internacion(inter.cols[i] || [])) malas.push('lista, Internación, ' + plan + ': ' + JSON.stringify((inter.cols[i] || []).map(sinDuro)) + ' (la espera sin «algo agudo»)');
+      if (!reglas.internacionOida(oidoDe(inter.nombre, plan))) malas.push('lista, Internación: el lector oye para ' + plan + ' ' + JSON.stringify(oidoDe(inter.nombre, plan)));
     });
+    visto.internacion = (inter.cols[1] || []).map(sinDuro).filter(esPlazo).join(' · ') || '(sin plazo)';
   }
   // La hoja de cada servicio: lo que manda al asesor, arriba de los tres planes.
   const abajo = [];
@@ -1568,7 +1711,7 @@ console.log('\n── Las esperas llevan su condición (lista, tabla de /planes 
       const hijos = [...d.children];
       const primero = hijos.findIndex((x) => x.classList.contains('sq'));
       return hijos.map((x, k) => [k, x]).filter(([, x]) => x.tagName === 'P' && x.textContent.toLowerCase().includes(asesor)).filter(([k]) => k > primero).map(([, x]) => x.textContent);
-    }, ASESOR.toLowerCase());
+    }, asesor);
     if (r === null) abajo.push(servicio + ': no se abrió la hoja');
     else r.forEach((t) => abajo.push(servicio + ': «' + t.slice(0, 50) + '…»'));
     await cel.locator('.cmp-cel .hoja[data-abierta="1"] button', { hasText: 'Los once servicios' }).first().tap();
@@ -1576,8 +1719,8 @@ console.log('\n── Las esperas llevan su condición (lista, tabla de /planes 
   }
   if (abajo.length) malas.push('hoja: notas que mandan al asesor debajo de los planes · ' + abajo.join(' · '));
   await ctx.close();
-  if (malas.length) mal('cada espera lleva su condición (cesárea de Gold, internación por algo agudo, laboratorio y cirugías de Essential) en la lista, la tabla de /planes y la hoja, y lo que manda al asesor va arriba · ' + malas.slice(0, 6).join(' · '));
-  else bien('las esperas llevan su condición: en la lista («2 meses de espera si es por algo agudo», «10 meses de espera para el parto» y «Cesárea: preguntale a tu asesor», también para el lector), en la tabla de /planes (la nota de cada espera, la del simulador) y, en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
+  if (malas.length) mal('cada espera lleva su condición (la cesárea de Gold, la internación por algo agudo, el laboratorio y las cirugías de Essential) en la lista, la tabla y el plegable de /planes y la hoja, y lo que manda al asesor va arriba · ' + malas.slice(0, 6).join(' · '));
+  else bien('las reglas distinguen lo que mostraba 02c733a de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '» y Silver en «Internación», «' + visto.internacion + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
 }
 
 // ── La plata no se parte por dentro (P3A; comité, vuelta 3, 17/10/2026) ─────
@@ -1836,17 +1979,69 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
 // tope por año («20 días al año», «25 días/persona/año»), un «día N», y las
 // palabras de espera (espera, esperás, carencia, afiliarte, primer día, día uno,
 // desde el día, inmediata). Con su caso malo y su caso bueno acá mismo.
+// Corrección del 18/10 (verificador de accesibilidad), dos huecos:
+// - la tarjeta se leía con textContent, que pega el plan a su línea
+//   («Silver5 meses para usarla.»), y una espera al principio de la línea de un
+//   plan, donde más naturalmente iría, no se veía. Ahora se lee texto por texto,
+//   separado por espacios, y la autoprueba incluye una tarjeta armada así en la
+//   página, leída con la misma función;
+// - quedaban afuera plazos comunes: los ordinales («a partir del tercer mes»,
+//   «al segundo año»), «el mes 4», «al año de contratarlo», «a los 365» y «en un
+//   año». «En un año» solo pasa en la definición de tope del glosario («podés
+//   usar algo en un año»), que es una frecuencia.
 console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
 {
-  const ESPERA = /(?:^|[^\w\u00c0-\u024f])(?:\d+|(?<!\ben\s)un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce)\s+(?:d[ií]as?|semanas?|mes(?:es)?|años?)(?![\w\u00c0-\u024f])(?!\s*(?:al|por)\s+año|\s*\/)|\bd[ií]a\s+(?:\d+|uno)\b|\besper[aá]s?\b|\besperar\b|carencia|afilia|primer d[ií]a|desde el d[ií]a|inmediat/i;
+  // «en un año» es un plazo («lo podés usar en un año»), salvo después de una
+  // cantidad, donde es una frecuencia («hasta 5 sesiones en un año», «usar algo
+  // en un año» de la definición de tope).
+  const CUANTO = '(?:\\d+|(?<!(?:\\balgo|\\bveces|\\d+\\s+[a-záéíóúñ]+)\\s+en\\s)un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce)';
+  const PLAZO_U = '(?:d[ií]as?|semanas?|mes(?:es)?|años?)';
+  const ORDINAL = '(?:primer[oa]?|segund[oa]|tercer[oa]?|cuart[oa]|quint[oa]|sext[oa]|s[ée]ptim[oa]|octav[oa]|noven[oa]|d[ée]cim[oa]|[úu]ltim[oa])';
+  const ESPERA = new RegExp([
+    // un plazo que no es un tope por año: «3 meses», «un año», «365 días»
+    '(?:^|[^\\w\\u00c0-\\u024f])' + CUANTO + '\\s+' + PLAZO_U + '(?![\\w\\u00c0-\\u024f])(?!\\s*(?:al|por)\\s+año|\\s*\\/)',
+    // un ordinal: «al tercer mes», «a partir del segundo año», «primer día»
+    '\\b' + ORDINAL + '\\s+(?:d[ií]a|semana|mes|año)\\b',
+    // un número de día, semana, mes o año: «el mes 4», «a partir del día 91»
+    '\\b(?:d[ií]a|semana|mes|año)\\s+(?:n[.º°]\\s*)?\\d+\\b',
+    // «al año de contratarlo», «al mes de afiliarte»
+    '\\bal\\s+(?:d[ií]a|mes|año)\\s+de\\b',
+    // «a los 365», «a las 6 semanas»
+    '\\ba\\s+l[oa]s\\s+\\d+',
+    // lo que dice que no hay espera: «desde el comienzo», «desde que entrás»
+    '\\bdesde\\s+(?:el\\s+(?:comienzo|principio|inicio)|que\\s+(?:entr|firm|contrat|te\\s+(?:afili|sum)))',
+    '\\bd[ií]a\\s+uno\\b', '\\besper(?:a[rns]?|ás|ando|ado)\\b', 'carencia', 'afilia', 'desde el d[ií]a', 'inmediat',
+  ].join('|'), 'i');
+  // Lo que dice una tarjeta: cada texto por separado, sin pegar el plan a su línea.
+  const LEER_TARJETA = `(t) => { const out = []; const w = document.createTreeWalker(t, NodeFilter.SHOW_TEXT); for (let n = w.nextNode(); n; n = w.nextNode()) out.push(n.data); return out.join(' ').replace(/\\s+/g, ' ').trim(); }`;
   const esperaAuto = {
-    malas: ['esperás un año', 'después de 365 días', 'a partir del día 91', 'a los 365 días de afiliarte', '3 meses de espera', 'Sin espera', 'desde el primer día', 'Se puede usar a los 150 días.', 'Desde el día uno.', 'Cubre de inmediato.', 'Hay que esperar seis meses.', 'Lo usás en 3 meses.'].filter((t) => !ESPERA.test(t)),
-    buenas: ['20 días al año para toda la familia, en habitación privada.', 'Hasta 2 días al año por persona.', '25 días/persona/año', 'Hasta 3 por mes en cada especialidad; después, con copago.', '1 al año, y no ponés nada.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.'].filter((t) => ESPERA.test(t)),
+    malas: ['esperás un año', 'después de 365 días', 'a partir del día 91', 'a los 365 días de afiliarte', '3 meses de espera', 'Sin espera', 'desde el primer día', 'Se puede usar a los 150 días.', 'Desde el día uno.', 'Cubre de inmediato.', 'Hay que esperar seis meses.', 'Lo usás en 3 meses.',
+      'A partir del tercer mes.', 'Desde el mes 4.', 'Al tercer mes ya lo usás.', 'Recién al año de contratarlo.', 'Lo podés usar en un año.', 'A partir del segundo año.', 'Se usa a los 365.', 'Está habilitado desde el comienzo.', 'Lo usás desde que entrás.'],
+    buenas: ['20 días al año para toda la familia, en habitación privada.', 'Hasta 2 días al año por persona.', '25 días/persona/año', 'Hasta 3 por mes en cada especialidad; después, con copago.', '1 al año, y no ponés nada.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
+      'Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.', '1 al año para toda la familia. Sin contraste ni sedación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.', 'Hasta 6 días al año.', 'Hasta Gs. 350 mil por evento.', 'Hasta 5 sesiones en un año.'],
   };
-  if (esperaAuto.malas.length || esperaAuto.buenas.length) mal('el detector de esperas no distingue el caso malo del bueno: ' + JSON.stringify(esperaAuto));
-  else bien('el detector de esperas encuentra las doce formas de un plazo («esperás un año», «después de 365 días», «a partir del día 91»…) y deja pasar los topes por año');
+  const formas = esperaAuto.malas.length;
+  esperaAuto.malas = esperaAuto.malas.filter((t) => !ESPERA.test(t));
+  esperaAuto.buenas = esperaAuto.buenas.filter((t) => ESPERA.test(t));
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  // El caso en contexto: una tarjeta armada como las del home, con la espera al
+  // principio de la línea de un plan (tiene que encontrarla) y la misma tarjeta
+  // sin espera (no tiene que encontrar nada), leídas con la misma función.
+  const enContexto = await page.evaluate((fn) => {
+    const leer = eval(fn);
+    const d = document.createElement('div');
+    d.innerHTML = '<span class="cmp2-tarjeta" id="qa-t-mala"><b class="cmp2-tarjeta-t">Tomografía (TAC)</b><span class="cmp2-tarjeta-p"><b>Essential</b><span>Hasta 2 al año.</span></span><span class="cmp2-tarjeta-p"><b>Silver</b><span>5 meses para usarla.</span></span></span>'
+      + '<span class="cmp2-tarjeta" id="qa-t-buena"><b class="cmp2-tarjeta-t">Tomografía (TAC)</b><span class="cmp2-tarjeta-p"><b>Essential</b><span>Hasta 2 al año.</span></span><span class="cmp2-tarjeta-p"><b>Silver</b><span>Hasta 2 al año.</span></span></span>';
+    document.body.appendChild(d);
+    const r = { mala: leer(d.querySelector('#qa-t-mala')), buena: leer(d.querySelector('#qa-t-buena')), pegada: d.querySelector('#qa-t-mala').textContent };
+    d.remove();
+    return r;
+  }, LEER_TARJETA);
+  if (!ESPERA.test(enContexto.mala)) esperaAuto.malas.push('en contexto: ' + enContexto.mala);
+  if (ESPERA.test(enContexto.buena)) esperaAuto.buenas.push('en contexto: ' + enContexto.buena);
+  if (esperaAuto.malas.length || esperaAuto.buenas.length) mal('el detector de esperas no distingue el caso malo del bueno: ' + JSON.stringify(esperaAuto));
+  else bien('el detector de esperas encuentra las ' + formas + ' formas de un plazo («esperás un año», «a partir del tercer mes», «al año de contratarlo», «a los 365»…) y la espera al principio de la línea de un plan en una tarjeta armada en la página (que con textContent se leía «' + enContexto.pegada.slice(enContexto.pegada.indexOf('Silver'), enContexto.pegada.indexOf('Silver') + 14) + '…»), y deja pasar los topes por año');
   await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
   const nombres = await page.$$eval('#cartilla .cmp2-lab .cmp2-srv', (bs) => bs.map((b) => b.textContent.trim()));
   const conEspera = [];
@@ -1859,14 +2054,14 @@ console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
     await page.waitForTimeout(150);
-    const t = await page.evaluate(() => (document.querySelector('#cartilla .cmp2-tarjeta') || {}).textContent || null);
+    const t = await page.evaluate((fn) => { const k = document.querySelector('#cartilla .cmp2-tarjeta'); return k ? eval(fn)(k) : null; }, LEER_TARJETA);
     if (t) abiertas++;
     if (t && ESPERA.test(t)) conEspera.push(n + ': «' + t.match(ESPERA)[0] + '»');
   }
   await page.mouse.move(5, 5);
   await page.close();
   if (nombres.length !== 9 || abiertas !== 9 || conEspera.length) mal('la tarjeta del servicio del home no lleva esperas (regla del 03/10, P2A): ' + JSON.stringify({ servicios: nombres.length, abiertas, conEspera }));
-  else bien('las nueve tarjetas de servicio del home se abren sin esperas');
+  else bien('las nueve tarjetas de servicio del home se abren sin esperas (leídas texto por texto)');
 }
 
 // ── La copia congelada /v1/ ya no existe (P4A, Arturo, 17/10/2026) ─────────

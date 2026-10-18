@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
-import { coverage, carencias, ASESOR, notaCorta } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, notaCorta } from '../coverage';
 import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
@@ -102,11 +102,17 @@ export default function Planes() {
      precio va arriba de cada columna y la letra chica de cada servicio, en su
      tarjeta, al pasar el mouse o tocar el nombre.
      Los valores cortos (`t`) son la forma corta de lo que dicen coverage() y
-     plans(); «por familia» va siempre a la vista (lección 51). La tarjeta (`d`)
-     es el texto de coverage() con la espera de carencias(), salvo tres filas que
-     todavía se escriben acá: consultas, terapia intensiva y odontología (los
-     días de terapia intensiva están también en coverage.js, page.jsx y quote.js;
-     comité, vuelta 3, 17/10: queda para un PR aparte, ver HANDOFF). */
+     plans(); «por familia» va siempre a la vista (lección 51). Salen de `corta`
+     en coverage.js, salvo las celdas que todavía se escriben acá: las de
+     consultas («Sin tope» con «en Lister», «en la mitad», «en casi todas»), las
+     de Silver y Gold en ecografía («Sin tope», «la mayoría»), las de odontología
+     y los días de terapia intensiva (2, 5 y 6, que también están en coverage.js,
+     page.jsx y quote.js). La tarjeta (`d`) es el texto de coverage() con la
+     espera de carencias() (`conEspera`), salvo la de odontología, que sale de
+     las líneas de plans(). Unificarlas queda para un PR aparte (ver HANDOFF,
+     «Vuelta 3», seguimiento). Este comentario decía «tres filas» y que la
+     tarjeta de consultas y la de terapia intensiva se escribían acá: lo que se
+     escribe acá son sus celdas (comité, vuelta 3, corrección, 18/10). */
   const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
   const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
   // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
@@ -155,7 +161,15 @@ export default function Planes() {
     // asesor» (notaCorta de coverage.js). Sin nota, la tabla decía «3 meses» para
     // todo el laboratorio de Essential y «10 meses» para la cesárea de Gold
     // (comité, vuelta 3, 17/10).
-    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d, i) => ({ t: waitLabel(d, true) || '—', n: notaCorta(c, i) || undefined })) })),
+    // El lector oye la espera entera, «5 meses de espera» (`dicho`, la forma
+    // larga de waitLabel): en las columnas de los planes el título de la banda
+    // no llega al árbol de accesibilidad, y «Resonancia, Essential: 1 año» se
+    // entendía como un cupo, al lado de «Resonancia (RM), Essential: 1 por
+    // familia al año» (comité, vuelta 3, corrección, 18/10).
+    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d, i) => {
+      const corto = waitLabel(d, true), largo = waitLabel(d);
+      return { t: corto || '—', dicho: largo && largo !== corto ? largo : undefined, n: notaCorta(c, i) || undefined };
+    }) })),
   ];
   const planesCompu = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: pl.tag, recommended: i === 1,
@@ -218,6 +232,20 @@ export default function Planes() {
     // Remedios en urgencias de Essential: el cuadernillo no fija el tope. Un «—»
     // se lee «no cubre»; manda al asesor como la tabla (R1A, 17/10/2026).
     if (/^En urgencia/i.test(f.p) && !f.v[j]) return ASESOR;
+    // La cesárea de Gold manda al asesor también acá (2A, sp-interno#116). El
+    // plegable decía «300 días» sin más, el lado que la 2A decidió no tomar,
+    // mientras la tabla de arriba, el cuadro del celular y la lista ya decían
+    // «Cesárea: preguntale a tu asesor» (comité, vuelta 3, corrección, 18/10).
+    // Sale de `alAsesor` de carencias(), como la lista; el dato generado no se
+    // toca. Para el lector, una coma entre el número y lo que manda al asesor,
+    // como la nota de la tabla.
+    const parto = esp['Parto'];
+    if (/^Carencia de maternidad/i.test(f.p) && f.v[j] && parto && parto.alAsesor && parto.alAsesor[j]) return (
+      <span style={css('display:flex;flex-direction:column;align-items:center;gap:3px')}>
+        <span>{valorParam(f.v[j])}<span className="sr-solo">,{' '}</span></span>
+        <span style={css('font-size:12px;color:var(--sp-estado-ink-2)')}>{conAsesor(parto.alAsesor[j])}</span>
+      </span>
+    );
     return f.v[j] ? valorParam(f.v[j]) : '—';
   };
 
