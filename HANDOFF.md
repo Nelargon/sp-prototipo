@@ -50,10 +50,13 @@ aprendió en el camino: BITACORA cap. 148.
    20 y el plegable, 10). La celda dice «Preguntale a tu asesor» en el home, la
    tabla y la lista de `/planes` y el plegable, como la cesárea de Gold de la
    2A: es texto (en la capa de cifras, con el peso del dato de al lado), no
-   botón, y la tarjeta se abre desde el nombre del servicio. Lo que se lee (la
-   tarjeta de `/planes` y la hoja del celular) dice para Gold qué cubre, sin
-   número, como la tarjeta del home, y la nota manda al asesor. Ninguna forma
-   corta le da a Gold un número hasta que SP lo aclare.
+   botón, y la tarjeta se abre desde el nombre del servicio. Lo que se lee (las
+   tarjetas del home y de `/planes` y la hoja del celular) dice para Gold qué
+   cubre, sin número («Traumatológica, neurológica o después de una cirugía, y
+   también respiratoria»), con los mismos tipos que Silver («15 sesiones al año
+   (…), más 5 respiratorias»): las dos líneas salen de `cov` en
+   `coverage.js` y la nota manda al asesor. Gold no lleva ningún número de
+   sesiones hasta que SP lo aclare, ni en la forma corta ni en la oración.
 3. **E3A, «/evento»** donde la grilla dice «por evento»: «Gs. 350 mil/evento»,
    «Gs. 1 millón/evento», «Gs. 1,5 millones/evento» (nunca «1,5 mill.»), y
    los remedios en urgencias de Silver y Gold. El parto queda con «hasta» y
@@ -64,7 +67,9 @@ aprendió en el camino: BITACORA cap. 148.
    (urgencia) en el plegable de topes, que se leía «no cubre». ⚠ La fila de
    abajo, «En estudios y procedimientos – Cuadro 2», tiene el mismo hueco en
    Essential (`null` en la fuente) y **sigue en «—»**: la R1A nombró solo la
-   fila de urgencia, y extenderla lo decide Arturo (PR #271).
+   fila de urgencia, y extenderla lo decide Arturo (punto de revisión 5,
+   abajo). Desde la vuelta 2, la lista y la hoja del celular también mandan al
+   asesor por los remedios en urgencias de Essential.
 5. **P2A, la tarjeta del servicio del home no muestra esperas** (regla del
    03/10). Las esperas siguen en `/planes`, el simulador y la cotización.
 6. **P4A, se bajó la copia congelada `/v1/`** (sp-interno#181). `public/v1/`
@@ -94,11 +99,8 @@ simulador en su propio renglón) espera su lámina antes del cambio.
 
 **Sigue esperando a SP:** si tomografía, resonancia, psicología y fisioterapia
 de Silver y Gold son por persona o por grupo (#110); cuántas sesiones de
-fisioterapia tiene Gold (#50). **Pregunta abierta en el PR #271:** si el 77%
-de tráfico móvil (trece lugares: nueve en el código y la QA, y dos pasajes
-viejos de este archivo y dos de la BITACORA) y los «50 segundos de paciencia»
-del personaje del `BRANDSCRIPT.md` también pasan al puntero; la decisión
-nombró solo los cuatro lugares de arriba.
+fisioterapia tiene Gold (#50). Lo que queda para Arturo de este PR está en los
+puntos de revisión de sp-interno (abajo, «Vuelta 2»).
 
 **Vuelta 1 del QA y el comité (17/10, BITACORA cap. 149).** Arreglado en la
 misma rama, cada arreglo con su prueba en `qa-lanzamiento` (falla en la build
@@ -109,12 +111,43 @@ dato y sin repetir el asesor en la tarjeta y la hoja; un control del
 `aria-hidden` de la forma corta; y ningún renglón termina en «/» en el
 plegable de topes («urgencia o emergencia», «traumatológica, neurológica o
 post-quirúrgica»: la barra que hace de «o» pasa a «o») ni en el pie del home
-(«c/ Azara» con espacio duro). **Quedan para Arturo, con opciones en el PR
-#271:** si la celda «Preguntale a tu asesor» lleva a WhatsApp; un solo pie
-para fisioterapia; el «por persona» de la tarjeta de consultas de Silver del
-home al lado de «5/¿quién?/año» en psicología (#110); la condición de la
-tomografía de Essential en las tablas; el «—» de «Cuadro 2» de Essential; y
-«y/o» y «post-quirúrgica» en los rótulos del plegable.
+(«c/ Azara» con espacio duro).
+
+**Vuelta 2 del QA y el comité (17/10, BITACORA cap. 150).** Arreglado en la
+misma rama, cada arreglo con su prueba en `qa-lanzamiento` (falla en la build
+de f40cc02 y pasa con el cambio):
+- **La fisioterapia de Silver y Gold nombra lo mismo.** La vuelta 1 le dio a la
+  línea de Gold los tipos y las respiratorias y dejó a Silver en «15 sesiones
+  al año»: en `/planes` parecía que solo Gold tenía respiratoria. Silver tiene
+  15 + 5 en las dos fuentes. La prueba de la G1A rechaza cualquier dígito que no
+  sea una espera (antes, solo 10 y 20) y compara los tipos de las dos líneas.
+- **Los remedios en urgencias de Essential mandan al asesor también en el
+  celular** (la lista de los once y la hoja «Urgencia 24 h», con la
+  `notaAsesor` de «Urgencia 24 h»), como ya lo hacían las tablas.
+- **El lector de pantalla oye de qué fila y de qué plan es cada valor:** la
+  celda del asesor en la computadora («Fisioterapia, Gold: preguntale a tu
+  asesor») y cada fila de la lista de los once en el celular («Fisioterapia.
+  Essential: 5 por familia al año, sin espera. Silver: …»). Se mide con el
+  árbol de accesibilidad (`ariaSnapshot`).
+- **Las pruebas de «¿quién?» corren sobre la fila que lo tiene** (si SP
+  contesta #110 para tomografía y resonancia, siguen probando psicología) y
+  dicen «se salta» si no queda ninguna; la de teclado aprieta Enter y Espacio
+  con la tarjeta cerrada y se prueba contra teclas mudas.
+
+**Quedan para Arturo, como puntos de revisión de sp-interno** (etiqueta
+`revisión`; los abre el Guardián con el texto y las opciones que dejó esta
+vuelta, y este párrafo suma sus números cuando existan): (1) si la celda
+«Preguntale a tu asesor» lleva a WhatsApp; (2) un solo pie para fisioterapia;
+(3) el «por persona» de la tarjeta de consultas de Silver del home al lado de
+«5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
+fusionar sin respuesta; (4) la condición de la tomografía de Essential en las
+tablas; (5) el «—» de «Cuadro 2» de Essential; (6) «y/o» y «post-quirúrgica»
+en los rótulos del plegable; (7) si el 77% de tráfico móvil (trece lugares) y
+los «50 segundos de paciencia» del `BRANDSCRIPT.md` también pasan al puntero;
+(8) «con los topes más altos» de Gold en el home y el simulador, que con la
+grilla es falso para la fisioterapia (#50); y (9) si la fisioterapia de
+Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
+planilla, y hoy solo el plegable; `essential.json` no lo trae).
 
 ---
 

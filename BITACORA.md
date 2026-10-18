@@ -5267,3 +5267,58 @@ y en cada una la prueba miraba otra cosa que lo que importaba:
   el texto (lámina 84).
 - **Una regla de forma vale para toda la página**, no solo para el componente
   que la trajo. Y lo que viene de `main` también se mide.
+
+## Capítulo 150 — Arreglar una línea y desparejar la de al lado (17/10/2026)
+
+**Qué intentamos.** Pasarle al QA y al comité la vuelta 1 del «Todo A» (PR
+#271, cap. 149). Todas las pruebas estaban en verde otra vez.
+
+**Qué pasó.** El comité encontró que algunos arreglos de la vuelta 1 habían
+dejado otro problema al lado, y que varias pruebas no veían lo que decían
+mirar:
+
+- **La línea de Gold se arregló sola.** Para no repetir el pedido al asesor, la
+  vuelta 1 (commit 4dc4401) le copió a Gold la línea del home: «Traumatológica,
+  neurológica o después de una cirugía, más respiratorias». La de Silver quedó
+  en «15 sesiones al año». En la tarjeta de `/planes` y en la hoja del celular
+  parecía que solo el plan caro tenía fisioterapia respiratoria, y Silver tiene
+  15 + 5 en las dos fuentes. La misma oración estaba escrita dos veces, en el
+  home y en `coverage.js`, y ya se habían separado. La prueba miraba solo la
+  línea de Gold.
+- **La prueba rechazaba los números que ya conocíamos.** En `/planes` buscaba
+  10 o 20 en la línea de Gold, porque un `\d` daba falso positivo con «3 meses
+  de espera». Si alguien escribía «más 5 respiratorias» (el número de Gold que
+  la fuente también da de dos maneras), seguía en verde.
+- **Las pruebas que no corrían decían ✓.** Las del botón «¿quién?» se
+  condicionaban a `QUIEN_SG`. El Dev lo puso en «persona», dejó la psicología
+  con «¿quién?», y el log siguió diciendo ✓ sobre una celda que ya no era un
+  botón.
+- **La prueba de teclado seguía sin apretar desde cerrado.** El cap. 149 dijo
+  «una prueba de teclado aprieta las teclas», pero la prueba nueva apretaba
+  Enter y Espacio con la tarjeta ya abierta por el foco. El Dev silenció las
+  dos teclas y la prueba pasó igual.
+- **El lector oía valores sin su plan.** En el celular, cada fila de «Los once
+  servicios» es un botón, y un botón se nombra con todo lo que tiene adentro:
+  «Fisioterapia › 5 por familia al año Sin espera 15 al año…», con los planes
+  afuera, en la cabecera. En la computadora, la celda «Preguntale a tu asesor»
+  se oía sin la fila. La vuelta 1 había arreglado eso solo en la celda
+  «¿quién?».
+- **La R1A llegó a las tablas y no al celular.** Los remedios en urgencias de
+  Essential mandaban al asesor en la computadora y callaban en la lista y la
+  hoja del celular, al lado del tope de Silver y Gold.
+
+**Qué aprendimos.**
+- **Una comparación se arregla de a pares.** Si cambia la línea de un plan, se
+  lee la de al lado, y la prueba compara los planes entre sí, no cada uno contra
+  una lista de errores. Y si la misma oración está en dos lugares, sale de uno
+  solo.
+- **Se rechaza la clase de error, no el caso conocido.** Primero se saca lo que
+  sí puede estar (las esperas) y después se rechaza cualquier dígito.
+- **Una prueba que no corre dice «se salta», no ✓** (el cap. 90, ahora con
+  interruptores). Y elige su caso por la condición («la primera fila con
+  “¿quién?”»), no por un nombre fijo.
+- **El detector de teclado se prueba contra teclas mudas.** Una lección escrita
+  en la bitácora no garantiza que la prueba la cumpla: hay que darle a la prueba
+  el caso que tiene que fallar.
+- **Lo que se arregla en una superficie se busca en todas las que muestran esa
+  fila:** la tabla, la tarjeta, la lista y la hoja del celular.
