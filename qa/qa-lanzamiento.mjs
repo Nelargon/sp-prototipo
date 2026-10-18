@@ -456,6 +456,9 @@ for (const width of [360, 390]) {
     else bien(n + ': «Vos con tus hijos» cambia el precio de las tres tarjetas');
   }
   // Una línea se toca y abre el tema en los tres planes, en la hoja; se cierra y queda inert.
+  // Acá se cuentan las cajas; lo que dice la hoja del tema «Tomografía y
+  // resonancia» y la línea que la abre se comparan con la lista cerrada, en «Lo
+  // que dicen las tarjetas y la hoja, contra una lista cerrada» (vuelta 8, 18/10).
   const linea = page.locator('.cmp-cel article').nth(1).locator('.linea-cel').nth(1);
   if (!(await linea.count())) mal(n + ': no hay líneas para tocar');
   else {
@@ -729,6 +732,212 @@ const pieBien = (p, extra = []) => {
   return !!normal(p) && resto === '' && dichas.includes(normal(PIE_APROBADO.PREGUNTA_UNIDAD));
 };
 
+// LA LISTA CERRADA DE LO QUE DICEN LAS TARJETAS, LAS HOJAS Y LAS LÍNEAS (P2A y
+// P3A). Qué es, cómo se lee, qué superficies y qué anchos cubre y cuáles no: en
+// la sección «Lo que dicen las tarjetas y la hoja, contra una lista cerrada»,
+// más abajo, que es la que la recorre. Vive acá arriba desde el 18/10 (vuelta 8)
+// porque la prueba de las líneas de las tarjetas de /planes en el celular (en
+// «La forma corta», `lineaBien`) también compara contra ella.
+const TARJETA_APROBADA = {
+  // La tabla del home (app/page.jsx, `cmp`): las nueve tarjetas, enteras, sin
+  // ninguna espera (P2A). `pie` es el pie de la tarjeta ('' si no tiene). Se
+  // leen a 1280 px pasando el mouse y a 360, 390 y 430 px con el dedo, desde
+  // cada una de las tres tarjetas de plan. Relevado en el navegador el 18/10
+  // sobre la v1 de 8db9016: en el celular dicen, letra por letra, lo mismo que a
+  // 1280 (las 81 lecturas), así que es una sola lista para los dos tamaños.
+  home: {
+    'Resonancia (RM)': {
+      Essential: '1 al año para toda la familia. Sin contraste ni sedación.',
+      Silver: '1 al año, y no ponés nada.',
+      Gold: '1 al año, y no ponés nada.',
+      pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Tomografía (TAC)': {
+      Essential: 'Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.',
+      Silver: 'Hasta 2 al año, y no ponés nada.',
+      Gold: 'Hasta 2 al año, y no ponés nada.',
+      pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Consultas por especialista': {
+      Essential: 'Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.',
+      Silver: 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.',
+      Gold: 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.',
+      pie: 'Copago: vos pagás una parte y Salud Protegida la otra.',
+    },
+    'Sesiones de psicología': {
+      Essential: 'Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.',
+      Silver: '5 sesiones al año.',
+      Gold: '6 sesiones al año.',
+      pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Fisioterapia': {
+      Essential: '5 sesiones al año para toda la familia.',
+      Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.',
+      Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria.',
+      pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
+    },
+    'Internación': {
+      Essential: '20 días al año para toda la familia, en habitación privada.',
+      Silver: '20 días al año por persona, en semi-suite.',
+      Gold: '25 días al año por persona, en semi-suite.',
+      pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.',
+    },
+    'Días de terapia intensiva': {
+      Essential: 'Hasta 2 días al año por persona.',
+      Silver: 'Hasta 5 días al año por persona, con cobertura total.',
+      Gold: 'Hasta 6 días al año por persona, con cobertura total.',
+      pie: '',
+    },
+    'Medicamentos internado': {
+      Essential: 'Hasta Gs. 350.000 en medicamentos en cada internación.',
+      Silver: 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.',
+      Gold: 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.',
+      pie: 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
+    },
+    'Remedios en urgencias': {
+      Essential: 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.',
+      Silver: 'Hasta Gs. 150.000 en medicamentos en cada urgencia.',
+      Gold: 'Hasta Gs. 200.000 en medicamentos en cada urgencia.',
+      pie: 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
+    },
+  },
+  // La tabla de /planes en la computadora (app/planes/Planes.jsx, `filasCompu`):
+  // las filas con «¿quién?», enteras, a 1280 px pasando el mouse. Las de las
+  // filas sin «¿quién?» no están. Acá las esperas van: cada línea suma la de su
+  // plan (conEspera, de carencias()). `pie` es el pie de la tarjeta. Relevado el
+  // 18/10 sobre la v1 de e4dc862, como la hoja de abajo.
+  planes: {
+    'Tomografía (TAC)': {
+      Essential: 'Hasta 2 al año por familia, junto con ecocardiograma y ergometría. 6 meses de espera.',
+      Silver: 'Hasta 2 al año. 4 meses de espera.',
+      Gold: 'Hasta 2 al año. 3 meses de espera.',
+      pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Resonancia (RM)': {
+      Essential: '1 al año por familia, sin contraste. 1 año de espera.',
+      Silver: '1 al año. 5 meses de espera.',
+      Gold: '1 al año. 5 meses de espera.',
+      pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Sesiones de psicología': {
+      Essential: 'Hasta 3 al año por familia, en el mismo cupo que otras especialidades.',
+      Silver: '5 sesiones al año.',
+      Gold: '6 sesiones al año.',
+      pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    },
+    'Fisioterapia': {
+      Essential: 'Hasta 5 sesiones al año por familia. Sin espera.',
+      Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5. 3 meses de espera.',
+      Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria. 3 meses de espera.',
+      pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
+    },
+  },
+  // La hoja de cada fila con «¿quién?» en el celular, abierta desde «Los once
+  // servicios, plan por plan» a 390 px, y solo a 390 (app/planes/
+  // ComparativaCelular.jsx, `enLosTres`). La línea de un plan es su caja, con
+  // « · » entre sus dos bloques (lo que cubre y la espera); `notas`, todo lo
+  // demás que dice la hoja, en orden, sin el «‹ Los once servicios» de arriba.
+  hoja: {
+    'Tomografía (TAC)': {
+      Essential: 'Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera',
+      Silver: 'Hasta 2 al año · 4 meses de espera',
+      Gold: 'Hasta 2 al año · 3 meses de espera',
+      notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
+    },
+    'Resonancia (RM)': {
+      Essential: '1 al año por familia, sin contraste · 1 año de espera',
+      Silver: '1 al año · 5 meses de espera',
+      Gold: '1 al año · 5 meses de espera',
+      notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
+    },
+    'Sesión de psicología': {
+      Essential: 'Hasta 3 al año por familia, en el mismo cupo que otras especialidades',
+      Silver: '5 sesiones al año',
+      Gold: '6 sesiones al año',
+      notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
+    },
+    'Fisioterapia': {
+      Essential: 'Hasta 5 sesiones al año por familia · Sin espera',
+      Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5 · 3 meses de espera',
+      Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria · 3 meses de espera',
+      notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
+    },
+  },
+  // La hoja de un tema de las tarjetas de plan de /planes en el celular, la que
+  // se abre al tocar una línea de la tarjeta (ComparativaCelular.jsx,
+  // `enLosTres(TEMA[t])`), cuando muestra filas con «¿quién?»: hoy, solo
+  // «Tomografía y resonancia». Las otras cuatro (Consultas, Internación, Terapia
+  // intensiva y Odontología) no nombran tomografía, resonancia, psicología ni
+  // fisioterapia y no están en la lista. La línea de un plan es su caja, con
+  // « · » entre sus bloques (el nombre de cada servicio, lo que cubre y la
+  // espera: en /planes las esperas van); `notas`, lo demás. Relevada el 18/10
+  // sobre la v1 de 8db9016 a 360, 390 y 430 px, abierta desde cada una de las
+  // tres tarjetas: dice lo mismo en las nueve.
+  tema: {
+    'Tomografía y resonancia': {
+      Essential: 'Tomografía · Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera · Resonancia · 1 al año por familia, sin contraste · 1 año de espera',
+      Silver: 'Tomografía · Hasta 2 al año · 4 meses de espera · Resonancia · 1 al año · 5 meses de espera',
+      Gold: 'Tomografía · Hasta 2 al año · 3 meses de espera · Resonancia · 1 al año · 5 meses de espera',
+      notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
+    },
+  },
+  // La línea de la tarjeta de cada plan de /planes en el celular que nombra
+  // tomografía, resonancia, psicología o fisioterapia (`lines` de plans(),
+  // app/quote.js; la dibuja ComparativaCelular.jsx): hoy, «Tomografía y
+  // resonancia» en las tres tarjetas. `ve`, lo que se ve (el texto dibujado,
+  // sin el oculto para lectores); `oye`, lo que oye el lector (la línea es un
+  // botón: su nombre, del ariaSnapshot). Relevada el 18/10 sobre la v1 de
+  // 8db9016: igual a 360, 390 y 430 px. Las esperas no van en estas líneas
+  // (Arturo, 03/10), y en Silver y Gold nada dice para quién (P3A).
+  linea: {
+    'Tomografía y resonancia': {
+      Essential: {
+        ve: 'Tomografía y resonancia: 2 estudios/familia/año (tomografía, ecocardiograma o ergometría) y 1 resonancia/familia/año',
+        oye: 'Tomografía y resonancia: 2 estudios por familia al año (tomografía, ecocardiograma o ergometría) y 1 resonancia por familia al año',
+      },
+      Silver: {
+        ve: 'Tomografía y resonancia: 2 tomografías/¿quién?/año y 1 resonancia/¿quién?/año',
+        oye: 'Tomografía y resonancia: 2 tomografías al año, sin confirmar para quién y 1 resonancia al año, sin confirmar para quién',
+      },
+      Gold: {
+        ve: 'Tomografía y resonancia: 2 tomografías/¿quién?/año y 1 resonancia/¿quién?/año',
+        oye: 'Tomografía y resonancia: 2 tomografías al año, sin confirmar para quién y 1 resonancia al año, sin confirmar para quién',
+      },
+    },
+  },
+};
+// Las líneas de las tarjetas de plan que entran en la lista: las que nombran un
+// servicio con «¿quién?» (P3A). La misma expresión elige las hojas de tema.
+const NOMBRA_DUDA = /tomograf|resonanc|psicolog|fisioterap/i;
+// Cómo se lee una línea de la tarjeta de plan. Lo que se ve: el texto de la
+// línea que el navegador dibuja (tiene caja), sin el oculto para lectores
+// (.sr-solo); la forma corta visible (aria-hidden) sí cuenta. El tema es lo que
+// va antes de los dos puntos.
+const LEER_LINEA = String((l) => {
+  const w = document.createTreeWalker(l, NodeFilter.SHOW_TEXT);
+  let ve = '';
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    if (n.parentElement.closest('.sr-solo')) continue;
+    const r = document.createRange();
+    r.selectNodeContents(n);
+    if (r.getClientRects().length) ve += n.data;
+  }
+  ve = ve.replace(/[\s   ]+/g, ' ').trim();
+  return { tema: ve.split(':')[0], ve };
+});
+// Lo que oye el lector: el nombre del botón, del ariaSnapshot (lo que expone el
+// navegador, no el texto oculto; BITACORA cap. 149).
+const oyeDe = async (loc) => oido((await loc.ariaSnapshot()).split('\n')[0]);
+// Una línea leída ({ ve, oye }) contra la lista: los hallazgos, vacío si está.
+const lineaEnLista = (tema, plan, l, donde = 'línea › ' + plan + ' › ' + tema) => {
+  const lista = TARJETA_APROBADA.linea[tema] && TARJETA_APROBADA.linea[tema][plan];
+  if (!lista) return [{ tipo: 'línea que no está en la lista', donde, linea: l.ve }];
+  const h = [];
+  if (normal(l.ve) !== normal(lista.ve)) h.push({ tipo: 'línea nueva', donde: donde + ' › se ve', linea: l.ve, antes: lista.ve });
+  if (normal(l.oye) !== normal(lista.oye)) h.push({ tipo: 'línea nueva', donde: donde + ' › se oye', linea: l.oye, antes: lista.oye });
+  return h;
+};
+
 // ── La forma corta (P3A: regla de escaneo de Arturo del 13/10/2026, elegida ──
 // el 17/10/2026 con «Todo A»; components/Corta.jsx). Lo que se escanea dice la
 // cifra, para quién y cada cuánto con barras («1/familia/año»), y donde la
@@ -996,22 +1205,36 @@ console.log('\n── La forma corta (P3A)');
     else if (!toque || toque.planes !== 3 || !toque.dentro) mal(n + ': tocar la celda con «' + DUDA + '» tiene que abrir la tarjeta del servicio, dentro de la pantalla (' + JSON.stringify(toque) + ')');
     else bien(n + ': tocar la celda con «' + DUDA + '» abre la tarjeta del servicio');
     await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
-    const lineas = await cel.evaluate(() => [...document.querySelectorAll('.cmp-cel article')].map((a) => {
-      const l = (re) => [...a.querySelectorAll('.linea-cel')].find((x) => re.test(x.textContent));
-      const tr = l(/^Tomografía y resonancia/), it = l(/^Internación/);
-      const negrita = it && it.querySelector('b'), corta = it && it.querySelector('.corta');
-      return {
-        t: tr ? [...tr.querySelectorAll('.corta')].map((k) => k.textContent.replace(/\u00a0/g, ' ')) : null,
-        sr: tr ? [...tr.querySelectorAll('.sr-solo')].map((k) => k.textContent).join(' | ') : '',
-        texto: tr ? tr.textContent : '',
-        navy: !!negrita && !!corta && getComputedStyle(corta).color === getComputedStyle(negrita).color,
-      };
-    }));
+    // Lo que dice la línea, lo que se ve y lo que oye el lector, contra la lista
+    // cerrada (TARJETA_APROBADA.linea, con LEER_LINEA y oyeDe; vuelta 8, 18/10).
+    // Reemplaza las expresiones de antes (`!/persona/i`, `!/2 tomografías/`,
+    // `/por familia/`, `/sin confirmar para quién/`): eran una lista de lo que no
+    // va, y «Son por persona.» se escribe de muchas formas. Acá quedan la forma
+    // corta (.corta, con las constantes de coverage.js) y su color.
+    const arts = cel.locator('.cmp-cel article');
+    const lineas = [];
+    for (let i = 0; i < (await arts.count()); i++) {
+      const a = arts.nth(i);
+      const tr = a.locator('.linea-cel').filter({ hasText: /^Tomografía y resonancia/ }).first();
+      const l = await a.evaluate((a) => {
+        const l = (re) => [...a.querySelectorAll('.linea-cel')].find((x) => re.test(x.textContent));
+        const tr = l(/^Tomografía y resonancia/), it = l(/^Internación/);
+        const negrita = it && it.querySelector('b'), corta = it && it.querySelector('.corta');
+        return {
+          plan: (a.getAttribute('aria-label') || '').replace(/^Plan /, ''),
+          t: tr ? [...tr.querySelectorAll('.corta')].map((k) => k.textContent.replace(/\u00a0/g, ' ')) : null,
+          navy: !!negrita && !!corta && getComputedStyle(corta).color === getComputedStyle(negrita).color,
+        };
+      });
+      if (await tr.count()) Object.assign(l, await tr.evaluate((e, fn) => eval(fn)(e), LEER_LINEA), { oye: await oyeDe(tr) });
+      lineas.push(l);
+    }
+    const enLista = (l) => (l.ve ? lineaEnLista('Tomografía y resonancia', l.plan, l) : [{ donde: l.plan, linea: 'sin la línea' }]);
     const lineaBien = (l, i) => !!l.t && l.t.length === 2 && l.navy && (i === 0
-      ? l.t[0] === '2 estudios/familia/año' && l.t[1] === '1 resonancia/familia/año' && /por familia/.test(l.sr) && !/2 tomografías/.test(l.texto) && /ecocardiograma o ergometría/.test(l.texto)
-      : l.t[0] === '2 tomografías/' + QUIEN_SG + '/año' && l.t[1] === '1 resonancia/' + QUIEN_SG + '/año' && (QUIEN_SG !== DUDA || (/sin confirmar para quién/.test(l.sr) && !/persona/i.test(l.texto + l.sr))));
-    if (lineas.length !== 3 || !lineas.every(lineaBien)) mal(n + ': las líneas «Tomografía y resonancia» de las tarjetas: Essential «2 estudios/familia/año (…)», Silver y Gold «2 tomografías/' + QUIEN_SG + '/año», con su frase y la forma corta en navy (' + JSON.stringify(lineas) + ')');
-    else bien(n + ': las líneas de las tarjetas en forma corta, en navy, con «2 estudios» en Essential');
+      ? l.t[0] === '2 estudios/familia/año' && l.t[1] === '1 resonancia/familia/año'
+      : l.t[0] === '2 tomografías/' + QUIEN_SG + '/año' && l.t[1] === '1 resonancia/' + QUIEN_SG + '/año') && !enLista(l).length;
+    if (lineas.length !== 3 || !lineas.every(lineaBien)) mal(n + ': las líneas «Tomografía y resonancia» de las tarjetas: Essential «2 estudios/familia/año (…)», Silver y Gold «2 tomografías/' + QUIEN_SG + '/año», con la forma corta en navy, y lo que se ve y lo que oye el lector, literal, como en la lista cerrada (TARJETA_APROBADA.linea) · ' + lineas.map((l) => JSON.stringify(l) + enLista(l).map((x) => ' · ' + x.donde + ': «' + x.linea + '»' + (x.antes ? ' (la lista dice «' + x.antes + '»)' : '')).join('')).join(' · '));
+    else bien(n + ': las líneas «Tomografía y resonancia» de las tarjetas, en forma corta y en navy, con «2 estudios» en Essential, y lo que se ve y lo que oye el lector, literal, como en la lista cerrada');
     await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
     await cel.waitForTimeout(450);
     const lista = await cel.evaluate(() => {
@@ -2094,32 +2317,67 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
 // ── Lo que dicen las tarjetas y la hoja, contra una lista cerrada (P2A y P3A) ─
 // Qué se controla:
 // - P2A (Arturo, 17/10/2026, «Todo A»): la tarjeta que se abre al pasar el mouse
-//   por el nombre de un servicio de la tabla del home no muestra esperas (la
-//   regla del 03/10: ninguna espera en la vista rápida). Las esperas siguen en
-//   /planes, el simulador y la cotización.
+//   o al tocar el nombre de un servicio de la tabla del home no muestra esperas
+//   (la regla del 03/10: ninguna espera en la vista rápida). Las esperas siguen
+//   en /planes, el simulador y la cotización.
 // - P3A (17/10): en las filas con «¿quién?» (tomografía, resonancia, psicología
 //   y fisioterapia), nada dice para quién son los de Silver y Gold mientras SP
 //   no conteste (sp-interno#110): ni la celda, ni la línea del plan, ni el pie.
 //
 // LA RED ES LA LISTA CERRADA (cierre de la vuelta 3, 18/10). TARJETA_APROBADA
-// tiene, como literales, lo que el sitio dice hoy (relevado en el navegador el
-// 18/10 sobre la v1 de e4dc862): las nueve tarjetas del home enteras (las tres
-// líneas y el pie) y, en las filas con «¿quién?», la tarjeta de /planes en la
-// computadora y la hoja del celular (390 px), también enteras (las tres líneas
-// y el pie o las notas). Cada línea se lee en el navegador, como se ve, y se
-// compara; antes se normalizan los espacios (también el duro) y las comillas,
-// nada más. Falla con cualquier línea que no esté en la lista, con la que falte
-// y con cualquier texto fuera de las líneas, aunque sea inocente: un cambio
-// querido se suma acá a conciencia, después de revisar que no sea una espera en
-// la tarjeta del home (P2A) ni una afirmación de unidad, de para quién es, en
-// Silver y Gold (P3A). Las líneas que hoy salen de una pregunta abierta de
-// Arturo (por ejemplo la fisioterapia de Essential, pregunta 9 del PR #271)
-// están como se ven hoy: si la respuesta las cambia, se cambian acá.
+// (arriba, después de pieBien) tiene, como literales, lo que el sitio dice hoy,
+// relevado en el navegador. Cada línea se lee como se ve y se compara; antes se
+// normalizan los espacios (también el duro) y las comillas, nada más. Falla con
+// cualquier línea que no esté en la lista, con la que falte y con cualquier
+// texto fuera de las líneas, aunque sea inocente: un cambio querido se suma a la
+// lista a conciencia, después de revisar que no sea una espera en la tarjeta del
+// home (P2A) ni una afirmación de unidad, de para quién es, en Silver y Gold
+// (P3A). Las líneas que hoy salen de una pregunta abierta de Arturo (por ejemplo
+// la fisioterapia de Essential, pregunta 9 del PR #271) están como se ven hoy:
+// si la respuesta las cambia, se cambian en la lista.
 // Los pies y las notas de las filas con «¿quién?» pasan además por pieBien (la
 // lista cerrada de oraciones de arriba, PIE_APROBADO), que pide la pregunta por
 // la unidad. Se leen todos los .cmp2-tarjeta-pie y todo el texto de la hoja: la
 // versión anterior leía solo el primer pie y, en la hoja, solo los <p> hijos
 // directos (verificador, 18/10).
+//
+// QUÉ SUPERFICIES Y QUÉ ANCHOS CUBRE (18/10, vuelta 8). Hasta la tercera vuelta
+// del verificador del cierre, la tarjeta del home se leía solo a 1280 px con el
+// mouse, y en /planes del celular la lista no leía la hoja del tema ni la línea
+// de la tarjeta del plan: una espera o una frase de unidad que solo se viera ahí
+// pasaba en verde. Ahora:
+//   1. Home: las nueve tarjetas de la tabla, enteras (las tres líneas y el pie),
+//      a 1280 px pasando el mouse por el nombre (la columna de nombres) y a 360,
+//      390 y 430 px con el dedo (isMobile, hasTouch), tocando el nombre en cada
+//      una de las tres tarjetas de plan (9 lecturas en la computadora y 81 en el
+//      celular). En el celular dicen lo mismo que a 1280, así que es la misma
+//      lista.
+//   2. /planes en la computadora (1280 px, pasando el mouse): la tarjeta de las
+//      cuatro filas con «¿quién?», entera.
+//   3. /planes en el celular (390 px): la hoja de las cuatro filas con «¿quién?»,
+//      abierta desde «Los once servicios, plan por plan», entera.
+//   4. /planes en el celular (360, 390 y 430 px): la hoja del tema «Tomografía y
+//      resonancia», abierta tocando la línea en cada una de las tres tarjetas de
+//      plan, entera (9 lecturas). Se abren las hojas de las cinco líneas de cada
+//      tarjeta, y toda hoja que nombra tomografía, resonancia, psicología o
+//      fisioterapia (NOMBRA_DUDA), en su línea o en su texto, tiene que estar en
+//      la lista: hoy es esa sola.
+//   5. /planes en el celular (360, 390 y 430 px): la línea de la tarjeta de cada
+//      plan que nombra esos servicios, lo que se ve y lo que oye el lector (9
+//      lecturas): hoy, «Tomografía y resonancia» en las tres tarjetas. La prueba
+//      de la forma corta (`lineaBien`, más arriba) también la compara con la
+//      lista.
+// Las tarjetas y las hojas se leen con innerText, lo que el navegador dibuja,
+// también el texto oculto para lectores (.sr-solo, que mide 1 px).
+// LO QUE NO CUBRE: en /planes, las tarjetas de la computadora y las hojas de
+// «Los once servicios» de las filas sin «¿quién?», las hojas de las cuatro filas
+// con «¿quién?» a 360 y 430 px, las otras cuatro hojas de tema (Consultas,
+// Internación, Terapia intensiva y Odontología) y las otras cuatro líneas de
+// cada tarjeta de plan; en el home, la tarjeta abierta desde la celda
+// «¿quién?» (es la misma que abre el nombre, pero no se lee desde ahí); ningún
+// otro ancho (ni la tableta); de las tarjetas y las hojas, lo que el lector oye
+// por un aria-label o una descripción, que no es texto dibujado (de la línea de
+// la tarjeta del plan, sí); y el simulador, /que-cubre y la cotización.
 //
 // EL REGEX ESPERA ES SOLO UNA PISTA: no hace fallar nada. Cuando una línea nueva
 // de la tarjeta del home lo dispara, el mensaje dice «parece una espera», para
@@ -2133,142 +2391,33 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
 // lo que cierra la clase es la lista de lo que sí va.
 //
 // Autoprueba, en la misma página y con la misma lectura (se cambia el texto de
-// una línea real, se lee y se deja como estaba): (i) las 16 esperas que pasaban
-// con el regex, metidas en una línea real del home, fallan; (ii) las 4
-// afirmaciones de unidad («Son por persona.», «Cada integrante tiene el
-// suyo.», «Por persona.», «Para cada uno de la familia.»), metidas en una línea
-// de Silver o Gold de una fila con «¿quién?», fallan en el home, en /planes y en
-// la hoja; (iii) un tope nuevo legítimo («Hasta 2 días anuales.») falla como
-// «línea nueva», con la pista apagada; (iv) las líneas reales pasan (es la
-// comparación de la lista, sobre la misma lectura) y cada tarjeta y cada hoja,
-// releídas después de los cambios, dicen lo mismo que antes: la autoprueba no
-// depende de cómo esté el sitio. Y la pista se prueba contra sus casos: dice
-// «parece una espera» en las formas que conoce y calla en los topes.
+// una línea real, se lee y se deja como estaba):
+//   (i) las 16 esperas que pasaban con el regex, metidas en una línea real del
+//       home a 1280, fallan;
+//   (ii) las 4 afirmaciones de unidad («Son por persona.», «Cada integrante
+//       tiene el suyo.», «Por persona.», «Para cada uno de la familia.»),
+//       metidas en una línea de Silver o Gold de una fila con «¿quién?», fallan
+//       en el home y en /planes a 1280 y en la hoja de «Los once servicios»;
+//   (iii) un tope nuevo legítimo («Hasta 2 días anuales.») falla como «línea
+//       nueva», con la pista apagada;
+//   (iv) cada tarjeta, hoja y línea, releída después de los cambios, dice lo
+//       mismo que antes: la autoprueba no depende de cómo esté el sitio.
+// Y en cada superficie del 18/10, en cada ancho y desde cada tarjeta de plan,
+// una espera y una afirmación de unidad: ·cel, en el home con el dedo, una
+// espera en cada una de las 81 tarjetas y una unidad en Silver o Gold de cada
+// fila con «¿quién?» (36); ·tema, en la hoja «Tomografía y resonancia», una
+// espera y una unidad en cada una de las 9; ·línea, en la línea de la tarjeta,
+// una espera que se ve en las 9 y una unidad que solo oye el lector (en su
+// texto .sr-solo) en las 6 de Silver y Gold. Que las líneas reales pasan lo dice
+// la comparación de la lista, sobre la misma lectura. Y la pista se prueba
+// contra sus casos: dice «parece una espera» en las formas que conoce y calla en
+// los topes.
 console.log('\n── Lo que dicen las tarjetas y la hoja, contra una lista cerrada (P2A y P3A)');
 {
   const { DUDA, QUIEN_SG, QUIEN_PSICO } = COV;
   const HAY_DUDA = [QUIEN_SG, QUIEN_PSICO].includes(DUDA);
   const PLANES = ['Essential', 'Silver', 'Gold'];
-  const TARJETA_APROBADA = {
-    // La tabla del home (app/page.jsx, `cmp`): las nueve tarjetas, enteras, sin
-    // ninguna espera (P2A). `pie` es el pie de la tarjeta ('' si no tiene).
-    home: {
-      'Resonancia (RM)': {
-        Essential: '1 al año para toda la familia. Sin contraste ni sedación.',
-        Silver: '1 al año, y no ponés nada.',
-        Gold: '1 al año, y no ponés nada.',
-        pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Tomografía (TAC)': {
-        Essential: 'Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.',
-        Silver: 'Hasta 2 al año, y no ponés nada.',
-        Gold: 'Hasta 2 al año, y no ponés nada.',
-        pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Consultas por especialista': {
-        Essential: 'Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.',
-        Silver: 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.',
-        Gold: 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.',
-        pie: 'Copago: vos pagás una parte y Salud Protegida la otra.',
-      },
-      'Sesiones de psicología': {
-        Essential: 'Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.',
-        Silver: '5 sesiones al año.',
-        Gold: '6 sesiones al año.',
-        pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Fisioterapia': {
-        Essential: '5 sesiones al año para toda la familia.',
-        Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.',
-        Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria.',
-        pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
-      },
-      'Internación': {
-        Essential: '20 días al año para toda la familia, en habitación privada.',
-        Silver: '20 días al año por persona, en semi-suite.',
-        Gold: '25 días al año por persona, en semi-suite.',
-        pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.',
-      },
-      'Días de terapia intensiva': {
-        Essential: 'Hasta 2 días al año por persona.',
-        Silver: 'Hasta 5 días al año por persona, con cobertura total.',
-        Gold: 'Hasta 6 días al año por persona, con cobertura total.',
-        pie: '',
-      },
-      'Medicamentos internado': {
-        Essential: 'Hasta Gs. 350.000 en medicamentos en cada internación.',
-        Silver: 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.',
-        Gold: 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.',
-        pie: 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
-      },
-      'Remedios en urgencias': {
-        Essential: 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.',
-        Silver: 'Hasta Gs. 150.000 en medicamentos en cada urgencia.',
-        Gold: 'Hasta Gs. 200.000 en medicamentos en cada urgencia.',
-        pie: 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
-      },
-    },
-    // La tabla de /planes en la computadora (app/planes/Planes.jsx, `filasCompu`):
-    // las filas con «¿quién?», enteras. Acá las esperas van: cada línea suma la de
-    // su plan (conEspera, de carencias()). `pie` es el pie de la tarjeta.
-    planes: {
-      'Tomografía (TAC)': {
-        Essential: 'Hasta 2 al año por familia, junto con ecocardiograma y ergometría. 6 meses de espera.',
-        Silver: 'Hasta 2 al año. 4 meses de espera.',
-        Gold: 'Hasta 2 al año. 3 meses de espera.',
-        pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Resonancia (RM)': {
-        Essential: '1 al año por familia, sin contraste. 1 año de espera.',
-        Silver: '1 al año. 5 meses de espera.',
-        Gold: '1 al año. 5 meses de espera.',
-        pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Sesiones de psicología': {
-        Essential: 'Hasta 3 al año por familia, en el mismo cupo que otras especialidades.',
-        Silver: '5 sesiones al año.',
-        Gold: '6 sesiones al año.',
-        pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
-      },
-      'Fisioterapia': {
-        Essential: 'Hasta 5 sesiones al año por familia. Sin espera.',
-        Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5. 3 meses de espera.',
-        Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria. 3 meses de espera.',
-        pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
-      },
-    },
-    // La hoja de cada fila con «¿quién?» en el celular, abierta desde «Los once
-    // servicios, plan por plan» a 390 px (app/planes/ComparativaCelular.jsx,
-    // `enLosTres`). La línea de un plan es su caja, con « · » entre sus dos
-    // bloques (lo que cubre y la espera); `notas`, todo lo demás que dice la hoja,
-    // en orden, sin el «‹ Los once servicios» de arriba.
-    hoja: {
-      'Tomografía (TAC)': {
-        Essential: 'Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera',
-        Silver: 'Hasta 2 al año · 4 meses de espera',
-        Gold: 'Hasta 2 al año · 3 meses de espera',
-        notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
-      },
-      'Resonancia (RM)': {
-        Essential: '1 al año por familia, sin contraste · 1 año de espera',
-        Silver: '1 al año · 5 meses de espera',
-        Gold: '1 al año · 5 meses de espera',
-        notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
-      },
-      'Sesión de psicología': {
-        Essential: 'Hasta 3 al año por familia, en el mismo cupo que otras especialidades',
-        Silver: '5 sesiones al año',
-        Gold: '6 sesiones al año',
-        notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
-      },
-      'Fisioterapia': {
-        Essential: 'Hasta 5 sesiones al año por familia · Sin espera',
-        Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5 · 3 meses de espera',
-        Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria · 3 meses de espera',
-        notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
-      },
-    },
-  };
+  const ANCHOS_CEL = [360, 390, 430];
   // El botón de arriba de la hoja: no es una nota.
   const VOLVER = '‹ Los once servicios';
   // Las filas con «¿quién?» de cada superficie, en el orden de la autoprueba (ii).
@@ -2408,9 +2557,9 @@ console.log('\n── Lo que dicen las tarjetas y la hoja, contra una lista cerr
   });
 
   // Lo leído contra la lista: cada hallazgo dice qué es, dónde está y qué dice.
-  const hallazgos = (sup, servicio, leido) => {
+  // `donde` dice además el ancho y la tarjeta de plan desde la que se abrió.
+  const hallazgos = (sup, servicio, leido, donde = sup + ' › ' + servicio) => {
     const lista = TARJETA_APROBADA[sup][servicio];
-    const donde = sup + ' › ' + servicio;
     const h = [];
     const nueva = (d, linea, antes) => h.push({ tipo: 'línea nueva', donde: d, linea, antes, pista: sup === 'home' ? pistaDe(linea) : null });
     if (!lista) return [{ tipo: 'tarjeta que no está en la lista', donde, linea: leido ? leido.planes.map((p) => p.plan + ': ' + p.linea).join(' | ') : '' }];
@@ -2423,8 +2572,8 @@ console.log('\n── Lo que dicen las tarjetas y la hoja, contra una lista cerr
       if (normal(linea) !== normal(lista[plan])) nueva(donde + ' › ' + plan, linea, lista[plan]);
     }
     PLANES.filter((p) => !vistos.includes(p)).forEach((p) => h.push({ tipo: 'falta', donde: donde + ' › ' + p, linea: lista[p] }));
-    const clave = sup === 'hoja' ? 'notas' : 'pie';
-    const dicho = sup === 'hoja' ? notasDe(leido).join(' ') : leido.pies.join(' ');
+    const clave = sup === 'hoja' || sup === 'tema' ? 'notas' : 'pie';
+    const dicho = clave === 'notas' ? notasDe(leido).join(' ') : leido.pies.join(' ');
     if (normal(dicho) !== normal(lista[clave])) {
       if (!normal(dicho)) h.push({ tipo: 'falta', donde: donde + ' › ' + clave, linea: lista[clave] });
       else nueva(donde + ' › ' + clave, dicho, lista[clave]);
@@ -2445,42 +2594,57 @@ console.log('\n── Lo que dicen las tarjetas y la hoja, contra una lista cerr
   const UNIDADES = ['Son por persona.', 'Cada integrante tiene el suyo.', 'Por persona.', 'Para cada uno de la familia.'];
   // (iii) Un tope nuevo, legítimo: falla como línea nueva y sin la pista.
   const TOPE_NUEVO = 'Hasta 2 días anuales.';
-  const casosDe = (sup, servicio) => {
+  // `tag` dice la superficie del 18/10 (vacío en las de antes); `j`, la lectura,
+  // para repartir las esperas y las unidades entre las tarjetas y los planes.
+  const casosDe = (sup, servicio, tag = '', j = 0) => {
     const casos = [];
-    if (sup === 'home') {
+    if (sup === 'home' && !tag) {
       const k = Object.keys(TARJETA_APROBADA.home).indexOf(servicio);
-      ESPERAS_QUE_PASABAN.forEach((texto, j) => {
-        if (j % 9 !== k) return;
-        let donde = ['Silver', 'Gold', 'Essential', 'pie'][j % 4];
+      ESPERAS_QUE_PASABAN.forEach((texto, n) => {
+        if (n % 9 !== k) return;
+        let donde = ['Silver', 'Gold', 'Essential', 'pie'][n % 4];
         if (donde === 'pie' && !TARJETA_APROBADA.home[servicio].pie) donde = 'Silver';
-        casos.push({ por: 'i', donde, modo: j % 2 ? 'inicio' : 'fin', texto });
+        casos.push({ por: 'i', donde, modo: n % 2 ? 'inicio' : 'fin', texto });
       });
       if (servicio === 'Días de terapia intensiva') casos.push({ por: 'iii', donde: 'Essential', modo: 'reemplazo', texto: TOPE_NUEVO });
     }
-    const u = FILAS_DUDA[sup].indexOf(servicio);
-    if (u >= 0) casos.push({ por: 'ii', donde: u % 2 ? 'Gold' : 'Silver', modo: 'fin', texto: UNIDADES[u] });
+    if (sup === 'home' && tag) {
+      // ·cel: una espera en cada tarjeta, en una de sus líneas o en el pie.
+      let donde = ['Silver', 'Gold', 'Essential', 'pie'][j % 4];
+      if (donde === 'pie' && !TARJETA_APROBADA.home[servicio].pie) donde = 'Silver';
+      casos.push({ por: 'i', tag, donde, modo: j % 2 ? 'inicio' : 'fin', texto: ESPERAS_QUE_PASABAN[j % ESPERAS_QUE_PASABAN.length] });
+    }
+    if (sup === 'tema') {
+      // ·tema: una espera en uno de los tres planes y una unidad en Silver o Gold.
+      casos.push({ por: 'i', tag, donde: PLANES[j % 3], modo: 'fin', texto: ESPERAS_QUE_PASABAN[j % ESPERAS_QUE_PASABAN.length] });
+      casos.push({ por: 'ii', tag, donde: j % 2 ? 'Gold' : 'Silver', modo: 'fin', texto: UNIDADES[j % UNIDADES.length] });
+    }
+    const u = (FILAS_DUDA[sup] || []).indexOf(servicio);
+    if (u >= 0) casos.push({ por: 'ii', tag, donde: (tag ? j + u : u) % 2 ? 'Gold' : 'Silver', modo: 'fin', texto: UNIDADES[(tag ? j + u : u) % UNIDADES.length] });
     // (iv) Después de los cambios, la tarjeta real otra vez: tiene que decir lo
     // mismo que en la primera lectura.
-    casos.push({ por: 'iv', modo: 'nada' });
+    casos.push({ por: 'iv', tag, modo: 'nada' });
     return casos;
   };
-  const auto = { i: 0, ii: 0, iii: 0, iv: 0 };
+  const auto = {};
+  const cuenta = (k) => { auto[k] = (auto[k] || 0) + 1; };
   const autoMal = [];
-  const revisar = (sup, servicio, casos, leidos, primera) => casos.forEach((c, n) => {
-    const h = leidos[n] ? hallazgos(sup, servicio, leidos[n]) : null;
-    const lugar = sup + ' › ' + servicio + (c.donde ? ' › ' + c.donde : '');
-    if (!h) { autoMal.push('(' + c.por + ') no se pudo leer ' + lugar); return; }
-    if (c.modo === 'nada') { if (JSON.stringify(leidos[n]) !== JSON.stringify(primera)) autoMal.push('(iv) ' + lugar + ', releída después de los cambios, no dice lo mismo que antes: ' + JSON.stringify(leidos[n])); else auto.iv++; return; }
+  const revisar = (sup, servicio, casos, leidos, primera, donde = sup + ' › ' + servicio) => casos.forEach((c, n) => {
+    const h = leidos[n] ? hallazgos(sup, servicio, leidos[n], donde) : null;
+    const lugar = donde + (c.donde ? ' › ' + c.donde : '');
+    const k = c.por + (c.tag ? '·' + c.tag : '');
+    if (!h) { autoMal.push('(' + k + ') no se pudo leer ' + lugar); return; }
+    if (c.modo === 'nada') { if (JSON.stringify(leidos[n]) !== JSON.stringify(primera)) autoMal.push('(' + k + ') ' + lugar + ', releída después de los cambios, no dice lo mismo que antes: ' + JSON.stringify(leidos[n])); else cuenta(k); return; }
     const x = h.find((y) => y.donde === lugar && y.tipo === 'línea nueva');
-    if (!x) autoMal.push('(' + c.por + ') no falla: ' + lugar + ' con «' + c.texto + '»');
+    if (!x) autoMal.push('(' + k + ') no falla: ' + lugar + ' con «' + c.texto + '»');
     else if (c.por === 'iii' && (x.pista || !decir(x).includes('línea nueva'))) autoMal.push('(iii) falla, pero no como una línea nueva con la pista apagada: ' + decir(x));
-    else auto[c.por]++;
+    else cuenta(k);
   });
 
   const malas = [];
   const piesMal = [];
   const piesVistos = [];
-  const listo = (p) => p.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const listo = (p, s = '.cmp2-srv') => p.waitForFunction((sel) => { const b = document.querySelector(sel); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, s, { timeout: 10000 }).catch(() => {});
   const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // 1. La computadora: las nueve tarjetas del home y las de /planes de las filas
   // con «¿quién?», abiertas como una persona (el mouse que entra desde afuera,
@@ -2555,15 +2719,169 @@ console.log('\n── Lo que dicen las tarjetas y la hoja, contra una lista cerr
   }
   await ctxH.close();
 
-  // Lo que se espera de la autoprueba: 16 esperas, 4 unidades en cada una de
-  // las tres superficies, un tope y la relectura de cada tarjeta y hoja.
-  const debe = { i: ESPERAS_QUE_PASABAN.length, ii: UNIDADES.length * 3, iii: 1, iv: Object.values(TARJETA_APROBADA).reduce((a, s) => a + Object.keys(s).length, 0) };
-  Object.keys(debe).filter((k) => auto[k] !== debe[k]).forEach((k) => autoMal.push('(' + k + ') ' + auto[k] + ' de ' + debe[k]));
+  // 3. El home en el celular (vuelta 8, 18/10): las nueve tarjetas con el dedo,
+  // a 360, 390 y 430, tocando el nombre en cada una de las tres tarjetas de plan
+  // (en el celular cada tarjeta de plan trae sus nombres y abre su tarjeta). Se
+  // lee la tarjeta abierta, que tiene que ser una sola y de esa tarjeta de plan.
+  const TARJETA_H = '#cartilla .cmp2-tarjeta';
+  const leidasCel = { home: 0, tema: 0, linea: 0 };
+  let jCel = 0;
+  for (const w of ANCHOS_CEL) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    await p.goto(BASE + '/', { waitUntil: 'networkidle' });
+    await listo(p);
+    const tarjetas = p.locator('#cartilla .cmp2-plan');
+    const nt = await tarjetas.count();
+    if (nt !== PLANES.length) malas.push({ tipo: 'falta', donde: 'home ' + w + ' px', linea: 'hay ' + nt + ' tarjetas de plan, no ' + PLANES.length });
+    const enLista = Object.keys(TARJETA_APROBADA.home);
+    for (let i = 0; i < nt; i++) {
+      const plan = (await tarjetas.nth(i).locator('.cmp2-nombre').innerText()).trim();
+      const base = 'home ' + w + ' px, tarjeta de ' + plan;
+      const nombres = await tarjetas.nth(i).locator('.cmp2-srv').evaluateAll((bs) => bs.map((b) => b.textContent.trim()));
+      nombres.filter((n) => !enLista.includes(n)).forEach((n) => malas.push({ tipo: 'tarjeta que no está en la lista', donde: base + ' › ' + n, linea: 'un servicio nuevo en la tabla' }));
+      enLista.filter((n) => !nombres.includes(n)).forEach((n) => malas.push({ tipo: 'falta', donde: base + ' › ' + n, linea: 'la tarjeta del plan no tiene esta fila' }));
+      for (const n of enLista.filter((x) => nombres.includes(x))) {
+        const btn = tarjetas.nth(i).locator('.cmp2-srv').filter({ hasText: new RegExp('^' + escRe(n) + '$') }).first();
+        await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+        await btn.tap();
+        await p.waitForSelector(TARJETA_H, { timeout: 2000 }).catch(() => {});
+        const leido = await p.evaluate(([fn, s, i]) => {
+          const ks = document.querySelectorAll(s);
+          if (ks.length !== 1 || ks[0].closest('.cmp2-plan') !== document.querySelectorAll('#cartilla .cmp2-plan')[i]) return null;
+          return eval(fn)(ks[0]);
+        }, [LEER_TARJETA, TARJETA_H, i]);
+        const donde = base + ' › ' + n;
+        malas.push(...hallazgos('home', n, leido, donde));
+        if (leido) {
+          leidasCel.home++;
+          const casos = casosDe('home', n, 'cel', jCel++);
+          revisar('home', n, casos, await p.evaluate(([fn, leer, s, cs]) => eval(fn)([leer, s, cs]), [INYECTAR, LEER_TARJETA, TARJETA_H, casos]), leido, donde);
+          await btn.tap();
+          await p.waitForFunction((s) => !document.querySelector(s), TARJETA_H, { timeout: 2000 }).catch(() => {});
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  // 4. /planes en el celular (vuelta 8, 18/10), a 360, 390 y 430: en cada
+  // tarjeta de plan, la línea que nombra un servicio con «¿quién?» (lo que se ve
+  // y lo que oye el lector), y la hoja de cada línea, abierta tocándola como una
+  // persona (en el ícono de la izquierda: en el medio puede haber una palabra
+  // del glosario, como «semi-suite», que abre su explicación y no la hoja).
+  const PANEL_T = '.cmp-cel .hoja[data-abierta="1"] .hoja-panel';
+  // La línea de la autoprueba: se le suma `texto` al último nodo de texto que se
+  // ve y se oye (modo «visto») o al último del texto oculto para lectores (modo
+  // «oido»), y `window.__qaVolver` la deja como estaba.
+  const TOCAR_LINEA = String(([l, modo, texto]) => {
+    const ns = [];
+    const w = document.createTreeWalker(l, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) if (n.data.trim()) ns.push(n);
+    const elegibles = ns.filter((n) => (modo === 'oido' ? !!n.parentElement.closest('.sr-solo') : !n.parentElement.closest('.sr-solo, [aria-hidden="true"]')));
+    const n = elegibles[elegibles.length - 1];
+    if (!n) return false;
+    const antes = n.data;
+    n.data = antes + ' ' + texto + ' ';
+    window.__qaVolver = () => { n.data = antes; };
+    return true;
+  });
+  let jTema = 0;
+  let jLinea = 0;
+  for (const w of ANCHOS_CEL) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    await p.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    await listo(p);
+    const arts = p.locator('.cmp-cel article');
+    const na = await arts.count();
+    if (na !== PLANES.length) malas.push({ tipo: 'falta', donde: '/planes ' + w + ' px', linea: 'hay ' + na + ' tarjetas de plan, no ' + PLANES.length });
+    const vistos = new Set();
+    for (let i = 0; i < na; i++) {
+      const plan = ((await arts.nth(i).getAttribute('aria-label')) || '').replace(/^Plan /, '');
+      const ls = arts.nth(i).locator('.linea-cel');
+      const nl = await ls.count();
+      for (let k = 0; k < nl; k++) {
+        const l = ls.nth(k);
+        const vista = await l.evaluate((e, fn) => eval(fn)(e), LEER_LINEA);
+        const nombra = NOMBRA_DUDA.test(vista.ve);
+        // La línea.
+        if (nombra) {
+          vistos.add('linea|' + plan + '|' + vista.tema);
+          leidasCel.linea++;
+          const leida = { ...vista, oye: await oyeDe(l) };
+          const donde = 'línea ' + w + ' px, tarjeta de ' + plan + ' › ' + vista.tema;
+          malas.push(...lineaEnLista(vista.tema, plan, leida, donde));
+          const casosL = [{ por: 'i', modo: 'visto', texto: ESPERAS_QUE_PASABAN[jLinea % ESPERAS_QUE_PASABAN.length], parte: ' › se ve' }];
+          if (plan !== 'Essential') casosL.push({ por: 'ii', modo: 'oido', texto: UNIDADES[jLinea % UNIDADES.length], parte: ' › se oye' });
+          jLinea++;
+          for (const c of casosL) {
+            const k2 = c.por + '·línea';
+            if (!(await l.evaluate((e, [fn, modo, texto]) => eval(fn)([e, modo, texto]), [TOCAR_LINEA, c.modo, c.texto]))) { autoMal.push('(' + k2 + ') no se pudo cambiar ' + donde); continue; }
+            const otra = { ...(await l.evaluate((e, fn) => eval(fn)(e), LEER_LINEA)), oye: await oyeDe(l) };
+            await l.evaluate(() => window.__qaVolver());
+            if (!lineaEnLista(vista.tema, plan, otra, donde).some((x) => x.donde === donde + c.parte && x.tipo === 'línea nueva')) autoMal.push('(' + k2 + ') no falla: ' + donde + c.parte + ' con «' + c.texto + '»');
+            else cuenta(k2);
+          }
+          const otraVez = { ...(await l.evaluate((e, fn) => eval(fn)(e), LEER_LINEA)), oye: await oyeDe(l) };
+          if (JSON.stringify(otraVez) !== JSON.stringify(leida)) autoMal.push('(iv·línea) ' + donde + ', releída después de los cambios, no dice lo mismo que antes: ' + JSON.stringify(otraVez));
+          else cuenta('iv·línea');
+        }
+        // La hoja de su tema.
+        await l.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+        await l.tap({ position: { x: 6, y: 12 } });
+        await p.waitForSelector(PANEL_T, { timeout: 2000 }).catch(() => {});
+        await p.waitForTimeout(150);
+        const hoja = await p.evaluate(([fn, s]) => { const k = document.querySelector(s); return k ? { leido: eval(fn)(k), texto: k.innerText } : null; }, [LEER_HOJA, PANEL_T]);
+        // Toda línea abre su hoja: si una no abre, no se sabe qué dice.
+        if (!hoja) malas.push({ tipo: 'no se abrió', donde: 'tema ' + w + ' px, tarjeta de ' + plan + ' › ' + vista.tema, linea: 'la hoja de la línea' });
+        else if (nombra || NOMBRA_DUDA.test(hoja.texto)) {
+          const t = hoja.leido.titulo;
+          const donde = 'tema ' + w + ' px, tarjeta de ' + plan + ' › ' + t;
+          vistos.add('tema|' + plan + '|' + t);
+          leidasCel.tema++;
+          malas.push(...hallazgos('tema', t, hoja.leido, donde));
+          if (HAY_DUDA) {
+            piesVistos.push('tema ' + t + ' (' + w + ' px, ' + plan + ')');
+            if (!pieBien(notasDe(hoja.leido).join(' '), [CIERRE_HOJA])) piesMal.push(donde + ': ' + JSON.stringify(notasDe(hoja.leido)));
+          }
+          if (TARJETA_APROBADA.tema[t]) {
+            const casos = casosDe('tema', t, 'tema', jTema++);
+            revisar('tema', t, casos, await p.evaluate(([fn, leer, s, cs]) => eval(fn)([leer, s, cs]), [INYECTAR, LEER_HOJA, PANEL_T, casos]), hoja.leido, donde);
+          }
+        }
+        await p.keyboard.press('Escape');
+        await p.waitForFunction(() => { const h = document.querySelector('.cmp-cel .hoja'); return !!h && h.dataset.abierta === '0'; }, null, { timeout: 2000 }).catch(() => {});
+        await p.waitForTimeout(350);
+      }
+    }
+    // Lo de la lista que no apareció, en cada tarjeta de plan y en este ancho.
+    for (const plan of PLANES) {
+      Object.keys(TARJETA_APROBADA.linea).filter((t) => !vistos.has('linea|' + plan + '|' + t)).forEach((t) => malas.push({ tipo: 'falta', donde: 'línea ' + w + ' px, tarjeta de ' + plan + ' › ' + t, linea: 'la tarjeta del plan no tiene esta línea' }));
+      Object.keys(TARJETA_APROBADA.tema).filter((t) => !vistos.has('tema|' + plan + '|' + t)).forEach((t) => malas.push({ tipo: 'falta', donde: 'tema ' + w + ' px, tarjeta de ' + plan + ' › ' + t, linea: 'ninguna línea de la tarjeta abre esta hoja' }));
+    }
+    await ctx.close();
+  }
+
+  // Lo que se espera de la autoprueba. En la computadora y la hoja de «Los once
+  // servicios»: 16 esperas, 4 unidades en cada una de las tres superficies, un
+  // tope y la relectura de cada tarjeta y hoja. En el celular (·cel, ·tema y
+  // ·línea): una espera y una relectura por lectura, y una unidad por lectura de
+  // una fila con «¿quién?» (en la línea, solo Silver y Gold).
+  const nAnchos = ANCHOS_CEL.length * PLANES.length;
+  const cuantas = (s) => Object.keys(TARJETA_APROBADA[s]).length;
+  const debe = {
+    i: ESPERAS_QUE_PASABAN.length, ii: UNIDADES.length * 3, iii: 1, iv: cuantas('home') + cuantas('planes') + cuantas('hoja'),
+    'i·cel': cuantas('home') * nAnchos, 'ii·cel': FILAS_DUDA.home.length * nAnchos, 'iv·cel': cuantas('home') * nAnchos,
+    'i·tema': cuantas('tema') * nAnchos, 'ii·tema': cuantas('tema') * nAnchos, 'iv·tema': cuantas('tema') * nAnchos,
+    'i·línea': cuantas('linea') * nAnchos, 'ii·línea': cuantas('linea') * ANCHOS_CEL.length * 2, 'iv·línea': cuantas('linea') * nAnchos,
+  };
+  Object.keys(debe).filter((k) => (auto[k] || 0) !== debe[k]).forEach((k) => autoMal.push('(' + k + ') ' + (auto[k] || 0) + ' de ' + debe[k]));
   if (pistaMal.length || autoMal.length) mal('la autoprueba de la lista cerrada no da lo esperado · ' + [...autoMal, ...pistaMal.map((t) => 'la pista ' + t)].join(' · '));
-  else bien('la autoprueba de la lista cerrada, en la misma página y con la misma lectura: (i) las ' + debe.i + ' esperas que pasaban con el regex («Lo usás pasado el año.», «Disponible al año.», «A partir de la tercera cuota.»…), metidas en una línea real del home, fallan; (ii) las ' + UNIDADES.length + ' afirmaciones de unidad («Son por persona.», «Cada integrante tiene el suyo.»…) fallan en Silver y Gold en el home, /planes y la hoja (' + debe.ii + '); (iii) «' + TOPE_NUEVO + '» falla como «línea nueva», sin la pista; (iv) las ' + debe.iv + ' tarjetas y hojas, releídas después de los cambios, dicen lo mismo que antes (que las líneas reales pasan lo dice la línea de abajo); la pista («parece una espera») se prende en las ' + pistaAuto.prende.length + ' formas que conoce y calla en los ' + pistaAuto.calla.length + ' topes y líneas del home');
-  const lineas = Object.values(TARJETA_APROBADA).reduce((a, s) => a + Object.values(s).reduce((b, t) => b + Object.values(t).filter(Boolean).length, 0), 0);
-  if (malas.length) mal('lo que dicen las tarjetas y la hoja tiene que estar, literal, en TARJETA_APROBADA · ' + malas.map(decir).join(' · ') + ' · Si es un cambio querido, sumala a TARJETA_APROBADA (qa/qa-lanzamiento.mjs) después de revisar que no sea una espera en la tarjeta del home (P2A) ni una afirmación de unidad, de para quién es, en Silver y Gold (P3A).');
-  else bien('las ' + Object.keys(TARJETA_APROBADA.home).length + ' tarjetas del home, las ' + Object.keys(TARJETA_APROBADA.planes).length + ' de /planes y las ' + Object.keys(TARJETA_APROBADA.hoja).length + ' hojas del celular de las filas con «' + DUDA + '» dicen solo lo que está en TARJETA_APROBADA (' + lineas + ' líneas, pies y notas, literales), sin nada fuera de las líneas: en el home, ninguna espera (P2A); en Silver y Gold, nada que diga para quién (P3A)');
+  else bien('la autoprueba de la lista cerrada, en la misma página y con la misma lectura: (i) las ' + debe.i + ' esperas que pasaban con el regex («Lo usás pasado el año.», «Disponible al año.», «A partir de la tercera cuota.»…), metidas en una línea real del home a 1280, fallan; (ii) las ' + UNIDADES.length + ' afirmaciones de unidad («Son por persona.», «Cada integrante tiene el suyo.»…) fallan en Silver y Gold en el home y /planes a 1280 y en la hoja de «Los once servicios» a 390 (' + debe.ii + '); (iii) «' + TOPE_NUEVO + '» falla como «línea nueva», sin la pista; en el celular, a 360, 390 y 430 y desde las tres tarjetas de plan, fallan una espera en cada una de las ' + debe['i·cel'] + ' tarjetas del home abiertas con el dedo y una unidad en Silver o Gold en las ' + debe['ii·cel'] + ' de filas con «' + DUDA + '», una espera y una unidad en cada una de las ' + debe['i·tema'] + ' hojas «Tomografía y resonancia», y en la línea de la tarjeta del plan, una espera que se ve (' + debe['i·línea'] + ') y una unidad que solo oye el lector (' + debe['ii·línea'] + ', Silver y Gold); (iv) las ' + (debe.iv + debe['iv·cel'] + debe['iv·tema'] + debe['iv·línea']) + ' tarjetas, hojas y líneas, releídas después de los cambios, dicen lo mismo que antes (que las líneas reales pasan lo dice la línea de abajo); la pista («parece una espera») se prende en las ' + pistaAuto.prende.length + ' formas que conoce y calla en los ' + pistaAuto.calla.length + ' topes y líneas del home');
+  const contar = (o) => (typeof o === 'string' ? (o ? 1 : 0) : Object.values(o).reduce((a, v) => a + contar(v), 0));
+  if (malas.length) mal('lo que dicen las tarjetas, las hojas y las líneas tiene que estar, literal, en TARJETA_APROBADA · ' + malas.map(decir).join(' · ') + ' · Si es un cambio querido, sumala a TARJETA_APROBADA (qa/qa-lanzamiento.mjs) después de revisar que no sea una espera en la tarjeta del home (P2A) ni en la línea de la tarjeta del plan (03/10), ni una afirmación de unidad, de para quién es, en Silver y Gold (P3A).');
+  else bien('dicen solo lo que está en TARJETA_APROBADA (' + contar(TARJETA_APROBADA) + ' líneas, pies y notas, literales), sin nada fuera de las líneas: las ' + cuantas('home') + ' tarjetas del home a 1280 con el mouse y a 360, 390 y 430 con el dedo, desde las tres tarjetas de plan (' + leidasCel.home + ' lecturas), sin ninguna espera (P2A); de las filas con «' + DUDA + '», las ' + cuantas('planes') + ' tarjetas de /planes a 1280 y sus ' + cuantas('hoja') + ' hojas de «Los once servicios» a 390; y en /planes a 360, 390 y 430, desde las tres tarjetas, la hoja del tema «Tomografía y resonancia» (' + leidasCel.tema + ' lecturas) y la línea de la tarjeta del plan que nombra tomografía, resonancia, psicología o fisioterapia, lo que se ve y lo que se oye (' + leidasCel.linea + ' lecturas): en Silver y Gold, nada que diga para quién (P3A). No cubre las otras cuatro hojas de tema ni las otras líneas de las tarjetas de plan, ni las tarjetas y hojas de /planes de las filas sin «' + DUDA + '»');
   if (!HAY_DUDA) console.log('    · se salta: los pies de las filas con la duda (ninguna fila dice «' + DUDA + '»)');
   else if (piesMal.length) mal('el pie de una fila con «' + DUDA + '» dice una oración que no está en la lista cerrada (o le falta la pregunta por la unidad) · ' + piesMal.join(' · '));
   else bien('los ' + piesVistos.length + ' pies y hojas de las filas con «' + DUDA + '» (todos los pies y todo el texto de la hoja) dicen solo oraciones de PIE_APROBADO, con la pregunta por la unidad (' + piesVistos.join(', ') + ')');
