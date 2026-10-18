@@ -680,6 +680,12 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // servicios con las condiciones de Essential; que ningún renglón termine en
 // «/»; y que la nota no afirme nada del contrato. Probado contra la rama sin la
 // P3A (falla) y con ella (pasa).
+// Vuelta 2 (Dev, 17/10): las pruebas del botón corren sobre la primera fila que
+// dice «¿quién?» (con QUIEN_SG en 'persona', la psicología) y dicen «se salta»
+// si no queda ninguna; y la de teclado aprieta Enter y Espacio con la tarjeta
+// cerrada, con un caso de teclas mudas que tiene que ver. Medido con QUIEN_SG en
+// 'persona' (corren sobre psicología y pasan) y con los dos interruptores en
+// 'persona' (dicen «se salta», no ✓).
 console.log('\n── La forma corta (P3A)');
 {
   const { DUDA, QUIEN_SG, QUIEN_PSICO, NOTA_UNIDAD } = COV;
@@ -733,25 +739,40 @@ console.log('\n── La forma corta (P3A)');
   if (JSON.stringify(pleg) !== JSON.stringify(['20 días/familia', '20 días/persona', '25 días/persona'])) malas.push('/planes/ plegable, tope de días de internación: ' + JSON.stringify(pleg));
   const menosEspera = await page.evaluate(() => /menos espera/.test(document.body.textContent));
   if (menosEspera) malas.push('/planes/: la tomografía de Gold dice «y menos espera» (regla de esperas del 03/10)');
-  if (malas.length) mal('forma corta: Essential dice «/familia/» y Silver y Gold «/' + QUIEN_SG + '/» (que se toca), con su frase completa y sin «persona» hasta que SP lo confirme (sp-interno#110) · ' + malas.join(' · '));
-  else bien('forma corta en tomografía, resonancia, psicología, fisioterapia, internación y ecografía: «familia» en Essential y «' + QUIEN_SG + '» en Silver y Gold, con su frase para lectores (home, tabla y plegable de /planes)');
+  // Lo que dicen Silver y Gold: uno o los dos interruptores (QUIEN_SG y QUIEN_PSICO).
+  const quienes = [...new Set([QUIEN_SG, QUIEN_PSICO])].map((q) => '«' + q + '»').join(' o ');
+  if (malas.length) mal('forma corta: Essential dice «/familia/» y Silver y Gold ' + quienes + ' (la duda se toca), con su frase completa y sin «persona» hasta que SP lo confirme (sp-interno#110) · ' + malas.join(' · '));
+  else bien('forma corta en tomografía, resonancia, psicología, fisioterapia, internación y ecografía: «familia» en Essential y ' + quienes + ' en Silver y Gold, con su frase para lectores (home, tabla y plegable de /planes)');
+  // Las pruebas del botón «¿quién?» corren sobre la primera fila de FILAS que lo
+  // tiene, no sobre una fija (Dev, vuelta 2, 17/10). Antes miraban siempre la
+  // tomografía y la resonancia y se condicionaban solo a QUIEN_SG: si SP
+  // contestaba esas dos primero, la psicología (QUIEN_PSICO) seguía siendo un
+  // botón «¿quién?», nadie lo probaba y el log decía ✓ (medido con QUIEN_SG en
+  // 'persona'). Si ninguna fila tiene «¿quién?», lo dicen («se salta»).
+  const HAY_DUDA = [QUIEN_SG, QUIEN_PSICO].includes(DUDA);
+  const FILA_DUDA = (FILAS.find(([, q]) => q === DUDA) || [''])[0];
+  const salta = (m) => console.log('    · se salta: ' + m + ' (ninguna fila dice «' + DUDA + '»)');
+  const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const celdaDe = (plan) => page.locator('#cartilla .cmp2-plan').nth(plan).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: FILA_DUDA }) });
   // El hueco con la letra, el color y el peso de «familia», más el subrayado punteado.
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
-  const estilo = await page.evaluate(() => {
-    const filas = [...document.querySelectorAll('#cartilla .cmp2-plan')];
-    const enFila = (pl) => [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === 'Resonancia (RM)');
-    const fam = enFila(filas[0]) && enFila(filas[0]).querySelector('.corta-r');
-    const duda = enFila(filas[1]) && enFila(filas[1]).querySelector('.corta-duda');
-    if (!fam || !duda) return null;
-    const q = (e) => { const c = getComputedStyle(e); return { familia: c.fontFamily, color: c.color, peso: c.fontWeight, tamaño: c.fontSize }; };
-    return { familia: q(fam), duda: q(duda), subrayado: getComputedStyle(duda).borderBottomStyle, texto: duda.textContent };
-  });
-  if (QUIEN_SG === DUDA && (!estilo || JSON.stringify(estilo.familia) !== JSON.stringify(estilo.duda) || estilo.subrayado !== 'dotted' || estilo.texto !== DUDA)) mal('«' + DUDA + '» no tiene la letra, el color y el peso de «familia», o le falta el subrayado punteado: ' + JSON.stringify(estilo));
-  else bien('«' + DUDA + '» con la misma letra, color y peso que «familia», y subrayado punteado');
+  if (HAY_DUDA) {
+    const estilo = await page.evaluate((nombre) => {
+      const filas = [...document.querySelectorAll('#cartilla .cmp2-plan')];
+      const enFila = (pl) => [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === nombre);
+      const fam = enFila(filas[0]) && enFila(filas[0]).querySelector('.corta-r');
+      const duda = enFila(filas[1]) && enFila(filas[1]).querySelector('.corta-duda');
+      if (!fam || !duda) return null;
+      const q = (e) => { const c = getComputedStyle(e); return { familia: c.fontFamily, color: c.color, peso: c.fontWeight, tamaño: c.fontSize }; };
+      return { familia: q(fam), duda: q(duda), subrayado: getComputedStyle(duda).borderBottomStyle, texto: duda.textContent };
+    }, FILA_DUDA);
+    if (!estilo || JSON.stringify(estilo.familia) !== JSON.stringify(estilo.duda) || estilo.subrayado !== 'dotted' || estilo.texto !== DUDA) mal('«' + DUDA + '» no tiene la letra, el color y el peso de «familia», o le falta el subrayado punteado (' + FILA_DUDA + '): ' + JSON.stringify(estilo));
+    else bien('«' + DUDA + '» con la misma letra, color y peso que «familia», y subrayado punteado (' + FILA_DUDA + ')');
+  } else salta('el estilo del hueco');
   // Se abre con un clic y con el teclado, no al pasar el mouse (ajuste 4 del comité).
-  const celdaDuda = page.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Resonancia (RM)' }) }).locator('.cmp2-duda');
+  const celdaDuda = celdaDe(1).locator('.cmp2-duda');
   let abre = null;
-  if (QUIEN_SG === DUDA && (await celdaDuda.count())) {
+  if (HAY_DUDA && (await celdaDuda.count())) {
     await page.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
     await celdaDuda.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
     await page.waitForTimeout(1200);
@@ -779,35 +800,64 @@ console.log('\n── La forma corta (P3A)');
     await page.keyboard.press('Space');
     await page.waitForTimeout(200);
     const conEspacio = await sigueAbierta();
+    // Y las teclas abren (Dev, vuelta 2, 17/10): lo de arriba solo miraba que
+    // siguiera abierto lo que ya había abierto el foco, y pasaba igual con
+    // Enter y Espacio mudos. Con la tarjeta cerrada por Escape (y
+    // aria-expanded en «false»), Enter la abre; cerrada otra vez, Espacio también.
+    const estado = () => page.evaluate(() => ({ abierta: !!document.querySelector('#cartilla .cmp2-tarjeta'), expandida: document.activeElement.getAttribute('aria-expanded') }));
+    const teclas = async () => {
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(150);
+      const tras = await estado();
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(200);
+      const enter = await estado();
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(150);
+      await page.keyboard.press('Space');
+      await page.waitForTimeout(200);
+      const espacio = await estado();
+      return { cierraEscape: !tras.abierta && tras.expandida === 'false', abreEnter: enter.abierta && enter.expandida === 'true', abreEspacio: espacio.abierta && espacio.expandida === 'true' };
+    };
+    const conTeclas = await teclas();
+    // El caso que tiene que fallar, en la misma página: Enter y Espacio mudos (el
+    // clic de teclado, con detail 0, no llega a React). La prueba los tiene que ver.
+    await page.evaluate(() => { window.__mudo = (e) => { if (e.detail === 0 && e.target.closest && e.target.closest('.cmp2-duda')) { e.stopImmediatePropagation(); e.preventDefault(); } }; document.addEventListener('click', window.__mudo, true); });
+    const mudas = await teclas();
+    await page.evaluate(() => document.removeEventListener('click', window.__mudo, true));
     await page.keyboard.press('Escape');
     await page.waitForTimeout(150);
-    const ev = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'duda');
-    abre = { conHover, conClic, cerrada, conTeclado, conEnter, conEspacio, ev: ev.length };
+    // Una vez por fila, aunque se abra muchas veces (Shift+Tab puede pasar por la
+    // celda de la fila de arriba, que se mide aparte).
+    const ev = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'duda' && x.datos?.clave === FILA_DUDA);
+    abre = { conHover, conClic, cerrada, conTeclado, conEnter, conEspacio, ...conTeclas, veMudas: !mudas.abreEnter && !mudas.abreEspacio, ev: ev.length };
   }
   const pieBien = (p) => p === 'Por familia: un cupo que comparten todos los del grupo. ' + NOTA_UNIDAD && !/contrato/i.test(p);
-  if (QUIEN_SG === DUDA && (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || abre.ev !== 1)) mal('computadora: la celda con «' + DUDA + '» tiene que abrir la tarjeta con un clic y con el teclado (y Enter o Espacio no la cierran), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda» (' + JSON.stringify(abre) + ')');
-  else bien('computadora: la celda con «' + DUDA + '» abre la tarjeta con un clic y con el teclado, y Enter o Espacio no la cierran; no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
+  if (!HAY_DUDA) salta('la celda que se abre con clic y teclado');
+  else if (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || !abre.cierraEscape || !abre.abreEnter || !abre.abreEspacio || !abre.veMudas || abre.ev !== 1) mal('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') tiene que abrir la tarjeta con un clic y con el teclado (Enter o Espacio no la cierran, y con la tarjeta cerrada la abren), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda»; la prueba tiene que ver las teclas mudas (' + JSON.stringify(abre) + ')');
+  else bien('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') abre la tarjeta con un clic y con el teclado; Enter o Espacio no la cierran y, con la tarjeta cerrada, la abren (la prueba ve las teclas mudas); no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
   // Lo que oye el lector de pantalla (vuelta 1 del comité, 17/10). En la
   // computadora la columna de nombres está lejos: el nombre del botón (el que
   // calcula el navegador, no un atributo leído a mano) dice la fila y el plan;
   // la tarjeta abierta es su descripción, y «expandido» lo dice solo la celda
   // que la abrió, no las de los otros planes de la misma fila.
   let lector = null;
-  const tomSilver = page.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-c', { has: page.locator('.cmp2-l', { hasText: 'Tomografía (TAC)' }) }).locator('.cmp2-duda');
-  if (QUIEN_SG === DUDA && (await tomSilver.count())) {
-    await tomSilver.click();
+  const dudaSilver = celdaDe(1).locator('.cmp2-duda');
+  if (HAY_DUDA && (await dudaSilver.count())) {
+    await dudaSilver.click();
     await page.waitForTimeout(200);
-    lector = await page.evaluate(() => {
+    lector = await page.evaluate((nombre) => {
       const b = [...document.querySelectorAll('#cartilla .cmp2-duda[aria-expanded="true"]')];
       const d = b[0] && document.getElementById(b[0].getAttribute('aria-describedby') || '');
-      return { expandidos: b.length, describe: !!d && d.classList.contains('cmp2-tarjeta') && /Tomografía/.test(d.textContent) };
-    });
-    lector.nombre = await page.getByRole('button', { name: /^Tomografía \(TAC\), Silver: 2 al año, sin confirmar para quién$/ }).count();
+      return { expandidos: b.length, describe: !!d && d.classList.contains('cmp2-tarjeta') && d.textContent.includes(nombre) };
+    }, FILA_DUDA);
+    lector.nombre = await page.getByRole('button', { name: new RegExp('^' + escRe(FILA_DUDA) + ', Silver: \\d+ al año, sin confirmar para quién$') }).count();
     lector.sinFila = await page.getByRole('button', { name: /^\d+ al año, sin confirmar para quién$/ }).count();
     await page.keyboard.press('Escape');
   }
-  if (QUIEN_SG === DUDA && (!lector || lector.expandidos !== 1 || !lector.describe || lector.nombre !== 1 || lector.sinFila)) mal('computadora: el lector de pantalla tiene que oír la fila y el plan en la celda con «' + DUDA + '», la tarjeta como su descripción, y «expandido» solo en la celda que la abrió (' + JSON.stringify(lector) + ')');
-  else bien('computadora: el lector oye «Tomografía (TAC), Silver: …» en la celda con «' + DUDA + '», la tarjeta como descripción y «expandido» solo ahí');
+  if (!HAY_DUDA) salta('lo que oye el lector en la celda con la duda');
+  else if (!lector || lector.expandidos !== 1 || !lector.describe || lector.nombre !== 1 || lector.sinFila) mal('computadora: el lector de pantalla tiene que oír la fila y el plan en la celda con «' + DUDA + '» (' + FILA_DUDA + '), la tarjeta como su descripción, y «expandido» solo en la celda que la abrió (' + JSON.stringify(lector) + ')');
+  else bien('computadora: el lector oye «' + FILA_DUDA + ', Silver: …» en la celda con «' + DUDA + '», la tarjeta como descripción y «expandido» solo ahí');
   await page.close();
 
   // 2. Celular: el toque, las líneas de las tarjetas y la lista de los once.
@@ -818,7 +868,7 @@ console.log('\n── La forma corta (P3A)');
     const n = 'móvil ' + width;
     let toque = null;
     const dudaCel = cel.locator('#cartilla .cmp2-plan').nth(1).locator('.cmp2-duda').first();
-    if (QUIEN_SG === DUDA && (await dudaCel.count())) {
+    if (HAY_DUDA && (await dudaCel.count())) {
       await cel.waitForFunction(() => { const b = document.querySelector('.cmp2-duda'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
       await dudaCel.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
       await cel.waitForTimeout(1200);
@@ -826,7 +876,8 @@ console.log('\n── La forma corta (P3A)');
       await cel.waitForTimeout(200);
       toque = await cel.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const r = t.getBoundingClientRect(); return { planes: t.querySelectorAll('.cmp2-tarjeta-p').length, dentro: r.left >= 0 && r.right <= innerWidth + 1 }; });
     }
-    if (QUIEN_SG === DUDA && (!toque || toque.planes !== 3 || !toque.dentro)) mal(n + ': tocar la celda con «' + DUDA + '» tiene que abrir la tarjeta del servicio, dentro de la pantalla (' + JSON.stringify(toque) + ')');
+    if (!HAY_DUDA) salta(n + ': el toque en la celda con la duda');
+    else if (!toque || toque.planes !== 3 || !toque.dentro) mal(n + ': tocar la celda con «' + DUDA + '» tiene que abrir la tarjeta del servicio, dentro de la pantalla (' + JSON.stringify(toque) + ')');
     else bien(n + ': tocar la celda con «' + DUDA + '» abre la tarjeta del servicio');
     await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
     const lineas = await cel.evaluate(() => [...document.querySelectorAll('.cmp-cel article')].map((a) => {
