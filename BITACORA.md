@@ -5377,3 +5377,53 @@ revisor de Dev lo midió en vez de suponerlo:
 - **Cada sabotaje se construye fuera del repo**: en un `git worktree` aparte, o
   en una copia del sitio construido con una línea de CSS de más. Así se prueba
   el detector sin tocar la rama.
+
+## Capítulo 152 — La lección del capítulo anterior, rota por sus propias pruebas (18/10/2026)
+
+**Qué intentamos.** Cerrar la vuelta 3 del «Todo A» (PR #271, cap. 151) con
+todas las pruebas en verde y pasársela a la QA y a dos verificadores
+adversariales, uno de datos y uno de accesibilidad.
+
+**Qué pasó.** La QA dio verde en todas las suites. Los verificadores
+sabotearon copias del sitio construidas fuera del repo y encontraron cuatro
+pruebas de la misma vuelta que no probaban lo que decían:
+
+- **La prueba de las esperas armaba lo esperado con los campos que dibujan la
+  página.** Era justo lo que el cap. 151 había escrito: «una prueba no compara
+  la página con la constante que la arma». Se lo escribió y, en el mismo
+  commit, se hizo. Peor: con el campo vacío, la prueba se salteaba la
+  comprobación. Sacando `cuando` y `alAsesor` de `coverage.js`, la lista volvía
+  a darle a la cesárea de Gold los 10 meses, y la prueba decía ✓ con un texto
+  fijo que afirmaba haber visto lo que no estaba.
+- **La forma corta se contaba en todo el body.** «20 días por familia» del
+  plegable está dentro de «20 días por familia al año» de la tabla de arriba:
+  con las tres celdas del plegable mudas, la frase seguía apareciendo en la
+  página y la prueba la daba por oída.
+- **El detector de esperas leía `textContent`**, que pega el nombre del plan a
+  su línea («Silver5 meses para usarla.»). Una espera al principio de la línea,
+  que es donde más naturalmente iría, no se veía. Y la lista de formas
+  («esperás», «a los N días»…) dejaba afuera «a partir del tercer mes» o «al
+  año de contratarlo».
+- **El pie enumeraba las unidades conocidas.** «Cada persona tiene su propio
+  cupo» no estaba en la lista y pasaba.
+
+Además, la cesárea de Gold había quedado bien en la lista y en la tabla, y el
+plegable de la misma página seguía diciendo «300 días» sin más: la lección del
+cap. 150 (buscar el arreglo en todas las superficies que muestran esa fila) se
+había aplicado a las superficies nombradas en el hallazgo, no a todas.
+
+**Qué aprendimos.**
+- **Una prueba que se saltea cuando falta un campo no prueba ese campo.** Si
+  el campo es lo que arregla el defecto, sin él la prueba tiene que fallar. La
+  regla se escribe en la prueba, como literal o como clase («la cesárea con el
+  asesor»), y no se lee del mismo lugar que la página.
+- **El ✓ dice lo que vio, no lo que se esperaba ver.** Un mensaje fijo de éxito
+  es una afirmación sin fuente.
+- **Lo que oye el lector se mide en su celda.** Contar una frase en toda la
+  página la da por oída si aparece en otro lado.
+- **Se lee texto por texto, no `textContent`**, cuando lo que importa es dónde
+  empieza una palabra.
+- **Escribir la lección no alcanza: hay que pasar la lección por lo que se acaba
+  de escribir.** El cap. 151 se escribió junto con las pruebas que lo rompían.
+  Antes de cerrar una vuelta, cada prueba nueva se sabotea contra la clase de
+  error, no solo contra el caso que la motivó.

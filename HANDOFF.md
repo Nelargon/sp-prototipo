@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 17 oct 2026.*
+*Última actualización: 18 oct 2026.*
 
 ---
 
@@ -195,11 +195,50 @@ construida fuera del repo, y pasa con el cambio:
   E8, E2): la forma corta se cuenta en el árbol de accesibilidad (con la frase
   silenciada por CSS, la prueba vieja seguía en verde), el pie rechaza toda
   afirmación de unidad, el detector de esperas rechaza cualquier plazo, y el
-  celular de la P3A se mide también a 430 px.
+  celular de la P3A se mide también a 430 px. *(18/10: las tres primeras
+  tenían huecos, y la de las esperas leía los campos que dibujan la página: ver
+  «Corrección de la vuelta 3», abajo.)*
 - **Documentos** (W9, E9, V4, D9, D8): el punto (7) de arriba ya no repite la
   cifra de tráfico; notas fechadas en las menciones viejas de `/v1/` y de
   «Confirmalo/Consultalo»; el README de datos y las láminas 85 a 87, al día; y
   el punto 1 ya no da por hechas todas las líneas de `quote.js` desde `corta`.
+
+**Corrección de la vuelta 3 (18/10, la QA y dos verificadores adversariales,
+BITACORA cap. 152).** Sobre lo de arriba encontraron tres cosas del sitio y
+cuatro pruebas que no probaban lo que decían. Se arregló en la rama, y cada
+prueba nueva falla en una copia saboteada construida fuera del repo y pasa con
+el cambio:
+- **La cesárea de Gold también en el plegable** «Internación, maternidad y
+  topes»: decía «300 días» de maternidad para Gold, sin más. Ahora dice debajo
+  «Cesárea: preguntale a tu asesor» (de `alAsesor` de `carencias()`, como la
+  lista; el dato de la planilla no se toca).
+- **Las esperas se oyen como espera.** En la banda «Cuánto esperás para usarlo»
+  de `/planes` (computadora), el lector oía «Resonancia, Essential: 1 año», que
+  se entendía como un cupo. Ahora oye «1 año de espera» (`dicho`); lo que se ve
+  no cambió.
+- **El comentario de `filasCompu`** (`app/planes/Planes.jsx`) nombra bien lo
+  que todavía se escribe a mano: las celdas de consultas, de ecografía de Silver
+  y Gold, de odontología y de terapia intensiva (decía «tres filas» y que las
+  tarjetas de consultas y terapia intensiva se escribían ahí).
+- **Las pruebas, contra la clase de error.** «Las esperas llevan su condición»
+  armaba lo esperado con `cuando`, `alAsesor` y `notaCorta`, y sin el campo se
+  salteaba: ahora las reglas están escritas en la prueba (la cesárea con
+  `ASESOR` en Gold; «algo agudo» en todo plazo de internación de Silver y Gold;
+  «rutina», cirugía y familia, y «la mayoría» en la tabla; la cesárea en el
+  plegable). La forma corta para lectores se cuenta en su celda y no en todo el
+  body (una celda muda se escondía detrás de una frase más larga), y una celda
+  de tabla sin nombre falla. El detector de esperas de la tarjeta del home lee
+  texto por texto (`textContent` pegaba «Silver5 meses») y suma ordinales, «mes
+  N», «al año de», «a los N», «en un año» y «desde el comienzo». El pie se
+  compara con los textos que fijó Arturo el 17/10: cualquier otra oración solo
+  puede ser otra pregunta al asesor, sin palabras de unidad.
+- **Falsa alarma, no se tocó el sitio:** el revisor de diseño (`sp-interno`,
+  skill `sp-disenador-ux`, `scripts/revisar.mjs`) marca 🟡 `[fuente-lectura]`
+  los prefijos ocultos «Días de terapia intensiva, Essential:» (`.sr-solo
+  .cmp2-fila`, 20 en `/` y 53 en `/planes`, desde 820 px). Medido: miden 1×1 px,
+  con `clip-path: inset(50%)` y `overflow: hidden`, y no se pintan; el revisor
+  cuenta como visible lo que mide 1 px o más. El arreglo es del revisor (ver
+  seguimiento).
 
 *Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
 los de la lista de arriba): **8**, Gold «con los topes más altos»
@@ -224,7 +263,10 @@ las consultas de Silver «por persona»; y **1, 2, 5, 6 y 7**, como estaban.
   una afirmación nueva y no se escribió (`app/coverage.js:185`, comentario).
 - Datos escritos a mano en más de un lugar (resto de D8): los días de terapia
   intensiva (`app/coverage.js:101`, `app/page.jsx:413`,
-  `app/planes/Planes.jsx:143`, `app/quote.js:180-184`); las tarjetas del home
+  `app/planes/Planes.jsx:149`, `app/quote.js:180-184`); las celdas de consultas
+  (`app/planes/Planes.jsx:138` y `app/page.jsx:390`, contra
+  `app/coverage.js:83`) y las de ecografía de Silver y Gold
+  (`app/planes/Planes.jsx:141`, contra `app/coverage.js:84`); las tarjetas del home
   de resonancia, tomografía, psicología, internación, terapia intensiva y
   medicamentos (`app/page.jsx:384-424`), que además dicen «Gs. 1.500.000» donde
   el resto dice «Gs. 1,5 millones»; y la línea de Essential de fisioterapia del
@@ -233,6 +275,12 @@ las consultas de Silver «por persona»; y **1, 2, 5, 6 y 7**, como estaban.
   Arturo conteste la 9 (moverla hoy cambiaba el texto de una de las dos).
 - La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
   h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
+- El revisor de diseño de `sp-interno` (`.claude/skills/sp-disenador-ux/scripts/revisar.mjs`)
+  tiene que ignorar lo que está escondido a la vista (`clip-path: inset(50%)`, o
+  1×1 px con `overflow: hidden`), con un caso que tiene que fallar y uno que no
+  en su `--autoprueba`. Hoy marca 🟡 `[fuente-lectura]` los 73 prefijos
+  `.sr-solo.cmp2-fila` de esta rama (corrección de la vuelta 3, arriba). Es de
+  `sp-interno`, fuera de este PR.
 - La descripción del PR #271 (D11) la arma el Guardián.
 
 ---
