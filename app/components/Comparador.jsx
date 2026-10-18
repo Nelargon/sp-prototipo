@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
-import Corta, { frase } from './Corta';
-import { DUDA, ASESOR } from '../coverage';
+import Corta, { frase, conCortas } from './Corta';
+import { DUDA } from '../coverage';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -100,14 +100,17 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   );
 }
 
-// Una celda con barras es una forma corta. Una sin barras que trae `dicho` (la
-// que manda al asesor) se ve igual y el lector oye `dicho`, como la forma corta.
+// Una celda con barras es una forma corta. Una sin barras que trae `dicho` se ve
+// igual y el lector oye `dicho`, como la forma corta.
 const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} />
   : c.dicho ? <><span aria-hidden="true">{c.t}</span><span className="sr-solo">{c.dicho}</span></> : c.t);
+// La nota de la celda («en Lister», «la mayoría», «1 cirugía/familia/año»): con
+// su forma corta dibujada por Corta y, para el lector, una coma que la separa
+// del valor (se oía «Sin topeen casi todas»; comité, vuelta 3, 17/10).
 const valor = (fila, c, notas) => (
   <>
     {fila.kind === 'status' ? <span className="cmp2-chip disp">{texto(c)}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{texto(c)}</span>}
-    {(c.n === 'por familia' || (notas && c.n)) && <span className="cmp2-fam">{c.n}</span>}
+    {(c.n === 'por familia' || (notas && c.n)) && <><span className="sr-solo">,{'\u00a0'}</span><span className="cmp2-fam">{conCortas(c.n)}</span></>}
   </>
 );
 
@@ -166,13 +169,20 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
   // nombres (computadora) o la de la tarjeta del plan (celular).
   const dondeDuda = (i) => (typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches ? 'c' : String(i));
   const celda = (f, i, k) => {
-    // La celda que manda al asesor da una instrucción: el lector oye de qué fila
-    // y de qué plan es («Fisioterapia, Gold: preguntale a tu asesor»), como la
-    // celda «¿quién?». En la computadora la columna de nombres está lejos y sola
-    // no dice sobre qué preguntar (comité, vuelta 2, 17/10).
-    const c = f.cells[i].t === ASESOR ? { ...f.cells[i], dicho: f.name + ', ' + planes[i].short + ': preguntale a tu asesor' } : f.cells[i];
+    // El lector oye de qué fila y de qué plan es CADA valor, no solo la celda del
+    // asesor (comité, vuelta 3, 17/10). En la computadora el orden de la página
+    // va columna por columna y la columna de nombres está lejos: se oía «2, hasta
+    // 350 mil guaraníes…, Remedios en urgencias, Essential: preguntale a tu
+    // asesor» y el «2» suelto de terapia intensiva no decía nada. Cada celda
+    // lleva delante, oculto, «Días de terapia intensiva, Essential:». Solo en la
+    // computadora: en el celular el nombre de la fila está al lado (.cmp2-l) y el
+    // plan arriba de la tarjeta, y se oía dos veces. Lo que dice la celda del
+    // asesor es la constante ASESOR, sin un texto escrito a mano. La celda con
+    // «¿quién?» ya lo dice en el nombre del botón.
+    const c = f.cells[i];
     const v = valor(f, c, notas);
-    if (!f.d || !c.t.includes('/' + DUDA + '/')) return v;
+    const quien = <span className="sr-solo cmp2-fila">{f.name + ', ' + planes[i].short + ':\u00a0'}</span>;
+    if (!f.d || !c.t.includes('/' + DUDA + '/')) return <>{quien}{v}</>;
     const aqui = (abierta === 'c-' + k && desde === i) || abierta === i + '-' + k;
     return (
       <Duda
@@ -224,7 +234,8 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
             </div>
           ))}
           <div className="cmp2-pie">
-            <a href={p.href} onClick={p.onCta} className="cmp2-cta disp">Ver mi precio</a>
+            {/* Para el lector, de qué plan (tres «Ver mi precio» iguales no dicen adónde llevan). */}
+            <a href={p.href} onClick={p.onCta} className="cmp2-cta disp">Ver mi precio<span className="sr-solo">{'\u00a0en ' + p.short}</span></a>
           </div>
         </div>
       ))}

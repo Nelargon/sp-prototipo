@@ -715,7 +715,10 @@ console.log('\n── La forma corta (P3A)');
       if (!c) return null;
       const k = c.querySelector('.cmp2-v .corta');
       // La forma corta une la cifra y su unidad con espacio duro: se compara con espacio común.
-      return { t: (k ? k.textContent : (c.querySelector('.cmp2-v') || {}).textContent || '').replace(/\u00a0/g, ' '), sr: ((c.querySelector('.cmp2-v .sr-solo') || {}).textContent || ''), duda: !!c.querySelector('.cmp2-v .cmp2-duda'), corta: !!k };
+      // La frase es la de la forma corta (su vecina), no el primer .sr-solo de la
+      // celda: desde la vuelta 3 ese dice la fila y el plan.
+      const sr = k && k.nextElementSibling && k.nextElementSibling.classList.contains('sr-solo') ? k.nextElementSibling.textContent : '';
+      return { t: (k ? k.textContent : (c.querySelector('.cmp2-v') || {}).textContent || '').replace(/\u00a0/g, ' '), sr, duda: !!c.querySelector('.cmp2-v .cmp2-duda'), corta: !!k };
     });
   };
   const celdaBien = (c, i, quien) => !!c && c.corta && (i === 0
@@ -1031,71 +1034,190 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
   else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular) con aria-hidden, sin role y con su frase al lado');
 }
 
-// ── Lo que oye el lector en la celda del asesor y en la lista de los once ──
-// (comité, vuelta 2, 17/10/2026). Dos lugares donde el lector oía valores sin
-// saber de qué eran:
-// - En la computadora, la celda «Preguntale a tu asesor» (la fisioterapia de
-//   Gold y los remedios en urgencias de Essential). La columna de nombres está
-//   lejos (`.cmp2-l` no se ve desde 820 px) y una instrucción sin objeto no se
-//   puede cumplir. Ahora oye «Fisioterapia, Gold: preguntale a tu asesor».
-// - En el celular, cada fila de «Los once servicios» es un botón que se nombra
-//   con todo lo que tiene adentro, y los planes están en la cabecera, fuera del
-//   botón: oía «Fisioterapia › 5 por familia al año Sin espera 15 al año…».
-//   Ahora cada valor va con su plan y la «›» no se lee.
-// Se mide lo que expone el navegador (el árbol de accesibilidad, con
-// ariaSnapshot), no el texto oculto (cap. 149). Los dos detectores se prueban
-// antes contra lo que se oía en la build de f40cc02 (tienen que fallar) y contra
-// la forma nueva (no). Falla en la build de f40cc02 y pasa con el cambio.
-console.log('\n── Lo que oye el lector: la celda del asesor y la lista de los once');
+// ── Lo que oye el lector: cada valor con su fila y su plan ──────────────────
+// (comité, vueltas 2 y 3, 17/10/2026). Se mide lo que expone el navegador (el
+// árbol de accesibilidad, con ariaSnapshot), no el texto oculto (cap. 149).
+// - En la computadora, la tabla del home y la de /planes. La página va columna
+//   por columna y la columna de nombres está lejos. La vuelta 2 le dio la fila y
+//   el plan a la celda del asesor; la vuelta 3, a todas: el lector oía «2» suelto
+//   en terapia intensiva, y «Sin topeen casi todas». Cada columna tiene que
+//   decir, en orden, cada fila con su plan delante («Días de terapia intensiva,
+//   Essential: 2») y algo después, y nada suelto antes de la primera. La celda
+//   del asesor dice la constante ASESOR (no un texto escrito a mano), y el link
+//   de cada columna, de qué plan es («Ver mi precio en Gold»). En el celular la
+//   fila está al lado y el plan arriba de la tarjeta: ahí no se repite.
+// - Los dos plegables de /planes son tablas para el lector (roles de tabla):
+//   cada valor está en la columna de su plan y en la fila de lo que es, y la
+//   fisioterapia de Gold y la urgencia de Essential mandan al asesor en la
+//   columna de su plan. Antes eran divs y se oía «… Preguntale a tu asesor Gs.
+//   150.000 Gs. 200.000» sin saber de qué plan.
+// - En el celular, cada fila de «Los once servicios» se nombra con cada valor y
+//   su plan, sin «›» ni barras, con la plata en «guaraníes», sin «·», y con
+//   «preguntale a tu asesor» en minúscula y después de dos puntos, nunca pegado
+//   a la palabra de antes («remedios Preguntale»).
+// - Ningún botón ni link del home ni de /planes se nombra con «Gs.».
+// Cada detector se prueba antes contra un caso que tiene que fallar y uno que no.
+// Falla en la build de 02c733a y pasa con el cambio.
+console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
 {
   const { ASESOR } = COV;
   const SERVICIOS = COV.coverage().map((s) => s.name);
   const malas = [];
-  const conContexto = (snap, fila, plan) => snap.includes(fila + ', ' + plan + ': preguntale a tu asesor') && !snap.includes(ASESOR);
-  // «Fisioterapia. Essential: …. Silver: …. Gold: ….», sin «›» ni barras de la forma corta.
-  const nombreBien = (n, servicio) => n.startsWith(servicio + '. Essential: ') && /\. Silver: .+\. Gold: .+\.$/.test(n) && !/[›/]/.test(n);
+  // Una columna de la computadora: cada fila, en orden, con «Fila, Plan:» delante.
+  const conFilas = (leido, filas, plan) => {
+    const pos = [];
+    let desde = 0;
+    const faltan = [];
+    for (const f of filas) {
+      const pref = f + ', ' + plan + ':';
+      const j = leido.indexOf(pref, desde);
+      if (j < 0) { faltan.push(f); continue; }
+      pos.push([f, j, j + pref.length]);
+      desde = j + pref.length;
+    }
+    // Lo que dice cada fila (si dos se llaman igual, como «Fisioterapia» en
+    // /planes, la primera: la del servicio, no la de su espera).
+    const lista = pos.map(([f, , fin], k) => [f, leido.slice(fin, k + 1 < pos.length ? pos[k + 1][1] : undefined).replace(/Ver mi precio.*$/, '').trim()]);
+    const valores = {};
+    for (const [f, v] of lista) if (!(f in valores)) valores[f] = v;
+    const vacias = lista.filter(([, v]) => !v).map(([f]) => f);
+    const antes = pos.length ? leido.slice(0, pos[0][1]) : leido;
+    const sueltos = /\d/.test(antes.replace(/Gs\.\s*[\d.]+/, '')) || /asesor/i.test(antes);
+    return { faltan, vacias, sueltos, valores };
+  };
+  const columnaBien = (r) => !r.faltan.length && !r.vacias.length && !r.sueltos;
+  // Las tablas que expone el navegador, con sus filas y los roles de cada celda.
+  const tablas = (snap) => {
+    const out = [];
+    let t = null, fila = null;
+    for (const l of snap.split('\n')) {
+      const m = /^\s*- '?([a-z]+)(?: "((?:[^"\\]|\\.)*)")?/.exec(l);
+      if (!m) continue;
+      const [, rol, nom] = m;
+      const nombre = nom !== undefined ? JSON.parse('"' + nom + '"') : '';
+      if (rol === 'table') { t = { nombre, filas: [] }; out.push(t); fila = null; }
+      else if (rol === 'row' && t) { fila = []; t.filas.push(fila); }
+      else if (['columnheader', 'rowheader', 'cell'].includes(rol) && fila) fila.push([rol, nombre]);
+    }
+    return out;
+  };
+  const roles = (f) => f.map(([r]) => r).join(',');
+  const tablaBien = (t) => t.filas.length > 1 && roles(t.filas[0]) === 'columnheader,columnheader,columnheader,columnheader'
+    && t.filas[0].slice(1).map(([, n]) => n).join(',') === 'Essential,Silver,Gold'
+    && t.filas.slice(1).every((f) => roles(f) === 'rowheader,cell,cell,cell');
+  // «Fisioterapia. Essential: …. Silver: …. Gold: ….», sin «›», barras, «·» ni «Gs.».
+  const nombreBien = (n, servicio) => n.startsWith(servicio + '. Essential: ') && /\. Silver: .+\. Gold: .+\.$/.test(n)
+    && !/[›/·]/.test(n) && !/Gs\./.test(n) && !/Preguntale/.test(n) && !/\b24 h\b/.test(n.slice(servicio.length));
   // ariaSnapshot escribe «- button "…"» o, si el nombre trae «: », «- 'button "…"': …».
-  const botones = (snap) => [...snap.matchAll(/- '?button "((?:[^"\\]|\\.)*)"/g)].map((m) => JSON.parse('"' + m[1] + '"'));
+  const nombres = (snap, rol = 'button|link') => [...snap.matchAll(new RegExp("- '?(?:" + rol + ') "((?:[^"\\\\]|\\\\.)*)"', 'g'))].map((m) => JSON.parse('"' + m[1] + '"'));
+
+  // Los detectores, contra un caso que tiene que fallar y uno que no.
+  const filas = ['Resonancia (RM)', 'Días de terapia intensiva', 'Remedios en urgencias'];
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   await page.evaluate(() => {
     const d = document.createElement('div');
-    d.id = 'qa-asesor';
-    d.innerHTML = '<p id="qa-mala"><span>15</span> <span>Preguntale a tu asesor</span></p>'
-      + '<p id="qa-buena"><span aria-hidden="true">Preguntale a tu asesor</span><span class="sr-solo">Fisioterapia, Gold: preguntale a tu asesor</span></p>';
+    d.id = 'qa-lector';
+    d.innerHTML = '<div id="qa-grilla-mala"><div><div>Topes</div><div>Essential</div><div>Silver</div><div>Gold</div></div><div><div>Fisioterapia</div><div>5</div><div>15</div><div>Preguntale a tu asesor</div></div></div>'
+      + '<div id="qa-grilla-buena" role="table" aria-label="Topes"><div role="row"><div role="columnheader">Topes</div><div role="columnheader">Essential</div><div role="columnheader">Silver</div><div role="columnheader">Gold</div></div><div role="row"><div role="rowheader">Fisioterapia</div><div role="cell">5</div><div role="cell">15</div><div role="cell">Preguntale a tu asesor</div></div></div>'
+      + '<p id="qa-boton-malo"><button aria-label="Parto. Essential: hasta Gs. 350 mil">x</button></p><p id="qa-boton-bueno"><button aria-label="Parto. Essential: hasta 350 mil guaraníes">x</button></p>';
     document.body.appendChild(d);
   });
   const prueba = {
-    celdaMala: conContexto(await page.locator('#qa-mala').ariaSnapshot(), 'Fisioterapia', 'Gold'),
-    celdaBuena: conContexto(await page.locator('#qa-buena').ariaSnapshot(), 'Fisioterapia', 'Gold'),
-    filaMala: nombreBien('Fisioterapia › 5 por familia al año Sin espera 15 al año, sin confirmar para quién 3 meses de espera Preguntale a tu asesor 3 meses de espera', 'Fisioterapia'),
-    filaBuena: nombreBien('Fisioterapia. Essential: 5 por familia al año, sin espera. Silver: 15 al año, sin confirmar para quién, 3 meses de espera. Gold: Preguntale a tu asesor, 3 meses de espera.', 'Fisioterapia'),
+    columnaVieja: columnaBien(conFilas('Essential desde Gs. 220.000 1 por familia al año 2 Remedios en urgencias, Essential: preguntale a tu asesor Ver mi precio', filas, 'Essential')),
+    columnaNueva: columnaBien(conFilas('Essential desde Gs. 220.000 Resonancia (RM), Essential: 1 por familia al año Días de terapia intensiva, Essential: 2 Remedios en urgencias, Essential: Preguntale a tu asesor Ver mi precio en Essential', filas, 'Essential')),
+    grillaSinRoles: tablas(await page.locator('#qa-grilla-mala').ariaSnapshot()).some(tablaBien),
+    grillaConRoles: tablas(await page.locator('#qa-grilla-buena').ariaSnapshot()).every(tablaBien),
+    filaVuelta1: nombreBien('Fisioterapia › 5 por familia al año Sin espera 15 al año, sin confirmar para quién 3 meses de espera Preguntale a tu asesor 3 meses de espera', 'Fisioterapia'),
+    filaVuelta2: nombreBien('Urgencia 24 h. Essential: Consulta 24 h · remedios Preguntale a tu asesor, sin espera. Silver: Consulta 24 h · remedios hasta 150 mil guaraníes cada vez que vas a urgencias, sin espera. Gold: Consulta 24 h · remedios hasta 200 mil guaraníes cada vez que vas a urgencias, sin espera.', 'Urgencia 24 h'),
+    filaConGs: nombreBien('Parto o cesárea. Essential: con el bebé en nursery, medicamentos hasta Gs. 350 mil, 1 año de espera. Silver: x. Gold: y.', 'Parto o cesárea'),
+    filaBuena: nombreBien('Urgencia 24 h. Essential: consulta 24 horas, remedios: preguntale a tu asesor, sin espera. Silver: consulta 24 horas, remedios hasta 150 mil guaraníes cada vez que vas a urgencias, sin espera. Gold: consulta 24 horas, remedios hasta 200 mil guaraníes cada vez que vas a urgencias, sin espera.', 'Urgencia 24 h'),
+    botonConGs: nombres(await page.locator('#qa-boton-malo').ariaSnapshot()).some((n) => /Gs\./.test(n)),
+    botonBueno: nombres(await page.locator('#qa-boton-bueno').ariaSnapshot()).some((n) => /Gs\./.test(n)),
   };
-  await page.evaluate(() => document.getElementById('qa-asesor').remove());
-  if (prueba.celdaMala || !prueba.celdaBuena || prueba.filaMala || !prueba.filaBuena) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(prueba));
+  await page.evaluate(() => document.getElementById('qa-lector').remove());
+  if (prueba.columnaVieja || !prueba.columnaNueva || prueba.grillaSinRoles || !prueba.grillaConRoles || prueba.filaVuelta1 || prueba.filaVuelta2 || prueba.filaConGs || !prueba.filaBuena || !prueba.botonConGs || prueba.botonBueno) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(prueba));
+
+  // 1. La computadora: cada columna de la tabla del home y de /planes.
+  const conGs = [];
   for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
     if (ruta !== '/') await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const nombresFila = await page.$$eval(sel + ' .cmp2-lab .cmp2-c', (cs) => cs.map((c) => c.textContent.trim()));
     const cols = page.locator(sel + ' .cmp2-plan');
-    const essential = await cols.nth(0).ariaSnapshot(), gold = await cols.nth(2).ariaSnapshot();
-    if (!conContexto(gold, 'Fisioterapia', 'Gold')) malas.push(ruta + ' columna de Gold: ' + JSON.stringify((gold.match(/.{0,40}asesor.{0,10}/gi) || []).join(' | ')));
-    if (!conContexto(essential, 'Remedios en urgencias', 'Essential')) malas.push(ruta + ' columna de Essential: ' + JSON.stringify((essential.match(/.{0,40}asesor.{0,10}/gi) || []).join(' | ')));
+    for (let i = 0; i < 3; i++) {
+      const plan = (await cols.nth(i).locator('.cmp2-nombre').textContent()).trim();
+      const snap = await cols.nth(i).ariaSnapshot();
+      const r = conFilas(oido(snap), nombresFila, plan);
+      if (!columnaBien(r)) malas.push(ruta + ' columna de ' + plan + ': ' + JSON.stringify({ faltan: r.faltan.slice(0, 4), vacias: r.vacias, sueltos: r.sueltos }));
+      if (plan === 'Gold' && r.valores['Fisioterapia'] !== ASESOR) malas.push(ruta + ' fisioterapia de Gold: ' + JSON.stringify(r.valores['Fisioterapia']));
+      if (plan === 'Essential' && r.valores['Remedios en urgencias'] !== ASESOR) malas.push(ruta + ' remedios en urgencias de Essential: ' + JSON.stringify(r.valores['Remedios en urgencias']));
+      if (!nombres(snap, 'link').includes('Ver mi precio en ' + plan)) malas.push(ruta + ' columna de ' + plan + ': el link no dice de qué plan es');
+    }
+    nombres(await page.locator('body').ariaSnapshot()).filter((n) => /Gs\./.test(n)).forEach((n) => conGs.push(ruta + ' 1280: ' + n));
   }
+  // 2. Los plegables de /planes, abiertos: tablas para el lector.
+  await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  for (const id of ['detalle-especialidades', 'detalle-internacion']) await page.click(`button[aria-controls="${id}"]`);
+  await page.waitForTimeout(500);
+  const plegables = {};
+  for (const id of ['detalle-especialidades', 'detalle-internacion']) {
+    const ts = tablas(await page.locator('#' + id).ariaSnapshot());
+    plegables[id] = ts.length;
+    if (!ts.length || !ts.every(tablaBien)) malas.push(id + ': no es una tabla para el lector (' + JSON.stringify(ts.map((t) => ({ t: t.nombre, filas: t.filas.length, roles: t.filas.slice(0, 2).map(roles) }))) + ')');
+    for (const t of ts) {
+      const planes = t.filas[0].map(([, n]) => n);
+      for (const f of t.filas.slice(1)) {
+        f.forEach(([rol, n], j) => {
+          if (rol !== 'cell' || n !== ASESOR) return;
+          const fila = f[0][1], plan = planes[j];
+          const esperado = /^Fisioterapia/.test(fila) ? 'Gold' : /^En urgencia/.test(fila) ? 'Essential' : null;
+          if (plan !== esperado) malas.push(id + ': «' + ASESOR + '» en «' + fila + '» cae en la columna ' + plan);
+        });
+      }
+    }
+  }
+  const asesorEnPlegable = (await page.locator('#detalle-internacion').ariaSnapshot()).split('\n').filter((l) => l.includes('cell "' + ASESOR + '"')).length;
+  if (asesorEnPlegable !== 3) malas.push('detalle-internacion: tendrían que ser 3 celdas «' + ASESOR + '» (las dos de fisioterapia de Gold y la urgencia de Essential), hay ' + asesorEnPlegable);
   await page.close();
+
+  // 3. El celular: la tabla del home no repite la fila (está al lado) y la lista de los once.
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const cel = await ctx.newPage();
+  await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const repetidas = async () => {
+    const out = [];
+    const cols = cel.locator('#cartilla .cmp2-plan');
+    for (let i = 0; i < 3; i++) {
+      const plan = (await cols.nth(i).locator('.cmp2-nombre').textContent()).trim();
+      (await cols.nth(i).ariaSnapshot()).split('\n').filter((l) => /^\s*- text:/.test(l) && l.includes(', ' + plan + ':')).forEach((l) => out.push(l.trim()));
+    }
+    return out;
+  };
+  // Caso que tiene que fallar: la fila y el plan a la vista del lector también en el celular.
+  await cel.addStyleTag({ content: '.cmp2 .cmp2-fila{display:inline-block !important}' }).then((h) => h.evaluate((e) => { e.id = 'qa-fila-cel'; }));
+  const conRepeticion = (await repetidas()).length;
+  await cel.evaluate(() => document.getElementById('qa-fila-cel').remove());
+  const rep = await repetidas();
+  if (!conRepeticion || rep.length) malas.push('celular: la fila y el plan se repiten para el lector, al lado del nombre de la fila (' + JSON.stringify({ casoMalo: conRepeticion, rep: rep.slice(0, 2) }) + ')');
+  nombres(await cel.locator('body').ariaSnapshot()).filter((n) => /Gs\./.test(n)).forEach((n) => conGs.push('/ 390: ' + n));
   await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
   await cel.waitForTimeout(450);
-  const nombres = botones(await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo').ariaSnapshot());
+  const snapLista = await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo').ariaSnapshot();
+  const deLaLista = nombres(snapLista, 'button');
   for (const s of SERVICIOS) {
-    const n = nombres.find((x) => x.startsWith(s));
+    const n = deLaLista.find((x) => x.startsWith(s + '.'));
     if (!n || !nombreBien(n, s)) malas.push('lista, ' + s + ': ' + JSON.stringify(n || null));
   }
-  const fisio = nombres.find((x) => x.startsWith('Fisioterapia')) || '';
-  if (!fisio.includes('Gold: ' + ASESOR)) malas.push('lista, fisioterapia de Gold: ' + JSON.stringify(fisio));
+  const fisio = deLaLista.find((x) => x.startsWith('Fisioterapia')) || '';
+  if (!fisio.includes('Gold: ' + minus(ASESOR))) malas.push('lista, fisioterapia de Gold: ' + JSON.stringify(fisio));
+  const urg = deLaLista.find((x) => x.startsWith('Urgencia 24 h')) || '';
+  if (!urg.includes('Essential: consulta 24 horas, remedios: ' + minus(ASESOR) + ',')) malas.push('lista, urgencia de Essential: ' + JSON.stringify(urg));
+  nombres(await cel.locator('body').ariaSnapshot()).filter((n) => /Gs\./.test(n)).forEach((n) => conGs.push('/planes 390: ' + n));
   await ctx.close();
-  if (malas.length) mal('el lector tiene que oír de qué fila y de qué plan es cada valor: la celda del asesor en la computadora y cada fila de la lista de los once en el celular · ' + malas.slice(0, 6).join(' · '));
-  else bien('el lector oye «Fisioterapia, Gold: preguntale a tu asesor» y «Remedios en urgencias, Essential: …» en la computadora (home y /planes), y cada fila de la lista de los once con su plan y sin «›» (' + nombres.length + ' botones); los detectores distinguen el caso malo del bueno');
+  if (conGs.length) malas.push('nombres de botones o links con «Gs.»: ' + conGs.slice(0, 3).join(' | '));
+  if (malas.length) mal('el lector tiene que oír de qué fila y de qué plan es cada valor (tablas de la computadora, plegables y lista de los once), con la plata en guaraníes · ' + malas.slice(0, 6).join(' · '));
+  else bien('el lector oye cada valor con su fila y su plan en las tablas del home y de /planes («Días de terapia intensiva, Essential: 2»; la celda del asesor dice ASESOR), los links dicen de qué plan son, los plegables son tablas (' + Object.values(plegables).reduce((a, b) => a + b, 0) + ') con el asesor en la columna de su plan, el celular no repite la fila, y las ' + deLaLista.length + ' filas de la lista se nombran con su plan, en guaraníes y sin «·»; los detectores distinguen el caso malo del bueno');
 }
 
 // ── La fisioterapia de Gold va al asesor (G1A, Arturo, 17/10/2026, «Todo A») ─
@@ -1247,7 +1369,8 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
   const fila = ([sel, nombre]) => [...document.querySelectorAll(sel + ' .cmp2-plan')].map((pl) => {
     const c = [...pl.querySelectorAll('.cmp2-c')].find((x) => ((x.querySelector('.cmp2-l') || {}).textContent || '').trim() === nombre);
     const k = c && c.querySelector('.cmp2-v .corta');
-    return k ? { t: k.textContent.replace(/ /g, ' '), sr: (c.querySelector('.cmp2-v .sr-solo') || {}).textContent || '' } : null;
+    // La frase de la forma corta es su vecina (el primer .sr-solo de la celda dice la fila y el plan).
+    return k ? { t: k.textContent.replace(/ /g, ' '), sr: (k.nextElementSibling || {}).textContent || '' } : null;
   });
   const bien3 = (f, esperado, cuando) => f.length === 3 && esperado.every((e, i) => e === null || (f[i] && f[i].t === e && /guaraníes/.test(f[i].sr) && !/Gs\./.test(f[i].sr) && f[i].sr.includes(cuando)));
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });

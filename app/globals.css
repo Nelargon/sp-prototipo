@@ -565,6 +565,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp2-c.sobre{z-index:6}
   .cmp2-l{font-family:var(--font-display),sans-serif;font-size:14.5px;font-weight:700;color:var(--sp-navy);line-height:1.3}
   .cmp2-v{text-align:right}
+  /* De qué fila y de qué plan es cada valor, para el lector: solo en la
+     computadora. Acá el nombre de la fila está al lado y el plan, arriba de la
+     tarjeta (Comparador.jsx; comité, vuelta 3, 17/10). */
+  .cmp2 .cmp2-fila{display:none}
   /* En el celular la tarjeta se ancla a la fila, a lo ancho, no a la palabra. */
   .cmp2-srv-wrap{position:static}
   .cmp2-tarjeta{left:-6px;right:-6px;width:auto;top:calc(100% - 2px)}

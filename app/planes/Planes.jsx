@@ -317,22 +317,26 @@ export default function Planes() {
               onToggle={() => alternar('especialidades')}
             >
               <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                <div style={css('min-width:600px')}>
-                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
-                    <div style={css('padding:13px 18px')}>Especialidad</div>
+                {/* Una tabla también para el lector (comité, vuelta 3, 17/10): con
+                    divs sueltos oía tres valores pegados sin saber de qué plan
+                    eran. Los roles le dan a cada celda su plan y su fila, como el
+                    cuadro de esperas del celular. */}
+                <div role="table" aria-label={`Las ${especialidades.length} especialidades, plan por plan`} style={css('min-width:600px')}>
+                  <div role="row" className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
+                    <div role="columnheader" style={css('padding:13px 18px')}>Especialidad</div>
                     {plansArr.map((pl) => (
-                      <div key={pl.short} style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
+                      <div key={pl.short} role="columnheader" style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
                     ))}
                   </div>
                   {especialidades.map((esp, r) => (
-                    <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                      <div className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
+                    <div key={esp.n} role="row" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                      <div role="rowheader" className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
                       {PLAN_KEYS.map((k) => {
                         const [cob, cantIdx] = esp[k];
                         // Essential nombra una lista cerrada: la que no está, no entra.
                         const texto = cob === 5 ? 'No entra en este plan' : cantIdx >= 0 ? datos.cantidades[cantIdx] : '—';
                         return (
-                          <div key={k} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-text);line-height:1.4')}>
+                          <div key={k} role="cell" style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-text);line-height:1.4')}>
                             {texto}
                             {cob === 1 && <div className="disp" style={css('font-size:11px;font-weight:700;color:var(--sp-estado-ink-2);margin-top:3px')}>Pagás la mitad</div>}
                           </div>
@@ -354,18 +358,22 @@ export default function Planes() {
               <div style={css('display:flex;flex-direction:column;gap:14px')}>
                 {seccionesParam.map((grupo) => (
                   <div className="sq" key={grupo.sec} style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                    <div style={css('min-width:600px')}>
-                      <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
-                        <div style={css('padding:12px 18px')}>{grupo.sec}</div>
+                    {/* Una tabla también para el lector (comité, vuelta 3, 17/10):
+                        oía «En urgencia o emergencia (por evento) Preguntale a tu
+                        asesor Gs. 150.000 Gs. 200.000» sin saber de qué plan era
+                        cada valor ni para cuál preguntar. */}
+                    <div role="table" aria-label={grupo.sec} style={css('min-width:600px')}>
+                      <div role="row" className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
+                        <div role="columnheader" style={css('padding:12px 18px')}>{grupo.sec}</div>
                         {plansArr.map((pl) => (
-                          <div key={pl.short} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
+                          <div key={pl.short} role="columnheader" style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
                         ))}
                       </div>
                       {grupo.filas.map((f, r) => (
-                        <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                          <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
+                        <div key={f.p} role="row" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                          <div role="rowheader" style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
                           {f.v.map((v, j) => (
-                            <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{vistaParam(f, j)}</div>
+                            <div key={j} role="cell" className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{vistaParam(f, j)}</div>
                           ))}
                         </div>
                       ))}
