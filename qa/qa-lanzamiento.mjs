@@ -1209,8 +1209,34 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
   if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));
   await page.close();
-  if (malas.length) mal('una sola forma de mandar al asesor, «' + ASESOR + '»: quedan «Consultalo» o «Confirmalo», o la celda o el plegable de remedios en urgencias de Essential no lo dicen · ' + malas.join(' · '));
-  else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas, el código y la fila de remedios en urgencias de Essential (tablas y plegable)');
+  // El celular de /planes (comité, vuelta 2, 17/10): la lista de los once decía
+  // «Consulta 24 h, desde el día uno» para Essential al lado del tope de Silver y
+  // Gold, y la hoja «Urgencia 24 h» no traía ninguna nota. El silencio se leía
+  // «no cubre remedios». Ahora la lista dice «Consulta 24 h · remedios» y manda
+  // al asesor, y la hoja trae la nota de coverage.js. Falla en la build de
+  // f40cc02 y pasa con el cambio.
+  const notaUrg = COV.coverage().find((s) => s.name === 'Urgencia 24 h').notaAsesor;
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  const filaUrg = '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila';
+  const listaUrg = await cel.evaluate((sel) => {
+    const b = [...document.querySelectorAll(sel)].find((x) => /^Urgencia 24 h/.test(x.querySelector('b').textContent));
+    if (!b) return null;
+    const c = b.querySelectorAll(':scope > span > span')[0].cloneNode(true);
+    c.querySelectorAll('.sr-solo, i').forEach((x) => x.remove());
+    return c.textContent.replace(/ /g, ' ').trim();
+  }, filaUrg);
+  if (listaUrg !== 'Consulta 24 h · remedios ' + ASESOR) malas.push('celular, lista de los once, urgencia de Essential: ' + JSON.stringify(listaUrg));
+  await cel.locator(filaUrg, { hasText: 'Urgencia 24 h' }).tap();
+  await cel.waitForTimeout(450);
+  const hojaUrg = await cel.evaluate(() => (document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo') || {}).textContent || '');
+  if (!notaUrg || !/preguntale a tu asesor/i.test(notaUrg) || !hojaUrg.includes(notaUrg)) malas.push('celular, hoja «Urgencia 24 h» sin la nota de Essential: ' + JSON.stringify(hojaUrg.slice(0, 160)));
+  await ctx.close();
+  if (malas.length) mal('una sola forma de mandar al asesor, «' + ASESOR + '»: quedan «Consultalo» o «Confirmalo», o la celda, el plegable, la lista o la hoja del celular de remedios en urgencias de Essential no lo dicen · ' + malas.join(' · '));
+  else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas, el código y la fila de remedios en urgencias de Essential (tablas, plegable, y la lista y la hoja del celular)');
 }
 
 // ── La tarjeta del servicio del home no muestra esperas (P2A, Arturo, 17/10) ─

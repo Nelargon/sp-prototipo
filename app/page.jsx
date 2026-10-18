@@ -5,7 +5,7 @@ import { BP } from './basePath';
 import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
-import { coverage, ASESOR } from './coverage';
+import { coverage } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
 import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
@@ -417,7 +417,7 @@ export default function Page() {
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
     // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo»).
-    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: ASESOR }, ...celdas('Urgencia 24 h').slice(1)],
+    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: celdas('Urgencia 24 h'),
       d: ['El cuadernillo de Essential no fija este tope: preguntale a tu asesor.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia.'], pie: PIE_TOPE },
     // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
     // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada

@@ -143,8 +143,9 @@ export default function Planes() {
     { name: 'Medicamentos internado', kind: 'num', cells: corta('Medicamentos en internación'), d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
     // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo
-    // con tu asesor»). El nombre de la fila abre la tarjeta y el pie dice por qué.
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h', [{ t: ASESOR }]), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: 'El cuadernillo de Essential no fija este tope: preguntale a tu asesor.' },
+    // con tu asesor»). El nombre de la fila abre la tarjeta y el pie dice por qué:
+    // la `notaAsesor` de coverage.js, la misma que lee la hoja del celular.
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h'), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: cv['Urgencia 24 h'].notaAsesor },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
     // el simulador. Sin tarjeta: el número ya es el dato.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),

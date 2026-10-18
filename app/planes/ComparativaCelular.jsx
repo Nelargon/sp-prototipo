@@ -188,9 +188,12 @@ export default function ComparativaCelular() {
                       («2/familia/año, junto con ecocardiograma y ergometría»).
                       La celda que manda al asesor (G1A) también sale de
                       `corta` y va en la misma capa de cifras que el dato de al
-                      lado: la duda se dice con el mismo peso (lámina 84). */}
+                      lado: la duda se dice con el mismo peso (lámina 84). Con
+                      su `pre`, si lo tiene: en urgencias, Essential dice
+                      «Consulta 24 h · remedios» y manda al asesor por el tope
+                      (R1A; comité, vuelta 2, 17/10). */}
                   {s.corta && s.corta[i] === ASESOR
-                    ? <span className="disp" style={css('font-weight:700')}>{ASESOR}</span>
+                    ? <span>{s.pre && s.pre[i]}<span className="disp" style={css('font-weight:700')}>{ASESOR}</span></span>
                     : s.corta && s.corta[i] && s.corta[i].includes('/') ? <span>{s.pre && s.pre[i]}<Corta t={s.corta[i]} partir dicho={s.dicho && s.dicho[i]} />{s.cola && s.cola[i]}</span> : c.d}
                   {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
                   {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
