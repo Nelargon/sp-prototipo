@@ -156,6 +156,85 @@ grilla es falso para la fisioterapia (#50); y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
 planilla, y hoy solo el plegable; `essential.json` no lo trae).
 
+**Vuelta 3 del comité (17/10, 36 hallazgos, BITACORA cap. 151).** El Guardián
+separó lo que es de Claude (se arregló en la rama), lo que es de Arturo o de SP
+(no se tocó) y lo que va aparte. Cada arreglo con su prueba en
+`qa-lanzamiento`, que falla en la build de 02c733a, o en una copia saboteada
+construida fuera del repo, y pasa con el cambio:
+- **Las esperas llevan su condición** (W3, D1, D3, E6). La lista «Los once
+  servicios» daba a la cesárea de Gold los 10 meses que la 2A le sacó y a toda
+  internación de Silver y Gold los 2 meses de la aguda: ahora dice «10 meses de
+  espera para el parto» y «Cesárea: preguntale a tu asesor», y «2 meses de
+  espera si es por algo agudo» (`cuando` y `alAsesor` de `carencias()`). La
+  tabla de esperas de `/planes` en la computadora lleva en cada celda la nota
+  del simulador (`notaCorta`): «los de rutina, sin espera», «la mayoría», «1
+  cirugía/familia/año» y la cesárea de Gold. En la hoja del celular, toda nota
+  que manda al asesor va arriba de los tres planes.
+- **El lector oye de qué fila y de qué plan es cada valor** (W1, W5, V7, W4,
+  D7, E4, V6). En la computadora cada celda lleva delante, oculto, «Días de
+  terapia intensiva, Essential:» (no en el celular, donde la fila está al
+  lado); la celda del asesor dice la constante `ASESOR`; cada «Ver mi precio»
+  dice su plan. Los dos plegables de `/planes` son tablas para el lector. El
+  nombre de cada fila de la lista dice la plata en «guaraníes», sin «·», y
+  «remedios: preguntale a tu asesor». Se mide con el árbol de accesibilidad.
+- **Una sola fuente y una sola forma para mandar al asesor** (W2, E5, W6, D6,
+  V5, W8). La nota de remedios de Essential vive solo en `coverage.js` («En
+  Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.») y
+  el home la lee de ahí; en la lista, «Consulta 24 h · remedios» va en su
+  renglón y el valor en el siguiente; el buscador usa `ASESOR`; la Guía Médica
+  dice «Preguntale a tu asesor» (decía «preguntá» y «Confirmá» en el código).
+  La prueba de la R1A rechaza la clase (todo imperativo de preguntar, consultar
+  o confirmar con tu asesor que no sea «preguntale»), el rótulo escrito a mano
+  y una oración de `coverage.js` copiada en otro archivo.
+- **La fisioterapia de Silver y Gold con la misma forma** (W7): las dos
+  arrancan por los tipos. La línea de Essential no cambió (pregunta 9).
+- **La plata no se parte y el plegable dice los montos como la E3A** (V2, D5):
+  `duro` une «Gs.», la cifra y «millones»; el plegable dice «Gs. 1,5 millones»
+  y no «Gs. 1.500.000».
+- **Las pruebas miran lo que expone el navegador y la clase de error** (V1, V3,
+  E8, E2): la forma corta se cuenta en el árbol de accesibilidad (con la frase
+  silenciada por CSS, la prueba vieja seguía en verde), el pie rechaza toda
+  afirmación de unidad, el detector de esperas rechaza cualquier plazo, y el
+  celular de la P3A se mide también a 430 px.
+- **Documentos** (W9, E9, V4, D9, D8): el punto (7) de arriba ya no repite la
+  cifra de tráfico; notas fechadas en las menciones viejas de `/v1/` y de
+  «Confirmalo/Consultalo»; el README de datos y las láminas 85 a 87, al día; y
+  el punto 1 ya no da por hechas todas las líneas de `quote.js` desde `corta`.
+
+*Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
+los de la lista de arriba): **8**, Gold «con los topes más altos»
+(E1, D2: el estratega y el revisor de datos piden tratarla como la 3, para no
+fusionar sin respuesta, porque con la grilla es falso en fisioterapia); **9**,
+la fisioterapia de Essential «solo traumatológica» (E3, D4: cuando se conteste,
+la prueba de tipos tiene que comparar los tres planes, no solo Silver y Gold);
+**4**, que se amplía: la resonancia de Essential «sin contraste» tampoco está
+en la celda ni en la línea de la tarjeta, así que conviene contestar la
+tomografía y la resonancia juntas (E7: la condición de Essential que la celda
+no dice es una clase, no un caso); **3**,
+las consultas de Silver «por persona»; y **1, 2, 5, 6 y 7**, como estaban.
+
+*Seguimiento, fuera de este PR:*
+- Las ecografías de Silver y Gold dicen «2 meses» sin «la mayoría» (D10):
+  Silver espera 60 días en 23 de 33 y 90 en 10; Gold, 60 en 17 de 32 y 90 en 15,
+  obstétricas incluidas (conteo sobre la grilla del 24/07, no verificado contra
+  el contrato). `app/coverage.js:173` (`{ que: 'Ecografías', … }`). Lo decide
+  Arturo, con su punto de revisión.
+- «De una lista cerrada de 26» de las cirugías de Essential: el cuadernillo lo
+  dice (`essential.json`) y el sitio no, ni en la tabla ni en el simulador; es
+  una afirmación nueva y no se escribió (`app/coverage.js:185`, comentario).
+- Datos escritos a mano en más de un lugar (resto de D8): los días de terapia
+  intensiva (`app/coverage.js:101`, `app/page.jsx:413`,
+  `app/planes/Planes.jsx:143`, `app/quote.js:180-184`); las tarjetas del home
+  de resonancia, tomografía, psicología, internación, terapia intensiva y
+  medicamentos (`app/page.jsx:384-424`), que además dicen «Gs. 1.500.000» donde
+  el resto dice «Gs. 1,5 millones»; y la línea de Essential de fisioterapia del
+  home (`app/page.jsx:401`, «5 sesiones al año para toda la familia.», contra
+  «Hasta 5 sesiones al año por familia» de `/planes`), que se unifica cuando
+  Arturo conteste la 9 (moverla hoy cambiaba el texto de una de las dos).
+- La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
+  h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
+- La descripción del PR #271 (D11) la arma el Guardián.
+
 ---
 
 ## ✅ DECIDIDO EL 13/10/2026 (cita del Guardián, «1A, 2A, 3A, 4A, 5A»)

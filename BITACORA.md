@@ -5322,3 +5322,58 @@ mirar:
   el caso que tiene que fallar.
 - **Lo que se arregla en una superficie se busca en todas las que muestran esa
   fila:** la tabla, la tarjeta, la lista y la hoja del celular.
+
+## Capítulo 151 — La prueba que leía lo que ella misma había escrito (17/10/2026)
+
+**Qué intentamos.** Pasarle al comité la vuelta 2 del «Todo A» (PR #271, cap.
+150), con todas las pruebas en verde. Volvieron 36 hallazgos. El Guardián los
+separó en tres: lo que arregla Claude, lo que decide Arturo y lo que va
+aparte.
+
+**Qué pasó.** Varias pruebas en verde no miraban lo que decían mirar, y el
+revisor de Dev lo midió en vez de suponerlo:
+
+- **La prueba de lectores de pantalla leía el texto oculto, no lo que oye el
+  lector.** Agregó `.corta + .sr-solo{display:none}` al CSS de una copia del
+  sitio. El lector ya no oía ninguna frase de la forma corta, y la prueba dijo
+  «✓ 93 formas cortas visibles … con su frase al lado» (lo repetimos sobre la
+  rama de esta vuelta: «✓ 120»). La frase seguía en el
+  DOM: la prueba preguntaba si estaba escrita, no si se oía. Es lo que el cap.
+  149 mandó dejar de hacer, en otra sección del mismo archivo.
+- **La prueba del pie comparaba la página con la constante que la arma.** Si
+  `NOTA_UNIDAD` pasaba a decir «En Silver y Gold son para cada persona.», la
+  página y la constante decían lo mismo y la prueba pasaba. Lo único que
+  rechazaba era la palabra «contrato». Lo probamos con esa frase en una copia:
+  verde.
+- **El detector de esperas enumeraba las formas conocidas.** Lo probamos:
+  «Esperás un año» en la tarjeta del home pasaba en verde. La vuelta 2 había escrito en el cap.
+  150 «se rechaza la clase de error, no el caso conocido», y esta expresión
+  era de antes y nadie la había vuelto a mirar.
+- **Un número que sale de su fila pierde su condición.** La lista del celular
+  se llama «Parto o cesárea» y tomaba la espera de la fila «Parto»: le daba a
+  la cesárea de Gold los 10 meses que la 2A le había sacado. Lo mismo con la
+  internación, que tomaba los 2 meses de «Internación por algo agudo». La
+  tabla de esperas de la computadora no mostraba ninguna nota: «3 meses» para
+  todo el laboratorio de Essential.
+- **El arreglo de la vuelta 2 fue para la celda conocida.** El lector oía la
+  fila y el plan en la celda del asesor, y en las demás seguía oyendo «2» o
+  «Sin topeen casi todas». El plegable de topes no era una tabla para el
+  lector: tres valores pegados sin plan.
+
+**Qué aprendimos.**
+- **Una prueba de lectores de pantalla lee lo que expone el navegador** (el
+  árbol de accesibilidad, con `ariaSnapshot`), no el texto oculto del DOM. Y se
+  prueba silenciando la frase en el CSS: si sigue en verde, no mira lo que
+  dice.
+- **Una prueba no compara la página con la constante que la arma.** Si las dos
+  se equivocan juntas, coinciden. Se compara con lo que decidió la persona, o
+  se rechaza la clase de error («afirma una unidad que no está confirmada»).
+- **Una lección escrita en la bitácora no se aplica sola a lo que ya estaba.**
+  Cuando se escribe «se rechaza la clase», se barren los detectores viejos del
+  mismo archivo, no solo el nuevo.
+- **Un número que se muestra fuera de su fila se lleva su condición.** El dato
+  y la condición salen juntos de la misma fuente (`cuando` y `alAsesor` en
+  `carencias()`, y `notaCorta` para la celda de una tabla).
+- **Cada sabotaje se construye fuera del repo**: en un `git worktree` aparte, o
+  en una copia del sitio construido con una línea de CSS de más. Así se prueba
+  el detector sin tocar la rama.
