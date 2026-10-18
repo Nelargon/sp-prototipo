@@ -5458,12 +5458,39 @@ la tabla de arriba, iba en Inter 400 con la clase de nota que ya existía.
   prohibido no se termina nunca: el idioma siempre tiene otra forma de decir
   «por persona». La lista cerrada tiene un costo, y es el que se busca: decir
   algo nuevo en ese pie obliga a sumarlo a la prueba a conciencia.
-- **Cuando lo permitido no es fijo, la clase se describe por su forma, no por sus
-  ejemplos.** El texto de una tarjeta cambia; una espera es cualquier cantidad
-  (en cifras o en palabras) con cualquier unidad de tiempo, salvo un tope por
-  año. Y la autoprueba lleva los topes de verdad, para que el detector no grite
-  en falso (cap. 89): «después de una cirugía» no es una espera.
+- **Lo que dice una tarjeta también es fijo: también se lista.** *(Corregido el
+  18/10: esta lección decía «Cuando lo permitido no es fijo, la clase se
+  describe por su forma, no por sus ejemplos», que el texto de una tarjeta
+  cambia y que una espera es «cualquier cantidad (en cifras o en palabras) con
+  cualquier unidad de tiempo, salvo un tope por año». Esa forma era otra lista
+  de ejemplos, y el segundo verificador del cierre la pasó con dieciséis
+  esperas; ver el cierre de abajo.)* El texto de una tarjeta cambia poco y cada
+  cambio es una decisión: la prueba lo tiene como literal y falla con cualquier
+  línea nueva. El detector de formas queda como pista en el mensaje («parece una
+  espera»), con los topes de verdad en su autoprueba para que no grite en falso
+  (cap. 89): «después de una cirugía» no es una espera.
 - **Lo que una clase no declara, lo hereda del lugar donde la ponen.**
   `.cmp2-fam` no decía su peso: en la tabla heredaba 400 y en la celda del
   plegable, 700. Ahora lo declara. Un texto que repite otro del sitio se arma con
   la clase del otro y se mide contra él con `getComputedStyle`.
+
+**Cierre (18/10, el segundo verificador del cierre).** Con nueve esperas a la
+vista, la tarjeta del home seguía en verde: «Lo usás pasado el año.», «Se usa
+después de los noventa.», «Lo usás al año y medio.», «Disponible al año.», «A
+partir de la tercera cuota.», «Desde la primera cuota.»… Dieciséis formas que la
+«forma» de la espera no conocía. La misma expresión gritaba con topes posibles
+(«Hasta 2 días anuales», «20 días por persona al año», «Hasta 15 días en
+habitación privada»). Y las líneas de Silver y Gold de las filas con «¿quién?» no
+las miraba nadie: «Son por persona.» pasaba en el home, en `/planes` y en la
+hoja del celular, y la prueba del pie leía solo el primer pie y, en la hoja,
+solo los párrafos de primer nivel. El HANDOFF decía que el detector cubría «la
+clase entera»; el comentario de la prueba, que la rechazaba; este capítulo, que
+la clase se describía por su forma. El primer punto de la lección valía para
+todo el capítulo y lo escribimos para la mitad. Ahora las nueve tarjetas del
+home y, en las filas con «¿quién?», la tarjeta de `/planes` y la hoja del
+celular están enteras en una lista cerrada de `qa-lanzamiento`
+(`TARJETA_APROBADA`), y la expresión de esperas es una pista dentro del mensaje.
+Lo que queda: **si lo que se controla es un texto que alguien decidió, la
+prueba lo tiene escrito; un detector de formas sirve para explicar un error, no
+para encontrarlo.** Y una prueba que dice «la clase entera» se sabotea con
+formas que su autor no escribió, antes de escribirlo.

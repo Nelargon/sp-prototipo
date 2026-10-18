@@ -251,11 +251,11 @@ construida fuera del repo y pasa en la rama:
   definición de «Por familia» del home y la pregunta de la fisioterapia de Gold
   (G1A); la hoja suma su cierre fijo. Cualquier otra falla: lo nuevo en ese pie
   se suma a la prueba a conciencia.
-- **Las esperas de la tarjeta del home, la clase entera:** cantidades en cifras
-  o en palabras (del uno al cien, «medio», «un par de»), quincena, trimestre y
-  semestre, los ordinales y las formas relativas («el año que viene», «al
-  cumplir», «después de un», «recién a los», «a partir del»); los topes por año
-  siguen pasando.
+- **Las esperas de la tarjeta del home.** *(Corregido el 18/10: este punto
+  decía «la clase entera», y no era cierto. El regex sumó cantidades en
+  palabras, quincena, trimestre, semestre, ordinales y formas relativas, pero
+  seguía siendo una lista de formas. La red pasó a ser la lista cerrada; ver
+  «Cierre de la vuelta 3, la lista de lo que sí va», abajo.)*
 - **La nota de la cesárea del plegable va en Inter**, con la clase de la nota de
   la tabla (`.cmp2-fam`, que ahora declara su peso, 400): heredaba Nunito Sans
   Bold de la celda. Ocupa los mismos renglones (3 a 360-430 px, 2 a 820, 1 a
@@ -263,6 +263,46 @@ construida fuera del repo y pasa en la rama:
 - **El comentario de `filasCompu`** dice de dónde sale cada grupo de celdas:
   `corta`, lo que se escribe a mano y la banda de esperas, que sale de
   `carencias()` con `waitLabel` y `notaCorta`.
+
+**Cierre de la vuelta 3, la lista de lo que sí va (18/10, segundo verificador
+del cierre, BITACORA cap. 153).** El detector de esperas de la tarjeta del home
+seguía siendo una lista de formas: con nueve esperas a la vista daba verde («Lo
+usás pasado el año.», «Disponible al año.», «A partir de la tercera cuota.»…) y
+gritaba en falso con topes posibles («20 días por persona al año», «Hasta 2 días
+anuales», «Hasta 15 días en habitación privada»). Y las líneas de Silver y Gold
+de las filas con «¿quién?» no las miraba nadie: «Son por persona.» pasaba en
+verde en el home, en `/planes` y en la hoja del celular. Ahora, en
+`qa-lanzamiento` (sección «Lo que dicen las tarjetas y la hoja, contra una lista
+cerrada»):
+- **La red es la lista cerrada `TARJETA_APROBADA`:** 67 líneas, pies y notas
+  como literales, relevados en el navegador sobre la v1 de e4dc862. Las nueve
+  tarjetas del home enteras (tres líneas y el pie) y, en las cuatro filas con
+  «¿quién?», la tarjeta de `/planes` en la computadora y la hoja del celular
+  (390 px), también enteras. Falla con cualquier línea que no esté en la lista,
+  con la que falte y con texto fuera de las líneas, aunque sea inocente. El
+  mensaje dice qué línea es y dónde está, y que, si el cambio es querido, se suma
+  a la lista después de revisar que no sea una espera (P2A) ni una afirmación de
+  unidad (P3A). Las líneas que salen de preguntas abiertas de Arturo (por
+  ejemplo la fisioterapia de Essential, la 9) están como se ven hoy.
+- **El regex `ESPERA` es solo una pista** dentro de ese mensaje («parece una
+  espera»): no hace fallar nada, y ya no se prende con «hasta N días», «N días
+  anuales», «N días por persona» ni «N días de algo al año».
+- **Se leen todos los pies y todo el texto de la hoja**, no solo el primer
+  `.cmp2-tarjeta-pie` ni, en la hoja, los `<p>` hijos directos. La prueba del
+  pie de las filas con «¿quién?» (`pieBien`, `PIE_APROBADO`) se mudó a esta
+  sección.
+- **Autoprueba en la misma página, con la misma lectura:** las 16 esperas que
+  pasaban, metidas en una línea real del home, fallan; las 4 afirmaciones de
+  unidad («Son por persona.», «Cada integrante tiene el suyo.», «Por persona.»,
+  «Para cada uno de la familia.»), en Silver y Gold, fallan en las tres
+  superficies; «Hasta 2 días anuales.» falla como línea nueva, con la pista
+  apagada. Sabotajes construidos fuera del repo, con la `qa-lanzamiento` entera
+  de la rama: «Lo usás pasado el año.» en la tarjeta del home y «Son por
+  persona.» en la línea de Silver de tomografía de `/planes` dan ✗ (una falla
+  cada uno, la de la lista); la rama, ✓.
+- **El costo, a propósito:** cambiar una línea de esas tarjetas (por ejemplo
+  cuando Arturo conteste la 3 o la 9, o SP la #110 o la #50) obliga a sumarla a
+  `TARJETA_APROBADA` en el mismo PR, a conciencia.
 
 *Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
 los de la lista de arriba): **8**, Gold «con los topes más altos»
