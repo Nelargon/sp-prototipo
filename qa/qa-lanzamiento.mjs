@@ -1253,14 +1253,22 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   const TIPOS = [['traumatológica', /traumatol/i], ['neurológica', /neurol/i], ['después de una cirugía', /cirug|quirúrg/i], ['respiratoria', /respirat/i]];
   const tipos = (t) => TIPOS.filter(([, re]) => re.test(t || '')).map(([n]) => n).join(', ');
   const mismosTipos = (silver, gold) => tipos(silver) === tipos(gold);
+  // Y con la misma forma (comité, vuelta 3, 17/10): las dos arrancan por los
+  // tipos, en el mismo orden. Una arrancaba por «15 sesiones al año (…)» y la
+  // otra por «Traumatológica…», y el ojo tenía que reacomodarlas.
+  const orden = (t) => TIPOS.map(([n, re]) => [n, (t || '').search(re)]).filter(([, i]) => i >= 0).sort((a, b) => a[1] - b[1]).map(([n]) => n).join(', ');
+  const arranque = (t) => (t || '').replace(/^\s*(?:Silver|Gold)/, '').trim();
+  const mismaForma = (silver, gold) => /^(?:traumatol|neurol)/i.test(arranque(silver)) && /^(?:traumatol|neurol)/i.test(arranque(gold)) && orden(silver) === orden(gold);
   const autoprueba = {
+    formaDeLaVuelta2: mismaForma('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
+    formaNueva: mismaForma('SilverTraumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.3 meses de espera', 'GoldTraumatológica, neurológica o después de una cirugía, y respiratoria.3 meses de espera'),
     numeroQueVuelve: conNumero('GoldTraumatológica, neurológica o después de una cirugía, más 5 respiratorias3 meses de espera'),
     lineaDeHoy: conNumero('Traumatológica, neurológica o después de una cirugía, y también respiratoria. 3 meses de espera.'),
     asimetriaDeLaVuelta1: mismosTipos('15 sesiones al año. 3 meses de espera.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias. 3 meses de espera.'),
     simetria: mismosTipos('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
   };
-  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria) malas.push('los detectores de número y de simetría no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
-  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold);
+  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria || autoprueba.formaDeLaVuelta2 || !autoprueba.formaNueva) malas.push('los detectores de número, de simetría y de forma no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
+  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold) && mismaForma(x.silver, x.gold);
   const visible = ([sel, nombre]) => {
     const t = document.querySelector(sel);
     if (!t) return null;
@@ -1348,8 +1356,8 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
   if (!lineasBien(hoja) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(hoja && { silver: hoja.silver, gold: hoja.gold }));
   await ctx.close();
-  if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50); en la tarjeta y la hoja, Silver y Gold nombran los mismos tipos · ' + malas.join(' · '));
-  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin ningún número para Gold, con los mismos tipos que Silver y sin repetir el pedido; los detectores distinguen el caso malo del bueno');
+  if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50); en la tarjeta y la hoja, Silver y Gold nombran los mismos tipos con la misma forma · ' + malas.join(' · '));
+  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin ningún número para Gold, con los mismos tipos que Silver, en el mismo orden y arrancando por el tipo, y sin repetir el pedido; los detectores distinguen el caso malo del bueno');
 }
 
 // ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────
