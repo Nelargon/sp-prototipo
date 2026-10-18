@@ -5490,7 +5490,32 @@ todo el capítulo y lo escribimos para la mitad. Ahora las nueve tarjetas del
 home y, en las filas con «¿quién?», la tarjeta de `/planes` y la hoja del
 celular están enteras en una lista cerrada de `qa-lanzamiento`
 (`TARJETA_APROBADA`), y la expresión de esperas es una pista dentro del mensaje.
+*(Precisado el 18/10, tercer verificador del cierre: las nueve tarjetas del home
+se leían solo a 1280 px, pasando el mouse, y la hoja del celular, solo a 390 y
+solo desde «Los once servicios». En el celular, la tarjeta del home que se abre
+al tocar no la leía nadie, y en `/planes` tampoco la hoja del tema ni la línea de
+la tarjeta del plan; ver el segundo cierre, abajo.)*
 Lo que queda: **si lo que se controla es un texto que alguien decidió, la
 prueba lo tiene escrito; un detector de formas sirve para explicar un error, no
 para encontrarlo.** Y una prueba que dice «la clase entera» se sabotea con
 formas que su autor no escribió, antes de escribirlo.
+
+**Segundo cierre (18/10, el tercer verificador del cierre).** La lista cerrada
+era la de lo que sí va, pero leía la mitad de los lugares donde eso se dice.
+Las nueve tarjetas del home se abrían a 1280 px con el mouse; en el celular, la
+misma tarjeta se abre tocando el nombre en cada tarjeta de plan, y no la leía
+ninguna prueba. Lo medimos: con «Lo usás a los 3 meses de afiliarte.» visible
+solo en el celular (`display:none` desde 820 px), la `qa-lanzamiento` de 8db9016
+dio «✓ todo verde». En `/planes` del celular pasaba lo mismo con la hoja que
+abre la línea «Tomografía y resonancia» (una prueba contaba sus tres cajas, sin
+leerlas) y con esa línea, que se controlaba con `!/persona/i`: otra vez la lista
+de lo que no va, la que este capítulo había dado por cerrada. Y el HANDOFF, este
+capítulo y el mensaje de la prueba decían «las nueve tarjetas del home», sin
+ancho. Ahora la lista se lee también con el dedo, a 360, 390 y 430, desde las
+tres tarjetas de plan (81 lecturas, que dicen letra por letra lo mismo que a
+1280), y suma la hoja del tema y la línea de la tarjeta, lo que se ve y lo que
+oye el lector; el HANDOFF tiene la tabla de lo que cubre y la lista de lo que
+no. Lo que queda: **una prueba cubre lo que lee, no lo que nombra.** «Las nueve
+tarjetas» era cierto en un ancho y con un puntero. Cuando se escribe qué cubre
+una prueba, se escribe con sus superficies, sus anchos y su manera de abrir, y
+al lado, lo que no cubre.

@@ -278,7 +278,12 @@ cerrada»):
   como literales, relevados en el navegador sobre la v1 de e4dc862. Las nueve
   tarjetas del home enteras (tres líneas y el pie) y, en las cuatro filas con
   «¿quién?», la tarjeta de `/planes` en la computadora y la hoja del celular
-  (390 px), también enteras. Falla con cualquier línea que no esté en la lista,
+  (390 px), también enteras. *(Precisado el 18/10, vuelta 8: las nueve tarjetas
+  del home se leían solo a 1280 px, pasando el mouse; la que se abre al tocar en
+  el celular no la leía nadie, y en `/planes` del celular tampoco la hoja del
+  tema ni la línea de la tarjeta del plan. Una espera que solo se veía en el
+  celular daba «✓ todo verde». Qué cubre ahora, superficie por superficie y
+  ancho por ancho: «Vuelta 3, celular», abajo.)* Falla con cualquier línea que no esté en la lista,
   con la que falte y con texto fuera de las líneas, aunque sea inocente. El
   mensaje dice qué línea es y dónde está, y que, si el cambio es querido, se suma
   a la lista después de revisar que no sea una espera (P2A) ni una afirmación de
@@ -299,10 +304,75 @@ cerrada»):
   apagada. Sabotajes construidos fuera del repo, con la `qa-lanzamiento` entera
   de la rama: «Lo usás pasado el año.» en la tarjeta del home y «Son por
   persona.» en la línea de Silver de tomografía de `/planes` dan ✗ (una falla
-  cada uno, la de la lista); la rama, ✓.
+  cada uno, la de la lista); la rama, ✓. *(Precisado el 18/10, vuelta 8: «las
+  tres superficies» eran el home y `/planes` a 1280 y la hoja de «Los once
+  servicios» a 390, y esa «línea de Silver de tomografía de `/planes`» es la de
+  la tarjeta de la computadora, no la de la tarjeta del plan en el celular.)*
 - **El costo, a propósito:** cambiar una línea de esas tarjetas (por ejemplo
   cuando Arturo conteste la 3 o la 9, o SP la #110 o la #50) obliga a sumarla a
   `TARJETA_APROBADA` en el mismo PR, a conciencia.
+
+**Vuelta 3, celular: qué cubre la lista cerrada, superficie por superficie
+(18/10, tercer verificador del cierre, BITACORA cap. 153).** La lista leía la
+tarjeta del home solo a 1280 px con el mouse. En el celular, la que se abre al
+tocar el nombre no la leía nadie: con «Lo usás a los 3 meses de afiliarte.»
+solo visible en el celular (`.solo-cel`), la `qa-lanzamiento` de 8db9016 daba
+«✓ todo verde» (medido). Y en `/planes` del celular, la hoja del tema
+«Tomografía y resonancia» no la leía ninguna prueba (la de «/planes/ en el
+celular» cuenta sus cajas) y la línea de la tarjeta del plan se controlaba con
+una lista de lo que no va (`!/persona/i`). Ahora `TARJETA_APROBADA` vive arriba
+en `qa/qa-lanzamiento.mjs` (después de `pieBien`), tiene 77 literales y cubre
+exactamente esto:
+
+| Superficie | Cómo se abre | Anchos | Lecturas |
+|---|---|---|---|
+| Home: las 9 tarjetas de la tabla, enteras (3 líneas y el pie) | pasando el mouse por el nombre (columna de nombres) | 1280 | 9 |
+| Home: las mismas 9 tarjetas | con el dedo (`isMobile`, `hasTouch`), tocando el nombre en cada una de las 3 tarjetas de plan | 360, 390, 430 | 81 |
+| `/planes`, computadora: la tarjeta de las 4 filas con «¿quién?», entera | pasando el mouse | 1280 | 4 |
+| `/planes`, celular: la hoja de las 4 filas con «¿quién?», entera | desde «Los once servicios, plan por plan» | 390 | 4 |
+| `/planes`, celular: la hoja del tema «Tomografía y resonancia», entera | tocando la línea en cada una de las 3 tarjetas de plan | 360, 390, 430 | 9 |
+| `/planes`, celular: la línea «Tomografía y resonancia» de la tarjeta de cada plan, lo que se ve y lo que oye el lector | se lee sin abrir (es un botón: su nombre, del ariaSnapshot) | 360, 390, 430 | 9 |
+
+- **Relevado en el navegador el 18/10, sobre la v1 de 8db9016:** en el celular
+  las nueve tarjetas del home dicen, letra por letra, lo mismo que a 1280 en las
+  81 lecturas, así que es la misma lista para los dos tamaños; la hoja del tema
+  y la línea dicen lo mismo en los tres anchos y desde las tres tarjetas. De las
+  cinco hojas de tema, solo «Tomografía y resonancia» nombra un servicio con
+  «¿quién?».
+- **Lo que entra se elige en la página:** se abren las hojas de las cinco líneas
+  de cada tarjeta de plan, y toda línea u hoja que nombre tomografía, resonancia,
+  psicología o fisioterapia (`NOMBRA_DUDA`) tiene que estar en la lista. Hoy son
+  la línea «Tomografía y resonancia» y su hoja. Una línea cuya hoja no abre,
+  falla.
+- **La línea de la tarjeta del plan, contra la lista también en `lineaBien`:**
+  las expresiones `!/persona/i`, `!/2 tomografías/`, `/por familia/` y `/sin
+  confirmar para quién/` salieron; quedan la forma corta (`.corta`, con las
+  constantes de `coverage.js`) y su color navy.
+- **Lo que NO cubre:** en `/planes`, las tarjetas de la computadora y las hojas
+  de «Los once servicios» de las siete filas sin «¿quién?», las hojas de las
+  cuatro filas con «¿quién?» a 360 y 430 px, las otras cuatro hojas de tema
+  (Consultas, Internación, Terapia intensiva y Odontología) y las otras cuatro
+  líneas de cada tarjeta de plan; en el home, la tarjeta abierta desde la celda
+  «¿quién?» (es la misma que abre el nombre, pero no se lee desde ahí); ningún
+  otro ancho (ni la tableta); de las tarjetas y las hojas, lo que el lector oye
+  por un `aria-label` o una descripción, que no es texto dibujado (se lee el
+  `innerText`, que sí incluye el texto `.sr-solo`); y el simulador,
+  `/que-cubre` y la cotización.
+- **Autoprueba en cada superficie nueva, en cada ancho y desde cada tarjeta:**
+  una espera en cada una de las 81 tarjetas del home abiertas con el dedo y una
+  unidad en Silver o Gold de las 36 de filas con «¿quién?»; una espera y una
+  unidad en cada una de las 9 hojas del tema; en la línea, una espera que se ve
+  (9) y una unidad que solo oye el lector, metida en su texto `.sr-solo` (6, en
+  Silver y Gold). Todas fallan, y cada tarjeta, hoja y línea releída dice lo
+  mismo que antes.
+- **Sabotajes**, construidos fuera del repo y con la `qa-lanzamiento` entera de
+  la rama: «Lo usás a los 3 meses de afiliarte.» en la tarjeta de Medicamentos
+  internado (Gold), visible solo en el celular, da ✗ (1 falla: 9 hallazgos, a
+  360, 390 y 430, desde las tres tarjetas, y ninguno a 1280); «Son por
+  persona.» en la línea de la tarjeta de Silver de `/planes` da ✗ (4 fallas:
+  `lineaBien` a 360, 390 y 430 y la lista, que lo ve y lo oye). La rama, ✓.
+- **El costo:** la `qa-lanzamiento` tarda cerca de un minuto más (3 min 8 s →
+  4 min 0 s en el contenedor de la sesión).
 
 *Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
 los de la lista de arriba): **8**, Gold «con los topes más altos»
