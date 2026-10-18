@@ -698,9 +698,12 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // cerrada, con un caso de teclas mudas que tiene que ver. Medido con QUIEN_SG en
 // 'persona' (corren sobre psicología y pasan) y con los dos interruptores en
 // 'persona' (dicen «se salta», no ✓).
+// Vuelta 3 (comité, 17/10): el celular se mide también a 430 px, y el pie se
+// lee como se ve y se rechaza toda afirmación de unidad, no solo «contrato»
+// (falla con un NOTA_UNIDAD que dice «En Silver y Gold son para cada persona.»).
 console.log('\n── La forma corta (P3A)');
 {
-  const { DUDA, QUIEN_SG, QUIEN_PSICO, NOTA_UNIDAD } = COV;
+  const { DUDA, QUIEN_SG, QUIEN_PSICO, ASESOR: ASESOR_P3 } = COV;
   // La tercera columna: los planes cuya celda manda al asesor en lugar de dar
   // un número (la fisioterapia de Gold, G1A): esa la controla su sección.
   const FILAS = [['Tomografía (TAC)', QUIEN_SG, []], ['Resonancia (RM)', QUIEN_SG, []], ['Sesiones de psicología', QUIEN_PSICO, []], ['Fisioterapia', QUIEN_SG, [2]]];
@@ -798,7 +801,7 @@ console.log('\n── La forma corta (P3A)');
     const conHover = await page.evaluate(() => !!document.querySelector('#cartilla .cmp2-tarjeta'));
     await page.mouse.click(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    const conClic = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); return t ? { planes: t.querySelectorAll('.cmp2-tarjeta-p').length, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' } : null; });
+    const conClic = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); return t ? { planes: t.querySelectorAll('.cmp2-tarjeta-p').length, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).innerText || '' } : null; });
     await page.keyboard.press('Escape');
     await page.waitForTimeout(150);
     const cerrada = await page.evaluate(() => !document.querySelector('#cartilla .cmp2-tarjeta'));
@@ -847,7 +850,37 @@ console.log('\n── La forma corta (P3A)');
     const ev = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'duda' && x.datos?.clave === FILA_DUDA);
     abre = { conHover, conClic, cerrada, conTeclado, conEnter, conEspacio, ...conTeclas, veMudas: !mudas.abreEnter && !mudas.abreEspacio, ev: ev.length };
   }
-  const pieBien = (p) => p === 'Por familia: un cupo que comparten todos los del grupo. ' + NOTA_UNIDAD && !/contrato/i.test(p);
+  // El pie no afirma nada del contrato ni la unidad de Silver y Gold (comité,
+  // vuelta 3, 17/10): antes se comparaba con la constante y solo rechazaba la
+  // palabra «contrato», así que un NOTA_UNIDAD que dijera «En Silver y Gold son
+  // para cada persona.» pasaba en verde. Ahora se lee el texto que se ve, oración
+  // por oración: manda a preguntar por Silver y Gold, y toda oración que nombre
+  // Silver o Gold con una unidad («por persona», «para todo el grupo»…) la dice
+  // después de «preguntale a tu asesor si», como pregunta, no como dato. «Por
+  // familia: …» es la definición de la unidad de Essential y queda.
+  const UNIDAD = /por persona|para cada persona|cada uno|por familia|para toda la familia|para todo el grupo|por grupo|por beneficiario/i;
+  const pregunta = minus(ASESOR_P3) + ' si ';
+  const pieBien = (p) => {
+    if (!p || /contrato/i.test(p)) return false;
+    const oraciones = p.replace(/\s+/g, ' ').trim().split(/(?<=\.)\s+/);
+    const pide = oraciones.some((o) => /Silver|Gold/.test(o) && o.toLowerCase().includes(pregunta));
+    return pide && oraciones.every((o) => {
+      const u = o.search(UNIDAD);
+      if (u < 0) return true;
+      if (!/Silver|Gold/.test(o)) return /^Por familia:/.test(o);
+      const q = o.toLowerCase().indexOf(pregunta);
+      return q >= 0 && q < u;
+    });
+  };
+  const pieAuto = {
+    deHoy: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
+    afirma: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold son para cada persona.'),
+    afirmaYPregunta: pieBien('Por familia: un cupo que comparten todos los del grupo. En Silver y Gold son por persona; preguntale a tu asesor si cambia.'),
+    contrato: pieBien('Por familia: un cupo que comparten todos los del grupo. Según el contrato, en Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
+    noPregunta: pieBien('Por familia: un cupo que comparten todos los del grupo.'),
+  };
+  if (!pieAuto.deHoy || pieAuto.afirma || pieAuto.afirmaYPregunta || pieAuto.contrato || pieAuto.noPregunta) mal('el detector del pie no distingue la pregunta al asesor de una afirmación de unidad o del contrato: ' + JSON.stringify(pieAuto));
+  else bien('el detector del pie deja pasar la pregunta al asesor y rechaza «son para cada persona», la unidad dicha antes de la pregunta, «contrato» y un pie sin la pregunta');
   if (!HAY_DUDA) salta('la celda que se abre con clic y teclado');
   else if (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || !abre.cierraEscape || !abre.abreEnter || !abre.abreEspacio || !abre.veMudas || abre.ev !== 1) mal('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') tiene que abrir la tarjeta con un clic y con el teclado (Enter o Espacio no la cierran, y con la tarjeta cerrada la abren), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda»; la prueba tiene que ver las teclas mudas (' + JSON.stringify(abre) + ')');
   else bien('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') abre la tarjeta con un clic y con el teclado; Enter o Espacio no la cierran y, con la tarjeta cerrada, la abren (la prueba ve las teclas mudas); no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
@@ -876,7 +909,9 @@ console.log('\n── La forma corta (P3A)');
   await page.close();
 
   // 2. Celular: el toque, las líneas de las tarjetas y la lista de los once.
-  for (const width of [360, 390]) {
+  // También a 430 (comité, vuelta 3, 17/10): es el piso móvil del proyecto y ahí
+  // las columnas de la lista tienen otro ancho y el corte cae en otro lugar.
+  for (const width of [360, 390, 430]) {
     const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
     const cel = await ctx.newPage();
     await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
@@ -974,64 +1009,90 @@ console.log('\n── Ningún renglón termina en «/» (pie del home y plegable
   else bien('ningún renglón del pie del home ni del plegable de topes termina en «/» (360, 390, 430, 820 y 1280 px); el detector distingue el caso malo del bueno');
 }
 
-// ── La forma corta, para los lectores de pantalla (P3A; comité, vuelta 1) ──
+// ── La forma corta, para los lectores de pantalla (P3A; comité, vueltas 1 y 3) ─
 // La decisión fija cómo se oye: la forma visible («1/¿quién?/año») va con
 // aria-hidden y al lado, un texto oculto (.sr-solo) con la frase completa; sin
-// role="img", porque algunos lectores le suman «imagen». Las otras secciones
-// leen la frase, no el atributo: si alguien sacaba el aria-hidden, el lector
-// decía «uno barra quién barra año» y además la frase, y todo seguía en verde.
-// Se mira cada forma corta visible del home y /planes en la computadora y en
-// el celular (con la lista de los once abierta). El detector se prueba antes
-// contra tres formas mal armadas (sin aria-hidden, con role="img", sin su
-// frase), que tiene que encontrar, y una bien armada, que no.
+// role="img", porque algunos lectores le suman «imagen».
+// Vuelta 3 (17/10): la prueba leía el atributo y el texto oculto del DOM, no lo
+// que expone el navegador. Con `.corta + .sr-solo{display:none}` en el CSS el
+// lector no oía nada y todo seguía en verde (lo midió el revisor de Dev). Ahora,
+// para cada forma corta visible (no inerte ni escondida para el lector) se
+// cuenta su frase en el árbol de accesibilidad (ariaSnapshot): tiene que estar
+// al menos tantas veces como formas cortas la llevan, y la forma con barras no
+// se oye nunca. Del DOM queda solo lo que el árbol no dice: el role. Se mira el
+// home y /planes en la computadora (con los plegables abiertos) y en el celular
+// (con la lista de los once abierta). El detector se prueba antes, en la misma
+// página, contra cuatro formas mal armadas (sin aria-hidden, con role="img", sin
+// frase y con la frase escondida con display:none) y una bien armada. Falla en
+// una copia del sitio con la frase silenciada en el CSS y pasa en la rama.
 console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
 {
-  const REVISAR = `(raiz) => [...raiz.querySelectorAll('.corta')].filter((k) => k.getClientRects().length).map((k) => {
-    const sr = k.nextElementSibling;
-    const mal = [];
-    if (k.getAttribute('aria-hidden') !== 'true') mal.push('sin aria-hidden');
-    if (k.hasAttribute('role')) mal.push('role=' + k.getAttribute('role'));
-    if (!sr || !sr.classList.contains('sr-solo') || !sr.textContent.trim()) mal.push('sin su frase');
-    return mal.length ? k.textContent + ': ' + mal.join(', ') : null;
-  }).filter(Boolean)`;
+  const BARRAS = /\d[\d.,]*(?:\s\S+)?\/(?:familia|persona|año|mes|evento|¿quién\?)/;
+  const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const revisar = async (pg, sel) => {
+    const esperado = await pg.evaluate((sel) => [...document.querySelectorAll(sel + ' .corta')]
+      .filter((k) => k.getClientRects().length && !k.parentElement.closest('[inert], [aria-hidden="true"]'))
+      .map((k) => { const sr = k.nextElementSibling; return { t: k.textContent, frase: sr && sr.classList.contains('sr-solo') ? sr.textContent.trim() : '', role: k.getAttribute('role') }; }), sel);
+    const leido = oido(await pg.locator(sel).first().ariaSnapshot());
+    const malas = [];
+    const veces = {};
+    for (const e of esperado) {
+      if (e.role) malas.push(e.t + ': role=' + e.role);
+      if (!e.frase) { malas.push(e.t + ': sin su frase'); continue; }
+      veces[e.frase] = (veces[e.frase] || 0) + 1;
+    }
+    for (const [f, n] of Object.entries(veces)) {
+      const hay = (leido.match(new RegExp('(?<![\\d,])' + escRe(f), 'g')) || []).length;
+      if (hay < n) malas.push('«' + f + '»: el lector la oye ' + hay + ' de ' + n + ' veces');
+    }
+    const barra = leido.match(BARRAS);
+    if (barra) malas.push('el lector oye la forma con barras: «' + barra[0] + '»');
+    return { total: esperado.length, malas };
+  };
   const malas = [];
   let revisadas = 0;
-  const revisar = async (pg, donde) => {
-    const r = await pg.evaluate((fn) => { const f = eval(fn); return { malas: f(document), total: [...document.querySelectorAll('.corta')].filter((k) => k.getClientRects().length).length }; }, REVISAR);
+  const pagina = async (pg, donde) => {
+    const r = await revisar(pg, 'body');
     revisadas += r.total;
     if (!r.total) malas.push(donde + ': ninguna forma corta visible');
     r.malas.forEach((m) => malas.push(donde + ' · ' + m));
   };
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
-  // El caso que tiene que fallar y el que no, armados en la misma página.
-  const prueba = await page.evaluate((fn) => {
-    const f = eval(fn);
-    const caja = (html) => { const d = document.createElement('div'); d.innerHTML = html; document.body.appendChild(d); const r = f(d); d.remove(); return r; };
-    return {
-      malas: caja('<span class="corta">1/familia/año</span><span class="sr-solo">1 por familia al año</span>'
-        + '<span class="corta" aria-hidden="true" role="img">1/¿quién?/año</span><span class="sr-solo">1 al año, sin confirmar para quién</span>'
-        + '<span class="corta" aria-hidden="true">2/familia/año</span>').length,
-      buenas: caja('<span class="corta" aria-hidden="true">4/familia/año</span><span class="sr-solo">4 por familia al año</span>').length,
-    };
-  }, REVISAR);
-  if (prueba.malas !== 3 || prueba.buenas !== 0) mal('el detector de la forma corta para lectores no distingue el caso malo del bueno: ' + JSON.stringify(prueba));
-  else bien('el detector encuentra las tres formas cortas mal armadas (sin aria-hidden, con role="img", sin su frase) y deja pasar la bien armada');
-  await revisar(page, 'home 1280');
+  // Los casos que tienen que fallar y el que no, armados en la misma página.
+  await page.evaluate(() => {
+    const d = document.createElement('div');
+    d.id = 'qa-corta';
+    d.innerHTML = '<p id="qa-c1"><span class="corta">1/familia/año</span><span class="sr-solo">1 por familia al año</span></p>'
+      + '<p id="qa-c2"><span class="corta" aria-hidden="true" role="img">2/familia/año</span><span class="sr-solo">2 por familia al año</span></p>'
+      + '<p id="qa-c3"><span class="corta" aria-hidden="true">3/familia/año</span></p>'
+      + '<p id="qa-c4"><span class="corta" aria-hidden="true">4/familia/año</span><span class="sr-solo" style="display:none">4 por familia al año</span></p>'
+      + '<p id="qa-c5"><span class="corta" aria-hidden="true">5/familia/año</span><span class="sr-solo">5 por familia al año</span></p>';
+    document.body.appendChild(d);
+  });
+  const caso = async (id) => (await revisar(page, '#' + id)).malas.length;
+  const prueba = { sinAriaHidden: await caso('qa-c1'), conRole: await caso('qa-c2'), sinFrase: await caso('qa-c3'), fraseEscondida: await caso('qa-c4'), bienArmada: await caso('qa-c5') };
+  await page.evaluate(() => document.getElementById('qa-corta').remove());
+  if (!prueba.sinAriaHidden || !prueba.conRole || !prueba.sinFrase || !prueba.fraseEscondida || prueba.bienArmada) mal('el detector de la forma corta para lectores no distingue el caso malo del bueno: ' + JSON.stringify(prueba));
+  else bien('el detector, sobre el árbol de accesibilidad, encuentra las cuatro formas cortas mal armadas (sin aria-hidden, con role="img", sin frase y con la frase escondida) y deja pasar la bien armada');
+  await pagina(page, 'home 1280');
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
-  await revisar(page, '/planes 1280');
+  await page.waitForFunction(() => { const b = document.querySelector('button[aria-controls="detalle-internacion"]'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  for (const id of ['detalle-especialidades', 'detalle-internacion']) await page.click(`button[aria-controls="${id}"]`);
+  await page.waitForTimeout(500);
+  await pagina(page, '/planes 1280 con los plegables abiertos');
   await page.close();
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const cel = await ctx.newPage();
   await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
-  await revisar(cel, 'home 390');
+  await pagina(cel, 'home 390');
   await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
   await cel.waitForTimeout(450);
-  await revisar(cel, '/planes 390 con la lista abierta');
+  await pagina(cel, '/planes 390 con la lista abierta');
   await ctx.close();
-  if (malas.length) mal('cada forma corta visible va con aria-hidden="true", sin role y con su frase al lado (.sr-solo) · ' + malas.slice(0, 6).join(' · '));
-  else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular) con aria-hidden, sin role y con su frase al lado');
+  if (malas.length) mal('cada forma corta visible se oye con su frase, sin las barras y sin role (árbol de accesibilidad) · ' + malas.slice(0, 6).join(' · '));
+  else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular): el lector oye cada frase y ninguna forma con barras');
 }
 
 // ── Lo que oye el lector: cada valor con su fila y su plan ──────────────────
@@ -1769,9 +1830,21 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
 // Las esperas siguen en /planes (lo controla «/planes/ en el celular» y la
 // tarjeta de Internación de la computadora). Probado contra la rama sin la P2A
 // (falla) y con ella (pasa).
+// Vuelta 3 (comité, 17/10): la expresión enumeraba formas conocidas y «esperás
+// un año», «después de 365 días» o «a partir del día 91» pasaban en verde. Ahora
+// rechaza la clase: cualquier plazo en días, semanas, meses o años que no sea un
+// tope por año («20 días al año», «25 días/persona/año»), un «día N», y las
+// palabras de espera (espera, esperás, carencia, afiliarte, primer día, día uno,
+// desde el día, inmediata). Con su caso malo y su caso bueno acá mismo.
 console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
 {
-  const ESPERA = /a los \d+ días|afiliarte|primer día|día uno|\d+ mes(?:es)?\b|sin espera|de espera|carencia/i;
+  const ESPERA = /(?:^|[^\w\u00c0-\u024f])(?:\d+|(?<!\ben\s)un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce)\s+(?:d[ií]as?|semanas?|mes(?:es)?|años?)(?![\w\u00c0-\u024f])(?!\s*(?:al|por)\s+año|\s*\/)|\bd[ií]a\s+(?:\d+|uno)\b|\besper[aá]s?\b|\besperar\b|carencia|afilia|primer d[ií]a|desde el d[ií]a|inmediat/i;
+  const esperaAuto = {
+    malas: ['esperás un año', 'después de 365 días', 'a partir del día 91', 'a los 365 días de afiliarte', '3 meses de espera', 'Sin espera', 'desde el primer día', 'Se puede usar a los 150 días.', 'Desde el día uno.', 'Cubre de inmediato.', 'Hay que esperar seis meses.', 'Lo usás en 3 meses.'].filter((t) => !ESPERA.test(t)),
+    buenas: ['20 días al año para toda la familia, en habitación privada.', 'Hasta 2 días al año por persona.', '25 días/persona/año', 'Hasta 3 por mes en cada especialidad; después, con copago.', '1 al año, y no ponés nada.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.'].filter((t) => ESPERA.test(t)),
+  };
+  if (esperaAuto.malas.length || esperaAuto.buenas.length) mal('el detector de esperas no distingue el caso malo del bueno: ' + JSON.stringify(esperaAuto));
+  else bien('el detector de esperas encuentra las doce formas de un plazo («esperás un año», «después de 365 días», «a partir del día 91»…) y deja pasar los topes por año');
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
