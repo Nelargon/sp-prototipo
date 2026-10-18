@@ -968,6 +968,73 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
   else bien(revisadas + ' formas cortas visibles (home y /planes, computadora y celular) con aria-hidden, sin role y con su frase al lado');
 }
 
+// ── Lo que oye el lector en la celda del asesor y en la lista de los once ──
+// (comité, vuelta 2, 17/10/2026). Dos lugares donde el lector oía valores sin
+// saber de qué eran:
+// - En la computadora, la celda «Preguntale a tu asesor» (la fisioterapia de
+//   Gold y los remedios en urgencias de Essential). La columna de nombres está
+//   lejos (`.cmp2-l` no se ve desde 820 px) y una instrucción sin objeto no se
+//   puede cumplir. Ahora oye «Fisioterapia, Gold: preguntale a tu asesor».
+// - En el celular, cada fila de «Los once servicios» es un botón que se nombra
+//   con todo lo que tiene adentro, y los planes están en la cabecera, fuera del
+//   botón: oía «Fisioterapia › 5 por familia al año Sin espera 15 al año…».
+//   Ahora cada valor va con su plan y la «›» no se lee.
+// Se mide lo que expone el navegador (el árbol de accesibilidad, con
+// ariaSnapshot), no el texto oculto (cap. 149). Los dos detectores se prueban
+// antes contra lo que se oía en la build de f40cc02 (tienen que fallar) y contra
+// la forma nueva (no). Falla en la build de f40cc02 y pasa con el cambio.
+console.log('\n── Lo que oye el lector: la celda del asesor y la lista de los once');
+{
+  const { ASESOR } = COV;
+  const SERVICIOS = COV.coverage().map((s) => s.name);
+  const malas = [];
+  const conContexto = (snap, fila, plan) => snap.includes(fila + ', ' + plan + ': preguntale a tu asesor') && !snap.includes(ASESOR);
+  // «Fisioterapia. Essential: …. Silver: …. Gold: ….», sin «›» ni barras de la forma corta.
+  const nombreBien = (n, servicio) => n.startsWith(servicio + '. Essential: ') && /\. Silver: .+\. Gold: .+\.$/.test(n) && !/[›/]/.test(n);
+  // ariaSnapshot escribe «- button "…"» o, si el nombre trae «: », «- 'button "…"': …».
+  const botones = (snap) => [...snap.matchAll(/- '?button "((?:[^"\\]|\\.)*)"/g)].map((m) => JSON.parse('"' + m[1] + '"'));
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.evaluate(() => {
+    const d = document.createElement('div');
+    d.id = 'qa-asesor';
+    d.innerHTML = '<p id="qa-mala"><span>15</span> <span>Preguntale a tu asesor</span></p>'
+      + '<p id="qa-buena"><span aria-hidden="true">Preguntale a tu asesor</span><span class="sr-solo">Fisioterapia, Gold: preguntale a tu asesor</span></p>';
+    document.body.appendChild(d);
+  });
+  const prueba = {
+    celdaMala: conContexto(await page.locator('#qa-mala').ariaSnapshot(), 'Fisioterapia', 'Gold'),
+    celdaBuena: conContexto(await page.locator('#qa-buena').ariaSnapshot(), 'Fisioterapia', 'Gold'),
+    filaMala: nombreBien('Fisioterapia › 5 por familia al año Sin espera 15 al año, sin confirmar para quién 3 meses de espera Preguntale a tu asesor 3 meses de espera', 'Fisioterapia'),
+    filaBuena: nombreBien('Fisioterapia. Essential: 5 por familia al año, sin espera. Silver: 15 al año, sin confirmar para quién, 3 meses de espera. Gold: Preguntale a tu asesor, 3 meses de espera.', 'Fisioterapia'),
+  };
+  await page.evaluate(() => document.getElementById('qa-asesor').remove());
+  if (prueba.celdaMala || !prueba.celdaBuena || prueba.filaMala || !prueba.filaBuena) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(prueba));
+  for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+    if (ruta !== '/') await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const cols = page.locator(sel + ' .cmp2-plan');
+    const essential = await cols.nth(0).ariaSnapshot(), gold = await cols.nth(2).ariaSnapshot();
+    if (!conContexto(gold, 'Fisioterapia', 'Gold')) malas.push(ruta + ' columna de Gold: ' + JSON.stringify((gold.match(/.{0,40}asesor.{0,10}/gi) || []).join(' | ')));
+    if (!conContexto(essential, 'Remedios en urgencias', 'Essential')) malas.push(ruta + ' columna de Essential: ' + JSON.stringify((essential.match(/.{0,40}asesor.{0,10}/gi) || []).join(' | ')));
+  }
+  await page.close();
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  const nombres = botones(await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo').ariaSnapshot());
+  for (const s of SERVICIOS) {
+    const n = nombres.find((x) => x.startsWith(s));
+    if (!n || !nombreBien(n, s)) malas.push('lista, ' + s + ': ' + JSON.stringify(n || null));
+  }
+  const fisio = nombres.find((x) => x.startsWith('Fisioterapia')) || '';
+  if (!fisio.includes('Gold: ' + ASESOR)) malas.push('lista, fisioterapia de Gold: ' + JSON.stringify(fisio));
+  await ctx.close();
+  if (malas.length) mal('el lector tiene que oír de qué fila y de qué plan es cada valor: la celda del asesor en la computadora y cada fila de la lista de los once en el celular · ' + malas.slice(0, 6).join(' · '));
+  else bien('el lector oye «Fisioterapia, Gold: preguntale a tu asesor» y «Remedios en urgencias, Essential: …» en la computadora (home y /planes), y cada fila de la lista de los once con su plan y sin «›» (' + nombres.length + ' botones); los detectores distinguen el caso malo del bueno');
+}
+
 // ── La fisioterapia de Gold va al asesor (G1A, Arturo, 17/10/2026, «Todo A») ─
 // La fuente se contradice (sp-interno#50): gold.json dice 20 + 5 sesiones y la
 // grilla, 10 + 3. Mientras SP no lo aclare, la celda de Gold manda al asesor

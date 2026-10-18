@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
 import Corta, { frase } from './Corta';
-import { DUDA } from '../coverage';
+import { DUDA, ASESOR } from '../coverage';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -100,8 +100,10 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   );
 }
 
-// Una celda con barras es una forma corta.
-const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} /> : c.t);
+// Una celda con barras es una forma corta. Una sin barras que trae `dicho` (la
+// que manda al asesor) se ve igual y el lector oye `dicho`, como la forma corta.
+const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} />
+  : c.dicho ? <><span aria-hidden="true">{c.t}</span><span className="sr-solo">{c.dicho}</span></> : c.t);
 const valor = (fila, c, notas) => (
   <>
     {fila.kind === 'status' ? <span className="cmp2-chip disp">{texto(c)}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{texto(c)}</span>}
@@ -164,8 +166,12 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
   // nombres (computadora) o la de la tarjeta del plan (celular).
   const dondeDuda = (i) => (typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches ? 'c' : String(i));
   const celda = (f, i, k) => {
-    const v = valor(f, f.cells[i], notas);
-    const c = f.cells[i];
+    // La celda que manda al asesor da una instrucción: el lector oye de qué fila
+    // y de qué plan es («Fisioterapia, Gold: preguntale a tu asesor»), como la
+    // celda «¿quién?». En la computadora la columna de nombres está lejos y sola
+    // no dice sobre qué preguntar (comité, vuelta 2, 17/10).
+    const c = f.cells[i].t === ASESOR ? { ...f.cells[i], dicho: f.name + ', ' + planes[i].short + ': preguntale a tu asesor' } : f.cells[i];
+    const v = valor(f, c, notas);
     if (!f.d || !c.t.includes('/' + DUDA + '/')) return v;
     const aqui = (abierta === 'c-' + k && desde === i) || abierta === i + '-' + k;
     return (

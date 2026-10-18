@@ -9,7 +9,7 @@ import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
-import Corta, { conCortas } from '../components/Corta';
+import Corta, { conCortas, frase } from '../components/Corta';
 import datos from '../../lib/prestaciones.json';
 
 /* La comparativa de /planes en el celular (lámina 59; Arturo la confirmó el
@@ -170,33 +170,53 @@ export default function ComparativaCelular() {
     );
   };
 
+  // Cada celda de la lista, en partes: lo que se ve y lo que oye el lector salen
+  // de acá. La forma corta donde la hay (P3A): esto se escanea. La cola conserva
+  // lo que Essential decía después del número («2/familia/año, junto con
+  // ecocardiograma y ergometría»). La celda que manda al asesor (G1A) también
+  // sale de `corta` y va en la misma capa de cifras que el dato de al lado: la
+  // duda se dice con el mismo peso (lámina 84). Con su `pre`, si lo tiene: en
+  // urgencias, Essential dice «Consulta 24 h · remedios» y manda al asesor por
+  // el tope (R1A; comité, vuelta 2, 17/10).
+  const celdaDe = (s, i) => {
+    const t = s.corta && s.corta[i];
+    const e = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]].dias[i];
+    return {
+      tipo: t === ASESOR ? 'asesor' : t && t.includes('/') ? 'corta' : 'frase',
+      t, pre: (s.pre && s.pre[i]) || '', cola: (s.cola && s.cola[i]) || '', dicho: s.dicho && s.dicho[i],
+      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? waitLabel(e) : null,
+    };
+  };
+  // El nombre de cada fila de la lista para el lector de pantalla. El botón se
+  // nombra con todo lo que tiene adentro y los planes están en la cabecera, fuera
+  // del botón: se oían tres valores pegados sin saber de cuál eran («5 por
+  // familia al año Sin espera 15 al año…») y la «›» (comité, vuelta 2, 17/10).
+  // Ahora cada valor va con su plan: «Fisioterapia. Essential: 5 por familia al
+  // año, sin espera. Silver: … Gold: Preguntale a tu asesor, 3 meses de espera.»
+  const minuscula = (x) => x.charAt(0).toLowerCase() + x.slice(1);
+  const nombreFila = (s) => s.name + '. ' + planes.map((p, i) => {
+    const c = celdaDe(s, i);
+    const valor = c.tipo === 'asesor' ? c.pre + ASESOR : c.tipo === 'corta' ? c.pre + (c.dicho || frase(c.t)) + c.cola : c.d;
+    return p.short + ': ' + [valor, c.sub && minuscula(c.sub), c.espera && minuscula(c.espera)].filter(Boolean).join(', ');
+  }).join('. ') + '.';
   const lista = (
     <>
       <div style={css('display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:sticky;top:-4px;background:#fff;padding:8px 0;z-index:1;border-bottom:1px solid var(--sp-line)')}>
         {planes.map((p) => <span key={p.short} className="disp" style={css('font-size:12.5px;font-weight:800;color:var(--sp-navy)')}>{p.short}</span>)}
       </div>
       {cov.map((s) => (
-        <button key={s.name} type="button" className="fila" onClick={() => abrirServicio(s.name)} style={css('display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--sp-line-2);padding:12px 0;cursor:pointer')}>
-          <b className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy)')}>{s.name} ›</b>
+        <button key={s.name} type="button" className="fila" aria-label={nombreFila(s)} onClick={() => abrirServicio(s.name)} style={css('display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--sp-line-2);padding:12px 0;cursor:pointer')}>
+          <b className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy)')}>{s.name}<span aria-hidden="true"> ›</span></b>
           <span style={css('display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;' + inter + 'font-size:12.5px;line-height:1.35;color:var(--sp-text)')}>
-            {s.cov.map((c, i) => {
-              const e = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]].dias[i];
+            {s.cov.map((_, i) => {
+              const c = celdaDe(s, i);
               return (
                 <span key={i} style={css('display:flex;flex-direction:column;gap:3px')}>
-                  {/* La forma corta donde la hay (P3A): esto se escanea. La
-                      cola conserva lo que Essential decía después del número
-                      («2/familia/año, junto con ecocardiograma y ergometría»).
-                      La celda que manda al asesor (G1A) también sale de
-                      `corta` y va en la misma capa de cifras que el dato de al
-                      lado: la duda se dice con el mismo peso (lámina 84). Con
-                      su `pre`, si lo tiene: en urgencias, Essential dice
-                      «Consulta 24 h · remedios» y manda al asesor por el tope
-                      (R1A; comité, vuelta 2, 17/10). */}
-                  {s.corta && s.corta[i] === ASESOR
-                    ? <span>{s.pre && s.pre[i]}<span className="disp" style={css('font-weight:700')}>{ASESOR}</span></span>
-                    : s.corta && s.corta[i] && s.corta[i].includes('/') ? <span>{s.pre && s.pre[i]}<Corta t={s.corta[i]} partir dicho={s.dicho && s.dicho[i]} />{s.cola && s.cola[i]}</span> : c.d}
-                  {s.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{s.sub[i]}</span> : null}
-                  {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
+                  {c.tipo === 'asesor'
+                    ? <span>{c.pre}<span className="disp" style={css('font-weight:700')}>{ASESOR}</span></span>
+                    : c.tipo === 'corta' ? <span>{c.pre}<Corta t={c.t} partir dicho={c.dicho} />{c.cola}</span> : c.d}
+                  {c.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{c.sub}</span> : null}
+                  {c.espera ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.espera}</i> : null}
                 </span>
               );
             })}
