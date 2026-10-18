@@ -981,11 +981,34 @@ console.log('\n── La forma corta, para los lectores de pantalla (P3A)');
 // servicio, como la cesárea de Gold de la 2A (comité, vuelta 1, 17/10).
 // Probado contra la rama con la P3A sin la G1A (falla) y con ella (pasa), y
 // contra la rama con la celda como botón (falla).
+// Vuelta 2 (comité, 17/10): «sin número» es cualquier dígito que no sea una
+// espera (antes solo se rechazaban 10 y 20, y «más 5 respiratorias», el número
+// de Gold que la fuente también da de dos maneras, pasaba en verde). Y la línea
+// de Gold no nombra un tipo de fisioterapia que la de Silver no nombre, ni al
+// revés: la vuelta 1 le dio a Gold «más respiratorias» y dejó a Silver en «15
+// sesiones al año», y parecía que solo Gold tenía respiratoria. Los dos
+// detectores se prueban antes contra un caso que tiene que fallar y uno que no.
+// Falla en la build de f40cc02 (la tarjeta de /planes y la hoja) y pasa con el
+// cambio.
 console.log('\n── La fisioterapia de Gold (G1A)');
 {
   const { ASESOR } = COV;
   const nota = 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.';
   const malas = [];
+  // Lo que no es un número de sesiones: las esperas («3 meses de espera», «Sin
+  // espera»). Sin \b: textContent pega la línea y su espera («respiratoria3 meses»).
+  const conNumero = (t) => /\d/.test((t || '').replace(/(?:\d+ (?:días|meses)|1 año) de espera|sin espera|\d+ días de afiliarte/gi, ''));
+  const TIPOS = [['traumatológica', /traumatol/i], ['neurológica', /neurol/i], ['después de una cirugía', /cirug|quirúrg/i], ['respiratoria', /respirat/i]];
+  const tipos = (t) => TIPOS.filter(([, re]) => re.test(t || '')).map(([n]) => n).join(', ');
+  const mismosTipos = (silver, gold) => tipos(silver) === tipos(gold);
+  const autoprueba = {
+    numeroQueVuelve: conNumero('GoldTraumatológica, neurológica o después de una cirugía, más 5 respiratorias3 meses de espera'),
+    lineaDeHoy: conNumero('Traumatológica, neurológica o después de una cirugía, y también respiratoria. 3 meses de espera.'),
+    asimetriaDeLaVuelta1: mismosTipos('15 sesiones al año. 3 meses de espera.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias. 3 meses de espera.'),
+    simetria: mismosTipos('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
+  };
+  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria) malas.push('los detectores de número y de simetría no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
+  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold);
   const visible = ([sel, nombre]) => {
     const t = document.querySelector(sel);
     if (!t) return null;
@@ -1015,10 +1038,10 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
+    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
     await page.mouse.move(5, 5);
   }
-  if (!tarjeta || tarjeta.gold === null || /\d/.test(tarjeta.gold.replace(/\b\d+ días de afiliarte/, '')) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta: ' + JSON.stringify(tarjeta));
+  if (!lineasBien(tarjeta) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjeta));
   // La tarjeta de /planes en la computadora: sin número para Gold y sin repetir
   // el pedido (comité, vuelta 1, 17/10: «Preguntale a tu asesor» salía tres
   // veces, una como línea de Gold que no decía qué preguntar).
@@ -1034,10 +1057,10 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
+    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
     await page.mouse.move(5, 5);
   }
-  if (!tarjetaPlanes || !tarjetaPlanes.gold || /\b(?:10|20)\b/.test(tarjetaPlanes.gold) || /asesor/i.test(tarjetaPlanes.gold) || !tarjetaPlanes.pie.includes(nota) || (tarjetaPlanes.todo.match(VECES) || []).length > 2) malas.push('/planes/ tarjeta: ' + JSON.stringify(tarjetaPlanes));
+  if (!lineasBien(tarjetaPlanes) || !tarjetaPlanes.pie.includes(nota) || (tarjetaPlanes.todo.match(VECES) || []).length > 2) malas.push('/planes/ tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjetaPlanes && { silver: tarjetaPlanes.silver, gold: tarjetaPlanes.gold, pie: tarjetaPlanes.pie }));
   // El plegable de /planes: los dos renglones de fisioterapia.
   const pleg = await page.evaluate(() => [...document.querySelectorAll('#detalle-internacion div')].filter((d) => d.children.length === 4 && /^Fisioterapia/.test((d.firstElementChild || {}).textContent || '')).map((d) => d.children[3].textContent.trim()));
   if (pleg.length !== 2 || pleg.some((t) => t !== ASESOR)) malas.push('/planes/ plegable: ' + JSON.stringify(pleg));
@@ -1070,11 +1093,11 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   await cel.waitForTimeout(450);
   // La hoja se lee: la línea de Gold dice qué cubre, sin número, y el pedido
   // al asesor va en las notas, sin repetirse.
-  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
-  if (!hoja || !hoja.gold || /\b(?:10|20)\b/.test(hoja.gold) || /asesor/i.test(hoja.gold) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio: ' + JSON.stringify(hoja));
+  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
+  if (!lineasBien(hoja) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(hoja && { silver: hoja.silver, gold: hoja.gold }));
   await ctx.close();
-  if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50) · ' + malas.join(' · '));
-  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin número para Gold y sin repetir el pedido');
+  if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50); en la tarjeta y la hoja, Silver y Gold nombran los mismos tipos · ' + malas.join(' · '));
+  else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin ningún número para Gold, con los mismos tipos que Silver y sin repetir el pedido; los detectores distinguen el caso malo del bueno');
 }
 
 // ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────

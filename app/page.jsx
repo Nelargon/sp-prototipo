@@ -395,8 +395,10 @@ export default function Page() {
       // que el cupo se comparte con otras especialidades (essential.json).
       d: ['Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.', '5 sesiones al año.', '6 sesiones al año.'], pie: pieQuien('Sesión de psicología') },
     // Gold: sin número hasta que SP aclare si son 20 + 5 o 10 + 3 (G1A, sp-interno#50).
+    // Silver y Gold salen de `cov` en coverage.js, las mismas líneas que /planes:
+    // escritas dos veces ya se habían separado (comité, vuelta 2, 17/10).
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: celdas('Fisioterapia'),
-      d: ['5 sesiones al año para toda la familia.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias.'], pie: pieQuien('Fisioterapia') },
+      d: ['5 sesiones al año para toda la familia.', cartDe['Fisioterapia'].cov[1].d + '.', cartDe['Fisioterapia'].cov[2].d + '.'], pie: pieQuien('Fisioterapia') },
     // Internación (13/10/2026, decisión 2A de Arturo): los 60 días de Silver y
     // Gold son de la «internación clínica por evento agudo» (parámetros clave);
     // la programada no tiene espera escrita (sp-interno#82) y no se deduce. Y la
