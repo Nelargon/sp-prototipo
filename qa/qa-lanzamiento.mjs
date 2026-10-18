@@ -853,51 +853,87 @@ console.log('\n── La forma corta (P3A)');
   // El pie no afirma nada del contrato ni la unidad de Silver y Gold (comité,
   // vuelta 3, 17/10): antes se comparaba con la constante y solo rechazaba la
   // palabra «contrato», así que un NOTA_UNIDAD que dijera «En Silver y Gold son
-  // para cada persona.» pasaba en verde. Ahora se lee el texto que se ve, oración
-  // por oración: manda a preguntar por Silver y Gold, y toda oración que nombre
-  // Silver o Gold con una unidad («por persona», «para todo el grupo»…) la dice
-  // después de «preguntale a tu asesor si», como pregunta, no como dato. «Por
-  // familia: …» es la definición de la unidad de Essential y queda.
-  // Corrección del 18/10 (verificador de accesibilidad): la lista de unidades
-  // enumeraba formas conocidas («por persona», «cada uno»…) y pasaban «En Silver
-  // y Gold, cada persona tiene su propio cupo: preguntale a tu asesor si querés
-  // saber cuántos son.», «son individuales», «cada integrante tiene los suyos» o
-  // «son por afiliado». Ahora el pie se compara con los textos que fijó Arturo
-  // el 17/10, escritos acá como literales (no leídos de coverage.js, que es lo
-  // que dibuja la página): la pregunta por la unidad tiene que estar tal cual, la
-  // definición de «por familia» puede estar, y cualquier otra oración solo puede
-  // ser otra pregunta al asesor («En Gold, preguntale a tu asesor cuántas
-  // sesiones de fisioterapia tiene.»): nada dicho antes de «preguntale» y ninguna
-  // palabra de unidad.
-  const DEFINICION = 'Por familia: un cupo que comparten todos los del grupo.';
-  const PREGUNTA_UNIDAD = 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.';
-  const OTRA_PREGUNTA = /^En (?:Essential|Silver|Gold|Silver y Gold), preguntale a tu asesor (?:cuánt[oa]s?|qué|cuál|cómo|si)\b[^.:;]*\.$/;
-  const DE_UNIDAD = /persona|familia|grupo|individual|integrante|afiliad|beneficiari|\bcada\b|cupo|\bsuy[oa]s\b/i;
-  const pieBien = (p) => {
-    if (!p || /contrato/i.test(p)) return false;
-    const oraciones = p.replace(/\s+/g, ' ').trim().split(/(?<=\.)\s+/);
-    return oraciones.includes(PREGUNTA_UNIDAD) && oraciones.every((o) => o === DEFINICION || o === PREGUNTA_UNIDAD || (OTRA_PREGUNTA.test(o) && !DE_UNIDAD.test(o)));
+  // para cada persona.» pasaba en verde.
+  // Corrección del 18/10 (verificador de accesibilidad): una lista de palabras de
+  // unidad dejaba pasar «cada persona tiene su propio cupo», «son individuales»,
+  // «cada integrante tiene los suyos» o «son por afiliado».
+  // Cierre de la vuelta 3 (verificador, 18/10): la lista se agrandó y siguieron
+  // pasando «… si querés, son compartidos.», «… porque son por titular.», «… que
+  // van por cabeza.», «… que son por socio.» y «… que se comparten entre todos.».
+  // Buscar las palabras que no van no termina nunca: siempre hay otra forma de
+  // decir la unidad. Ahora se mira al revés: el pie de una fila con «¿quién?» solo
+  // puede decir oraciones de una LISTA CERRADA, escritas acá como literales (no
+  // leídas de coverage.js, que es lo que dibuja la página), y tiene que traer la
+  // pregunta por la unidad. Cualquier otra oración falla, aunque sea inocente: si
+  // el sitio necesita decir algo nuevo en ese pie, se suma acá a conciencia, con
+  // su origen. Antes de comparar se normalizan los espacios (también el duro) y
+  // las comillas; nada más.
+  // Lo que el sitio muestra hoy en esos pies (relevado en el navegador el 18/10:
+  // home y /planes a 1280 px, todas las filas con «¿quién?», y la hoja de esos
+  // servicios a 390 px) son estas tres oraciones y, en la hoja, su cierre fijo.
+  // No hay otra nota al asesor.
+  const PIE_APROBADO = {
+    // NOTA_UNIDAD de app/coverage.js, como la fijó Arturo el 17/10 (P3A, «Todo A»):
+    // el pie del home, el de /planes y la hoja de tomografía, resonancia,
+    // psicología y fisioterapia. Es la que tiene que estar.
+    PREGUNTA_UNIDAD: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+    // La definición de «Por familia» del pie del home (PIE_QUIEN del 17/10;
+    // pieQuien de app/page.jsx). /planes y la hoja no la dicen.
+    DEFINICION: 'Por familia: un cupo que comparten todos los del grupo.',
+    // La pregunta de la fisioterapia de Gold (G1A, Arturo, 17/10; `notaAsesor` de
+    // Fisioterapia en coverage.js): el pie de Fisioterapia en el home y en
+    // /planes, y su hoja.
+    PREGUNTA_FISIO_GOLD: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
   };
+  // El cierre de toda hoja del celular (app/planes/ComparativaCelular.jsx, el
+  // último párrafo de enLosTres): vale solo en la hoja, no en el pie.
+  const CIERRE_HOJA = 'El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.';
+  const normal = (t) => String(t || '').replace(/[\s\u00a0\u202f\u2009]+/g, ' ').replace(/[«»“”„‟"]/g, '"').replace(/[‘’‚‛`´]/g, "'").trim();
+  // Se sacan del principio, una por una, las oraciones aprobadas; tiene que no
+  // quedar nada. Sin partir en oraciones a mano: un punto adentro de una oración
+  // aprobada (el cierre de la hoja tiene dos) no la parte.
+  const pieBien = (p, extra = []) => {
+    const lista = Object.values(PIE_APROBADO).concat(extra).map(normal);
+    let resto = normal(p);
+    const dichas = [];
+    for (let o = lista.find((x) => resto === x || resto.startsWith(x + ' ')); resto && o; o = lista.find((x) => resto === x || resto.startsWith(x + ' '))) { dichas.push(o); resto = resto.slice(o.length).trim(); }
+    return !!normal(p) && resto === '' && dichas.includes(normal(PIE_APROBADO.PREGUNTA_UNIDAD));
+  };
+  const { PREGUNTA_UNIDAD: U, DEFINICION, PREGUNTA_FISIO_GOLD } = PIE_APROBADO;
   const P = DEFINICION + ' ';
   const pieAuto = {
-    deHoy: pieBien(P + PREGUNTA_UNIDAD),
-    fisioterapia: pieBien(P + PREGUNTA_UNIDAD + ' En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.'),
-    afirma: pieBien(P + 'En Silver y Gold son para cada persona.'),
-    afirmaYPregunta: pieBien(P + 'En Silver y Gold son por persona; preguntale a tu asesor si cambia.'),
-    contrato: pieBien(P + 'Según el contrato, en Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.'),
-    noPregunta: pieBien(P.trim()),
-    cadaPersona: pieBien(P + 'En Silver y Gold, cada persona tiene su propio cupo: preguntale a tu asesor si querés saber cuántos son.'),
-    cadaPersonaYPregunta: pieBien(P + 'En Silver y Gold, cada persona tiene su propio cupo. ' + PREGUNTA_UNIDAD),
-    individuales: pieBien(P + 'En Silver y Gold son individuales. ' + PREGUNTA_UNIDAD),
-    integrante: pieBien(P + 'En Silver y Gold cada integrante tiene los suyos. ' + PREGUNTA_UNIDAD),
-    afiliado: pieBien(P + 'En Silver y Gold son por afiliado. ' + PREGUNTA_UNIDAD),
-    preguntaQueAfirma: pieBien(P + 'En Silver y Gold, preguntale a tu asesor si querés: son para cada persona.'),
-    afirmaDespues: pieBien(P + PREGUNTA_UNIDAD + ' Son para cada persona.'),
-    otraQueAfirma: pieBien(P + PREGUNTA_UNIDAD + ' En Gold, preguntale a tu asesor si son más, porque son por persona.'),
+    // Los pies de hoy: tienen que pasar.
+    buenos: { home: P + U, homeFisio: P + U + ' ' + PREGUNTA_FISIO_GOLD, planes: U, planesFisio: U + ' ' + PREGUNTA_FISIO_GOLD, conEspacioDuro: P.replace(/ /g, '\u00a0') + U },
+    // Tienen que fallar: las cinco del verificador del cierre de la vuelta 3, tres
+    // nuevas (la pregunta estirada, una oración sin punto, la de Gold con la
+    // unidad) y las de las vueltas anteriores.
+    malos: {
+      compartidos: P + U + ' En Silver y Gold, preguntale a tu asesor si querés, son compartidos.',
+      titular: P + U + ' En Silver y Gold, preguntale a tu asesor cuántos son, porque son por titular.',
+      cabeza: P + U + ' En Gold, preguntale a tu asesor cuántas son, que van por cabeza.',
+      socio: P + U + ' En Silver y Gold, preguntale a tu asesor cómo se usan, que son por socio.',
+      entreTodos: P + U + ' En Silver y Gold, preguntale a tu asesor cuántos son, que se comparten entre todos.',
+      preguntaEstirada: P + 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo, aunque suelen ser por persona.',
+      sinPunto: P + U + ' Van por titular',
+      fisioConUnidad: P + U + ' En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene cada integrante.',
+      afirma: P + 'En Silver y Gold son para cada persona.',
+      afirmaYPregunta: P + 'En Silver y Gold son por persona; preguntale a tu asesor si cambia.',
+      contrato: P + 'Según el contrato, en Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
+      noPregunta: P.trim(),
+      cadaPersona: P + 'En Silver y Gold, cada persona tiene su propio cupo: preguntale a tu asesor si querés saber cuántos son.',
+      individuales: P + 'En Silver y Gold son individuales. ' + U,
+      integrante: P + 'En Silver y Gold cada integrante tiene los suyos. ' + U,
+      afiliado: P + 'En Silver y Gold son por afiliado. ' + U,
+      afirmaDespues: P + U + ' Son para cada persona.',
+      otraQueAfirma: P + U + ' En Gold, preguntale a tu asesor si son más, porque son por persona.',
+      cierreDeLaHojaEnElPie: U + ' ' + CIERRE_HOJA,
+    },
   };
-  const pieMalos = Object.entries(pieAuto).filter(([k, v]) => !['deHoy', 'fisioterapia'].includes(k) && v).map(([k]) => k);
-  if (!pieAuto.deHoy || !pieAuto.fisioterapia || pieMalos.length) mal('el detector del pie no distingue la pregunta al asesor de una afirmación de unidad o del contrato: ' + JSON.stringify(pieAuto));
-  else bien('el detector del pie deja pasar los dos pies de hoy (con la pregunta que fijó Arturo) y rechaza las ' + (Object.keys(pieAuto).length - 2) + ' afirmaciones de unidad o del contrato («son para cada persona», «cada persona tiene su propio cupo», «son individuales», «por afiliado», la unidad antes o después de la pregunta, «contrato» y un pie sin la pregunta)');
+  const pieMalos = Object.entries(pieAuto.malos).filter(([, p]) => pieBien(p)).map(([k]) => k);
+  const pieBuenosNo = Object.entries(pieAuto.buenos).filter(([, p]) => !pieBien(p)).map(([k]) => k);
+  if (!pieBien(U + ' ' + CIERRE_HOJA, [CIERRE_HOJA])) pieBuenosNo.push('hoja con su cierre');
+  if (pieMalos.length || pieBuenosNo.length) mal('el detector del pie no distingue los pies de hoy de un pie con otra oración: pasan ' + JSON.stringify(pieMalos) + ', fallan ' + JSON.stringify(pieBuenosNo));
+  else bien('el detector del pie (lista cerrada de ' + Object.keys(PIE_APROBADO).length + ' oraciones) deja pasar los pies de hoy y rechaza los ' + Object.keys(pieAuto.malos).length + ' que dicen otra cosa («son compartidos», «por titular», «por cabeza», «por socio», «se comparten entre todos», la pregunta estirada, una oración sin punto, «contrato», un pie sin la pregunta…)');
   if (!HAY_DUDA) salta('la celda que se abre con clic y teclado');
   else if (!abre || abre.conHover || !abre.conClic || abre.conClic.planes !== 3 || !pieBien(abre.conClic.pie) || !abre.cerrada || !abre.conTeclado || !abre.conEnter || !abre.conEspacio || !abre.cierraEscape || !abre.abreEnter || !abre.abreEspacio || !abre.veMudas || abre.ev !== 1) mal('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') tiene que abrir la tarjeta con un clic y con el teclado (Enter o Espacio no la cierran, y con la tarjeta cerrada la abren), no al pasar el mouse, con el pie que manda al asesor sin afirmar nada del contrato, y medirse como «duda»; la prueba tiene que ver las teclas mudas (' + JSON.stringify(abre) + ')');
   else bien('computadora: la celda con «' + DUDA + '» (' + FILA_DUDA + ') abre la tarjeta con un clic y con el teclado; Enter o Espacio no la cierran y, con la tarjeta cerrada, la abren (la prueba ve las teclas mudas); no se abre al pasar el mouse; el pie manda al asesor y se mide como «duda»');
@@ -924,6 +960,65 @@ console.log('\n── La forma corta (P3A)');
   else if (!lector || lector.expandidos !== 1 || !lector.describe || lector.nombre !== 1 || lector.sinFila) mal('computadora: el lector de pantalla tiene que oír la fila y el plan en la celda con «' + DUDA + '» (' + FILA_DUDA + '), la tarjeta como su descripción, y «expandido» solo en la celda que la abrió (' + JSON.stringify(lector) + ')');
   else bien('computadora: el lector oye «' + FILA_DUDA + ', Silver: …» en la celda con «' + DUDA + '», la tarjeta como descripción y «expandido» solo ahí');
   await page.close();
+
+  // 1b. Todos los pies, no solo el de la primera fila (cierre de la vuelta 3,
+  // 18/10): el pie de cada fila que en Silver o Gold dice «¿quién?», en el home y
+  // en /planes, y las notas de la hoja de esos servicios en el celular, con la
+  // lista cerrada de arriba. Las filas salen de la página (las que tienen la
+  // celda con la duda), no de una lista: si SP contesta una, deja de mirarse sola.
+  const piesMal = [];
+  const piesVistos = [];
+  if (HAY_DUDA) {
+    const pp = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+      await pp.goto(BASE + ruta, { waitUntil: 'networkidle' });
+      await pp.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+      const conDuda = await pp.evaluate((sel) => {
+        const filas = [...document.querySelectorAll(sel + ' .cmp2-lab .cmp2-c')].map((c) => c.textContent.trim());
+        const r = new Set();
+        [...document.querySelectorAll(sel + ' .cmp2-plan')].forEach((pl) => [...pl.querySelectorAll('.cmp2-c')].forEach((c, k) => { if (c.querySelector('.cmp2-duda')) r.add(filas[k]); }));
+        return [...r];
+      }, sel);
+      if (!conDuda.length) piesMal.push(ruta + ': ninguna fila con «' + DUDA + '», y coverage.js dice que hay');
+      for (const nombre of conDuda) {
+        const btn = pp.locator(sel + ' .cmp2-lab .cmp2-srv', { hasText: nombre }).first();
+        await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+        await pp.waitForTimeout(200);
+        const c = await btn.boundingBox();
+        await pp.mouse.move(5, 5);
+        await pp.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+        await pp.waitForTimeout(200);
+        const pie = await pp.evaluate((sel) => { const k = document.querySelector(sel + ' .cmp2-tarjeta'); return k ? ((k.querySelector('.cmp2-tarjeta-pie') || {}).innerText || '') : null; }, sel);
+        piesVistos.push(ruta + ' ' + nombre);
+        if (pie === null || !pieBien(pie)) piesMal.push(ruta + ' ' + nombre + ': ' + JSON.stringify(pie));
+      }
+      await pp.mouse.move(5, 5);
+    }
+    await pp.close();
+    // La hoja de esos servicios en el celular: sus notas, en orden, con el cierre fijo.
+    const ctxH = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const hoja = await ctxH.newPage();
+    await hoja.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    await hoja.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+    await hoja.waitForTimeout(450);
+    const FILA_H = '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila';
+    // Las filas de la lista que dicen «¿quién?» en Silver o Gold (lo que se ve).
+    const enLista = await hoja.$$eval(FILA_H, (bs, duda) => bs.filter((b) => [...b.querySelectorAll(':scope > span > span')].slice(1).some((c) => c.textContent.includes(duda))).map((b) => b.querySelector('b').textContent.replace(/ ›$/, '')), DUDA);
+    if (!enLista.length) piesMal.push('hoja: ninguna fila de la lista con «' + DUDA + '»');
+    for (const s of enLista) {
+      await hoja.locator(FILA_H, { hasText: s }).first().tap();
+      await hoja.waitForTimeout(400);
+      const notas = await hoja.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo > div'); return d ? [...d.children].filter((x) => x.tagName === 'P').map((x) => x.textContent).join(' ') : null; });
+      piesVistos.push('hoja ' + s);
+      if (notas === null || !pieBien(notas, [CIERRE_HOJA])) piesMal.push('hoja ' + s + ': ' + JSON.stringify(notas));
+      await hoja.locator('.cmp-cel .hoja[data-abierta="1"] button', { hasText: 'Los once servicios' }).first().tap();
+      await hoja.waitForTimeout(350);
+    }
+    await ctxH.close();
+  }
+  if (!HAY_DUDA) salta('los pies de las filas con la duda');
+  else if (piesMal.length) mal('el pie de una fila con «' + DUDA + '» dice una oración que no está en la lista cerrada (o le falta la pregunta por la unidad) · ' + piesMal.join(' · '));
+  else bien('los ' + piesVistos.length + ' pies y hojas de las filas con «' + DUDA + '» dicen solo oraciones de la lista cerrada, con la pregunta por la unidad (' + piesVistos.join(', ') + ')');
 
   // 2. Celular: el toque, las líneas de las tarjetas y la lista de los once.
   // También a 430 (comité, vuelta 3, 17/10): es el piso móvil del proyecto y ahí
@@ -1989,25 +2084,54 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
 //   «al segundo año»), «el mes 4», «al año de contratarlo», «a los 365» y «en un
 //   año». «En un año» solo pasa en la definición de tope del glosario («podés
 //   usar algo en un año»), que es una frecuencia.
+// Cierre de la vuelta 3 (verificador, 18/10): seguían pasando los números en
+// palabras («Se usa a los noventa días.», «a los dieciocho meses»), las otras
+// unidades («un trimestre», «medio año», «después de un semestre», «en el
+// segundo semestre») y las formas relativas («el año que viene», «al cumplir el
+// año»). La clase ahora es: cualquier cantidad (en cifras, en palabras del uno al
+// cien, «medio», «un par de», «unos», «varios»…) con cualquier unidad de tiempo
+// (día, semana, quincena, mes, bimestre, trimestre, cuatrimestre, semestre,
+// año), salvo un tope por año; un ordinal o «próximo» con esa unidad; la unidad
+// con «siguiente», «que viene» o «entrante»; y las formas relativas «al cumplir»,
+// «después de un», «recién a los» (o «recién al», «recién después»…) y «a partir
+// del». Los topes que hoy pasan siguen pasando («Hasta 2 días al año», «20
+// días/familia/año», «3 por mes», «1 al año», «en 23 de las 43») y «después de
+// una cirugía» (la fisioterapia de Silver y Gold) no es una espera.
 console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
 {
+  const DIGITO = '\\d+(?:[.,]\\d+)?';
+  const UNO_A_NUEVE = '(?:un[oa]?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve)';
+  // Del dos al cien en palabras («treinta y cinco», «veintiún», «dieciocho»).
+  const NUM_PAL = '(?:(?:treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)(?:\\s+y\\s+' + UNO_A_NUEVE + ')?|veinti(?:[úu]n[oa]?|d[oó]s|tr[eé]s|cuatro|cinco|s[eé]is|siete|ocho|nueve)|dieci(?:s[eé]is|siete|ocho|nueve)|diez|once|doce|trece|catorce|quince|veinte|cien(?:to)?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve)';
   // «en un año» es un plazo («lo podés usar en un año»), salvo después de una
   // cantidad, donde es una frecuencia («hasta 5 sesiones en un año», «usar algo
   // en un año» de la definición de tope).
-  const CUANTO = '(?:\\d+|(?<!(?:\\balgo|\\bveces|\\d+\\s+[a-záéíóúñ]+)\\s+en\\s)un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce)';
-  const PLAZO_U = '(?:d[ií]as?|semanas?|mes(?:es)?|años?)';
-  const ORDINAL = '(?:primer[oa]?|segund[oa]|tercer[oa]?|cuart[oa]|quint[oa]|sext[oa]|s[ée]ptim[oa]|octav[oa]|noven[oa]|d[ée]cim[oa]|[úu]ltim[oa])';
+  const UN = '(?<!(?:\\balgo|\\bveces|(?:' + DIGITO + '|' + NUM_PAL + ')\\s+[a-záéíóúñ]+)\\s+en\\s)un[oa]?';
+  const CUANTO = '(?:' + DIGITO + '|' + NUM_PAL + '|' + UN + '|medi[oa]|un\\s+par\\s+de|unos|unas|varios|varias|algunos|algunas|pocos|pocas)';
+  const PLAZO_U = '(?:d[ií]as?|semanas?|quincenas?|mes(?:es)?|bimestres?|trimestres?|cuatrimestres?|semestres?|años?)';
+  const UNIDAD = '(?:d[ií]a|semana|quincena|mes|bimestre|trimestre|cuatrimestre|semestre|año)';
+  const ORDINAL = '(?:primer[oa]?|segund[oa]|tercer[oa]?|cuart[oa]|quint[oa]|sext[oa]|s[ée]ptim[oa]|octav[oa]|noven[oa]|d[ée]cim[oa]|[úu]ltim[oa]|pr[oó]xim[oa])';
+  const FIN = '(?![\\w\\u00c0-\\u024f])';
   const ESPERA = new RegExp([
-    // un plazo que no es un tope por año: «3 meses», «un año», «365 días»
-    '(?:^|[^\\w\\u00c0-\\u024f])' + CUANTO + '\\s+' + PLAZO_U + '(?![\\w\\u00c0-\\u024f])(?!\\s*(?:al|por)\\s+año|\\s*\\/)',
-    // un ordinal: «al tercer mes», «a partir del segundo año», «primer día»
-    '\\b' + ORDINAL + '\\s+(?:d[ií]a|semana|mes|año)\\b',
+    // una cantidad con su unidad que no es un tope por año: «3 meses», «un año»,
+    // «noventa días», «medio año», «un trimestre», «un par de meses»
+    '(?:^|[^\\w\\u00c0-\\u024f])' + CUANTO + '\\s+' + PLAZO_U + FIN + '(?!\\s*(?:al|por)\\s+año|\\s*\\/)',
+    // un ordinal: «al tercer mes», «en el segundo semestre», «el próximo año»
+    '\\b' + ORDINAL + '\\s+' + UNIDAD + FIN,
+    // la unidad con lo que la ubica: «el año que viene», «al mes siguiente»
+    '\\b' + UNIDAD + '\\s+(?:siguiente|pr[oó]xim[oa]|entrante|que\\s+viene)' + FIN,
     // un número de día, semana, mes o año: «el mes 4», «a partir del día 91»
     '\\b(?:d[ií]a|semana|mes|año)\\s+(?:n[.º°]\\s*)?\\d+\\b',
     // «al año de contratarlo», «al mes de afiliarte»
     '\\bal\\s+(?:d[ií]a|mes|año)\\s+de\\b',
-    // «a los 365», «a las 6 semanas»
-    '\\ba\\s+l[oa]s\\s+\\d+',
+    // «a los 365», «a las 6 semanas», «a los noventa»
+    '\\ba\\s+l[oa]s\\s+(?:\\d+|' + NUM_PAL + ')' + FIN,
+    // las formas relativas: «al cumplir el año», «después de un semestre»,
+    // «recién a los…», «recién al año», «a partir del…»
+    '\\bal\\s+cumplir\\b',
+    '\\bdespu[eé]s\\s+de\\s+un' + FIN,
+    '\\breci[eé]n\\s+(?:a\\s+l[oa]s|al|a\\s+partir|despu[eé]s|desde|cuando|pasad[oa]s?|tras|en\\s+el)' + FIN,
+    '\\ba\\s+partir\\s+del' + FIN,
     // lo que dice que no hay espera: «desde el comienzo», «desde que entrás»
     '\\bdesde\\s+(?:el\\s+(?:comienzo|principio|inicio)|que\\s+(?:entr|firm|contrat|te\\s+(?:afili|sum)))',
     '\\bd[ií]a\\s+uno\\b', '\\besper(?:a[rns]?|ás|ando|ado)\\b', 'carencia', 'afilia', 'desde el d[ií]a', 'inmediat',
@@ -2016,11 +2140,20 @@ console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
   const LEER_TARJETA = `(t) => { const out = []; const w = document.createTreeWalker(t, NodeFilter.SHOW_TEXT); for (let n = w.nextNode(); n; n = w.nextNode()) out.push(n.data); return out.join(' ').replace(/\\s+/g, ' ').trim(); }`;
   const esperaAuto = {
     malas: ['esperás un año', 'después de 365 días', 'a partir del día 91', 'a los 365 días de afiliarte', '3 meses de espera', 'Sin espera', 'desde el primer día', 'Se puede usar a los 150 días.', 'Desde el día uno.', 'Cubre de inmediato.', 'Hay que esperar seis meses.', 'Lo usás en 3 meses.',
-      'A partir del tercer mes.', 'Desde el mes 4.', 'Al tercer mes ya lo usás.', 'Recién al año de contratarlo.', 'Lo podés usar en un año.', 'A partir del segundo año.', 'Se usa a los 365.', 'Está habilitado desde el comienzo.', 'Lo usás desde que entrás.'],
+      'A partir del tercer mes.', 'Desde el mes 4.', 'Al tercer mes ya lo usás.', 'Recién al año de contratarlo.', 'Lo podés usar en un año.', 'A partir del segundo año.', 'Se usa a los 365.', 'Está habilitado desde el comienzo.', 'Lo usás desde que entrás.',
+      // Las del verificador del cierre de la vuelta 3 (18/10): las diez de su
+      // informe y las de su prueba fuera del navegador.
+      'Se usa a los noventa días.', 'Lo usás a los treinta días.', 'Recién después de un semestre.', 'a los quince días', 'a los dieciocho meses', 'medio año', 'un trimestre', 'en el segundo semestre', 'el año que viene', 'al cumplir el año',
+      'Recién a los quince días.', 'Disponible tras medio año.', 'Después de un semestre.', 'Pasado un trimestre ya lo usás.', 'Lo usás el año que viene.', 'Con un año y medio de antigüedad.', 'Tras seis meses.', 'Se habilita en el segundo semestre.', 'Lo usás pasados 90 días.', 'Lo usás después de 3 meses.',
+      // Y otras de la misma clase.
+      'Lo usás en un par de meses.', 'Al tercer trimestre ya entra.', 'Se habilita el mes que viene.', 'A los cuarenta y cinco días.', 'Lo usás al semestre siguiente.', 'Dentro de veintiún días.', 'En una quincena.', 'Recién al año.', 'Después de un tiempo.', 'Lo usás en unas semanas.', 'Recién en el segundo año.', 'Cien días después.', 'El próximo año ya lo usás.'],
     buenas: ['20 días al año para toda la familia, en habitación privada.', 'Hasta 2 días al año por persona.', '25 días/persona/año', 'Hasta 3 por mes en cada especialidad; después, con copago.', '1 al año, y no ponés nada.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.',
-      'Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.', '1 al año para toda la familia. Sin contraste ni sedación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.', 'Hasta 6 días al año.', 'Hasta Gs. 350 mil por evento.', 'Hasta 5 sesiones en un año.'],
+      'Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.', '1 al año para toda la familia. Sin contraste ni sedación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.', 'Hasta 6 días al año.', 'Hasta Gs. 350 mil por evento.', 'Hasta 5 sesiones en un año.',
+      // Los topes que pasaban tienen que seguir pasando, también en palabras, y
+      // «después de una cirugía» (la fisioterapia de Silver y Gold) no es espera.
+      'Hasta 2 días al año', '20 días/familia/año', '3 por mes', '1 al año', 'Hasta dos días al año por persona.', 'Cinco sesiones en un año.', 'Gs. 1,5 millones/evento', 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.'],
   };
-  const formas = esperaAuto.malas.length;
+  const formas = esperaAuto.malas.length, esperaBuenas = esperaAuto.buenas.length;
   esperaAuto.malas = esperaAuto.malas.filter((t) => !ESPERA.test(t));
   esperaAuto.buenas = esperaAuto.buenas.filter((t) => ESPERA.test(t));
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -2041,7 +2174,7 @@ console.log('\n── La tarjeta del servicio del home, sin esperas (P2A)');
   if (!ESPERA.test(enContexto.mala)) esperaAuto.malas.push('en contexto: ' + enContexto.mala);
   if (ESPERA.test(enContexto.buena)) esperaAuto.buenas.push('en contexto: ' + enContexto.buena);
   if (esperaAuto.malas.length || esperaAuto.buenas.length) mal('el detector de esperas no distingue el caso malo del bueno: ' + JSON.stringify(esperaAuto));
-  else bien('el detector de esperas encuentra las ' + formas + ' formas de un plazo («esperás un año», «a partir del tercer mes», «al año de contratarlo», «a los 365»…) y la espera al principio de la línea de un plan en una tarjeta armada en la página (que con textContent se leía «' + enContexto.pegada.slice(enContexto.pegada.indexOf('Silver'), enContexto.pegada.indexOf('Silver') + 14) + '…»), y deja pasar los topes por año');
+  else bien('el detector de esperas encuentra las ' + formas + ' formas de un plazo («esperás un año», «a partir del tercer mes», «al año de contratarlo», «a los 365», «a los noventa días», «medio año», «un trimestre», «en el segundo semestre», «el año que viene», «al cumplir el año»…) y la espera al principio de la línea de un plan en una tarjeta armada en la página (que con textContent se leía «' + enContexto.pegada.slice(enContexto.pegada.indexOf('Silver'), enContexto.pegada.indexOf('Silver') + 14) + '…»), y deja pasar los ' + (esperaBuenas) + ' topes por año («Hasta 2 días al año», «20 días/familia/año», «3 por mes», «1 al año», «en 23 de las 43»…)');
   await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
   const nombres = await page.$$eval('#cartilla .cmp2-lab .cmp2-srv', (bs) => bs.map((b) => b.textContent.trim()));
   const conEspera = [];
