@@ -4,12 +4,12 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, engine } from '../quote';
-import { coverage, carencias, NOTA_UNIDAD, ASESOR } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, minuscula } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
-import Corta, { conCortas, frase } from '../components/Corta';
+import Corta, { conCortas, frase, leer } from '../components/Corta';
 import datos from '../../lib/prestaciones.json';
 
 /* La comparativa de /planes en el celular (lámina 59; Arturo la confirmó el
@@ -145,8 +145,11 @@ export default function ComparativaCelular() {
     // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
     const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota, COV[n] && COV[n].notaAsesor])).filter(Boolean))];
     // Las que mandan al asesor van primero: es lo que la persona vino a
-    // preguntar («¿quién?» y, en fisioterapia, cuántas sesiones tiene Gold).
-    const arriba = notas.filter((t) => t === NOTA_UNIDAD || nombres.some((n) => COV[n] && COV[n].notaAsesor === t));
+    // preguntar («¿quién?», cuántas sesiones tiene Gold, la cesárea de Gold, la
+    // internación programada). Toda nota que lo diga, no una lista de las
+    // conocidas: la cesárea y la programada quedaban abajo, en gris (comité,
+    // vuelta 3, 17/10).
+    const arriba = notas.filter((t) => t.toLowerCase().includes(ASESOR.toLowerCase()));
     return (
       <>
         {arriba.map((t) => <p key={t} style={css(inter + 'font-size:13.5px;line-height:1.5;color:var(--sp-text-2);margin:0 0 12px')}>{t}</p>)}
@@ -178,13 +181,21 @@ export default function ComparativaCelular() {
   // duda se dice con el mismo peso (lámina 84). Con su `pre`, si lo tiene: en
   // urgencias, Essential dice «Consulta 24 h · remedios» y manda al asesor por
   // el tope (R1A; comité, vuelta 2, 17/10).
+  // La espera va con su condición (`cuando` de carencias(): «si es por algo
+  // agudo», «para el parto») y, si una parte de la fila manda al asesor en ese
+  // plan (la cesárea de Gold), una línea más que lo dice, con la oración entera
+  // para el lector (comité, vuelta 3, 17/10).
   const celdaDe = (s, i) => {
     const t = s.corta && s.corta[i];
-    const e = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]].dias[i];
+    const c = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]];
+    const e = c && c.dias[i];
+    const cuando = c && c.cuando && c.cuando[i];
+    const alAsesor = c && c.alAsesor && c.alAsesor[i];
     return {
       tipo: t === ASESOR ? 'asesor' : t && t.includes('/') ? 'corta' : 'frase',
       t, pre: (s.pre && s.pre[i]) || '', cola: (s.cola && s.cola[i]) || '', dicho: s.dicho && s.dicho[i],
-      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? waitLabel(e) : null,
+      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? waitLabel(e) + (cuando ? ' ' + cuando : '') : null,
+      aparte: alAsesor ? conAsesor(alAsesor) : null, aparteDicho: alAsesor ? c.notaPlan[i] : null,
     };
   };
   // El nombre de cada fila de la lista para el lector de pantalla. El botón se
@@ -192,12 +203,16 @@ export default function ComparativaCelular() {
   // del botón: se oían tres valores pegados sin saber de cuál eran («5 por
   // familia al año Sin espera 15 al año…») y la «›» (comité, vuelta 2, 17/10).
   // Ahora cada valor va con su plan: «Fisioterapia. Essential: 5 por familia al
-  // año, sin espera. Silver: … Gold: Preguntale a tu asesor, 3 meses de espera.»
-  const minuscula = (x) => x.charAt(0).toLowerCase() + x.slice(1);
+  // año, sin espera. Silver: … Gold: preguntale a tu asesor, 3 meses de espera.»
+  // Todo pasa por `leer` (Corta.jsx): la plata se oye «guaraníes», el «·» es una
+  // coma y lo que manda al asesor va después de dos puntos, en minúscula
+  // («consulta 24 horas, remedios: preguntale a tu asesor»; comité, vuelta 3).
   const nombreFila = (s) => s.name + '. ' + planes.map((p, i) => {
     const c = celdaDe(s, i);
-    const valor = c.tipo === 'asesor' ? c.pre + ASESOR : c.tipo === 'corta' ? c.pre + (c.dicho || frase(c.t)) + c.cola : c.d;
-    return p.short + ': ' + [valor, c.sub && minuscula(c.sub), c.espera && minuscula(c.espera)].filter(Boolean).join(', ');
+    const pre = c.pre ? leer(c.pre) : '';
+    const valor = c.tipo === 'asesor' ? (pre ? pre + ': ' : '') + minuscula(ASESOR)
+      : c.tipo === 'corta' ? (pre ? pre + ' ' : '') + (c.dicho || frase(c.t)) + c.cola : leer(c.d);
+    return p.short + ': ' + [valor, c.sub && minuscula(c.sub), c.espera && minuscula(c.espera)].filter(Boolean).join(', ') + (c.aparteDicho ? '; ' + c.aparteDicho : '');
   }).join('. ') + '.';
   const lista = (
     <>
@@ -217,6 +232,7 @@ export default function ComparativaCelular() {
                     : c.tipo === 'corta' ? <span>{c.pre}<Corta t={c.t} partir dicho={c.dicho} />{c.cola}</span> : c.d}
                   {c.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{c.sub}</span> : null}
                   {c.espera ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.espera}</i> : null}
+                  {c.aparte ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.aparte}</i> : null}
                 </span>
               );
             })}

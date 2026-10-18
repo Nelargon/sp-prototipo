@@ -17,6 +17,7 @@
 // está en sp-interno#110).
 const yes = (d) => ({ s: 'Cubierta', ok: true, d });
 const no = (s, d) => ({ s, ok: false, d });
+export const minuscula = (x) => x.charAt(0).toLowerCase() + x.slice(1);
 
 // LA FORMA CORTA (P3, opción A: la regla de escaneo de Arturo del 13/10/2026,
 // elegida el 17/10/2026 con «Todo A»). Lo que se escanea (las celdas de las
@@ -50,6 +51,15 @@ const notaDe = (quien) => (quien === DUDA ? NOTA_UNIDAD : undefined);
 // La celda que manda al asesor, una sola forma en todo el sitio (R1A, 17/10).
 // Va donde la fuente no fija el dato o se contradice, en lugar del número.
 export const ASESOR = 'Preguntale a tu asesor';
+// Lo que se escanea y manda al asesor por una parte de la fila («Cesárea:
+// preguntale a tu asesor»): la misma forma única, después de lo que se pregunta.
+export const conAsesor = (que) => que + ': ' + minuscula(ASESOR);
+// Las dos condiciones de espera que el sitio ya dice y que viajan con el número
+// fuera de su fila (comité, vuelta 3, 17/10): los 2 meses de internación de
+// Silver y Gold son si es por algo agudo (la programada no tiene espera escrita,
+// sp-interno#82), y la cesárea de Gold manda al asesor (sp-interno#116).
+const SI_AGUDO = 'si es por algo agudo';
+const CESAREA_GOLD = 'para una cesárea, ' + minuscula(ASESOR) + ' cuánto esperás';
 
 // Carencia = días de espera desde la afiliación hasta poder usar la cobertura.
 // Fuente: las 935 filas de datos/planes-vigentes/grilla-coberturas-precios-jul2026.json,
@@ -82,7 +92,7 @@ export const coverage = () => [
   // `cola`, lo que sigue a la forma corta en esa hoja: las condiciones de
   // Essential que hoy se ven y no pueden quedar solo en el contrato (comité del
   // 13/10, ajuste 4).
-  { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', wait: [365, null, null], waitNote: 'En Silver y Gold, 2 meses si es por algo agudo; si es programada, preguntale a tu asesor cuánto esperás.', corta: [anual('20 días', 'familia'), anual('20 días', 'persona'), anual('25 días', 'persona')], sub: ['Habitación privada', 'Semi-suite', 'Semi-suite'], cov: [yes('Habitación privada, hasta 20 días al año por familia'), yes('Semi-suite, hasta 20 días al año por persona'), yes('Semi-suite, hasta 25 días al año por persona')] },
+  { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', wait: [365, null, null], waitNote: 'En Silver y Gold, 2 meses ' + SI_AGUDO + '; si es programada, ' + minuscula(ASESOR) + ' cuánto esperás.', corta: [anual('20 días', 'familia'), anual('20 días', 'persona'), anual('25 días', 'persona')], sub: ['Habitación privada', 'Semi-suite', 'Semi-suite'], cov: [yes('Habitación privada, hasta 20 días al año por familia'), yes('Semi-suite, hasta 20 días al año por persona'), yes('Semi-suite, hasta 25 días al año por persona')] },
   { name: 'Terapia intensiva', icon: 'M3 12h4l2-5 4 10 2-5h6', cov: [yes('Hasta 2 días al año'), yes('Hasta 5 días al año'), yes('Hasta 6 días al año')] },
   // Parto: 365 días en Essential y 300 en Silver y Gold. Es la espera más larga
   // y la que más caro sale descubrir tarde; por eso además tiene aviso propio en
@@ -90,8 +100,10 @@ export const coverage = () => [
   // 2A de Arturo): el contrato de Gold se contradice (Cuadro 3: 150 días;
   // cláusula de maternidad 2.5.2: 300). Mostrar los 10 meses sin más tomaba el
   // otro lado, así que la cesárea de Gold manda al asesor. Vuelve con su número
-  // si SP lo aclara (sp-interno#116).
-  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], nota: 'En Gold, preguntale a tu asesor cuánto esperás para una cesárea.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
+  // si SP lo aclara (sp-interno#116). La nota dice lo mismo, con las mismas
+  // palabras, que el cuadro de esperas, el simulador y la cotización
+  // (CESAREA_GOLD; comité, vuelta 3, 17/10).
+  { name: 'Parto o cesárea', icon: 'M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z', wait: [365, 300, 300], nota: 'En Gold, ' + CESAREA_GOLD + '.', cov: [yes('Con el bebé en nursery · medicamentos hasta Gs. 350 mil'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1 millón'), yes('Con el bebé en nursery · medicamentos hasta Gs. 1,5 millones')] },
   // Los topes «por evento» (E3A, decisión de Arturo del 17/10/2026): donde la
   // fuente dice «por evento» (la grilla en Silver y Gold; essential.json, «hasta
   // ₲ 350.000 por evento», en la internación de Essential), lo que se escanea lo
@@ -152,20 +164,37 @@ export const carencias = () => [
   // Essential no distingue: toda internación, a los 365 días. La internación
   // programada de Silver y Gold no tiene espera escrita: no se deduce de la de
   // su cirugía (sp-interno#82); la nota de «Internación» manda al asesor.
-  { que: 'Internación por algo agudo', dias: [365, 60, 60] },
+  { que: 'Internación por algo agudo', dias: [365, 60, 60], cuando: [null, SI_AGUDO, SI_AGUDO] },
   { que: 'Fisioterapia', dias: [0, 90, 90] },
   { que: 'Resonancia', dias: [365, 150, 150], sinCobertura: 'Desde Silver' },
   // Cuadro 3 (cirugías e internación): 292 de 314 filas → 210 / 180 / 150 días.
   // ⚠ La FAQ decía "7 meses" para los tres planes: era el número de Bronze.
   // Silver espera 6 y Gold 5. Se corrigió el 7 sep 2026.
   // Essential: una cirugía al año por familia, de una lista de 26, a los 365.
-  { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null] },
+  // `corta`, esa misma condición en la forma corta, para la celda de la tabla de
+  // /planes en la computadora (lo que se escanea); `notaPlan` sigue en oraciones
+  // para el simulador y la cotización.
+  { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null], corta: [anual('1 cirugía', 'familia'), null, null] },
   // Parámetros clave: "Carencia de maternidad: 300 días". La cesárea de Gold
   // tiene la fuente contradicha: el Cuadro 3 de su contrato dice 150 días y la
   // cláusula de maternidad (2.5.2), 300. Hasta que SP lo aclare, en Gold manda
   // al asesor (sp-interno#116, decisión 2A de Arturo, 13/10/2026).
-  { que: 'Parto', dias: [365, 300, 300], notaPlan: [null, null, 'para una cesárea, preguntale a tu asesor cuánto esperás'] },
+  // `cuando`, la condición que viaja con el número cuando la espera se muestra
+  // fuera de su fila: la lista de los once servicios nombra «Parto o cesárea» e
+  // «Internación», no «Parto» ni «por algo agudo», y daba a la cesárea de Gold
+  // los 10 meses que la 2A le sacó, y a toda internación de Silver y Gold los 2
+  // meses de la aguda (comité, vuelta 3, 17/10). `alAsesor`, la parte de la fila
+  // que en ese plan manda al asesor, dicha en corto con `conAsesor`.
+  { que: 'Parto', dias: [365, 300, 300], notaPlan: [null, null, CESAREA_GOLD], cuando: [null, null, 'para el parto'], alAsesor: [null, null, 'Cesárea'] },
 ];
+
+// La nota de una espera en una celda que se escanea (la tabla de /planes en la
+// computadora): la forma corta si la hay, la parte que manda al asesor, lo que
+// dice ese plan o lo que dicen los tres. Es la misma nota que muestran el
+// simulador y el cuadro de esperas del celular, en la forma de una celda: la
+// tabla no traía ninguna y decía «3 meses» para el laboratorio de Essential y
+// «10 meses» para el parto de Gold sin la cesárea (comité, vuelta 3, 17/10).
+export const notaCorta = (c, i) => (c.corta && c.corta[i]) || (c.alAsesor && c.alAsesor[i] && conAsesor(c.alAsesor[i])) || (c.notaPlan && c.notaPlan[i]) || c.nota || null;
 
 // Plan Vital (65+) tiene grilla propia y agrupa las coberturas POR carencia
 // (grilla-vital-coberturas-jul2026.json → coberturas_por_carencia). Un solo

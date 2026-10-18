@@ -38,6 +38,15 @@ export function frase(t) {
   });
   return [plata(cuanto), ...dichas].join(' ') + (partes.includes(DUDA) ? ', sin confirmar para quién' : '');
 }
+// Una oración que se escribe para el lector de pantalla (el nombre de una fila de
+// la lista de los once servicios): la plata se lee «guaraníes», no «ge ese»; el
+// «·» que separa en la pantalla es una coma; «24 h», «24 horas»; y arranca en
+// minúscula, porque va después de «Essential:» (comité, vuelta 3, 17/10).
+export const leer = (t) => t
+  .replace(/Gs\.\s*(\d[\d.,]*(?:\s(?:mil|millón|millones)\b)?)/g, (_, n) => plata('Gs. ' + n.replace(/\s/g, ' ')))
+  .replace(/\s+·\s+/g, ', ')
+  .replace(/\b24 h\b/g, '24 horas')
+  .replace(/^./, (x) => x.toLowerCase());
 
 // Una forma corta adentro de una línea de texto: «2 tomografías/familia/año».
 // El hueco sale de la constante, no de un literal: si DUDA cambia, esto también.

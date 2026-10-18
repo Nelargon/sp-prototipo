@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
-import { coverage, carencias, ASESOR } from '../coverage';
+import { coverage, carencias, ASESOR, notaCorta } from '../coverage';
 import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
@@ -147,8 +147,13 @@ export default function Planes() {
     // la `notaAsesor` de coverage.js, la misma que lee la hoja del celular.
     { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h'), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: cv['Urgencia 24 h'].notaAsesor },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
-    // el simulador. Sin tarjeta: el número ya es el dato.
-    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
+    // el simulador. Sin tarjeta: el número ya es el dato. Con su nota, como en el
+    // simulador y en el cuadro del celular: «la mayoría», «los de rutina, sin
+    // espera» y, en corto, «1 cirugía/familia/año» y «Cesárea: preguntale a tu
+    // asesor» (notaCorta de coverage.js). Sin nota, la tabla decía «3 meses» para
+    // todo el laboratorio de Essential y «10 meses» para la cesárea de Gold
+    // (comité, vuelta 3, 17/10).
+    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d, i) => ({ t: waitLabel(d, true) || '—', n: notaCorta(c, i) || undefined })) })),
   ];
   const planesCompu = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: pl.tag, recommended: i === 1,

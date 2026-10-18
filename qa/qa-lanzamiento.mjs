@@ -59,6 +59,18 @@ const RENGLONES = `(el) => {
   }
   return lineas.sort((a, b) => a.top - b.top).map((x) => x.t);
 }`;
+// Lo que oye el lector, en orden, de un ariaSnapshot: el texto de cada «text» y
+// el nombre de cada botón o link (el nombre es lo que se oye, no su contenido).
+// Se mide lo que expone el navegador, no el texto oculto (BITACORA cap. 149).
+const oido = (snap) => snap.split('\n').map((l) => {
+  const m = /^\s*- '?([a-z]+)(?: "((?:[^"\\]|\\.)*)")?(?: \[[^\]]*\])*'?(?::\s*(.*))?$/.exec(l);
+  if (!m) return '';
+  const [, rol, nombre, resto] = m;
+  if (nombre !== undefined) return JSON.parse('"' + nombre + '"');
+  // Sin nombre, el texto que trae en la misma línea («- text: …», «- paragraph: …»).
+  return (resto || '').replace(/^"(.*)"$/, (_, x) => JSON.parse('"' + x + '"'));
+}).filter(Boolean).join(' ').replace(/\s+/g, ' ');
+const minus = (x) => x.charAt(0).toLowerCase() + x.slice(1);
 
 for (const [nombre, width, height] of ANCHOS) {
   console.log('\n── ' + nombre);
@@ -1279,6 +1291,100 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
   await ctx.close();
   if (malas.length) mal('«/evento»: medicamentos y remedios de Silver y Gold en forma corta, con los millones enteros y «guaraníes» para el lector, en las tablas y la lista; el parto con «hasta» · ' + malas.join(' · '));
   else bien('«/evento» en medicamentos y remedios (tablas del home y /planes, y la lista), con los millones enteros y «guaraníes» para el lector; el parto con «hasta»; a 360 px el nombre baja entre palabras');
+}
+
+// ── Las esperas llevan su condición (comité, vuelta 3, 17/10/2026) ─────────
+// Un número de espera fuera de su fila perdía la condición que el resto del
+// sitio ya dice, con la fuente en coverage.js:
+// - la lista «Los once servicios» del celular nombra «Parto o cesárea» e
+//   «Internación» y daba a la cesárea de Gold los 10 meses que la 2A le sacó
+//   (sp-interno#116), y a toda internación de Silver y Gold los 2 meses de la
+//   aguda (la programada no tiene espera escrita, #82). Ahora la espera lleva su
+//   `cuando` («2 meses de espera si es por algo agudo», «10 meses de espera para
+//   el parto»), la cesárea de Gold dice «Cesárea: preguntale a tu asesor», y el
+//   lector oye la oración entera;
+// - la tabla de esperas de /planes en la computadora no traía ninguna nota: el
+//   laboratorio de Essential decía «3 meses» sin «los de rutina, sin espera», las
+//   cirugías no decían «una al año por familia» y el parto de Gold, nada de la
+//   cesárea. Ahora cada celda lleva la nota que muestran el simulador y el cuadro
+//   del celular (`notaCorta` de coverage.js, en forma corta donde es una cifra);
+// - en la hoja del celular, toda nota que manda al asesor va arriba, antes de los
+//   tres planes (la de la cesárea y la de la internación programada quedaban
+//   abajo, en gris).
+// Todo se lee de coverage.js, no de un literal. Falla en la build de 02c733a y
+// pasa con el cambio.
+console.log('\n── Las esperas llevan su condición (lista, tabla de /planes y hoja)');
+{
+  const { ASESOR } = COV;
+  const CAR = Object.fromEntries(COV.carencias().map((c) => [c.que, c]));
+  // Las filas de la lista cuya espera viene de una fila de carencias() con condición.
+  const DE = { 'Internación': 'Internación por algo agudo', 'Parto o cesárea': 'Parto' };
+  const malas = [];
+  // 1. La tabla de /planes en la computadora: cada espera con su nota.
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  const tabla = await page.evaluate(() => {
+    const o = {};
+    const planes = [...document.querySelectorAll('#comparar-planes .cmp2-plan')];
+    const filas = [...document.querySelectorAll('#comparar-planes .cmp2-lab .cmp2-c')].map((c) => c.textContent.trim());
+    planes.forEach((pl, i) => [...pl.querySelectorAll('.cmp2-c')].forEach((c, k) => {
+      const n = c.querySelector('.cmp2-fam');
+      const v = n ? n.cloneNode(true) : null;
+      if (v) v.querySelectorAll('.sr-solo').forEach((x) => x.remove());
+      (o[filas[k]] = o[filas[k]] || [])[i] = v ? v.textContent.replace(/ /g, ' ').trim() : null;
+    }));
+    return o;
+  });
+  for (const c of COV.carencias()) {
+    const esperado = [0, 1, 2].map((i) => COV.notaCorta(c, i));
+    const visto = (tabla[c.que] || []).slice(0, 3);
+    if (JSON.stringify(visto) !== JSON.stringify(esperado)) malas.push('/planes 1280, ' + c.que + ': ' + JSON.stringify(visto) + ' (tendría que ser ' + JSON.stringify(esperado) + ')');
+  }
+  await page.close();
+  // 2. La lista de los once y la hoja de cada servicio, en el celular.
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const cel = await ctx.newPage();
+  await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+  await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+  await cel.waitForTimeout(450);
+  const FILA = '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila';
+  const lista = await cel.evaluate((sel) => Object.fromEntries([...document.querySelectorAll(sel)].map((b) => [b.querySelector('b').textContent.replace(/ ›$/, ''), {
+    nombre: b.getAttribute('aria-label') || '',
+    esperas: [...b.querySelectorAll(':scope > span > span')].map((c) => [...c.querySelectorAll(':scope > i')].map((x) => x.textContent.replace(/ /g, ' ').trim())),
+  }])), FILA);
+  for (const [servicio, fila] of Object.entries(DE)) {
+    const c = CAR[fila], l = lista[servicio];
+    if (!l) { malas.push('lista: falta ' + servicio); continue; }
+    [0, 1, 2].forEach((i) => {
+      const e = l.esperas[i] || [];
+      const cuando = c.cuando && c.cuando[i], aparte = c.alAsesor && c.alAsesor[i];
+      if (cuando && !(e[0] || '').endsWith(' de espera ' + cuando)) malas.push('lista, ' + servicio + ', plan ' + (i + 1) + ': la espera sin «' + cuando + '» (' + JSON.stringify(e) + ')');
+      if (aparte && e[1] !== COV.conAsesor(aparte)) malas.push('lista, ' + servicio + ', plan ' + (i + 1) + ': falta «' + COV.conAsesor(aparte) + '» (' + JSON.stringify(e) + ')');
+      if (cuando && !l.nombre.includes('de espera ' + cuando)) malas.push('lista, ' + servicio + ': el lector no oye «' + cuando + '»');
+      if (aparte && !l.nombre.includes(c.notaPlan[i])) malas.push('lista, ' + servicio + ': el lector no oye «' + c.notaPlan[i] + '»');
+    });
+  }
+  // La hoja de cada servicio: lo que manda al asesor, arriba de los tres planes.
+  const abajo = [];
+  for (const servicio of Object.keys(lista)) {
+    await cel.locator(FILA, { hasText: servicio }).first().tap();
+    await cel.waitForTimeout(400);
+    const r = await cel.evaluate((asesor) => {
+      const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo > div');
+      if (!d) return null;
+      const hijos = [...d.children];
+      const primero = hijos.findIndex((x) => x.classList.contains('sq'));
+      return hijos.map((x, k) => [k, x]).filter(([, x]) => x.tagName === 'P' && x.textContent.toLowerCase().includes(asesor)).filter(([k]) => k > primero).map(([, x]) => x.textContent);
+    }, ASESOR.toLowerCase());
+    if (r === null) abajo.push(servicio + ': no se abrió la hoja');
+    else r.forEach((t) => abajo.push(servicio + ': «' + t.slice(0, 50) + '…»'));
+    await cel.locator('.cmp-cel .hoja[data-abierta="1"] button', { hasText: 'Los once servicios' }).first().tap();
+    await cel.waitForTimeout(350);
+  }
+  if (abajo.length) malas.push('hoja: notas que mandan al asesor debajo de los planes · ' + abajo.join(' · '));
+  await ctx.close();
+  if (malas.length) mal('cada espera lleva su condición (cesárea de Gold, internación por algo agudo, laboratorio y cirugías de Essential) en la lista, la tabla de /planes y la hoja, y lo que manda al asesor va arriba · ' + malas.slice(0, 6).join(' · '));
+  else bien('las esperas llevan su condición: en la lista («2 meses de espera si es por algo agudo», «10 meses de espera para el parto» y «Cesárea: preguntale a tu asesor», también para el lector), en la tabla de /planes (la nota de cada espera, la del simulador) y, en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
 }
 
 // ── Una sola forma de mandar al asesor (R1A, Arturo, 17/10/2026) ────────────
