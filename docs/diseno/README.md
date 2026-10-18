@@ -2147,7 +2147,7 @@ subrayado (en la computadora) o al tocarlo (en el celular). En la web se le
 dice *tooltip* o *popover*. Las marcas en ámbar son de la lámina, no de la
 página.
 
-**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* La recomendación
+**Qué se decidió y por qué.** *Pendiente hasta el 17/10/2026, cuando Arturo lo decidió (abajo).* La recomendación
 es sacarlas también de la tarjeta, por la regla del 03/10: hoy unas tarjetas
 tienen espera y otras no. Terapia intensiva, por ejemplo, dice «a los 365
 días» en Essential y nada en Silver y Gold, y eso se puede leer como que ahí no
@@ -2182,7 +2182,9 @@ el navegador:
   letra. Al tocarla se abre la tarjeta del servicio, que lo explica y manda al
   asesor. Cero px más en las tablas del home y de `/planes`; +49 px en las
   tarjetas de `/planes` del celular. La internación pasa a «20 días/persona/año»
-  en Silver y Gold, porque ahí la fuente lo dice («por beneficiario»).
+  en Silver y «25 días/persona/año» en Gold, porque ahí la fuente lo dice («por
+  beneficiario»). *(17/10/2026: decía «20 días/persona/año en Silver y Gold»;
+  la lámina muestra 25 en Gold.)*
 - **B · Lo confirmado corto y la duda debajo.** «1/año» en la celda y
   «¿para quién?» en gris chico abajo. Suma 141 px en el home del celular, y las
   tarjetas de Silver y Gold quedan 70 px más altas que la de Essential.
@@ -2190,7 +2192,7 @@ el navegador:
   «1/familia» o «1/¿quién?» en la celda. Cero px más, pero separa la cifra de
   su unidad.
 
-**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* El comité votó
+**Qué se decidió y por qué.** *Pendiente hasta el 17/10/2026, cuando Arturo lo decidió (abajo).* El comité votó
 unánime A, con la palabra de C: «1/¿quién?/año» en vez de «1/¿?/año». Medido,
 «¿?» ocupa 51 px contra 81 de «familia»: la duda se ve más chica que el dato y
 puede leerse como un dato que no cargó. «¿quién?» ocupa 84 px y se lee como lo
@@ -2234,7 +2236,7 @@ a tamaño real, con solo el texto cambiado. De los 76, 27 son claros (el precio
 una duda y 15 no aplican, porque se leen o porque la barra ya significa otra
 cosa. Los marcados «Dudoso» llevan su duda escrita en la lámina.
 
-**Qué se decidió y por qué.** *Pendiente: lo decide Arturo.* Los 34 dudosos se
+**Qué se decidió y por qué.** *Pendiente hasta el 17/10/2026, cuando Arturo lo decidió (abajo).* Los 34 dudosos se
 juntan en pocas preguntas: las celdas de la P3, la unidad «/evento» que la
 grilla tiene y la celda no muestra (suma un renglón en la tarjeta de Gold), y
 «/mes» en el paso del nivel del simulador (suma 141 px en el celular, porque el

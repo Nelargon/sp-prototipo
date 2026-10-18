@@ -44,8 +44,12 @@ aprendió en el camino: BITACORA cap. 148.
    `role="img"`, y nunca con `position:absolute`, que se escapaba del plegable
    y hacía desbordar `/planes`). Internación: «20 días/familia/año | 20
    días/persona/año | 25 días/persona/año». Las líneas de las tarjetas del
-   celular (`plans()` de `quote.js`) salen de `corta`, no de números a mano
-   (sp-interno#117).
+   celular (`plans()` de `quote.js`) que tienen forma corta (tomografía y
+   resonancia, e internación) salen de `corta`, no de números a mano
+   (sp-interno#117). *(17/10/2026, vuelta 3: decía «las líneas», como si fueran
+   todas. La de terapia intensiva sigue escrita a mano en `quote.js`, y los
+   días de terapia intensiva y varias tarjetas del home también se escriben en
+   más de un lugar: ver «Vuelta 3», seguimiento.)*
 2. **G1A, la fisioterapia de Gold va al asesor** (sp-interno#50: la tabla decía
    20 y el plegable, 10). La celda dice «Preguntale a tu asesor» en el home, la
    tabla y la lista de `/planes` y el plegable, como la cesárea de Gold de la
@@ -142,8 +146,11 @@ vuelta, y este párrafo suma sus números cuando existan): (1) si la celda
 «5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
 fusionar sin respuesta; (4) la condición de la tomografía de Essential en las
 tablas; (5) el «—» de «Cuadro 2» de Essential; (6) «y/o» y «post-quirúrgica»
-en los rótulos del plegable; (7) si el 77% de tráfico móvil (trece lugares) y
-los «50 segundos de paciencia» del `BRANDSCRIPT.md` también pasan al puntero;
+en los rótulos del plegable; (7) si la proporción de tráfico que entra por
+celular (trece lugares) y la paciencia del personaje del `BRANDSCRIPT.md`
+también pasan al puntero (las cifras, en
+`sp-interno/project/metricas-web-ga-2026.md`; este párrafo las repetía y se
+sacaron en la vuelta 3, 17/10/2026);
 (8) «con los topes más altos» de Gold en el home y el simulador, que con la
 grilla es falso para la fisioterapia (#50); y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
@@ -1214,7 +1221,9 @@ escalón» (ahora Essential → Silver y Silver → Gold) muestran Essential.
 - **Lo que el cuadernillo no nombra, no entra.** Es una lista cerrada: el
   default es «No entra en este plan». Si un nombre de la grilla no se parece a
   ninguno del cuadernillo, no se adivina: la regla dudosa lo marca y el sitio
-  dice **«Confirmalo con tu asesor»**.
+  dice **«Confirmalo con tu asesor»**. *(17/10/2026: desde la R1A dice
+  «Preguntale a tu asesor», la forma única, constante `ASESOR` de
+  `app/coverage.js`; el buscador no tiene página desde el 04/10.)*
 - **Guardián nuevo:** si un patrón del JSON no calza con ninguna fila, el build
   se corta (probado con un patrón falso → sale con error; con el archivo sano →
   pasa). Una regla que no encuentra nada es una regla que dejó de funcionar sin
@@ -1364,7 +1373,8 @@ el camino, en BITACORA cap. 99, 102 y 103.
   es una opción** a un toque («¿Dónde te vas a atender?»).
 - **Dos pasos para `/que-cubre`:** ahora, Essential en el home, el simulador y
   `/planes`; en el buscador su columna dice «Confirmalo con tu asesor». El paso
-  2 carga Essential estudio por estudio (ver abajo).
+  2 carga Essential estudio por estudio (ver abajo). *(17/10/2026: desde la R1A
+  dice «Preguntale a tu asesor».)*
 
 **Las fuentes (y por qué esas):** precios de `PRECIOS ESSENTIAL.pdf`
 (21/08/2026), confirmados por la minuta de implementación del 18/08 (Crafting:
@@ -1418,7 +1428,9 @@ era el estado del paso 1.
 
 **Datos que faltan o no cierran (no se inventan):**
 - Remedios en la consulta de urgencia: el cuadernillo no trae tope → la tabla
-  dice «Consultalo con tu asesor».
+  dice «Consultalo con tu asesor». *(17/10/2026: desde la R1A dice «Preguntale
+  a tu asesor», también en la lista del celular y en el plegable de topes, y la
+  nota sale de una sola constante de `app/coverage.js`.)*
 - «Hasta 3 consultas por mes, por beneficiario, por año de contrato»
   (cuadernillo 1.2) es ambiguo; el sitio dice «3 por mes en la red».
 - Odontología en Silver y Gold: el sitio sigue diciendo que no entra (pendiente
@@ -4081,7 +4093,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    reales con consentimiento), eventos `manifesto_scroll` y `puerta_home`
    (ANEXO §2), y presupuesto móvil verificado: 173 KB gzip de contenido
    crítico (≤300 KB). El home anterior quedó congelado en `/v1/` como
-   referencia. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
+   referencia *(17/10/2026: esa copia se bajó, P4A, sp-interno#181; queda en
+   el historial de git)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
    nace de acá:** testimonios reales con consentimiento (responsable: SP).
    *Refinado v2.1 (feedback del usuario, jul 2026)*: menú móvil overlay a
    pantalla completa estilo Apple/Tesla/Ogilvy (blanco pleno, tipografía

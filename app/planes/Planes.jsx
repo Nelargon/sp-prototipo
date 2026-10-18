@@ -103,8 +103,10 @@ export default function Planes() {
      tarjeta, al pasar el mouse o tocar el nombre.
      Los valores cortos (`t`) son la forma corta de lo que dicen coverage() y
      plans(); «por familia» va siempre a la vista (lección 51). La tarjeta (`d`)
-     es el texto de coverage() con la espera de carencias(), así las dos fuentes
-     son las de siempre y nada se escribe dos veces. */
+     es el texto de coverage() con la espera de carencias(), salvo tres filas que
+     todavía se escriben acá: consultas, terapia intensiva y odontología (los
+     días de terapia intensiva están también en coverage.js, page.jsx y quote.js;
+     comité, vuelta 3, 17/10: queda para un PR aparte, ver HANDOFF). */
   const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
   const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
   // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
