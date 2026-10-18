@@ -231,7 +231,8 @@ el cambio:
   texto por texto (`textContent` pegaba «Silver5 meses») y suma ordinales, «mes
   N», «al año de», «a los N», «en un año» y «desde el comienzo». El pie se
   compara con los textos que fijó Arturo el 17/10: cualquier otra oración solo
-  puede ser otra pregunta al asesor, sin palabras de unidad.
+  puede ser otra pregunta al asesor, sin palabras de unidad. *(18/10: el pie y
+  las esperas todavía enumeraban; ver «Cierre de la vuelta 3», abajo.)*
 - **Falsa alarma, no se tocó el sitio:** el revisor de diseño (`sp-interno`,
   skill `sp-disenador-ux`, `scripts/revisar.mjs`) marca 🟡 `[fuente-lectura]`
   los prefijos ocultos «Días de terapia intensiva, Essential:» (`.sr-solo
@@ -239,6 +240,29 @@ el cambio:
   con `clip-path: inset(50%)` y `overflow: hidden`, y no se pintan; el revisor
   cuenta como visible lo que mide 1 px o más. El arreglo es del revisor (ver
   seguimiento).
+
+**Cierre de la vuelta 3 (18/10, el verificador de la corrección, BITACORA cap.
+153).** Dos pruebas seguían enumerando, una nota tenía la letra de la celda y
+un comentario decía de menos. Cada prueba nueva falla en una copia saboteada
+construida fuera del repo y pasa en la rama:
+- **El pie, contra una lista cerrada.** En las filas con «¿quién?» (home y
+  `/planes`, y la hoja del celular) el pie solo puede decir tres oraciones,
+  literales en `qa-lanzamiento`: la pregunta por la unidad (`NOTA_UNIDAD`), la
+  definición de «Por familia» del home y la pregunta de la fisioterapia de Gold
+  (G1A); la hoja suma su cierre fijo. Cualquier otra falla: lo nuevo en ese pie
+  se suma a la prueba a conciencia.
+- **Las esperas de la tarjeta del home, la clase entera:** cantidades en cifras
+  o en palabras (del uno al cien, «medio», «un par de»), quincena, trimestre y
+  semestre, los ordinales y las formas relativas («el año que viene», «al
+  cumplir», «después de un», «recién a los», «a partir del»); los topes por año
+  siguen pasando.
+- **La nota de la cesárea del plegable va en Inter**, con la clase de la nota de
+  la tabla (`.cmp2-fam`, que ahora declara su peso, 400): heredaba Nunito Sans
+  Bold de la celda. Ocupa los mismos renglones (3 a 360-430 px, 2 a 820, 1 a
+  1280) y no desborda.
+- **El comentario de `filasCompu`** dice de dónde sale cada grupo de celdas:
+  `corta`, lo que se escribe a mano y la banda de esperas, que sale de
+  `carencias()` con `waitLabel` y `notaCorta`.
 
 *Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
 los de la lista de arriba): **8**, Gold «con los topes más altos»

@@ -5427,3 +5427,43 @@ había aplicado a las superficies nombradas en el hallazgo, no a todas.
   de escribir.** El cap. 151 se escribió junto con las pruebas que lo rompían.
   Antes de cerrar una vuelta, cada prueba nueva se sabotea contra la clase de
   error, no solo contra el caso que la motivó.
+
+## Capítulo 153 — La lista de lo que no va no se termina nunca (18/10/2026)
+
+**Qué intentamos.** Cerrar la corrección de la vuelta 3 (cap. 152) pasándole la
+rama del PR #271 a otro verificador, con la consigna que dejó ese capítulo:
+sabotear cada prueba nueva contra la clase de error, no contra el caso.
+
+**Qué pasó.** Dos de las pruebas «contra la clase» seguían enumerando:
+
+- **El pie.** La corrección había agrandado la lista de palabras de unidad
+  («persona», «integrante», «afiliado», «cada», «cupo»…). Pasaron igual «son
+  compartidos», «por titular», «por cabeza», «por socio» y «se comparten entre
+  todos». Cada vuelta sumaba las palabras que había encontrado el verificador
+  anterior, y el siguiente encontraba otras.
+- **Las esperas de la tarjeta del home.** El detector aceptaba cifras y «uno» a
+  «doce» con días, semanas, meses o años. «A los noventa días», «medio año», «un
+  trimestre», «en el segundo semestre», «el año que viene» y «al cumplir el año»
+  pasaban.
+
+Y una del sitio: la nota «Cesárea: preguntale a tu asesor» que la corrección
+había sumado al plegable de `/planes` se escribió con un estilo a mano (tamaño y
+color) y heredó de la celda la letra display y el peso 700. La misma frase, en
+la tabla de arriba, iba en Inter 400 con la clase de nota que ya existía.
+
+**Qué aprendimos.**
+- **Cuando lo permitido es fijo, se lista lo permitido.** El pie de una fila con
+  «¿quién?» dice oraciones que decidió Arturo; la prueba ahora las tiene como
+  literales y falla con cualquier otra, aunque sea inocente. La lista de lo
+  prohibido no se termina nunca: el idioma siempre tiene otra forma de decir
+  «por persona». La lista cerrada tiene un costo, y es el que se busca: decir
+  algo nuevo en ese pie obliga a sumarlo a la prueba a conciencia.
+- **Cuando lo permitido no es fijo, la clase se describe por su forma, no por sus
+  ejemplos.** El texto de una tarjeta cambia; una espera es cualquier cantidad
+  (en cifras o en palabras) con cualquier unidad de tiempo, salvo un tope por
+  año. Y la autoprueba lleva los topes de verdad, para que el detector no grite
+  en falso (cap. 89): «después de una cirugía» no es una espera.
+- **Lo que una clase no declara, lo hereda del lugar donde la ponen.**
+  `.cmp2-fam` no decía su peso: en la tabla heredaba 400 y en la celda del
+  plegable, 700. Ahora lo declara. Un texto que repite otro del sitio se arma con
+  la clase del otro y se mide contra él con `getComputedStyle`.
