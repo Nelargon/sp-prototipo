@@ -117,8 +117,11 @@ export const coverage = () => [
   // tablas y también en la lista del celular, con el mismo `pre` que Silver y
   // Gold, y `notaAsesor` lo dice en oraciones en la tarjeta de /planes y en la
   // hoja del celular: el silencio al lado del tope de los otros dos se leía «no
-  // cubre remedios» (comité, vuelta 2, 17/10).
-  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', notaAsesor: 'El cuadernillo de Essential no fija el tope de remedios en urgencias: preguntale a tu asesor.', corta: [ASESOR, 'Gs. 150 mil/evento', 'Gs. 200 mil/evento'], pre: ['Consulta 24 h · remedios ', 'Consulta 24 h · remedios ', 'Consulta 24 h · remedios '], dicho: [null, 'hasta 150 mil guaraníes cada vez que vas a urgencias', 'hasta 200 mil guaraníes cada vez que vas a urgencias'], cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
+  // cubre remedios» (comité, vuelta 2, 17/10). Es la única copia de esa oración:
+  // la tarjeta del home también la lee de acá, y dice qué preguntar con el molde
+  // de la G1A (comité, vuelta 3, 17/10). `pre` va en su propio renglón en la
+  // lista: pegado a «Preguntale a tu asesor» se leía «remedios Preguntale…».
+  { name: 'Urgencia 24 h', icon: 'M12 2v6m0 8v6M2 12h6m8 0h6', notaAsesor: 'En Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.', corta: [ASESOR, 'Gs. 150 mil/evento', 'Gs. 200 mil/evento'], pre: ['Consulta 24 h · remedios', 'Consulta 24 h · remedios', 'Consulta 24 h · remedios'], dicho: [null, 'hasta 150 mil guaraníes cada vez que vas a urgencias', 'hasta 200 mil guaraníes cada vez que vas a urgencias'], cov: [yes('Consulta 24 h, desde el día uno'), yes('Consulta 24 h · remedios hasta Gs. 150 mil'), yes('Consulta 24 h · remedios hasta Gs. 200 mil')] },
   // Fisioterapia de Gold (G1A, decisión de Arturo del 17/10/2026, sp-interno#50):
   // la fuente se contradice. gold.json dice «20 sesiones/año […] + 5
   // respiratorias» y los parámetros clave de la grilla (y el plegable de

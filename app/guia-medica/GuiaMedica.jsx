@@ -159,7 +159,7 @@ function Tarjeta({ p, plan, abrirVisar }) {
         ? <span className="sq" style={css(INTER + '--sq:6px;align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--sp-teal-ink);background:var(--sp-mint-bg);padding:3px 8px;display:inline-flex;align-items:center;gap:4px')}>{Icono.check} Atiende con {nombrePlan(plan)}</span>
         : <span style={css(INTER + 'font-size:12.5px;color:var(--sp-muted)')}>Planes: {redesCortas(p.r).join(' · ')}</span>}
       {p.k && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>{condicionTexto(p.k)}</p>}
-      {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
+      {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntale a tu asesor qué cubre tu plan en odontología.</p>}
       <div style={css('display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:4px')}>
         {p.tel[0] && (
           <a href={telHref(p.tel[0])} onClick={() => track('guia_llamar', { tipo: p.t })} className="disp num-tnum" style={css('height:36px;padding:0 14px;border-radius:var(--r-pill);background:var(--sp-mint-bg);border:1px solid #BFE6E3;color:var(--sp-teal-ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center')}>{telVisible(p.tel[0])}</a>

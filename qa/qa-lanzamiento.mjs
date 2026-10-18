@@ -1268,13 +1268,14 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
   const lista = await cel.evaluate(() => {
     const o = {};
     for (const b of document.querySelectorAll('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila')) {
-      o[b.querySelector('b').textContent.replace(/ ›$/, '')] = [...b.querySelectorAll(':scope > span > span')].map((c) => { const k = c.cloneNode(true); k.querySelectorAll('.sr-solo, i').forEach((x) => x.remove()); return k.textContent.replace(/ /g, ' '); });
+      // Cada columna, renglón por renglón: `pre` va en su propio renglón (vuelta 3).
+      o[b.querySelector('b').textContent.replace(/ ›$/, '')] = [...b.querySelectorAll(':scope > span > span')].map((c) => [...c.children].filter((x) => x.tagName !== 'I').map((x) => { const k = x.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((y) => y.remove()); return k.textContent.replace(/ /g, ' '); }).join(' ⏎ '));
     }
     return o;
   });
   const m = lista['Medicamentos en internación'] || [], u = lista['Urgencia 24 h'] || [], pa = lista['Parto o cesárea'] || [];
   if (!MED.every((e, i) => m[i] === e)) malas.push('lista, medicamentos: ' + JSON.stringify(m));
-  if (!REM.every((e, i) => e === null || (u[i] || '').endsWith('remedios ' + e))) malas.push('lista, urgencias: ' + JSON.stringify(u));
+  if (!REM.every((e, i) => e === null || (u[i] || '') === 'Consulta 24 h · remedios ⏎ ' + e)) malas.push('lista, urgencias: ' + JSON.stringify(u));
   if (pa.length !== 3 || pa.some((t) => /\/evento/.test(t) || !/hasta Gs\./.test(t))) malas.push('lista, parto (queda con «hasta», sin «/evento»): ' + JSON.stringify(pa));
   // A 360 px, en las tarjetas del home: el nombre baja entre palabras y el monto entra.
   await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
@@ -1396,25 +1397,62 @@ console.log('\n── Las esperas llevan su condición (lista, tabla de /planes 
 // /planes (texto, no botón: solo «¿quién?» es botón), y el «—» del plegable,
 // que se leía «no cubre». Probado contra la rama sin la R1A (falla) y con ella
 // (pasa), y contra la rama con la celda como botón (falla).
+// Vuelta 3 (comité, 17/10): «una sola forma» se busca por clase, no por las dos
+// palabras viejas. La Guía Médica decía «preguntá a tu asesor» y «Confirmá con
+// tu asesor» (en el código de app/ y de lib/red-medica.js, no en la planilla):
+// ahora se rechaza todo imperativo de preguntar, consultar o confirmar «a» o
+// «con tu asesor» que no sea «preguntale a tu asesor» («lo confirmás con tu
+// asesor», que no manda a preguntar, queda). El rótulo que manda al asesor sale
+// de la constante ASESOR: ningún archivo fuera de coverage.js lo escribe como
+// texto suelto (el buscador lo tenía escrito a mano). Una oración de coverage.js
+// no se escribe otra vez en otro archivo (la nota de remedios de Essential
+// estaba en el home con otras palabras), y la tarjeta del home la lee de ahí.
+// Cada detector, contra un caso que tiene que fallar y uno que no.
 console.log('\n── Una sola forma de mandar al asesor (R1A)');
 {
   const { ASESOR } = COV;
   // Sin \b: textContent pega celdas vecinas («urgenciasConsultalo») y el límite de palabra no se ve.
   const VIEJAS = /(?:consult|confirm)[aá]lo/i;
+  const FORMAS = /\b(?:pregunt|consult|confirm)[aá](?:le|lo|la|selo|les)?\s+(?:a|con)\s+tu\s+asesor/gi;
+  const otraForma = (t) => (t.match(FORMAS) || []).filter((m) => m.toLowerCase().replace(/\s+/g, ' ') !== minus(ASESOR));
+  const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const SUELTO = new RegExp('([\'"`])' + escRe(ASESOR) + '\\1|>\\s*' + escRe(ASESOR) + '\\s*<');
+  // Las oraciones de coverage.js que la página muestra: cada una vive solo ahí.
+  const ORACIONES = [...new Set(COV.coverage().flatMap((x) => [x.nota, x.notaAsesor, x.waitNote]).concat([COV.NOTA_UNIDAD]).filter(Boolean))];
+  const copiadas = (fuente) => ORACIONES.filter((o) => fuente.includes(o));
+  const autoprueba = {
+    guia: otraForma('Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.').length,
+    red: otraForma('Confirmá con tu asesor si atiende con tu plan.').length,
+    consultala: otraForma('Consultá con tu asesor').length,
+    buenas: otraForma('Preguntale a tu asesor si atiende. El detalle final lo confirmás con tu asesor. Decíselo a tu asesor.').length,
+    rotuloAMano: SUELTO.test("{sinDato ? (plan.k === 'e' ? 'Preguntale a tu asesor' : 'Sin dato') : modo.k}"),
+    rotuloConstante: SUELTO.test("{sinDato ? (plan.k === 'e' ? ASESOR : 'Sin dato') : modo.k}"),
+    notaCopiada: copiadas("d: ['" + (COV.coverage().find((x) => x.name === 'Urgencia 24 h').notaAsesor) + "', 'Hasta…']").length,
+    notaLeida: copiadas("d: [cartDe['Urgencia 24 h'].notaAsesor, 'Hasta…']").length,
+  };
   const malas = [];
+  if (!autoprueba.guia || !autoprueba.red || !autoprueba.consultala || autoprueba.buenas || !autoprueba.rotuloAMano || autoprueba.rotuloConstante || !autoprueba.notaCopiada || autoprueba.notaLeida) malas.push('los detectores no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  for (const ruta of ['/', '/planes/', '/simulador/', '/guia-medica/']) {
+  for (const ruta of ['/', '/planes/', '/simulador/', '/guia-medica/', '/guia-medica/P-0001/']) {
     await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
-    const m = await page.evaluate((re) => (document.body.textContent.match(new RegExp(re, 'gi')) || []), VIEJAS.source);
+    const texto = await page.evaluate(() => document.body.textContent);
+    const m = [...(texto.match(new RegExp(VIEJAS.source, 'gi')) || []), ...otraForma(texto)];
     if (m.length) malas.push(ruta + ': ' + [...new Set(m)].join(', '));
   }
-  // El código: sin comentarios, cada «Consultalo»/«Confirmalo» que quede es texto de cara al usuario.
+  // El código: sin comentarios, de app/ y de lib/ (la Guía Médica arma ahí sus
+  // frases; lib/guia-medica.json sale de la planilla y no se mira).
   const { readdirSync } = await import('node:fs');
-  const raiz = new URL('../app/', import.meta.url);
-  const archivos = readdirSync(raiz, { recursive: true }).filter((f) => /\.(jsx?|mjs)$/.test(f) && !/^blog[\\/]/.test(f));
-  for (const f of archivos) {
-    const sin = readFileSync(new URL(f, raiz), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/[^\n]*/g, '$1');
-    if (VIEJAS.test(sin)) malas.push('app/' + f);
+  const sinComentarios = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/[^\n]*/g, '$1');
+  const fuentes = [['app/', new URL('../app/', import.meta.url), true], ['lib/', new URL('../lib/', import.meta.url), false]];
+  for (const [nombre, raiz, recursivo] of fuentes) {
+    const archivos = readdirSync(raiz, { recursive: recursivo }).filter((f) => /\.(jsx?|mjs)$/.test(f) && !/^blog[\\/]/.test(f));
+    for (const f of archivos) {
+      const sin = sinComentarios(readFileSync(new URL(f, raiz), 'utf8'));
+      if (VIEJAS.test(sin) || otraForma(sin).length) malas.push(nombre + f + ': ' + [...new Set(otraForma(sin))].join(', '));
+      if (nombre + f === 'app/coverage.js') continue;
+      if (SUELTO.test(sin)) malas.push(nombre + f + ': escribe «' + ASESOR + '» a mano, sin la constante ASESOR');
+      copiadas(sin).forEach((o) => malas.push(nombre + f + ': copia una oración de coverage.js («' + o.slice(0, 40) + '…»)'));
+    }
   }
   const celda = ([sel]) => {
     const pl = document.querySelectorAll(sel + ' .cmp2-plan')[0];
@@ -1432,6 +1470,25 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   }
   const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
   if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));
+  // La tarjeta del home lee la nota de coverage.js (comité, vuelta 3): escrita a
+  // mano en page.jsx decía «no fija este tope» y, en /planes, «no fija el tope de
+  // remedios en urgencias». Y dice qué preguntar, con el molde de la G1A.
+  const notaRem = COV.coverage().find((x) => x.name === 'Urgencia 24 h').notaAsesor;
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => { const b = document.querySelector('.cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+  const srvRem = page.locator('#cartilla .cmp2-lab .cmp2-srv', { hasText: 'Remedios en urgencias' });
+  let lineaRem = null;
+  if (await srvRem.count()) {
+    await srvRem.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(1200);
+    const caja = await srvRem.boundingBox();
+    await page.mouse.move(5, 5);
+    await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+    await page.waitForTimeout(250);
+    lineaRem = await page.evaluate(() => { const p = document.querySelector('#cartilla .cmp2-tarjeta .cmp2-tarjeta-p'); return p ? p.lastElementChild.textContent : null; });
+    await page.mouse.move(5, 5);
+  }
+  if (lineaRem !== notaRem || !/^En Essential, preguntale a tu asesor cuánto /.test(notaRem || '')) malas.push('home, tarjeta de «Remedios en urgencias»: la línea de Essential tiene que ser la nota de coverage.js y decir qué preguntar (' + JSON.stringify({ linea: lineaRem, nota: notaRem }) + ')');
   await page.close();
   // El celular de /planes (comité, vuelta 2, 17/10): la lista de los once decía
   // «Consulta 24 h, desde el día uno» para Essential al lado del tope de Silver y
@@ -1446,21 +1503,29 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
   await cel.waitForTimeout(450);
   const filaUrg = '.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila';
-  const listaUrg = await cel.evaluate((sel) => {
+  // Comité, vuelta 3: «Consulta 24 h · remedios» en su propio renglón y
+  // «Preguntale a tu asesor» en el siguiente; pegados, se leía «remedios
+  // Preguntale a tu asesor», con la mayúscula a mitad de renglón. Se mira cada
+  // renglón como se ve (ninguno tiene «Preguntale» después de una minúscula), con
+  // su caso malo armado en la misma página.
+  const listaUrg = await cel.evaluate(([sel, fn]) => {
+    const renglones = eval(fn);
     const b = [...document.querySelectorAll(sel)].find((x) => /^Urgencia 24 h/.test(x.querySelector('b').textContent));
     if (!b) return null;
-    const c = b.querySelectorAll(':scope > span > span')[0].cloneNode(true);
-    c.querySelectorAll('.sr-solo, i').forEach((x) => x.remove());
-    return c.textContent.replace(/ /g, ' ').trim();
-  }, filaUrg);
-  if (listaUrg !== 'Consulta 24 h · remedios ' + ASESOR) malas.push('celular, lista de los once, urgencia de Essential: ' + JSON.stringify(listaUrg));
+    const col = b.querySelectorAll(':scope > span > span')[0];
+    const lineas = [...col.children].filter((x) => x.tagName !== 'I').map((x) => x.textContent.replace(/\u00a0/g, ' ').trim());
+    const pegadas = [...b.querySelectorAll(':scope > span > span')].flatMap((c) => renglones(c)).filter((t) => /[a-záéíóúñ]\s+Preguntale/.test(t));
+    const caja = (html) => { const d = document.createElement('div'); d.style.cssText = 'width:120px;font-size:12.5px'; d.innerHTML = html; document.body.appendChild(d); const r = renglones(d).filter((t) => /[a-záéíóúñ]\s+Preguntale/.test(t)).length; d.remove(); return r; };
+    return { lineas, pegadas, casoMalo: caja('<span>Consulta 24 h · remedios <b>Preguntale a tu asesor</b></span>'), casoBueno: caja('<span style="display:block">Consulta 24 h · remedios</span><b style="display:block">Preguntale a tu asesor</b>') };
+  }, [filaUrg, RENGLONES]);
+  if (!listaUrg || listaUrg.lineas[0] !== 'Consulta 24 h · remedios' || listaUrg.lineas[1] !== ASESOR || listaUrg.pegadas.length || !listaUrg.casoMalo || listaUrg.casoBueno) malas.push('celular, lista de los once, urgencia de Essential («Consulta 24 h · remedios» y «' + ASESOR + '» en renglones separados): ' + JSON.stringify(listaUrg));
   await cel.locator(filaUrg, { hasText: 'Urgencia 24 h' }).tap();
   await cel.waitForTimeout(450);
   const hojaUrg = await cel.evaluate(() => (document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo') || {}).textContent || '');
   if (!notaUrg || !/preguntale a tu asesor/i.test(notaUrg) || !hojaUrg.includes(notaUrg)) malas.push('celular, hoja «Urgencia 24 h» sin la nota de Essential: ' + JSON.stringify(hojaUrg.slice(0, 160)));
   await ctx.close();
   if (malas.length) mal('una sola forma de mandar al asesor, «' + ASESOR + '»: quedan «Consultalo» o «Confirmalo», o la celda, el plegable, la lista o la hoja del celular de remedios en urgencias de Essential no lo dicen · ' + malas.join(' · '));
-  else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas, el código y la fila de remedios en urgencias de Essential (tablas, plegable, y la lista y la hoja del celular)');
+  else bien('una sola forma de mandar al asesor: «' + ASESOR + '» en las páginas (también la Guía Médica), el código de app/ y lib/ (ningún «preguntá», «consultá» ni «confirmá» con tu asesor, el rótulo sale de la constante y ninguna oración de coverage.js se copia) y la fila de remedios en urgencias de Essential (tablas, plegable, tarjeta del home, y la lista, en dos renglones, y la hoja del celular); los detectores distinguen el caso malo del bueno');
 }
 
 // ── La tarjeta del servicio del home no muestra esperas (P2A, Arturo, 17/10) ─

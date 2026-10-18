@@ -227,9 +227,13 @@ export default function ComparativaCelular() {
               const c = celdaDe(s, i);
               return (
                 <span key={i} style={css('display:flex;flex-direction:column;gap:3px')}>
+                  {/* `pre` en su propio renglón: el valor cae en el mismo lugar en
+                      las tres columnas y «Preguntale a tu asesor» no queda pegado
+                      a «remedios» (comité, vuelta 3, 17/10). */}
+                  {c.pre ? <span>{c.pre}</span> : null}
                   {c.tipo === 'asesor'
-                    ? <span>{c.pre}<span className="disp" style={css('font-weight:700')}>{ASESOR}</span></span>
-                    : c.tipo === 'corta' ? <span>{c.pre}<Corta t={c.t} partir dicho={c.dicho} />{c.cola}</span> : c.d}
+                    ? <span className="disp" style={css('font-weight:700')}>{ASESOR}</span>
+                    : c.tipo === 'corta' ? <span><Corta t={c.t} partir dicho={c.dicho} />{c.cola}</span> : <span>{c.d}</span>}
                   {c.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{c.sub}</span> : null}
                   {c.espera ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.espera}</i> : null}
                   {c.aparte ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.aparte}</i> : null}
