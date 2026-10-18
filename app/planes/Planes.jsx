@@ -102,17 +102,33 @@ export default function Planes() {
      precio va arriba de cada columna y la letra chica de cada servicio, en su
      tarjeta, al pasar el mouse o tocar el nombre.
      Los valores cortos (`t`) son la forma corta de lo que dicen coverage() y
-     plans(); «por familia» va siempre a la vista (lección 51). Salen de `corta`
-     en coverage.js, salvo las celdas que todavía se escriben acá: las de
-     consultas («Sin tope» con «en Lister», «en la mitad», «en casi todas»), las
-     de Silver y Gold en ecografía («Sin tope», «la mayoría»), las de odontología
-     y los días de terapia intensiva (2, 5 y 6, que también están en coverage.js,
-     page.jsx y quote.js). La tarjeta (`d`) es el texto de coverage() con la
-     espera de carencias() (`conEspera`), salvo la de odontología, que sale de
-     las líneas de plans(). Unificarlas queda para un PR aparte (ver HANDOFF,
-     «Vuelta 3», seguimiento). Este comentario decía «tres filas» y que la
-     tarjeta de consultas y la de terapia intensiva se escribían acá: lo que se
-     escribe acá son sus celdas (comité, vuelta 3, corrección, 18/10). */
+     plans(); «por familia» va siempre a la vista (lección 51). De dónde sale
+     cada grupo de celdas:
+     - De `corta` en coverage.js (la función `corta` de abajo): psicología,
+       fisioterapia, tomografía, resonancia, internación, medicamentos internado
+       y remedios en urgencias, y la ecografía de Essential. Donde `corta` dice
+       ASESOR (la fisioterapia de Gold, los remedios en urgencias de Essential),
+       la celda es ese texto.
+     - Escritas acá, todavía: las de consultas («Sin tope» con «en Lister», «en
+       la mitad», «en casi todas»), las de Silver y Gold en ecografía («Sin
+       tope», «la mayoría», el `resto` que se le pasa a `corta`), las de
+       odontología y los días de terapia intensiva (2, 5 y 6, que también están
+       en coverage.js, page.jsx y quote.js).
+     - La banda «Cuánto esperás para usarlo» (el final de la lista): de
+       carencias() en coverage.js, una fila por espera (`que`). El valor, de
+       `dias` con waitLabel de glossary.jsx: la forma corta se ve («5 meses»,
+       «Sin espera»), la larga la oye el lector («5 meses de espera», `dicho`) y
+       «—» va donde la espera es null. La nota de la celda, de notaCorta de
+       coverage.js («la mayoría», «1 cirugía/familia/año», «Cesárea: preguntale
+       a tu asesor»). Ninguna sale de `corta`.
+     La tarjeta (`d`) es el texto de coverage() con la espera de carencias()
+     (`conEspera`), salvo la de odontología, que sale de las líneas de plans();
+     las filas de la banda de esperas no tienen tarjeta. Unificar lo que se
+     escribe acá queda para un PR aparte (ver HANDOFF, «Vuelta 3»,
+     seguimiento). Este comentario decía «tres filas» y que la tarjeta de
+     consultas y la de terapia intensiva se escribían acá (comité, vuelta 3,
+     corrección, 18/10), y después, que todo salía de `corta` salvo lo escrito
+     acá, sin la banda de esperas (verificador, cierre de la vuelta 3, 18/10). */
   const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
   const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
   // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
