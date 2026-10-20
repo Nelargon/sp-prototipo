@@ -2261,3 +2261,48 @@ lugares. La mayoría son claros, y los dudosos, que parecían muchos, son pocas
 preguntas repetidas. Y el barrido encuentra de paso lo que nadie buscaba: en la
 computadora, el precio de cada plan no dice «por mes», porque una regla de
 estilo lo esconde.
+
+## Parte 34 · Lo que espera a SP no se afirma (20/10/2026)
+
+Arturo contestó la cita del Guardián del 20/10 con «Adelante»: la 3A
+(sp-interno#184) y la 8A (sp-interno#189) entran en el PR #271. La lámina es
+para que vea, antes de autorizar la fusión, lo que cambia de cara al cliente.
+
+### 88 · Una frase también afirma un dato
+
+![Cuatro lugares antes y ahora, en el celular: la línea de Silver de la tarjeta «Consultas por especialista» del home, sin «por persona»; y Gold sin «los topes más altos» en la cabecera de la tabla del home, en la opción «La cobertura más amplia posible» del simulador y en el porqué de su resultado](img/2026-10-20-3a-8a-antes-despues.webp)
+
+**Qué muestra.** A la izquierda, el `main` del 20/10; a la derecha, la rama del
+PR #271. Las dos en la edición de lanzamiento y en el celular, a 390 px. En
+dorado, lo que sale:
+
+1. **3A.** La tarjeta «Consultas por especialista» del home, abierta con el dedo
+   desde la tarjeta de Silver: Silver dice «…en el resto, 5 o 6 al año.», sin
+   «por persona». Essential y Gold no cambian.
+2. **8A.** La cabecera de Gold en la tabla del home: «La cobertura más amplia.»
+3. **8A.** La opción «La cobertura más amplia posible» del simulador, en el paso
+   «¿Qué nivel de cobertura buscás?»: la nota termina en «…y terapia
+   intensiva.». El rótulo queda.
+4. **8A.** El porqué del resultado de Gold, con una persona en Asunción: «…y más
+   días de internación.»
+
+En la 3 y en la 4, la coma antes de «más días» pasa a ser «y». Los recortes se
+quedan en estas cuatro líneas: lo demás que trae el PR #271 está en su
+descripción.
+
+**Qué se decidió y por qué.** **Decidido el 20/10/2026** (Arturo, «Adelante»,
+sobre lo recomendado en la cita del Guardián). La 3A: Silver dice «5 o 6 al
+año», sin para quién, hasta que SP conteste sp-interno#110. La psicología es una
+de las especialidades de ese resto y su fila de la tabla dice «¿quién?»: la
+tarjeta afirmaba lo que la tabla ponía en duda. La 8A: Gold dice «La cobertura
+más amplia», sin «con los topes más altos», hasta que SP conteste
+sp-interno#50. Si vale la grilla, Gold tiene menos fisioterapia que Silver, y el
+superlativo tomaba partido por el dato que favorece al plan caro. Silver sigue
+diciendo «topes más altos» en el simulador, comparado con Essential: la 8A no lo
+tocó, y lo decide Arturo en sp-interno#193. El detalle y los controles que lo
+cuidan están en el HANDOFF, «✅ DECIDIDO EL 20/10/2026».
+
+**La lección.** Una frase también afirma un dato. «Por persona» y «los topes más
+altos» no estaban en una celda: eran el final de una oración, y decían lo mismo
+que una celda, para quién cuenta un tope y qué plan da más. Si el sitio pone ese
+dato en duda en otro lado, la frase sale hasta que SP conteste.
