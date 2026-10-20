@@ -73,9 +73,10 @@ cap. 154.
    está en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`)», con
    nota fechada (en la BITACORA, como excepción decidida a no reescribirla). El
    texto original, con archivo y línea, lo guarda el Guardián en sp-interno.
-   `git grep -n -E '9[.]?100'` ya no la encuentra (quedan dos precios de Gs.
-   910.000 en `datos/planes-vigentes/`, que no son la cifra). El historial de
-   git la conserva: la decisión cambia lo que se lee hoy. **La regla del punto
+   La búsqueda de la cifra ya no la encuentra en el árbol; el comando, lo que
+   encontró y el texto original están en sp-interno, no acá: la expresión de
+   búsqueda es la cifra escrita de otra manera. El historial de git la
+   conserva: la decisión cambia lo que se lee hoy. **La regla del punto
    7 de abajo (U4A) vale también para una cifra interna de SP sin confirmar.**
 
 **Sigue esperando a SP:** cuando conteste #110, la tarjeta de consultas de
