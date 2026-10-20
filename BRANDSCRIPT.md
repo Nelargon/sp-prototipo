@@ -9,9 +9,11 @@ maquetas; toda palabra pasa el test *¿la dice una familia en su casa?*
 (regla de lenguaje en `CLAUDE.md`).
 
 Escrito con los datos reales de la web activa de SP (GA, 15 may–13 jul
-2026): 77% del tráfico entra por celular, 94% desde Paraguay, 50 segundos
-de atención media, y 1 de cada 4 visitantes viene buscando la guía del
-asegurado.
+2026): la mayoría del tráfico entra por celular, casi todo desde Paraguay,
+la atención media es corta y una buena parte de los visitantes viene
+buscando la guía del asegurado (las cifras de Google Analytics de la web de
+SP están en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`;
+17/10/2026, sp-interno#180).
 
 ---
 

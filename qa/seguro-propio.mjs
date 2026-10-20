@@ -12,7 +12,9 @@
 // detector falla en sus propios casos, corta antes de opinar sobre el sitio.
 //
 // Afuera a propósito: el blog (/blog/, lo controla la compuerta del motor,
-// sp-contenido#238) y /v1 (congelado, como en el QA integral).
+// sp-contenido#238). La copia congelada /v1/ también quedaba afuera; se bajó
+// el 17/10/2026 (sp-interno#181) y la excepción salió con ella: si vuelve,
+// este detector la mira como a cualquier página.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -69,7 +71,7 @@ export function revisarCarpeta(dir) {
   const walk = (d) => {
     for (const f of readdirSync(d)) {
       const full = join(d, f);
-      if (statSync(full).isDirectory()) { if (!/\/(v1|blog|_next)(\/|$)/.test(full)) walk(full); }
+      if (statSync(full).isDirectory()) { if (!/\/(blog|_next)(\/|$)/.test(full)) walk(full); }
       else if (f.endsWith('.html')) htmls.push(full);
     }
   };
@@ -93,5 +95,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     for (const h of hallazgos) console.error(`  ${h.pagina} · ${h.nombre} · «…${h.cerca}…»`);
     process.exit(1);
   }
-  console.log(`✓ seguro-propio: ${DEBEN_MARCAR.length + NO_DEBEN_MARCAR.length} casos de prueba bien · ${paginas} páginas sin «seguro» para SP (afuera: blog y /v1)`);
+  console.log(`✓ seguro-propio: ${DEBEN_MARCAR.length + NO_DEBEN_MARCAR.length} casos de prueba bien · ${paginas} páginas sin «seguro» para SP (afuera: el blog)`);
 }

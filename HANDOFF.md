@@ -13,7 +13,532 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 13 oct 2026.*
+*Última actualización: 20 oct 2026.*
+
+---
+
+## ✅ DECIDIDO EL 20/10/2026 («Adelante»: 3A, 8A y 180A)
+
+Arturo contestó «Adelante», sobre lo recomendado en la cita del Guardián de ese
+día. Lo registran sp-interno #184, #189 y #180 (comentarios del 20/10). Va en la
+misma rama del PR #271. Las dos decisiones del sitio tienen su control en
+`qa/qa-lanzamiento.mjs` (sección «Lo que espera a SP no se afirma»), probado
+fuera del repo: la build de antes (5a15047) da ✗ en la línea de Silver de la
+tarjeta (a 1280 y a 390 px) y en los cuatro lugares de Gold (la línea de la
+tabla, el texto del home, la opción y el porqué del simulador); una copia
+saboteada con variantes («para cada uno» en la tarjeta, «por persona» en la
+pregunta frecuente, «por beneficiario» en la línea de Silver de `/planes`, «los
+topes más altos» en la pregunta frecuente y «los mayores topes» en el porqué de
+Gold) da ✗ también en lo que la build de antes no tocaba, el «5 o 6» del texto
+del home y de `/planes`; la rama, ✓. No todos los controles se prueban además
+en la misma página. Tienen la línea de antes, o una paráfrasis, metida en la
+página, leída con la misma lectura y devuelta: la línea de Silver de la tarjeta
+del home (a 1280 px; a 390 px, con el dedo, no), la cabecera de Gold del home,
+la línea de Gold de `/planes` (a 390 y a 1280 px) y, en el simulador, el
+mensaje del paso que sigue a elegir Gold, la nota de su opción y lo que va al
+lado de su precio, y el porqué de su resultado (el mensaje, la nota y el
+porqué, en las dos capas; lo de al lado del precio, solo en el texto
+aprobado). Se prueban solo
+con autoprueba en texto, contra textos de antes y de ahora: lo que sigue a cada
+«5 o 6» en el home, en `/planes` y en el simulador (`QUIEN_DICHO`), y
+`TOPES_ALTOS` sobre el texto entero del home y de `/planes`. Y con los sabotajes
+de este párrafo, fuera del repo, todos menos lo que va al lado del precio de la
+opción, que se prueba solo en la página, y `TOPES_ALTOS` sobre `/planes`, que
+no tuvo sabotaje propio: se sabotea en el home, con la misma lectura. Después
+del verificador del
+20/10, dos copias más del simulador: con «…y los mejores topes.» en el porqué de
+Gold y «…, con los topes más amplios.» en la nota de su opción, ✗ en los dos
+lugares y en las dos capas (el texto aprobado y la lista); con paráfrasis que la
+lista no conoce («…, con el máximo en todo.» y «…, sin quedarte corto en
+nada.»), ✗ en los dos por el texto aprobado solo. Después del segundo
+verificador, tres más, cada una en su build de la v1: la copia de ese
+verificador, con «La cobertura más amplia, con los topes más altos.» en el
+mensaje del paso y «…, con el respaldo más alto en cada tope» en la línea de
+Gold de `/planes`, ✗ en los dos (el mensaje, en los tres recorridos de Gold;
+`/planes`, a 390 y a 1280 px); «5 o 6 al año por persona» en el porqué de Silver
+del simulador, ✗ en la 3A del simulador; y «La cobertura más amplia, sin tope en
+nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
+
+1. **3A, las consultas de Silver sin «por persona»** (sp-interno#184), hasta
+   que SP conteste #110. La tarjeta de «Consultas por especialista» del home
+   dice para Silver «Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6
+   al año. Hasta 3 por mes en cada especialidad; después, con copago.». El
+   porqué: la psicología es una de ese resto y su fila dice «5/¿quién?/año»; la
+   tabla afirmaba y negaba el mismo dato. `/planes` (su tarjeta y la línea de la
+   tarjeta de Silver) y la pregunta frecuente del home ya decían «5 o 6 al año
+   en el resto», sin para quién, y no cambiaron. La línea de Essential («En la
+   red, hasta 3 por mes por persona.») no es parte de la decisión y queda. La
+   lista cerrada `TARJETA_APROBADA` (BITACORA cap. 153) se actualizó con la
+   línea nueva, con nota: no se aflojó. La prueba lee la línea de Silver abierta
+   como una persona (a 1280 px con el mouse y a 390 px con el dedo) y lo que
+   sigue a cada «5 o 6» en el texto del home y de `/planes`: nada puede decir
+   para quién (`QUIEN_DICHO`: «por persona», «por beneficiario», «para cada
+   uno», «por familia»…).
+2. **8A, Gold «La cobertura más amplia», sin «con los topes más altos»**
+   (sp-interno#189), hasta que SP conteste #50. El porqué: si vale la grilla,
+   Gold tiene menos fisioterapia que Silver (10 + 3 contra 15 + 5); el
+   superlativo tomaba el lado de `gold.json`, que es lo que la G1A evita, y
+   favorecía al plan caro. Cambió en tres lugares: la línea de Gold de la tabla
+   del home («La cobertura más amplia.»), la nota de la opción «La cobertura más
+   amplia posible» del simulador («Consultas sin tope en casi todas las
+   especialidades y más días de internación y terapia intensiva.») y el porqué
+   del resultado de Gold («La cobertura más amplia: consultas sin tope en casi
+   todas las especialidades y más días de internación.»). El rótulo de la
+   opción, «La cobertura más amplia posible», queda: es lo que la persona busca,
+   no una afirmación sobre los topes. ⚠ Silver sigue diciendo «topes más altos»
+   en el simulador (su opción y su porqué: «Más días de terapia intensiva y
+   topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
+   Lo decide Arturo en sp-interno#193 (abierto el 20/10): en 10 de las 20
+   especialidades con tope en Silver, Essential puede dar más consultas al año.
+   La prueba mira lo de Gold con sus textos aprobados, literales y como se ven:
+   su línea de la tabla (`GOLD_PARA`) y, en el simulador, la opción (dice su
+   rótulo y `OPCION_AMPLIA_NOTA`, y nada más) y el porqué del resultado (un
+   párrafo que es, entero, `GOLD_PORQUE`). Debajo, como segunda capa, la lista
+   de lo que no va (`TOPES_ALTOS`) sobre el texto entero del home y de
+   `/planes`, el botón de la opción y la tarjeta del resultado de Gold.
+   *(20/10/2026, verificador: el simulador se miraba solo con `TOPES_ALTOS`, y
+   «…y los mejores topes.» en el porqué o «…, con los topes más amplios.» en la
+   nota pasaban en verde. Era la lección del cap. 153 aplicada a medias:
+   BITACORA cap. 154.)* *(20/10/2026, segundo verificador: tres controles más
+   del mismo tipo. El mensaje que acompaña el paso que sigue a elegir Gold en
+   el simulador es, literal, `GOLD_PARA`, como se ve a 390 y a 1280 px; la línea
+   de Gold de `/planes` es, literal, «La cobertura más amplia» (`GOLD_TAG`), en
+   la tarjeta del celular y en el texto de la cabecera de la tabla, que en la
+   computadora no se ve; y la 3A lee lo que se ve en la tarjeta del simulador,
+   con una persona en Asunción, en Essential, Silver y Gold (lo plegado no
+   entra), que hoy no dice ningún «5 o 6», y falla si no leyó. Antes, una copia con la
+   frase vieja en el mensaje y una paráfrasis en `/planes` daba 133 ✓.)*
+3. **180A, la cifra de contratos activos de SP sale de los documentos de este
+   repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de
+   Google Analytics: en este archivo (punto 3c de «Prioridad alta») y en el cap.
+   24 de la BITACORA queda un puntero, «(la cifra de contratos activos de SP
+   está en el repo privado, `sp-interno/project/cifra-contratos-activos.md`)»,
+   con nota fechada (en la BITACORA, como excepción decidida a no
+   reescribirla). En ese archivo están el dato, su estado (sin confirmar) y el
+   texto original, con archivo y línea. *(20/10/2026, verificador: el primer
+   borrador apuntaba a `metricas-web-ga-2026.md`, la tabla de Google Analytics
+   de la U4A, que no trae esta cifra.)* Los dos archivos, este y el de la U4A,
+   llegan a sp-interno con su PR #177, que fusiona Arturo: hasta entonces
+   están en la rama de ese PR (`claude/dazzling-keller-l0torp`), no en `main`.
+   La búsqueda de la cifra ya no la encuentra en el árbol; el comando y lo que
+   encontró están en ese mismo archivo, no acá: la expresión de búsqueda es la
+   cifra escrita de otra manera (BITACORA cap. 154). El historial de git la
+   conserva: la decisión cambia lo que se lee hoy. **La regla del punto
+   7 de abajo (U4A) vale también para una cifra interna de SP sin confirmar.**
+
+**Sigue esperando a SP:** cuando conteste #110, la tarjeta de consultas de
+Silver puede volver a decir para quién (y la prueba de la 3A se ajusta en el
+mismo PR); cuando conteste #50, se revisa qué puede decir Gold de sus topes.
+
+---
+
+## ✅ DECIDIDO EL 17/10/2026 («Todo A»: lo que toca al sitio)
+
+Arturo contestó «Todo A» a la tabla de decisiones pendientes, en la sesión del
+Guardián. Lo registran el PR #271 (comentario del 17/10) y sp-interno #50,
+#110, #180 y #181. Todo va en la rama `claude/dazzling-keller-l0torp`
+(PR #271), un commit por decisión, cada una con su sección en
+`qa/qa-lanzamiento.mjs` que falla sin el cambio y pasa con él. Lo que se
+aprendió en el camino: BITACORA cap. 148.
+
+1. **P3A, la forma corta con «¿quién?»** (tomografía, resonancia, psicología y
+   fisioterapia). Essential dice «1/familia/año»; Silver y Gold,
+   «1/¿quién?/año». «¿quién?» es la constante `DUDA` de `app/coverage.js`
+   (`QUIEN_SG` y, aparte, `QUIEN_PSICO`): cuando SP conteste #110, se cambia
+   ahí. Tiene la letra, el color y el peso de «familia», con subrayado punteado,
+   y es un botón que abre la tarjeta del servicio con clic, toque o teclado (no
+   al pasar el mouse). Con el teclado, Enter y Espacio no la cierran; el lector
+   de pantalla oye la fila y el plan («Tomografía (TAC), Silver: 2 al año, sin
+   confirmar para quién») y la tarjeta como descripción. Solo esa celda es
+   botón (vuelta 1, abajo). El pie no afirma nada del contrato (`NOTA_UNIDAD`: «En
+   Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el
+   grupo.»). La lista «Los once servicios» conserva las condiciones de
+   Essential. La forma corta va en `app/components/Corta.jsx`: el corte de
+   renglón solo antes de la barra, la cifra con su unidad en espacio duro, y la
+   frase completa para lectores de pantalla en un texto oculto (sin
+   `role="img"`, y nunca con `position:absolute`, que se escapaba del plegable
+   y hacía desbordar `/planes`). Internación: «20 días/familia/año | 20
+   días/persona/año | 25 días/persona/año». Las líneas de las tarjetas del
+   celular (`plans()` de `quote.js`) que tienen forma corta (tomografía y
+   resonancia, e internación) salen de `corta`, no de números a mano
+   (sp-interno#117). *(17/10/2026, vuelta 3: decía «las líneas», como si fueran
+   todas. La de terapia intensiva sigue escrita a mano en `quote.js`, y los
+   días de terapia intensiva y varias tarjetas del home también se escriben en
+   más de un lugar: ver «Vuelta 3», seguimiento.)*
+2. **G1A, la fisioterapia de Gold va al asesor** (sp-interno#50: la tabla decía
+   20 y el plegable, 10). La celda dice «Preguntale a tu asesor» en el home, la
+   tabla y la lista de `/planes` y el plegable, como la cesárea de Gold de la
+   2A: es texto (en la capa de cifras, con el peso del dato de al lado), no
+   botón, y la tarjeta se abre desde el nombre del servicio. Lo que se lee (las
+   tarjetas del home y de `/planes` y la hoja del celular) dice para Gold qué
+   cubre, sin número («Traumatológica, neurológica o después de una cirugía, y
+   también respiratoria»), con los mismos tipos que Silver («15 sesiones al año
+   (…), más 5 respiratorias»): las dos líneas salen de `cov` en
+   `coverage.js` y la nota manda al asesor. Gold no lleva ningún número de
+   sesiones hasta que SP lo aclare, ni en la forma corta ni en la oración.
+3. **E3A, «/evento»** donde la grilla dice «por evento»: «Gs. 350 mil/evento»,
+   «Gs. 1 millón/evento», «Gs. 1,5 millones/evento» (nunca «1,5 mill.»), y
+   los remedios en urgencias de Silver y Gold. El parto queda con «hasta» y
+   sin unidad: su fuente no la trae.
+4. **R1A, una sola forma de mandar al asesor: «Preguntale a tu asesor»**
+   (`ASESOR` de `coverage.js`). Salieron «Consultalo», «Consultalo con tu
+   asesor» y «Confirmalo con tu asesor», y el «—» de esa misma fila
+   (urgencia) en el plegable de topes, que se leía «no cubre». ⚠ La fila de
+   abajo, «En estudios y procedimientos – Cuadro 2», tiene el mismo hueco en
+   Essential (`null` en la fuente) y **sigue en «—»**: la R1A nombró solo la
+   fila de urgencia, y extenderla lo decide Arturo (punto de revisión 5,
+   abajo). Desde la vuelta 2, la lista y la hoja del celular también mandan al
+   asesor por los remedios en urgencias de Essential.
+5. **P2A, la tarjeta del servicio del home no muestra esperas** (regla del
+   03/10). Las esperas siguen en `/planes`, el simulador y la cotización.
+6. **P4A, se bajó la copia congelada `/v1/`** (sp-interno#181). `public/v1/`
+   salió del repo: servía los TTF de Gilroy sin licencia, «Contratos activos
+   hoy» con una cifra sin confirmar y «Planes de seguro médico familiar».
+   Queda en el historial de git. Los guardianes que la exceptuaban
+   (`seguro-propio`, `titulos-y-sombras`, `qa-integral`) ya no lo hacen; el
+   CI corta si `out/v1` aparece, `qa-integral` y `qa-lanzamiento` piden 404 y
+   la salud nocturna mira `/v1/` en vivo (no en un PR, porque ahí el sitio en
+   vivo todavía es main). Las menciones viejas de este archivo quedan como
+   historia, con nota.
+7. **U4A, lo que el repo público no dice** (sp-interno#180). Los nombres de
+   competidores del cap. 57 de la BITACORA y del pendiente 12c de este archivo
+   pasaron a su categoría («una prepaga sin sanatorio propio»), con nota
+   fechada. Las cifras de Google Analytics de la web de SP (la línea de base de
+   la sección 2, el 8b de SEO, el cap. 16 y el `BRANDSCRIPT.md`) pasaron a un
+   puntero: `sp-interno/project/metricas-web-ga-2026.md`. No se tocan
+   `lib/guia-medica.json` ni la lista DESTACADOS de `scripts/red-home.mjs`: son
+   la red de SP. **Regla para lo que venga:** un nombre de competidor o una
+   cifra de tráfico de la web de SP no se escribe en este repo; va al privado
+   y acá, un puntero (CLAUDE.md de sp-interno, «¿esto le sirve a un
+   competidor?»). *(20/10/2026: la 180A le sumó la cifra de contratos activos
+   de SP, que la U4A no había alcanzado; ver «✅ DECIDIDO EL 20/10/2026».)*
+
+**Fuera de este PR:** E2A (los 27 cambios claros del barrido de la regla de
+escaneo) va en un PR aparte, después de que se fusione este. E4A (el precio del
+simulador en su propio renglón) espera su lámina antes del cambio.
+
+**Sigue esperando a SP:** si tomografía, resonancia, psicología y fisioterapia
+de Silver y Gold son por persona o por grupo (#110); cuántas sesiones de
+fisioterapia tiene Gold (#50). Lo que queda para Arturo de este PR está en los
+puntos de revisión de sp-interno (abajo, «Vuelta 2»).
+
+**Vuelta 1 del QA y el comité (17/10, BITACORA cap. 149).** Arreglado en la
+misma rama, cada arreglo con su prueba en `qa-lanzamiento` (falla en la build
+de 56d4d9e y pasa con el cambio): la celda «¿quién?» con teclado y lector de
+pantalla; solo esa celda es botón (la de «Preguntale a tu asesor» lo era sin
+que nadie lo decidiera); la fisioterapia de Gold en la lista con el peso del
+dato y sin repetir el asesor en la tarjeta y la hoja; un control del
+`aria-hidden` de la forma corta; y ningún renglón termina en «/» en el
+plegable de topes («urgencia o emergencia», «traumatológica, neurológica o
+post-quirúrgica»: la barra que hace de «o» pasa a «o») ni en el pie del home
+(«c/ Azara» con espacio duro).
+
+**Vuelta 2 del QA y el comité (17/10, BITACORA cap. 150).** Arreglado en la
+misma rama, cada arreglo con su prueba en `qa-lanzamiento` (falla en la build
+de f40cc02 y pasa con el cambio):
+- **La fisioterapia de Silver y Gold nombra lo mismo.** La vuelta 1 le dio a la
+  línea de Gold los tipos y las respiratorias y dejó a Silver en «15 sesiones
+  al año»: en `/planes` parecía que solo Gold tenía respiratoria. Silver tiene
+  15 + 5 en las dos fuentes. La prueba de la G1A rechaza cualquier dígito que no
+  sea una espera (antes, solo 10 y 20) y compara los tipos de las dos líneas.
+- **Los remedios en urgencias de Essential mandan al asesor también en el
+  celular** (la lista de los once y la hoja «Urgencia 24 h», con la
+  `notaAsesor` de «Urgencia 24 h»), como ya lo hacían las tablas.
+- **El lector de pantalla oye de qué fila y de qué plan es cada valor:** la
+  celda del asesor en la computadora («Fisioterapia, Gold: preguntale a tu
+  asesor») y cada fila de la lista de los once en el celular («Fisioterapia.
+  Essential: 5 por familia al año, sin espera. Silver: …»). Se mide con el
+  árbol de accesibilidad (`ariaSnapshot`).
+- **Las pruebas de «¿quién?» corren sobre la fila que lo tiene** (si SP
+  contesta #110 para tomografía y resonancia, siguen probando psicología) y
+  dicen «se salta» si no queda ninguna; la de teclado aprieta Enter y Espacio
+  con la tarjeta cerrada y se prueba contra teclas mudas.
+
+**Quedan para Arturo, como puntos de revisión de sp-interno** (etiqueta
+`revisión`; los abrió el Guardián el 18/10/2026 con el texto y las opciones que
+dejó esta vuelta, y cada uno lleva acá su número): (1) si la celda
+«Preguntale a tu asesor» lleva a WhatsApp (sp-interno#182); (2) un solo pie
+para fisioterapia (#183);
+(3) el «por persona» de la tarjeta de consultas de Silver del home al lado de
+«5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
+fusionar sin respuesta *(20/10/2026: decidida, 3A, sp-interno#184: sale «por
+persona»; ver «✅ DECIDIDO EL 20/10/2026»)*; (4) la condición de la tomografía de Essential en las
+tablas (#185); (5) el «—» de «Cuadro 2» de Essential (#186); (6) «y/o» y
+«post-quirúrgica» en los rótulos del plegable (#187); (7) si la proporción de
+tráfico que entra por celular (trece lugares) y la paciencia del personaje del
+`BRANDSCRIPT.md` también pasan al puntero (#188; las cifras, en
+`sp-interno/project/metricas-web-ga-2026.md`; este párrafo las repetía y se
+sacaron en la vuelta 3, 17/10/2026);
+(8) «con los topes más altos» de Gold en el home y el simulador, que con la
+grilla es falso para la fisioterapia (#50) *(20/10/2026: decidida, 8A,
+sp-interno#189: Gold dice «La cobertura más amplia»; ver «✅ DECIDIDO EL
+20/10/2026»)*; y (9) si la fisioterapia de
+Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
+planilla, y hoy solo el plegable; `essential.json` no lo trae; #190).
+
+**Vuelta 3 del comité (17/10, 36 hallazgos, BITACORA cap. 151).** El Guardián
+separó lo que es de Claude (se arregló en la rama), lo que es de Arturo o de SP
+(no se tocó) y lo que va aparte. Cada arreglo con su prueba en
+`qa-lanzamiento`, que falla en la build de 02c733a, o en una copia saboteada
+construida fuera del repo, y pasa con el cambio:
+- **Las esperas llevan su condición** (W3, D1, D3, E6). La lista «Los once
+  servicios» daba a la cesárea de Gold los 10 meses que la 2A le sacó y a toda
+  internación de Silver y Gold los 2 meses de la aguda: ahora dice «10 meses de
+  espera para el parto» y «Cesárea: preguntale a tu asesor», y «2 meses de
+  espera si es por algo agudo» (`cuando` y `alAsesor` de `carencias()`). La
+  tabla de esperas de `/planes` en la computadora lleva en cada celda la nota
+  del simulador (`notaCorta`): «los de rutina, sin espera», «la mayoría», «1
+  cirugía/familia/año» y la cesárea de Gold. En la hoja del celular, toda nota
+  que manda al asesor va arriba de los tres planes.
+- **El lector oye de qué fila y de qué plan es cada valor** (W1, W5, V7, W4,
+  D7, E4, V6). En la computadora cada celda lleva delante, oculto, «Días de
+  terapia intensiva, Essential:» (no en el celular, donde la fila está al
+  lado); la celda del asesor dice la constante `ASESOR`; cada «Ver mi precio»
+  dice su plan. Los dos plegables de `/planes` son tablas para el lector. El
+  nombre de cada fila de la lista dice la plata en «guaraníes», sin «·», y
+  «remedios: preguntale a tu asesor». Se mide con el árbol de accesibilidad.
+- **Una sola fuente y una sola forma para mandar al asesor** (W2, E5, W6, D6,
+  V5, W8). La nota de remedios de Essential vive solo en `coverage.js` («En
+  Essential, preguntale a tu asesor cuánto cubre en remedios en urgencias.») y
+  el home la lee de ahí; en la lista, «Consulta 24 h · remedios» va en su
+  renglón y el valor en el siguiente; el buscador usa `ASESOR`; la Guía Médica
+  dice «Preguntale a tu asesor» (decía «preguntá» y «Confirmá» en el código).
+  La prueba de la R1A rechaza la clase (todo imperativo de preguntar, consultar
+  o confirmar con tu asesor que no sea «preguntale»), el rótulo escrito a mano
+  y una oración de `coverage.js` copiada en otro archivo.
+- **La fisioterapia de Silver y Gold con la misma forma** (W7): las dos
+  arrancan por los tipos. La línea de Essential no cambió (pregunta 9).
+- **La plata no se parte y el plegable dice los montos como la E3A** (V2, D5):
+  `duro` une «Gs.», la cifra y «millones»; el plegable dice «Gs. 1,5 millones»
+  y no «Gs. 1.500.000».
+- **Las pruebas miran lo que expone el navegador y la clase de error** (V1, V3,
+  E8, E2): la forma corta se cuenta en el árbol de accesibilidad (con la frase
+  silenciada por CSS, la prueba vieja seguía en verde), el pie rechaza toda
+  afirmación de unidad, el detector de esperas rechaza cualquier plazo, y el
+  celular de la P3A se mide también a 430 px. *(18/10: las tres primeras
+  tenían huecos, y la de las esperas leía los campos que dibujan la página: ver
+  «Corrección de la vuelta 3», abajo.)*
+- **Documentos** (W9, E9, V4, D9, D8): el punto (7) de arriba ya no repite la
+  cifra de tráfico; notas fechadas en las menciones viejas de `/v1/` y de
+  «Confirmalo/Consultalo»; el README de datos y las láminas 85 a 87, al día; y
+  el punto 1 ya no da por hechas todas las líneas de `quote.js` desde `corta`.
+
+**Corrección de la vuelta 3 (18/10, la QA y dos verificadores adversariales,
+BITACORA cap. 152).** Sobre lo de arriba encontraron tres cosas del sitio y
+cuatro pruebas que no probaban lo que decían. Se arregló en la rama, y cada
+prueba nueva falla en una copia saboteada construida fuera del repo y pasa con
+el cambio:
+- **La cesárea de Gold también en el plegable** «Internación, maternidad y
+  topes»: decía «300 días» de maternidad para Gold, sin más. Ahora dice debajo
+  «Cesárea: preguntale a tu asesor» (de `alAsesor` de `carencias()`, como la
+  lista; el dato de la planilla no se toca).
+- **Las esperas se oyen como espera.** En la banda «Cuánto esperás para usarlo»
+  de `/planes` (computadora), el lector oía «Resonancia, Essential: 1 año», que
+  se entendía como un cupo. Ahora oye «1 año de espera» (`dicho`); lo que se ve
+  no cambió.
+- **El comentario de `filasCompu`** (`app/planes/Planes.jsx`) nombra bien lo
+  que todavía se escribe a mano: las celdas de consultas, de ecografía de Silver
+  y Gold, de odontología y de terapia intensiva (decía «tres filas» y que las
+  tarjetas de consultas y terapia intensiva se escribían ahí).
+- **Las pruebas, contra la clase de error.** «Las esperas llevan su condición»
+  armaba lo esperado con `cuando`, `alAsesor` y `notaCorta`, y sin el campo se
+  salteaba: ahora las reglas están escritas en la prueba (la cesárea con
+  `ASESOR` en Gold; «algo agudo» en todo plazo de internación de Silver y Gold;
+  «rutina», cirugía y familia, y «la mayoría» en la tabla; la cesárea en el
+  plegable). La forma corta para lectores se cuenta en su celda y no en todo el
+  body (una celda muda se escondía detrás de una frase más larga), y una celda
+  de tabla sin nombre falla. El detector de esperas de la tarjeta del home lee
+  texto por texto (`textContent` pegaba «Silver5 meses») y suma ordinales, «mes
+  N», «al año de», «a los N», «en un año» y «desde el comienzo». El pie se
+  compara con los textos que fijó Arturo el 17/10: cualquier otra oración solo
+  puede ser otra pregunta al asesor, sin palabras de unidad. *(18/10: el pie y
+  las esperas todavía enumeraban; ver «Cierre de la vuelta 3», abajo.)*
+- **Falsa alarma, no se tocó el sitio:** el revisor de diseño (`sp-interno`,
+  skill `sp-disenador-ux`, `scripts/revisar.mjs`) marca 🟡 `[fuente-lectura]`
+  los prefijos ocultos «Días de terapia intensiva, Essential:» (`.sr-solo
+  .cmp2-fila`, 20 en `/` y 53 en `/planes`, desde 820 px). Medido: miden 1×1 px,
+  con `clip-path: inset(50%)` y `overflow: hidden`, y no se pintan; el revisor
+  cuenta como visible lo que mide 1 px o más. El arreglo es del revisor (ver
+  seguimiento).
+
+**Cierre de la vuelta 3 (18/10, el verificador de la corrección, BITACORA cap.
+153).** Dos pruebas seguían enumerando, una nota tenía la letra de la celda y
+un comentario decía de menos. Cada prueba nueva falla en una copia saboteada
+construida fuera del repo y pasa en la rama:
+- **El pie, contra una lista cerrada.** En las filas con «¿quién?» (home y
+  `/planes`, y la hoja del celular) el pie solo puede decir tres oraciones,
+  literales en `qa-lanzamiento`: la pregunta por la unidad (`NOTA_UNIDAD`), la
+  definición de «Por familia» del home y la pregunta de la fisioterapia de Gold
+  (G1A); la hoja suma su cierre fijo. Cualquier otra falla: lo nuevo en ese pie
+  se suma a la prueba a conciencia.
+- **Las esperas de la tarjeta del home.** *(Corregido el 18/10: este punto
+  decía «la clase entera», y no era cierto. El regex sumó cantidades en
+  palabras, quincena, trimestre, semestre, ordinales y formas relativas, pero
+  seguía siendo una lista de formas. La red pasó a ser la lista cerrada; ver
+  «Cierre de la vuelta 3, la lista de lo que sí va», abajo.)*
+- **La nota de la cesárea del plegable va en Inter**, con la clase de la nota de
+  la tabla (`.cmp2-fam`, que ahora declara su peso, 400): heredaba Nunito Sans
+  Bold de la celda. Ocupa los mismos renglones (3 a 360-430 px, 2 a 820, 1 a
+  1280) y no desborda.
+- **El comentario de `filasCompu`** dice de dónde sale cada grupo de celdas:
+  `corta`, lo que se escribe a mano y la banda de esperas, que sale de
+  `carencias()` con `waitLabel` y `notaCorta`.
+
+**Cierre de la vuelta 3, la lista de lo que sí va (18/10, segundo verificador
+del cierre, BITACORA cap. 153).** El detector de esperas de la tarjeta del home
+seguía siendo una lista de formas: con nueve esperas a la vista daba verde («Lo
+usás pasado el año.», «Disponible al año.», «A partir de la tercera cuota.»…) y
+gritaba en falso con topes posibles («20 días por persona al año», «Hasta 2 días
+anuales», «Hasta 15 días en habitación privada»). Y las líneas de Silver y Gold
+de las filas con «¿quién?» no las miraba nadie: «Son por persona.» pasaba en
+verde en el home, en `/planes` y en la hoja del celular. Ahora, en
+`qa-lanzamiento` (sección «Lo que dicen las tarjetas y la hoja, contra una lista
+cerrada»):
+- **La red es la lista cerrada `TARJETA_APROBADA`:** 67 líneas, pies y notas
+  como literales, relevados en el navegador sobre la v1 de e4dc862. Las nueve
+  tarjetas del home enteras (tres líneas y el pie) y, en las cuatro filas con
+  «¿quién?», la tarjeta de `/planes` en la computadora y la hoja del celular
+  (390 px), también enteras. *(Precisado el 18/10, vuelta 8: las nueve tarjetas
+  del home se leían solo a 1280 px, pasando el mouse; la que se abre al tocar en
+  el celular no la leía nadie, y en `/planes` del celular tampoco la hoja del
+  tema ni la línea de la tarjeta del plan. Una espera que solo se veía en el
+  celular daba «✓ todo verde». Qué cubre ahora, superficie por superficie y
+  ancho por ancho: «Vuelta 3, celular», abajo.)* Falla con cualquier línea que no esté en la lista,
+  con la que falte y con texto fuera de las líneas, aunque sea inocente. El
+  mensaje dice qué línea es y dónde está, y que, si el cambio es querido, se suma
+  a la lista después de revisar que no sea una espera (P2A) ni una afirmación de
+  unidad (P3A). Las líneas que salen de preguntas abiertas de Arturo (por
+  ejemplo la fisioterapia de Essential, la 9) están como se ven hoy.
+- **El regex `ESPERA` es solo una pista** dentro de ese mensaje («parece una
+  espera»): no hace fallar nada, y ya no se prende con «hasta N días», «N días
+  anuales», «N días por persona» ni «N días de algo al año».
+- **Se leen todos los pies y todo el texto de la hoja**, no solo el primer
+  `.cmp2-tarjeta-pie` ni, en la hoja, los `<p>` hijos directos. La prueba del
+  pie de las filas con «¿quién?» (`pieBien`, `PIE_APROBADO`) se mudó a esta
+  sección.
+- **Autoprueba en la misma página, con la misma lectura:** las 16 esperas que
+  pasaban, metidas en una línea real del home, fallan; las 4 afirmaciones de
+  unidad («Son por persona.», «Cada integrante tiene el suyo.», «Por persona.»,
+  «Para cada uno de la familia.»), en Silver y Gold, fallan en las tres
+  superficies; «Hasta 2 días anuales.» falla como línea nueva, con la pista
+  apagada. Sabotajes construidos fuera del repo, con la `qa-lanzamiento` entera
+  de la rama: «Lo usás pasado el año.» en la tarjeta del home y «Son por
+  persona.» en la línea de Silver de tomografía de `/planes` dan ✗ (una falla
+  cada uno, la de la lista); la rama, ✓. *(Precisado el 18/10, vuelta 8: «las
+  tres superficies» eran el home y `/planes` a 1280 y la hoja de «Los once
+  servicios» a 390, y esa «línea de Silver de tomografía de `/planes`» es la de
+  la tarjeta de la computadora, no la de la tarjeta del plan en el celular.)*
+- **El costo, a propósito:** cambiar una línea de esas tarjetas (por ejemplo
+  cuando Arturo conteste la 3 o la 9, o SP la #110 o la #50) obliga a sumarla a
+  `TARJETA_APROBADA` en el mismo PR, a conciencia. *(20/10/2026: pasó con la
+  3A; la línea de Silver de consultas cambió en la lista, con nota.)*
+
+**Vuelta 3, celular: qué cubre la lista cerrada, superficie por superficie
+(18/10, tercer verificador del cierre, BITACORA cap. 153).** La lista leía la
+tarjeta del home solo a 1280 px con el mouse. En el celular, la que se abre al
+tocar el nombre no la leía nadie: con «Lo usás a los 3 meses de afiliarte.»
+solo visible en el celular (`.solo-cel`), la `qa-lanzamiento` de 8db9016 daba
+«✓ todo verde» (medido). Y en `/planes` del celular, la hoja del tema
+«Tomografía y resonancia» no la leía ninguna prueba (la de «/planes/ en el
+celular» cuenta sus cajas) y la línea de la tarjeta del plan se controlaba con
+una lista de lo que no va (`!/persona/i`). Ahora `TARJETA_APROBADA` vive arriba
+en `qa/qa-lanzamiento.mjs` (después de `pieBien`), tiene 77 literales y cubre
+exactamente esto:
+
+| Superficie | Cómo se abre | Anchos | Lecturas |
+|---|---|---|---|
+| Home: las 9 tarjetas de la tabla, enteras (3 líneas y el pie) | pasando el mouse por el nombre (columna de nombres) | 1280 | 9 |
+| Home: las mismas 9 tarjetas | con el dedo (`isMobile`, `hasTouch`), tocando el nombre en cada una de las 3 tarjetas de plan | 360, 390, 430 | 81 |
+| `/planes`, computadora: la tarjeta de las 4 filas con «¿quién?», entera | pasando el mouse | 1280 | 4 |
+| `/planes`, celular: la hoja de las 4 filas con «¿quién?», entera | desde «Los once servicios, plan por plan» | 390 | 4 |
+| `/planes`, celular: la hoja del tema «Tomografía y resonancia», entera | tocando la línea en cada una de las 3 tarjetas de plan | 360, 390, 430 | 9 |
+| `/planes`, celular: la línea «Tomografía y resonancia» de la tarjeta de cada plan, lo que se ve y lo que oye el lector | se lee sin abrir (es un botón: su nombre, del ariaSnapshot) | 360, 390, 430 | 9 |
+
+- **Relevado en el navegador el 18/10, sobre la v1 de 8db9016:** en el celular
+  las nueve tarjetas del home dicen, letra por letra, lo mismo que a 1280 en las
+  81 lecturas, así que es la misma lista para los dos tamaños; la hoja del tema
+  y la línea dicen lo mismo en los tres anchos y desde las tres tarjetas. De las
+  cinco hojas de tema, solo «Tomografía y resonancia» nombra un servicio con
+  «¿quién?».
+- **Lo que entra se elige en la página:** se abren las hojas de las cinco líneas
+  de cada tarjeta de plan, y toda línea u hoja que nombre tomografía, resonancia,
+  psicología o fisioterapia (`NOMBRA_DUDA`) tiene que estar en la lista. Hoy son
+  la línea «Tomografía y resonancia» y su hoja. Una línea cuya hoja no abre,
+  falla.
+- **La línea de la tarjeta del plan, contra la lista también en `lineaBien`:**
+  las expresiones `!/persona/i`, `!/2 tomografías/`, `/por familia/` y `/sin
+  confirmar para quién/` salieron; quedan la forma corta (`.corta`, con las
+  constantes de `coverage.js`) y su color navy.
+- **Lo que NO cubre:** en `/planes`, las tarjetas de la computadora y las hojas
+  de «Los once servicios» de las siete filas sin «¿quién?», las hojas de las
+  cuatro filas con «¿quién?» a 360 y 430 px, las otras cuatro hojas de tema
+  (Consultas, Internación, Terapia intensiva y Odontología) y las otras cuatro
+  líneas de cada tarjeta de plan; en el home, la tarjeta abierta desde la celda
+  «¿quién?» (es la misma que abre el nombre, pero no se lee desde ahí); ningún
+  otro ancho (ni la tableta); de las tarjetas y las hojas, lo que el lector oye
+  por un `aria-label` o una descripción, que no es texto dibujado (se lee el
+  `innerText`, que sí incluye el texto `.sr-solo`); y el simulador y la
+  cotización. (`/que-cubre/` no cuenta: es solo el redirect a `/planes/`.)
+- **Autoprueba en cada superficie nueva, en cada ancho y desde cada tarjeta:**
+  una espera en cada una de las 81 tarjetas del home abiertas con el dedo y una
+  unidad en Silver o Gold de las 36 de filas con «¿quién?»; una espera y una
+  unidad en cada una de las 9 hojas del tema; en la línea, una espera que se ve
+  (9) y una unidad que solo oye el lector, metida en su texto `.sr-solo` (6, en
+  Silver y Gold). Todas fallan, y cada tarjeta, hoja y línea releída dice lo
+  mismo que antes.
+- **Sabotajes**, construidos fuera del repo y con la `qa-lanzamiento` entera de
+  la rama: «Lo usás a los 3 meses de afiliarte.» en la tarjeta de Medicamentos
+  internado (Gold), visible solo en el celular, da ✗ (1 falla: 9 hallazgos, a
+  360, 390 y 430, desde las tres tarjetas, y ninguno a 1280); «Son por
+  persona.» en la línea de la tarjeta de Silver de `/planes` da ✗ (4 fallas:
+  `lineaBien` a 360, 390 y 430 y la lista, que lo ve y lo oye). La rama, ✓.
+- **El costo:** la `qa-lanzamiento` tarda cerca de un minuto más (3 min 8 s →
+  4 min 0 s en el contenedor de la sesión).
+
+*Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
+los de la lista de arriba): **8**, Gold «con los topes más altos»
+(E1, D2: el estratega y el revisor de datos piden tratarla como la 3, para no
+fusionar sin respuesta, porque con la grilla es falso en fisioterapia)
+*(20/10/2026: decidida, 8A, sp-interno#189)*; **9**,
+la fisioterapia de Essential «solo traumatológica» (E3, D4: cuando se conteste,
+la prueba de tipos tiene que comparar los tres planes, no solo Silver y Gold);
+**4**, que se amplía: la resonancia de Essential «sin contraste» tampoco está
+en la celda ni en la línea de la tarjeta, así que conviene contestar la
+tomografía y la resonancia juntas (E7: la condición de Essential que la celda
+no dice es una clase, no un caso); **3**,
+las consultas de Silver «por persona» *(20/10/2026: decidida, 3A,
+sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
+
+*Seguimiento, fuera de este PR:*
+- Las ecografías de Silver y Gold dicen «2 meses» sin «la mayoría» (D10):
+  Silver espera 60 días en 23 de 33 y 90 en 10; Gold, 60 en 17 de 32 y 90 en 15,
+  obstétricas incluidas (conteo sobre la grilla del 24/07, no verificado contra
+  el contrato). `app/coverage.js:173` (`{ que: 'Ecografías', … }`). Lo decide
+  Arturo, con su punto de revisión.
+- «De una lista cerrada de 26» de las cirugías de Essential: el cuadernillo lo
+  dice (`essential.json`) y el sitio no, ni en la tabla ni en el simulador; es
+  una afirmación nueva y no se escribió (`app/coverage.js:185`, comentario).
+- Datos escritos a mano en más de un lugar (resto de D8): los días de terapia
+  intensiva (`app/coverage.js:101`, `app/page.jsx:413`,
+  `app/planes/Planes.jsx:149`, `app/quote.js:180-184`); las celdas de consultas
+  (`app/planes/Planes.jsx:138` y `app/page.jsx:390`, contra
+  `app/coverage.js:83`) y las de ecografía de Silver y Gold
+  (`app/planes/Planes.jsx:141`, contra `app/coverage.js:84`); las tarjetas del home
+  de resonancia, tomografía, psicología, internación, terapia intensiva y
+  medicamentos (`app/page.jsx:384-424`), que además dicen «Gs. 1.500.000» donde
+  el resto dice «Gs. 1,5 millones»; y la línea de Essential de fisioterapia del
+  home (`app/page.jsx:401`, «5 sesiones al año para toda la familia.», contra
+  «Hasta 5 sesiones al año por familia» de `/planes`), que se unifica cuando
+  Arturo conteste la 9 (moverla hoy cambiaba el texto de una de las dos).
+- La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
+  h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
+- El revisor de diseño de `sp-interno` (`.claude/skills/sp-disenador-ux/scripts/revisar.mjs`)
+  tiene que ignorar lo que está escondido a la vista (`clip-path: inset(50%)`, o
+  1×1 px con `overflow: hidden`), con un caso que tiene que fallar y uno que no
+  en su `--autoprueba`. Hoy marca 🟡 `[fuente-lectura]` los 73 prefijos
+  `.sr-solo.cmp2-fila` de esta rama (corrección de la vuelta 3, arriba). Es de
+  `sp-interno`, fuera de este PR.
+- La descripción del PR #271 (D11) la arma el Guardián.
 
 ---
 
@@ -27,20 +552,125 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    calificadora), por el camino normal: el Orquestador corrige la cocina y el
    Publicador lo copia a la web. Se sacan además el «36 %» de hospitalizados,
    que la fuente no trae, y el párrafo de más de 320 caracteres. No entran los
-   botones de opinión del correo ni la revisión factual por nota.
+   botones de opinión del correo ni la revisión factual por nota. **Hecho el
+   13/10:** #240 y sp-contenido#236 cerrados sin fusionar; el pedido al
+   Orquestador, con el texto exacto de cada cambio, es sp-contenido#268.
 2. **Lo que el sitio afirma sin fuente sale o manda al asesor mientras SP no
    conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Va en un PR propio
-   que Arturo ve antes de fusionar.
+   que Arturo ve antes de fusionar (rama `claude/dazzling-keller-l0torp`). Una
+   sola forma de mandar al asesor, la de #80: «preguntale a tu asesor…».
+   Aplicado:
+   - **#80, el 10% en Essential.** El simulador ya no le calcula a Essential
+     un precio con débito (`autoPay` en `quote.js`): en su lugar va una línea
+     gris, «Si pagás con débito automático o tarjeta de crédito, preguntale a tu
+     asesor si Essential tiene descuento», también en la cotización que se
+     descarga. La FAQ, la línea del débito del home y de `/planes`, la nota de
+     precios del celular y la viñeta del inicio del simulador dicen «En Silver y
+     Gold» y mandan Essential al asesor. La confirmación del 17/07 fue para el
+     tarifario Privilege; Essential tiene su propia lista de precios.
+   - **#110, «por persona».** Sale de la tomografía y la resonancia de Silver y
+     Gold en el home, `/planes`, el simulador y la FAQ: las celdas dicen cuántas
+     («2 al año», «1 al año») y la línea de abajo (la `nota` de `coverage.js`,
+     también en fisioterapia) dice «En Silver y Gold, preguntale a tu asesor si
+     son para cada persona o para todo el grupo». Las tarjetas del celular dicen
+     «hasta 2 tomografías y 1 resonancia al año» en los tres planes, y solo
+     Essential lleva la negrita («por familia», que su cuadernillo sí dice). La
+     frase de Silver pasó a «El equilibrio entre precio y cobertura», la del
+     simulador. La línea de Gold perdió «con menos espera en la tomografía»: las
+     esperas no van en esas tarjetas (regla del 03/10) y la diferencia sigue en
+     el cuadro de esperas. Internación y terapia intensiva quedan «por persona»:
+     ahí la fuente dice «por beneficiario».
+   - **#116.** La ambulancia de Silver y Gold ya no se lee «sin tope» (tarjeta
+     «Médico a domicilio», solo en el prototipo). La «cesárea a 5 meses en Gold»
+     salió de la FAQ, la caja del parto, la hoja y el cuadro de esperas del
+     celular, el simulador y la cotización. El parto sigue en 10 meses, y la
+     cesárea de Gold manda al asesor (hoja del celular, cuadro de esperas,
+     simulador y cotización): no estaba sin fuente, tenía la fuente contradicha
+     (Cuadro 3 del contrato de Gold: 150 días; cláusula de maternidad 2.5.2: 300).
+     Dejar los 10 meses sin más tomaba el otro lado. La unidad de las cirugías de
+     Silver y Gold no la afirmaba ningún texto.
+   - **#89.** Sale «También podés visarla desde la App» de la Guía Médica. La
+     semi-suite ya no es «privada, con baño propio»: el glosario dice lo que trae
+     el contrato de Silver y Gold («con cama para un acompañante, según lo que
+     tenga el sanatorio»). La tarjeta de Internación del home dice que en los tres
+     planes hay cama para acompañante (cuadernillo de Essential, 4.3.1, leído el
+     13/10) y manda al asesor qué cambia entre la privada y la semi-suite. Las
+     interconsultas del plegable de internación de `/planes` mandan al asesor
+     si son por año o por internación: la grilla dice «por año; + hasta 3
+     visitas» y los contratos de Silver y Gold (2.3.5) dicen «por internación»,
+     con 3 visitas en Silver y 4 en Gold. El dato generado no se tocó: cambia el
+     rótulo (`etiquetaParam` de `Planes.jsx`).
+   - **#82.** En el home, la internación de Silver y Gold dice «A los 60 días de
+     afiliarte si es por algo agudo» (no se suma ninguna espera a la vista
+     rápida; las esperas de las tarjetas del home están preguntadas aparte). En
+     `/planes`, la nota agrega «si es programada, preguntale a tu asesor cuánto
+     esperás». La espera de la terapia intensiva había salido con la 5A, y el
+     sitio no daba ninguna del dentista de Essential.
+   - **#52.** «La más elegida» salió de la cabecera de Silver (home y `/planes`).
+     El renglón queda vacío en los tres para no mover las cabeceras, y Silver
+     sigue resaltado (**Arturo, 13/10: «P1A»**, se queda así).
+   - **Preguntas que siguen abiertas en el PR:** P2, si las esperas salen también
+     de la tarjeta del servicio del home (lámina 85; la recomendación es que
+     sí), y P3, cómo se ve «por familia» frente a «al año». Las tres opciones de
+     la lámina 84 sumaban palabras; con la regla de escaneo se rehicieron en
+     forma corta (lámina 86). La recomendación es A con la palabra de C:
+     «1/familia/año» en Essential y «1/¿quién?/año» en Silver y Gold, con la
+     explicación a un toque. La fisioterapia de Gold (20 o 10, #50) no se
+     publica como segura hasta que Arturo decida.
+     *(17/10: decididas las tres con «Todo A»: P2A, P3A y G1A. Ver la sección
+     del 17/10 arriba.)*
+   - **Prueba:** `qa-lanzamiento` («Lo que el sitio no afirma sin fuente»)
+     controla el 10% de Essential; «por persona» en las celdas del home y de la
+     tabla de `/planes`, en las tarjetas del celular y en la FAQ; «La más
+     elegida»; y, en todo el texto del home, `/planes` y la Guía Médica, la
+     cesárea a 5 meses, visar desde la App y la semi-suite «con baño propio».
+     No controla las interconsultas ni la ambulancia. Falla en el main del 13/10
+     y pasa con esto.
+
+   **Sigue esperando a SP** (los seis issues quedan abiertos; el PR los nombra
+   con «Refs»): si Essential tiene el 10% (#80); si tomografía, resonancia y
+   fisioterapia de Silver y Gold son para cada persona o para el grupo (#110);
+   el tope de la ambulancia, la unidad de las cirugías y la espera de la cesárea
+   en Gold (#116); visar desde la App, qué cambia entre la habitación privada y
+   la semi-suite, y las interconsultas (#89); las esperas de la internación
+   programada, la terapia intensiva y el dentista de Essential (#82). #52 espera
+   a Comercial (la cifra de ventas del Drive, sin confirmar) y a Arturo (si
+   Silver sigue resaltado: decidido el 13/10, sí). Cuando un dato llega, el texto vuelve con su fuente y
+   su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
-   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45).
+   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso nuevo del
+   manual está en sp-interno#177. Si un master cambió, el PR de datos espera el
+   OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
+   `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
+   minutos después de su última ingestión: la primera corrida lo va a marcar.
+   El quincenal quedó pausado ese mismo día a las 10:33, por decisión de
+   Arturo (sp-interno#176, opción A).
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
-   computadora de Arturo, y le deja los pasos.
+   computadora de Arturo, y le deja los pasos. **Puede, con cambios:** los
+   pasos y tres detalles para decidir están en sp-interno#178.
 5. **La fila «Tiempo de espera» sale de la tabla del home.** Es la regla del
    03/10: ninguna espera en la vista rápida. Las esperas, todas con el mismo
    peso, quedan en `/planes`, el simulador y la cotización. El grupo de la
    tabla pasa de «Urgencias y espera» a «Urgencias», y `qa-lanzamiento` ahora
    controla que la tabla del home no muestre esperas.
+6. **Regla de escaneo** (después de la cita, el mismo 13/10): lo que se
+   escanea va en forma corta, con barras («1/familia/año», «Gs. 220.000/mes»);
+   lo que se lee, en oraciones. Está en `CLAUDE.md`. Se aplica primero a las
+   opciones de la P3 del PR de la 2A y después, con una lámina antes de tocar
+   nada, al resto del sitio (BITACORA cap. 147). **El barrido está hecho**
+   (lámina 87): 76 lugares, 27 claros, 34 dudosos y 15 que no aplican. Nada se
+   tocó todavía: los claros y las dudas («/evento» en medicamentos y remedios,
+   «/mes» en el paso del nivel del simulador) esperan a Arturo. *(17/10:
+   «/evento» quedó decidido con la E3A; los 27 claros van en un PR aparte con
+   la E2A, después del #271. Ver la sección del 17/10 arriba.)* Lo que resuelve
+   la regla sin preguntar: no se agrega una unidad que la fuente no tiene, y la
+   barra que hace de «o» («urgencia / emergencia») pasa a «o». Para quien lo
+   construya: la forma corta va en una capa de vista, no en el dato
+   (`coverage.js` alimenta también las hojas que se leen, y
+   `lib/prestaciones.json` es generado), y el texto para lectores de pantalla
+   va oculto, como en `app/glossary.jsx`, porque las celdas son `<span>` sin
+   rol y ahí un `aria-label` no se lee de forma confiable.
 
 Con el punto 5 se aplicó además lo decidido el 04/10 en sp-interno #55, que
 estaba pendiente: el tope de **3 consultas por mes en cada especialidad** en
@@ -294,7 +924,8 @@ Quedaron escritas solo en issues de `sp-interno`. Esto es un puntero: el
 detalle y lo que falta viven en cada issue.
 
 - **El sitio se publica desde este repo** (Cloudflare Pages), no desde un sitio
-  de Buenavista: `Nelargon/sp-interno#101`. Deja como historia la sección
+  de Buenavista: `Nelargon/sp-interno#101`. *(18/10/2026: es lo decidido;
+  todavía no salió. Hoy `main` se publica en GitHub Pages, con el prototipo.)* Deja como historia la sección
   «⚠ LEER PRIMERO — `/lanzamiento/` es una maqueta» (16/09), más abajo.
 - **Preparar el build para el dominio real**, que decide Claude:
   `Nelargon/sp-interno#103`.
@@ -314,10 +945,10 @@ detalle y lo que falta viven en cada issue.
 comparador de planes»*. En resonancia y tomografía, Essential decía «1 por
 familia» y Silver y Gold decían «Al 100%»: dos preguntas distintas en la misma
 fila, y la diferencia real (por familia contra por persona) escondida. Ahora:
-- **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona».
+- **Comparador del home** (`app/page.jsx`): «1 por persona» y «2 por persona». *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*
   «No ponés nada» va en la tarjeta del servicio, solo en Silver y Gold, y el pie
   explica por familia y por persona. En el FAQ, «por persona y no por familia».
-- **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador) y
+- **`app/coverage.js`** (lo usan `/planes`, `/que-cubre` y el simulador; *18/10/2026: `/que-cubre` redirige a `/planes/` desde el 05/10*) y
   **`app/quote.js`** (etiqueta, líneas y textos del simulador): sin «Al 100%».
 
 «Al 100%» aparecía 5 veces en el home, 10 en `/planes` y 13 en `/que-cubre`;
@@ -328,7 +959,7 @@ pareja del pase de la comparativa, en `sp-interno`):
 1. **¿Essential cubre la resonancia y la tomografía sin que la persona ponga
    nada?** Su fuente dice «1 al año por grupo familiar» y no declara
    porcentaje. Hasta saberlo, «no ponés nada» no se dice de Essential.
-2. **¿El tope de Silver y Gold es por persona?** El cuadernillo dice
+2. **¿El tope de Silver y Gold es por persona?** *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)* El cuadernillo dice
    «Cobertura total (100%), hasta 1 por año (cualquiera de la lista)», sin
    decir por persona. El sitio ya lo decía antes de este cambio (FAQ,
    etiqueta de Silver, simulador); ahora se ve en la celda, así que conviene
@@ -639,7 +1270,9 @@ reabre la guarda de arriba: el mismo contenido sirve a la comparativa nueva.
   comparador del home. **La odontología volvió** a pedido de Arturo (*«sumá la
   odontología»*): Essential, sin costo y solo en Lister; Silver y Gold, «la
   atención del dentista no entra» (la palabra del propio sitio).
-- ⚠ «Por persona» de Silver y Gold espera a SP (sp-interno#110). Los 37 puntos
+- ⚠ «Por persona» de Silver y Gold espera a SP (sp-interno#110). Desde el
+  13/10/2026 (decisión 2A) las tarjetas no lo dicen: dicen cuántas, en los tres
+  planes. Los 37 puntos
   que impiden decir «mejora tema por tema» están en
   `sp-interno/project/AUDITORIA-planes-comparativo-2026-09-29.md` (issues #110 a
   #117).
@@ -926,6 +1559,10 @@ absolutamente conectado»*.
   cap. 112). Está en las **dos ediciones** por decisión de Arturo (Buenavista
   sabe que no va en el sitio real). Se apaga con `CON_REVISION` en
   `app/edicion.js`. Quien no tiene acceso al repo privado ve «no encontrado».
+  *(18/10/2026: con la decisión del 29/09, ese motivo ya no existe. La v1 la
+  va a publicar SP desde este repo, no la agencia (`Nelargon/sp-interno#101`):
+  si `CON_REVISION` sigue en `true`, el botón sale con el sitio. Si se apaga
+  antes del lanzamiento lo decide Arturo en `Nelargon/sp-interno#192`.)*
 - **El barrido:** el Guardián lo hace cada mañana (`sp-interno/salud/
   GUARDIAN.md`, paso 2b). Resuelve lo que puede resolver Claude, con PRs que
   cierran el issue, y sube al tablero lo que espera a una persona hace más de 7
@@ -973,7 +1610,9 @@ escalón» (ahora Essential → Silver y Silver → Gold) muestran Essential.
 - **Lo que el cuadernillo no nombra, no entra.** Es una lista cerrada: el
   default es «No entra en este plan». Si un nombre de la grilla no se parece a
   ninguno del cuadernillo, no se adivina: la regla dudosa lo marca y el sitio
-  dice **«Confirmalo con tu asesor»**.
+  dice **«Confirmalo con tu asesor»**. *(17/10/2026: desde la R1A dice
+  «Preguntale a tu asesor», la forma única, constante `ASESOR` de
+  `app/coverage.js`; el buscador no tiene página desde el 04/10.)*
 - **Guardián nuevo:** si un patrón del JSON no calza con ninguna fila, el build
   se corta (probado con un patrón falso → sale con error; con el archivo sano →
   pasa). Una regla que no encuentra nada es una regla que dejó de funcionar sin
@@ -1022,9 +1661,10 @@ una firme y se regenera.
   resultado ahora lo avisa y apunta a Plan Vital.
 - **Tarjetas «para quién» de la tabla del home:** Gold decía «Tranquilidad total,
   sin preocupaciones», una promesa absoluta (ningún plan cubre todo); ahora dice
-  «La cobertura más amplia, con los topes más altos». Silver decía «La más
+  «La cobertura más amplia, con los topes más altos» *(⚠ 20/10/2026: «con los
+  topes más altos» salió por la 8A; ver «✅ DECIDIDO EL 20/10/2026»)*. Silver decía «La más
   elegida. Cobertura equilibrada…» justo debajo del badge «La más elegida»: se
-  quitó la repetición (regla de etiquetas). **El badge queda**; sigue abierta la
+  quitó la repetición (regla de etiquetas). **El badge queda** *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*; sigue abierta la
   pregunta de siempre para Comercial (¿hay dato de ventas que lo sostenga?, ver
   la tabla de pendientes).
 - **Título de la tabla del home** (Arturo, 25/09: *«La transparencia no implica
@@ -1123,7 +1763,8 @@ el camino, en BITACORA cap. 99, 102 y 103.
   es una opción** a un toque («¿Dónde te vas a atender?»).
 - **Dos pasos para `/que-cubre`:** ahora, Essential en el home, el simulador y
   `/planes`; en el buscador su columna dice «Confirmalo con tu asesor». El paso
-  2 carga Essential estudio por estudio (ver abajo).
+  2 carga Essential estudio por estudio (ver abajo). *(17/10/2026: desde la R1A
+  dice «Preguntale a tu asesor».)*
 
 **Las fuentes (y por qué esas):** precios de `PRECIOS ESSENTIAL.pdf`
 (21/08/2026), confirmados por la minuta de implementación del 18/08 (Crafting:
@@ -1177,7 +1818,9 @@ era el estado del paso 1.
 
 **Datos que faltan o no cierran (no se inventan):**
 - Remedios en la consulta de urgencia: el cuadernillo no trae tope → la tabla
-  dice «Consultalo con tu asesor».
+  dice «Consultalo con tu asesor». *(17/10/2026: desde la R1A dice «Preguntale
+  a tu asesor», también en la lista del celular y en el plegable de topes, y la
+  nota sale de una sola constante de `app/coverage.js`.)*
 - «Hasta 3 consultas por mes, por beneficiario, por año de contrato»
   (cuadernillo 1.2) es ambiguo; el sitio dice «3 por mes en la red».
 - Odontología en Silver y Gold: el sitio sigue diciendo que no entra (pendiente
@@ -1306,7 +1949,9 @@ reemplaza a Bronze»). Lámina:
 - **El descuento, en plata:** *«Pagá con débito automático o tarjeta de crédito y
   ahorrás 10% todos los meses: en un año, es más de una cuota que te queda en el
   bolsillo.»* La cuenta vale para cualquier plan y precio (10% × 12 = 1,2
-  cuotas de lista), así que no envejece cuando cambie la grilla.
+  cuotas de lista), así que no envejece cuando cambie la grilla. *(⚠ 13/10/2026:
+  desde la decisión 2A dice «En Silver y Gold» y manda Essential al asesor; ver
+  el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*
 - **Las dos puertas, simétricas.** «El detalle fila por fila» pasó a *«¿Qué
   cambia de un plan a otro?»* con la bajada *«Los tres, servicio por servicio y
   con sus esperas.»*: dos preguntas de la persona, del mismo largo, bajadas de
@@ -2241,11 +2886,11 @@ planilla.
 | ~~Aliados en el home y comparador: qué forma~~ Construidos el 26/09 (muro continuo; 1.5 + 4.1 con tarjeta del servicio) | — |
 | Logos de los aliados en buena calidad (hoy de 19 a 63 px de alto) | SP |
 | Tildes de la planilla que se ven en el home («San Martin», «Santa Lucia», «Divino Niño Jesus») | SP |
-| "La más elegida" en Silver: ¿hay dato de ventas? Si no, cambiar la etiqueta | Comercial |
+| "La más elegida" en Silver: ¿hay dato de ventas? *(Salió el 13/10/2026, decisión 2A. Vuelve si Comercial confirma la cifra, con fuente y fecha.)* | Comercial |
 | "SP Senior" y "Plan Vital" en la misma tarjeta: ¿cuál es el nombre? | Arturo |
 | Política de privacidad (el sitio pide nombre, WhatsApp y email) | Legal |
 | Ecocardiograma, dos dudas: (1) ¿"ECOCARDIOGRAMA CON DOPPLER DE BASOS DE CUELLO" estaba en rojo? Sigue publicado. (2) En Gold, la fila borrada decía "Ilimitada" y la que queda dice "1 por año": ¿cuál vale? | SP (quien mandó la corrección) |
-| 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` | llegan así de la grilla: corregir con la grilla nueva |
+| 619 nombres de estudios en MAYÚSCULAS sin tilde en `/que-cubre` *(18/10/2026: hoy es el buscador guardado, sin página)* | llegan así de la grilla: corregir con la grilla nueva |
 
 **Guardas que siguen valiendo:**
 - La **Guía Médica pública no incluye "Ver mi red" por cédula**: eso es Mi SP,
@@ -2254,7 +2899,9 @@ planilla.
   abajo (Bronze dado de baja, grilla oficial pendiente). No renombrar planes a
   mano.
 - La reserva de turnos por cédula de la web vieja (la que Buenavista está
-  migrando) no se toca desde acá.
+  migrando) no se toca desde acá. *(18/10/2026: después de la decisión del
+  29/09 (`Nelargon/sp-interno#101`), falta confirmar si la agencia sigue
+  migrando la web vieja.)*
 
 ---
 
@@ -2434,8 +3081,12 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · snapshot `/v1/` | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (bajado el 17/10/2026, sp-interno#181) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
+
+*(18/10/2026: «qué cubre» ya no es una página en ninguna de las dos ediciones.
+Desde el 05/10, `/que-cubre/` redirige a `/planes/`; ver «🔁 04/10/2026: UNA
+SOLA PÁGINA DE DETALLE».)*
 
 **La decisión (Arturo, 15 sep 2026):** *"Tenemos que lanzar la v1 de la página
 web de SP. Quiero crear otra versión del prototipo para esto sin tocar el
@@ -2536,9 +3187,31 @@ agendar en la v1 son: `hero`, `nav`, `menu_movil`, `cobertura`.
 > ellos. El `noindex` de nuestra copia se queda como está: nuestra copia es
 > una referencia, no el sitio.
 
+> **Nota del 18/10/2026: lo de arriba también es historia.** El 29/09 Arturo
+> decidió que esta edición la publique SP desde este repo, en Cloudflare Pages,
+> con el dominio de SP, y no la agencia (`Nelargon/sp-interno#101`; ver «🧭
+> DECIDIDO EL 29/09/2026»). El dominio, el hosting y la indexación pasan a ser
+> nuestros. Todavía no salió: hoy `main` se publica en GitHub Pages
+> (`.github/workflows/deploy.yml`), con las dos ediciones del prototipo, y la
+> v1 sigue con `noindex`. Entre lo que falta:
+> - conectar Cloudflare Pages para la producción: en el repo no hay ningún
+>   deploy a Cloudflare;
+> - preparar el build para el dominio real (`Nelargon/sp-interno#103`);
+> - prender la indexación (`NEXT_PUBLIC_INDEXABLE=true` y `SITE_URL`, pendiente
+>   8b) cuando se decida salir;
+> - pasar el redirect de `/que-cubre/` a un 301 en `_redirects` (ver «🔁
+>   04/10/2026: UNA SOLA PÁGINA DE DETALLE»).
+
 ---
 
 ## 🆕 `/que-cubre` — la landing de los planes, en espacio propio (6 ago 2026)
+
+> **Nota del 18/10/2026: `/que-cubre` como página es historia.** Desde el 05/10
+> redirige a `/planes/`, la única página de detalle, y el buscador quedó
+> guardado sin página (`app/que-cubre/Buscador.jsx`). Lo vigente: «🔁 04/10/2026:
+> UNA SOLA PÁGINA DE DETALLE». **Siguen valiendo** dos cosas de esta sección: la
+> guarda «⚠ NO reponer el bloque 45/66/93 en ningún lado» y lo que dice sobre el
+> buscador guardado («Lo que una sesión futura tiene que saber»).
 
 Ruta nueva: **`/que-cubre/`** (`app/que-cubre/`). Es **la página donde la
 promesa de transparencia se puede verificar**: abre con un buscador — escribís
@@ -2558,6 +3231,10 @@ porcentajes.** Ver BITACORA cap. 65.
 > busca una sola comparativa completa de los tres planes. Ver la sección
 > «`/que-cubre` QUEDA OBSOLETA» al principio de este documento. Lo de abajo
 > queda como historia de cómo se llegó.
+>
+> *(18/10/2026: el 04/10 Arturo cerró este reparto: `/que-cubre` no existe
+> como página y `/planes/` es la única página de detalle. Ver «🔁 04/10/2026:
+> UNA SOLA PÁGINA DE DETALLE».)*
 
 Decisión del usuario (6 ago 2026), textual: **"que sea un espacio aparte"**.
 
@@ -2764,7 +3441,9 @@ para la web, más allá del #2 ya arrancado:
 ### Índice — dónde vive cada cosa
 Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-puesto)
 · Planes `app/planes/Planes.jsx` · **Landing `app/que-cubre/Landing.jsx` + buscador
-`app/que-cubre/Buscador.jsx`** · Motor de
+`app/que-cubre/Buscador.jsx`** *(18/10/2026: `Landing.jsx` se borró con «🔁
+04/10/2026: UNA SOLA PÁGINA DE DETALLE». Hoy está `app/que-cubre/page.jsx`, el
+redirect a `/planes/`, y el buscador quedó guardado sin página)* · Motor de
 precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
 `datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
 `scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
@@ -2846,7 +3525,7 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
-| **Snapshot del home v1** (referencia congelada, pre-rediseño) | `public/v1/` → [/v1/](https://nelargon.github.io/sp-prototipo/v1/) | Solo referencia — no editar (fuente: commit `b8289a8`) |
+| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) |
 | **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
@@ -2857,15 +3536,19 @@ integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
 
 **Línea de base de datos reales (GA de la web activa de SP,
-15 may – 13 jul 2026, aportada por el usuario):** ~3.200 usuarios
-activos, **2.900 nuevos (recurrencia ~9% — la métrica a vencer con la
-guía nueva y el portal)**, 50 s de interacción media, **77% móvil**, 94%
-Paraguay. "Guía para el asegurado" es la **3ª página más visitada** (783
-usuarios — valida la puerta 2 del hero); Login solo 132 usuarios.
-Canales: Organic Search #1 (282 sesiones/semana), Paid Social pagado
-creciendo (+33%). Pregunta abierta para SIP: el embudo que mostraba
+15 may – 13 jul 2026, aportada por el usuario):** (las cifras de Google
+Analytics de la web de SP están en el repo privado,
+`sp-interno/project/metricas-web-ga-2026.md`). Lo que dicen, sin las
+cifras: la mayoría del tráfico entra por celular y casi todo desde
+Paraguay; **casi nadie vuelve (la recurrencia es la métrica a vencer con la
+guía nueva y el portal)**; la atención es corta; "Guía para el asegurado"
+está entre las páginas más visitadas (valida la puerta 2 del hero) y el
+Login, muy abajo. Organic Search es el canal #1 y Paid Social pagado crece.
+Pregunta abierta para SIP: el embudo que mostraba
 "100% inicio de sesión" parece auto-calificarse — ¿la app/portal mide en
 otra propiedad de GA? El `BRANDSCRIPT.md` está escrito con estos números.
+*(17/10/2026: las cifras pasaron a un puntero por decisión de Arturo,
+sp-interno#180.)*
 
 **Historia git:** PR #1 (rediseño de la guía + publicación en Pages),
 PR #2 (QA móvil + menú + cobertura por plan + upsell), PR #3 (HANDOFF),
@@ -2991,6 +3674,9 @@ usa `npm ci`).
     Nunito Sans y la web el variable woff2 (subset latin). Ojo: `/v1/`
     (congelado) todavía sirve los TTF viejos de Gilroy — decidir si el
     snapshot se baja o se tolera mientras sea demo interna.
+    *Historia (17/10/2026): decidido. Arturo eligió bajarlo (P4A,
+    sp-interno#181); `public/v1/` salió del repo y queda en el historial de
+    git. Ver la sección del 17/10 arriba.*
 11h. **El paso "Zona" se volvió "¿Dónde querés tu cobertura?" (21 jul
     2026, decisión del usuario tras la reunión MKT/Ventas del 20 jul;
     BITACORA cap. 31)**: la persona escribe SU CIUDAD (buscador tolerante
@@ -3179,7 +3865,11 @@ usa `npm ci`).
     el trabajo siguiente". Textual: *"el prototipo va a ser la web… a muchísimos
     les está gustando cómo está quedando"*. Se descarta WordPress como
     plataforma; BuenaVista, si entra, es implementador/hosting, no dueño del
-    diseño. **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
+    diseño. *(18/10/2026: el 29/09 Arturo decidió que el sitio lo publique SP
+    desde este repo, en Cloudflare Pages, con el dominio de SP
+    (`Nelargon/sp-interno#101`): la publicación y el hosting no pasan por la
+    agencia. Todavía no salió: hoy `main` se publica en GitHub Pages.)*
+    **Consecuencia para SEO:** el bloqueo técnico era esta decisión —
     la infra de las páginas Next.js ya está lista (robots/noindex/sitemap/
     canonicals/OG/JSON-LD, se prende con `NEXT_PUBLIC_INDEXABLE=true` +
     `SITE_URL`). Faltan, concretas: (a) el **hostname público del sitio** (para
@@ -3831,7 +4521,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    reales con consentimiento), eventos `manifesto_scroll` y `puerta_home`
    (ANEXO §2), y presupuesto móvil verificado: 173 KB gzip de contenido
    crítico (≤300 KB). El home anterior quedó congelado en `/v1/` como
-   referencia. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
+   referencia *(17/10/2026: esa copia se bajó, P4A, sp-interno#181; queda en
+   el historial de git)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
    nace de acá:** testimonios reales con consentimiento (responsable: SP).
    *Refinado v2.1 (feedback del usuario, jul 2026)*: menú móvil overlay a
    pantalla completa estilo Apple/Tesla/Ogilvy (blanco pleno, tipografía
@@ -3850,7 +4541,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    leído. **Ejecutado en el mismo día**: (a) etiqueta "No incluida" del
    comparador → "Desde SP Integral" en dorado (violaba la decisión #7);
    (b) cifras: quedan solo las confirmadas — vidas ~19.000 (real),
-   contratos ~9.100 salió (sin confirmar), los años se calculan desde la
+   contratos (la cifra de contratos activos de SP está en el repo privado,
+   `sp-interno/project/cifra-contratos-activos.md`) salió (sin confirmar)
+   *(20/10/2026: la cifra pasó a un puntero por decisión de Arturo,
+   sp-interno#180, 180A)*, los años se calculan desde la
    fundación (agosto 2002, `YEARS_CARING` en `app/quote.js` + script en
    la guía) en cada build; (c) el bloque CI+fecha de la guía lleva
    etiqueta visible "Demostración" y aclara que muestra un asegurado de
@@ -3894,7 +4588,12 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 8. ⚠ **Superado el 16/09/2026** — ver "LEER PRIMERO" arriba: la v1 la publica
    **Buenavista**, en su sitio, a partir de nuestra maqueta. Lo de abajo es la
    decisión de julio, que se conserva como historia. Guía de publicación para
-   ellos: `docs/IMPLEMENTAR-v1.md`.
+   ellos: `docs/IMPLEMENTAR-v1.md`. *(18/10/2026: lo del 16/09 también es
+   historia. El 29/09 Arturo decidió que la v1 la publique SP desde este repo,
+   en Cloudflare Pages, y no la agencia en su sitio (`Nelargon/sp-interno#101`;
+   ver «🧭 DECIDIDO EL 29/09/2026»). Todavía no salió: hoy `main` se publica
+   en GitHub Pages (`.github/workflows/deploy.yml`), con las dos ediciones del
+   prototipo.)*
    ~~**Decisión de plataforma de la web pública**~~ ✔ **RESUELTO (23 jul 2026,
    dec. 11p): el prototipo Next.js ES la web.** Se descarta WordPress/BuenaVista
    como plataforma. Quedan quién hospeda y el dominio (#9); el backend (ANEXO)
@@ -3906,8 +4605,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    prohibido lorem ipsum — el copy dicta el diseño.
 8b. **SEO** (sube de prioridad baja → media, jul 2026): los datos reales
    muestran que **Organic Search ya es el canal #1** de la web activa
-   (282 sesiones/semana) y hay Paid Social pagado aterrizando en un
-   sitio con ~9% de recurrencia. Sitemap, metadatos, schema.org (ejemplo
+   y hay Paid Social pagado aterrizando en un sitio al que casi nadie
+   vuelve (las cifras de Google Analytics de la web de SP están en el repo
+   privado, `sp-interno/project/metricas-web-ga-2026.md`; 17/10/2026,
+   sp-interno#180). Sitemap, metadatos, schema.org (ejemplo
    en la ficha de la guía) valen más de lo presupuestado. La decisión de
    dominio de la guía (#9) se evalúa junto con esto.
    **Estado (jul 2026): infraestructura ✔ lista, indexación apagada a
@@ -3954,7 +4655,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     `marked`/`gray-matter`, mismo diseño de lectura `Articulo.jsx`).
     Meta acordada: 2-3 notas publicadas por semana; publicar = copiar
     el markdown aprobado a `publicados/` vía PR — revisión humana
-    siempre. El contenido es portable: el día que la web oficial pase a
+    siempre. *(18/10/2026: ya no es así; ver la nota al final de este
+    punto.)* El contenido es portable: el día que la web oficial pase a
     WordPress/HubSpot (BuenaVista), la biblioteca de notas migra tal
     cual.
     **✔ Motor de contenido — CONSTRUIDO (20 jul 2026, guarda
@@ -3971,6 +4673,20 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
     — los mergea un humano, SIEMPRE (el merge automático de este repo
     no aplica a PRs de contenido). Ninguna sesión de la web coordina
     contenido: eso es del Master Orquestador en `sp-contenido`.
+    *(18/10/2026: lo de arriba sobre cómo se publica es historia. Desde el
+    05/08 el Publicador fusiona sin espera humana las notas 🟢 que pasan la
+    compuerta (`sp-contenido/GOVERNANCE.md`, §3b). Desde el 25/09, las de
+    «Entendé tu plan» y «Salud en Paraguay» esperan una lectura humana antes
+    de salir (§3b, punto 7; acá, «📬 EL BLOG LLEGA POR CORREO»). Los
+    borradores del blog se escriben cada día (RTN-002, diario desde el 22/07),
+    no cada semana. El Minero de reuniones se retiró el 30/09
+    (`sp-contenido/routines/registry.yml`). `sp-interno` es un repo activo: el
+    privado del ecosistema. Y el 29/09 Arturo decidió que la web se publique
+    desde este repo, en Cloudflare Pages, y no desde un sitio de la agencia
+    (`Nelargon/sp-interno#101`; ver «🧭 DECIDIDO EL 29/09/2026»). Todavía no
+    salió: hoy `main` se publica en GitHub Pages
+    (`.github/workflows/deploy.yml`), con las dos ediciones del prototipo. Lo
+    vigente del motor vive en `sp-contenido`.)*
 
 ### Carencias visibles y glosario en contexto (26 jul 2026)
 
@@ -3992,7 +4708,9 @@ dato que ya estaba estructurado en las 935 filas de
    descripción nueva que diga "semi-suite" se explica sola.
 
 **Los datos** (grilla de julio 2026, verificada por el usuario): parto
-**300 días en los tres planes**; cesárea 300/300 y **150 en Gold**;
+**300 días en los tres planes**; cesárea 300/300 y **150 en Gold** *(⚠ 13/10/2026:
+el contrato de Gold se contradice, Cuadro 3: 150 y cláusula 2.5.2: 300; la web
+manda la cesárea de Gold al asesor, decisión 2A)*;
 cirugías programadas mayormente 210; resonancia 150 (Silver/Gold, Bronce no
 cubre); fisioterapia 90; tomografía 60/60/30 *(⚠ corregido el 25/09/2026:
 ese 60/30 era de la ortopantomografía; la tomografía es 120 en Silver y 90 en
@@ -4024,7 +4742,8 @@ la espera importa más ahí que en ningún lado:
   regla: solo donde HAY cobertura (Resonancia no muestra espera en Bronce,
   porque Bronce no la cubre).
 - **`waitNote`** por fin visible: la fila de parto aclara que *"la cesárea
-  espera 150 días en Gold"*. El campo estaba en `app/coverage.js` desde la
+  espera 150 días en Gold"* *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2
+  de «✅ DECIDIDO EL 13/10/2026»)*. El campo estaba en `app/coverage.js` desde la
   tanda anterior y nunca se había mostrado.
 - **Glosario** en los detalles de cobertura (`annotate`) y en la nota al pie,
   que ahora explica de dónde arranca el reloj.
@@ -4046,11 +4765,13 @@ El relevamiento de los 7 competidores está hecho
 **No permitió endurecer la frase: obligó a corregirla.**
 
 **Lo que se encontró, con cita textual de folletos propios de cada empresa:**
-SPS (Superior Plus) cubre tratamiento oncológico —quimio en pensión y
-honorarios, radioterapia, cirugías oncológicas— y **alta complejidad**
-(*"Neurológicas, torácicas, cardiacas y vascular periférica"*). SPS y MediLife
-cubren odontología general básica. Bariátrica no se puede afirmar en ninguna
-dirección.
+una prepaga sin sanatorio propio, en uno de sus planes altos, cubre
+tratamiento oncológico —quimio en pensión y honorarios, radioterapia,
+cirugías oncológicas— y **alta complejidad** (*"Neurológicas, torácicas,
+cardiacas y vascular periférica"*). Esa misma y otra prepaga sin sanatorio
+propio cubren odontología general básica. Bariátrica no se puede afirmar en
+ninguna dirección. *(17/10/2026: los nombres pasaron a la categoría por
+decisión de Arturo, sp-interno#180; el detalle vive en el repo privado)*
 
 **Consecuencia:** la frase *"es hasta dónde llega este tipo de producto"* era
 **falsa**. El "en general" protegía la primera oración, pero esa última
@@ -4537,6 +5258,10 @@ puerta, se mira acá.
 | **`/que-cubre`** | *¿Está cubierto **esto** que me pidió el médico?* | Buscador sobre 983 respuestas de la grilla oficial |
 | **`/guia`** | *¿Dónde y con quién me atiendo?* | Directorio de prestadores |
 
+*(18/10/2026: la fila de `/que-cubre` es historia. Desde el 05/10,
+`/que-cubre/` redirige a `/planes/` y el buscador quedó guardado sin página;
+ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
+
 **No son redundantes: son cuatro preguntas distintas.** Por eso el arreglo nunca
 fue fusionar páginas — fue **que cada puerta diga qué pregunta responde**. La
 puerta genérica ("¿Querés ver más?") es la que rompe el sistema: manda a la
@@ -4546,13 +5271,19 @@ persona que llega con una orden médica en la mano a la comparación de planes.
 lado, nunca por el lugar al que lleva.* El home tiene ahora dos puertas bajo la
 matriz — "¿Está cubierto lo que me pidieron?" → `/que-cubre` y "El detalle fila
 por fila" → `/planes` — en vez de una sola que decía "ver todos los planes".
+*(18/10/2026: la regla sigue; la puerta a `/que-cubre` salió del home el
+05/10. Ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
 
 🔁 **26/09/2026: Arturo reabrió este reparto** (ver «`/que-cubre` QUEDA
 OBSOLETA» al principio). El mapa se redibuja con la comparativa completa.
+*(18/10/2026: se cerró el 04/10, con el OK de Arturo el 05/10: `/planes/` es la
+única página de detalle. Ver «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».)*
 
 ⚠ Que `/planes` y `/que-cubre` sean cosas distintas **es decisión de Arturo**,
 registrada al construir `/que-cubre`: *"que sea un espacio aparte"*. No
-re-litigar sin él.
+re-litigar sin él. *(18/10/2026: la cambió Arturo mismo el 04/10: «el espacio
+de "¿Qué cubre?" realmente debería no existir». Ver «🔁 04/10/2026: UNA SOLA
+PÁGINA DE DETALLE».)*
 
 ### ⚠ EL CAÑO DE PUBLICACIÓN SE ROMPIÓ EN SILENCIO (6 ago 2026)
 
@@ -4589,6 +5320,9 @@ del árbol actual y no lo es**. La evidencia se genera corriendo la suite.
   direcciones/horarios? → SP + empresa desarrolladora.
 - ~~¿WordPress o Next.js para la web pública?~~ ✔ RESUELTO (dec. 11p): Next.js
   (el prototipo). BuenaVista, si entra, es implementador/hosting.
+  *(18/10/2026: el 29/09 Arturo decidió que lo publique SP desde este repo, en
+  Cloudflare Pages (`Nelargon/sp-interno#101`), no la agencia. Todavía no
+  salió: hoy `main` se publica en GitHub Pages.)*
 - ¿Dominio **del sitio** (hostname para `SITE_URL`) y **de la guía**? → SP.
 
 ---

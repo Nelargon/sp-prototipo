@@ -1,5 +1,13 @@
 # Previews por rama (Cloudflare Pages)
 
+> **Nota del 18/10/2026.** Hoy es así: `main` se publica en GitHub Pages, y
+> este documento usa Cloudflare Pages solo para las previews. Pero está
+> decidido pasar la producción a Cloudflare Pages: el 29/09/2026 Arturo decidió
+> que SP publique la v1 desde este repo, en Cloudflare Pages
+> (`Nelargon/sp-interno#101`; en el `HANDOFF.md`, «🧭 DECIDIDO EL 29/09/2026»).
+> Todavía no salió. Cuando salga, «eso no cambia» y «la producción "de verdad"
+> sigue siendo GitHub Pages» dejan de valer.
+
 `main` se publica en GitHub Pages (`.github/workflows/deploy.yml`) — eso no cambia.
 Este documento agrega **previews automáticos por rama y por PR** con Cloudflare
 Pages, para poder ver un cambio en vivo **antes de fusionarlo**.

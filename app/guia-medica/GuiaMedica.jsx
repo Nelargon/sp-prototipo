@@ -159,7 +159,7 @@ function Tarjeta({ p, plan, abrirVisar }) {
         ? <span className="sq" style={css(INTER + '--sq:6px;align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--sp-teal-ink);background:var(--sp-mint-bg);padding:3px 8px;display:inline-flex;align-items:center;gap:4px')}>{Icono.check} Atiende con {nombrePlan(plan)}</span>
         : <span style={css(INTER + 'font-size:12.5px;color:var(--sp-muted)')}>Planes: {redesCortas(p.r).join(' · ')}</span>}
       {p.k && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>{condicionTexto(p.k)}</p>}
-      {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntá a tu asesor qué cubre tu plan en odontología.</p>}
+      {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntale a tu asesor qué cubre tu plan en odontología.</p>}
       <div style={css('display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:4px')}>
         {p.tel[0] && (
           <a href={telHref(p.tel[0])} onClick={() => track('guia_llamar', { tipo: p.t })} className="disp num-tnum" style={css('height:36px;padding:0 14px;border-radius:var(--r-pill);background:var(--sp-mint-bg);border:1px solid #BFE6E3;color:var(--sp-teal-ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center')}>{telVisible(p.tel[0])}</a>
@@ -399,7 +399,9 @@ export default function GuiaMedica() {
               {REQUISITOS.map((r) => <div key={r} style={css(INTER + 'display:flex;gap:8px;font-size:13.5px;line-height:1.45;color:var(--sp-text)')}><span style={css('color:var(--sp-teal-deep);display:flex;margin-top:3px')}>{Icono.check}</span>{r}</div>)}
             </div>
             <a href={WA_VISAR} target="_blank" rel="noopener" onClick={() => track('guia_whatsapp', { origen: 'visar' })} className="disp sq" style={css('--sq:var(--r-xs);height:46px;background:var(--sp-teal-deep);color:#fff;font-size:15.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px')}>{Icono.wa} Enviar mi orden por WhatsApp</a>
-            <div style={css(INTER + 'font-size:12.5px;color:var(--sp-muted);text-align:center')}>También podés visarla desde la App de Salud Protegida.</div>
+            {/* «También podés visarla desde la App de Salud Protegida» salió el
+                13/10/2026 (decisión 2A de Arturo): no hay fuente de que la App
+                lo permita (sp-interno#89). Vuelve si SP lo confirma. */}
           </section>
         </Plegable>
 

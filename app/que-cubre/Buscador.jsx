@@ -6,6 +6,7 @@ import { track } from '../track';
 import { Term, marcarTerminoMedico } from '../glossary';
 import { MEDICOS } from '../glosario-medico';
 import { CON_GLOSARIO_MEDICO } from '../edicion';
+import { ASESOR } from '../coverage';
 import datos from '../../lib/prestaciones.json';
 import { buscar, indexar, EJEMPLOS } from '../../lib/buscar-prestaciones';
 
@@ -102,7 +103,9 @@ function Celda({ item, plan, indice, datos }) {
       </div>
       <div className="disp" style={css(`display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);line-height:1.3;background:${est.bg};color:${est.fg}`)}>
         <span style={css('width:7px;height:7px;border-radius:var(--r-pill);flex:none;background:' + est.punto)}></span>
-        {sinDato ? (plan.k === 'e' ? 'Confirmalo con tu asesor' : 'Sin dato') : modo.k}
+        {/* «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Confirmalo con tu asesor»),
+            de la constante ASESOR de coverage.js: escrita a mano quedaba atrás si cambiaba (comité, vuelta 3). */}
+        {sinDato ? (plan.k === 'e' ? ASESOR : 'Sin dato') : modo.k}
       </div>
       {cantidad && (
         <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);line-height:1.45')}>{cantidad}</div>

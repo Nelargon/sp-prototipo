@@ -10,17 +10,24 @@ Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
 
 | Pieza | Link |
 |---|---|
-| **Edición de lanzamiento (v1)** — la maqueta que Buenavista publica | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
+| **Edición de lanzamiento (v1)** — el sitio que SP decidió publicar desde este repo (todavía no salió) | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
 | Guía Médica de la v1 (red real, desde la planilla de SP) | https://nelargon.github.io/sp-prototipo/lanzamiento/guia-medica/ |
 | Prototipo completo — el laboratorio | https://nelargon.github.io/sp-prototipo/ |
 | Simulador | https://nelargon.github.io/sp-prototipo/simulador/ |
 
-**La v1 publica** inicio, simulador, planes, qué cubre y la **Guía Médica**
-(desde el 23 sep 2026). **No publica** agendar turnos, Mi SP, el blog ni
-`/historia/`: siguen en el prototipo. El molde viejo de la guía
-(`/guia/guia_home.html`, datos ilustrativos) queda solo en el prototipo, como
-referencia. El detalle, en las primeras secciones del `HANDOFF.md`; lo que
-Buenavista tiene que hacer, en `docs/IMPLEMENTAR-v1.md`.
+**La v1 publica** inicio, simulador, planes y la **Guía Médica** (desde el 23
+sep 2026). «Qué cubre» ya no es una página: desde el 05/10/2026, `/que-cubre/`
+redirige a `/planes/`, la única página de detalle. **No publica** agendar
+turnos, Mi SP, el blog ni `/historia/`: siguen en el prototipo. El molde viejo
+de la guía (`/guia/guia_home.html`, datos ilustrativos) queda solo en el
+prototipo, como referencia.
+
+**Quién la publica.** Está decidido desde el 29/09/2026 que la publique SP,
+desde este repo, en Cloudflare Pages (`Nelargon/sp-interno#101`). Todavía no
+salió: hoy `main` se publica en GitHub Pages (`.github/workflows/deploy.yml`),
+con las dos ediciones del prototipo, en los links de arriba. Antes, la idea era
+que la agencia la copiara en su sitio: eso quedó como historia. El detalle, en
+el `HANDOFF.md`.
 
 ## 📖 Para entender el proyecto
 
@@ -30,8 +37,9 @@ Buenavista tiene que hacer, en `docs/IMPLEMENTAR-v1.md`.
   reglas técnicas, de lenguaje y de tipografía). Valen para personas y para IA.
 - [`BITACORA.md`](BITACORA.md) — el libro del proyecto: qué intentamos, qué
   pasó y qué aprendimos, capítulo por capítulo.
-- [`docs/IMPLEMENTAR-v1.md`](docs/IMPLEMENTAR-v1.md) — **para Buenavista**:
-  cómo publicar la v1, en una página.
+- [`docs/IMPLEMENTAR-v1.md`](docs/IMPLEMENTAR-v1.md) — cómo publicar la v1,
+  en una página. Se escribió el 23/09 para la agencia; quién publica cambió el
+  29/09 (lo dice la nota al principio del documento).
 - [`BRANDSCRIPT.md`](BRANDSCRIPT.md) — el argumento de venta central (SB7) que
   dicta estructura y texto de toda pieza digital.
 - [`PLAN-home-v2.md`](PLAN-home-v2.md) — plan de la home v2. ⚠ Su ejecución
@@ -79,7 +87,8 @@ guia/           # molde viejo de la guía (HTML + Tailwind), solo prototipo
 public/guia/    # copia publicada del molde — se genera en cada build, NO editar
 scripts/        # generadores (guía médica, glosario, prestaciones) y los hooks del build
 qa/             # pruebas: qa-integral, qa-lanzamiento, cobertura-rutas, links-internos
-docs/           # instrucciones para terceros (implementar la v1, previews)
+docs/           # cómo publicar la v1 y las previews por rama
+docs/diseno/    # las láminas de diseño y la lección de cada una (README.md, img/, fuentes/)
 ```
 
 - La **Guía Médica real** se regenera desde la planilla maestra de SP con

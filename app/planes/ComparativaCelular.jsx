@@ -4,11 +4,12 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, engine } from '../quote';
-import { coverage, carencias } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, minuscula } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
 import IconoSP from '../components/IconoSP';
+import Corta, { conCortas, frase, leer } from '../components/Corta';
 import datos from '../../lib/prestaciones.json';
 
 /* La comparativa de /planes en el celular (lámina 59; Arturo la confirmó el
@@ -31,7 +32,16 @@ import datos from '../../lib/prestaciones.json';
    - Los once servicios, a pedido, en una hoja que sube (decisión 2A).
    Lo que no cubren, el detalle fino, Vital y el cierre son los de la página.
 
-   Todos los números salen de quote.js y coverage.js: ninguno se escribe acá. */
+   Todos los números salen de quote.js y coverage.js: ninguno se escribe acá.
+
+   LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+   elegida el 17/10 con «Todo A»): lo que se escanea (las líneas de las
+   tarjetas y las celdas de «Los once servicios») dice la cifra, para quién y
+   cada cuánto con barras, dibujado por components/Corta.jsx con su frase
+   completa para los lectores de pantalla. Lo que se lee (la hoja del tema)
+   sigue en oraciones. Donde la fuente no dice para quién, «¿quién?»; la hoja
+   lo explica arriba de todo, antes de los tres planes, para que la respuesta
+   no quede debajo del pliegue. */
 
 // Las personas con las que se calcula cada grupo: la edad más joven de cada
 // tarifa, así el precio es el «desde» de ese grupo y la condición lo dice.
@@ -79,9 +89,10 @@ const NOTA_EXTRA = { 'Internación por algo agudo': 'En Essential, toda internac
 
 const tema = (linea) => linea.split(':')[0];
 const sinMarcas = (t) => t.replace(/\*\*/g, '');
+// La negrita entre `**` y, adentro o afuera de ella, cada forma corta con barras.
 const conNegrita = (texto) => texto.split('**').map((seg, k) => (k % 2
-  ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{annotate(seg)}</b>
-  : <Fragment key={k}>{annotate(seg)}</Fragment>));
+  ? <b key={k} style={css('color:var(--sp-navy);font-weight:600')}>{conCortas(seg, annotate)}</b>
+  : <Fragment key={k}>{conCortas(seg, annotate)}</Fragment>));
 
 const CHECK = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00BCB4" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:3px')} aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>;
 const FLECHA = <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:4px;color:var(--sp-muted)')} aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
@@ -130,9 +141,18 @@ export default function ComparativaCelular() {
   // lámina 51, con la espera de cada uno.
   const enLosTres = (nombres, actual) => {
     const varios = nombres.length > 1;
-    const notas = nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota])).filter(Boolean);
+    // Sin repetir: la tomografía y la resonancia traen la misma nota (la del
+    // asesor, sp-interno#110) y la hoja que las junta la dice una vez.
+    const notas = [...new Set(nombres.flatMap((n) => (n === 'Odontología' ? [odonto && odonto.d] : [COV[n] && COV[n].waitNote, COV[n] && COV[n].nota, COV[n] && COV[n].notaAsesor])).filter(Boolean))];
+    // Las que mandan al asesor van primero: es lo que la persona vino a
+    // preguntar («¿quién?», cuántas sesiones tiene Gold, la cesárea de Gold, la
+    // internación programada). Toda nota que lo diga, no una lista de las
+    // conocidas: la cesárea y la programada quedaban abajo, en gris (comité,
+    // vuelta 3, 17/10).
+    const arriba = notas.filter((t) => t.toLowerCase().includes(ASESOR.toLowerCase()));
     return (
       <>
+        {arriba.map((t) => <p key={t} style={css(inter + 'font-size:13.5px;line-height:1.5;color:var(--sp-text-2);margin:0 0 12px')}>{t}</p>)}
         {planes.map((p, i) => (
           <div key={p.short} className="sq" style={css('--sq:var(--r-md);border:1px solid ' + (i === actual ? 'var(--sp-teal-deep);box-shadow:0 0 0 1px var(--sp-teal-deep)' : 'var(--sp-line)') + ';padding:14px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px')}>
             <span className="disp" style={css('display:flex;align-items:center;gap:7px;font-size:16px;font-weight:800;color:var(--sp-navy)')}>
@@ -147,27 +167,76 @@ export default function ComparativaCelular() {
             ))}
           </div>
         ))}
-        {notas.map((t) => <p key={t} style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{t}</p>)}
+        {notas.filter((t) => !arriba.includes(t)).map((t) => <p key={t} style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>{t}</p>)}
         <p style={css(inter + 'font-size:13px;line-height:1.5;color:var(--sp-muted);margin:6px 0 0')}>El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.</p>
       </>
     );
   };
 
+  // Cada celda de la lista, en partes: lo que se ve y lo que oye el lector salen
+  // de acá. La forma corta donde la hay (P3A): esto se escanea. La cola conserva
+  // lo que Essential decía después del número («2/familia/año, junto con
+  // ecocardiograma y ergometría»). La celda que manda al asesor (G1A) también
+  // sale de `corta` y va en la misma capa de cifras que el dato de al lado: la
+  // duda se dice con el mismo peso (lámina 84). Con su `pre`, si lo tiene: en
+  // urgencias, Essential dice «Consulta 24 h · remedios» y manda al asesor por
+  // el tope (R1A; comité, vuelta 2, 17/10).
+  // La espera va con su condición (`cuando` de carencias(): «si es por algo
+  // agudo», «para el parto») y, si una parte de la fila manda al asesor en ese
+  // plan (la cesárea de Gold), una línea más que lo dice, con la oración entera
+  // para el lector (comité, vuelta 3, 17/10).
+  const celdaDe = (s, i) => {
+    const t = s.corta && s.corta[i];
+    const c = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]];
+    const e = c && c.dias[i];
+    const cuando = c && c.cuando && c.cuando[i];
+    const alAsesor = c && c.alAsesor && c.alAsesor[i];
+    return {
+      tipo: t === ASESOR ? 'asesor' : t && t.includes('/') ? 'corta' : 'frase',
+      t, pre: (s.pre && s.pre[i]) || '', cola: (s.cola && s.cola[i]) || '', dicho: s.dicho && s.dicho[i],
+      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? waitLabel(e) + (cuando ? ' ' + cuando : '') : null,
+      aparte: alAsesor ? conAsesor(alAsesor) : null, aparteDicho: alAsesor ? c.notaPlan[i] : null,
+    };
+  };
+  // El nombre de cada fila de la lista para el lector de pantalla. El botón se
+  // nombra con todo lo que tiene adentro y los planes están en la cabecera, fuera
+  // del botón: se oían tres valores pegados sin saber de cuál eran («5 por
+  // familia al año Sin espera 15 al año…») y la «›» (comité, vuelta 2, 17/10).
+  // Ahora cada valor va con su plan: «Fisioterapia. Essential: 5 por familia al
+  // año, sin espera. Silver: … Gold: preguntale a tu asesor, 3 meses de espera.»
+  // Todo pasa por `leer` (Corta.jsx): la plata se oye «guaraníes», el «·» es una
+  // coma y lo que manda al asesor va después de dos puntos, en minúscula
+  // («consulta 24 horas, remedios: preguntale a tu asesor»; comité, vuelta 3).
+  const nombreFila = (s) => s.name + '. ' + planes.map((p, i) => {
+    const c = celdaDe(s, i);
+    const pre = c.pre ? leer(c.pre) : '';
+    const valor = c.tipo === 'asesor' ? (pre ? pre + ': ' : '') + minuscula(ASESOR)
+      : c.tipo === 'corta' ? (pre ? pre + ' ' : '') + (c.dicho || frase(c.t)) + c.cola : leer(c.d);
+    return p.short + ': ' + [valor, c.sub && minuscula(c.sub), c.espera && minuscula(c.espera)].filter(Boolean).join(', ') + (c.aparteDicho ? '; ' + c.aparteDicho : '');
+  }).join('. ') + '.';
   const lista = (
     <>
       <div style={css('display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:sticky;top:-4px;background:#fff;padding:8px 0;z-index:1;border-bottom:1px solid var(--sp-line)')}>
         {planes.map((p) => <span key={p.short} className="disp" style={css('font-size:12.5px;font-weight:800;color:var(--sp-navy)')}>{p.short}</span>)}
       </div>
       {cov.map((s) => (
-        <button key={s.name} type="button" className="fila" onClick={() => abrirServicio(s.name)} style={css('display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--sp-line-2);padding:12px 0;cursor:pointer')}>
-          <b className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy)')}>{s.name} ›</b>
+        <button key={s.name} type="button" className="fila" aria-label={nombreFila(s)} onClick={() => abrirServicio(s.name)} style={css('display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--sp-line-2);padding:12px 0;cursor:pointer')}>
+          <b className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-navy)')}>{s.name}<span aria-hidden="true"> ›</span></b>
           <span style={css('display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;' + inter + 'font-size:12.5px;line-height:1.35;color:var(--sp-text)')}>
-            {s.cov.map((c, i) => {
-              const e = ESPERA_DE[s.name] && CAR[ESPERA_DE[s.name]].dias[i];
+            {s.cov.map((_, i) => {
+              const c = celdaDe(s, i);
               return (
                 <span key={i} style={css('display:flex;flex-direction:column;gap:3px')}>
-                  {c.d}
-                  {e != null ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{waitLabel(e)}</i> : null}
+                  {/* `pre` en su propio renglón: el valor cae en el mismo lugar en
+                      las tres columnas y «Preguntale a tu asesor» no queda pegado
+                      a «remedios» (comité, vuelta 3, 17/10). */}
+                  {c.pre ? <span>{c.pre}</span> : null}
+                  {c.tipo === 'asesor'
+                    ? <span className="disp" style={css('font-weight:700')}>{ASESOR}</span>
+                    : c.tipo === 'corta' ? <span><Corta t={c.t} partir dicho={c.dicho} />{c.cola}</span> : <span>{c.d}</span>}
+                  {c.sub ? <span style={css('font-size:11.5px;color:var(--sp-muted)')}>{c.sub}</span> : null}
+                  {c.espera ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.espera}</i> : null}
+                  {c.aparte ? <i className="disp" style={css('font-style:normal;font-size:11.5px;font-weight:700;color:var(--sp-estado-ink-2)')}>{c.aparte}</i> : null}
                 </span>
               );
             })}
@@ -220,7 +289,7 @@ export default function ComparativaCelular() {
               </button>
             ))}
           </div>
-          <p style={css(inter + 'font-size:12.5px;line-height:1.5;color:var(--sp-muted);text-align:center;margin:-8px 0 0')}>Precio por mes, con IVA. Con débito automático o tarjeta de crédito, 10% menos.</p>
+          <p style={css(inter + 'font-size:12.5px;line-height:1.5;color:var(--sp-muted);text-align:center;margin:-8px 0 0')}>Precio por mes, con IVA. En Silver y Gold, con débito automático o tarjeta de crédito, pagás 10% menos. En Essential, preguntale a tu asesor si también tiene el descuento.</p>
 
           <div className="sq" style={css('--sq:var(--r-md);background:var(--sp-mint-bg);padding:14px;display:flex;flex-direction:column;gap:10px')}>
             <span className="disp" style={css('font-size:14.5px;font-weight:800;color:var(--sp-teal-900)')}>Lo que tienen los tres</span>

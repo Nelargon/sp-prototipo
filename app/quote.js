@@ -13,6 +13,7 @@
    es vieja y hoy quiere decir Essential. */
 
 import { DEPT_AJUSTE } from './geo';
+import { coverage } from './coverage';
 
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
@@ -121,9 +122,14 @@ const priceEssential = (zona, people) => {
 const VITAL_PRECIO = 283000; // titular 65+, costo con débito automático
 const VITAL_PARTICULAR = 312000; // titular 65+, costo particular
 
-/* 10% de descuento pagando con débito automático o tarjeta de crédito
-   (confirmado por el usuario, jul 2026). Las primas del tarifario
-   Privilege son el precio particular; Vital publica ambas columnas. */
+/* 10% de descuento pagando con débito automático o tarjeta de crédito.
+   La confirmación del usuario (17/07/2026) fue para el tarifario Privilege:
+   bronce.json, silver.json y gold.json («descuento_debito_automatico»).
+   Essential tiene su propia lista de precios y ninguna fuente dice si lleva el
+   descuento (sp-interno#80). Decisión 2A de Arturo (13/10/2026): hasta que SP
+   conteste, el sitio no le calcula a Essential un precio con descuento y manda
+   a preguntarle al asesor. Las primas del tarifario Privilege son el precio
+   particular; Vital publica ambas columnas. */
 export const AUTO_PAY_DISCOUNT = 0.10;
 
 const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
@@ -141,16 +147,43 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // había sumado «Espera para internarte» y se sacó. No es esconderlas: se dicen
 // antes de la firma en otros momentos (detalle, simulador, cotización), no al
 // principio como gancho. Mapa en HANDOFF («Reparto de páginas de planes»).
-// ⚠ «Por persona» de Silver y Gold espera confirmación de SP (sp-interno#110).
-export const plans = () => [
-  // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
-  { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
-    lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', 'Tomografía y resonancia: **por familia**', 'Internación: **habitación privada**, hasta 20 días por familia', 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
-  { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'Resonancia y tomografía por persona',
-    lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', 'Tomografía y resonancia: **por persona**', 'Internación: **semi-suite**, hasta 20 días al año', 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
-  { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
-    lines: ['Consultas: **sin tope anual** en casi todas las especialidades', 'Tomografía y resonancia: **por persona**, con menos espera en la tomografía', 'Internación: **semi-suite**, hasta 25 días al año', 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
-];
+// ⚠ «Por persona» salió de la tomografía y la resonancia de Silver y Gold el
+// 13/10/2026 (decisión 2A de Arturo): la grilla dice «por año de contrato» y no
+// «por beneficiario». «Persona» vuelve si SP confirma que es para cada uno
+// (sp-interno#110). La espera de la tomografía de Gold también salió de su
+// línea: va en el cuadro de esperas (regla del 03/10).
+// LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+// elegida el 17/10 con «Todo A»): en la tomografía, la resonancia y la
+// internación, la línea dice cuántas, para quién y cada cuánto con barras,
+// igual en las tres tarjetas. Los números salen de `corta` en coverage.js, no se
+// escriben acá (sp-interno#117): Essential dice «familia», porque está escrito
+// en su cuadernillo; Silver y Gold, «¿quién?» (QUIEN_SG) donde la fuente no dice
+// para quién; la internación lo tiene escrito en las tres («persona» en Silver y
+// Gold: «por beneficiario»). Sin «hasta»: un tope ya es un máximo.
+// En Essential, los 2 son estudios compartidos entre tomografía, ecocardiograma y
+// ergometría (cuadernillo 3.2, essential.json; sp-interno#113): la línea no dice
+// «2 tomografías», dice «2 estudios» y cuáles. ComparativaCelular dibuja cada
+// forma corta con su frase completa para los lectores de pantalla.
+const nombrar = (t, cosa) => t.replace(/^([^/]+)/, '$1 ' + cosa); // «2/familia/año» → «2 tomografías/familia/año»
+const lineasCortas = (i) => {
+  const c = Object.fromEntries(coverage().map((s) => [s.name, s.corta]));
+  const tom = i === 0
+    ? nombrar(c['Tomografía (TAC)'][0], 'estudios') + ' (tomografía, ecocardiograma o ergometría)'
+    : nombrar(c['Tomografía (TAC)'][i], 'tomografías');
+  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia'), internacion: c['Internación'][i] };
+};
+export const plans = () => {
+  const [e, s, g] = [0, 1, 2].map(lineasCortas);
+  return [
+    // Essential: el "desde" es el precio más bajo de sus tres zonas (Interior).
+    { name: 'Plan Essential', short: 'Essential', nivel: 'esencial', price: ESSENTIAL.interior.titular, color: 'var(--sp-plan-essential)', tag: 'Para empezar a cuidarte, al precio de tu zona',
+      lines: ['Consultas: **sin tope en Lister**, y hasta 3 por mes en la red', e.estudios, 'Internación: **habitación privada**, ' + e.internacion, 'Terapia intensiva: **hasta 2 días** al año', 'Odontología: **sin costo, solo en Lister**: consulta, controles, extracciones simples y limpieza'] },
+    { name: 'Plan Silver', short: 'Silver', nivel: 'equilibrio', price: TARIFAS.silver.solo[0], color: 'var(--sp-plan-silver)', tag: 'El equilibrio entre precio y cobertura',
+      lines: ['Consultas: **sin tope en la mitad** de las especialidades, 5 o 6 al año en el resto', s.estudios, 'Internación: **semi-suite**, ' + s.internacion, 'Terapia intensiva: **hasta 5 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+    { name: 'Plan Gold', short: 'Gold', nivel: 'amplia', price: TARIFAS.gold.solo[0], color: 'var(--sp-plan-gold)', tag: 'La cobertura más amplia',
+      lines: ['Consultas: **sin tope anual** en casi todas las especialidades', g.estudios, 'Internación: **semi-suite**, ' + g.internacion, 'Terapia intensiva: **hasta 6 días** al año', 'Odontología: **la atención del dentista no entra**'] },
+  ];
+};
 
 // El puente comparador → simulador, en un solo lugar. La clave pública del
 // `?plan=` es `short.toLowerCase()` (essential/silver/gold); `bronze` y
@@ -210,8 +243,10 @@ export const engine = (d) => {
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
   const P = {
     essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
-    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: tomografía y resonancia por persona, más días de terapia intensiva y topes más altos.' },
-    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.' },
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.' },
+    // Sin «los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189): si vale
+    // la grilla, Gold tiene menos fisioterapia que Silver; lo aclara SP (#50).
+    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.' },
     vital: { name: 'Plan Vital', color: 'var(--sp-navy)', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
   let best;
@@ -241,8 +276,10 @@ export const engine = (d) => {
   const ajuste = ubi && best !== 'essential' ? (DEPT_AJUSTE[ubi.deptId] || 1) : 1;
   const price = Math.round(personas * ajuste);
   /* Privilege publica el precio particular → el pago automático descuenta 10%.
-     Vital ya publica el precio con débito → mostramos el particular como referencia. */
-  const autoPay = best === 'vital' ? null : Math.round(price * (1 - AUTO_PAY_DISCOUNT));
+     Vital ya publica el precio con débito → mostramos el particular como referencia.
+     Essential, sin descuento calculado hasta que SP diga si lo lleva
+     (sp-interno#80, decisión 2A): el resultado manda a preguntarle al asesor. */
+  const autoPay = best === 'vital' || best === 'essential' ? null : Math.round(price * (1 - AUTO_PAY_DISCOUNT));
   const vitalParticular = best === 'vital' ? VITAL_PARTICULAR * nAdultos : null;
   return {
     key: best, name: P[best].name, color: P[best].color, why: P[best].why,
@@ -288,8 +325,9 @@ export const opts = () => ({
   ],
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Tomografía y resonancia por persona, y topes más altos.' },
-    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.' },
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y topes más altos.' },
+    // Gold, sin «los topes más altos» (8A, 20/10/2026, sp-interno#189), como su porqué.
+    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.' },
   ],
   /* geo: reemplazado por el buscador de ciudades (app/geo.js) — el paso
      "¿Dónde querés tu cobertura?" ya no usa opciones fijas (HANDOFF 11h). */

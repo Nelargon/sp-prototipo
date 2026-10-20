@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
+import Corta, { frase, conCortas } from './Corta';
+import { DUDA } from '../coverage';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -21,8 +23,29 @@ import { trackExplicacion } from '../track';
    en la computadora; en el celular cada tarjeta trae sus propios nombres.
 
    ⚠ «por familia» queda a la vista (no va a la tarjeta): cambia la
-   comparación. 5 sesiones por familia contra 15 por persona no es el triple,
-   es más (docs/diseno, lección 51).
+   comparación. 5 sesiones por familia contra 15 no es el triple: si las 15
+   fueran para cada persona, sería más (docs/diseno, lección 51). Si lo son,
+   lo tiene que confirmar SP (sp-interno#110).
+
+   LA FORMA CORTA EN LA CELDA (P3, opción A: regla de escaneo de Arturo del
+   13/10/2026, elegida el 17/10 con «Todo A»). Una celda con barras
+   («1/familia/año», «Gs. 350 mil/evento») se dibuja con Corta: la cifra, para
+   quién y cada cuánto, con la frase completa para los lectores de pantalla
+   (la celda puede traer la suya en `dicho`). Donde la fuente no dice para
+   quién (Silver y Gold en tomografía, resonancia, psicología y fisioterapia,
+   sp-interno#110), el lugar de «familia» dice DUDA («¿quién?», coverage.js),
+   con la misma letra, el mismo color y el mismo peso. Esa celda es un botón
+   que abre la misma tarjeta que el nombre del servicio, donde el pie lo
+   explica en oraciones. Solo esa: la que dice «Preguntale a tu asesor» (la
+   fisioterapia de Gold, sp-interno#50, o los remedios en urgencias de
+   Essential) es texto, como la cesárea de Gold de la 2A, y su tarjeta se abre
+   desde el nombre del servicio. Como botón prometía llevar al asesor y solo
+   abría una tarjeta, y ninguna decisión lo pidió (comité, vuelta 1, 17/10:
+   si Arturo lo quiere, que lleve a WhatsApp, PR #271). Se abre
+   con un clic, un toque o el teclado, NO al pasar el mouse: al cruzar la
+   tabla se abrían tarjetas sin querer, lejos del puntero (ajuste 4 del
+   comité del 13/10). Pasar el mouse queda para el nombre, como dice la ayuda
+   de la tabla. Se mide aparte (`duda`), para saber cuánta gente se frena ahí.
 
    La tarjeta se comporta como el glosario (app/glossary.jsx): con mouse se
    abre al pasar; con el dedo, al tocar; con teclado, al enfocar. Escape o un
@@ -77,19 +100,58 @@ function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   );
 }
 
+// Una celda con barras es una forma corta. Una sin barras que trae `dicho` se ve
+// igual y el lector oye `dicho`, como la forma corta.
+const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} />
+  : c.dicho ? <><span aria-hidden="true">{c.t}</span><span className="sr-solo">{c.dicho}</span></> : c.t);
+// La nota de la celda («en Lister», «la mayoría», «1 cirugía/familia/año»): con
+// su forma corta dibujada por Corta y, para el lector, una coma que la separa
+// del valor (se oía «Sin topeen casi todas»; comité, vuelta 3, 17/10).
 const valor = (fila, c, notas) => (
   <>
-    {fila.kind === 'status' ? <span className="cmp2-chip disp">{c.t}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{c.t}</span>}
-    {(c.n === 'por familia' || (notas && c.n)) && <span className="cmp2-fam">{c.n}</span>}
+    {fila.kind === 'status' ? <span className="cmp2-chip disp">{texto(c)}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{texto(c)}</span>}
+    {(c.n === 'por familia' || (notas && c.n)) && <><span className="sr-solo">,{'\u00a0'}</span><span className="cmp2-fam">{conCortas(c.n)}</span></>}
   </>
 );
 
+// La celda con el hueco: se toca como el nombre del servicio y abre su tarjeta
+// (la de la fila: en la computadora vive en la columna de nombres). Clic, toque
+// o teclado; sin hover (ver arriba).
+// - Con el teclado, el foco la abre y Enter o Espacio (un clic sin puntero,
+//   `detail` 0) solo abren: la tecla de un botón no puede cerrar lo que el foco
+//   acaba de abrir (vuelta 1 del comité, 17/10). Escape o salir la cierran.
+//   Con el dedo o el mouse, el clic abre y cierra.
+// - El lector de pantalla oye la fila y el plan («Tomografía (TAC), Silver: 2
+//   al año, sin confirmar para quién»): en la computadora la columna de nombres
+//   está lejos y la celda sola no dice de qué es. La tarjeta, que queda antes en
+//   el orden de la página, es su descripción mientras está abierta.
+function Duda({ abierta, controla, nombre, abrir, cerrar, children }) {
+  return (
+    <button
+      type="button"
+      className="cmp2-duda"
+      aria-label={nombre}
+      aria-expanded={abierta}
+      aria-controls={abierta ? controla : undefined}
+      aria-describedby={abierta ? controla : undefined}
+      onClick={(e) => { e.stopPropagation(); if (e.detail === 0 || !abierta) abrir(); else cerrar(); }}
+      onFocus={(e) => { if (e.target.matches?.(':focus-visible')) abrir(); }}
+      onBlur={cerrar}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function Comparador({ planes, filas, notas = false, id = 'cartilla' }) {
   const [abierta, setAbierta] = useState(null);
+  // Qué columna abrió la tarjeta de la fila (en la computadora todas abren la
+  // misma, la de la columna de nombres): solo esa celda dice «expandido».
+  const [desde, setDesde] = useState(null);
   useEffect(() => {
     if (abierta === null) return;
     const tecla = (e) => { if (e.key === 'Escape') setAbierta(null); };
-    const afuera = (e) => { if (!e.target.closest?.('.cmp2-srv-wrap')) setAbierta(null); };
+    const afuera = (e) => { if (!e.target.closest?.('.cmp2-srv-wrap, .cmp2-duda')) setAbierta(null); };
     document.addEventListener('keydown', tecla);
     document.addEventListener('pointerdown', afuera);
     return () => { document.removeEventListener('keydown', tecla); document.removeEventListener('pointerdown', afuera); };
@@ -99,10 +161,40 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       fila={filas[k]} planes={planes} id={'cmp2-t-' + donde + '-' + k}
       abierta={abierta === donde + '-' + k}
       // Cuántas personas abren la tarjeta de cada servicio (sp-interno#98).
-      abrir={() => { setAbierta(donde + '-' + k); trackExplicacion('servicio', filas[k].name); }}
+      abrir={() => { setDesde(null); setAbierta(donde + '-' + k); trackExplicacion('servicio', filas[k].name); }}
       cerrar={() => setAbierta((a) => (a === donde + '-' + k ? null : a))}
     />
   );
+  // La tarjeta que abre una celda con «¿quién?»: la de la fila en la columna de
+  // nombres (computadora) o la de la tarjeta del plan (celular).
+  const dondeDuda = (i) => (typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches ? 'c' : String(i));
+  const celda = (f, i, k) => {
+    // El lector oye de qué fila y de qué plan es CADA valor, no solo la celda del
+    // asesor (comité, vuelta 3, 17/10). En la computadora el orden de la página
+    // va columna por columna y la columna de nombres está lejos: se oía «2, hasta
+    // 350 mil guaraníes…, Remedios en urgencias, Essential: preguntale a tu
+    // asesor» y el «2» suelto de terapia intensiva no decía nada. Cada celda
+    // lleva delante, oculto, «Días de terapia intensiva, Essential:». Solo en la
+    // computadora: en el celular el nombre de la fila está al lado (.cmp2-l) y el
+    // plan arriba de la tarjeta, y se oía dos veces. Lo que dice la celda del
+    // asesor es la constante ASESOR, sin un texto escrito a mano. La celda con
+    // «¿quién?» ya lo dice en el nombre del botón.
+    const c = f.cells[i];
+    const v = valor(f, c, notas);
+    const quien = <span className="sr-solo cmp2-fila">{f.name + ', ' + planes[i].short + ':\u00a0'}</span>;
+    if (!f.d || !c.t.includes('/' + DUDA + '/')) return <>{quien}{v}</>;
+    const aqui = (abierta === 'c-' + k && desde === i) || abierta === i + '-' + k;
+    return (
+      <Duda
+        abierta={aqui} controla={'cmp2-t-' + abierta}
+        nombre={f.name + ', ' + planes[i].short + ': ' + (c.dicho || frase(c.t))}
+        abrir={() => { const d = dondeDuda(i); setDesde(i); setAbierta(d + '-' + k); trackExplicacion('duda', f.name); }}
+        cerrar={() => setAbierta((a) => (a === 'c-' + k || a === i + '-' + k ? null : a))}
+      >
+        {v}
+      </Duda>
+    );
+  };
 
   return (
     <div id={id} data-rv className="cmp2">
@@ -121,7 +213,11 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
       {planes.map((p, i) => (
         <div key={p.short} className={'cmp2-plan' + (p.recommended ? ' rec' : '')} style={{ '--c': p.color }}>
           <div className="cmp2-h">
-            <span className="cmp2-tag disp">{p.recommended ? 'La más elegida' : ''}</span>
+            {/* «La más elegida» salió el 13/10/2026 (decisión 2A de Arturo,
+                sp-interno#52): no hay un dato de ventas confirmado por
+                Comercial. El renglón queda vacío en los tres planes para que
+                las cabeceras sigan alineadas; Silver sigue resaltado. */}
+            <span className="cmp2-tag disp" />
             <b className="cmp2-nombre disp">{p.short}</b>
             <span className="cmp2-precio">desde <b className="num-tnum">{p.price}</b><span className="cmp2-mes"> por mes</span></span>
             {p.zona && <span className="cmp2-zona">{p.zona}</span>}
@@ -133,12 +229,13 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
               <div className={'cmp2-c' + (abierta === i + '-' + k ? ' sobre' : '')}>
                 {/* En el celular cada tarjeta nombra sus filas. */}
                 <span className="cmp2-l">{srv(k, String(i))}</span>
-                <span className="cmp2-v">{valor(f, f.cells[i], notas)}</span>
+                <span className="cmp2-v">{celda(f, i, k)}</span>
               </div>
             </div>
           ))}
           <div className="cmp2-pie">
-            <a href={p.href} onClick={p.onCta} className="cmp2-cta disp">Ver mi precio</a>
+            {/* Para el lector, de qué plan (tres «Ver mi precio» iguales no dicen adónde llevan). */}
+            <a href={p.href} onClick={p.onCta} className="cmp2-cta disp">Ver mi precio<span className="sr-solo">{'\u00a0en ' + p.short}</span></a>
           </div>
         </div>
       ))}

@@ -58,9 +58,11 @@ export default function Page() {
     // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
-    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía por persona y no por familia, con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
-    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses (la cesárea baja a 5 en Gold). Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
-    { q: '¿Hay descuento por la forma de pago?', a: 'Sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses. Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    // El 10% está confirmado para Silver y Gold; para Essential no hay fuente
+    // (sp-interno#80, decisión 2A de Arturo, 13/10/2026): se pregunta al asesor.
+    { q: '¿Hay descuento por la forma de pago?', a: 'En Silver y Gold, sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. En Essential, preguntale a tu asesor si también tiene el descuento. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
     // #bolsillo (26/09/2026). El menú «Qué pagás de tu bolsillo» llevaba a la
     // leyenda de colores del comparador, que salió con el resto de la letra
     // chica. La explicación vive acá, con las palabras del glosario (copago,
@@ -116,9 +118,11 @@ export default function Page() {
   // de las secciones 2.9.1.5 y consultas de los cuadernillos Silver/Gold.
   // Essential (24/09/2026) no trae médico a domicilio ni psiquiatría en su
   // cuadernillo: psicología sí, en el cupo de subespecialidades.
+  // La ambulancia de Silver y Gold dice «cubierta», sin tope escrito: que no
+  // tenga tope sería deducirlo (sp-interno#116). Va al asesor (decisión 2A).
   const difsData = () => [
     { icono: 'letra', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
-    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo en Asunción y alrededores (en Essential, hasta 3 veces al año por familia).' },
+    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo en Asunción y alrededores (en Essential, hasta 3 veces al año por familia; en Silver y Gold, preguntale a tu asesor si tiene un tope).' },
     { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología cubierta en los tres planes, y psiquiatría en Silver y Gold, no como un extra aparte.' },
   ];
 
@@ -307,13 +311,18 @@ export default function Page() {
   // Comparador "lo que cambia" (ola 2, iter 3 — feedback CX del usuario, BITACORA
   // cap. 48). Iter 2 (el teal condicional) apagaba a Gold y obligaba a leer una
   // regla antes de entender: "no me hagas pensar". Ahora: "Al 100%" en teal
-  // CONSISTENTE en los tres (Gold no se apaga); Silver resaltado como "la más
-  // elegida" (anclaje); una línea humana bajo cada plan (para quién es); sin
+  // CONSISTENTE en los tres (Gold no se apaga); Silver resaltado (anclaje; la
+  // etiqueta «La más elegida» salió el 13/10/2026: no hay un dato de ventas
+  // confirmado por Comercial, sp-interno#52); una línea humana bajo cada plan
+  // (para quién es); sin
   // barras (eran ruido); y lo común, abajo, como GARANTÍA positiva, no letra chica.
+  // Gold, sin «con los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189):
+  // si vale la grilla, Gold tiene menos fisioterapia que Silver (10 + 3 contra
+  // 15 + 5), y mientras SP no conteste #50 no se afirma lo que depende de ese dato.
   const FORWHOM = [
     'Lo importante cubierto, al precio de tu zona.',
     'Cobertura equilibrada para tu familia.',
-    'La cobertura más amplia, con los topes más altos.',
+    'La cobertura más amplia.',
   ];
   const planHead = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: FORWHOM[i], recommended: i === 1,
@@ -335,7 +344,7 @@ export default function Page() {
   // ESSENTIAL (24/09/2026) en la primera columna, desde su cuadernillo
   // (datos/planes-vigentes/essential.json). Muchos de sus topes son POR FAMILIA
   // y no por persona: «por familia» va al lado del número y nunca a la tarjeta,
-  // porque "5" por familia y "15" por persona no se comparan a ojo. Donde el
+  // porque "5" por familia y "15" sin esa aclaración no se comparan a ojo. Donde el
   // cuadernillo no declara el dato (remedios en urgencias) se dice eso, no se
   // completa.
   // LA TARJETA DEL SERVICIO (26/09/2026, docs/diseno n.º 51, la 2). La letra
@@ -351,37 +360,82 @@ export default function Page() {
   // tres celdas dicen cuántas y para quién, y «no ponés nada» va en la tarjeta
   // del servicio, solo donde la fuente lo dice (Silver y Gold: «Cobertura
   // total (100%)»). Essential no declara porcentaje: se pregunta a SP.
-  const PIE_QUIEN = 'Por familia: las comparten todos. Por persona: cada uno tiene las suyas.';
+  // ⚠ En tomografía, resonancia y fisioterapia de Silver y Gold la grilla dice
+  // «por año de contrato», no «por beneficiario» (sp-interno#110). Desde el
+  // 13/10/2026 (decisión 2A de Arturo) las celdas dicen cuántas y no para quién,
+  // y la línea de abajo manda al asesor. Internación y terapia intensiva sí dicen
+  // «por beneficiario» en la fuente: ahí «por persona» queda.
+  // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+  // elegida el 17/10 con «Todo A»): las celdas de resonancia, tomografía,
+  // psicología, fisioterapia e internación dicen cuántas, para quién y cada
+  // cuánto, con barras («1/familia/año»). Salen de `corta` en coverage.js, las
+  // mismas que /planes. Donde la fuente no dice para quién (Silver y Gold,
+  // sp-interno#110), el lugar de «familia» dice «¿quién?» (DUDA), con la misma
+  // letra, color y peso; la celda se toca y la tarjeta lo explica. El pie no
+  // afirma nada del contrato: la fuente registrada es la grilla (comité, 13/10).
+  const cartDe = Object.fromEntries(cartArr.map((s) => [s.name, s]));
+  // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
+  // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
+  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i] }));
+  // El pie de la fila: qué es «por familia» y, mientras SP no conteste, a quién
+  // preguntarle lo de Silver y Gold (la `nota` de coverage.js, que se va sola
+  // cuando el interruptor de ese servicio deja de ser DUDA).
+  const pieQuien = (servicio) => ['Por familia: un cupo que comparten todos los del grupo.', cartDe[servicio].nota, cartDe[servicio].notaAsesor].filter(Boolean).join(' ');
   const PIE_TOPE = 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.';
   const cmp = [
-    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia', ok: true, n: 'al año' }, { t: '1 por persona', ok: true, n: 'al año' }, { t: '1 por persona', ok: true, n: 'al año' }],
-      d: ['1 al año para toda la familia, a los 365 días de afiliarte. Sin contraste ni sedación.', '1 al año por persona, y no ponés nada. Se puede usar a los 150 días de afiliarte.', '1 al año por persona, y no ponés nada. Se puede usar a los 150 días de afiliarte.'], pie: PIE_QUIEN },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia', ok: true, n: 'al año' }, { t: '2 por persona', ok: true, n: 'al año' }, { t: '2 por persona', ok: true, n: 'al año' }],
-      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría. A los 180 días de afiliarte.', 'Hasta 2 al año por persona, y no ponés nada. Se puede usar a los 120 días de afiliarte.', 'Hasta 2 al año por persona, y no ponés nada. Se puede usar a los 90 días de afiliarte.'], pie: PIE_QUIEN },
+    { g: 'Estudios y consultas', name: 'Resonancia (RM)', kind: 'status', cells: celdas('Resonancia (RM)'),
+      d: ['1 al año para toda la familia. Sin contraste ni sedación.', '1 al año, y no ponés nada.', '1 al año, y no ponés nada.'], pie: pieQuien('Resonancia (RM)') },
+    { name: 'Tomografía (TAC)', kind: 'status', cells: celdas('Tomografía (TAC)'),
+      d: ['Hasta 2 al año para toda la familia, contando también ecocardiograma y ergometría.', 'Hasta 2 al año, y no ponés nada.', 'Hasta 2 al año, y no ponés nada.'], pie: pieQuien('Tomografía (TAC)') },
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).
+    // Silver dice «5 o 6 al año», sin «por persona» (3A, Arturo, 20/10/2026,
+    // sp-interno#184), hasta que SP conteste #110: la psicología es una de ese
+    // resto y su fila dice «¿quién?». Como /planes (`cov` de coverage.js).
     { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }],
-      d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
+      d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
       pie: 'Copago: vos pagás una parte y Salud Protegida la otra.' },
-    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }],
-      d: ['3 sesiones al año para toda la familia, no por persona.', '5 sesiones al año.', '6 sesiones al año.'] },
-    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }],
-      d: ['5 sesiones al año para toda la familia, desde el primer día.', '15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.', '20 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias. A los 90 días de afiliarte.'] },
-    { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }],
-      d: ['20 días al año para toda la familia, en habitación privada. A los 365 días de afiliarte.', '20 días al año por persona, en semi-suite. A los 60 días de afiliarte.', '25 días al año por persona, en semi-suite. A los 60 días de afiliarte.'],
-      pie: 'Semi-suite: habitación privada, con baño propio y lugar para un acompañante.' },
+    { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: celdas('Sesión de psicología'),
+      // Essential (comité, 13/10): con «3/familia/año» a la vista, la sorpresa es
+      // que el cupo se comparte con otras especialidades (essential.json).
+      d: ['Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.', '5 sesiones al año.', '6 sesiones al año.'], pie: pieQuien('Sesión de psicología') },
+    // Gold: sin número hasta que SP aclare si son 20 + 5 o 10 + 3 (G1A, sp-interno#50).
+    // Silver y Gold salen de `cov` en coverage.js, las mismas líneas que /planes:
+    // escritas dos veces ya se habían separado (comité, vuelta 2, 17/10).
+    { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: celdas('Fisioterapia'),
+      d: ['5 sesiones al año para toda la familia.', cartDe['Fisioterapia'].cov[1].d + '.', cartDe['Fisioterapia'].cov[2].d + '.'], pie: pieQuien('Fisioterapia') },
+    // Internación (13/10/2026, decisión 2A de Arturo): los 60 días de Silver y
+    // Gold son de la «internación clínica por evento agudo» (parámetros clave);
+    // la programada no tiene espera escrita (sp-interno#82) y no se deduce. Y la
+    // habitación: el cuadernillo de Essential (4.3.1, leído el 13/10/2026) da
+    // «habitación privada con […] baño privado, cama para acompañante»; los de
+    // Silver y Gold (2.4.4.1), «semi suite, incluye cama para el acompañante,
+    // según disponibilidad del prestador», sin baño. No se pueden ordenar: qué
+    // cambia entre las dos lo dice SP (sp-interno#89).
+    { g: 'Si te internan', name: 'Internación', unit: 'días/año', kind: 'num', cells: celdas('Internación'),
+      d: ['20 días al año para toda la familia, en habitación privada.', '20 días al año por persona, en semi-suite.', '25 días al año por persona, en semi-suite.'],
+      pie: 'En los tres planes, la habitación tiene cama para un acompañante, según lo que tenga el sanatorio. Qué cambia entre la privada de Essential y la semi-suite de Silver y Gold, preguntale a tu asesor.' },
     { name: 'Días de terapia intensiva', unit: 'tope al año', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }],
-      d: ['Hasta 2 días al año por persona, a los 365 días de afiliarte.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
-    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }],
+      d: ['Hasta 2 días al año por persona.', 'Hasta 5 días al año por persona, con cobertura total.', 'Hasta 6 días al año por persona, con cobertura total.'] },
+    // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
+    { name: 'Medicamentos internado', unit: 'tope por evento', kind: 'num', cells: celdas('Medicamentos en internación'),
       d: ['Hasta Gs. 350.000 en medicamentos en cada internación.', 'Hasta Gs. 1.000.000 en medicamentos y descartables en cada internación.', 'Hasta Gs. 1.500.000 en medicamentos y descartables en cada internación.'], pie: PIE_TOPE },
     // Donde el cuadernillo de Essential no declara el dato se dice eso, no se completa.
-    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }],
-      d: ['El cuadernillo de Essential no fija este tope: consultalo con tu asesor. La urgencia se atiende desde el primer día.', 'Hasta Gs. 150.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia. La urgencia se atiende desde el primer día.'], pie: PIE_TOPE },
+    // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo»).
+    // La línea de Essential es la `notaAsesor` de coverage.js, la misma de /planes
+    // y de la hoja del celular: escrita acá otra vez ya decía «este tope» y allá
+    // «el tope de remedios en urgencias» (comité, vuelta 3, 17/10).
+    { g: 'Urgencias', name: 'Remedios en urgencias', unit: 'tope por evento', kind: 'num', cells: celdas('Urgencia 24 h'),
+      d: [cartDe['Urgencia 24 h'].notaAsesor, 'Hasta Gs. 150.000 en medicamentos en cada urgencia.', 'Hasta Gs. 200.000 en medicamentos en cada urgencia.'], pie: PIE_TOPE },
     // La fila «Tiempo de espera» salió del home el 13/10/2026 (decisión de
     // Arturo, 5A): ninguna espera en la vista rápida (regla del 03/10, aceptada
     // otra vez el 05/10). Las esperas, todas con el mismo peso, están en /planes,
     // el simulador y la cotización. Antes de eso fue una fila (26/09).
+    // P2A (Arturo, 17/10/2026, «Todo A»): tampoco van en la tarjeta que se abre
+    // al tocar un servicio. Salieron «a los 365 días de afiliarte», «se puede
+    // usar a los 150 días», «a los 60 días si es por algo agudo» y «desde el
+    // primer día» de estas oraciones; /planes las sigue diciendo con su número.
   ];
   // ⚠ La banda dice qué SERVICIOS tenés en los tres planes; la tabla de arriba
   // dice dónde cambia el TOPE. Los dos son ciertos y no se contradicen, pero
@@ -715,8 +769,9 @@ export default function Page() {
 
       {/* COMPARADOR "LO QUE CAMBIA" (iter 3, feedback CX del usuario) — filas
           alineadas de lo que difiere × planes. "Al 100%" en teal CONSISTENTE en
-          los tres (Gold ya no se apaga); Silver resaltado como "la más elegida"
-          (anclaje); una línea humana bajo cada plan; sin barras (ruido); lo común
+          los tres (Gold ya no se apaga); Silver resaltado (anclaje, sin la
+          etiqueta «La más elegida» desde el 13/10/2026, sp-interno#52); una
+          línea humana bajo cada plan; sin barras (ruido); lo común
           abajo como GARANTÍA positiva. BITACORA cap. 48. Detalle → /planes. */}
       <section id="comparar" className="sec con-muro" style={css('padding:80px 40px;background:var(--sp-surface)')}>
         <MuroFondo tono="claro" />
@@ -756,9 +811,11 @@ export default function Page() {
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
               {/* Del dato a lo que significa (Arturo, 24/09/2026: más persuasiva).
                   "10% de descuento" es un porcentaje; "más de una cuota al año" es
-                  plata que la familia ve. La cuenta vale para cualquier plan y
-                  precio: 10% × 12 meses = 1,2 cuotas de lista. */}
-              <span>Pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo.</span>
+                  plata que la familia ve. La cuenta vale para cualquier plan que
+                  lo tenga: 10% × 12 meses = 1,2 cuotas de lista. Desde el
+                  13/10/2026 dice para cuáles: el 10% está confirmado en Silver y
+                  Gold, y en Essential no hay fuente (sp-interno#80, decisión 2A). */}
+              <span>En Silver y Gold, pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo. En Essential, preguntale a tu asesor si también tiene el descuento.</span>
             </span>
           </div>
 
@@ -810,26 +867,29 @@ export default function Page() {
 
           <p className="cmp-nota">Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</p>
           {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
-              contesta "¿Qué es la carencia y cuánto dura?" con el mismo dato
-              (1 año en Essential, 10 meses en Silver y Gold, 5 en Gold para cesárea). El dato NO
+              contesta "¿Cuánto tengo que esperar para usar mi plan?" con el
+              mismo dato (1 año en Essential, 10 meses en Silver y Gold). El dato NO
               se pierde — se dice una vez en vez de dos, que es de lo que se
               trata acortar. En el prototipo se queda, con su porqué intacto. */}
           {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
               Parto son 300 días en Silver y Gold (365 en Essential, desde el
-              24/09/2026) y la cesárea baja a 150 en Gold — el dato más caro de descubrir tarde de todo el sistema, y
+              24/09/2026) — el dato más caro de descubrir tarde de todo el sistema, y
               que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
               al asesor). Va en dorado, no en rojo: la regla de color reserva
               el rojo para urgencias, y el dorado es "oportunidad". Y el
               encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
               una trampa escondida y pasa a ser una razón para afiliarse antes.
-              No se suaviza el número: se le da un destino. */}
+              No se suaviza el número: se le da un destino.
+              La «cesárea a 5 meses en Gold» salió el 13/10/2026 (decisión 2A de
+              Arturo): una sola fila de la grilla contra la cláusula de
+              maternidad (300 días). Vuelve si SP la confirma (sp-interno#116). */}
           {!ES_LANZAMIENTO && (
             <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:var(--r-md);padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
               <IconoSP nombre="espera" size={32} style={{ marginTop: -5 }} />
               <div>
                 <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
                 <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
-                  El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>), y la cesárea baja a 5 meses en Gold. Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
+                  El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>). Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
                 </div>
               </div>
             </div>
@@ -1020,7 +1080,8 @@ export default function Page() {
             <div style={css('font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-mint);margin-bottom:14px')}>Contacto</div>
             <div style={css('font-size:14px;color:var(--sp-blue-pale);line-height:2')}>
               <div>Sede Administrativa · Perú 222 esq. Eligio Ayala, Asunción</div>
-              <div>Centro Médico Lister · Pa'í Pérez 630 c/ Azara, Asunción</div>
+              {/* «c/» es «casi» y no se separa de la calle: a 360 px el renglón terminaba en «c/» (QA, 17/10). */}
+              <div>Centro Médico Lister · Pa'í Pérez 630 c/&nbsp;Azara, Asunción</div>
               <div>Atención y urgencias 24 h: <a href={'tel:' + SP_TEL} className="foot-link num-tnum" style={css('color:var(--sp-blue-pale);font-weight:700')}>{SP_PHONE_DISPLAY}</a></div>
               <div><a href="mailto:hola@saludprotegida.com.py" className="foot-link" style={css('color:var(--sp-blue-pale)')}>hola@saludprotegida.com.py</a></div>
             </div>

@@ -283,12 +283,18 @@ razón para mostrar el trabajo seguido y temprano.
 
 ## Capítulo 16 — Llegaron los primeros datos reales (y me corrigieron)
 
+*(17/10/2026: las cifras de este capítulo pasaron a un puntero por decisión
+de Arturo, sp-interno#180: las cifras de Google Analytics de la web de SP
+están en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`. Es
+una excepción decidida a la regla de no reescribir la bitácora; lo aprendido
+no cambió.)*
+
 El usuario trajo el Google Analytics de la web activa de SP: dos meses de
 datos reales, los primeros del proyecto. Confirmaron tres decisiones
-tomadas por intuición y teoría: **el 77% del tráfico entra por celular**
+tomadas por intuición y teoría: **la mayoría del tráfico entra por celular**
 (la ponderación móvil no era perfeccionismo), **"Guía para el asegurado"
-es la tercera página más visitada** (la puerta 2 del hero atiende una
-demanda que ya existía), y la atención media es de **50 segundos**
+está entre las páginas más visitadas** (la puerta 2 del hero atiende una
+demanda que ya existía), y la atención media es **corta**
 ("resolver en un minuto" es la vara correcta, y cualquier peaje de siete
 pantallas estaba condenado por los datos antes que por la mesa de
 advisors).
@@ -297,17 +303,17 @@ Pero el capítulo se gana su lugar por dos cosas más incómodas. Primera:
 la captura inicial (un embudo con "100% de finalización" en cada paso) me
 llevó a concluir que "un tercio de los clientes ya usa el canal digital".
 Con el informe completo quedó claro que ese embudo se auto-calificaba —
-el Login real tuvo 132 usuarios, no 2.900. **Los datos merecen la misma
+el Login real tuvo una fracción mínima de lo que el embudo daba a entender.
+**Los datos merecen la misma
 desconfianza metódica que el código**: un embudo perfecto es tan
 sospechoso como un test que nunca falla. Corregido en el mismo día,
 gracias a que el usuario trajo más capturas en vez de conformarse.
 
-Segunda: el dato más valioso no confirmaba nada — revelaba. **El 91% de
+Segunda: el dato más valioso no confirmaba nada — revelaba. **Casi todos
 los usuarios son nuevos: casi nadie vuelve.** El sitio actual no le da a
 nadie un motivo de regreso, mientras SP paga tráfico social que aterriza
-ahí. Esa cifra (recurrencia ~9%) quedó registrada en el HANDOFF como *la
-métrica a vencer* — el día que la guía nueva y el portal existan, este
-número es el juez.
+ahí. Esa cifra (la recurrencia) quedó registrada como *la métrica a vencer*
+— el día que la guía nueva y el portal existan, este número es el juez.
 
 **Lo aprendido:** los datos reales hacen tres trabajos — confirman (barato),
 corrigen (incómodo pero sano) y revelan lo que nadie preguntó (lo más
@@ -549,6 +555,12 @@ desactualizada. Preguntarse "¿estoy leyendo la última versión?" antes que
 
 ## Capítulo 24 — El feedback que nos encontró violando nuestra propia regla
 
+*(20/10/2026: la cifra de contratos activos de SP de este capítulo pasó a un
+puntero por decisión de Arturo, sp-interno#180 (180A): está en el repo privado,
+`sp-interno/project/cifra-contratos-activos.md`. Es una excepción decidida a la
+regla de no reescribir la bitácora, como la U4A en los cap. 16 y 57; lo
+aprendido no cambió.)*
+
 El usuario trajo un feedback externo sobre la web — el mejor que recibió
 el prototipo hasta ahora. La señal más valiosa no fue ningún hallazgo
 puntual sino la lectura estratégica final: "la guía consigue recurrencia,
@@ -567,7 +579,9 @@ tenía: "Desde SP Integral", en dorado.
 
 Del mismo feedback salió la disciplina de cifras: solo sobreviven los
 números confirmados por el usuario. Vidas (~19.000) es real y se queda;
-contratos (~9.100) no estaba confirmado y salió; prestadores espera la
+contratos (la cifra de contratos activos de SP está en el repo privado,
+`sp-interno/project/cifra-contratos-activos.md`) no estaba confirmado y salió;
+prestadores espera la
 confirmación del +800 antes de tocar el "más de 50" actual (que es
 verdadero pero se queda corto); y los años dejaron de ser un número
 escrito a mano — se calculan desde la fundación (agosto de 2002) en cada
@@ -1776,6 +1790,10 @@ razón distinta:
 
 ## Capítulo 57 — Fuimos a endurecer una frase y descubrimos que era falsa
 
+*(17/10/2026: los nombres pasaron a la categoría por decisión de Arturo,
+sp-interno#180; el detalle vive en el repo privado. Es una excepción decidida
+a la regla de no reescribir la bitácora.)*
+
 **Qué intentamos.** Cerrar el ⚠ pendiente 12c. Desde el capítulo 54 el bloque
 *"Dónde termina la medicina prepaga"* decía que odontología, bariátrica,
 oncológico y alta complejidad *"en general"* no las cubre la medicina prepaga,
@@ -1789,11 +1807,13 @@ endurecerla**. Ese era literalmente el pendiente escrito.
 
 **Qué pasó.** El relevamiento salió y no endureció nada: **tumbó la frase**.
 
-- **SPS** (Superior Plus) cubre, con cita textual de su propio folleto,
-  tratamiento oncológico —quimioterapia en pensión y honorarios, radioterapia,
-  cirugías oncológicas— y **alta complejidad**: *"Cirugía de alta complejidad:
-  Neurológicas, torácicas, cardiacas y vascular periférica"*.
-- **SPS y MediLife** cubren odontología general básica.
+- **Una prepaga sin sanatorio propio** (en uno de sus planes altos) cubre,
+  con cita textual de su propio folleto, tratamiento oncológico —quimioterapia
+  en pensión y honorarios, radioterapia, cirugías oncológicas— y **alta
+  complejidad**: *"Cirugía de alta complejidad: Neurológicas, torácicas,
+  cardiacas y vascular periférica"*.
+- **Esa misma y otra prepaga sin sanatorio propio** cubren odontología
+  general básica.
 - **Bariátrica** no se puede afirmar en ninguna dirección: nadie confirma
   cubrirla, nadie la excluye.
 
@@ -1803,10 +1823,10 @@ puede. Y el folleto de un competidor decía que sí.
 
 Y de paso cayó la hipótesis que habíamos anotado con confianza: creíamos que
 los competidores **con sanatorio propio** cubrirían más en alta complejidad,
-por costo marginal. **Santa Clara**, con la cabecera de mayor nivel del
-relevamiento (Británico, Nivel III), declara textual *"Alta Complejidad:
-Opcional"* — no viene en el plan base. **Promed**, con sanatorio propio, no la
-menciona en ningún plan publicado. Y **SPS, sin sanatorio, la cubre.**
+por costo marginal. **Una prepaga con sanatorio propio**, con la cabecera de
+mayor nivel del relevamiento (Nivel III), declara textual *"Alta Complejidad:
+Opcional"* — no viene en el plan base. **Otra con sanatorio propio** no la
+menciona en ningún plan publicado. Y **la que no tiene sanatorio la cubre.**
 
 **Qué aprendimos.**
 
@@ -1816,8 +1836,8 @@ menciona en ningún plan publicado. Y **SPS, sin sanatorio, la cubre.**
    oración por separado**, no el párrafo como bloque — la prudencia no se
    contagia entre frases.
 2. **El daño habría caído justo donde más importa.** Este bloque existe para
-   demostrar honestidad. Una familia que compare y encuentre que SPS cubre
-   oncología no lee "SP se equivocó": lee "SP me presentó sus propios límites
+   demostrar honestidad. Una familia que compare y encuentre que otra prepaga
+   cubre oncología no lee "SP se equivocó": lee "SP me presentó sus propios límites
    como límites del rubro". **La pieza construida para generar confianza era la
    que más confianza podía destruir.**
 3. **Verificar puede empeorar tu posición, y hay que ir igual.** Salimos a
@@ -5054,3 +5074,540 @@ trae `<meta charset>`, se leía con los acentos rotos.
 - **Un selector de escena se acota a lo que pinta**: `span:not(.asi-no)`, no
   `span`.
 
+
+---
+
+## Capítulo 146 — Lo que el sitio decía sin fuente, y el resumen que no era el contrato (13/10/2026)
+
+**Qué intentamos.** Seis puntos de revisión (sp-interno #80, #110, #116, #89,
+#82 y #52) esperaban la respuesta de SP desde fines de septiembre, y mientras
+tanto el sitio seguía afirmando cosas sin fuente: el 10% por débito en Essential,
+«por persona» en la tomografía y la resonancia de Silver y Gold, la cesárea a 5
+meses en Gold (que tenía fuente, pero contradicha dentro del mismo contrato),
+visar desde la App, la semi-suite «privada, con baño propio» y «La más elegida»
+sobre Silver. La cita del Guardián le preguntó a Arturo qué
+hacer mientras tanto y contestó «2A»: lo que no tiene fuente sale o manda al
+asesor, con una sola forma, «preguntale a tu asesor».
+
+**Qué pasó.** Casi todo fue sacar o acotar texto. Dos cosas no salieron como se
+pensaba:
+- **La semi-suite.** El comentario de #89 (29/09) decía que Essential «no
+  menciona acompañante ni baño», y el primer borrador del cambio escribía la cama
+  para el acompañante como algo de Silver y Gold. Ese comentario se apoyaba en
+  `essential.json`, que resume la internación en una línea («habitación
+  privada»). Leído el cuadernillo el 13/10, la cláusula 4.3.1 dice «habitación
+  privada con aire acondicionado, televisión, baño privado, cama para
+  acompañante». El texto nuevo dice lo contrario de lo que iba a decir: en los
+  tres planes hay cama para acompañante, y qué cambia entre la privada y la
+  semi-suite se le pregunta al asesor.
+- **El 10%.** La línea «Pagá con débito… y ahorrás 10%» y la FAQ se escribieron
+  cuando los planes eran Bronze, Silver y Gold, y la confirmación del 17/07 era
+  de ese tarifario. El 24/09 Essential reemplazó a Bronze con su propia lista de
+  precios, y las frases que decían «todos» siguieron valiendo para un plan que
+  la fuente no nombraba. El simulador le calculaba el descuento sin que nadie lo
+  hubiera decidido.
+- **La cesárea de Gold.** El primer cambio sacó «la cesárea espera 5 meses en
+  Gold» y la hoja «Parto o cesárea» quedó mostrando 10 meses en Gold. La
+  verificación leyó el contrato de Gold: el Cuadro 3 dice 150 días para la
+  cesárea y la cláusula de maternidad (2.5.2), 300. No era un dato sin fuente,
+  era una fuente que se contradice, y mostrar solo los 10 meses tomaba partido
+  por el otro lado. Ahora la cesárea de Gold manda al asesor. Lo mismo pasó con
+  las interconsultas: la grilla dice «por año» y los contratos, «por
+  internación».
+
+**Qué aprendimos.**
+- **Sacar un dato no es neutral si deja otro a la vista.** Cuando dos fuentes
+  se contradicen, borrar una deja a la otra como verdad. Lo honesto es mandar al
+  asesor hasta que la fuente se aclare.
+- **El resumen no es el contrato.** Un JSON curado sirve para leer rápido, pero
+  una ausencia en el resumen no es una ausencia en la fuente. Antes de escribir
+  «esto lo tiene un plan y el otro no», se lee la cláusula del otro.
+- **Una frase que dice «todos» hereda la fuente más angosta.** Cuando entra un
+  plan nuevo, se revisan las frases generales: las que hablan de un plan solo se
+  revisan solas, las que hablan de todos no.
+- **Sacar una etiqueta no es mover la cabecera.** «La más elegida» salió y su
+  renglón quedó vacío en los tres planes: las cabeceras miden lo mismo. Lo que se
+  saca por falta de fuente no tiene que cambiar el diseño que Arturo eligió.
+- **El cambio queda con su guardia.** `qa-lanzamiento` controla las
+  afirmaciones que se podían volver a colar: el 10% de Essential, «por persona»
+  (celdas, tarjetas y FAQ), «La más elegida», la cesárea a 5 meses, visar desde
+  la App y la semi-suite «con baño propio». Se probó contra el main del 13/10,
+  donde falla, y contra la rama, donde pasa. La primera versión miraba solo las
+  celdas del home y las tarjetas del celular: la verificación encontró cuatro
+  lugares de donde había salido «por persona» que la guardia no veía.
+
+## Capítulo 147 — El cliente escanea antes de leer (13/10/2026)
+
+**Qué intentamos.** Con la decisión 2A, «por persona» salió de la tomografía,
+la resonancia y la fisioterapia de Silver y Gold, y quedó un contraste: «1 por
+familia» en Essential contra «1 al año» en Silver y Gold. Arturo pidió tres
+opciones (lámina 84). Las tres resolvían el contraste sumando palabras: la A
+ponía «¿por familia? Preguntale a tu asesor» debajo de cada número, la B una
+línea de explicación arriba del grupo y la C una marca con su globo.
+
+**Qué pasó.** Arturo vio el problema de fondo antes de elegir: *«Si ponemos más
+palabras de las que tenemos que poner, podemos restar claridad al cliente que
+escanea la información, no es que la lea solamente de forma narrativa. Por
+ejemplo, donde pones 1 por familia por año, en vez de escribir y que quede
+largo, podría ser simplemente "1/familia/año"»*. Se le marcaron dos riesgos:
+dos barras seguidas pueden leerse más lento para quien no está acostumbrado (una
+parte del público es mayor; es una suposición, no una medición) y un lector de
+pantalla leería «barra». Decidió igual: *«Entiendo tu preocupación, pero vamos a
+igual ir con el tema de las barras, cómo tiene que ser»*. El segundo riesgo se
+arregla con un texto oculto; el primero queda para la prueba con personas
+(sp-interno#90).
+
+**Qué aprendimos.**
+- **Hay dos formas de leer la misma pantalla.** Una tabla, un chip o el precio
+  de una tarjeta se escanean; una tarjeta abierta o una pregunta frecuente se
+  leen. Lo que se escanea pide la cifra y su unidad, nada más. Ya lo hacíamos a
+  medias con la tipografía (cifras en Nunito Sans, oraciones en Inter): ahora
+  la regla tiene nombre.
+- **Una duda también se escribe corta.** Las tres opciones de la lámina 84
+  eran honestas pero largas, y en una tabla la palabra de más tapa el número.
+  Las opciones nuevas de la P3 tienen que decir «no sabemos» con el mismo largo
+  que el dato.
+- **La forma corta hace más visible el contraste.** «1/familia/año» contra
+  «1/año» deja un hueco donde iba la unidad, y ese hueco se lee como «por
+  persona». La regla no resuelve la duda: obliga a decir algo en ese lugar.
+
+## Capítulo 148 — Lo que se borra se lleva sus excepciones (17/10/2026)
+
+**Qué intentamos.** Aplicar el «Todo A» de Arturo en el sitio: siete decisiones
+en una rama (la del PR #271), un commit por decisión y cada una con su prueba en
+`qa-lanzamiento`, que falla sin el cambio y pasa con él. Cinco cambian lo que se
+ve (la forma corta con «¿quién?», la fisioterapia de Gold al asesor, «/evento»,
+una sola forma de mandar al asesor y las esperas fuera de la tarjeta del home).
+Dos sacan cosas: la copia congelada `/v1/` (P4A) y, del repo público, los
+nombres de competidores y las cifras de Google Analytics (U4A).
+
+**Qué pasó.** Cuatro tropiezos, ninguno visible en el diff:
+
+- **El texto oculto para lectores de pantalla se escapaba.** La forma corta
+  lleva al lado su frase completa, oculta. Escrita con `position:absolute`, se
+  escapaba del plegable con scroll de `/planes`, y la página desbordaba 150 a
+  220 px en el celular (medido en la primera mitad de la tanda). Pasó a
+  `inline-block` de 1 px.
+- **`textContent` no es lo que se ve.** La prueba de la R1A buscaba
+  «Consultalo» con borde de palabra (`\b`), y no lo encontraba aunque estaba:
+  `textContent` pega las celdas vecinas sin espacio («urgenciasConsultalo»).
+  Con `\b`, la prueba habría pasado en la rama vieja, donde tenía que fallar.
+  La búsqueda va sin `\b`.
+- **`/v1/` tenía tres excepciones.** `seguro-propio`, `titulos-y-sombras` y
+  `qa-integral` la salteaban porque estaba «congelada a propósito». Borrar la
+  carpeta y dejar las excepciones dejaba una puerta abierta: si alguien la
+  reponía, ningún guardián la veía. Sin las excepciones y con la copia repuesta
+  a propósito, los tres la marcan («plan de seguro», tres títulos con punto,
+  «Nombre Apellido» y «práctica»), `qa-lanzamiento` da 3 fallas y `qa-integral`
+  un «roto». Sin ella, todo pasa.
+- **La prueba en vivo no puede juzgar un PR.** La salud nocturna mira el sitio
+  publicado, que es `main`. Si pidiera `/v1/` en 404 también en los PR, el PR
+  que la baja saldría en rojo: en vivo responde 200 hasta que se publica. En
+  un PR no se mira; el build y las pruebas con navegador sí la miran.
+
+Y U4A es la primera vez que se reescriben entradas viejas de esta bitácora (cap.
+16 y cap. 57). Lo decidió Arturo, y cada una lleva su nota fechada. El
+historial de git del repo público conserva los textos viejos: la decisión cambia
+lo que se lee hoy, no la historia.
+
+**Qué aprendimos.**
+- **Una excepción en un guardián vive más que lo exceptuado.** Al borrar algo,
+  se borran también sus excepciones, y se prueba que, si vuelve, se ve. Es la
+  regla de «revisar los guardianes que leían la forma vieja» (cap. 90) del lado
+  de lo que se va.
+- **Lo oculto también ocupa lugar.** Un texto «invisible» puede agrandar la
+  página. El desborde se mide en el navegador, con el plegable abierto, y no se
+  deduce del CSS.
+- **Un detector se prueba en el estado donde tiene que fallar.** Con `\b`, la
+  prueba de la R1A habría dado verde en la rama vieja, y para siempre.
+- **Una prueba en vivo mide lo publicado, no lo propuesto.** Lo que un PR
+  cambia del sitio en vivo se controla en el build del PR y, después del merge,
+  en la noche.
+- **Lo que le sirve a un competidor no se escribe en el repo público**, ni
+  siquiera en la bitácora. Va al privado, y acá queda un puntero.
+
+## Capítulo 149 — La prueba de teclado que no apretaba ninguna tecla (17/10/2026)
+
+**Qué intentamos.** Pasarle la rama del «Todo A» (PR #271) al QA y al comité
+evaluador antes de que la vea Arturo. Todas las pruebas de `qa-lanzamiento`
+estaban en verde.
+
+**Qué pasó.** El QA y el comité encontraron seis cosas que las pruebas no veían,
+y en cada una la prueba miraba otra cosa que lo que importaba:
+
+- **Enter cerraba la tarjeta.** La celda «¿quién?» se abría al recibir el foco
+  con el teclado, y su clic alternaba entre abrir y cerrar. Quien llegaba con
+  Tab y apretaba Enter, como en cualquier botón, cerraba lo que se le acababa de
+  abrir (medido por el Dev: Tab la abre, Enter la cierra, Espacio la vuelve a
+  abrir). La prueba hacía Shift+Tab y Tab y miraba el foco: nunca apretaba la
+  tecla de un botón.
+- **El lector de pantalla no sabía de qué fila era la celda.** En la
+  computadora oía «2 al año, sin confirmar para quién», sin la fila ni el plan,
+  y dos celdas decían «expandido» a la vez. La prueba leía el texto oculto, no
+  el nombre que calcula el navegador.
+- **La prueba fijó lo que nadie decidió.** La rama hizo botón también a la
+  celda «Preguntale a tu asesor». Ninguna decisión lo pedía, el botón prometía
+  llevar al asesor y solo abría una tarjeta, y la prueba exigía `boton`:
+  deshacerlo la ponía en rojo. Una ocurrencia de la implementación había
+  quedado con forma de regla.
+- **El `aria-hidden` no lo miraba nadie.** Con `Corta.jsx` cambiado a
+  `role="img"` y sin `aria-hidden`, el lector diría «uno barra quién barra año»
+  y además la frase, y todo seguía en verde. Ahora falla una sola sección: la
+  que se sumó.
+- **La duda en la letra de lectura.** En la lista de los once servicios, la
+  celda de Gold decía «Preguntale a tu asesor» en Inter 400, al lado de
+  «15/¿quién?/año» en Nunito Sans 700. La prueba comparaba el texto, no el
+  estilo.
+- **«Ningún renglón termina en «/»» se medía solo donde lo pusimos.** El
+  plegable de topes de la misma página cortaba «Fisioterapia traumatológica / ⏎
+  neurológica» y el pie del home, «c/ ⏎ Azara». Las dos ya estaban en `main`.
+
+**Qué aprendimos.**
+- **Una prueba de teclado aprieta las teclas.** Enfocar no es usar: Enter y
+  Espacio son el botón. Un control que se abre al enfocar y alterna al hacer
+  clic se cierra con la tecla que lo activa.
+- **Lo que oye un lector se mide con el nombre que calcula el navegador**
+  (`getByRole` con `name`), no leyendo el texto oculto: ese texto puede estar y
+  no ser lo que se anuncia.
+- **Antes de fijar algo en una prueba, buscar la decisión que lo pide.** Si no
+  la hay, eso no se prueba como regla: se pregunta.
+- **«La misma forma y el mismo peso» se prueba con el estilo computado**, no con
+  el texto (lámina 84).
+- **Una regla de forma vale para toda la página**, no solo para el componente
+  que la trajo. Y lo que viene de `main` también se mide.
+
+## Capítulo 150 — Arreglar una línea y desparejar la de al lado (17/10/2026)
+
+**Qué intentamos.** Pasarle al QA y al comité la vuelta 1 del «Todo A» (PR
+#271, cap. 149). Todas las pruebas estaban en verde otra vez.
+
+**Qué pasó.** El comité encontró que algunos arreglos de la vuelta 1 habían
+dejado otro problema al lado, y que varias pruebas no veían lo que decían
+mirar:
+
+- **La línea de Gold se arregló sola.** Para no repetir el pedido al asesor, la
+  vuelta 1 (commit 4dc4401) le copió a Gold la línea del home: «Traumatológica,
+  neurológica o después de una cirugía, más respiratorias». La de Silver quedó
+  en «15 sesiones al año». En la tarjeta de `/planes` y en la hoja del celular
+  parecía que solo el plan caro tenía fisioterapia respiratoria, y Silver tiene
+  15 + 5 en las dos fuentes. La misma oración estaba escrita dos veces, en el
+  home y en `coverage.js`, y ya se habían separado. La prueba miraba solo la
+  línea de Gold.
+- **La prueba rechazaba los números que ya conocíamos.** En `/planes` buscaba
+  10 o 20 en la línea de Gold, porque un `\d` daba falso positivo con «3 meses
+  de espera». Si alguien escribía «más 5 respiratorias» (el número de Gold que
+  la fuente también da de dos maneras), seguía en verde.
+- **Las pruebas que no corrían decían ✓.** Las del botón «¿quién?» se
+  condicionaban a `QUIEN_SG`. El Dev lo puso en «persona», dejó la psicología
+  con «¿quién?», y el log siguió diciendo ✓ sobre una celda que ya no era un
+  botón.
+- **La prueba de teclado seguía sin apretar desde cerrado.** El cap. 149 dijo
+  «una prueba de teclado aprieta las teclas», pero la prueba nueva apretaba
+  Enter y Espacio con la tarjeta ya abierta por el foco. El Dev silenció las
+  dos teclas y la prueba pasó igual.
+- **El lector oía valores sin su plan.** En el celular, cada fila de «Los once
+  servicios» es un botón, y un botón se nombra con todo lo que tiene adentro:
+  «Fisioterapia › 5 por familia al año Sin espera 15 al año…», con los planes
+  afuera, en la cabecera. En la computadora, la celda «Preguntale a tu asesor»
+  se oía sin la fila. La vuelta 1 había arreglado eso solo en la celda
+  «¿quién?».
+- **La R1A llegó a las tablas y no al celular.** Los remedios en urgencias de
+  Essential mandaban al asesor en la computadora y callaban en la lista y la
+  hoja del celular, al lado del tope de Silver y Gold.
+
+**Qué aprendimos.**
+- **Una comparación se arregla de a pares.** Si cambia la línea de un plan, se
+  lee la de al lado, y la prueba compara los planes entre sí, no cada uno contra
+  una lista de errores. Y si la misma oración está en dos lugares, sale de uno
+  solo.
+- **Se rechaza la clase de error, no el caso conocido.** Primero se saca lo que
+  sí puede estar (las esperas) y después se rechaza cualquier dígito.
+- **Una prueba que no corre dice «se salta», no ✓** (el cap. 90, ahora con
+  interruptores). Y elige su caso por la condición («la primera fila con
+  “¿quién?”»), no por un nombre fijo.
+- **El detector de teclado se prueba contra teclas mudas.** Una lección escrita
+  en la bitácora no garantiza que la prueba la cumpla: hay que darle a la prueba
+  el caso que tiene que fallar.
+- **Lo que se arregla en una superficie se busca en todas las que muestran esa
+  fila:** la tabla, la tarjeta, la lista y la hoja del celular.
+
+## Capítulo 151 — La prueba que leía lo que ella misma había escrito (17/10/2026)
+
+**Qué intentamos.** Pasarle al comité la vuelta 2 del «Todo A» (PR #271, cap.
+150), con todas las pruebas en verde. Volvieron 36 hallazgos. El Guardián los
+separó en tres: lo que arregla Claude, lo que decide Arturo y lo que va
+aparte.
+
+**Qué pasó.** Varias pruebas en verde no miraban lo que decían mirar, y el
+revisor de Dev lo midió en vez de suponerlo:
+
+- **La prueba de lectores de pantalla leía el texto oculto, no lo que oye el
+  lector.** Agregó `.corta + .sr-solo{display:none}` al CSS de una copia del
+  sitio. El lector ya no oía ninguna frase de la forma corta, y la prueba dijo
+  «✓ 93 formas cortas visibles … con su frase al lado» (lo repetimos sobre la
+  rama de esta vuelta: «✓ 120»). La frase seguía en el
+  DOM: la prueba preguntaba si estaba escrita, no si se oía. Es lo que el cap.
+  149 mandó dejar de hacer, en otra sección del mismo archivo.
+- **La prueba del pie comparaba la página con la constante que la arma.** Si
+  `NOTA_UNIDAD` pasaba a decir «En Silver y Gold son para cada persona.», la
+  página y la constante decían lo mismo y la prueba pasaba. Lo único que
+  rechazaba era la palabra «contrato». Lo probamos con esa frase en una copia:
+  verde.
+- **El detector de esperas enumeraba las formas conocidas.** Lo probamos:
+  «Esperás un año» en la tarjeta del home pasaba en verde. La vuelta 2 había escrito en el cap.
+  150 «se rechaza la clase de error, no el caso conocido», y esta expresión
+  era de antes y nadie la había vuelto a mirar.
+- **Un número que sale de su fila pierde su condición.** La lista del celular
+  se llama «Parto o cesárea» y tomaba la espera de la fila «Parto»: le daba a
+  la cesárea de Gold los 10 meses que la 2A le había sacado. Lo mismo con la
+  internación, que tomaba los 2 meses de «Internación por algo agudo». La
+  tabla de esperas de la computadora no mostraba ninguna nota: «3 meses» para
+  todo el laboratorio de Essential.
+- **El arreglo de la vuelta 2 fue para la celda conocida.** El lector oía la
+  fila y el plan en la celda del asesor, y en las demás seguía oyendo «2» o
+  «Sin topeen casi todas». El plegable de topes no era una tabla para el
+  lector: tres valores pegados sin plan.
+
+**Qué aprendimos.**
+- **Una prueba de lectores de pantalla lee lo que expone el navegador** (el
+  árbol de accesibilidad, con `ariaSnapshot`), no el texto oculto del DOM. Y se
+  prueba silenciando la frase en el CSS: si sigue en verde, no mira lo que
+  dice.
+- **Una prueba no compara la página con la constante que la arma.** Si las dos
+  se equivocan juntas, coinciden. Se compara con lo que decidió la persona, o
+  se rechaza la clase de error («afirma una unidad que no está confirmada»).
+- **Una lección escrita en la bitácora no se aplica sola a lo que ya estaba.**
+  Cuando se escribe «se rechaza la clase», se barren los detectores viejos del
+  mismo archivo, no solo el nuevo.
+- **Un número que se muestra fuera de su fila se lleva su condición.** El dato
+  y la condición salen juntos de la misma fuente (`cuando` y `alAsesor` en
+  `carencias()`, y `notaCorta` para la celda de una tabla).
+- **Cada sabotaje se construye fuera del repo**: en un `git worktree` aparte, o
+  en una copia del sitio construido con una línea de CSS de más. Así se prueba
+  el detector sin tocar la rama.
+
+## Capítulo 152 — La lección del capítulo anterior, rota por sus propias pruebas (18/10/2026)
+
+**Qué intentamos.** Cerrar la vuelta 3 del «Todo A» (PR #271, cap. 151) con
+todas las pruebas en verde y pasársela a la QA y a dos verificadores
+adversariales, uno de datos y uno de accesibilidad.
+
+**Qué pasó.** La QA dio verde en todas las suites. Los verificadores
+sabotearon copias del sitio construidas fuera del repo y encontraron cuatro
+pruebas de la misma vuelta que no probaban lo que decían:
+
+- **La prueba de las esperas armaba lo esperado con los campos que dibujan la
+  página.** Era justo lo que el cap. 151 había escrito: «una prueba no compara
+  la página con la constante que la arma». Se lo escribió y, en el mismo
+  commit, se hizo. Peor: con el campo vacío, la prueba se salteaba la
+  comprobación. Sacando `cuando` y `alAsesor` de `coverage.js`, la lista volvía
+  a darle a la cesárea de Gold los 10 meses, y la prueba decía ✓ con un texto
+  fijo que afirmaba haber visto lo que no estaba.
+- **La forma corta se contaba en todo el body.** «20 días por familia» del
+  plegable está dentro de «20 días por familia al año» de la tabla de arriba:
+  con las tres celdas del plegable mudas, la frase seguía apareciendo en la
+  página y la prueba la daba por oída.
+- **El detector de esperas leía `textContent`**, que pega el nombre del plan a
+  su línea («Silver5 meses para usarla.»). Una espera al principio de la línea,
+  que es donde más naturalmente iría, no se veía. Y la lista de formas
+  («esperás», «a los N días»…) dejaba afuera «a partir del tercer mes» o «al
+  año de contratarlo».
+- **El pie enumeraba las unidades conocidas.** «Cada persona tiene su propio
+  cupo» no estaba en la lista y pasaba.
+
+Además, la cesárea de Gold había quedado bien en la lista y en la tabla, y el
+plegable de la misma página seguía diciendo «300 días» sin más: la lección del
+cap. 150 (buscar el arreglo en todas las superficies que muestran esa fila) se
+había aplicado a las superficies nombradas en el hallazgo, no a todas.
+
+**Qué aprendimos.**
+- **Una prueba que se saltea cuando falta un campo no prueba ese campo.** Si
+  el campo es lo que arregla el defecto, sin él la prueba tiene que fallar. La
+  regla se escribe en la prueba, como literal o como clase («la cesárea con el
+  asesor»), y no se lee del mismo lugar que la página.
+- **El ✓ dice lo que vio, no lo que se esperaba ver.** Un mensaje fijo de éxito
+  es una afirmación sin fuente.
+- **Lo que oye el lector se mide en su celda.** Contar una frase en toda la
+  página la da por oída si aparece en otro lado.
+- **Se lee texto por texto, no `textContent`**, cuando lo que importa es dónde
+  empieza una palabra.
+- **Escribir la lección no alcanza: hay que pasar la lección por lo que se acaba
+  de escribir.** El cap. 151 se escribió junto con las pruebas que lo rompían.
+  Antes de cerrar una vuelta, cada prueba nueva se sabotea contra la clase de
+  error, no solo contra el caso que la motivó.
+
+## Capítulo 153 — La lista de lo que no va no se termina nunca (18/10/2026)
+
+**Qué intentamos.** Cerrar la corrección de la vuelta 3 (cap. 152) pasándole la
+rama del PR #271 a otro verificador, con la consigna que dejó ese capítulo:
+sabotear cada prueba nueva contra la clase de error, no contra el caso.
+
+**Qué pasó.** Dos de las pruebas «contra la clase» seguían enumerando:
+
+- **El pie.** La corrección había agrandado la lista de palabras de unidad
+  («persona», «integrante», «afiliado», «cada», «cupo»…). Pasaron igual «son
+  compartidos», «por titular», «por cabeza», «por socio» y «se comparten entre
+  todos». Cada vuelta sumaba las palabras que había encontrado el verificador
+  anterior, y el siguiente encontraba otras.
+- **Las esperas de la tarjeta del home.** El detector aceptaba cifras y «uno» a
+  «doce» con días, semanas, meses o años. «A los noventa días», «medio año», «un
+  trimestre», «en el segundo semestre», «el año que viene» y «al cumplir el año»
+  pasaban.
+
+Y una del sitio: la nota «Cesárea: preguntale a tu asesor» que la corrección
+había sumado al plegable de `/planes` se escribió con un estilo a mano (tamaño y
+color) y heredó de la celda la letra display y el peso 700. La misma frase, en
+la tabla de arriba, iba en Inter 400 con la clase de nota que ya existía.
+
+**Qué aprendimos.**
+- **Cuando lo permitido es fijo, se lista lo permitido.** El pie de una fila con
+  «¿quién?» dice oraciones que decidió Arturo; la prueba ahora las tiene como
+  literales y falla con cualquier otra, aunque sea inocente. La lista de lo
+  prohibido no se termina nunca: el idioma siempre tiene otra forma de decir
+  «por persona». La lista cerrada tiene un costo, y es el que se busca: decir
+  algo nuevo en ese pie obliga a sumarlo a la prueba a conciencia.
+- **Lo que dice una tarjeta también es fijo: también se lista.** *(Corregido el
+  18/10: esta lección decía «Cuando lo permitido no es fijo, la clase se
+  describe por su forma, no por sus ejemplos», que el texto de una tarjeta
+  cambia y que una espera es «cualquier cantidad (en cifras o en palabras) con
+  cualquier unidad de tiempo, salvo un tope por año». Esa forma era otra lista
+  de ejemplos, y el segundo verificador del cierre la pasó con dieciséis
+  esperas; ver el cierre de abajo.)* El texto de una tarjeta cambia poco y cada
+  cambio es una decisión: la prueba lo tiene como literal y falla con cualquier
+  línea nueva. El detector de formas queda como pista en el mensaje («parece una
+  espera»), con los topes de verdad en su autoprueba para que no grite en falso
+  (cap. 89): «después de una cirugía» no es una espera.
+- **Lo que una clase no declara, lo hereda del lugar donde la ponen.**
+  `.cmp2-fam` no decía su peso: en la tabla heredaba 400 y en la celda del
+  plegable, 700. Ahora lo declara. Un texto que repite otro del sitio se arma con
+  la clase del otro y se mide contra él con `getComputedStyle`.
+
+**Cierre (18/10, el segundo verificador del cierre).** Con nueve esperas a la
+vista, la tarjeta del home seguía en verde: «Lo usás pasado el año.», «Se usa
+después de los noventa.», «Lo usás al año y medio.», «Disponible al año.», «A
+partir de la tercera cuota.», «Desde la primera cuota.»… Dieciséis formas que la
+«forma» de la espera no conocía. La misma expresión gritaba con topes posibles
+(«Hasta 2 días anuales», «20 días por persona al año», «Hasta 15 días en
+habitación privada»). Y las líneas de Silver y Gold de las filas con «¿quién?» no
+las miraba nadie: «Son por persona.» pasaba en el home, en `/planes` y en la
+hoja del celular, y la prueba del pie leía solo el primer pie y, en la hoja,
+solo los párrafos de primer nivel. El HANDOFF decía que el detector cubría «la
+clase entera»; el comentario de la prueba, que la rechazaba; este capítulo, que
+la clase se describía por su forma. El primer punto de la lección valía para
+todo el capítulo y lo escribimos para la mitad. Ahora las nueve tarjetas del
+home y, en las filas con «¿quién?», la tarjeta de `/planes` y la hoja del
+celular están enteras en una lista cerrada de `qa-lanzamiento`
+(`TARJETA_APROBADA`), y la expresión de esperas es una pista dentro del mensaje.
+*(Precisado el 18/10, tercer verificador del cierre: las nueve tarjetas del home
+se leían solo a 1280 px, pasando el mouse, y la hoja del celular, solo a 390 y
+solo desde «Los once servicios». En el celular, la tarjeta del home que se abre
+al tocar no la leía nadie, y en `/planes` tampoco la hoja del tema ni la línea de
+la tarjeta del plan; ver el segundo cierre, abajo.)*
+Lo que queda: **si lo que se controla es un texto que alguien decidió, la
+prueba lo tiene escrito; un detector de formas sirve para explicar un error, no
+para encontrarlo.** Y una prueba que dice «la clase entera» se sabotea con
+formas que su autor no escribió, antes de escribirlo.
+
+**Segundo cierre (18/10, el tercer verificador del cierre).** La lista cerrada
+era la de lo que sí va, pero leía la mitad de los lugares donde eso se dice.
+Las nueve tarjetas del home se abrían a 1280 px con el mouse; en el celular, la
+misma tarjeta se abre tocando el nombre en cada tarjeta de plan, y no la leía
+ninguna prueba. Lo medimos: con «Lo usás a los 3 meses de afiliarte.» visible
+solo en el celular (`display:none` desde 820 px), la `qa-lanzamiento` de 8db9016
+dio «✓ todo verde». En `/planes` del celular pasaba lo mismo con la hoja que
+abre la línea «Tomografía y resonancia» (una prueba contaba sus tres cajas, sin
+leerlas) y con esa línea, que se controlaba con `!/persona/i`: otra vez la lista
+de lo que no va, la que este capítulo había dado por cerrada. Y el HANDOFF, este
+capítulo y el mensaje de la prueba decían «las nueve tarjetas del home», sin
+ancho. Ahora la lista se lee también con el dedo, a 360, 390 y 430, desde las
+tres tarjetas de plan (81 lecturas, que dicen letra por letra lo mismo que a
+1280), y suma la hoja del tema y la línea de la tarjeta, lo que se ve y lo que
+oye el lector; el HANDOFF tiene la tabla de lo que cubre y la lista de lo que
+no. Lo que queda: **una prueba cubre lo que lee, no lo que nombra.** «Las nueve
+tarjetas» era cierto en un ancho y con un puntero. Cuando se escribe qué cubre
+una prueba, se escribe con sus superficies, sus anchos y su manera de abrir, y
+al lado, lo que no cubre.
+
+## Capítulo 154 — Lo que salió de la página seguía en los papeles (20/10/2026)
+
+**Qué intentamos.** Aplicar el «Adelante» de Arturo del 20/10 en el PR #271:
+tres puntos que el comité y el Guardián habían dejado para él. Dos son del sitio
+(3A: las consultas de Silver sin «por persona»; 8A: Gold sin «con los topes más
+altos») y uno, de los documentos (180A: la cifra de contratos activos de SP sale
+del repo público).
+
+**Qué pasó.**
+
+- **La cifra que la U4A no vio.** El 17/10 la U4A sacó del repo público los
+  nombres de competidores y las cifras de Google Analytics, y los buscó por
+  nombre y por cifra de tráfico. La de contratos activos no era ni una cosa ni
+  la otra: había salido del home en julio por no estar confirmada (cap. 24) y
+  seguía escrita en el HANDOFF y en esta bitácora, justo en los párrafos que
+  contaban por qué había salido. La encontró el Guardián al otro día (paso 5,
+  «Público/privado»).
+- **Dos oraciones tomaban partido por un dato en duda.** «5 o 6 al año por
+  persona» y «con los topes más altos» eran ciertas solo si una de dos fuentes
+  tenía razón. En la misma tabla, sobre esos mismos datos, la celda de
+  psicología de Silver decía «¿quién?» y la de fisioterapia de Gold,
+  «Preguntale a tu asesor». La duda estaba escrita en la celda y no en la
+  oración de al lado.
+- **Cambiar la tarjeta obligó a cambiar la lista cerrada**, que es lo que se
+  buscó el 18/10 (cap. 153): la línea nueva entró en `TARJETA_APROBADA` y la
+  vieja salió, con nota.
+- **La prueba nueva del «5 o 6» leía de más y miraba donde no había nada.** La
+  primera versión leía el `textContent` de todo el body, y la ventana que sigue
+  a «5 o 6» se llevaba la línea de al lado («…en el restoTomografía y
+  resonancia: 2 tomografías/¿quién?/año…»): con otra vecina habría gritado en
+  falso. Ahora lee el bloque que tiene el «5 o 6». Y miraba también el
+  resultado de Silver del simulador, donde no hay ningún «5 o 6»: ahí iba a dar
+  verde siempre. Salió, y la prueba falla si en el home o en `/planes` no
+  encuentra ninguno.
+- **La lección de ayer, aplicada a medias.** La cabecera de Gold del home se
+  comparaba con su texto aprobado, literal; el simulador, con una lista de lo
+  que no va (`TOPES_ALTOS`). El verificador lo probó con una build saboteada
+  fuera del repo: «…y los mejores topes.» en el porqué de Gold y «…, con los
+  topes más amplios.» en la nota de la opción daban ✓. Ahora el simulador
+  también se compara con sus textos aprobados, y la lista quedó como segunda
+  capa.
+- **La búsqueda escrita era la cifra.** El HANDOFF contaba que la cifra de
+  contratos ya no estaba en el árbol con la expresión con que se la buscó, y al
+  lado aclaraba qué aciertos no eran ella: quien lo leía, la reconstruía. Y el
+  puntero mandaba a la tabla de Google Analytics de la U4A, que no tiene ese
+  dato. Lo encontró el verificador antes de subir los commits: el comando pasó
+  al repo privado, con la cifra, y los punteros, a un archivo propio
+  (`sp-interno/project/cifra-contratos-activos.md`). La expresión sigue en la
+  historia de git, como la cifra misma desde julio: la 180A cambia lo que se
+  lee hoy.
+
+**Qué aprendimos.**
+- **Sacar un dato de la página no lo saca del repo.** El párrafo que explica
+  por qué salió lo repite. Cuando algo sale por no estar confirmado o por ser
+  interno, se busca también en los documentos que cuentan su salida.
+- **Una búsqueda por lista encuentra lo que la lista nombra.** Es la lección del
+  cap. 153, del lado de los documentos: la U4A buscó nombres y cifras de
+  tráfico, y la pregunta de la regla es otra, «¿le sirve a un competidor?».
+- **Si la celda duda, la oración de al lado también.** Un dato en duda no se
+  afirma en ninguna capa: ni en la forma corta, ni en la tarjeta, ni en la línea
+  que presenta al plan.
+- **Una prueba que no encuentra nada que mirar tiene que fallar**, no dar verde.
+- **Si una superficie de un dato se mira con su texto aprobado, todas las demás
+  también.** La paráfrasis pasa por la que quedó mirada con la lista de lo que
+  no va.
+- **Para contar que un dato salió, no se escribe cómo encontrarlo.** El comando
+  que lo busca va con el dato, en el repo privado. Y un puntero se verifica
+  abriendo el archivo al que apunta: que exista no alcanza, tiene que tener el
+  dato.
+
+*(20/10/2026, segundo verificador.)* Encontró tres lugares más del mismo tipo,
+y para ellos la lección es la de arriba: el mensaje que acompaña el paso que
+sigue a elegir Gold en el simulador y la línea de Gold de `/planes` no se
+comparaban con su texto aprobado (una copia con la frase vieja en el mensaje y
+una paráfrasis en `/planes` daba 133 ✓), y el «5 o 6» del simulador se había
+medido una vez, a mano. Lo que agrega es otra cosa. **Sacar de la prueba el
+lugar donde no hay nada no es probar que no hay nada:** la primera versión
+miraba el simulador y daba verde siempre; la corrección lo sacó, y la ausencia
+quedó sin medir. Ahora la prueba demuestra que leyó (llega al resultado de
+cada plan y pasa por cada pregunta, con texto) y, leído, no hay ningún «5 o
+6». Y el HANDOFF decía que cada control se probaba también en la página, con
+la línea de antes metida, y no todos lo hacían: **lo que un documento dice de
+una prueba se verifica contra la prueba**, como el puntero contra el archivo.

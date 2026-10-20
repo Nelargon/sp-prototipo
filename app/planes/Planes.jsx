@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
-import { coverage, carencias } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, notaCorta } from '../coverage';
 import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
 import Plegable from '../components/Plegable';
 import Comparador from '../components/Comparador';
+import Corta from '../components/Corta';
 import ComparativaCelular from './ComparativaCelular';
 import datos from '../../lib/prestaciones.json';
 
@@ -101,11 +102,44 @@ export default function Planes() {
      precio va arriba de cada columna y la letra chica de cada servicio, en su
      tarjeta, al pasar el mouse o tocar el nombre.
      Los valores cortos (`t`) son la forma corta de lo que dicen coverage() y
-     plans(); «por familia» va siempre a la vista (lección 51). La tarjeta (`d`)
-     es el texto de coverage() con la espera de carencias(), así las dos fuentes
-     son las de siempre y nada se escribe dos veces. */
+     plans(); «por familia» va siempre a la vista (lección 51). De dónde sale
+     cada grupo de celdas:
+     - De `corta` en coverage.js (la función `corta` de abajo): psicología,
+       fisioterapia, tomografía, resonancia, internación, medicamentos internado
+       y remedios en urgencias, y la ecografía de Essential. Donde `corta` dice
+       ASESOR (la fisioterapia de Gold, los remedios en urgencias de Essential),
+       la celda es ese texto.
+     - Escritas acá, todavía: las de consultas («Sin tope» con «en Lister», «en
+       la mitad», «en casi todas»), las de Silver y Gold en ecografía («Sin
+       tope», «la mayoría», el `resto` que se le pasa a `corta`), las de
+       odontología y los días de terapia intensiva (2, 5 y 6, que también están
+       en coverage.js, page.jsx y quote.js).
+     - La banda «Cuánto esperás para usarlo» (el final de la lista): de
+       carencias() en coverage.js, una fila por espera (`que`). El valor, de
+       `dias` con waitLabel de glossary.jsx: la forma corta se ve («5 meses»,
+       «Sin espera»), la larga la oye el lector («5 meses de espera», `dicho`) y
+       «—» va donde la espera es null. La nota de la celda, de notaCorta de
+       coverage.js («la mayoría», «1 cirugía/familia/año», «Cesárea: preguntale
+       a tu asesor»). Ninguna sale de `corta`.
+     La tarjeta (`d`) es el texto de coverage() con la espera de carencias()
+     (`conEspera`), salvo la de odontología, que sale de las líneas de plans();
+     las filas de la banda de esperas no tienen tarjeta. Unificar lo que se
+     escribe acá queda para un PR aparte (ver HANDOFF, «Vuelta 3»,
+     seguimiento). Este comentario decía «tres filas» y que la tarjeta de
+     consultas y la de terapia intensiva se escribían acá (comité, vuelta 3,
+     corrección, 18/10), y después, que todo salía de `corta` salvo lo escrito
+     acá, sin la banda de esperas (verificador, cierre de la vuelta 3, 18/10). */
   const cv = Object.fromEntries(cov.map((s) => [s.name, s]));
   const esp = Object.fromEntries(carencias().map((c) => [c.que, c]));
+  // LA FORMA CORTA (P3, opción A: regla de escaneo de Arturo del 13/10/2026,
+  // elegida el 17/10 con «Todo A»): las celdas que dicen cuántas, para quién y
+  // cada cuánto van con barras («1/familia/año»), de `corta` en coverage.js, las
+  // mismas que el home. Donde la fuente no dice para quién (Silver y Gold,
+  // sp-interno#110), «¿quién?»; el pie de la tarjeta, la `nota` de coverage.js,
+  // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
+  // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
+  // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, dicho: cv[servicio].dicho && cv[servicio].dicho[i] } : resto[i]));
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
     return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
@@ -118,20 +152,40 @@ export default function Planes() {
   }
   const filasCompu = [
     { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
-    { name: 'Sesiones de psicología', kind: 'num', cells: [{ t: '3', n: 'por familia' }, { t: '5' }, { t: '6' }], d: conEspera('Sesión de psicología') },
-    { name: 'Fisioterapia', kind: 'num', cells: [{ t: '5', n: 'por familia' }, { t: '15' }, { t: '20' }], d: conEspera('Fisioterapia', 'Fisioterapia') },
-    { name: 'Ecografía', kind: 'num', cells: [{ t: '4', n: 'por familia' }, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }], d: conEspera('Ecografía', 'Ecografías') },
-    { name: 'Tomografía (TAC)', kind: 'status', cells: [{ t: '2 por familia' }, { t: '2 por persona' }, { t: '2 por persona' }], d: conEspera('Tomografía (TAC)', 'Tomografía') },
-    { name: 'Resonancia (RM)', kind: 'status', cells: [{ t: '1 por familia' }, { t: '1 por persona' }, { t: '1 por persona' }], d: conEspera('Resonancia (RM)', 'Resonancia') },
+    { name: 'Sesiones de psicología', kind: 'num', cells: corta('Sesión de psicología'), d: conEspera('Sesión de psicología'), pie: cv['Sesión de psicología'].nota },
+    { name: 'Fisioterapia', kind: 'num', cells: corta('Fisioterapia'), d: conEspera('Fisioterapia', 'Fisioterapia'), pie: [cv['Fisioterapia'].nota, cv['Fisioterapia'].notaAsesor].filter(Boolean).join(' ') },
+    { name: 'Ecografía', kind: 'num', cells: corta('Ecografía', [null, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }]), d: conEspera('Ecografía', 'Ecografías') },
+    // Silver y Gold no dicen para quién: la grilla dice «por año de contrato»,
+    // no «por beneficiario» (sp-interno#110, decisión 2A de Arturo, 13/10/2026).
+    // Su celda lleva «¿quién?» y el pie, la `nota` de coverage.js, manda al asesor.
+    { name: 'Tomografía (TAC)', kind: 'status', cells: corta('Tomografía (TAC)'), d: conEspera('Tomografía (TAC)', 'Tomografía'), pie: cv['Tomografía (TAC)'].nota },
+    { name: 'Resonancia (RM)', kind: 'status', cells: corta('Resonancia (RM)'), d: conEspera('Resonancia (RM)', 'Resonancia'), pie: cv['Resonancia (RM)'].nota },
     { name: 'Odontología', kind: 'num', cells: [{ t: 'Lo básico', n: 'en Lister' }, { t: 'No entra', apagado: true }, { t: 'No entra', apagado: true }], d: odonto.d, pie: odonto.pie },
-    { g: 'Si te internan', name: 'Internación', kind: 'num', cells: [{ t: '20', n: 'por familia' }, { t: '20' }, { t: '25' }], d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
+    { g: 'Si te internan', name: 'Internación', kind: 'num', cells: corta('Internación'), d: conEspera('Internación', 'Internación por algo agudo'), pie: cv['Internación'].waitNote },
     { name: 'Días de terapia intensiva', kind: 'num', cells: [{ t: '2' }, { t: '5' }, { t: '6' }], d: conEspera('Terapia intensiva') },
-    { name: 'Medicamentos internado', kind: 'num', cells: [{ t: 'Gs. 350 mil' }, { t: 'Gs. 1 millón' }, { t: 'Gs. 1,5 mill.' }], d: conEspera('Medicamentos en internación') },
+    // «/evento» (E3A, 17/10/2026): de `corta` en coverage.js, con los millones enteros.
+    { name: 'Medicamentos internado', kind: 'num', cells: corta('Medicamentos en internación'), d: conEspera('Medicamentos en internación') },
     // Donde el cuadernillo de Essential no fija el tope se dice eso (como en el home).
-    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: [{ t: 'Consultalo', n: 'con tu asesor' }, { t: 'Gs. 150 mil' }, { t: 'Gs. 200 mil' }], d: conEspera('Urgencia 24 h', 'Consultas y urgencias') },
+    // «Preguntale a tu asesor», la forma única (R1A, 17/10/2026; antes «Consultalo
+    // con tu asesor»). El nombre de la fila abre la tarjeta y el pie dice por qué:
+    // la `notaAsesor` de coverage.js, la misma que lee la hoja del celular.
+    { g: 'Urgencias', name: 'Remedios en urgencias', kind: 'num', cells: corta('Urgencia 24 h'), d: conEspera('Urgencia 24 h', 'Consultas y urgencias'), pie: cv['Urgencia 24 h'].notaAsesor },
     // Las esperas, todas con el mismo peso y de carencias(), lo mismo que muestra
-    // el simulador. Sin tarjeta: el número ya es el dato.
-    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d) => ({ t: waitLabel(d, true) || '—' })) })),
+    // el simulador. Sin tarjeta: el número ya es el dato. Con su nota, como en el
+    // simulador y en el cuadro del celular: «la mayoría», «los de rutina, sin
+    // espera» y, en corto, «1 cirugía/familia/año» y «Cesárea: preguntale a tu
+    // asesor» (notaCorta de coverage.js). Sin nota, la tabla decía «3 meses» para
+    // todo el laboratorio de Essential y «10 meses» para la cesárea de Gold
+    // (comité, vuelta 3, 17/10).
+    // El lector oye la espera entera, «5 meses de espera» (`dicho`, la forma
+    // larga de waitLabel): en las columnas de los planes el título de la banda
+    // no llega al árbol de accesibilidad, y «Resonancia, Essential: 1 año» se
+    // entendía como un cupo, al lado de «Resonancia (RM), Essential: 1 por
+    // familia al año» (comité, vuelta 3, corrección, 18/10).
+    ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d, i) => {
+      const corto = waitLabel(d, true), largo = waitLabel(d);
+      return { t: corto || '—', dicho: largo && largo !== corto ? largo : undefined, n: notaCorta(c, i) || undefined };
+    }) })),
   ];
   const planesCompu = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: pl.tag, recommended: i === 1,
@@ -147,11 +201,75 @@ export default function Planes() {
      - "Carencia…" va después de lo que la persona entiende (regla del
        8/09/2026: "carencia" no va primero; la palabra del contrato, detrás).
      - El master escribe "Gs." y el sitio también (Arturo, 07/10/2026, sp-interno#164). Una sola moneda. */
-  const etiquetaParam = (t) => {
+  // La barra que hace de «o» pasa a «o», solo en la vista (el dato generado no
+  // se toca): «En urgencia o emergencia», «Fisioterapia traumatológica,
+  // neurológica o post-quirúrgica». Lo resuelve la regla de escaneo sin
+  // preguntar (HANDOFF, 13/10, punto 6). En este plegable la barra ya dice «por»
+  // («20 días/familia», P3A): con los dos sentidos se leía mal, y a 360, 390,
+  // 430 y 820 px un renglón terminaba en «traumatológica /» (QA y writer,
+  // vuelta 1, 17/10). «y/o» queda: si «clínica o quirúrgica» dice lo mismo lo
+  // confirma Arturo (barrido del 13/10, PR #271).
+  const barraO = (t) => { const p = t.split(' / '); return p.length < 2 ? t : p.slice(0, -1).join(', ') + ' o ' + p[p.length - 1]; };
+  const etiquetaParam = (crudo) => {
+    const t = barraO(crudo);
+    // Interconsultas: la grilla dice «por año; + hasta 3 visitas por
+    // especialidad», y los contratos de Silver y Gold (2.3.5) dicen «por
+    // internación», con 3 visitas en Silver y 4 en Gold. Hasta que SP lo aclare,
+    // el rótulo manda al asesor y el número queda (sp-interno#89, decisión 2A de
+    // Arturo, 13/10/2026).
+    if (/^Interconsultas en internación/i.test(t)) return 'Interconsultas en internación (si son por año o por internación, preguntale a tu asesor)';
     const m = /^Carencia\s*(?:–|-|de)\s*(.+)$/i.exec(t);
     return m ? `Tiempo de espera para ${m[1].replace(/por evento agudo/, 'por algo agudo')} (carencia)` : t;
   };
-  const valorParam = (v) => String(v).replace(/^Gs\.\s*/, 'Gs. ');
+  // Los montos, con la forma de la E3A (comité, vuelta 3, 17/10): «Gs. 1,5
+  // millones», «Gs. 350 mil», como la tabla («Gs. 1,5 millones/evento») y la
+  // tarjeta. El plegable decía «Gs. 1.500.000»: el mismo tope, de tres formas en
+  // la misma página. Sin «/evento»: el rótulo ya dice «(por evento)», como la
+  // internación dice «20 días/persona» bajo «(por año)». Va con Corta: el lector
+  // oye «guaraníes» y la cifra no se parte.
+  const montoCorto = (v) => {
+    const m = /^Gs\.\s*([\d.]+)$/.exec(String(v).trim());
+    if (!m) return null;
+    const n = Number(m[1].replace(/\./g, ''));
+    if (n >= 1e6 && n % 1e5 === 0) { const x = n / 1e6; return 'Gs. ' + String(x).replace('.', ',') + (x === 1 ? ' millón' : ' millones'); }
+    if (n >= 1000 && n % 1000 === 0) return 'Gs. ' + n / 1000 + ' mil';
+    return null;
+  };
+  const valorParam = (v) => { const corto = montoCorto(v); return corto ? <Corta t={corto} /> : String(v).replace(/^Gs\.\s*/, 'Gs. '); };
+  // Una sola forma por página (P3A, 17/10/2026): el tope de días de internación
+  // dice lo mismo que la tabla, «20 días/familia | 20 días/persona | 25
+  // días/persona», sin «/año» porque el rótulo ya dice «por año». Sale de
+  // `corta` en coverage.js; el dato generado no se toca.
+  const vistaParam = (f, j) => {
+    if (/^Tope de días de internación/i.test(f.p)) return <Corta t={cv['Internación'].corta[j].replace(/\/año$/, '')} />;
+    // Fisioterapia de Gold: la grilla dice 10 y 3; gold.json, 20 y 5. Hasta que SP
+    // lo aclare, manda al asesor como la tabla de arriba (G1A, sp-interno#50).
+    if (/^Fisioterapia/i.test(f.p) && j === 2) return ASESOR;
+    // Remedios en urgencias de Essential: el cuadernillo no fija el tope. Un «—»
+    // se lee «no cubre»; manda al asesor como la tabla (R1A, 17/10/2026).
+    if (/^En urgencia/i.test(f.p) && !f.v[j]) return ASESOR;
+    // La cesárea de Gold manda al asesor también acá (2A, sp-interno#116). El
+    // plegable decía «300 días» sin más, el lado que la 2A decidió no tomar,
+    // mientras la tabla de arriba, el cuadro del celular y la lista ya decían
+    // «Cesárea: preguntale a tu asesor» (comité, vuelta 3, corrección, 18/10).
+    // Sale de `alAsesor` de carencias(), como la lista; el dato generado no se
+    // toca. Para el lector, una coma entre el número y lo que manda al asesor,
+    // como la nota de la tabla.
+    // La nota va con la letra de la nota de la tabla (.cmp2-fam: Inter 400, 12 px,
+    // --sp-muted), no con la de la celda: heredaba .disp y el peso 700 y se veía
+    // en Nunito Sans Bold, mientras la misma frase de la tabla de arriba va en
+    // Inter (regla tipográfica; verificador, cierre de la vuelta 3, 18/10). El
+    // margen de la clase es para la nota que sigue al valor en el mismo renglón;
+    // acá va debajo, centrada.
+    const parto = esp['Parto'];
+    if (/^Carencia de maternidad/i.test(f.p) && f.v[j] && parto && parto.alAsesor && parto.alAsesor[j]) return (
+      <span style={css('display:flex;flex-direction:column;align-items:center;gap:3px')}>
+        <span>{valorParam(f.v[j])}<span className="sr-solo">,{' '}</span></span>
+        <span className="cmp2-fam" style={css('margin-left:0')}>{conAsesor(parto.alAsesor[j])}</span>
+      </span>
+    );
+    return f.v[j] ? valorParam(f.v[j]) : '—';
+  };
 
   // Las secciones de parámetros vienen agrupadas del master (Internación,
   // Topes…). Se respeta ese agrupamiento: es como lo lee quien vende.
@@ -193,11 +311,12 @@ export default function Planes() {
       <div className="solo-compu">
       <section style={css('padding:40px 24px 0')}>
         <div style={css('max-width:1080px;margin:0 auto')}>
-          {/* El débito, como en el home: es plata que la familia ve, no letra chica. */}
+          {/* El débito, como en el home: es plata que la familia ve, no letra chica.
+              Solo Silver y Gold: en Essential no hay fuente (sp-interno#80). */}
           <div style={css('display:flex;justify-content:center;margin-bottom:22px')}>
             <span style={css('display:inline-flex;align-items:flex-start;gap:10px;font-family:var(--font-inter),sans-serif;font-size:15px;color:var(--sp-text-fuerte);line-height:1.5;text-align:left;max-width:640px')}>
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#007d77" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={css('flex:none;margin-top:2px')} aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
-              <span>Pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo.</span>
+              <span>En Silver y Gold, pagá con <b style={css('color:var(--sp-navy)')}>débito automático o tarjeta de crédito</b> y ahorrás <b style={css('color:var(--sp-teal-deep)')}>10% todos los meses</b>: en un año, es <b style={css('color:var(--sp-teal-deep)')}>más de una cuota</b> que te queda en el bolsillo. En Essential, preguntale a tu asesor si también tiene el descuento.</span>
             </span>
           </div>
           <Comparador planes={planesCompu} filas={filasCompu} notas id="comparar-planes" />
@@ -264,22 +383,26 @@ export default function Planes() {
               onToggle={() => alternar('especialidades')}
             >
               <div className="sq" style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                <div style={css('min-width:600px')}>
-                  <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
-                    <div style={css('padding:13px 18px')}>Especialidad</div>
+                {/* Una tabla también para el lector (comité, vuelta 3, 17/10): con
+                    divs sueltos oía tres valores pegados sin saber de qué plan
+                    eran. Los roles le dan a cada celda su plan y su fila, como el
+                    cuadro de esperas del celular. */}
+                <div role="table" aria-label={`Las ${especialidades.length} especialidades, plan por plan`} style={css('min-width:600px')}>
+                  <div role="row" className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase')}>
+                    <div role="columnheader" style={css('padding:13px 18px')}>Especialidad</div>
                     {plansArr.map((pl) => (
-                      <div key={pl.short} style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
+                      <div key={pl.short} role="columnheader" style={css('padding:13px 12px;text-align:center;border-left:1px solid rgba(255,255,255,0.12)')}>{pl.short}</div>
                     ))}
                   </div>
                   {especialidades.map((esp, r) => (
-                    <div key={esp.n} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                      <div className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
+                    <div key={esp.n} role="row" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                      <div role="rowheader" className="disp" style={css('padding:12px 18px;font-size:13.5px;font-weight:700;color:var(--sp-navy);display:flex;align-items:center')}>{esp.n}</div>
                       {PLAN_KEYS.map((k) => {
                         const [cob, cantIdx] = esp[k];
                         // Essential nombra una lista cerrada: la que no está, no entra.
                         const texto = cob === 5 ? 'No entra en este plan' : cantIdx >= 0 ? datos.cantidades[cantIdx] : '—';
                         return (
-                          <div key={k} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-text);line-height:1.4')}>
+                          <div key={k} role="cell" style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-line-2);font-family:var(--font-inter),sans-serif;font-size:13px;color:var(--sp-text);line-height:1.4')}>
                             {texto}
                             {cob === 1 && <div className="disp" style={css('font-size:11px;font-weight:700;color:var(--sp-estado-ink-2);margin-top:3px')}>Pagás la mitad</div>}
                           </div>
@@ -301,18 +424,22 @@ export default function Planes() {
               <div style={css('display:flex;flex-direction:column;gap:14px')}>
                 {seccionesParam.map((grupo) => (
                   <div className="sq" key={grupo.sec} style={css('border:1px solid var(--sp-line);--sq:var(--r-md);overflow:hidden;overflow-x:auto')}>
-                    <div style={css('min-width:600px')}>
-                      <div className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
-                        <div style={css('padding:12px 18px')}>{grupo.sec}</div>
+                    {/* Una tabla también para el lector (comité, vuelta 3, 17/10):
+                        oía «En urgencia o emergencia (por evento) Preguntale a tu
+                        asesor Gs. 150.000 Gs. 200.000» sin saber de qué plan era
+                        cada valor ni para cuál preguntar. */}
+                    <div role="table" aria-label={grupo.sec} style={css('min-width:600px')}>
+                      <div role="row" className="disp" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--sp-blue-bg);color:var(--sp-navy);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase')}>
+                        <div role="columnheader" style={css('padding:12px 18px')}>{grupo.sec}</div>
                         {plansArr.map((pl) => (
-                          <div key={pl.short} style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
+                          <div key={pl.short} role="columnheader" style={css('padding:12px;text-align:center;border-left:1px solid var(--sp-blue-line)')}>{pl.short}</div>
                         ))}
                       </div>
                       {grupo.filas.map((f, r) => (
-                        <div key={f.p} style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
-                          <div style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
+                        <div key={f.p} role="row" style={css('display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? 'var(--sp-surface-2)' : '#fff'))}>
+                          <div role="rowheader" style={css('padding:13px 18px;font-family:var(--font-inter),sans-serif;font-size:13.5px;color:var(--sp-text);line-height:1.5;display:flex;align-items:center')}>{etiquetaParam(f.p)}</div>
                           {f.v.map((v, j) => (
-                            <div key={j} className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{v ? valorParam(v) : '—'}</div>
+                            <div key={j} role="cell" className="disp" style={css('padding:13px 12px;text-align:center;font-size:13.5px;font-weight:700;color:var(--sp-navy);line-height:1.4;display:flex;align-items:center;justify-content:center')}>{vistaParam(f, j)}</div>
                           ))}
                         </div>
                       ))}
