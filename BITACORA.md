@@ -557,7 +557,7 @@ desactualizada. Preguntarse "¿estoy leyendo la última versión?" antes que
 
 *(20/10/2026: la cifra de contratos activos de SP de este capítulo pasó a un
 puntero por decisión de Arturo, sp-interno#180 (180A): está en el repo privado,
-`sp-interno/project/metricas-web-ga-2026.md`. Es una excepción decidida a la
+`sp-interno/project/cifra-contratos-activos.md`. Es una excepción decidida a la
 regla de no reescribir la bitácora, como la U4A en los cap. 16 y 57; lo
 aprendido no cambió.)*
 
@@ -580,7 +580,7 @@ tenía: "Desde SP Integral", en dorado.
 Del mismo feedback salió la disciplina de cifras: solo sobreviven los
 números confirmados por el usuario. Vidas (~19.000) es real y se queda;
 contratos (la cifra de contratos activos de SP está en el repo privado,
-`sp-interno/project/metricas-web-ga-2026.md`) no estaba confirmado y salió;
+`sp-interno/project/cifra-contratos-activos.md`) no estaba confirmado y salió;
 prestadores espera la
 confirmación del +800 antes de tocar el "más de 50" actual (que es
 verdadero pero se queda corto); y los años dejaron de ser un número

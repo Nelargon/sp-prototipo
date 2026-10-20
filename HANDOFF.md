@@ -70,9 +70,14 @@ cap. 154.
    repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de
    Google Analytics: en este archivo (punto 3c de «Prioridad alta») y en el cap.
    24 de la BITACORA queda un puntero, «(la cifra de contratos activos de SP
-   está en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`)», con
-   nota fechada (en la BITACORA, como excepción decidida a no reescribirla). El
-   texto original, con archivo y línea, lo guarda el Guardián en sp-interno.
+   está en el repo privado, `sp-interno/project/cifra-contratos-activos.md`)»,
+   con nota fechada (en la BITACORA, como excepción decidida a no
+   reescribirla). En ese archivo están el dato, su estado (sin confirmar) y el
+   texto original, con archivo y línea. *(20/10/2026, verificador: el primer
+   borrador apuntaba a `metricas-web-ga-2026.md`, la tabla de Google Analytics
+   de la U4A, que no trae esta cifra.)* Los dos archivos, este y el de la U4A,
+   llegan a sp-interno con su PR #177: **#177 se fusiona antes que este PR o
+   junto con él**, o los punteros mandan a un archivo que no está en `main`.
    La búsqueda de la cifra ya no la encuentra en el árbol; el comando, lo que
    encontró y el texto original están en sp-interno, no acá: la expresión de
    búsqueda es la cifra escrita de otra manera. El historial de git la
@@ -4494,7 +4499,7 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    comparador → "Desde SP Integral" en dorado (violaba la decisión #7);
    (b) cifras: quedan solo las confirmadas — vidas ~19.000 (real),
    contratos (la cifra de contratos activos de SP está en el repo privado,
-   `sp-interno/project/metricas-web-ga-2026.md`) salió (sin confirmar)
+   `sp-interno/project/cifra-contratos-activos.md`) salió (sin confirmar)
    *(20/10/2026: la cifra pasó a un puntero por decisión de Arturo,
    sp-interno#180, 180A)*, los años se calculan desde la
    fundación (agosto 2002, `YEARS_CARING` en `app/quote.js` + script en
