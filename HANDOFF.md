@@ -36,13 +36,16 @@ página, leída con la misma lectura y devuelta: la línea de Silver de la tarje
 del home (a 1280 px; a 390 px, con el dedo, no), la cabecera de Gold del home,
 la línea de Gold de `/planes` (a 390 y a 1280 px) y, en el simulador, el
 mensaje del paso que sigue a elegir Gold, la nota de su opción y lo que va al
-lado de su precio, y el porqué de su resultado (en el simulador, en las dos
-capas). Se prueban solo
+lado de su precio, y el porqué de su resultado (el mensaje, la nota y el
+porqué, en las dos capas; lo de al lado del precio, solo en el texto
+aprobado). Se prueban solo
 con autoprueba en texto, contra textos de antes y de ahora: lo que sigue a cada
 «5 o 6» en el home, en `/planes` y en el simulador (`QUIEN_DICHO`), y
 `TOPES_ALTOS` sobre el texto entero del home y de `/planes`. Y con los sabotajes
 de este párrafo, fuera del repo, todos menos lo que va al lado del precio de la
-opción, que se prueba solo en la página. Después del verificador del
+opción, que se prueba solo en la página, y `TOPES_ALTOS` sobre `/planes`, que
+no tuvo sabotaje propio: se sabotea en el home, con la misma lectura. Después
+del verificador del
 20/10, dos copias más del simulador: con «…y los mejores topes.» en el porqué de
 Gold y «…, con los topes más amplios.» en la nota de su opción, ✗ en los dos
 lugares y en las dos capas (el texto aprobado y la lista); con paráfrasis que la
@@ -101,8 +104,9 @@ nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
    el simulador es, literal, `GOLD_PARA`, como se ve a 390 y a 1280 px; la línea
    de Gold de `/planes` es, literal, «La cobertura más amplia» (`GOLD_TAG`), en
    la tarjeta del celular y en el texto de la cabecera de la tabla, que en la
-   computadora no se ve; y la 3A lee lo visible de cada pantalla del simulador,
-   que hoy no dice ningún «5 o 6», y falla si no leyó. Antes, una copia con la
+   computadora no se ve; y la 3A lee lo que se ve en la tarjeta del simulador,
+   con una persona en Asunción, en Essential, Silver y Gold (lo plegado no
+   entra), que hoy no dice ningún «5 o 6», y falla si no leyó. Antes, una copia con la
    frase vieja en el mensaje y una paráfrasis en `/planes` daba 133 ✓.)*
 3. **180A, la cifra de contratos activos de SP sale de los documentos de este
    repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de

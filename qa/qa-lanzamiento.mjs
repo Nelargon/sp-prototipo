@@ -744,10 +744,10 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
 // del texto; una con paráfrasis del superlativo en la opción y en el porqué,
-// ✗ en los dos; y las del segundo verificador: la frase vieja en el mensaje y
-// la paráfrasis en /planes, ✗ en los dos; «5 o 6 al año por persona» en el
-// resultado de Silver, ✗ en la 3A del simulador; y «La cobertura más amplia,
-// sin tope en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+// ✗ en los dos; la del segundo verificador (la frase vieja en el mensaje y la
+// paráfrasis en /planes), ✗ en los dos; y dos más del 20/10: «5 o 6 al año por
+// persona» en el resultado de Silver, ✗ en la 3A del simulador, y «La cobertura
+// más amplia, sin tope en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
 console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
