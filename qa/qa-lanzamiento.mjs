@@ -697,25 +697,33 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        /planes. El simulador no dice «5 o 6» (medido el 20/10).
 //   8A · los textos de Gold, literales, como se ven: la cabecera de Gold de la
 //        tabla del home (lo que dice bajo el precio) es «La cobertura más
-//        amplia.» (GOLD_PARA); en el simulador, la opción «La cobertura más
-//        amplia posible» dice su rótulo y su nota y nada más (OPCION_AMPLIA_NOTA),
-//        y el resultado de Gold tiene un párrafo que es su porqué, entero
-//        (GOLD_PORQUE). Debajo, una segunda capa: el texto entero del home y de
-//        /planes, el botón de la opción y la tarjeta del resultado de Gold no
-//        dicen TOPES_ALTOS. En el simulador se mira solo lo de Gold: Silver dice
-//        «topes más altos» comparado con Essential, y eso la 8A no lo tocó.
+//        amplia.» (GOLD_PARA); en el simulador, el mensaje que acompaña el paso
+//        que sigue a elegir Gold es GOLD_PARA (a 390 y a 1280 px con Gold puesto
+//        desde el enlace, y a 390 px eligiéndolo en el paso del nivel), la opción
+//        «La cobertura más amplia posible» dice su rótulo y su nota y nada más
+//        (OPCION_AMPLIA_NOTA), y el resultado de Gold tiene un párrafo que es su
+//        porqué, entero (GOLD_PORQUE). Debajo, una segunda capa: el texto entero
+//        del home y de /planes, el botón de la opción y cada pantalla del
+//        recorrido de Gold, el resultado incluido, no dicen TOPES_ALTOS. En el
+//        simulador se mira solo lo de Gold: Silver dice «topes más altos»
+//        comparado con Essential, y eso la 8A no lo tocó.
 //        Corrección del 20/10 (verificador): el simulador se miraba solo con
 //        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
 //        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
 //        lo que no va no se termina nunca»), que la cabecera ya cumplía.
+//        Corrección del 20/10 (segundo verificador): el mensaje del paso del
+//        simulador no lo leía ningún control con su texto aprobado: una copia
+//        con «…, con los topes más altos.» en el mensaje daba 133 ✓.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
 // variantes (fallan) y los de ahora (pasan); y en la página, la línea de antes
-// metida en la tarjeta de Silver, en la cabecera de Gold, en la nota de la
-// opción y en el porqué de Gold, leída con la misma lectura y devuelta.
+// metida en la tarjeta de Silver, en la cabecera de Gold, en el mensaje del paso
+// (en los tres recorridos de Gold), en la nota de la opción y en el porqué de
+// Gold, leída con la misma lectura y devuelta.
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
-// del texto; y una con paráfrasis del superlativo en la opción y en el porqué,
-// ✗ en los dos (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+// del texto; una con paráfrasis del superlativo en la opción y en el porqué,
+// ✗ en los dos; y la del segundo verificador, con la frase vieja en el mensaje
+// del paso, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
 console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
@@ -849,22 +857,60 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       return r;
     }, 'La cobertura más amplia, con los topes más altos.');
   }
-  // El simulador hasta el precio (una persona sola, en Asunción), como la 2A.
-  const resultado = async (plan) => {
-    await page.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
-    for (let i = 0; i < 14 && !(await page.locator('[data-sp-price]').count()); i++) {
+  // El simulador hasta el precio (una persona sola, en Asunción), como la 2A. En
+  // cada pantalla se guarda lo que se ve: la pregunta del paso, el mensaje que
+  // acompaña (en la computadora, en la columna de la izquierda; en el celular,
+  // al lado de «Paso N de M» o, cuando ya hay estimado, debajo de la barra) y
+  // el texto entero de la tarjeta del simulador. Con `vieja`, en el paso de la
+  // ubicación (el que sigue a elegir el plan), la autoprueba: el mensaje pasa a
+  // decir `vieja`, se lee igual y se devuelve como estaba.
+  const PASO_UBI = '¿Dónde querés tu cobertura?';
+  const GOLD_PARA_VIEJA = 'La cobertura más amplia, con los topes más altos.';
+  const leerPaso = ([pasoUbi, vieja]) => {
+    const vis = (e) => !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
+    const n = (t) => t.replace(/\s+/g, ' ').trim();
+    const card = document.querySelector('.sim-card');
+    const enc = () => {
+      const r = [document.querySelector('.sim-side-enc')];
+      const mp = document.querySelector('.sim-mobile-progress');
+      if (mp) {
+        const der = mp.children[0] && mp.children[0].children[1];
+        if (der && !der.querySelector('.num-tnum')) r.push(der);
+        r.push(mp.children[2]);
+      }
+      return r.filter(vis);
+    };
+    const leer = () => ({ mensajes: enc().map((e) => n(e.innerText)), texto: card ? card.innerText : '' });
+    const r = Object.assign({ titulo: n((document.querySelector('.sim-q-title') || {}).innerText || ''), precio: !!document.querySelector('[data-sp-price]') }, leer());
+    if (vieja && r.titulo === pasoUbi) {
+      const es = enc().filter((e) => e.childNodes.length === 1 && e.firstChild.nodeType === 3);
+      if (es.length) {
+        const antes = es.map((e) => e.firstChild.data);
+        es.forEach((e) => { e.firstChild.data = vieja; });
+        r.vieja = leer();
+        es.forEach((e, i) => { e.firstChild.data = antes[i]; });
+      }
+    }
+    return r;
+  };
+  const resultado = async (plan, pg = page, vieja = null) => {
+    await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+    const pasos = [];
+    for (let i = 0; i < 14; i++) {
+      pasos.push(await pg.evaluate(leerPaso, [PASO_UBI, vieja]));
+      if (await pg.locator('[data-sp-price]').count()) break;
       let hecho = false;
       for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) {
-        const b = page.locator('button:visible', { hasText: t }).first();
+        const b = pg.locator('button:visible', { hasText: t }).first();
         if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; }
       }
       if (!hecho) break;
-      await page.waitForTimeout(500);
+      await pg.waitForTimeout(500);
     }
     // La tarjeta del resultado y sus párrafos como se ven; con `vieja`, la
     // autoprueba: el párrafo que hoy es el porqué aprobado pasa a decir `vieja`,
     // se lee igual y se devuelve como estaba.
-    return page.evaluate(([aprobado, vieja]) => {
+    const r = await pg.evaluate(([aprobado, vieja]) => {
       const p = document.querySelector('[data-sp-price]');
       const c = p && p.closest('div.sq');
       if (!c) return null;
@@ -882,8 +928,15 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       }
       return r;
     }, [GOLD_PORQUE, 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.']);
+    return Object.assign(r || { plan: null }, { pasos });
   };
-  const gold = await resultado('gold');
+  const gold = await resultado('gold', page, GOLD_PARA_VIEJA);
+  let gold1280;
+  {
+    const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    gold1280 = await resultado('gold', p, GOLD_PARA_VIEJA);
+    await p.close();
+  }
   // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido: el
   // rótulo con su nota (la columna de texto del botón) y el botón entero, como
   // se ven; con la autoprueba, la nota de antes metida y devuelta.
@@ -910,6 +963,14 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     }
     return r;
   }, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.']);
+  // Y la persona elige ahí Gold: el paso que sigue es el de la ubicación.
+  let elegida = null;
+  const bAmplia = page.locator('button.sim-opt', { hasText: OPCION_AMPLIA }).first();
+  if (await bAmplia.count()) {
+    await bAmplia.click().catch(() => {});
+    await page.waitForTimeout(500);
+    elegida = await page.evaluate(leerPaso, [PASO_UBI, GOLD_PARA_VIEJA]);
+  }
   await page.close();
 
   const lugares = [['/', ventanas['/']], ['/planes/', ventanas['/planes/']]];
@@ -925,8 +986,9 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   else if (textos.gold.t.trim() !== GOLD_PARA || textos.gold.visto.trim() !== GOLD_PARA) mal8A.push('home, cabecera de Gold: dice «' + textos.gold.visto.trim() + '» y no «' + GOLD_PARA + '»');
   for (const ruta of ['/', '/planes/']) { const m = (textos[ruta] || '').match(TOPES_ALTOS); if (m) mal8A.push(ruta + ': «…' + textos[ruta].slice(Math.max(0, m.index - 40), m.index + m[0].length + 10).trim() + '…»'); }
   // El simulador: primero lo literal (la opción dice su rótulo y su nota y nada
-  // más; el resultado de Gold tiene un párrafo que es su porqué, entero), y
-  // debajo TOPES_ALTOS sobre el botón y la tarjeta enteros.
+  // más; el mensaje del paso que sigue a elegir Gold es GOLD_PARA; el resultado
+  // de Gold tiene un párrafo que es su porqué, entero), y debajo TOPES_ALTOS
+  // sobre el botón y cada pantalla del recorrido de Gold.
   const COL_APROBADA = OPCION_AMPLIA + ' ' + OPCION_AMPLIA_NOTA;
   const opcionMal = (o) => {
     if (!o) return ['no encontré la opción «' + OPCION_AMPLIA + '»'];
@@ -946,8 +1008,22 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     if (k >= 0) r.push('dice «…' + g.texto.slice(Math.max(0, k - 60), k + 25).replace(/\s+/g, ' ').trim() + '…»');
     return r;
   };
+  // El mensaje del paso que sigue a elegir Gold: el de la ubicación, una vez, con
+  // al menos un mensaje a la vista, y todos literales.
+  const mensajeMal = (pasos) => {
+    const ubi = pasos.filter((x) => x && x.titulo === PASO_UBI);
+    if (ubi.length !== 1) return ['no encontré, una vez, el paso «' + PASO_UBI + '» (' + ubi.length + ')'];
+    if (!ubi[0].mensajes.length) return ['en el paso «' + PASO_UBI + '» no se ve ningún mensaje'];
+    return ubi[0].mensajes.filter((x) => x !== GOLD_PARA).map((x) => 'el mensaje del paso dice «' + x + '» y no «' + GOLD_PARA + '»');
+  };
+  const topesEnPasos = (pasos) => pasos.filter(Boolean).map((x) => {
+    const k = x.texto.search(TOPES_ALTOS);
+    return k < 0 ? null : 'en «' + (x.precio ? 'resultado' : x.titulo || 'inicio') + '» dice «…' + x.texto.slice(Math.max(0, k - 50), k + 25).replace(/\s+/g, ' ').trim() + '…»';
+  }).filter(Boolean);
+  const recorridosGold = [['390 px, con Gold puesto desde el enlace', gold.pasos || []], ['1280 px, con Gold puesto desde el enlace', gold1280.pasos || []], ['390 px, eligiendo «' + OPCION_AMPLIA + '»', elegida ? [elegida] : []]];
   // Autoprueba en el simulador, con la misma lectura: la paráfrasis metida en la
-  // nota de la opción y en el porqué de Gold tiene que caer en las dos capas.
+  // nota de la opción y en el porqué de Gold, y la línea de antes en el mensaje
+  // del paso, tienen que caer en las dos capas.
   if (!opcion || !opcion.vieja) mal('8A, autoprueba en el simulador: no pude meter la nota de prueba en la opción «' + OPCION_AMPLIA + '»');
   else {
     const v = opcionMal(opcion.vieja);
@@ -960,10 +1036,24 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     if (v.length < 2) mal('8A, autoprueba en el simulador: con «…y los mejores topes.» en el porqué de Gold, la lectura no lo ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
     else bien('8A, autoprueba en el simulador: con «…y los mejores topes.» en el porqué de Gold, la misma lectura ve que no es el porqué aprobado y que dice «' + gold.vieja.texto.match(TOPES_ALTOS)[0] + '»');
   }
+  const autoMensaje = recorridosGold.map(([d, pasos]) => {
+    const ubi = pasos.find((x) => x && x.titulo === PASO_UBI);
+    if (!ubi || !ubi.vieja) return d + ': no pude meter la línea de prueba en el mensaje del paso';
+    const lit = mensajeMal([Object.assign({}, ubi, ubi.vieja)]).length;
+    const lista = TOPES_ALTOS.test(ubi.vieja.texto);
+    return lit === ubi.vieja.mensajes.length && lit > 0 && lista ? null : d + ': con la línea de antes, el texto aprobado ve ' + lit + ' de ' + ubi.vieja.mensajes.length + ' mensajes y la lista ' + (lista ? 'la ve' : 'no la ve');
+  }).filter(Boolean);
+  if (autoMensaje.length) mal('8A, autoprueba del mensaje del paso: ' + autoMensaje.join(' · '));
+  else bien('8A, autoprueba del mensaje del paso: con «' + GOLD_PARA_VIEJA + '» en el mensaje que sigue a elegir Gold (a 390 px y a 1280 px desde el enlace, y a 390 px eligiendo la opción), la misma lectura ve que no es «' + GOLD_PARA + '» y que dice «' + GOLD_PARA_VIEJA.match(TOPES_ALTOS)[0] + '»');
   opcionMal(opcion).forEach((x) => mal8A.push('/simulador/, la opción «' + OPCION_AMPLIA + '»: ' + x));
   porqueMal(gold).forEach((x) => mal8A.push('/simulador/, porqué del resultado de Gold: ' + x));
+  for (const [d, pasos] of recorridosGold) {
+    mensajeMal(pasos).forEach((x) => mal8A.push('/simulador/, ' + d + ': ' + x));
+    topesEnPasos(pasos).forEach((x) => mal8A.push('/simulador/, ' + d + ', ' + x));
+  }
+  const mensajesVistos = recorridosGold.map(([, pasos]) => (pasos.find((x) => x && x.titulo === PASO_UBI) || { mensajes: [] }).mensajes.length).reduce((a, b) => a + b, 0);
   if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
-  else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; en el simulador, la nota de la opción «' + OPCION_AMPLIA + '» y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni el resultado de Gold dicen que tiene los topes más altos');
+  else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; en el simulador, el mensaje del paso que sigue a elegir Gold (' + mensajesVistos + ' lecturas), la nota de la opción «' + OPCION_AMPLIA + '», y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni ninguna pantalla del recorrido de Gold dicen que tiene los topes más altos');
 }
 
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────
