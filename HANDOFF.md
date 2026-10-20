@@ -31,7 +31,12 @@ pregunta frecuente, «por beneficiario» en la línea de Silver de `/planes`, «
 topes más altos» en la pregunta frecuente y «los mayores topes» en el porqué de
 Gold) da ✗ también en lo que la build de antes no tocaba, el «5 o 6» del texto
 del home y de `/planes`; la rama, ✓. Cada control se prueba además en la misma
-página, con la línea de antes metida y devuelta. Lo que se aprendió: BITACORA
+página, con la línea de antes metida y devuelta. Después del verificador del
+20/10, dos copias más del simulador: con «…y los mejores topes.» en el porqué de
+Gold y «…, con los topes más amplios.» en la nota de su opción, ✗ en los dos
+lugares y en las dos capas (el texto aprobado y la lista); con paráfrasis que la
+lista no conoce («…, con el máximo en todo.» y «…, sin quedarte corto en
+nada.»), ✗ en los dos por el texto aprobado solo. Lo que se aprendió: BITACORA
 cap. 154.
 
 1. **3A, las consultas de Silver sin «por persona»** (sp-interno#184), hasta
@@ -63,9 +68,16 @@ cap. 154.
    no una afirmación sobre los topes. ⚠ Silver sigue diciendo «topes más altos»
    en el simulador (su opción y su porqué: «Más días de terapia intensiva y
    topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
-   La prueba mira lo de Gold: su línea de la tabla, literal; el texto entero del
-   home y de `/planes`; y en el simulador, la opción y el porqué de Gold
-   (`TOPES_ALTOS`).
+   La prueba mira lo de Gold con sus textos aprobados, literales y como se ven:
+   su línea de la tabla (`GOLD_PARA`) y, en el simulador, la opción (dice su
+   rótulo y `OPCION_AMPLIA_NOTA`, y nada más) y el porqué del resultado (un
+   párrafo que es, entero, `GOLD_PORQUE`). Debajo, como segunda capa, la lista
+   de lo que no va (`TOPES_ALTOS`) sobre el texto entero del home y de
+   `/planes`, el botón de la opción y la tarjeta del resultado de Gold.
+   *(20/10/2026, verificador: el simulador se miraba solo con `TOPES_ALTOS`, y
+   «…y los mejores topes.» en el porqué o «…, con los topes más amplios.» en la
+   nota pasaban en verde. Era la lección del cap. 153 aplicada a medias:
+   BITACORA cap. 154.)*
 3. **180A, la cifra de contratos activos de SP sale de los documentos de este
    repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de
    Google Analytics: en este archivo (punto 3c de «Prioridad alta») y en el cap.

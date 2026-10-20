@@ -695,26 +695,41 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        que sigue a cada «5 o 6» hasta el punto tampoco: hoy, la pregunta
 //        frecuente del home y la línea de consultas de la tarjeta de Silver de
 //        /planes. El simulador no dice «5 o 6» (medido el 20/10).
-//   8A · la cabecera de Gold de la tabla del home (lo que dice bajo el precio)
-//        es, literal, «La cobertura más amplia.»; el texto entero del home y de
-//        /planes no dice TOPES_ALTOS; en el simulador, ni la opción «La cobertura
-//        más amplia posible» ni el porqué del resultado de Gold. En el simulador
-//        se mira solo lo de Gold: Silver dice «topes más altos» comparado con
-//        Essential, y eso la 8A no lo tocó.
+//   8A · los textos de Gold, literales, como se ven: la cabecera de Gold de la
+//        tabla del home (lo que dice bajo el precio) es «La cobertura más
+//        amplia.» (GOLD_PARA); en el simulador, la opción «La cobertura más
+//        amplia posible» dice su rótulo y su nota y nada más (OPCION_AMPLIA_NOTA),
+//        y el resultado de Gold tiene un párrafo que es su porqué, entero
+//        (GOLD_PORQUE). Debajo, una segunda capa: el texto entero del home y de
+//        /planes, el botón de la opción y la tarjeta del resultado de Gold no
+//        dicen TOPES_ALTOS. En el simulador se mira solo lo de Gold: Silver dice
+//        «topes más altos» comparado con Essential, y eso la 8A no lo tocó.
+//        Corrección del 20/10 (verificador): el simulador se miraba solo con
+//        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
+//        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
+//        lo que no va no se termina nunca»), que la cabecera ya cumplía.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
 // variantes (fallan) y los de ahora (pasan); y en la página, la línea de antes
-// metida en la tarjeta de Silver y en la cabecera de Gold, leída con la misma
-// lectura y devuelta. Sabotajes fuera del repo: la build de antes (5a15047) da
-// ✗ en la tarjeta y en los cuatro lugares de Gold; una copia con variantes, ✗
-// también en el «5 o 6» del texto (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+// metida en la tarjeta de Silver, en la cabecera de Gold, en la nota de la
+// opción y en el porqué de Gold, leída con la misma lectura y devuelta.
+// Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
+// los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
+// del texto; y una con paráfrasis del superlativo en la opción y en el porqué,
+// ✗ en los dos (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
 console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
   // «por familia» o «para todo el grupo», que afirman lo contrario. «En cada
   // especialidad» no es una unidad: no cuenta.
   const QUIEN_DICHO = /\bpor\s+(?:persona|beneficiario|integrante|cabeza|socio|titular|afiliado|familia|grupo)s?\b|\bcada\s+(?:persona|integrante|beneficiario|afiliado|uno)\b|\bpara\s+cada\b|\bpara\s+tod[oa]s?\s+(?:la\s+familia|el\s+grupo|los\s+del\s+grupo)\b|\bcompartid[oa]s?\b/i;
-  const TOPES_ALTOS = /\btopes?\s+(?:m[aá]s\s+alt[oa]s?|mayor(?:es)?|superior(?:es)?)|\b(?:m[aá]s\s+alt[oa]s?|mayor(?:es)?|superiores)\s+topes?\b|\blos\s+m[aá]s\s+altos\b/i;
+  // Segunda capa: la lista de lo que no va. La primera son los literales de abajo.
+  const TOPES_ALTOS = /\btopes?\s+(?:m[aá]s\s+(?:alt[oa]s?|ampli[oa]s?|grandes?|generos[oa]s?)|mayor(?:es)?|superior(?:es)?|mejor(?:es)?)|\b(?:m[aá]s\s+alt[oa]s?|mayor(?:es)?|superiores|mejor(?:es)?)\s+topes?\b|\blos\s+m[aá]s\s+altos\b/i;
+  // Lo aprobado el 20/10 (8A), escrito acá como literales, no leído de quote.js
+  // ni de page.jsx, que es lo que dibuja la página.
   const GOLD_PARA = 'La cobertura más amplia.';
+  const OPCION_AMPLIA = 'La cobertura más amplia posible';
+  const OPCION_AMPLIA_NOTA = 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.';
+  const GOLD_PORQUE = 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.';
   // Lo que sigue a cada «5 o 6» hasta el punto (o 80 caracteres). En la página
   // se lee el texto del bloque que lo tiene (subiendo por los padres en línea),
   // no el de todo el body: textContent pega bloques vecinos sin espacio («…en el
@@ -739,8 +754,10 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   const auto = [
     ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', '5 o 6 al año por beneficiario.', 'en el resto, 5 o 6 al año para cada uno.', '5 o 6 al año por familia.'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), true, 'QUIEN_DICHO']),
     ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto', 'Sin topeen la mitad; 5 o 6 en el resto'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), false, 'QUIEN_DICHO']),
-    ...['La cobertura más amplia, con los topes más altos.', 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.', 'Con los mayores topes.', 'Topes superiores a los de Silver.'].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
-    ...[GOLD_PARA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
+    ...['La cobertura más amplia, con los topes más altos.', 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.', 'Con los mayores topes.', 'Topes superiores a los de Silver.',
+      // Las paráfrasis del verificador del 20/10, que pasaban en el simulador.
+      'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.', 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'los mejores topes', 'topes más amplios'].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
+    ...[GOLD_PARA, OPCION_AMPLIA_NOTA, GOLD_PORQUE, 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
   ];
   const autoMal = auto.filter(([, dio, debe]) => dio !== debe).map(([t, dio, , re]) => re + (dio ? ' grita en falso con «' : ' no ve «') + t + '»');
   if (autoMal.length) mal('autoprueba de los detectores de la 3A y la 8A: ' + autoMal.join(' · '));
@@ -844,20 +861,55 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       if (!hecho) break;
       await page.waitForTimeout(500);
     }
-    return page.evaluate(() => {
+    // La tarjeta del resultado y sus párrafos como se ven; con `vieja`, la
+    // autoprueba: el párrafo que hoy es el porqué aprobado pasa a decir `vieja`,
+    // se lee igual y se devuelve como estaba.
+    return page.evaluate(([aprobado, vieja]) => {
       const p = document.querySelector('[data-sp-price]');
       const c = p && p.closest('div.sq');
-      return c ? { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.textContent } : null;
-    });
+      if (!c) return null;
+      const parrafos = () => [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim());
+      const r = { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.innerText, parrafos: parrafos() };
+      // El párrafo aprobado; si no está (una build que lo cambió), el que empieza
+      // como el porqué de Gold, para que la autoprueba igual tenga dónde probar.
+      const ps = [...c.querySelectorAll('p')];
+      const e = ps.find((x) => x.innerText.replace(/\s+/g, ' ').trim() === aprobado) || ps.find((x) => /^La cobertura más amplia/.test(x.innerText.trim()));
+      if (e && e.firstChild && e.firstChild.nodeType === 3 && e.childNodes.length === 1) {
+        const antes = e.firstChild.data;
+        e.firstChild.data = vieja;
+        r.vieja = { texto: c.innerText, parrafos: parrafos() };
+        e.firstChild.data = antes;
+      }
+      return r;
+    }, [GOLD_PORQUE, 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.']);
   };
   const gold = await resultado('gold');
-  // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido.
+  // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido: el
+  // rótulo con su nota (la columna de texto del botón) y el botón entero, como
+  // se ven; con la autoprueba, la nota de antes metida y devuelta.
   await page.goto(BASE + '/simulador/', { waitUntil: 'networkidle' });
   for (const t of ['Empecemos', 'Para mí']) {
     const b = page.locator('button:visible', { hasText: t }).first();
     if (await b.count()) { await b.click().catch(() => {}); await page.waitForTimeout(500); }
   }
-  const opcion = await page.evaluate(() => { const b = [...document.querySelectorAll('button.sim-opt')].find((x) => x.textContent.includes('La cobertura más amplia posible')); return b ? b.innerText : null; });
+  const opcion = await page.evaluate(([rotulo, vieja]) => {
+    const esRotulo = (s) => !s.children.length && s.textContent.trim() === rotulo;
+    const b = [...document.querySelectorAll('button.sim-opt')].find((x) => [...x.querySelectorAll('span')].some(esRotulo));
+    if (!b) return null;
+    const lab = [...b.querySelectorAll('span')].find(esRotulo);
+    const col = lab.parentElement;
+    const nota = lab.nextElementSibling;
+    const n = (t) => t.replace(/\s+/g, ' ').trim();
+    const leer = () => ({ col: n(col.innerText), nota: nota ? n(nota.innerText) : null, boton: n(b.innerText) });
+    const r = leer();
+    if (nota && nota.firstChild && nota.firstChild.nodeType === 3 && nota.childNodes.length === 1) {
+      const antes = nota.firstChild.data;
+      nota.firstChild.data = vieja;
+      r.vieja = leer();
+      nota.firstChild.data = antes;
+    }
+    return r;
+  }, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.']);
   await page.close();
 
   const lugares = [['/', ventanas['/']], ['/planes/', ventanas['/planes/']]];
@@ -872,13 +924,46 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   if (!textos.gold) mal8A.push('home: la tarjeta de Gold de la tabla no tiene su línea («.cmp2-para»)');
   else if (textos.gold.t.trim() !== GOLD_PARA || textos.gold.visto.trim() !== GOLD_PARA) mal8A.push('home, cabecera de Gold: dice «' + textos.gold.visto.trim() + '» y no «' + GOLD_PARA + '»');
   for (const ruta of ['/', '/planes/']) { const m = (textos[ruta] || '').match(TOPES_ALTOS); if (m) mal8A.push(ruta + ': «…' + textos[ruta].slice(Math.max(0, m.index - 40), m.index + m[0].length + 10).trim() + '…»'); }
-  if (!opcion) mal8A.push('/simulador/: no encontré la opción «La cobertura más amplia posible»');
-  else if (TOPES_ALTOS.test(opcion)) mal8A.push('/simulador/, la opción «La cobertura más amplia posible»: «' + opcion.replace(/\s+/g, ' ').trim() + '»');
-  if (!gold || gold.plan !== 'Gold') mal8A.push('/simulador/: no llegué al resultado de Gold (' + JSON.stringify(gold && gold.plan) + ')');
-  else if (!/La cobertura más amplia/.test(gold.texto)) mal8A.push('/simulador/, resultado de Gold: no encontré el porqué («La cobertura más amplia…»)');
-  else if (TOPES_ALTOS.test(gold.texto)) mal8A.push('/simulador/, porqué del resultado de Gold: «…' + gold.texto.slice(Math.max(0, gold.texto.search(TOPES_ALTOS) - 60), gold.texto.search(TOPES_ALTOS) + 25).trim() + '…»');
+  // El simulador: primero lo literal (la opción dice su rótulo y su nota y nada
+  // más; el resultado de Gold tiene un párrafo que es su porqué, entero), y
+  // debajo TOPES_ALTOS sobre el botón y la tarjeta enteros.
+  const COL_APROBADA = OPCION_AMPLIA + ' ' + OPCION_AMPLIA_NOTA;
+  const opcionMal = (o) => {
+    if (!o) return ['no encontré la opción «' + OPCION_AMPLIA + '»'];
+    const r = [];
+    if (o.nota !== OPCION_AMPLIA_NOTA) r.push('la nota dice «' + o.nota + '» y no «' + OPCION_AMPLIA_NOTA + '»');
+    else if (o.col !== COL_APROBADA) r.push('el texto del botón dice «' + o.col + '» y no «' + COL_APROBADA + '»');
+    const m = o.boton.match(TOPES_ALTOS);
+    if (m) r.push('dice «' + m[0] + '»');
+    return r;
+  };
+  const porqueMal = (g) => {
+    if (!g || g.plan !== 'Gold') return ['no llegué al resultado de Gold (' + JSON.stringify(g && g.plan) + ')'];
+    const r = [];
+    const iguales = g.parrafos.filter((x) => x === GOLD_PORQUE).length;
+    if (iguales !== 1) r.push('ningún párrafo es, entero, «' + GOLD_PORQUE + '» (' + (g.parrafos.filter((x) => /cobertura más amplia/i.test(x)).map((x) => '«' + x + '»').join(', ') || 'no hay ninguno con «cobertura más amplia»') + ')');
+    const k = g.texto.search(TOPES_ALTOS);
+    if (k >= 0) r.push('dice «…' + g.texto.slice(Math.max(0, k - 60), k + 25).replace(/\s+/g, ' ').trim() + '…»');
+    return r;
+  };
+  // Autoprueba en el simulador, con la misma lectura: la paráfrasis metida en la
+  // nota de la opción y en el porqué de Gold tiene que caer en las dos capas.
+  if (!opcion || !opcion.vieja) mal('8A, autoprueba en el simulador: no pude meter la nota de prueba en la opción «' + OPCION_AMPLIA + '»');
+  else {
+    const v = opcionMal(opcion.vieja);
+    if (v.length < 2) mal('8A, autoprueba en el simulador: con «…, con los topes más amplios.» en la nota de la opción, la lectura no lo ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('8A, autoprueba en el simulador: con «…, con los topes más amplios.» en la nota de la opción, la misma lectura ve que no es la nota aprobada y que dice «' + opcion.vieja.boton.match(TOPES_ALTOS)[0] + '»');
+  }
+  if (!gold || !gold.vieja) mal('8A, autoprueba en el simulador: no pude meter el porqué de prueba en el resultado de Gold');
+  else {
+    const v = porqueMal(Object.assign({ plan: gold.plan }, gold.vieja));
+    if (v.length < 2) mal('8A, autoprueba en el simulador: con «…y los mejores topes.» en el porqué de Gold, la lectura no lo ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('8A, autoprueba en el simulador: con «…y los mejores topes.» en el porqué de Gold, la misma lectura ve que no es el porqué aprobado y que dice «' + gold.vieja.texto.match(TOPES_ALTOS)[0] + '»');
+  }
+  opcionMal(opcion).forEach((x) => mal8A.push('/simulador/, la opción «' + OPCION_AMPLIA + '»: ' + x));
+  porqueMal(gold).forEach((x) => mal8A.push('/simulador/, porqué del resultado de Gold: ' + x));
   if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
-  else bien('8A: Gold dice «' + GOLD_PARA + '» en la tabla del home, y ni el home, ni /planes, ni la opción «La cobertura más amplia posible» ni el porqué del resultado de Gold del simulador dicen que tiene los topes más altos');
+  else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; en el simulador, la nota de la opción «' + OPCION_AMPLIA + '» y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni el resultado de Gold dicen que tiene los topes más altos');
 }
 
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────

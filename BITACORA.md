@@ -5562,6 +5562,13 @@ del repo público).
   resultado de Silver del simulador, donde no hay ningún «5 o 6»: ahí iba a dar
   verde siempre. Salió, y la prueba falla si en el home o en `/planes` no
   encuentra ninguno.
+- **La lección de ayer, aplicada a medias.** La cabecera de Gold del home se
+  comparaba con su texto aprobado, literal; el simulador, con una lista de lo
+  que no va (`TOPES_ALTOS`). El verificador lo probó con una build saboteada
+  fuera del repo: «…y los mejores topes.» en el porqué de Gold y «…, con los
+  topes más amplios.» en la nota de la opción daban ✓. Ahora el simulador
+  también se compara con sus textos aprobados, y la lista quedó como segunda
+  capa.
 
 **Qué aprendimos.**
 - **Sacar un dato de la página no lo saca del repo.** El párrafo que explica
@@ -5574,3 +5581,6 @@ del repo público).
   afirma en ninguna capa: ni en la forma corta, ni en la tarjeta, ni en la línea
   que presenta al plan.
 - **Una prueba que no encuentra nada que mirar tiene que fallar**, no dar verde.
+- **Si una superficie de un dato se mira con su texto aprobado, todas las demás
+  también.** La paráfrasis pasa por la que quedó mirada con la lista de lo que
+  no va.
