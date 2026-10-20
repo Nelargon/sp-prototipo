@@ -697,33 +697,39 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        /planes. El simulador no dice «5 o 6» (medido el 20/10).
 //   8A · los textos de Gold, literales, como se ven: la cabecera de Gold de la
 //        tabla del home (lo que dice bajo el precio) es «La cobertura más
-//        amplia.» (GOLD_PARA); en el simulador, el mensaje que acompaña el paso
-//        que sigue a elegir Gold es GOLD_PARA (a 390 y a 1280 px con Gold puesto
-//        desde el enlace, y a 390 px eligiéndolo en el paso del nivel), la opción
-//        «La cobertura más amplia posible» dice su rótulo y su nota y nada más
-//        (OPCION_AMPLIA_NOTA), y el resultado de Gold tiene un párrafo que es su
-//        porqué, entero (GOLD_PORQUE). Debajo, una segunda capa: el texto entero
-//        del home y de /planes, el botón de la opción y cada pantalla del
-//        recorrido de Gold, el resultado incluido, no dicen TOPES_ALTOS. En el
-//        simulador se mira solo lo de Gold: Silver dice «topes más altos»
-//        comparado con Essential, y eso la 8A no lo tocó.
+//        amplia.» (GOLD_PARA); la línea de Gold de /planes es «La cobertura más
+//        amplia» (GOLD_TAG), en la tarjeta de Gold a 390 px y en el texto de la
+//        cabecera de la tabla, que a 1280 px no se ve; en el simulador, el
+//        mensaje que acompaña el paso que sigue a elegir Gold es GOLD_PARA (a 390
+//        y a 1280 px con Gold puesto desde el enlace, y a 390 px eligiéndolo en
+//        el paso del nivel), la opción «La cobertura más amplia posible» dice su
+//        rótulo y su nota y nada más (OPCION_AMPLIA_NOTA), y el resultado de
+//        Gold tiene un párrafo que es su porqué, entero (GOLD_PORQUE). Debajo,
+//        una segunda capa: el texto entero del home y de /planes, el botón de la
+//        opción y cada pantalla del recorrido de Gold, el resultado incluido, no
+//        dicen TOPES_ALTOS. En el simulador se mira solo lo de Gold: Silver dice
+//        «topes más altos» comparado con Essential, y eso la 8A no lo tocó.
 //        Corrección del 20/10 (verificador): el simulador se miraba solo con
 //        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
 //        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
 //        lo que no va no se termina nunca»), que la cabecera ya cumplía.
 //        Corrección del 20/10 (segundo verificador): el mensaje del paso del
-//        simulador no lo leía ningún control con su texto aprobado: una copia
-//        con «…, con los topes más altos.» en el mensaje daba 133 ✓.
+//        simulador y la línea de Gold de /planes no los leía ningún control con
+//        su texto aprobado: una copia con «…, con los topes más altos.» en el
+//        mensaje y «…, con el respaldo más alto en cada tope» en /planes daba
+//        133 ✓.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
 // variantes (fallan) y los de ahora (pasan); y en la página, la línea de antes
-// metida en la tarjeta de Silver, en la cabecera de Gold, en el mensaje del paso
-// (en los tres recorridos de Gold), en la nota de la opción y en el porqué de
-// Gold, leída con la misma lectura y devuelta.
+// o una paráfrasis metida, leída con la misma lectura y devuelta: en la tarjeta
+// de Silver (a 1280 px), en la cabecera de Gold del home, en la línea de Gold
+// de /planes (a 390 y a 1280 px), en el mensaje del paso (en los tres
+// recorridos de Gold), en la nota de la opción y en el porqué de Gold.
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
 // del texto; una con paráfrasis del superlativo en la opción y en el porqué,
-// ✗ en los dos; y la del segundo verificador, con la frase vieja en el mensaje
-// del paso, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+// ✗ en los dos; y las del segundo verificador: la frase vieja en el mensaje y
+// la paráfrasis en /planes, ✗ en los dos, y «La cobertura más amplia, sin tope
+// en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
 console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
@@ -738,6 +744,11 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   const OPCION_AMPLIA = 'La cobertura más amplia posible';
   const OPCION_AMPLIA_NOTA = 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.';
   const GOLD_PORQUE = 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.';
+  // La línea de Gold de /planes: el `tag` de Gold de `plans()` (app/quote.js),
+  // sin punto. Es, literal, el texto de la 8A (Arturo, 20/10/2026,
+  // sp-interno#189: Gold dice «La cobertura más amplia», sin «con los topes más
+  // altos»); /planes ya lo decía así y no cambió.
+  const GOLD_TAG = 'La cobertura más amplia';
   // Lo que sigue a cada «5 o 6» hasta el punto (o 80 caracteres). En la página
   // se lee el texto del bloque que lo tiene (subiendo por los padres en línea),
   // no el de todo el body: textContent pega bloques vecinos sin espacio («…en el
@@ -835,10 +846,40 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   if (mal3A.length) mal('3A: la tarjeta de «' + SRV + '» del home, en Silver, dice para quién o no se leyó (sp-interno#184) · ' + mal3A.join(' · '));
   else bien('3A: la tarjeta de «' + SRV + '» del home dice para Silver «5 o 6 al año», sin para quién, a 1280 px con el mouse y a 390 px con el dedo («' + lecturas[0][1].silver + '»)');
 
-  // 3A y 8A en todo el texto del home y /planes, y la cabecera de Gold.
+  // 3A y 8A en todo el texto del home y /planes, la cabecera de Gold del home y
+  // la línea de Gold de /planes.
+  // La línea de Gold de /planes (el `tag` de Gold de `plans()`, app/quote.js),
+  // como se ve: en el celular, la de la tarjeta de Gold, debajo del nombre; en la
+  // computadora no se ve ninguna, porque la cabecera de la tabla la esconde
+  // (`.cmp2-para`, display:none desde 820 px). Se leen las dos en cada ancho: la
+  // que se ve, con innerText; las dos, con textContent, que es lo que se vería
+  // si la mostraran. Con `vieja`, la autoprueba: las dos pasan a decir `vieja`,
+  // se leen igual y se devuelven como estaban.
+  const lineaGoldPlanes = (vieja) => {
+    const vis = (e) => !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
+    const art = document.querySelector('article[aria-label="Plan Gold"]');
+    const nom = art && [...art.querySelectorAll('span')].find((s) => s.textContent.trim() === 'Gold');
+    const sig = nom && nom.nextElementSibling;
+    const pl = [...document.querySelectorAll('#comparar-planes .cmp2-plan')].find((x) => (x.querySelector('.cmp2-nombre') || {}).textContent === 'Gold');
+    const es = [['la tarjeta de Gold', sig && sig.tagName === 'P' ? sig : null], ['la cabecera de Gold de la tabla', pl ? pl.querySelector('.cmp2-para') : null]];
+    const leer = () => es.map(([donde, e]) => ({ donde, hay: !!e, visto: vis(e), t: e ? e.textContent : null, v: vis(e) ? e.innerText : null }));
+    const r = { lineas: leer() };
+    const conTexto = es.map(([, e]) => e).filter((e) => e && e.childNodes.length === 1 && e.firstChild.nodeType === 3);
+    if (vieja && conTexto.length === es.length) {
+      const antes = conTexto.map((e) => e.firstChild.data);
+      conTexto.forEach((e) => { e.firstChild.data = vieja; });
+      r.vieja = leer();
+      conTexto.forEach((e, i) => { e.firstChild.data = antes[i]; });
+    }
+    return r;
+  };
+  // La paráfrasis que pasó en verde el 20/10 (sabotaje C del segundo
+  // verificador): TOPES_ALTOS no la ve; la ve solo el texto aprobado.
+  const PLANES_PARAFRASIS = 'La cobertura más amplia, con el respaldo más alto en cada tope';
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const textos = {};
   const ventanas = {};
+  const planesGold = {};
   for (const ruta of ['/', '/planes/']) {
     await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
     textos[ruta] = await page.evaluate(() => document.body.textContent);
@@ -856,6 +897,13 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       e.firstChild.data = antes;
       return r;
     }, 'La cobertura más amplia, con los topes más altos.');
+    if (ruta === '/planes/') planesGold[390] = await page.evaluate(lineaGoldPlanes, PLANES_PARAFRASIS);
+  }
+  {
+    const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await p.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    planesGold[1280] = await p.evaluate(lineaGoldPlanes, PLANES_PARAFRASIS);
+    await p.close();
   }
   // El simulador hasta el precio (una persona sola, en Asunción), como la 2A. En
   // cada pantalla se guarda lo que se ve: la pregunta del paso, el mensaje que
@@ -985,6 +1033,28 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   if (!textos.gold) mal8A.push('home: la tarjeta de Gold de la tabla no tiene su línea («.cmp2-para»)');
   else if (textos.gold.t.trim() !== GOLD_PARA || textos.gold.visto.trim() !== GOLD_PARA) mal8A.push('home, cabecera de Gold: dice «' + textos.gold.visto.trim() + '» y no «' + GOLD_PARA + '»');
   for (const ruta of ['/', '/planes/']) { const m = (textos[ruta] || '').match(TOPES_ALTOS); if (m) mal8A.push(ruta + ': «…' + textos[ruta].slice(Math.max(0, m.index - 40), m.index + m[0].length + 10).trim() + '…»'); }
+  // La línea de Gold de /planes, literal: las dos lecturas en cada ancho; a
+  // 390 px, la de la tarjeta tiene que verse.
+  const planesMal = (ancho, lineas) => {
+    if (!lineas) return ['a ' + ancho + ' px no pude leer la página'];
+    const r = [];
+    for (const l of lineas) {
+      if (!l.hay) r.push('a ' + ancho + ' px no encontré ' + l.donde);
+      else if (l.t.trim() !== GOLD_TAG) r.push('a ' + ancho + ' px, ' + l.donde + ' dice «' + l.t.trim() + '» y no «' + GOLD_TAG + '»');
+      else if (l.visto && l.v.trim() !== GOLD_TAG) r.push('a ' + ancho + ' px, ' + l.donde + ' se ve «' + l.v.trim() + '» y no «' + GOLD_TAG + '»');
+    }
+    if (ancho === 390 && !lineas.some((l) => l.donde === 'la tarjeta de Gold' && l.visto)) r.push('a 390 px no se ve la línea de la tarjeta de Gold');
+    return r;
+  };
+  const autoPlanes = [390, 1280].map((a) => {
+    const g = planesGold[a];
+    if (!g || !g.vieja) return 'a ' + a + ' px no pude meter la línea de prueba';
+    const v = planesMal(a, g.vieja);
+    return v.length >= g.lineas.length ? null : 'a ' + a + ' px, con la paráfrasis, la lectura ve ' + v.length + ' de ' + g.lineas.length + ' (' + (v.join(' · ') || 'nada') + ')';
+  }).filter(Boolean);
+  if (autoPlanes.length) mal('8A, autoprueba en /planes: ' + autoPlanes.join(' · '));
+  else bien('8A, autoprueba en /planes: con «' + PLANES_PARAFRASIS + '» en la línea de Gold de la tarjeta y de la cabecera de la tabla, a 390 y a 1280 px, la misma lectura ve que no es «' + GOLD_TAG + '» en las dos');
+  [390, 1280].forEach((a) => planesMal(a, planesGold[a] && planesGold[a].lineas).forEach((x) => mal8A.push('/planes/, línea de Gold: ' + x)));
   // El simulador: primero lo literal (la opción dice su rótulo y su nota y nada
   // más; el mensaje del paso que sigue a elegir Gold es GOLD_PARA; el resultado
   // de Gold tiene un párrafo que es su porqué, entero), y debajo TOPES_ALTOS
@@ -1053,7 +1123,7 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   }
   const mensajesVistos = recorridosGold.map(([, pasos]) => (pasos.find((x) => x && x.titulo === PASO_UBI) || { mensajes: [] }).mensajes.length).reduce((a, b) => a + b, 0);
   if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
-  else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; en el simulador, el mensaje del paso que sigue a elegir Gold (' + mensajesVistos + ' lecturas), la nota de la opción «' + OPCION_AMPLIA + '», y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni ninguna pantalla del recorrido de Gold dicen que tiene los topes más altos');
+  else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; «' + GOLD_TAG + '» en la tarjeta de Gold de /planes a 390 px, y en el texto de la cabecera de la tabla, que a 1280 px no se ve; en el simulador, el mensaje del paso que sigue a elegir Gold (' + mensajesVistos + ' lecturas), la nota de la opción «' + OPCION_AMPLIA + '», y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni ninguna pantalla del recorrido de Gold dicen que tiene los topes más altos');
 }
 
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────
