@@ -88,8 +88,8 @@ cap. 154.
    texto original, con archivo y línea. *(20/10/2026, verificador: el primer
    borrador apuntaba a `metricas-web-ga-2026.md`, la tabla de Google Analytics
    de la U4A, que no trae esta cifra.)* Los dos archivos, este y el de la U4A,
-   llegan a sp-interno con su PR #177: **#177 se fusiona antes que este PR o
-   junto con él**, o los punteros mandan a un archivo que no está en `main`.
+   llegan a sp-interno con su PR #177, que fusiona Arturo: hasta entonces
+   están en la rama de ese PR (`claude/dazzling-keller-l0torp`), no en `main`.
    La búsqueda de la cifra ya no la encuentra en el árbol; el comando y lo que
    encontró están en ese mismo archivo, no acá: la expresión de búsqueda es la
    cifra escrita de otra manera (BITACORA cap. 154). El historial de git la
