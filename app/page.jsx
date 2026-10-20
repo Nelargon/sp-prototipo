@@ -316,10 +316,13 @@ export default function Page() {
   // confirmado por Comercial, sp-interno#52); una línea humana bajo cada plan
   // (para quién es); sin
   // barras (eran ruido); y lo común, abajo, como GARANTÍA positiva, no letra chica.
+  // Gold, sin «con los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189):
+  // si vale la grilla, Gold tiene menos fisioterapia que Silver (10 + 3 contra
+  // 15 + 5), y mientras SP no conteste #50 no se afirma lo que depende de ese dato.
   const FORWHOM = [
     'Lo importante cubierto, al precio de tu zona.',
     'Cobertura equilibrada para tu familia.',
-    'La cobertura más amplia, con los topes más altos.',
+    'La cobertura más amplia.',
   ];
   const planHead = plansArr.map((pl, i) => ({
     short: pl.short, price: fmt(pl.price), color: pl.color, forWhom: FORWHOM[i], recommended: i === 1,
@@ -387,8 +390,11 @@ export default function Page() {
     // Silver: la grilla da "sin tope" en 23 de 43 especialidades y 5 o 6 al año
     // en el resto; Gold, sin tope en 38 de 43 (auditoría del 25/09/2026: decía
     // "5" para Silver, lo mismo que la especialidad más acotada).
+    // Silver dice «5 o 6 al año», sin «por persona» (3A, Arturo, 20/10/2026,
+    // sp-interno#184), hasta que SP conteste #110: la psicología es una de ese
+    // resto y su fila dice «¿quién?». Como /planes (`cov` de coverage.js).
     { name: 'Consultas por especialista', unit: 'al año', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister · 3 por mes en la red' }, { t: 'Sin tope', n: 'en la mitad; 5 o 6 en el resto' }, { t: 'Sin tope', n: 'en casi todas' }],
-      d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
+      d: ['Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.', 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'],
       pie: 'Copago: vos pagás una parte y Salud Protegida la otra.' },
     { name: 'Sesiones de psicología', unit: 'al año', kind: 'num', cells: celdas('Sesión de psicología'),
       // Essential (comité, 13/10): con «3/familia/año» a la vista, la sorpresa es

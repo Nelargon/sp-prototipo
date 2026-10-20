@@ -679,6 +679,208 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   await page.close();
 }
 
+// ── Lo que espera a SP no se afirma (3A y 8A, Arturo, 20/10/2026, «Adelante») ──
+// 3A (sp-interno#184): la tarjeta de «Consultas por especialista» del home dice
+// para Silver «5 o 6 al año», sin «por persona», hasta que SP conteste #110. La
+// psicología es una de ese resto y su fila dice «¿quién?»: la tabla afirmaba y
+// negaba el mismo dato. 8A (sp-interno#189): Gold dice «La cobertura más
+// amplia», sin «con los topes más altos», en el home y en el simulador, hasta
+// que SP conteste #50: si vale la grilla, Gold tiene menos fisioterapia que
+// Silver, y el superlativo tomaba el lado del dato que favorece al plan caro.
+// Qué se mira:
+//   3A · la línea de Silver de esa tarjeta, abierta como la abre una persona: a
+//        1280 px pasando el mouse por el nombre y a 390 px con el dedo, desde la
+//        tarjeta de Silver. No puede decir para quién (QUIEN_DICHO). Y en todo
+//        el texto del home y de /planes (también lo que se abre al tocar), lo
+//        que sigue a cada «5 o 6» hasta el punto tampoco: hoy, la pregunta
+//        frecuente del home y la línea de consultas de la tarjeta de Silver de
+//        /planes. El simulador no dice «5 o 6» (medido el 20/10).
+//   8A · la cabecera de Gold de la tabla del home (lo que dice bajo el precio)
+//        es, literal, «La cobertura más amplia.»; el texto entero del home y de
+//        /planes no dice TOPES_ALTOS; en el simulador, ni la opción «La cobertura
+//        más amplia posible» ni el porqué del resultado de Gold. En el simulador
+//        se mira solo lo de Gold: Silver dice «topes más altos» comparado con
+//        Essential, y eso la 8A no lo tocó.
+// Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
+// variantes (fallan) y los de ahora (pasan); y en la página, la línea de antes
+// metida en la tarjeta de Silver y en la cabecera de Gold, leída con la misma
+// lectura y devuelta. Sabotajes fuera del repo: la build de antes (5a15047) da
+// ✗ en la tarjeta y en los cuatro lugares de Gold; una copia con variantes, ✗
+// también en el «5 o 6» del texto (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
+{
+  // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
+  // «por familia» o «para todo el grupo», que afirman lo contrario. «En cada
+  // especialidad» no es una unidad: no cuenta.
+  const QUIEN_DICHO = /\bpor\s+(?:persona|beneficiario|integrante|cabeza|socio|titular|afiliado|familia|grupo)s?\b|\bcada\s+(?:persona|integrante|beneficiario|afiliado|uno)\b|\bpara\s+cada\b|\bpara\s+tod[oa]s?\s+(?:la\s+familia|el\s+grupo|los\s+del\s+grupo)\b|\bcompartid[oa]s?\b/i;
+  const TOPES_ALTOS = /\btopes?\s+(?:m[aá]s\s+alt[oa]s?|mayor(?:es)?|superior(?:es)?)|\b(?:m[aá]s\s+alt[oa]s?|mayor(?:es)?|superiores)\s+topes?\b|\blos\s+m[aá]s\s+altos\b/i;
+  const GOLD_PARA = 'La cobertura más amplia.';
+  // Lo que sigue a cada «5 o 6» hasta el punto (o 80 caracteres). En la página
+  // se lee el texto del bloque que lo tiene (subiendo por los padres en línea),
+  // no el de todo el body: textContent pega bloques vecinos sin espacio («…en el
+  // restoTomografía…») y la ventana podía llevarse el «por persona» de otra
+  // línea. Cuenta también lo que está oculto hasta que se toca.
+  const VENTANA = '5\\s+o\\s+6[^.]{0,80}';
+  const trasCincoOSeis = (t) => [...(t || '').matchAll(new RegExp(VENTANA, 'g'))].map((m) => m[0]);
+  const cincoOSeisEnPagina = (src) => {
+    const r = [];
+    const vistos = new Set();
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (!/5\s+o\s+6/.test(n.data)) continue;
+      let e = n.parentElement;
+      while (e.parentElement && e !== document.body && getComputedStyle(e).display === 'inline') e = e.parentElement;
+      if (vistos.has(e)) continue;
+      vistos.add(e);
+      for (const m of e.textContent.matchAll(new RegExp(src, 'g'))) r.push(m[0]);
+    }
+    return r;
+  };
+  const auto = [
+    ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona.', '5 o 6 al año por beneficiario.', 'en el resto, 5 o 6 al año para cada uno.', '5 o 6 al año por familia.'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), true, 'QUIEN_DICHO']),
+    ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto', 'Sin topeen la mitad; 5 o 6 en el resto'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), false, 'QUIEN_DICHO']),
+    ...['La cobertura más amplia, con los topes más altos.', 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.', 'Con los mayores topes.', 'Topes superiores a los de Silver.'].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
+    ...[GOLD_PARA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.', 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
+  ];
+  const autoMal = auto.filter(([, dio, debe]) => dio !== debe).map(([t, dio, , re]) => re + (dio ? ' grita en falso con «' : ' no ve «') + t + '»');
+  if (autoMal.length) mal('autoprueba de los detectores de la 3A y la 8A: ' + autoMal.join(' · '));
+  else bien('autoprueba: QUIEN_DICHO y TOPES_ALTOS ven los ' + auto.filter((a) => a[2]).length + ' textos de antes del 20/10 y sus variantes, y callan en los ' + auto.filter((a) => !a[2]).length + ' de ahora');
+
+  // La línea de Silver de la tarjeta abierta (una sola), como se ve.
+  const silverDe = (tsel) => {
+    const ts = document.querySelectorAll(tsel);
+    if (ts.length !== 1) return null;
+    const p = [...ts[0].querySelectorAll('.cmp2-tarjeta-p')].find((x) => x.querySelector('b') && x.querySelector('b').innerText.trim() === 'Silver');
+    return { titulo: (ts[0].querySelector('.cmp2-tarjeta-t') || {}).innerText || '', silver: p ? p.innerText.replace(/^\s*Silver\s*/, '').trim() : null };
+  };
+  const TARJETA = '#cartilla .cmp2-tarjeta';
+  const SRV = 'Consultas por especialista';
+  // 3A en la computadora: el mouse entra al nombre desde afuera.
+  const lecturas = [];
+  let vieja3A = null;
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => { const b = document.querySelector('#cartilla .cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+    const btn = page.locator('#cartilla .cmp2-lab .cmp2-srv', { hasText: SRV }).first();
+    if (await btn.count()) {
+      await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.waitForTimeout(250);
+      const c = await btn.boundingBox();
+      await page.mouse.move(5, 5);
+      await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+      await page.waitForTimeout(250);
+    }
+    lecturas.push(['1280 px, con el mouse', await page.evaluate(silverDe, TARJETA)]);
+    // Autoprueba en la página, con la misma lectura: la línea de antes del 20/10
+    // en lugar de la de hoy, leída y devuelta como estaba.
+    vieja3A = await page.evaluate(([tsel, vieja]) => {
+      const t = document.querySelector(tsel);
+      const p = t && [...t.querySelectorAll('.cmp2-tarjeta-p')].find((x) => x.querySelector('b') && x.querySelector('b').innerText.trim() === 'Silver');
+      const ns = [];
+      if (p) { const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT); for (let n = w.nextNode(); n; n = w.nextNode()) if (n.data.trim() && !n.parentElement.closest('b')) ns.push(n); }
+      if (!ns.length) return null;
+      const antes = ns.map((n) => n.data);
+      ns.forEach((n, i) => { n.data = i ? '' : vieja; });
+      const leida = p.innerText.replace(/^\s*Silver\s*/, '').trim();
+      ns.forEach((n, i) => { n.data = antes[i]; });
+      return leida;
+    }, [TARJETA, 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.']);
+    await page.close();
+  }
+  // 3A en el celular: el dedo toca el nombre en la tarjeta de Silver.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    await p.goto(BASE + '/', { waitUntil: 'networkidle' });
+    await p.waitForFunction(() => { const b = document.querySelector('#cartilla .cmp2-srv'); return !!b && Object.keys(b).some((k) => k.startsWith('__reactProps')); }, null, { timeout: 10000 }).catch(() => {});
+    const tarjeta = p.locator('#cartilla .cmp2-plan').filter({ has: p.locator('.cmp2-nombre', { hasText: /^Silver$/ }) }).first();
+    const btn = tarjeta.locator('.cmp2-srv', { hasText: SRV }).first();
+    if (await btn.count()) {
+      await btn.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await btn.tap();
+      await p.waitForSelector(TARJETA, { timeout: 2000 }).catch(() => {});
+    }
+    lecturas.push(['390 px, con el dedo', await p.evaluate(silverDe, TARJETA)]);
+    await ctx.close();
+  }
+  const mal3A = lecturas.filter(([, l]) => !l || l.titulo.trim() !== SRV || !l.silver || !/5 o 6 al año/.test(l.silver) || QUIEN_DICHO.test(l.silver)).map(([d, l]) => d + ': ' + (!l || l.silver === null ? 'no se abrió la tarjeta o no tiene la línea de Silver' : '«' + l.silver + '»' + (QUIEN_DICHO.test(l.silver) ? ' dice para quién («' + l.silver.match(QUIEN_DICHO)[0] + '»)' : ' no dice «5 o 6 al año»')));
+  if (!vieja3A || !QUIEN_DICHO.test(vieja3A)) mal('3A, autoprueba en la página: con la línea de antes del 20/10 metida en la tarjeta, la lectura no ve el «por persona» (' + JSON.stringify(vieja3A) + ')');
+  else bien('3A, autoprueba en la página: con la línea de antes del 20/10 metida en la tarjeta a 1280 px, la misma lectura ve «' + vieja3A.match(QUIEN_DICHO)[0] + '»');
+  if (mal3A.length) mal('3A: la tarjeta de «' + SRV + '» del home, en Silver, dice para quién o no se leyó (sp-interno#184) · ' + mal3A.join(' · '));
+  else bien('3A: la tarjeta de «' + SRV + '» del home dice para Silver «5 o 6 al año», sin para quién, a 1280 px con el mouse y a 390 px con el dedo («' + lecturas[0][1].silver + '»)');
+
+  // 3A y 8A en todo el texto del home y /planes, y la cabecera de Gold.
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const textos = {};
+  const ventanas = {};
+  for (const ruta of ['/', '/planes/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    textos[ruta] = await page.evaluate(() => document.body.textContent);
+    ventanas[ruta] = await page.evaluate(cincoOSeisEnPagina, VENTANA);
+    // La cabecera de Gold, y la autoprueba con la misma lectura: la línea de
+    // antes del 20/10 en su lugar, leída y devuelta como estaba.
+    if (ruta === '/') textos.gold = await page.evaluate((vieja) => {
+      const pl = [...document.querySelectorAll('#cartilla .cmp2-plan')].find((x) => (x.querySelector('.cmp2-nombre') || {}).textContent === 'Gold');
+      const e = pl && pl.querySelector('.cmp2-para');
+      if (!e || !e.firstChild) return null;
+      const r = { t: e.textContent, visto: e.innerText };
+      const antes = e.firstChild.data;
+      e.firstChild.data = vieja;
+      r.vieja = e.innerText;
+      e.firstChild.data = antes;
+      return r;
+    }, 'La cobertura más amplia, con los topes más altos.');
+  }
+  // El simulador hasta el precio (una persona sola, en Asunción), como la 2A.
+  const resultado = async (plan) => {
+    await page.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+    for (let i = 0; i < 14 && !(await page.locator('[data-sp-price]').count()); i++) {
+      let hecho = false;
+      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) {
+        const b = page.locator('button:visible', { hasText: t }).first();
+        if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; }
+      }
+      if (!hecho) break;
+      await page.waitForTimeout(500);
+    }
+    return page.evaluate(() => {
+      const p = document.querySelector('[data-sp-price]');
+      const c = p && p.closest('div.sq');
+      return c ? { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.textContent } : null;
+    });
+  };
+  const gold = await resultado('gold');
+  // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido.
+  await page.goto(BASE + '/simulador/', { waitUntil: 'networkidle' });
+  for (const t of ['Empecemos', 'Para mí']) {
+    const b = page.locator('button:visible', { hasText: t }).first();
+    if (await b.count()) { await b.click().catch(() => {}); await page.waitForTimeout(500); }
+  }
+  const opcion = await page.evaluate(() => { const b = [...document.querySelectorAll('button.sim-opt')].find((x) => x.textContent.includes('La cobertura más amplia posible')); return b ? b.innerText : null; });
+  await page.close();
+
+  const lugares = [['/', ventanas['/']], ['/planes/', ventanas['/planes/']]];
+  const cincoOSeis = lugares.flatMap(([ruta, vs]) => (vs || []).filter((x) => QUIEN_DICHO.test(x)).map((x) => ruta + ': «' + x.trim() + '»'));
+  if (!ventanas['/'].length || !ventanas['/planes/'].length) mal('3A: no encontré ningún «5 o 6» en el home o en /planes (la prueba no estaría mirando nada)');
+  else if (cincoOSeis.length) mal('3A: lo que sigue a «5 o 6» dice para quién (sp-interno#184) · ' + cincoOSeis.join(' · '));
+  else bien('3A: ningún «5 o 6» dice para quién en el texto del home ni de /planes (' + lugares.map(([ruta, vs]) => ruta + ': ' + vs.map((x) => '«' + x.trim() + '»').join(', ')).join(' · ') + ')');
+
+  const mal8A = [];
+  if (!textos.gold || textos.gold.vieja.trim() === GOLD_PARA || !TOPES_ALTOS.test(textos.gold.vieja)) mal('8A, autoprueba en la página: con la línea de antes del 20/10 en la cabecera de Gold, la lectura no la ve (' + JSON.stringify(textos.gold && textos.gold.vieja) + ')');
+  else bien('8A, autoprueba en la página: con la línea de antes del 20/10 en la cabecera de Gold, la misma lectura ve «' + textos.gold.vieja.match(TOPES_ALTOS)[0] + '» y que no es «' + GOLD_PARA + '»');
+  if (!textos.gold) mal8A.push('home: la tarjeta de Gold de la tabla no tiene su línea («.cmp2-para»)');
+  else if (textos.gold.t.trim() !== GOLD_PARA || textos.gold.visto.trim() !== GOLD_PARA) mal8A.push('home, cabecera de Gold: dice «' + textos.gold.visto.trim() + '» y no «' + GOLD_PARA + '»');
+  for (const ruta of ['/', '/planes/']) { const m = (textos[ruta] || '').match(TOPES_ALTOS); if (m) mal8A.push(ruta + ': «…' + textos[ruta].slice(Math.max(0, m.index - 40), m.index + m[0].length + 10).trim() + '…»'); }
+  if (!opcion) mal8A.push('/simulador/: no encontré la opción «La cobertura más amplia posible»');
+  else if (TOPES_ALTOS.test(opcion)) mal8A.push('/simulador/, la opción «La cobertura más amplia posible»: «' + opcion.replace(/\s+/g, ' ').trim() + '»');
+  if (!gold || gold.plan !== 'Gold') mal8A.push('/simulador/: no llegué al resultado de Gold (' + JSON.stringify(gold && gold.plan) + ')');
+  else if (!/La cobertura más amplia/.test(gold.texto)) mal8A.push('/simulador/, resultado de Gold: no encontré el porqué («La cobertura más amplia…»)');
+  else if (TOPES_ALTOS.test(gold.texto)) mal8A.push('/simulador/, porqué del resultado de Gold: «…' + gold.texto.slice(Math.max(0, gold.texto.search(TOPES_ALTOS) - 60), gold.texto.search(TOPES_ALTOS) + 25).trim() + '…»');
+  if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
+  else bien('8A: Gold dice «' + GOLD_PARA + '» en la tabla del home, y ni el home, ni /planes, ni la opción «La cobertura más amplia posible» ni el porqué del resultado de Gold del simulador dicen que tiene los topes más altos');
+}
+
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────
 // Lo usan «La forma corta (P3A)» (la celda que abre la tarjeta) y «Lo que dicen
 // las tarjetas y la hoja, contra una lista cerrada» (todos los pies y la hoja).
@@ -760,7 +962,9 @@ const TARJETA_APROBADA = {
     },
     'Consultas por especialista': {
       Essential: 'Sin tope en Lister, nuestro centro propio. En la red, hasta 3 por mes por persona.',
-      Silver: 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año por persona. Hasta 3 por mes en cada especialidad; después, con copago.',
+      // 20/10/2026, 3A (Arturo, sp-interno#184): sin «por persona» después de «5
+      // o 6 al año» hasta que SP conteste #110. Decía «…5 o 6 al año por persona.».
+      Silver: 'Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.',
       Gold: 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.',
       pie: 'Copago: vos pagás una parte y Salud Protegida la otra.',
     },

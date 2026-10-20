@@ -244,7 +244,9 @@ export const engine = (d) => {
   const P = {
     essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
     silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.' },
-    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.' },
+    // Sin «los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189): si vale
+    // la grilla, Gold tiene menos fisioterapia que Silver; lo aclara SP (#50).
+    gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.' },
     vital: { name: 'Plan Vital', color: 'var(--sp-navy)', why: 'Pensado para personas de 65 años o más: consultas, urgencias 24 h, ambulancia a domicilio y cobertura que crece con la antigüedad.' },
   };
   let best;
@@ -324,7 +326,8 @@ export const opts = () => ({
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
     { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y topes más altos.' },
-    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.' },
+    // Gold, sin «los topes más altos» (8A, 20/10/2026, sp-interno#189), como su porqué.
+    { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.' },
   ],
   /* geo: reemplazado por el buscador de ciudades (app/geo.js) — el paso
      "¿Dónde querés tu cobertura?" ya no usa opciones fijas (HANDOFF 11h). */
