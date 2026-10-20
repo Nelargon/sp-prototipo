@@ -694,7 +694,12 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        el texto del home y de /planes (también lo que se abre al tocar), lo
 //        que sigue a cada «5 o 6» hasta el punto tampoco: hoy, la pregunta
 //        frecuente del home y la línea de consultas de la tarjeta de Silver de
-//        /planes. El simulador no dice «5 o 6» (medido el 20/10).
+//        /planes. En el simulador, lo mismo sobre lo que se ve en cada pantalla
+//        de los recorridos de Essential, Silver y Gold (los pasos y el
+//        resultado), en el paso del nivel y en la ubicación después de elegir
+//        Gold. Ahí hoy no hay ningún «5 o 6», y eso vale; lo que no vale es no
+//        haber leído: cada recorrido tiene que llegar al resultado de su plan y
+//        pasar por las tres preguntas, con texto en cada pantalla.
 //   8A · los textos de Gold, literales, como se ven: la cabecera de Gold de la
 //        tabla del home (lo que dice bajo el precio) es «La cobertura más
 //        amplia.» (GOLD_PARA); la línea de Gold de /planes es «La cobertura más
@@ -713,23 +718,27 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
 //        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
 //        lo que no va no se termina nunca»), que la cabecera ya cumplía.
-//        Corrección del 20/10 (segundo verificador): el mensaje del paso del
-//        simulador y la línea de Gold de /planes no los leía ningún control con
-//        su texto aprobado: una copia con «…, con los topes más altos.» en el
-//        mensaje y «…, con el respaldo más alto en cada tope» en /planes daba
-//        133 ✓.
+//        Corrección del 20/10 (segundo verificador): tres lugares más del mismo
+//        tipo. El mensaje del paso del simulador y la línea de Gold de /planes
+//        no los leía ningún control con su texto aprobado: una copia con «…, con
+//        los topes más altos.» en el mensaje y «…, con el respaldo más alto en
+//        cada tope» en /planes daba 133 ✓. Y el «5 o 6» del simulador se había
+//        medido una vez, a mano.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
-// variantes (fallan) y los de ahora (pasan); y en la página, la línea de antes
-// o una paráfrasis metida, leída con la misma lectura y devuelta: en la tarjeta
-// de Silver (a 1280 px), en la cabecera de Gold del home, en la línea de Gold
-// de /planes (a 390 y a 1280 px), en el mensaje del paso (en los tres
-// recorridos de Gold), en la nota de la opción y en el porqué de Gold.
+// variantes (fallan) y los de ahora (pasan); la 3A del simulador, en texto, con
+// el resultado de Silver como se leyó y una línea metida (con «por persona»,
+// cae; sin él, no); y en la página, la línea de antes o una paráfrasis metida,
+// leída con la misma lectura y devuelta: en la tarjeta de Silver (a 1280 px),
+// en la cabecera de Gold del home, en la línea de Gold de /planes (a 390 y a
+// 1280 px), en el mensaje del paso (en los tres recorridos de Gold), en la nota
+// de la opción y en el porqué de Gold.
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
 // del texto; una con paráfrasis del superlativo en la opción y en el porqué,
 // ✗ en los dos; y las del segundo verificador: la frase vieja en el mensaje y
-// la paráfrasis en /planes, ✗ en los dos, y «La cobertura más amplia, sin tope
-// en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
+// la paráfrasis en /planes, ✗ en los dos; «5 o 6 al año por persona» en el
+// resultado de Silver, ✗ en la 3A del simulador; y «La cobertura más amplia,
+// sin tope en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
 console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
@@ -912,7 +921,9 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // el texto entero de la tarjeta del simulador. Con `vieja`, en el paso de la
   // ubicación (el que sigue a elegir el plan), la autoprueba: el mensaje pasa a
   // decir `vieja`, se lee igual y se devuelve como estaba.
+  const PASO_QUIEN = '¿Para quién es el plan?';
   const PASO_UBI = '¿Dónde querés tu cobertura?';
+  const PASO_EDADES = '¿Qué edades tienen?';
   const GOLD_PARA_VIEJA = 'La cobertura más amplia, con los topes más altos.';
   const leerPaso = ([pasoUbi, vieja]) => {
     const vis = (e) => !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
@@ -979,6 +990,8 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     return Object.assign(r || { plan: null }, { pasos });
   };
   const gold = await resultado('gold', page, GOLD_PARA_VIEJA);
+  const silver = await resultado('silver');
+  const essential = await resultado('essential');
   let gold1280;
   {
     const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -993,6 +1006,7 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     const b = page.locator('button:visible', { hasText: t }).first();
     if (await b.count()) { await b.click().catch(() => {}); await page.waitForTimeout(500); }
   }
+  const pasoNivel = await page.evaluate(leerPaso, [PASO_UBI, null]);
   const opcion = await page.evaluate(([rotulo, vieja]) => {
     const esRotulo = (s) => !s.children.length && s.textContent.trim() === rotulo;
     const b = [...document.querySelectorAll('button.sim-opt')].find((x) => [...x.querySelectorAll('span')].some(esRotulo));
@@ -1026,6 +1040,42 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   if (!ventanas['/'].length || !ventanas['/planes/'].length) mal('3A: no encontré ningún «5 o 6» en el home o en /planes (la prueba no estaría mirando nada)');
   else if (cincoOSeis.length) mal('3A: lo que sigue a «5 o 6» dice para quién (sp-interno#184) · ' + cincoOSeis.join(' · '));
   else bien('3A: ningún «5 o 6» dice para quién en el texto del home ni de /planes (' + lugares.map(([ruta, vs]) => ruta + ': ' + vs.map((x) => '«' + x.trim() + '»').join(', ')).join(' · ') + ')');
+
+  // 3A en el simulador: lo que sigue a cada «5 o 6» en lo visible de cada
+  // pantalla, renglón por renglón (innerText separa los bloques con un salto, y
+  // así la ventana no se lleva el renglón de al lado). Que no diga ningún «5 o
+  // 6» vale; que no haya leído, no: cada recorrido tiene que llegar al
+  // resultado de su plan, pasar por las tres preguntas y tener texto en cada
+  // pantalla.
+  const ventanasDeTexto = (t) => (t || '').split('\n').flatMap(trasCincoOSeis);
+  const dicePara = (t) => ventanasDeTexto(t).filter((x) => QUIEN_DICHO.test(x));
+  const recorridos3A = [['Essential', essential], ['Silver', silver], ['Gold', gold], ['Gold', gold1280]];
+  const sinLeer = recorridos3A.map(([pl, res], i) => {
+    const ps = res.pasos || [];
+    const falta = [];
+    if (res.plan !== pl || !ps.length || !ps[ps.length - 1].precio) falta.push('no llegó al resultado de ' + pl + ' (' + JSON.stringify(res.plan) + ')');
+    for (const t of [PASO_QUIEN, PASO_UBI, PASO_EDADES]) if (!ps.some((x) => x.titulo === t)) falta.push('no pasó por «' + t + '»');
+    if (ps.some((x) => !x.texto.trim())) falta.push('una pantalla sin texto');
+    return falta.length ? pl + (i === 3 ? ' a 1280 px' : '') + ': ' + falta.join(', ') : null;
+  }).filter(Boolean);
+  if (!pasoNivel || pasoNivel.titulo !== '¿Qué nivel de cobertura buscás?' || !pasoNivel.texto.trim()) sinLeer.push('no leí el paso del nivel (' + JSON.stringify(pasoNivel && pasoNivel.titulo) + ')');
+  const pantallas = recorridos3A.flatMap(([pl, res], i) => (res.pasos || []).map((x) => [pl + (i === 3 ? ' a 1280 px' : '') + ', ' + (x.precio ? 'resultado' : x.titulo || 'inicio'), x.texto])).concat(pasoNivel ? [['paso del nivel', pasoNivel.texto]] : [], elegida ? [['ubicación, después de elegir Gold', elegida.texto]] : []);
+  const ventanasSim = pantallas.flatMap(([d, t]) => ventanasDeTexto(t).map((x) => [d, x]));
+  const caracteres = pantallas.reduce((s, [, t]) => s + t.length, 0);
+  // Autoprueba, en texto: el resultado de Silver como se leyó, con una línea de
+  // consultas metida debajo del nombre del plan. Con «por persona», cae; sin
+  // él, la ventana lo ve y calla, también con la línea de Essential al lado.
+  const resSilver = (silver.pasos || []).find((x) => x.precio);
+  const baseSilver = resSilver && resSilver.texto.includes('Plan Silver') ? resSilver.texto : null;
+  const conPersona = baseSilver && baseSilver.replace('Plan Silver', 'Plan Silver\nSin tope en la mitad de las especialidades; 5 o 6 al año por persona en el resto.');
+  const sinPersona = baseSilver && baseSilver.replace('Plan Silver', 'Plan Silver\nSin tope en la mitad de las especialidades; 5 o 6 al año en el resto.\nEn la red, hasta 3 por mes por persona.');
+  if (!baseSilver) mal('3A en el simulador, autoprueba: no tengo el texto del resultado de Silver para probar');
+  else if (dicePara(conPersona).length !== 1 || dicePara(sinPersona).length || ventanasDeTexto(sinPersona).length !== ventanasDeTexto(baseSilver).length + 1) mal('3A en el simulador, autoprueba: en el resultado de Silver, con «5 o 6 al año por persona» ve ' + dicePara(conPersona).length + ' (debe ver 1) y sin él ' + dicePara(sinPersona).length + ' (debe ver 0)');
+  else bien('3A en el simulador, autoprueba en texto: en el resultado de Silver, «…5 o 6 al año por persona en el resto.» cae y «…5 o 6 al año en el resto.», con «En la red, hasta 3 por mes por persona.» en el renglón de abajo, no');
+  const simPara = ventanasSim.filter(([, x]) => QUIEN_DICHO.test(x));
+  if (sinLeer.length) mal('3A en el simulador: no leí lo que tenía que leer (la prueba no estaría mirando el simulador) · ' + sinLeer.join(' · '));
+  else if (simPara.length) mal('3A en el simulador: lo que sigue a «5 o 6» dice para quién (sp-interno#184) · ' + simPara.map(([d, x]) => d + ': «' + x.trim() + '»').join(' · '));
+  else bien('3A en el simulador: leí ' + pantallas.length + ' pantallas (las de Essential, Silver y Gold, cada una hasta su resultado, Gold también a 1280 px, el paso del nivel y la ubicación después de elegir Gold; ' + caracteres + ' caracteres) y ' + (ventanasSim.length ? 'ningún «5 o 6» dice para quién (' + ventanasSim.map(([d, x]) => d + ': «' + x.trim() + '»').join(' · ') + ')' : 'no dicen «5 o 6» en ninguna: no hay nada que diga para quién'));
 
   const mal8A = [];
   if (!textos.gold || textos.gold.vieja.trim() === GOLD_PARA || !TOPES_ALTOS.test(textos.gold.vieja)) mal('8A, autoprueba en la página: con la línea de antes del 20/10 en la cabecera de Gold, la lectura no la ve (' + JSON.stringify(textos.gold && textos.gold.vieja) + ')');
