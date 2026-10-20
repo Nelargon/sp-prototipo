@@ -1084,12 +1084,17 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // Autoprueba, en texto: el resultado de Silver como se leyó, con una línea de
   // consultas metida debajo del nombre del plan. Con «por persona», cae; sin
   // él, la ventana lo ve y calla, también con la línea de Essential al lado.
+  // Se cuenta contra lo que ya tenía el texto leído: si la página dice para
+  // quién, eso lo marca la línea de abajo, y la autoprueba sigue midiendo solo
+  // al detector (corrección del 20/10: con el sabotaje S2 daba dos ✗ por una
+  // misma falla, y la de la autoprueba decía que el detector veía de más).
   const resSilver = (silver.pasos || []).find((x) => x.precio);
   const baseSilver = resSilver && resSilver.texto.includes('Plan Silver') ? resSilver.texto : null;
   const conPersona = baseSilver && baseSilver.replace('Plan Silver', 'Plan Silver\nSin tope en la mitad de las especialidades; 5 o 6 al año por persona en el resto.');
   const sinPersona = baseSilver && baseSilver.replace('Plan Silver', 'Plan Silver\nSin tope en la mitad de las especialidades; 5 o 6 al año en el resto.\nEn la red, hasta 3 por mes por persona.');
+  const yaDice = baseSilver ? dicePara(baseSilver).length : 0;
   if (!baseSilver) mal('3A en el simulador, autoprueba: no tengo el texto del resultado de Silver para probar');
-  else if (dicePara(conPersona).length !== 1 || dicePara(sinPersona).length || ventanasDeTexto(sinPersona).length !== ventanasDeTexto(baseSilver).length + 1) mal('3A en el simulador, autoprueba: en el resultado de Silver, con «5 o 6 al año por persona» ve ' + dicePara(conPersona).length + ' (debe ver 1) y sin él ' + dicePara(sinPersona).length + ' (debe ver 0)');
+  else if (dicePara(conPersona).length !== yaDice + 1 || dicePara(sinPersona).length !== yaDice || ventanasDeTexto(sinPersona).length !== ventanasDeTexto(baseSilver).length + 1) mal('3A en el simulador, autoprueba: en el resultado de Silver, con «5 o 6 al año por persona» ve ' + (dicePara(conPersona).length - yaDice) + ' más (debe ver 1) y sin él ' + (dicePara(sinPersona).length - yaDice) + ' más (debe ver 0)');
   else bien('3A en el simulador, autoprueba en texto: en el resultado de Silver, «…5 o 6 al año por persona en el resto.» cae y «…5 o 6 al año en el resto.», con «En la red, hasta 3 por mes por persona.» en el renglón de abajo, no');
   const simPara = ventanasSim.filter(([, x]) => QUIEN_DICHO.test(x));
   if (sinLeer.length) mal('3A en el simulador: no leí lo que tenía que leer (la prueba no estaría mirando el simulador) · ' + sinLeer.join(' · '));
