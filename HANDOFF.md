@@ -30,14 +30,31 @@ saboteada con variantes («para cada uno» en la tarjeta, «por persona» en la
 pregunta frecuente, «por beneficiario» en la línea de Silver de `/planes`, «los
 topes más altos» en la pregunta frecuente y «los mayores topes» en el porqué de
 Gold) da ✗ también en lo que la build de antes no tocaba, el «5 o 6» del texto
-del home y de `/planes`; la rama, ✓. Cada control se prueba además en la misma
-página, con la línea de antes metida y devuelta. Después del verificador del
+del home y de `/planes`; la rama, ✓. No todos los controles se prueban además
+en la misma página. Tienen la línea de antes, o una paráfrasis, metida en la
+página, leída con la misma lectura y devuelta: la línea de Silver de la tarjeta
+del home (a 1280 px; a 390 px, con el dedo, no), la cabecera de Gold del home,
+la línea de Gold de `/planes` (a 390 y a 1280 px) y, en el simulador, el
+mensaje del paso que sigue a elegir Gold, la nota de su opción y lo que va al
+lado de su precio, y el porqué de su resultado (en el simulador, en las dos
+capas). Se prueban solo
+con autoprueba en texto, contra textos de antes y de ahora: lo que sigue a cada
+«5 o 6» en el home, en `/planes` y en el simulador (`QUIEN_DICHO`), y
+`TOPES_ALTOS` sobre el texto entero del home y de `/planes`. Y con los sabotajes
+de este párrafo, fuera del repo, todos menos lo que va al lado del precio de la
+opción, que se prueba solo en la página. Después del verificador del
 20/10, dos copias más del simulador: con «…y los mejores topes.» en el porqué de
 Gold y «…, con los topes más amplios.» en la nota de su opción, ✗ en los dos
 lugares y en las dos capas (el texto aprobado y la lista); con paráfrasis que la
 lista no conoce («…, con el máximo en todo.» y «…, sin quedarte corto en
-nada.»), ✗ en los dos por el texto aprobado solo. Lo que se aprendió: BITACORA
-cap. 154.
+nada.»), ✗ en los dos por el texto aprobado solo. Después del segundo
+verificador, tres más, cada una en su build de la v1: la copia de ese
+verificador, con «La cobertura más amplia, con los topes más altos.» en el
+mensaje del paso y «…, con el respaldo más alto en cada tope» en la línea de
+Gold de `/planes`, ✗ en los dos (el mensaje, en los tres recorridos de Gold;
+`/planes`, a 390 y a 1280 px); «5 o 6 al año por persona» en el porqué de Silver
+del simulador, ✗ en la 3A del simulador; y «La cobertura más amplia, sin tope en
+nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
 
 1. **3A, las consultas de Silver sin «por persona»** (sp-interno#184), hasta
    que SP conteste #110. La tarjeta de «Consultas por especialista» del home
@@ -68,6 +85,8 @@ cap. 154.
    no una afirmación sobre los topes. ⚠ Silver sigue diciendo «topes más altos»
    en el simulador (su opción y su porqué: «Más días de terapia intensiva y
    topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
+   Lo decide Arturo en sp-interno#193 (abierto el 20/10): en 10 de las 20
+   especialidades con tope en Silver, Essential puede dar más consultas al año.
    La prueba mira lo de Gold con sus textos aprobados, literales y como se ven:
    su línea de la tabla (`GOLD_PARA`) y, en el simulador, la opción (dice su
    rótulo y `OPCION_AMPLIA_NOTA`, y nada más) y el porqué del resultado (un
@@ -77,7 +96,14 @@ cap. 154.
    *(20/10/2026, verificador: el simulador se miraba solo con `TOPES_ALTOS`, y
    «…y los mejores topes.» en el porqué o «…, con los topes más amplios.» en la
    nota pasaban en verde. Era la lección del cap. 153 aplicada a medias:
-   BITACORA cap. 154.)*
+   BITACORA cap. 154.)* *(20/10/2026, segundo verificador: tres controles más
+   del mismo tipo. El mensaje que acompaña el paso que sigue a elegir Gold en
+   el simulador es, literal, `GOLD_PARA`, como se ve a 390 y a 1280 px; la línea
+   de Gold de `/planes` es, literal, «La cobertura más amplia» (`GOLD_TAG`), en
+   la tarjeta del celular y en el texto de la cabecera de la tabla, que en la
+   computadora no se ve; y la 3A lee lo visible de cada pantalla del simulador,
+   que hoy no dice ningún «5 o 6», y falla si no leyó. Antes, una copia con la
+   frase vieja en el mensaje y una paráfrasis en `/planes` daba 133 ✓.)*
 3. **180A, la cifra de contratos activos de SP sale de los documentos de este
    repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de
    Google Analytics: en este archivo (punto 3c de «Prioridad alta») y en el cap.
@@ -225,17 +251,18 @@ de f40cc02 y pasa con el cambio):
   con la tarjeta cerrada y se prueba contra teclas mudas.
 
 **Quedan para Arturo, como puntos de revisión de sp-interno** (etiqueta
-`revisión`; los abre el Guardián con el texto y las opciones que dejó esta
-vuelta, y este párrafo suma sus números cuando existan): (1) si la celda
-«Preguntale a tu asesor» lleva a WhatsApp; (2) un solo pie para fisioterapia;
+`revisión`; los abrió el Guardián el 18/10/2026 con el texto y las opciones que
+dejó esta vuelta, y cada uno lleva acá su número): (1) si la celda
+«Preguntale a tu asesor» lleva a WhatsApp (sp-interno#182); (2) un solo pie
+para fisioterapia (#183);
 (3) el «por persona» de la tarjeta de consultas de Silver del home al lado de
 «5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
 fusionar sin respuesta *(20/10/2026: decidida, 3A, sp-interno#184: sale «por
 persona»; ver «✅ DECIDIDO EL 20/10/2026»)*; (4) la condición de la tomografía de Essential en las
-tablas; (5) el «—» de «Cuadro 2» de Essential; (6) «y/o» y «post-quirúrgica»
-en los rótulos del plegable; (7) si la proporción de tráfico que entra por
-celular (trece lugares) y la paciencia del personaje del `BRANDSCRIPT.md`
-también pasan al puntero (las cifras, en
+tablas (#185); (5) el «—» de «Cuadro 2» de Essential (#186); (6) «y/o» y
+«post-quirúrgica» en los rótulos del plegable (#187); (7) si la proporción de
+tráfico que entra por celular (trece lugares) y la paciencia del personaje del
+`BRANDSCRIPT.md` también pasan al puntero (#188; las cifras, en
 `sp-interno/project/metricas-web-ga-2026.md`; este párrafo las repetía y se
 sacaron en la vuelta 3, 17/10/2026);
 (8) «con los topes más altos» de Gold en el home y el simulador, que con la
@@ -243,7 +270,7 @@ grilla es falso para la fisioterapia (#50) *(20/10/2026: decidida, 8A,
 sp-interno#189: Gold dice «La cobertura más amplia»; ver «✅ DECIDIDO EL
 20/10/2026»)*; y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
-planilla, y hoy solo el plegable; `essential.json` no lo trae).
+planilla, y hoy solo el plegable; `essential.json` no lo trae; #190).
 
 **Vuelta 3 del comité (17/10, 36 hallazgos, BITACORA cap. 151).** El Guardián
 separó lo que es de Claude (se arregló en la rama), lo que es de Arturo o de SP
