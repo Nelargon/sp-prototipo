@@ -90,9 +90,9 @@ cap. 154.
    de la U4A, que no trae esta cifra.)* Los dos archivos, este y el de la U4A,
    llegan a sp-interno con su PR #177: **#177 se fusiona antes que este PR o
    junto con él**, o los punteros mandan a un archivo que no está en `main`.
-   La búsqueda de la cifra ya no la encuentra en el árbol; el comando, lo que
-   encontró y el texto original están en sp-interno, no acá: la expresión de
-   búsqueda es la cifra escrita de otra manera. El historial de git la
+   La búsqueda de la cifra ya no la encuentra en el árbol; el comando y lo que
+   encontró están en ese mismo archivo, no acá: la expresión de búsqueda es la
+   cifra escrita de otra manera (BITACORA cap. 154). El historial de git la
    conserva: la decisión cambia lo que se lee hoy. **La regla del punto
    7 de abajo (U4A) vale también para una cifra interna de SP sin confirmar.**
 

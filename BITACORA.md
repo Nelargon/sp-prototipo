@@ -5569,6 +5569,15 @@ del repo público).
   topes más amplios.» en la nota de la opción daban ✓. Ahora el simulador
   también se compara con sus textos aprobados, y la lista quedó como segunda
   capa.
+- **La búsqueda escrita era la cifra.** El HANDOFF contaba que la cifra de
+  contratos ya no estaba en el árbol con la expresión con que se la buscó, y al
+  lado aclaraba qué aciertos no eran ella: quien lo leía, la reconstruía. Y el
+  puntero mandaba a la tabla de Google Analytics de la U4A, que no tiene ese
+  dato. Lo encontró el verificador antes de subir los commits: el comando pasó
+  al repo privado, con la cifra, y los punteros, a un archivo propio
+  (`sp-interno/project/cifra-contratos-activos.md`). La expresión sigue en la
+  historia de git, como la cifra misma desde julio: la 180A cambia lo que se
+  lee hoy.
 
 **Qué aprendimos.**
 - **Sacar un dato de la página no lo saca del repo.** El párrafo que explica
@@ -5584,3 +5593,7 @@ del repo público).
 - **Si una superficie de un dato se mira con su texto aprobado, todas las demás
   también.** La paráfrasis pasa por la que quedó mirada con la lista de lo que
   no va.
+- **Para contar que un dato salió, no se escribe cómo encontrarlo.** El comando
+  que lo busca va con el dato, en el repo privado. Y un puntero se verifica
+  abriendo el archivo al que apunta: que exista no alcanza, tiene que tener el
+  dato.
