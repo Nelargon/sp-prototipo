@@ -21,10 +21,9 @@ que documenta la implementación técnica de la página de planes.
 
 Rama `codex/simulador-leads-20261020`, desde `05a4e80`. Arturo pidió verificar el
 recorrido y preparar la solución **sin publicar ni fusionar directamente**.
-La validación y los bloqueos están en `docs/VALIDAR-LEADS.md`; continúan en
-[sp-interno#84](https://github.com/Nelargon/sp-interno/issues/84),
-[#86](https://github.com/Nelargon/sp-interno/issues/86) y
-[#85](https://github.com/Nelargon/sp-interno/issues/85). No se cierran por este PR.
+La validación y los bloqueos están en `docs/VALIDAR-LEADS.md`. Los pendientes
+operativos continúan en el seguimiento interno existente; esta rama no los
+cierra. La rama está disponible para revisión, sin PR ni autorización de publicación.
 
 - **Corrección de la decisión histórica 11x:** sí hay formularios publicados
   en el portal. Falta elegir y validar el destinado al simulador; un ID solo

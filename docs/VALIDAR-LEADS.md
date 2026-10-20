@@ -34,9 +34,7 @@ propuesto para resolverlo, no una asignación ya acordada.
 | Medición y privacidad | Marketing + responsable de privacidad + Desarrollo | Elegir GA4/Plausible, cuenta/propiedad propia, consentimiento y política; ver evento en el panel y revisar tráfico de red |
 | Origen de campañas | Marketing + administrador HubSpot | Acordar propiedades y vocabulario de campaña, agregarlos al formulario y probarlos. Esta rama NO copia UTM ni identificadores publicitarios libres |
 
-Seguimiento único: [sp-interno#84](https://github.com/Nelargon/sp-interno/issues/84),
-[#86](https://github.com/Nelargon/sp-interno/issues/86) y
-[#85](https://github.com/Nelargon/sp-interno/issues/85).
+Registrar decisiones y evidencia en el seguimiento interno existente.
 La revisión del 20/10 confirmó en el portal dos formularios publicados:
 “Formulario Nueva Web” y “Salud protegida - Formulario web”. Sus identificadores
 y fuentes se entregan en la respuesta de la tarea; el estado publicado
