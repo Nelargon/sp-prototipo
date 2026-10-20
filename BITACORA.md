@@ -555,6 +555,12 @@ desactualizada. Preguntarse "¿estoy leyendo la última versión?" antes que
 
 ## Capítulo 24 — El feedback que nos encontró violando nuestra propia regla
 
+*(20/10/2026: la cifra de contratos activos de SP de este capítulo pasó a un
+puntero por decisión de Arturo, sp-interno#180 (180A): está en el repo privado,
+`sp-interno/project/metricas-web-ga-2026.md`. Es una excepción decidida a la
+regla de no reescribir la bitácora, como la U4A en los cap. 16 y 57; lo
+aprendido no cambió.)*
+
 El usuario trajo un feedback externo sobre la web — el mejor que recibió
 el prototipo hasta ahora. La señal más valiosa no fue ningún hallazgo
 puntual sino la lectura estratégica final: "la guía consigue recurrencia,
@@ -573,7 +579,9 @@ tenía: "Desde SP Integral", en dorado.
 
 Del mismo feedback salió la disciplina de cifras: solo sobreviven los
 números confirmados por el usuario. Vidas (~19.000) es real y se queda;
-contratos (~9.100) no estaba confirmado y salió; prestadores espera la
+contratos (la cifra de contratos activos de SP está en el repo privado,
+`sp-interno/project/metricas-web-ga-2026.md`) no estaba confirmado y salió;
+prestadores espera la
 confirmación del +800 antes de tocar el "más de 50" actual (que es
 verdadero pero se queda corto); y los años dejaron de ser un número
 escrito a mano — se calculan desde la fundación (agosto de 2002) en cada
@@ -5519,3 +5527,50 @@ no. Lo que queda: **una prueba cubre lo que lee, no lo que nombra.** «Las nueve
 tarjetas» era cierto en un ancho y con un puntero. Cuando se escribe qué cubre
 una prueba, se escribe con sus superficies, sus anchos y su manera de abrir, y
 al lado, lo que no cubre.
+
+## Capítulo 154 — Lo que salió de la página seguía en los papeles (20/10/2026)
+
+**Qué intentamos.** Aplicar el «Adelante» de Arturo del 20/10 en el PR #271:
+tres puntos que el comité y el Guardián habían dejado para él. Dos son del sitio
+(3A: las consultas de Silver sin «por persona»; 8A: Gold sin «con los topes más
+altos») y uno, de los documentos (180A: la cifra de contratos activos de SP sale
+del repo público).
+
+**Qué pasó.**
+
+- **La cifra que la U4A no vio.** El 17/10 la U4A sacó del repo público los
+  nombres de competidores y las cifras de Google Analytics, y los buscó por
+  nombre y por cifra de tráfico. La de contratos activos no era ni una cosa ni
+  la otra: había salido del home en julio por no estar confirmada (cap. 24) y
+  seguía escrita en el HANDOFF y en esta bitácora, justo en los párrafos que
+  contaban por qué había salido. La encontró el Guardián al otro día (paso 5,
+  «Público/privado»).
+- **Dos oraciones tomaban partido por un dato en duda.** «5 o 6 al año por
+  persona» y «con los topes más altos» eran ciertas solo si una de dos fuentes
+  tenía razón. En la misma tabla, sobre esos mismos datos, la celda de
+  psicología de Silver decía «¿quién?» y la de fisioterapia de Gold,
+  «Preguntale a tu asesor». La duda estaba escrita en la celda y no en la
+  oración de al lado.
+- **Cambiar la tarjeta obligó a cambiar la lista cerrada**, que es lo que se
+  buscó el 18/10 (cap. 153): la línea nueva entró en `TARJETA_APROBADA` y la
+  vieja salió, con nota.
+- **La prueba nueva del «5 o 6» leía de más y miraba donde no había nada.** La
+  primera versión leía el `textContent` de todo el body, y la ventana que sigue
+  a «5 o 6» se llevaba la línea de al lado («…en el restoTomografía y
+  resonancia: 2 tomografías/¿quién?/año…»): con otra vecina habría gritado en
+  falso. Ahora lee el bloque que tiene el «5 o 6». Y miraba también el
+  resultado de Silver del simulador, donde no hay ningún «5 o 6»: ahí iba a dar
+  verde siempre. Salió, y la prueba falla si en el home o en `/planes` no
+  encuentra ninguno.
+
+**Qué aprendimos.**
+- **Sacar un dato de la página no lo saca del repo.** El párrafo que explica
+  por qué salió lo repite. Cuando algo sale por no estar confirmado o por ser
+  interno, se busca también en los documentos que cuentan su salida.
+- **Una búsqueda por lista encuentra lo que la lista nombra.** Es la lección del
+  cap. 153, del lado de los documentos: la U4A buscó nombres y cifras de
+  tráfico, y la pregunta de la regla es otra, «¿le sirve a un competidor?».
+- **Si la celda duda, la oración de al lado también.** Un dato en duda no se
+  afirma en ninguna capa: ni en la forma corta, ni en la tarjeta, ni en la línea
+  que presenta al plan.
+- **Una prueba que no encuentra nada que mirar tiene que fallar**, no dar verde.

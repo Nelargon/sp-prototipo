@@ -13,7 +13,74 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 18 oct 2026.*
+*Última actualización: 20 oct 2026.*
+
+---
+
+## ✅ DECIDIDO EL 20/10/2026 («Adelante»: 3A, 8A y 180A)
+
+Arturo contestó «Adelante», sobre lo recomendado en la cita del Guardián de ese
+día. Lo registran sp-interno #184, #189 y #180 (comentarios del 20/10). Va en la
+misma rama del PR #271. Las dos decisiones del sitio tienen su control en
+`qa/qa-lanzamiento.mjs` (sección «Lo que espera a SP no se afirma»), probado
+fuera del repo: la build de antes (5a15047) da ✗ en la línea de Silver de la
+tarjeta (a 1280 y a 390 px) y en los cuatro lugares de Gold (la línea de la
+tabla, el texto del home, la opción y el porqué del simulador); una copia
+saboteada con variantes («para cada uno» en la tarjeta, «por persona» en la
+pregunta frecuente, «por beneficiario» en la línea de Silver de `/planes`, «los
+topes más altos» en la pregunta frecuente y «los mayores topes» en el porqué de
+Gold) da ✗ también en lo que la build de antes no tocaba, el «5 o 6» del texto
+del home y de `/planes`; la rama, ✓. Cada control se prueba además en la misma
+página, con la línea de antes metida y devuelta. Lo que se aprendió: BITACORA
+cap. 154.
+
+1. **3A, las consultas de Silver sin «por persona»** (sp-interno#184), hasta
+   que SP conteste #110. La tarjeta de «Consultas por especialista» del home
+   dice para Silver «Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6
+   al año. Hasta 3 por mes en cada especialidad; después, con copago.». El
+   porqué: la psicología es una de ese resto y su fila dice «5/¿quién?/año»; la
+   tabla afirmaba y negaba el mismo dato. `/planes` (su tarjeta y la línea de la
+   tarjeta de Silver) y la pregunta frecuente del home ya decían «5 o 6 al año
+   en el resto», sin para quién, y no cambiaron. La línea de Essential («En la
+   red, hasta 3 por mes por persona.») no es parte de la decisión y queda. La
+   lista cerrada `TARJETA_APROBADA` (BITACORA cap. 153) se actualizó con la
+   línea nueva, con nota: no se aflojó. La prueba lee la línea de Silver abierta
+   como una persona (a 1280 px con el mouse y a 390 px con el dedo) y lo que
+   sigue a cada «5 o 6» en el texto del home y de `/planes`: nada puede decir
+   para quién (`QUIEN_DICHO`: «por persona», «por beneficiario», «para cada
+   uno», «por familia»…).
+2. **8A, Gold «La cobertura más amplia», sin «con los topes más altos»**
+   (sp-interno#189), hasta que SP conteste #50. El porqué: si vale la grilla,
+   Gold tiene menos fisioterapia que Silver (10 + 3 contra 15 + 5); el
+   superlativo tomaba el lado de `gold.json`, que es lo que la G1A evita, y
+   favorecía al plan caro. Cambió en tres lugares: la línea de Gold de la tabla
+   del home («La cobertura más amplia.»), la nota de la opción «La cobertura más
+   amplia posible» del simulador («Consultas sin tope en casi todas las
+   especialidades y más días de internación y terapia intensiva.») y el porqué
+   del resultado de Gold («La cobertura más amplia: consultas sin tope en casi
+   todas las especialidades y más días de internación.»). El rótulo de la
+   opción, «La cobertura más amplia posible», queda: es lo que la persona busca,
+   no una afirmación sobre los topes. ⚠ Silver sigue diciendo «topes más altos»
+   en el simulador (su opción y su porqué: «Más días de terapia intensiva y
+   topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
+   La prueba mira lo de Gold: su línea de la tabla, literal; el texto entero del
+   home y de `/planes`; y en el simulador, la opción y el porqué de Gold
+   (`TOPES_ALTOS`).
+3. **180A, la cifra de contratos activos de SP sale de los documentos de este
+   repo** (sp-interno#180), con el trato que la U4A les dio a las cifras de
+   Google Analytics: en este archivo (punto 3c de «Prioridad alta») y en el cap.
+   24 de la BITACORA queda un puntero, «(la cifra de contratos activos de SP
+   está en el repo privado, `sp-interno/project/metricas-web-ga-2026.md`)», con
+   nota fechada (en la BITACORA, como excepción decidida a no reescribirla). El
+   texto original, con archivo y línea, lo guarda el Guardián en sp-interno.
+   `git grep -n -E '9[.]?100'` ya no la encuentra (quedan dos precios de Gs.
+   910.000 en `datos/planes-vigentes/`, que no son la cifra). El historial de
+   git la conserva: la decisión cambia lo que se lee hoy. **La regla del punto
+   7 de abajo (U4A) vale también para una cifra interna de SP sin confirmar.**
+
+**Sigue esperando a SP:** cuando conteste #110, la tarjeta de consultas de
+Silver puede volver a decir para quién (y la prueba de la 3A se ajusta en el
+mismo PR); cuando conteste #50, se revisa qué puede decir Gold de sus topes.
 
 ---
 
@@ -95,7 +162,8 @@ aprendió en el camino: BITACORA cap. 148.
    la red de SP. **Regla para lo que venga:** un nombre de competidor o una
    cifra de tráfico de la web de SP no se escribe en este repo; va al privado
    y acá, un puntero (CLAUDE.md de sp-interno, «¿esto le sirve a un
-   competidor?»).
+   competidor?»). *(20/10/2026: la 180A le sumó la cifra de contratos activos
+   de SP, que la U4A no había alcanzado; ver «✅ DECIDIDO EL 20/10/2026».)*
 
 **Fuera de este PR:** E2A (los 27 cambios claros del barrido de la regla de
 escaneo) va en un PR aparte, después de que se fusione este. E4A (el precio del
@@ -144,7 +212,8 @@ vuelta, y este párrafo suma sus números cuando existan): (1) si la celda
 «Preguntale a tu asesor» lleva a WhatsApp; (2) un solo pie para fisioterapia;
 (3) el «por persona» de la tarjeta de consultas de Silver del home al lado de
 «5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
-fusionar sin respuesta; (4) la condición de la tomografía de Essential en las
+fusionar sin respuesta *(20/10/2026: decidida, 3A, sp-interno#184: sale «por
+persona»; ver «✅ DECIDIDO EL 20/10/2026»)*; (4) la condición de la tomografía de Essential en las
 tablas; (5) el «—» de «Cuadro 2» de Essential; (6) «y/o» y «post-quirúrgica»
 en los rótulos del plegable; (7) si la proporción de tráfico que entra por
 celular (trece lugares) y la paciencia del personaje del `BRANDSCRIPT.md`
@@ -152,7 +221,9 @@ también pasan al puntero (las cifras, en
 `sp-interno/project/metricas-web-ga-2026.md`; este párrafo las repetía y se
 sacaron en la vuelta 3, 17/10/2026);
 (8) «con los topes más altos» de Gold en el home y el simulador, que con la
-grilla es falso para la fisioterapia (#50); y (9) si la fisioterapia de
+grilla es falso para la fisioterapia (#50) *(20/10/2026: decidida, 8A,
+sp-interno#189: Gold dice «La cobertura más amplia»; ver «✅ DECIDIDO EL
+20/10/2026»)*; y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
 planilla, y hoy solo el plegable; `essential.json` no lo trae).
 
@@ -310,7 +381,8 @@ cerrada»):
   la tarjeta de la computadora, no la de la tarjeta del plan en el celular.)*
 - **El costo, a propósito:** cambiar una línea de esas tarjetas (por ejemplo
   cuando Arturo conteste la 3 o la 9, o SP la #110 o la #50) obliga a sumarla a
-  `TARJETA_APROBADA` en el mismo PR, a conciencia.
+  `TARJETA_APROBADA` en el mismo PR, a conciencia. *(20/10/2026: pasó con la
+  3A; la línea de Silver de consultas cambió en la lista, con nota.)*
 
 **Vuelta 3, celular: qué cubre la lista cerrada, superficie por superficie
 (18/10, tercer verificador del cierre, BITACORA cap. 153).** La lista leía la
@@ -377,14 +449,16 @@ exactamente esto:
 *Para Arturo, sin tocar* (son sus preguntas o datos de SP; los números son
 los de la lista de arriba): **8**, Gold «con los topes más altos»
 (E1, D2: el estratega y el revisor de datos piden tratarla como la 3, para no
-fusionar sin respuesta, porque con la grilla es falso en fisioterapia); **9**,
+fusionar sin respuesta, porque con la grilla es falso en fisioterapia)
+*(20/10/2026: decidida, 8A, sp-interno#189)*; **9**,
 la fisioterapia de Essential «solo traumatológica» (E3, D4: cuando se conteste,
 la prueba de tipos tiene que comparar los tres planes, no solo Silver y Gold);
 **4**, que se amplía: la resonancia de Essential «sin contraste» tampoco está
 en la celda ni en la línea de la tarjeta, así que conviene contestar la
 tomografía y la resonancia juntas (E7: la condición de Essential que la celda
 no dice es una clase, no un caso); **3**,
-las consultas de Silver «por persona»; y **1, 2, 5, 6 y 7**, como estaban.
+las consultas de Silver «por persona» *(20/10/2026: decidida, 3A,
+sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
 
 *Seguimiento, fuera de este PR:*
 - Las ecografías de Silver y Gold dicen «2 meses» sin «la mayoría» (D10):
@@ -1538,7 +1612,8 @@ una firme y se regenera.
   resultado ahora lo avisa y apunta a Plan Vital.
 - **Tarjetas «para quién» de la tabla del home:** Gold decía «Tranquilidad total,
   sin preocupaciones», una promesa absoluta (ningún plan cubre todo); ahora dice
-  «La cobertura más amplia, con los topes más altos». Silver decía «La más
+  «La cobertura más amplia, con los topes más altos» *(⚠ 20/10/2026: «con los
+  topes más altos» salió por la 8A; ver «✅ DECIDIDO EL 20/10/2026»)*. Silver decía «La más
   elegida. Cobertura equilibrada…» justo debajo del badge «La más elegida»: se
   quitó la repetición (regla de etiquetas). **El badge queda** *(⚠ 13/10/2026: salió por la decisión 2A; ver el punto 2 de «✅ DECIDIDO EL 13/10/2026».)*; sigue abierta la
   pregunta de siempre para Comercial (¿hay dato de ventas que lo sostenga?, ver
@@ -4417,7 +4492,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    leído. **Ejecutado en el mismo día**: (a) etiqueta "No incluida" del
    comparador → "Desde SP Integral" en dorado (violaba la decisión #7);
    (b) cifras: quedan solo las confirmadas — vidas ~19.000 (real),
-   contratos ~9.100 salió (sin confirmar), los años se calculan desde la
+   contratos (la cifra de contratos activos de SP está en el repo privado,
+   `sp-interno/project/metricas-web-ga-2026.md`) salió (sin confirmar)
+   *(20/10/2026: la cifra pasó a un puntero por decisión de Arturo,
+   sp-interno#180, 180A)*, los años se calculan desde la
    fundación (agosto 2002, `YEARS_CARING` en `app/quote.js` + script en
    la guía) en cada build; (c) el bloque CI+fecha de la guía lleva
    etiqueta visible "Demostración" y aclara que muestra un asegurado de
