@@ -17,6 +17,33 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 20/10/2026 — Captación del simulador, propuesta sin publicar
+
+Rama `codex/simulador-leads-20261020`, desde `05a4e80`. Arturo pidió verificar el
+recorrido y preparar la solución **sin publicar ni fusionar directamente**.
+La validación y los bloqueos están en `docs/VALIDAR-LEADS.md`; continúan en
+[sp-interno#84](https://github.com/Nelargon/sp-interno/issues/84),
+[#86](https://github.com/Nelargon/sp-interno/issues/86) y
+[#85](https://github.com/Nelargon/sp-interno/issues/85). No se cierran por este PR.
+
+- **Corrección de la decisión histórica 11x:** sí hay formularios publicados
+  en el portal. Falta elegir y validar el destinado al simulador; un ID solo
+  no basta. `lead.js` centraliza configuración, consentimiento, POST, timeout y
+  resultados. La configuración queda apagada por defecto.
+- `sent` significa aceptación HTTP de HubSpot. WhatsApp preparado/abierto
+  nunca significa lead recibido. Una falla conserva los campos y ofrece
+  reintento explícito y WhatsApp; un timeout puede haber llegado al CRM.
+- `track()` tiene una lista cerrada y adaptadores GA4/Plausible, apagados hasta
+  la decisión de SP. No salen datos de contacto, búsquedas, URLs completas,
+  datos del grupo, plan, precio ni la clave del servicio médico. Las aperturas
+  de explicaciones conservan el conteo por tipo y su deduplicación local.
+- El diagnóstico local para QA pasa de consola a `sp:measurement`, ya filtrado.
+  La QA integral y de lanzamiento se adaptan a ese contrato. Los eventos fuera
+  de la lista quedan sin exportar hasta revisar su contrato.
+- El PR #271 toca también `quote.js`, `Simulador.jsx`, las QA y este documento:
+  integrar los dos trabajos antes del merge, sin reemplazar sus decisiones.
+
+
 ## ✅ DECIDIDO EL 13/10/2026 (cita del Guardián, «1A, 2A, 3A, 4A, 5A»)
 
 Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue cada una:

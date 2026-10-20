@@ -5054,3 +5054,24 @@ trae `<meta charset>`, se leía con los acentos rotos.
 - **Un selector de escena se acota a lo que pinta**: `span:not(.asi-no)`, no
   `span`.
 
+
+
+## Captación — aceptar un formulario no acredita todo el recorrido (20/10/2026)
+
+**Qué intentamos.** Verificar el camino simulador → formulario → contacto y
+preparar una rama sin publicar, según el pedido de Arturo.
+
+**Qué pasó.** En `05a4e80` el ID seguía vacío y el fallback marcaba `sent:true` y
+`sim_lead_submit` antes de abrir WhatsApp. La guía de publicación incluso
+llamaba contacto efectivo a ese clic. Al revisar el portal sí aparecieron dos
+formularios web publicados: la existencia no era la dependencia correcta.
+Seguían faltando la selección del formulario y la comprobación de sus campos,
+consentimiento y tratamiento comercial. Las notas históricas 11x describían
+una intención; no demostraban que el circuito estuviera conectado.
+
+**Qué aprendimos.** Hay cuatro hechos distintos: intento, aceptación HTTP,
+contacto comprobado en CRM y atención comercial. El código ahora distingue los
+primeros dos, nunca da por recibido un WhatsApp y no promete una respuesta que
+no pueda comprobar. La aceptación técnica tampoco cuenta personas únicas ni
+ventas. El cierre operacional y las decisiones están en los issues existentes,
+con la prueba reproducible en `docs/VALIDAR-LEADS.md`.

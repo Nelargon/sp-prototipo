@@ -1,7 +1,7 @@
 # Cómo publicar la v1 del sitio de Salud Protegida
 
 **Para el equipo que la publica (Buenavista).** Una página, sin supuestos.
-Última revisión: 24/09/2026.
+Última revisión de captación y medición: 20/10/2026 (propuesta en rama, sin publicar).
 
 ## 1. Qué es esto
 
@@ -51,21 +51,29 @@ roto.
 
 ## 4. Lo que hay que conectar antes de abrir
 
-1. **Contactos del simulador → HubSpot.** Hoy el contacto viaja solo por
-   WhatsApp: si la persona no toca el botón verde, se pierde. Crear el
-   formulario en HubSpot (campos `firstname`, `phone`, `email`, `message`) y
-   poner su ID en `HUBSPOT_FORM_ID` (`app/quote.js`). Con eso el contacto entra
-   al CRM, y si el envío falla, sigue por WhatsApp.
-2. **Medición.** Cada interacción llama a `track()` (`app/track.js`), que hoy
-   solo escribe en la consola. Hay que conectarla a GA4 o a un endpoint.
-   Regla del proyecto: **nunca** mandar nombre, teléfono, email ni lo que la
-   persona escribe en los buscadores.
-   Ojo con un evento: `sim_lead_submit` se dispara al tocar "Enviarme mi
-   cotización", **antes** de que la persona mande el WhatsApp. El contacto
-   enviado de verdad es `click_whatsapp {origen: 'simulador_lead'}` (o el CRM).
-3. **Política de privacidad.** El sitio pide nombre, WhatsApp y email, y el
-   pie todavía no tiene el link. Con GA4 también hace falta un aviso de
-   cookies. Plausible no lo necesita. Esto lo tiene que validar Legal.
+1. **Contactos del simulador → HubSpot.** Hay formularios publicados, pero
+   falta validar cuál corresponde a este flujo, sus campos y la asignación
+   comercial. La configuración está en `app/lead.js` mediante variables del
+   build. Un ID no la activa solo: requiere validación, política de privacidad
+   y texto de consentimiento. Ver el procedimiento en
+   [VALIDAR-LEADS.md](VALIDAR-LEADS.md). Una respuesta aceptada muestra recepción;
+   si falta configuración o el envío falla, WhatsApp queda como alternativa.
+2. **Medición.** `app/track.js` envía únicamente eventos y campos de una lista
+   cerrada a GA4 o Plausible, **apagados por defecto**. Se habilita con proveedor
+   y validación de SP. GA4 espera además consentimiento de la persona y exige
+   desactivar medición mejorada/captura automática en la propiedad. No envía
+   nombre, teléfono, email, búsquedas, cotizaciones, grupo, plan, precio ni
+   parámetros de URL. Los eventos del resto del sitio fuera de esa lista se
+   descartan hasta revisar su contrato.
+   **`sim_lead_accepted` significa aceptación del formulario por HubSpot.**
+   `click_whatsapp` solo significa apertura: no demuestra mensaje enviado,
+   contacto recibido ni venta. El registro efectivo y la asignación se
+   verifican dentro del CRM, con evidencia privada.
+3. **Privacidad.** SP debe validar y publicar la política, su enlace y el
+   texto de consentimiento del formulario. El código no inventa aprobación
+   ni inscribe a nadie en publicidad. El consentimiento analítico es separado:
+   falta conectar y probar la CMP si se usa GA4 (también es el modo por defecto
+   para Plausible). No inferir cumplimiento legal por elegir una herramienta.
 4. **Redirecciones desde la web actual.** Las URLs viejas que tengan tráfico
    (y las de campañas) tienen que redirigir a su equivalente nuevo.
    **Muy importante: el QR del carnet** lleva hoy a la guía médica de SIP. Si

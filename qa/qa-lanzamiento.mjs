@@ -349,10 +349,10 @@ console.log('\n── /planes/: la página única de detalle');
   else bien('/simulador/: los números del riel se leen (' + Math.min(...riel.map((x) => x.cr)).toFixed(2) + ':1 o más)');
   // Las explicaciones que se abren al tocar se miden (regla de claridad,
   // sp-interno#98): abrir «carencia» manda un abre_explicacion, una sola vez
-  // por página aunque se vuelva a abrir. Se escucha console.debug, que es por donde sale
-  // track() hasta que haya backend.
+  // por página aunque se vuelva a abrir. Se observa el contrato filtrado
+  // de track(), sin depender de una plataforma externa.
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
-  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  await page.evaluate(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
   // :visible — la comparativa del celular también tiene su «carencia», escondida
   // en la computadora (07/10/2026).
   const pal = page.locator('button.txt:visible', { hasText: 'carencia' }).first();
@@ -368,7 +368,7 @@ console.log('\n── /planes/: la página única de detalle');
       await page.waitForTimeout(300);
     }
     const ev = await aExpl();
-    if (ev.length !== 1 || ev[0].datos?.tipo !== 'glosario' || ev[0].datos?.clave !== 'carencia') mal('/planes/: abrir «carencia» dos veces tiene que mandar un solo abre_explicacion de glosario (' + JSON.stringify(ev) + ')');
+    if (ev.length !== 1 || ev[0].datos?.tipo !== 'glosario' || ev[0].datos?.clave !== undefined) mal('/planes/: abrir «carencia» dos veces tiene que mandar un solo abre_explicacion de glosario (' + JSON.stringify(ev) + ')');
     else bien('/planes/: abrir «carencia» se mide, una sola vez por página');
   }
   await page.close();
@@ -385,7 +385,7 @@ console.log('\n── /planes/ en el celular: tarjetas iguales y el detalle al t
 for (const width of [360, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
   const page = await ctx.newPage();
-  await page.addInitScript(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  await page.addInitScript(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
   await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
   const n = 'móvil ' + width;
   const r = await page.evaluate(() => {
@@ -453,7 +453,7 @@ for (const width of [360, 390]) {
   else bien('escritorio: en la computadora, la tabla y no la comparativa del celular');
   // La letra chica de cada servicio se abre al pasar el mouse por su nombre,
   // con los tres planes y su espera, y se mide (como en el home).
-  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  await page.evaluate(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
   const srv = page.locator('#comparar-planes .cmp2-lab .cmp2-srv', { hasText: 'Internación' });
   let t = null;
   if (await srv.count()) {
@@ -464,7 +464,7 @@ for (const width of [360, 390]) {
     await page.waitForTimeout(300);
     t = await page.evaluate(() => { const e = document.querySelector('#comparar-planes .cmp2-tarjeta'); return e ? { planes: e.querySelectorAll('.cmp2-tarjeta-p').length, espera: /de espera/.test(e.textContent) } : null; });
   }
-  const evS = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'servicio' && x.datos?.clave === 'Internación');
+  const evS = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion' && x.datos?.tipo === 'servicio' && x.datos?.clave === undefined);
   if (!t || t.planes !== 3 || !t.espera || evS.length !== 1) mal('escritorio: pasar el mouse por «Internación» tiene que abrir su tarjeta con los tres planes y la espera, y medirse una vez (' + JSON.stringify({ t, ev: evS.length }) + ')');
   else bien('escritorio: la letra chica de cada servicio se abre al pasar el mouse, con su espera, y se mide');
   await page.close();
@@ -542,7 +542,7 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   // que la prueba exige. El 01/10 volvió a fallar y esto mostró la causa: el
   // click cayó en la celda, no en el botón (la espera de arriba).
   await page.evaluate(() => { window.__cmpEv = []; for (const t of ['pointerdown', 'pointerup', 'touchend', 'focusin', 'focusout', 'click']) document.addEventListener(t, (e) => window.__cmpEv.push(t + (e.pointerType ? '/' + e.pointerType : '') + '→' + (e.target.closest?.('.cmp2-srv') ? 'botón' : String(e.target.className || e.target.nodeName).slice(0, 24))), true); });
-  await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+  await page.evaluate(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
   if (movil) await btn.tap();
   else {
     const caja = await btn.boundingBox();
@@ -557,10 +557,10 @@ for (const [nombre, width, height] of [['móvil 360', 360, 780], ['móvil 390', 
   const ev = await page.evaluate(() => window.__cmpEv || []);
   if (!t || t.planes !== 3 || !t.dentro || !cerrada) mal(nombre + ': la tarjeta del servicio no se abre con los tres planes, se sale de la pantalla o no se cierra con Escape (' + JSON.stringify({ t, cerrada, react, quieto, ev }) + ')');
   else bien(nombre + ': la tarjeta del servicio se abre ' + (movil ? 'al tocar' : 'al pasar el mouse') + ', con los tres planes, y se cierra');
-  // Abrir la tarjeta se mide una vez, con el nombre del servicio (sp-interno#98).
+  // Abrir la tarjeta se mide una vez por servicio; solo sale el tipo, sin su nombre.
   const evSrv = (await page.evaluate(() => window.__tracks)).filter((x) => x.evento === 'abre_explicacion');
-  if (evSrv.length !== 1 || evSrv[0].datos?.tipo !== 'servicio' || evSrv[0].datos?.clave !== 'Fisioterapia') mal(nombre + ': abrir la tarjeta de Fisioterapia tiene que mandar un solo abre_explicacion de servicio (' + JSON.stringify(evSrv) + ')');
-  else bien(nombre + ': abrir la tarjeta del servicio se mide, con su nombre');
+  if (evSrv.length !== 1 || evSrv[0].datos?.tipo !== 'servicio' || evSrv[0].datos?.clave !== undefined) mal(nombre + ': abrir la tarjeta de Fisioterapia tiene que mandar un solo abre_explicacion de servicio (' + JSON.stringify(evSrv) + ')');
+  else bien(nombre + ': abrir la tarjeta del servicio se mide, sin su nombre');
   if (!movil) {
     await page.evaluate(() => { const e = document.querySelector('#cartilla'); window.scrollTo({ top: e.getBoundingClientRect().top + scrollY + 300, behavior: 'instant' }); });
     await page.waitForTimeout(200);

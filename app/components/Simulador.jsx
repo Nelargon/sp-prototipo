@@ -5,12 +5,13 @@ import { css } from '../css';
 import IconoSP from './IconoSP';
 import { BP } from '../basePath';
 import {
-  WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
+  WHATSAPP_NUMBER, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
   ZONA_ESSENTIAL, GUIA_ESSENTIAL, RED_ESSENTIAL,
 } from '../quote';
 import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
 import { redEnZona, guiaHref } from '../../lib/red-zona';
 import { track, trackExplicacion } from '../track';
+import { LEAD_CONFIG, leadReady, contactError, submitLead, simulationDraft } from '../lead';
 
 // «¿Por qué te preguntamos esto?» de cada paso es una explicación que se abre al
 // tocar: se mide al abrirse, con el paso como clave (sp-interno#98).
@@ -44,9 +45,9 @@ const INITIAL_SIM = {
   // geo (string) queda solo por compatibilidad con simulaciones guardadas.
   // essNacional: en Essential, la persona eligió la versión para todo el país.
   step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', essNacional: false, addons: [], people: [],
-  // sentVia: 'crm' (llegó a HubSpot) | 'wa' (viaja por WhatsApp prellenado).
-  // crmErr marca que el CRM falló y WhatsApp actuó de respaldo.
-  nombre: '', tel: '', email: '', sent: false, sentVia: null, crmErr: false, sending: false, err: '', priceAnim: null,
+  // sent solo cambia tras la aceptación de HubSpot. WhatsApp es una salida,
+  // nunca un envío confirmado; no sabemos si la persona manda el mensaje.
+  nombre: '', tel: '', email: '', sent: false, sentVia: null, fallbackReason: '', consent: false, sending: false, err: '', priceAnim: null,
 };
 
 /* "En Luque tenés 12 médicos y centros con este plan" — con números de la
@@ -64,9 +65,16 @@ function notaRed(ubi, planGuia, red = 'privilege') {
 
 export default function Simulador() {
   const [simState, setSimState] = useState(INITIAL_SIM);
-  const simPatch = (p) => setSimState((s) => Object.assign({}, s, p));
+  const simPatch = (p) => {
+    // Durante un envío, el resultado visible debe seguir siendo el enviado.
+    if (submittingRef.current && !['sending', 'sent', 'fallbackReason', 'err'].some(k => k in p)) return;
+    setSimState((s) => Object.assign({}, s,
+      ['nivel', 'essNacional'].some(k => k in p && p[k] !== s[k]) ? { sent: false, sentVia: null, fallbackReason: '', consent: false } : {}, p));
+  };
 
   const rafRef = useRef(null);
+  const submittingRef = useRef(false);
+  const crmReady = leadReady();
   const prevStepRef = useRef(0);
   const cardRef = useRef(null);
   const bodyRef = useRef(null);
@@ -138,11 +146,11 @@ export default function Simulador() {
       const next = cur.includes(k) ? cur.filter((x) => x !== k) : cur.concat([k]);
       return Object.assign({}, s, { addons: next });
     });
-  const simBack = () => { setSimDir(-1); setSimState((s) => {
+  const simBack = () => { if (submittingRef.current) return; setSimDir(-1); setSimState((s) => {
     let prev = Math.max(0, s.step - 1);
     // Con plan pre-elegido el paso "nivel" (2) no existe en el flujo: lo salteamos también al volver.
     if (planPresetRef.current && s.who !== 'padres' && prev === 2) prev = 1;
-    return Object.assign({}, s, { step: prev });
+    return Object.assign({}, s, { step: prev, sent: false, sentVia: null, fallbackReason: '', consent: false });
   }); };
   const simGo = (patch, dir = 1) => { setSimDir(dir); simPatch(patch); };
 
@@ -237,42 +245,37 @@ export default function Simulador() {
   };
 
   const simSubmit = async () => {
+    if (submittingRef.current || simState.sent) return;
     const d = simState;
-    const emailOk = !d.email.trim() || /.+@.+\..+/.test(d.email);
-    if (!d.nombre.trim() || d.tel.replace(/\D/g, '').length < 8 || !emailOk) {
-      simPatch({ err: 'Necesitamos tu nombre y un WhatsApp válido (mín. 8 dígitos). El email es opcional.' });
+    const error = contactError(d);
+    if (error) { simPatch({ err: error }); return; }
+    if (crmReady && !d.consent) {
+      simPatch({ err: 'Antes de enviar, leé y aceptá el uso de tus datos para esta consulta.' });
       return;
     }
-    // Sin nombre/tel/email en el evento: esos datos viajan al CRM o dentro
-    // del WhatsApp, nunca a la analítica.
-    const rq = engine(d);
-    if (!HUBSPOT_FORM_ID) {
-      track('sim_lead_submit', { plan: rq.name, precio: rq.price, via: 'whatsapp' });
-      simPatch({ sent: true, sentVia: 'wa', crmErr: false, err: '' });
+    if (!crmReady) {
+      track('sim_lead_fallback', { motivo: 'unavailable' });
+      simPatch({ fallbackReason: 'unavailable', err: '' });
       return;
     }
-    simPatch({ sending: true, err: '' });
+    submittingRef.current = true;
+    simPatch({ sending: true, err: '', fallbackReason: '' });
+    track('sim_lead_attempt', {});
     try {
-      const res = await fetch('https://api.hsforms.com/submissions/v3/integration/submit/' + HUBSPOT_PORTAL_ID + '/' + HUBSPOT_FORM_ID, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fields: [
-            { objectTypeId: '0-1', name: 'firstname', value: d.nombre.trim() },
-            { objectTypeId: '0-1', name: 'phone', value: d.tel.trim() },
-          ].concat(d.email.trim() ? [{ objectTypeId: '0-1', name: 'email', value: d.email.trim() }] : [])
-            .concat([{ objectTypeId: '0-1', name: 'message', value: 'Simulador web — ' + rq.name + ' · ' + fmt(rq.price) + '/mes · ' + groupLabel(d) }]),
-          context: { pageUri: typeof location !== 'undefined' ? location.href : '', pageName: 'Simulador Salud Protegida' },
-        }),
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      track('sim_lead_submit', { plan: rq.name, precio: rq.price, via: 'crm' });
-      simPatch({ sending: false, sent: true, sentVia: 'crm', crmErr: false });
-    } catch (e) {
-      // El CRM falló: WhatsApp de respaldo. Una falla nunca es un lead perdido.
-      track('sim_lead_crm_error', { plan: rq.name });
-      track('sim_lead_submit', { plan: rq.name, precio: rq.price, via: 'whatsapp' });
-      simPatch({ sending: false, sent: true, sentVia: 'wa', crmErr: true });
+      const rq = engine(d);
+      const result = await submitLead(d, 'Simulador web — ' + rq.name + ' · ' + fmt(rq.price) + '/mes');
+      if (result.status === 'accepted') {
+        track('sim_lead_accepted', {});
+        simPatch({ sent: true, sentVia: 'crm', fallbackReason: '' });
+      } else {
+        const motivo = result.reason || 'unavailable';
+        track('sim_lead_failed', { motivo });
+        track('sim_lead_fallback', { motivo });
+        simPatch({ fallbackReason: motivo });
+      }
+    } finally {
+      submittingRef.current = false;
+      simPatch({ sending: false });
     }
   };
 
@@ -363,7 +366,8 @@ export default function Simulador() {
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved && saved.step > 0 && saved.step < 6 && !saved.sent) {
-          savedSimRef.current = saved;
+          savedSimRef.current = simulationDraft(saved);
+          localStorage.setItem('sp-sim-v2', JSON.stringify(savedSimRef.current));
           setResumeAvailable(true);
         }
       }
@@ -374,7 +378,7 @@ export default function Simulador() {
   useEffect(() => {
     try {
       const d = simState;
-      if (d.step > 0 && d.step < 6 && !d.sent) localStorage.setItem('sp-sim-v2', JSON.stringify(d));
+      if (d.step > 0 && d.step < 6 && !d.sent) localStorage.setItem('sp-sim-v2', JSON.stringify(simulationDraft(d)));
       else if (d.step === 0 || d.sent) localStorage.removeItem('sp-sim-v2');
     } catch (e) {}
   }, [simState]);
@@ -504,8 +508,8 @@ export default function Simulador() {
     // dormido de adicionales) — antes solo existía "empezar de nuevo"
     // (pedido del usuario, 21 jul: poder evaluar decisiones sin arrancar
     // de cero). Lo configurado queda intacto; el precio se recalcula solo.
-    backFromResult: () => { setSimDir(-1); simPatch({ step: 4 }); },
-    restart: () => { setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', essNacional: false, addons: [], people: [], sent: false, sentVia: null, crmErr: false, sending: false, err: '', nombre: '', tel: '', email: '' }); },
+    backFromResult: () => { if (submittingRef.current) return; setSimDir(-1); simPatch({ step: 4, sent: false, sentVia: null, fallbackReason: '', consent: false }); },
+    restart: () => { if (submittingRef.current) return; setSimDir(-1); setDeptOpen(false); simPatch({ step: 0, who: null, nivel: null, geo: null, ubi: null, ubiQ: '', essNacional: false, addons: [], people: [], sent: false, sentVia: null, fallbackReason: '', consent: false, sending: false, err: '', nombre: '', tel: '', email: '' }); },
     resName: r ? r.name : '', resWhy: r ? r.why : '', resPrice: r ? fmt(r.price) : '', resGroup: r ? groupLabel(d) : '', titularAge: r ? titularAge(d) : '',
     resGeoLine: r ? (r.ubi ? ((r.ubi.ciudad || r.ubi.deptNombre) + ' · ' + (r.zonaEss ? ({ asuncion_central: 'red de Asunción y Central', interior: 'red del interior', nacional: 'red en todo el país' })[r.zonaEss] : 'cobertura en todo el país')) : ('Cobertura ' + r.geoLabel)) : '',
     // La red REAL de este plan en tu zona (lib/red-zona.js), con la puerta a la
@@ -547,7 +551,8 @@ export default function Simulador() {
     resumeAvailable, resume: resumeSim,
     enc: stepEnc, stepNum: displayStep, totalSteps, progressPct: d.step >= 6 ? 100 : (displayStep / (totalSteps + 0.3)) * 100, isQuestion: d.step >= 1 && d.step <= 5,
     headerStyle: 'padding:16px 20px;color:#fff;background:' + (r ? r.color : 'var(--sp-navy)'),
-    formOpen: !d.sent, sentOpen: d.sent && d.sentVia === 'crm', waLeadOpen: d.sent && d.sentVia === 'wa', crmErr: d.crmErr, sending: d.sending,
+    formOpen: !d.sent, sentOpen: d.sent && d.sentVia === 'crm', waLeadOpen: !!d.fallbackReason, fallbackReason: d.fallbackReason, sending: d.sending,
+    crmReady, consent: d.consent, setConsent: (e) => simPatch({ consent: e.target.checked }),
     nombre: d.nombre, tel: d.tel, email: d.email, err: d.err, hasErr: !!d.err,
     setNombre: (e) => simPatch({ nombre: e.target.value }), setTel: (e) => simPatch({ tel: e.target.value }), setEmail: (e) => simPatch({ email: e.target.value }),
     submit: simSubmit,
@@ -856,33 +861,40 @@ export default function Simulador() {
               <div style={css('margin-top:18px')}>
                 {sim.formOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-tint);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:18px 18px 16px')}>
-                    <div style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:3px')}>¿A dónde te enviamos tu cotización?</div>
-                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-bottom:14px')}>{sim.whyContacto}</div>
+                    <div style={css('font-size:15px;font-weight:800;color:var(--sp-navy);margin-bottom:3px')}>{sim.crmReady ? '¿A dónde te enviamos tu cotización?' : 'Prepará tu consulta por WhatsApp'}</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-bottom:14px')}>{sim.crmReady ? sim.whyContacto : 'Tus datos se agregarán al mensaje. Después tenés que enviarlo desde WhatsApp.'}</div>
                     <div style={css('display:flex;gap:10px;margin-bottom:10px')}>
-                      <input type="text" value={sim.nombre} onChange={sim.setNombre} placeholder="Nombre y apellido" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
-                      <input type="tel" value={sim.tel} onChange={sim.setTel} placeholder="WhatsApp" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
+                      <input type="text" aria-label="Nombre y apellido" autoComplete="name" maxLength={150} disabled={sim.sending} value={sim.nombre} onChange={sim.setNombre} placeholder="Nombre y apellido" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
+                      <input type="tel" aria-label="WhatsApp" autoComplete="tel" maxLength={30} disabled={sim.sending} value={sim.tel} onChange={sim.setTel} placeholder="WhatsApp" required className="inp sq" style={css('flex:1;min-width:0;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none')} />
                     </div>
-                    <input type="email" value={sim.email} onChange={sim.setEmail} placeholder="Email (opcional)" className="inp sq" style={css('width:100%;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none;margin-bottom:8px')} />
+                    <input type="email" aria-label="Email (opcional)" autoComplete="email" maxLength={254} disabled={sim.sending} value={sim.email} onChange={sim.setEmail} placeholder="Email (opcional)" className="inp sq" style={css('width:100%;height:46px;border:1.5px solid var(--sp-line);--sq:var(--r-xs);padding:0 14px;font-size:15px;color:var(--sp-ink);background:#fff;outline:none;margin-bottom:8px')} />
                     <div style={css('font-family:var(--font-inter),sans-serif;font-size:11.5px;color:var(--sp-muted);margin-bottom:12px;line-height:1.4')}>Tu WhatsApp con código de país si podés (ej: +595 9…). El email es opcional.</div>
+                    {sim.crmReady && <div style={css('font-family:var(--font-inter),sans-serif;font-size:13px;line-height:1.5;margin-bottom:12px;color:var(--sp-text)')}>
+                      <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                        <input type="checkbox" checked={sim.consent} onChange={sim.setConsent} disabled={sim.sending} style={{ marginTop: 4, flex: 'none' }} />
+                        <span>{LEAD_CONFIG.consentText}</span>
+                      </label>
+                      <a href={LEAD_CONFIG.privacyUrl} target="_blank" rel="noopener noreferrer" className="link-teal">Política de privacidad</a>
+                    </div>}
                     {/* Sin rojo: el rojo es SOLO para urgencias (regla de color). */}
                     {sim.hasErr && <div role="alert" className="sq" style={css('font-family:var(--font-inter),sans-serif;font-size:12.5px;color:var(--sp-text);background:var(--sp-gold-bg);--sq:var(--r-xs);padding:7px 10px;margin-bottom:10px')}>{sim.err}</div>}
-                    <button onClick={sim.submit} disabled={sim.sending} className="btn-teal sq" style={css('width:100%;height:48px;border:none;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;cursor:pointer;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : 'Enviarme mi cotización'}</button>
+                    <button onClick={sim.submit} disabled={sim.sending} className="btn-teal sq" style={css('width:100%;height:48px;border:none;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;cursor:pointer;opacity:' + (sim.sending ? '0.6' : '1'))}>{sim.sending ? 'Enviando…' : !sim.crmReady ? 'Preparar mensaje de WhatsApp' : sim.fallbackReason ? 'Reintentar envío' : 'Enviar mi consulta'}</button>
                   </div>
                 )}
                 {sim.sentOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
                     <IconoSP nombre="listo" size={60} style={{ margin: '0 auto' }} />
                     <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}!</div>
-                    <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización va en camino. Te va a escribir un asesor — una persona, no un robot — para confirmarla y responder todo lo que quieras preguntar.</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Recibimos tu solicitud de cotización. Si querés seguir la consulta ahora, podés escribirnos por WhatsApp.</div>
                   </div>
                 )}
                 {sim.waLeadOpen && (
                   <div className="sq" style={css('background:var(--sp-mint-bg);border:1px solid var(--sp-mint-line);--sq:var(--r-md);padding:24px;text-align:center')}>
                     <IconoSP nombre="enviar" size={60} style={{ margin: '0 auto' }} />
-                    <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>¡Listo, {sim.nombre}! Falta un solo toque</div>
-                    <div style={css('font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Tu cotización ya está escrita, con tu plan y tu precio. Tocá el botón y nos llega entera por WhatsApp — queda por escrito y te responde un asesor, una persona de verdad.</div>
-                    {sim.crmErr && <div style={css('font-size:12px;color:var(--sp-muted);margin-top:8px;line-height:1.4')}>El envío automático no funcionó esta vez — por WhatsApp llega igual, no se pierde nada.</div>}
-                    <a href={sim.waLeadHref} onClick={() => track('click_whatsapp', { origen: 'simulador_lead', plan: sim.resName })} target="_blank" rel="noopener" className="btn-teal sq" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;margin-top:14px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Enviar mi cotización por WhatsApp</a>
+                    <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);margin-top:12px')}>Tu mensaje está preparado, {sim.nombre}</div>
+                    <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-text);margin-top:4px;line-height:1.5')}>Abrí WhatsApp, revisá el mensaje y tocá Enviar allí para que podamos recibirlo.</div>
+                    {sim.fallbackReason !== 'unavailable' && <div style={css('font-family:var(--font-inter),sans-serif;font-size:12px;color:var(--sp-muted);margin-top:8px;line-height:1.4')}>No pudimos confirmar el envío del formulario. Podés reintentarlo o seguir por WhatsApp; si la conexión se cortó, la solicitud pudo haber llegado.</div>}
+                    <a href={sim.waLeadHref} onClick={() => track('click_whatsapp', { origen: 'simulador_lead', plan: sim.resName })} target="_blank" rel="noopener noreferrer" className="btn-teal sq" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;--sq:var(--r-sm);background:var(--sp-teal-deep);color:#fff;font-size:15px;font-weight:800;margin-top:14px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Abrir WhatsApp con mi cotización</a>
                   </div>
                 )}
                 {!sim.waLeadOpen && <a href={sim.waResultHref} onClick={() => track('click_whatsapp', { origen: 'simulador_resultado', plan: sim.resName })} target="_blank" rel="noopener" className="btn-wa-outline sq" style={css('display:flex;align-items:center;justify-content:center;gap:9px;height:48px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-teal);font-size:15px;font-weight:700;margin-top:10px')}><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5Z" /></svg>Prefiero escribir por WhatsApp</a>}

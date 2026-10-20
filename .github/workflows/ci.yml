@@ -37,6 +37,8 @@ jobs:
           node qa/links-internos.mjs out /sp-prototipo
           node qa/seguro-propio.mjs out
           node qa/titulos-y-sombras.mjs out
+      - name: Captación y medición sin envíos reales
+        run: node --test qa/leads.test.mjs
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.

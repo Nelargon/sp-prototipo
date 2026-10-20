@@ -94,7 +94,7 @@ console.log('\n== 1. FUNCIONAL ==');
   if (await empezar.count()) { await empezar.click().catch(() => {}); await page.waitForTimeout(450); }
   const porque = page.locator('details.sim-why:visible summary').first();
   if (await porque.count()) {
-    await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+    await page.evaluate(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
     await porque.click();
     await page.waitForTimeout(300);
     const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
@@ -135,11 +135,11 @@ console.log('\n== 1. FUNCIONAL ==');
     if (tilde && tilde.dx <= 2 && tilde.dy <= 2) ok('funcional', 'resultado: tilde del match centrado en el aro (±2px)');
     else falla('funcional', 'confunde', 'el tilde del resultado no está centrado en el aro' + (tilde ? ' (dx=' + tilde.dx.toFixed(1) + ', dy=' + tilde.dy.toFixed(1) + ')' : ' (no encontrado)'), '/simulador/');
     // «¿Cómo calculamos esto?» se mide al abrirse, como toda explicación que se
-    // abre al tocar (regla de claridad, sp-interno#98). Se escucha console.debug,
-    // que es por donde sale track() hasta que haya backend.
+    // abre al tocar (regla de claridad, sp-interno#98). Se observa el contrato
+    // local saneado; la entrega a terceros se prueba en qa-leads.mjs.
     const calc = page.locator('button', { hasText: '¿Cómo calculamos esto?' }).first();
     if (await calc.count()) {
-      await page.evaluate(() => { window.__tracks = []; const d = console.debug; console.debug = (...a) => { if (a[0] === '[track]') window.__tracks.push({ evento: a[1], datos: a[2] }); d.apply(console, a); }; });
+      await page.evaluate(() => { window.__tracks = []; window.addEventListener('sp:measurement', (e) => window.__tracks.push(e.detail)); });
       await calc.click();
       await page.waitForTimeout(400);
       const ev = (await page.evaluate(() => window.__tracks)).filter((t) => t.evento === 'abre_explicacion');
@@ -171,12 +171,21 @@ console.log('\n== 1. FUNCIONAL ==');
     else ok('funcional', 'Puerta 1.5: las esperas del ' + car.plan + ' (' + car.filas.length + ' servicios, parto de ' + esperaParto(car.plan) + ' incluido) se muestran antes de pedir nombre y teléfono');
     const nombre = page.locator('input[placeholder*="ombre"]');
     if (await nombre.count()) {
+      // Incluso si BASE tiene CRM habilitado, esta QA nunca crea un lead real.
+      let aceptadoDePrueba = false;
+      await page.route('https://api.hsforms.com/**', async (route) => {
+        aceptadoDePrueba = true;
+        await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+      });
       await nombre.fill('QA Prueba');
       await page.locator('input[placeholder*="hats"], input[type="tel"]').first().fill('0981123456').catch(() => {});
-      await page.locator('button', { hasText: /Enviarme/ }).click().catch(() => {});
+      const consentimiento = page.locator('.sim-card input[type="checkbox"]');
+      if (await consentimiento.count()) await consentimiento.check();
+      await page.locator('button', { hasText: /Enviar mi consulta|Preparar mensaje de WhatsApp/ }).click().catch(() => {});
       await page.waitForTimeout(500);
-      if (await page.locator('text=¡Listo').count()) ok('funcional', 'simulador: lead se envía y confirma');
-      else falla('funcional', 'roto', 'el envío del lead no muestra confirmación', '/simulador/');
+      if (aceptadoDePrueba && await page.getByText('Recibimos tu solicitud de cotización.', { exact: false }).isVisible()) ok('funcional', 'simulador: confirma la aceptación simulada de HubSpot');
+      else if (!aceptadoDePrueba && await page.getByRole('link', { name: 'Abrir WhatsApp con mi cotización' }).isVisible()) ok('funcional', 'simulador: prepara WhatsApp sin afirmar que se recibió un lead');
+      else falla('funcional', 'roto', 'el formulario no muestra aceptación ni alternativa de WhatsApp', '/simulador/');
     }
   } else falla('funcional', 'roto', 'el caminante no llegó al precio del simulador', '/simulador/');
 
