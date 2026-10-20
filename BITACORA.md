@@ -5597,3 +5597,17 @@ del repo público).
   que lo busca va con el dato, en el repo privado. Y un puntero se verifica
   abriendo el archivo al que apunta: que exista no alcanza, tiene que tener el
   dato.
+
+*(20/10/2026, segundo verificador.)* Encontró tres lugares más del mismo tipo,
+y para ellos la lección es la de arriba: el mensaje que acompaña el paso que
+sigue a elegir Gold en el simulador y la línea de Gold de `/planes` no se
+comparaban con su texto aprobado (una copia con la frase vieja en el mensaje y
+una paráfrasis en `/planes` daba 133 ✓), y el «5 o 6» del simulador se había
+medido una vez, a mano. Lo que agrega es otra cosa. **Sacar de la prueba el
+lugar donde no hay nada no es probar que no hay nada:** la primera versión
+miraba el simulador y daba verde siempre; la corrección lo sacó, y la ausencia
+quedó sin medir. Ahora la prueba demuestra que leyó (llega al resultado de
+cada plan y pasa por cada pregunta, con texto) y, leído, no hay ningún «5 o
+6». Y el HANDOFF decía que cada control se probaba también en la página, con
+la línea de antes metida, y no todos lo hacían: **lo que un documento dice de
+una prueba se verifica contra la prueba**, como el puntero contra el archivo.
