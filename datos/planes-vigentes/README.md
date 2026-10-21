@@ -76,7 +76,7 @@ usuario actualiza un master:
 | Master (Drive) | fileId | Última ingestión |
 |---|---|---|
 | SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx | `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh` | **26 jul 2026** (master del 24/07: filas AD → `N/A`) |
-| SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | 22 jul 2026 (primera ingestión) |
+| SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | **21 oct 2026** (master `2026-07-22T16:46:00.486Z`: anotada sin cambios de datos; la primera ingestión fue el 22 jul 2026) |
 
 > Nota: los atajos `.lnk` en Drive **no** funcionan como puntero (son atajos de
 > Windows); se trackea el **fileId** del master.
