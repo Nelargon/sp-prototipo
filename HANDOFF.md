@@ -646,14 +646,21 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
    (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso entró al
    manual con sp-interno#177 (fusionado el 20/10; `salud/GUARDIAN.md`, §5 paso
-   4). Si un master cambió, el PR de datos espera el
-   OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
+   4). Si un master cambió y la re-ingesta mueve algún dato, el PR de datos
+   espera el OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
    `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
    minutos después de su última ingestión, y el Guardián lo marca desde su
-   primera corrida. Falta anotar esa versión en la tabla de masters de
-   `datos/planes-vigentes/README.md`: es un PR de datos aparte, que espera el
-   OK de Arturo.
-   El quincenal quedó pausado ese mismo día a las 10:33, por decisión de
+   primera corrida. Esa versión quedó anotada en la tabla de masters de
+   `datos/planes-vigentes/README.md` con #281 (21/10), un PR que no movía
+   ningún dato. Desde el 21/10, por decisión de Arturo, un PR que solo anota
+   la versión nueva de un master de planes sin cambiar ningún dato lo fusiona
+   el Guardián con las pruebas en verde; el manual del Guardián le suma que
+   Codex, el revisor automático, haya terminado sin observaciones abiertas.
+   Si mueve un dato (un precio, una cobertura, un tope, una espera, o un
+   estudio o una especialidad que cambia de nombre, se suma o se va), sigue
+   esperando el OK de Arturo, igual que la Guía Médica. Una diferencia que ya
+   estaba en el JSON antes de esa versión se corrige aparte, con su OK.
+   El quincenal quedó pausado el 13/10 a las 10:33, por decisión de
    Arturo (sp-interno#176, opción A).
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
    computadora de Arturo, y le deja los pasos. **Puede, con cambios:** los
@@ -3378,6 +3385,9 @@ documentado en el repo.
   - Privilege: `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh`
   - Vital: `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3`
 - Runbook de re-ingesta + fechas + chequeo mensual: `datos/planes-vigentes/README.md`.
+- *(21/10/2026: los masters no viven en `SP-Web`. Están en las carpetas
+  `PRIVILEGE` y `VITAL` de «Planes a Julio 2026», dentro de «07 Productos y
+  Planes»: ver `datos/planes-vigentes/README.md` y sp-interno#194.)*
 
 ### Hallazgos clave (de los masters)
 - **AD = sin cobertura, el socio paga 100% con tarifa de convenio** (cláusula 2.10). Confirmado.
