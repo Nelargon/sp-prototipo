@@ -48,7 +48,7 @@ son las hojas viejas por plan y contradicen a la página 1 en las filas
 Los **masters** viven en el Drive del usuario, en las carpetas `PRIVILEGE` y
 `VITAL` de «Planes a Julio 2026», y son la fuente de verdad.
 
-> *21/10/2026: el 20/10 una limpieza del Drive movió «Planes a Julio 2026» a una carpeta de archivo; los fileIds y las versiones no cambiaron, y dónde queda lo decide Arturo en sp-interno#__.*
+> *21/10/2026: el 20/10 una limpieza del Drive movió «Planes a Julio 2026» a una carpeta de archivo; los fileIds y las versiones no cambiaron, y dónde queda lo decide Arturo en sp-interno#194.*
 
 El repo guarda la transcripción versionada. Para **re-ingerir** cuando el
 usuario actualiza un master:
