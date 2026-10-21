@@ -3092,7 +3092,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (bajado el 17/10/2026, sp-interno#181) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (decidido el 17/10/2026 y bajado el 20/10, sp-interno#181 y PR #271) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 *(18/10/2026: «qué cubre» ya no es una página en ninguna de las dos ediciones.
@@ -3536,7 +3536,7 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
-| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) |
+| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) *(21/10/2026: decidido el 17/10 y bajado el 20/10: el PR #271 lo borró de `main` (`86ed718`) y su deploy, del sitio en vivo)* |
 | **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
@@ -3687,7 +3687,8 @@ usa `npm ci`).
     snapshot se baja o se tolera mientras sea demo interna.
     *Historia (17/10/2026): decidido. Arturo eligió bajarlo (P4A,
     sp-interno#181); `public/v1/` salió del repo y queda en el historial de
-    git. Ver la sección del 17/10 arriba.*
+    git. Ver la sección del 17/10 arriba.* *(21/10/2026: el 17/10 fue la
+    decisión; salió del repo y del sitio en vivo el 20/10, con el PR #271.)*
 11h. **El paso "Zona" se volvió "¿Dónde querés tu cobertura?" (21 jul
     2026, decisión del usuario tras la reunión MKT/Ventas del 20 jul;
     BITACORA cap. 31)**: la persona escribe SU CIUDAD (buscador tolerante
@@ -4533,7 +4534,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    (ANEXO §2), y presupuesto móvil verificado: 173 KB gzip de contenido
    crítico (≤300 KB). El home anterior quedó congelado en `/v1/` como
    referencia *(17/10/2026: esa copia se bajó, P4A, sp-interno#181; queda en
-   el historial de git)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
+   el historial de git)* *(21/10/2026: el 17/10 fue la decisión; se bajó el
+   20/10, con el PR #271)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
    nace de acá:** testimonios reales con consentimiento (responsable: SP).
    *Refinado v2.1 (feedback del usuario, jul 2026)*: menú móvil overlay a
    pantalla completa estilo Apple/Tesla/Ogilvy (blanco pleno, tipografía
