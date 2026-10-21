@@ -48,7 +48,7 @@ son las hojas viejas por plan y contradicen a la página 1 en las filas
 Los **masters** viven en el Drive del usuario, en las carpetas `PRIVILEGE` y
 `VITAL` de «Planes a Julio 2026», y son la fuente de verdad.
 
-> *21/10/2026: el 20/10 una limpieza del Drive movió «Planes a Julio 2026» a una carpeta de archivo; los fileIds y las versiones no cambiaron, y dónde queda lo decide Arturo en sp-interno#194.*
+> *21/10/2026: el 20/10 una limpieza del Drive movió «Planes a Julio 2026» a una carpeta de archivo, y el 21/10 volvió a «07 Productos y Planes», por decisión de Arturo (sp-interno#194). Los fileIds y las versiones no cambiaron.*
 
 El repo guarda la transcripción versionada. Para **re-ingerir** cuando el
 usuario actualiza un master:
@@ -72,11 +72,20 @@ usuario actualiza un master:
 5. PR en borrador → revisión humana → merge. El diff de `lib/prestaciones.json`
    muestra **ítem por ítem qué cobertura se movió** — es la parte del PR que
    hay que mirar con más cuidado, porque va derecho a la web.
+   Si la re-ingesta no mueve ningún dato (ni precios, ni coberturas, ni topes,
+   ni esperas, ni estudios o especialidades que cambian de nombre, se suman o
+   se van) y el PR solo anota la versión nueva en la tabla de abajo, no espera
+   revisión humana: lo fusiona el Guardián con las pruebas en verde (decisión
+   de Arturo del 21/10/2026). El manual del Guardián le suma que Codex, el
+   revisor automático, haya terminado sin observaciones abiertas (sp-interno,
+   `salud/GUARDIAN.md` §5 paso 4). Una diferencia que ya estaba en el JSON
+   antes de esa versión se nombra en el PR y no se corrige ahí: va aparte,
+   con el OK de Arturo (en #281, «laparotomía»).
 
 | Master (Drive) | fileId | Última ingestión |
 |---|---|---|
 | SP Privilege — Grilla Coberturas y Precios (Jul 2026).xlsx | `1ORPseTEt-jeo2FDqGJ6LQkr0F-fr_oYh` | **26 jul 2026** (master del 24/07: filas AD → `N/A`) |
-| SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | 22 jul 2026 (primera ingestión) |
+| SP Vital — Grilla Coberturas y Precios (Jul 2026).xlsx | `1kIptlBGNTpKuEgFQAEJjmpzeqKmfrZm3` | **21 oct 2026** (master `2026-07-22T16:46:00.486Z`: anotada sin cambios de datos; la primera ingestión fue el 22 jul 2026) |
 
 > Nota: los atajos `.lnk` en Drive **no** funcionan como puntero (son atajos de
 > Windows); se trackea el **fileId** del master.
