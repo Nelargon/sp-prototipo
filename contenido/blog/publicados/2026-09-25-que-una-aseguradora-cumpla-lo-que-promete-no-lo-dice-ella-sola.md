@@ -21,8 +21,8 @@ Confiar a ciegas en lo que dice la propia empresa parece, en ese
 momento, la única opción disponible.
 
 Este mes, un caso en México muestra cómo se contesta esa pregunta en la
-práctica: con la nota de alguien que no tiene nada que ganar quedando
-bien con la aseguradora.
+práctica: contrastando lo que comunica la empresa con las evaluaciones
+y los registros de terceros, y entendiendo qué mide cada uno.
 
 ## Quién audita la promesa
 
@@ -37,9 +37,8 @@ según el [comunicado oficial de la
 aseguradora](https://www.prnewswire.com/mx/comunicados-de-prensa/plan-seguro-consolida-su-liderazgo-en-salud-302883580.html)
 del 22/09/2026.
 
-El dato que más pesa acá no lo puso la aseguradora en su propio
-comunicado: la calificadora Moody's Investors Service ratificó su
-fortaleza financiera en AA-.mx, con perspectiva estable
+La noticia también atribuye a Moody's Investors Service una calificación
+de fortaleza financiera de AA-.mx, con perspectiva estable
 ([Infobae](https://www.infobae.com/america/agencias/2026/09/22/plan-seguro-consolida-su-liderazgo-en-salud/),
 22/09/2026).
 
@@ -49,23 +48,23 @@ defiende a los usuarios de servicios financieros
 ([Infobae](https://www.infobae.com/america/agencias/2026/09/22/plan-seguro-consolida-su-liderazgo-en-salud/),
 22/09/2026).
 
-Una calificación como AA-.mx sigue una escala pública, la misma que se
-usa para bancos y gobiernos, y se revisa cada cierto tiempo, no una
-sola vez.
+## Qué dice cada evaluación
 
-## Qué mide una calificadora y qué mide un índice de atención
+Una calificación de fortaleza financiera evalúa la capacidad de una empresa
+para cumplir sus obligaciones. No certifica que cualquier tratamiento esté
+cubierto ni describe cómo será cada experiencia de atención.
 
-Una calificadora de riesgo no trabaja para la aseguradora que califica:
-revisa sus cuentas, sus reservas y su capacidad de pagar siniestros, y
-le pone una nota pública que cualquiera puede consultar.
+Que una evaluación sea externa no demuestra, por sí solo, que no existan
+relaciones comerciales o conflictos de interés. Para valorar el resultado,
+conviene consultar el informe original, su alcance y su metodología.
 
-Un índice de atención al usuario tampoco lo arma la empresa: lo
-construye un organismo público con reclamos, tiempos de respuesta y encuestas a
-clientes reales, no con lo que la aseguradora cuenta de sí misma.
+El índice de atención al usuario mide otra dimensión. Antes de interpretar
+la puntuación citada en la noticia, corresponde consultar la ficha y la
+metodología del organismo que la publica.
 
-**Que una empresa diga que es sólida no prueba que lo sea.** Lo
-prueba que un tercero, sin nada que ganar por quedar bien con ella, la
-revise y lo firme con su nombre.
+Las cifras de este caso provienen de una noticia y un comunicado empresarial.
+Para usarlas como prueba de calidad hace falta contrastarlas con los informes
+originales de la calificadora y del organismo de atención al usuario.
 
 ## La pregunta que sirve en cualquier país
 
@@ -85,17 +84,17 @@ tengas contratado:
   supervisa la [Superintendencia de Seguros del Banco Central del
   Paraguay](https://www.bcp.gov.py/documents/20117/213083/LEY_827_96_DE_SEGUROS.pdf/68f0897c-3e19-22c3-4904-367b1b2937a9?t=1741806943153).
 
-Alcanza con preguntar ante cuál de los dos organismos está registrada la
-empresa que estás por elegir. Es un dato público, no un secreto de la
-empresa, y no hace falta entender de finanzas para pedirlo.
+Preguntá ante cuál de los dos organismos está registrada la empresa que
+estás por elegir. El registro permite comprobar su habilitación; no
+reemplaza la lectura de las condiciones de tu plan.
 
 **Antes de creerle a una promesa de cobertura, preguntá quién más la
 audita** — no alcanza con lo que la propia empresa dice de sí misma,
 sea cual sea el país o el plan.
 
 Esa pregunta no reemplaza mirar el precio ni la red de atención. Pero
-va primero, porque de nada sirve comparar cuotas si todavía no sabés si
-la empresa que las cobra es de fiar.
+va primero, porque cada comprobación responde una pregunta distinta: habilitación,
+condiciones del plan y capacidad financiera.
 
 La próxima vez que una empresa de salud te muestre un número lindo sobre
 sí misma, la pregunta que vale hacer es quién más, aparte de ella, lo

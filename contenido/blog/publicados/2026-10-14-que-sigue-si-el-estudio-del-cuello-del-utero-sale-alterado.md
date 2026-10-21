@@ -21,9 +21,11 @@ Pensalo como la luz de aviso del tablero del auto. Se prende para que lo lleves 
 > [!clave]
 > Un resultado alterado es un aviso para mirar de cerca.
 
-Según la [OMS](https://www.who.int/es/news-room/fact-sheets/detail/cervical-cancer), tras un resultado alterado el personal de salud examina el cuello del útero para buscar cambios, como lesiones previas al cáncer. Esas lesiones rara vez dan síntomas, y llegar a cáncer suele llevar de 15 a 20 años.
+Según la [OMS](https://www.who.int/es/news-room/fact-sheets/detail/cervical-cancer), tras un resultado alterado el personal de salud examina el cuello del útero para buscar cambios, como lesiones previas al cáncer. Esas lesiones rara vez dan síntomas.
 
-Ese examen más de cerca se llama colposcopia: el médico mira el cuello del útero con una lupa especial. Si ve algo dudoso, toma una muestra pequeña, la biopsia, y la manda a analizar.
+Según la misma hoja de la OMS, llegar a cáncer suele llevar de 15 a 20 años. Si las defensas están bajas, por ejemplo por un VIH sin tratar, puede pasar en 5 a 10. Por eso conviene no esperar.
+
+Ese examen más de cerca se llama colposcopia: el médico mira el cuello del útero con una lupa especial.
 
 En el hospital regional de Concepción, por ejemplo, hubo una jornada con 18 biopsias y 22 colposcopias. Esos estudios se dan de martes a viernes y el turno se saca el mismo día desde las 06:00 ([MSPBS](https://www.mspbs.gov.py/portal/36678/hospital-regional-de-concepcion-impulsa-jornada-preventiva-contra-el-cancer-de-cuello-uterino.html), 13/10/2026).
 
