@@ -16,8 +16,9 @@ status: "publicado"
 author: "Equipo Salud Protegida"
 ---
 
-Tenés más de 40 años, vivís en Asunción o en Central, y hasta la semana
-pasada la vacuna contra el dengue no era para vos. Desde esta semana, sí.
+La ampliación anunciada suma a las personas de 40 a 60 años en las zonas
+priorizadas. La edad es una de las condiciones del programa; la indicación
+para cada persona se confirma en el vacunatorio.
 
 ## Qué cambió y para quién
 
@@ -36,7 +37,10 @@ Presidente Hayes, Cordillera, Caaguazú, Amambay y Alto Paraná
 
 El esquema oficial es de dos dosis, con tres meses de intervalo entre una
 y otra, según el PAI ([PAI/MSPBS](https://pai.mspbs.gov.py/vacunacion-contra-dengue-se-amplia-para-personas-de-6-a-60-anos-de-zonas-priorizadas/)).
-Podés aplicártela sin importar si ya tuviste dengue antes.
+Se aplica hayas tenido dengue antes o no
+([MSPBS, 17/10/2026](https://www.mspbs.gov.py/portal/36709/vacunacion-dengue-ya-recibiste-la-primera-dosis-no-te-olvides-de-la-segunda.html)).
+Consultá en el vacunatorio los requisitos y las contraindicaciones antes de
+aplicártela.
 
 ## Por qué la ampliación llega ahora
 
@@ -47,20 +51,18 @@ edad
 Antes, el corte a los 39 años dejaba afuera a buena parte de los adultos
 de una familia.
 
-## A quién golpea más el dengue grave
+## A quién golpea más el dengue
 
 Entre 2019 y 2024, la franja de 20 a 39 años concentró **más de 108.000
-casos de dengue** en Paraguay, una de las incidencias más altas del país,
-y explicó el 36 % de los hospitalizados por dengue en ese período
+casos de dengue** en Paraguay, una de las incidencias más altas del país
 ([MSPBS](https://www.mspbs.gov.py/portal/34838/vacuna-contra-el-dengue-sera-aplicada-a-personas-de-6-a-39-antildeos.html)).
 
-**El dengue grave golpea fuerte también en la adultez temprana**, no solo
-en la niñez. Es la misma franja de edad que hasta esta semana quedaba
-afuera de la vacuna.
+**El dengue golpea fuerte también en la adultez temprana**, no solo
+en la niñez. La franja de 20 a 39 años ya estaba incluida en el rango
+anterior de 6 a 39. La ampliación suma a las personas de 40 a 60 años.
 
 ## Qué hacer con esto esta semana
 
-**Si tenés entre 6 y 60 años y vivís en una de las diez zonas
-priorizadas, ya podés pedir la vacuna en tu centro de salud**, hayas
-tenido dengue antes o no. Es un trámite de esta semana, no de la próxima
-temporada de lluvias.
+**Consultá en tu centro de salud si te corresponde la vacuna y dónde
+aplicártela.** Confirmá las condiciones vigentes con el vacunatorio: el
+rango de edad no reemplaza esa evaluación.
