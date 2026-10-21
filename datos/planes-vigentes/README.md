@@ -45,9 +45,13 @@ son las hojas viejas por plan y contradicen a la página 1 en las filas
 
 ## Pipeline de datos (Drive → repo) — runbook
 
-Los **masters** viven en el Drive del usuario (carpeta `SP-Web`) y son la fuente
-de verdad. El repo guarda la transcripción versionada. Para **re-ingerir** cuando
-el usuario actualiza un master:
+Los **masters** viven en el Drive del usuario, en las carpetas `PRIVILEGE` y
+`VITAL` de «Planes a Julio 2026», y son la fuente de verdad.
+
+> *21/10/2026: el 20/10 una limpieza del Drive movió «Planes a Julio 2026» a una carpeta de archivo; los fileIds y las versiones no cambiaron, y dónde queda lo decide Arturo en sp-interno#194.*
+
+El repo guarda la transcripción versionada. Para **re-ingerir** cuando el
+usuario actualiza un master:
 
 1. Leer el master por su **fileId** con la herramienta de Google Drive
    (`get_file_metadata` / `read_file_content`).
@@ -82,8 +86,8 @@ Routine iba a comparar el `modifiedTime` de cada master contra las fechas de
 esta tabla los días 1 y 15. Nunca tuvo el conector de Drive, así que no midió
 nada (sp-interno, BITACORA cap. 45), y Arturo la pausó el 13/10 a las 10:33
 (sp-interno#176, opción A). Desde la decisión 3A del 13/10, los masters los
-mide el Guardián cada mañana; el paso nuevo de su manual está en
-sp-interno#177.
+mide el Guardián cada mañana; el paso entró a su manual con sp-interno#177
+(20/10, `salud/GUARDIAN.md` §5 paso 4).
 
 ### Ingestión del 26 jul 2026 (master modificado el 24/07)
 

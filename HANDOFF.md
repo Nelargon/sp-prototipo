@@ -13,15 +13,16 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 20 oct 2026.*
+*Última actualización: 21 oct 2026.*
 
 ---
 
 ## ✅ DECIDIDO EL 20/10/2026 («Adelante»: 3A, 8A y 180A)
 
 Arturo contestó «Adelante», sobre lo recomendado en la cita del Guardián de ese
-día. Lo registran sp-interno #184, #189 y #180 (comentarios del 20/10). Va en la
-misma rama del PR #271. Las dos decisiones del sitio tienen su control en
+día. Lo registran sp-interno #184, #189 y #180 (comentarios del 20/10). Entró
+con el PR #271 (fusionado el 20/10, `86ed718`). Las dos decisiones del sitio
+tienen su control en
 `qa/qa-lanzamiento.mjs` (sección «Lo que espera a SP no se afirma»), probado
 fuera del repo: la build de antes (5a15047) da ✗ en la línea de Silver de la
 tarjeta (a 1280 y a 390 px) y en los cuatro lugares de Gold (la línea de la
@@ -118,8 +119,8 @@ nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
    texto original, con archivo y línea. *(20/10/2026, verificador: el primer
    borrador apuntaba a `metricas-web-ga-2026.md`, la tabla de Google Analytics
    de la U4A, que no trae esta cifra.)* Los dos archivos, este y el de la U4A,
-   llegan a sp-interno con su PR #177, que fusiona Arturo: hasta entonces
-   están en la rama de ese PR (`claude/dazzling-keller-l0torp`), no en `main`.
+   están en el `main` de sp-interno desde su PR #177 (fusionado el 20/10,
+   `38626d1`).
    La búsqueda de la cifra ya no la encuentra en el árbol; el comando y lo que
    encontró están en ese mismo archivo, no acá: la expresión de búsqueda es la
    cifra escrita de otra manera (BITACORA cap. 154). El historial de git la
@@ -136,8 +137,9 @@ mismo PR); cuando conteste #50, se revisa qué puede decir Gold de sus topes.
 
 Arturo contestó «Todo A» a la tabla de decisiones pendientes, en la sesión del
 Guardián. Lo registran el PR #271 (comentario del 17/10) y sp-interno #50,
-#110, #180 y #181. Todo va en la rama `claude/dazzling-keller-l0torp`
-(PR #271), un commit por decisión, cada una con su sección en
+#110, #180 y #181. Todo entró con el PR #271 (fusionado el 20/10, rama
+`claude/dazzling-keller-l0torp`), un commit por decisión,
+cada una con su sección en
 `qa/qa-lanzamiento.mjs` que falla sin el cambio y pasa con él. Lo que se
 aprendió en el camino: BITACORA cap. 148.
 
@@ -213,9 +215,10 @@ aprendió en el camino: BITACORA cap. 148.
    competidor?»). *(20/10/2026: la 180A le sumó la cifra de contratos activos
    de SP, que la U4A no había alcanzado; ver «✅ DECIDIDO EL 20/10/2026».)*
 
-**Fuera de este PR:** E2A (los 27 cambios claros del barrido de la regla de
-escaneo) va en un PR aparte, después de que se fusione este. E4A (el precio del
-simulador en su propio renglón) espera su lámina antes del cambio.
+**Fuera del PR #271:** E2A (los 27 cambios claros del barrido de la regla de
+escaneo) va en un PR aparte: #271 entró el 20/10 y el PR de la E2A sigue sin
+abrir. E4A (el precio del simulador en su propio renglón) espera su lámina
+antes del cambio.
 
 **Sigue esperando a SP:** si tomografía, resonancia, psicología y fisioterapia
 de Silver y Gold son por persona o por grupo (#110); cuántas sesiones de
@@ -533,12 +536,14 @@ sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
 - La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
   h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
 - El revisor de diseño de `sp-interno` (`.claude/skills/sp-disenador-ux/scripts/revisar.mjs`)
-  tiene que ignorar lo que está escondido a la vista (`clip-path: inset(50%)`, o
-  1×1 px con `overflow: hidden`), con un caso que tiene que fallar y uno que no
-  en su `--autoprueba`. Hoy marca 🟡 `[fuente-lectura]` los 73 prefijos
-  `.sr-solo.cmp2-fila` de esta rama (corrección de la vuelta 3, arriba). Es de
-  `sp-interno`, fuera de este PR.
-- La descripción del PR #271 (D11) la arma el Guardián.
+  ya ignora lo que está escondido a la vista (`clip-path: inset(50%)`, `clip`,
+  o 1×1 px con `overflow: hidden`), y su `--autoprueba` lo prueba con un caso
+  que tiene que fallar (`pruebas/mal.html`) y uno que no (`pruebas/bien.html`).
+  Antes marcaba 🟡 `[fuente-lectura]` los 73 prefijos `.sr-solo.cmp2-fila`
+  (corrección de la vuelta 3, arriba). Hecho en sp-interno#177 (fusionado el
+  20/10); el porqué está en `references/verificacion.md` de la skill.
+- La descripción del PR #271 (D11) la armó el Guardián: hecho, el PR entró con
+  ella el 20/10.
 
 ---
 
@@ -556,8 +561,8 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    13/10:** #240 y sp-contenido#236 cerrados sin fusionar; el pedido al
    Orquestador, con el texto exacto de cada cambio, es sp-contenido#268.
 2. **Lo que el sitio afirma sin fuente sale o manda al asesor mientras SP no
-   conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Va en un PR propio
-   que Arturo ve antes de fusionar (rama `claude/dazzling-keller-l0torp`). Una
+   conteste** (sp-interno #80, #110, #116, #89, #82 y #52). Entró con el PR
+   #271, que Arturo fusionó el 20/10 (rama `claude/dazzling-keller-l0torp`). Una
    sola forma de mandar al asesor, la de #80: «preguntale a tu asesor…».
    Aplicado:
    - **#80, el 10% en Essential.** El simulador ya no le calcula a Essential
@@ -639,11 +644,15 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
    Privilege y Vital, porque el chequeo quincenal corre sin Drive
-   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso nuevo del
-   manual está en sp-interno#177. Si un master cambió, el PR de datos espera el
+   (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso entró al
+   manual con sp-interno#177 (fusionado el 20/10; `salud/GUARDIAN.md`, §5 paso
+   4). Si un master cambió, el PR de datos espera el
    OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
    `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
-   minutos después de su última ingestión: la primera corrida lo va a marcar.
+   minutos después de su última ingestión, y el Guardián lo marca desde su
+   primera corrida. Falta anotar esa versión en la tabla de masters de
+   `datos/planes-vigentes/README.md`: es un PR de datos aparte, que espera el
+   OK de Arturo.
    El quincenal quedó pausado ese mismo día a las 10:33, por decisión de
    Arturo (sp-interno#176, opción A).
 4. **Transcripciones:** una sesión averigua si puede correr en la nube sin la
@@ -663,7 +672,9 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    tocó todavía: los claros y las dudas («/evento» en medicamentos y remedios,
    «/mes» en el paso del nivel del simulador) esperan a Arturo. *(17/10:
    «/evento» quedó decidido con la E3A; los 27 claros van en un PR aparte con
-   la E2A, después del #271. Ver la sección del 17/10 arriba.)* Lo que resuelve
+   la E2A, después del #271. Ver la sección del 17/10 arriba.)* *(21/10/2026:
+   #271 entró el 20/10, con la E3A aplicada; el PR de la E2A sigue sin abrir.)*
+   Lo que resuelve
    la regla sin preguntar: no se agrega una unidad que la fuente no tiene, y la
    barra que hace de «o» («urgencia / emergencia») pasa a «o». Para quien lo
    construya: la forma corta va en una capa de vista, no en el dato
@@ -3081,7 +3092,7 @@ sitios**, no uno:
 |---|---|---|
 | Dónde | `/sp-prototipo/` (donde estuvo siempre) | `/sp-prototipo/lanzamiento/` |
 | Qué es | El laboratorio: todo lo construido | **Lo que sale al público** |
-| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (bajado el 17/10/2026, sp-interno#181) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
+| Rutas | home · simulador · planes · qué cubre · agendar · historia · **blog · Mi SP · Guía Médica** · ~~snapshot `/v1/`~~ (decidido el 17/10/2026 y bajado el 20/10, sp-interno#181 y PR #271) | home · simulador · planes · qué cubre · **Guía Médica** (desde el 23/09; agendar salió ese día) |
 | Se indexa | no | **no todavía** (`noindex`, decisión del 15 sep) |
 
 *(18/10/2026: «qué cubre» ya no es una página en ninguna de las dos ediciones.
@@ -3525,7 +3536,7 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
 | **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
-| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) |
+| ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) *(21/10/2026: decidido el 17/10 y bajado el 20/10: el PR #271 lo borró de `main` (`86ed718`) y su deploy, del sitio en vivo)* |
 | **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
@@ -3676,7 +3687,8 @@ usa `npm ci`).
     snapshot se baja o se tolera mientras sea demo interna.
     *Historia (17/10/2026): decidido. Arturo eligió bajarlo (P4A,
     sp-interno#181); `public/v1/` salió del repo y queda en el historial de
-    git. Ver la sección del 17/10 arriba.*
+    git. Ver la sección del 17/10 arriba.* *(21/10/2026: el 17/10 fue la
+    decisión; salió del repo y del sitio en vivo el 20/10, con el PR #271.)*
 11h. **El paso "Zona" se volvió "¿Dónde querés tu cobertura?" (21 jul
     2026, decisión del usuario tras la reunión MKT/Ventas del 20 jul;
     BITACORA cap. 31)**: la persona escribe SU CIUDAD (buscador tolerante
@@ -4522,7 +4534,8 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    (ANEXO §2), y presupuesto móvil verificado: 173 KB gzip de contenido
    crítico (≤300 KB). El home anterior quedó congelado en `/v1/` como
    referencia *(17/10/2026: esa copia se bajó, P4A, sp-interno#181; queda en
-   el historial de git)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
+   el historial de git)* *(21/10/2026: el 17/10 fue la decisión; se bajó el
+   20/10, con el PR #271)*. Detalle y salvaguardas: `PLAN-home-v2.md`. **Pendiente que
    nace de acá:** testimonios reales con consentimiento (responsable: SP).
    *Refinado v2.1 (feedback del usuario, jul 2026)*: menú móvil overlay a
    pantalla completa estilo Apple/Tesla/Ogilvy (blanco pleno, tipografía
