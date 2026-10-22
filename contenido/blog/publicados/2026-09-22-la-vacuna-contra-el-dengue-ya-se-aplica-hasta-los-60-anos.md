@@ -12,6 +12,8 @@ sources:
   - "https://www.abc.com.py/nacionales/2026/09/19/amplian-rango-de-edades-para-vacunacion-contra-el-dengue/"
   - "https://pai.mspbs.gov.py/vacunacion-contra-dengue-se-amplia-para-personas-de-6-a-60-anos-de-zonas-priorizadas/"
   - "https://www.mspbs.gov.py/portal/34838/vacuna-contra-el-dengue-sera-aplicada-a-personas-de-6-a-39-antildeos.html"
+  - "https://www.mspbs.gov.py/portal/36709/vacunacion-dengue-ya-recibiste-la-primera-dosis-no-te-olvides-de-la-segunda.html"
+  - "https://vacunate.gov.py/index-campanha-vacunas-dengue-2026.html"
 status: "publicado"
 author: "Equipo Salud Protegida"
 ---
@@ -39,6 +41,11 @@ El esquema oficial es de dos dosis, con tres meses de intervalo entre una
 y otra, según el PAI ([PAI/MSPBS](https://pai.mspbs.gov.py/vacunacion-contra-dengue-se-amplia-para-personas-de-6-a-60-anos-de-zonas-priorizadas/)).
 Se aplica hayas tenido dengue antes o no
 ([MSPBS, 17/10/2026](https://www.mspbs.gov.py/portal/36709/vacunacion-dengue-ya-recibiste-la-primera-dosis-no-te-olvides-de-la-segunda.html)).
+
+Si ya tuviste dengue, hay que esperar 6 meses desde que empezó la enfermedad
+para comenzar el esquema
+([vacunate.gov.py](https://vacunate.gov.py/index-campanha-vacunas-dengue-2026.html), 18/10/2026).
+
 Consultá en el vacunatorio los requisitos y las contraindicaciones antes de
 aplicártela.
 
