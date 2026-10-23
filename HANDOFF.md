@@ -17,6 +17,28 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## ⚠ OCTUBRE ROSA Y NOVIEMBRE AZUL — EN DISEÑO, NO CONSTRUIR EN EL SITIO (23/10/2026)
+
+Arturo eligió vestir la web en dos campañas del Ministerio de Salud, y solo en
+esas dos: **Octubre Rosa** (cáncer de mama) y **Noviembre Azul** (próstata y
+colon) («1A, 2A», 23/10). Septiembre Rojo y los días mundiales sueltos van solo
+al blog: el rojo es de urgencias y no se usa para vestir la página. Las fechas
+patrias y los «feliz día» no van (regla de marca de `sp-contenido`,
+`LINEA-EDITORIAL`).
+
+**Nada de esto entra al sitio todavía.** Arturo, 23/10: *«todavía no queremos
+poner nada de esto en la página mientras creamos un artefacto y nos aseguramos
+de que todos sus espacios, no solamente la home, tengan ese nuevo estilo»*. El
+trabajo vive en un artifact privado de claude.ai con todas las páginas
+vestidas, y las láminas y su lección en `docs/diseno/README.md` (Parte 36,
+lección 90) y en el PR #288. Octubre Rosa ya tiene forma: el hero rosa claro
+con el lazo gigante, las dos fajas cruzadas y el resto del azul pasado a rosa
+profundo; el turquesa que significa algo y el rojo de urgencias no cambian.
+Noviembre Azul está en láminas. Cuando se construya, la idea es una sola pieza
+que se prende y se apaga sola por fecha, con la paleta y el texto de cada mes.
+
+---
+
 ## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
 
 Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)

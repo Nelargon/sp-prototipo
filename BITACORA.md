@@ -5826,3 +5826,14 @@ de la foto, y lo primero con dos fajas que se cruzan como el lazo
   seis opciones. El navy de los fondos y el turquesa de adorno no significan
   nada que un mes de campaña rompa. Los rosas se eligieron del lado magenta
   (cerca de 330°), lejos del rojo de urgencias (`#E11900`, cerca de 7°).
+
+*(23/10/2026, más tarde.)* Arturo eligió vestir la web en dos campañas y solo en
+esas: Octubre Rosa y Noviembre Azul. Septiembre Rojo, la campaña del corazón del
+Ministerio, quedó afuera por una regla de seguridad, no de gusto: si la página
+se pone roja, el botón de urgencias deja de destacar. Y pidió que nada entre al
+sitio hasta que el artifact tenga todas las páginas vestidas, no solo la home.
+Lo que eso enseñó: **un tema de mes se prueba en el sitio entero antes de
+construirlo**. La home se diseña a mano; el resto lo pinta una regla (lo azul
+pasa a rosa profundo, lo menta a rosa pálido), y una regla se ve recién cuando
+se aplica a todas las páginas. Ahí apareció lo que la home no mostraba: Nuestra
+historia depende de su animación y sin ella quedaba con las frases encimadas.

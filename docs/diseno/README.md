@@ -2389,8 +2389,44 @@ las dos fajas cruzadas entre el hero y la tarjeta del simulador, y el resto de
 la página con el azul pasado a rosa profundo (los fondos menta, a rosa pálido).
 El turquesa que significa algo (botones, planes, lo cubierto, los íconos) y el
 rojo de urgencias no cambian. El revisor da sobre ella lo mismo que sobre la
-home de hoy: 0 🔴 y los mismos 27 🟡, a 360, 390, 430 y 1280 px. Falta decidir
-si se construye en el sitio y por cuánto tiempo.
+home de hoy: 0 🔴 y los mismos 27 🟡, a 360, 390, 430 y 1280 px.
+
+Después Arturo pidió no tocar el sitio todavía: *«todavía no queremos poner
+nada de esto en la página mientras creamos un artefacto y nos aseguramos de que
+todos sus espacios, no solamente la home, tengan ese nuevo estilo»* (23/10). El
+artifact pasó a tener el sitio entero: la home, `/planes/`, el simulador, la
+Guía Médica con tres fichas, Mi SP, Agendar, Nuestra historia (con su animación
+al bajar, rehecha para el artifact), el blog con todas sus notas y la 404. El
+lazo gigante y las fajas quedan solo en la home; en las demás páginas el tema
+es la paleta. Página por página, el revisor da lo mismo que el sitio de hoy (los
+🔴 que aparecen en el blog, una nota y Agendar ya están en el sitio publicado).
+
+![El sitio vestido de Octubre Rosa, en el celular: la home, Planes, el simulador, la Guía Médica, una ficha, el blog, una nota, una guía del blog, Nuestra historia, Mi SP, Agendar y la 404](img/2026-10-23-octubre-rosa-todas-las-paginas.webp)
+
+### 91 · Si el sitio ya es del color del mes, el mes lo cuenta la forma
+
+Arturo eligió vestir la web en dos campañas del Ministerio de Salud y solo en
+esas: Octubre Rosa y Noviembre Azul (próstata y colon), «1A» del 23/10.
+Septiembre Rojo queda afuera porque el rojo es de urgencias, y los días mundiales
+sueltos van al blog. El problema de Noviembre Azul: el sitio ya es azul, así que
+«pasar el azul a azul» no se nota.
+
+![Noviembre Azul en la home, en el celular: hoy; A, el molde de octubre en celeste, con el hero claro, el lazo gigante y las fajas azules; B, el navy pasado a un azul más vivo con la foto teñida; C, la foto de siempre con el lazo en la etiqueta y las dos fajas azules](img/2026-10-23-noviembre-azul-celular.webp)
+
+**Qué muestra.** «Hoy» y tres opciones. **A · El molde de octubre** (la
+recomendada): lo mismo que eligió para Octubre Rosa, en celeste, con el hero
+claro, el lazo gigante y las dos fajas. **B · Azul de campaña:** el navy pasa a
+un azul más vivo, la foto se tiñe, sin fajas. **C · Foto y fajas:** la foto de
+siempre, el lazo en la etiqueta y las dos fajas azules. La etiqueta lleva a la
+nota «Los chequeos que conviene hacerse a cada edad». El revisor no encontró
+nada nuevo contra «Hoy» en ninguna.
+
+**Qué se decidió y por qué.** Pendiente. La recomendación es A: una sola pieza
+para los dos meses, que cambia la paleta y el texto por fecha.
+
+**La lección.** Cuando el color del mes ya es el de la marca, recolorear no
+cuenta nada. Lo que hace que se note es la forma que la persona asocia con la
+campaña (el lazo, las fajas) y un tono distinto del de todos los días.
 
 ![La versión combinada: hoy en el celular, y la home con el hero rosa claro, el lazo gigante y las dos fajas cruzadas, en el celular y en la computadora](img/2026-10-23-octubre-rosa-b-con-fajas.webp)
 
