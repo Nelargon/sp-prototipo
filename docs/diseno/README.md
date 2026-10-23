@@ -2380,7 +2380,19 @@ El revisor (`revisar.mjs`, a 360, 390 y 430 px) no encontró nada nuevo contra
 a navy un enlace que daba 4,48:1 sobre rosa suave.
 
 **Qué se decidió y por qué.** La primera tanda, descartada entera: se veía
-azul. La segunda, pendiente: la elige Arturo.
+azul. De la segunda, Arturo tomó la B y le sumó algo de la C: *«me está
+gustando muchísimo la opción B, pero de la opción C me gusta esa cinta que se
+cruza en tonos de rosa»* (23/10). La versión combinada se armó sobre la home
+entera y se publicó como maqueta en un artifact privado de claude.ai, con un
+rótulo ámbar «Maqueta · Octubre Rosa»: el hero rosa claro con el lazo gigante,
+las dos fajas cruzadas entre el hero y la tarjeta del simulador, y el resto de
+la página con el azul pasado a rosa profundo (los fondos menta, a rosa pálido).
+El turquesa que significa algo (botones, planes, lo cubierto, los íconos) y el
+rojo de urgencias no cambian. El revisor da sobre ella lo mismo que sobre la
+home de hoy: 0 🔴 y los mismos 27 🟡, a 360, 390, 430 y 1280 px. Falta decidir
+si se construye en el sitio y por cuánto tiempo.
+
+![La versión combinada: hoy en el celular, y la home con el hero rosa claro, el lazo gigante y las dos fajas cruzadas, en el celular y en la computadora](img/2026-10-23-octubre-rosa-b-con-fajas.webp)
 
 **La lección.** Las tres opciones de la primera tanda cambiaban **dónde** iba el
 rosa, no **cuánto**: una cinta, una etiqueta, una sección, y la página seguía
