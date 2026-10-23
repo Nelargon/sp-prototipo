@@ -17,6 +17,133 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🚦 23/10/2026: LA RESERVA DE TURNOS, LAS BASES Y EL «PUBLICÁ» (sp-interno#209)
+
+Arturo preguntó qué hace falta para llevar esto a `saludprotegida.com.py`, y
+pidió *«tener todo listito y después ya hacemos lo que queda»*. Contestó «1A,
+2A, 3A, 4A» a las cuatro decisiones de `Nelargon/sp-interno#209` (las tres del
+issue más una sobre cómo se publica). Lo público sigue esperando: nada de esto
+conecta el dominio.
+
+- **1A — La reserva de turnos se muda a `turnos.saludprotegida.com.py`**, en el
+  servidor de hoy, y `/login/` y `/dashboard/` llevan ahí (302). Medido el
+  23/10: la reserva («Agendamiento») es un complemento del WordPress
+  (`appointment-scheduling`) que manda los pedidos a `admin-ajax.php` **por el
+  nombre del dominio**. Crear el subdominio no alcanza: el WordPress tiene que
+  pasar a llamarse `turnos.…`, o la página carga y el turno no sale. Lo que
+  tiene que hacer el proveedor y el control que se corre antes de cambiar el
+  DNS (`scripts/antes-del-dns.mjs`, que hoy da ✗ a propósito) están en
+  `docs/IMPLEMENTAR-v1.md`, §0.
+- **2A — Las bases de Octubre Rosa 2026 viven en `/bases/octubre-rosa-2026/`**,
+  con el texto literal de SP (`lib/bases.js`, leído de la web actual; solo los
+  títulos pasan a tipo oración). `/octubre_rosa/` lleva ahí (301). Es la casa de
+  las bases de las próximas promociones: una entrada más en `lib/bases.js`.
+  `qa-lanzamiento` controla que la página diga las bases frase por frase. Tiene
+  que seguir en línea hasta enero de 2027 (el voucher vale 60 días). No lleva
+  la estética de campaña: esa guarda (PR #288) sigue en pie.
+- **3A — El QR del carnet:** Arturo escanea uno y pasa la dirección. Pendiente.
+- **4A — Al dominio sale solo `produccion`, con el «publicá» de Arturo.** `main`
+  sigue siendo el taller. Regla en `CLAUDE.md` («Flujo git»); el cómo, en
+  `docs/IMPLEMENTAR-v1.md`, §0. La tabla de Cloudflare ya dice `produccion`.
+
+⚠ **Abierto: cómo se entera el cliente del cambio de la reserva.** Arturo:
+*«sería bueno que […] tengamos información para que el usuario esté al tanto de
+los cambios que se hacen con eso del tema de reservas y turnos»*. Hoy la v1 no
+tiene ningún link a la reserva (el «Agendamiento» del menú viejo no tiene
+equivalente). Las opciones se le presentaron el 23/10 y están en
+`Nelargon/sp-interno#209`. **Hasta que conteste, no se construye el aviso ni
+el link**: el texto depende de lo que confirme el proveedor (por ejemplo, que
+se entra con el mismo usuario).
+
+---
+
+## 💲 23/10/2026: LOS PRECIOS SALEN DEL DRIVE — TABLA DEL 09/10/2026
+
+**La regla (Arturo, 23/10/2026):** *«Si no coincide el simulador con el archivo
+de Drive, el archivo de Drive gana.»* Vale para los precios desde hoy, aunque
+el resto de la carpeta siga en carga (ver «🌐», abajo).
+
+**La fuente:** carpeta «Fuente de Planes - Productos - Guia»
+(`1OB7DQnzbVLcDsh1E5h1m9VuUBo9ACess`) → «Fuentes PDF» → «Precios» →
+`9 octubre  2026 TABLA DE PRECIOS.pdf` (fileId
+`1qyh9LBvhzR4JpA9kTFswk5OOxo5_HBG2`). El simulador cotizaba con las tarifas de
+julio (Silver y Gold) y de agosto (Essential): desde el 9/10 cotizaba mal.
+Este cambio entra con el OK de Arturo, no con el merge automático: es un cambio
+de precios.
+
+**Qué cambió:**
+- **Silver y Gold.** Las tarifas por categoría son las de julio (salvo el
+  cónyuge 70+, que llega a 99). Cambiaron los 7 ejemplos «GRUPOS» de cada plan, y
+  con ellos la regla: **el titular paga siempre «titular solo»**, aunque esté
+  acompañado (antes pagaba como cónyuge), y el **hijo adicional corre desde el
+  3er hijo también sin cónyuge**. La regla está deducida de los ejemplos (14 de
+  14) y anotada como deducida en `app/quote.js` (`priceFor`) y en `silver.json`
+  y `gold.json` (`regla_deducida`). Casos típicos: pareja de 30, 456.000 →
+  552.000 en Silver y 648.000 → 756.000 en Gold; titular + 2 hijos, 572.000 →
+  668.000 y 800.000 → 908.000; pareja + 1 hijo, 628.000 → 724.000 y 886.000 →
+  994.000. El grupo familiar (pareja + 2 hijos: 770.000 / 990.000) no cambió.
+- **Essential.** En el PDF su tabla es una **imagen**: el texto que extrae Drive
+  no la trae (BITACORA, «El texto extraído no es el documento»). Cifras
+  transcriptas de la captura de Arturo del 23/10/2026; las 10 filas, literales,
+  en `essential.json` (`tabla_09_10_2026`). Nuevas: adherente de 21 a 35
+  (125.000 / 150.000 / 170.000, Interior / Asunción y Central / Nacional),
+  titular y adherente
+  adulto (las mismas cifras que la pareja), **titular + 2 hijos** y **dos
+  adultos + 1 hijo** (345.000 / 415.000 / 475.000). En Asunción: mamá + 2 hijos,
+  485.000 → 415.000; pareja + 1 hijo, 505.000 → 415.000 (de 46 a 64, 585.000 →
+  415.000). Lo que la tabla no dice (1 adulto + 1 hijo, el 3er hijo, el hijo de
+  21 a 35 aparte) lo arma el motor y está marcado **inferencia** en el código y
+  en `reglas_de_grupo`.
+- **Quién entra en Essential:** ya no es «hijos hasta los 20». Sin tarifa:
+  adultos de más de 64, hijos de más de 35 y un tercer adulto de más de 35
+  (`essentialNoAplica`). El simulador deja cargar hijos **hasta los 35**
+  (`EDAD_MAX_HIJO`, antes 25): el último tramo de hijo con tarifa en los tres
+  planes.
+- **Vital:** sin cambios (283.000 con débito, 312.000 particular; está en la
+  misma tabla).
+- **Lo controla `qa/precios.mjs` en el CI:** el motor real contra los JSON (los
+  14 ejemplos, las 10 filas × 3 zonas, cada tarifa por categoría y las
+  inferencias). Se prueba contra la regla de antes del 09/10 y tiene que
+  fallar.
+
+**⚠ Para la próxima sesión que toque precios:**
+- La tabla de Essential **es una imagen dentro del PDF**. `read_file_content`
+  devuelve el texto de Silver, Gold, Vital y tablas sueltas sin nombre de plan,
+  y no la de Essential. Antes de decir que un dato no está, mirar la página o
+  pedir la captura.
+- Ese día llegó primero una tabla «Octubre 2026» con dos versiones de precio
+  para los mismos grupos; Arturo la reemplazó por la del 9/10. La vigente es la
+  del 9/10.
+- `grilla-coberturas-precios-jul2026.json` es la transcripción fiel del master
+  de julio y no se tocó: sus ejemplos de grupo son los de julio. Para precios,
+  mandan `silver.json`, `gold.json` y `essential.json`.
+- Solo precios: las coberturas de los cuadernillos nuevos van en otro PR, con
+  contradicciones que Arturo todavía no decidió (`Nelargon/sp-interno#211`).
+
+**Decidido por Arturo (23/10/2026, «4A»: las recomendadas del PR):**
+1. **La rareza de Essential se publica tal cual y se le pregunta a SP.** Una
+   pareja de 46 a 64 sola paga 475.000 (Asunción) y con un hijo, 415.000. Drive
+   gana: si es un error, se corrige en el Drive y el sitio lo sigue. Lo pregunta
+   Arturo; queda anotado en `Nelargon/sp-interno#211`.
+2. **Un hijo de 21 a 35 con un solo adulto, en Essential, paga el adherente de
+   21 a 35 aparte** (265.000 + 150.000 = 415.000), que es lo que hace el motor.
+3. **En Silver y Gold, el titular es «Vos»**, la persona que simula.
+4. **`sp-interno#162` se cierra** con este PR: con la tabla del 09/10, Silver
+   (552.000) ya no queda por debajo de Essential (475.000) para la pareja de 46
+   a 54.
+5. **El camino para mamá o papá solo con sus hijos se suma en otro PR, con
+   lámina** (`Nelargon/sp-interno#213`). Hoy «Para mi familia, con hijos» trae
+   dos adultos, y la fila nueva de Essential (titular + 2 hijos) solo se ve en
+   `/planes/` («Vos con tus hijos»).
+6. **Hijos hasta los 35 en el simulador** (`EDAD_MAX_HIJO`).
+
+**Territorio:** `app/quote.js` (compartido: tarifas, motor y textos de
+Essential), `app/components/Simulador.jsx` (solo el tope de edad de los hijos),
+`datos/planes-vigentes/` (silver, gold, essential y README), `qa/precios.mjs`
+(nuevo), `.github/workflows/ci.yml` (un paso). Refs `Nelargon/sp-interno#211`.
+
+---
+
 ## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
 
 Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)
@@ -41,6 +168,7 @@ ser el centro de la información de la Guía Médica y de los planes. **Arturo l
 está cargando: hasta que diga que está lista, no se lee ni se cambia de dónde
 salen los datos.** Mientras, valen los datos de hoy (la planilla maestra y
 `datos/planes-vigentes/`). Se verificó que la sesión tiene acceso.
+*(23/10/2026: para los precios, Arturo ya fijó que el Drive gana; ver «💲», arriba.)*
 
 **1A — El glosario médico:** Arturo lo valida en el Excel
 (`datos/glosario/Glosario-medico-SP-borradores.xlsx`). Validado, va a
@@ -73,7 +201,8 @@ trabajo).
   «Agendamiento», la reserva de turnos de los clientes; `/octubre_rosa/`, las
   bases legales de una promoción vigente; y el QR del carnet. **Si el dominio
   cambia sin resolverlas, los clientes se quedan sin turnos.** El control falla
-  si alguna aparece redirigida.
+  si alguna aparece redirigida. *(23/10/2026, más tarde: Arturo decidió las dos
+  primeras, «1A, 2A», y el QR espera a que escanee un carnet. Ver «🚦», arriba.)*
 - La receta para SP en Cloudflare: `docs/IMPLEMENTAR-v1.md`, §0. Incluye las
   variables, que van solo en producción para que las previews sigan mostrando el
   prototipo, y la lista del día del DNS: MX, `mail.`, SPF, Brevo, DKIM, y los
@@ -160,6 +289,7 @@ reglas nuevas no le llegaban.
 | Historia (`CON_HISTORIA`) | ✓ | — | Decisión de Arturo y otra forma: hoy son 720vh de scroll dirigido |
 | Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo, en el Excel. Validado, va a `/planes/`, subrayado en las palabras difíciles, después de `Nelargon/sp-interno#206` (1A, 23/10) |
 | Marca «Revisar» de la guía (`CON_MARCA_REVISAR`) | ✓ | nunca | Es interna. Dato del 23/10: 218 filas marcadas (eran 185 el 23/09) |
+| Laboratorio de imágenes (`/blog/laboratorio/`) | ✓ | nunca | Herramienta de revisión visual. Las imágenes elegidas podrán entrar al blog con la decisión de Arturo; el laboratorio queda en el prototipo |
 | Botón «Revisión» (`CON_REVISION`) | ✓ | nunca | Es interno: solo en el prototipo desde el 23/10 (`Nelargon/sp-interno#192`, 2A) |
 
 **El espacio de la guía y los planes (anunciado por Arturo el 23/10).** Arturo
@@ -455,15 +585,15 @@ de la videolaparoscopía). Entró en la misma rama:
   ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
   Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
   tiene que conservar de su ítem), aunque cambien las dos puntas del par.
-- **Documentos**: BITACORA caps. 164 («Lo que dice el ítem se queda en el
-  ítem») y 165 («La caja que redondeaba sus esquinas recortaba la lista»), y el
-  cap. 163 corregido donde decía más que el cuadernillo sobre la
+- **Documentos**: BITACORA caps. 167 («Lo que dice el ítem se queda en el
+  ítem») y 168 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 166 corregido donde decía más que el cuadernillo sobre la
   videolaparoscopía.
 
 **La cuarta tanda (23/10, después de re-verificar la tercera).** La rama trajo
 `main` con el modo oscuro (#287): el cap. 155 de main quedó como 155 y los ocho
-de la rama pasaron a 156-163, con sus citas renumeradas (*desde la quinta
-tanda son 158-165: el 156 y el 157 son de main*); el CI corre esquinas,
+de la rama pasaron a 156-163, con sus citas renumeradas (*desde la ronda 5
+de verificación son 161-168: del 156 al 160 son de main*); el CI corre esquinas,
 listas-fuente y modo-oscuro en el mismo paso. Y entró:
 - **La vejiga, dentro de la oración de Gold** en el toque de Silver y Gold
   juntos (`eco-sg`): «… En Gold, también las de riñón y de vías urinarias, la
@@ -495,7 +625,7 @@ listas-fuente y modo-oscuro en el mismo paso. Y entró:
   (medido con la transición pausada y llevada a cada milisegundo).
 - **El anestesista de la cesárea no era una pregunta**: lo contesta el
   cuadernillo (ver «Lo que queda»).
-- **Documentos**: BITACORA cap. 166 («La regla que no dejaba pasar a su propia
+- **Documentos**: BITACORA cap. 169 («La regla que no dejaba pasar a su propia
   fuente»).
 
 **La quinta tanda (23/10, después de la ronda 3 de verificación, y con `main`
@@ -504,10 +634,11 @@ sp-prototipo#289 («🧩 23/10/2026», arriba) y después #291 («🌐 23/10/202
 dos de otras sesiones:
 - **La bitácora**: el cap. 156 («Las dos versiones eran una sola…») y el 157
   («Preparar el dominio era inventariar lo que hace la web vieja») son de main y
-  se quedan con su número; los nueve de la rama pasan a 158-166, en el mismo
+  se quedan con su número; los nueve de la rama pasan a 161-169, en el mismo
   orden, con sus citas renumeradas por título (acá, en el capítulo «Lo que dice
   el ítem se queda en el ítem» y en la nota de las esquinas). El nuevo es el
-  167.
+  170. *(Al principio pasaron a 158-166; desde la ronda 5 de verificación el
+  158, el 159 y el 160 también son de main: ver abajo.)*
 - **El molde viejo, retirado entero**: los dos `guia/*.html` que la rama había
   corregido por Bronze (#61, punto 2) se borraron con el resto, y con ellos la
   prueba de Bronze y la del upsell de `qa-integral`; las reemplazan el 404 de
@@ -538,9 +669,9 @@ dos de otras sesiones:
 - **`CALIFICATIVOS`** (hallazgo 3): «pterigión, con o sin injerto», sin «auto»,
   marca («injerto» es también el de donante); acepta «con o sin injerto propio».
   El apéndice acepta «no esté complicada».
-- **Documentos**: el cap. 166 decía «el primer caso de «pasan» es el cuadernillo
+- **Documentos**: el cap. 169 decía «el primer caso de «pasan» es el cuadernillo
   mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
-  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 167, «Lo
+  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 170, «Lo
   que no se ve no es solo lo que recorta».
 - **Después de la ronda 4 de verificación (sobre 15c56f9; sin cambios en el
   sitio, solo en las pruebas):**
@@ -564,7 +695,7 @@ dos de otras sesiones:
     la condición para las dos. **«si no se complicó» sigue marcando a
     propósito**: como «sin complicaciones», se lee «si la cirugía sale bien».
     Si #206 elige palabras de casa, esa forma no sirve.
-  - **Documentos**: BITACORA cap. 168 («La frase del ítem vivía adentro de la
+  - **Documentos**: BITACORA cap. 171 («La frase del ítem vivía adentro de la
     que dice lo contrario»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
@@ -713,9 +844,11 @@ un caso que falla y uno que pasa:
   segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
 - Lo que sigue para preparar el espacio, sin publicar, está en «🧩» y en «🌐
   23/10/2026», arriba: el build para el dominio y el botón «Revisión» solo en el
-  prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101) y las
-  tres direcciones de la web actual que esperan a Arturo (#209). Esta rama no lo
-  toca. Fusionarla actualiza el sitio de GitHub Pages, como cualquier PR; la v1
+  prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101). Las
+  tres direcciones de la web actual ya no esperan: Arturo contestó «1A, 2A, 3A,
+  4A» en #209 y entró a main con #293 (ver «🚦 23/10/2026», arriba). De ahí
+  quedan el QR del carnet, que espera a que Arturo escanee uno, y el aviso a los
+  clientes por el cambio de la reserva, abierto en #209. Esta rama no lo toca. Fusionarla actualiza el sitio de GitHub Pages, como cualquier PR; la v1
   en el dominio real sigue esperando.
 
 ---
@@ -1809,7 +1942,8 @@ antes estaba pendiente se resolvió así:
 **Pendiente con SP (4A):** una pareja de 46 a 54 años paga menos en Silver
 (₲ 456.000) que en Essential (₲ 475.000, Asunción y Central). Va como punto de
 revisión (`sp-interno#162`) para que SP diga si es así o si es un error del
-tarifario.
+tarifario. *(⚠ 23/10/2026: con la tabla del 09/10, la pareja de 46 a
+54 paga 552.000 en Silver, más que en Essential; ver «💲», arriba.)*
 
 **Dónde está todo:** en `sp-interno/project/comparativa-2026-09-27/`. Ahí
 están el `PASE.md` al día, las láminas navegables, la maqueta del 06/10, las
@@ -2605,7 +2739,62 @@ era el estado del paso 1.
 
 ---
 
-## 🖼 PORTADAS DIBUJADAS DEL BLOG — ESTILO ELEGIDO, FALTA LA BIBLIOTECA (25 sep 2026)
+## 🖼 LABORATORIO DE IMÁGENES — NUEVA EXPLORACIÓN, ELECCIÓN POR NOTA ABIERTA (23 oct 2026)
+
+Arturo pidió conservar los estilos en una subpágina de GitHub y sumar cinco o
+seis artículos: *«Me cuesta decidir para cada opción cuál me gusta más […]
+con este laboratorio de imágenes y después podemos ir decidiendo»*.
+
+**Dónde:** https://nelargon.github.io/sp-prototipo/blog/laboratorio/
+Código y 33 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
+27 propuestas actuales y seis versiones anteriores de escuela y caminar.
+Son imágenes generadas para esta exploración. Las referencias ajenas del
+Drive no se copian al sitio.
+
+**Qué ya le gusta:** las tres opciones de libreta y escuela. En caminar,
+A (editorial) y B (narrativa); la fotográfica D sigue como antecedente porque
+Arturo la percibe artificial. La escuela conserva la revisión de sombras y
+el gesto casi imperceptible en papel. No hay una técnica única elegida para
+todo el blog. Esta exploración reabre la elección visual de septiembre
+documentada abajo; ese apartado es el antecedente, no una orden de aplicar
+el trazo blanco a todas las notas.
+
+**Seis notas nuevas, tres técnicas por nota:** lavado de manos, criaderos de
+dengue, control de presión, embarazo de mellizos, medicamentos y cobertura,
+y hábitos familiares. Cada una mantiene su composición entre trazo
+explicativo, siluetas y papel e ilustración facetada. Títulos, copetes y links
+vienen de las notas reales. Conceptos, límites de representación, procedencia
+y capturas en `docs/diseno/fuentes/2026-10-23-laboratorio-imagenes/`.
+
+**Cómo se decide:** se pueden guardar varias favoritas y una nota por artículo,
+ampliar, ver recortes 2:1/16:9/1:1 y descargar la imagen completa. Favoritas y
+notas viven en `localStorage` del navegador: no son compartidas ni se guardan
+en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selección
+al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
+
+**Respaldo sin conexión:** `python3 scripts/export-laboratorio.py --output
+/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 17 MB, con las
+imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
+porque los primeros dos intentos de Pages agotaron el tiempo de publicación,
+con las compilaciones y pruebas en verde. Se verificó sin conexión: 33
+versiones y cero solicitudes externas. Las favoritas de la copia y de la web
+se pasan con exportar/importar. Los links a las notas sí necesitan internet.
+
+**Pendiente de Arturo:** elegir y pedir ajustes por nota. Ejemplo: «Manos:
+trazo y papel; mellizos: papel; medicamentos: probar otra escena». Todas las
+portadas y los textos del blog siguen como estaban. La página es solo del
+prototipo: la poda de `/blog/` la excluye de la edición de lanzamiento y del
+build para el dominio. No se empuja a `produccion`.
+
+**Pruebas:** `qa/laboratorio.mjs --datos` entra al CI; con la URL del build
+prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 33 versiones,
+descargas, favoritas múltiples, notas, copia, exportación/importación,
+historial y almacenamiento bloqueado. `qa-integral` abre la nueva subpágina.
+Revisor UX sin hallazgos. Láminas y lecciones en `docs/diseno/README.md`.
+
+---
+
+## 🖼 PORTADAS DIBUJADAS DEL BLOG — ANTECEDENTE DE SEPTIEMBRE (25 sep 2026)
 
 Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
 lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo
@@ -3267,7 +3456,7 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
   `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
   dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
   casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
-  158.)* A la vista son 2px, casi invisibles (capturas ampliadas en
+  161.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que

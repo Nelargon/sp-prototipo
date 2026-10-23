@@ -5,7 +5,7 @@ import { css } from '../css';
 import IconoSP from './IconoSP';
 import { BP } from '../basePath';
 import {
-  WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel,
+  WHATSAPP_NUMBER, HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID, fmt, engine, opts, why, peopleFor, ageTxt, groupLabel, grupoPropio, titularAge, plans, planKeyToNivel, EDAD_MAX_HIJO,
   ZONA_ESSENTIAL, GUIA_ESSENTIAL, RED_ESSENTIAL,
 } from '../quote';
 import { buscarCiudad, zonaConRed, DEPARTAMENTOS } from '../geo';
@@ -102,7 +102,7 @@ export default function Simulador() {
   const setPersonAge = (i, val) =>
     setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => {
       if (idx !== i) return p;
-      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? 25 : 85;
+      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? EDAD_MAX_HIJO : 85;
       return Object.assign({}, p, { age: Math.max(lo, Math.min(hi, +val || lo)) });
     }) }));
   const addKid = () =>
@@ -152,7 +152,7 @@ export default function Simulador() {
     setSimState((s) => Object.assign({}, s, { people: s.people.map((p, idx) => {
       if (idx !== i) return p;
       // Plan Vital es para personas de 65 o más: en ese carril la edad no baja de 65.
-      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? 25 : 85;
+      const lo = p.kind === 'kid' ? 0 : (s.who === 'padres' ? 65 : 18), hi = p.kind === 'kid' ? EDAD_MAX_HIJO : 85;
       return Object.assign({}, p, { age: Math.max(lo, Math.min(hi, p.age + delta)) });
     }) }));
 
@@ -436,7 +436,7 @@ export default function Simulador() {
       label: 'font-size:13.5px;transition:color 220ms;' + (done || active ? 'color:#fff;font-weight:' + (active ? '700' : '500') + ';' : 'color:#9fb8d2;font-weight:500;'),
     };
   });
-  const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : (isPadres ? 65 : 18), max: pp.kind === 'kid' ? 25 : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
+  const peopleVals = (d.people || []).map((pp, i) => ({ role: pp.role, age: pp.age, ageTxt: ageTxt(pp.age), min: pp.kind === 'kid' ? 0 : (isPadres ? 65 : 18), max: pp.kind === 'kid' ? EDAD_MAX_HIJO : 85, setAge: (e) => setPersonAge(i, e.target.value), inc: () => bumpPersonAge(i, 1), dec: () => bumpPersonAge(i, -1) }));
 
   // Para 65+ el plan vigente es uno solo: Plan Vital (tarifa fija por persona).
   const nivelData = isPadres

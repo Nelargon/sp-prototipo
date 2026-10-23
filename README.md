@@ -13,6 +13,7 @@ Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
 | **Edición de lanzamiento (v1)** — el sitio que SP decidió publicar desde este repo (todavía no salió) | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
 | Guía Médica de la v1 (red real, desde la planilla de SP) | https://nelargon.github.io/sp-prototipo/lanzamiento/guia-medica/ |
 | Prototipo completo — el laboratorio | https://nelargon.github.io/sp-prototipo/ |
+| Laboratorio de imágenes del blog — comparar estilos y guardar favoritas | https://nelargon.github.io/sp-prototipo/blog/laboratorio/ |
 | Simulador | https://nelargon.github.io/sp-prototipo/simulador/ |
 
 **La v1 publica** inicio, simulador, planes y la **Guía Médica** (desde el 23
@@ -29,7 +30,11 @@ con las dos ediciones del prototipo, en los links de arriba. Antes, la idea era
 que la agencia la copiara en su sitio: eso quedó como historia. El detalle, en
 el `HANDOFF.md`. El build para el dominio ya está preparado y se prueba en cada
 PR (`qa/produccion.mjs`); la configuración de Cloudflare, en
-`docs/IMPLEMENTAR-v1.md` §0. Lo público espera la decisión de Arturo.
+`docs/IMPLEMENTAR-v1.md` §0. Lo público espera la decisión de Arturo. Cuando
+salga, al dominio va solo la rama `produccion`, que avanza con su «publicá»;
+`main` sigue siendo el taller. Antes de cambiar el DNS se corre
+`scripts/antes-del-dns.mjs`: la reserva de turnos tiene que estar andando en su
+subdominio.
 
 ## 📖 Para entender el proyecto
 

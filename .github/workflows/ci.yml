@@ -59,11 +59,19 @@ jobs:
           node qa/esquinas.mjs
           node qa/listas-fuente.mjs
           node qa/modo-oscuro.mjs out
+          node qa/laboratorio.mjs --datos
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.
       - name: Pruebas del correo del blog
         run: python3 scripts/correo-blog/test_correo_blog.py
+      # Los precios del simulador contra la tabla del Drive (23/10/2026, Arturo:
+      # «Si no coincide el simulador con el archivo de Drive, el archivo de
+      # Drive gana»). Corre el motor real (app/quote.js) contra
+      # datos/planes-vigentes/{silver,gold,essential}.json, y se prueba a sí
+      # mismo contra la regla de antes del 09/10/2026.
+      - name: Precios del simulador contra la tabla del 09/10/2026
+        run: node qa/precios.mjs
       # La v1 pública se construye del mismo código (app/edicion.js). Si esta
       # rama esconde un módulo pero deja un link apuntándole, el postbuild
       # (scripts/podar-edicion.mjs) corta acá y el PR no se puede fusionar.

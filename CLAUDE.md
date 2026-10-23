@@ -63,6 +63,12 @@ sesiones, hoy y en el futuro:
   `PLAN-home-v2.md`), que eliminen trabajo existente, o sobre los que el
   usuario expresó dudas en la conversación.
 - El `HANDOFF.md` se actualiza en el mismo PR que el cambio.
+- **Al dominio de SP sale solo `produccion`, y solo con el «publicá» de
+  Arturo** (23 oct 2026, decisión 4A, `sp-interno#209`). `main` sigue siendo el
+  taller y se fusiona como siempre; lo que lee una familia en
+  `saludprotegida.com.py` lo aprueba él. Ninguna sesión empuja a `produccion`
+  por su cuenta, y la rama solo avanza, nunca se reescribe. El cómo, en
+  `docs/IMPLEMENTAR-v1.md`, §0 («Cómo sale un cambio al dominio»).
 
 ## Bitácora (detección automática — no esperar a que el usuario lo pida)
 

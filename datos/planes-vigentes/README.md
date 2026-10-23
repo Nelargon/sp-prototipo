@@ -18,6 +18,37 @@ grupo familiar, hijos y los 7 ejemplos GRUPOS por plan — quedó idéntico
 son las hojas viejas por plan y contradicen a la página 1 en las filas
 70+ — **la consolidada manda**.
 
+**Actualización 23 oct 2026 — los precios salen del Drive de Arturo.** Arturo:
+*«Si no coincide el simulador con el archivo de Drive, el archivo de Drive
+gana.»* El archivo es `9 octubre  2026 TABLA DE PRECIOS.pdf` (tabla del
+09/10/2026), en la carpeta «Fuente de Planes - Productos - Guia»
+(`1OB7DQnzbVLcDsh1E5h1m9VuUBo9ACess`) → «Fuentes PDF» → «Precios» (fileId
+`1qyh9LBvhzR4JpA9kTFswk5OOxo5_HBG2`). Pasó a `silver.json`, `gold.json` y
+`essential.json`, y al motor (`app/quote.js`):
+
+- **Silver y Gold:** las tarifas por categoría son las de julio (salvo cónyuge
+  70+, que llega a 99), pero cambiaron los 7 ejemplos «GRUPOS» y con ellos la
+  regla: el titular paga siempre «titular solo», aunque esté acompañado
+  (pareja de 30 en Silver: 456.000 → 552.000), y el hijo adicional corre desde
+  el 3er hijo también sin grupo familiar. La regla no está escrita en la tabla:
+  es **deducida** de sus ejemplos (14 de 14) y está anotada en cada JSON
+  (`regla_deducida`).
+- **Essential:** en el PDF es una **imagen** (el texto que extrae Drive no la
+  trae). Cifras transcriptas de la captura que pasó Arturo el 23/10/2026, con
+  las 10 filas literales en `tabla_09_10_2026`. Nuevas: adherente de 21 a 35,
+  titular y adherente adulto, titular + 2 hijos y 2 adultos + 1 hijo. Lo que la
+  tabla no dice y el motor arma está en `reglas_de_grupo`, marcado inferencia.
+- **Vital:** sin cambios (283.000 con débito, 312.000 particular).
+- **`grilla-coberturas-precios-jul2026.json` no se tocó:** es la transcripción
+  fiel del master de julio. Sus tarifas por categoría siguen siendo las
+  vigentes, pero sus ejemplos de grupo son los de julio. Para precios, mandan
+  los tres JSON de arriba y la tabla del 09/10.
+
+`node qa/precios.mjs` (lo corre el CI) compara el motor con estos JSON: los 14
+ejemplos de Silver y Gold, las 10 filas de Essential en las tres zonas, cada
+tarifa por categoría y las inferencias. Se prueba a sí mismo contra la regla de
+antes del 09/10.
+
 ## Decisiones de presentación (del usuario, jul 2026)
 
 - **"Privilege" se elimina del nombre**: en la web es "Plan Bronce"
@@ -38,9 +69,9 @@ son las hojas viejas por plan y contradicen a la página 1 en las filas
 | `SP_Privilege_Grilla_Coberturas_Precios_Jul2026.xlsx` | **Grilla oficial completa (fuente de verdad, jul 2026)** — 8 hojas: Precios, Consultas x especialidad (43), Cuadro 1 Laboratorio (348), Cuadro 2 Estudios e Imágenes (271), Cuadro 3 Cirugías e Internación (314), Cuadro 4 Fisioterapia, Parámetros Clave. La pasó el usuario. |
 | `grilla-coberturas-precios-jul2026.json` | **Transcripción fiel de la grilla Privilege** (Bronze/Silver/Gold), versionable y diffeable. Cada ítem trae `cob` (CT/COP/CP/AD), `cantidad` y `carencia`. Incluye `cobertura_real` (% cubierto por plan) y la leyenda `AD` con la cláusula 2.10. |
 | `grilla-vital-coberturas-jul2026.json` | **Transcripción fiel de la grilla Plan Vital (65+)** — precios (débito/particular + sepelio), coberturas por carencia (4 tramos), 26 especialidades, laboratorio y estudios, sepelio. |
-| `essential.json` | **Essential (desde el 24/09/2026 reemplaza a Bronze).** Precio por zona (Asunción y Central · Interior · Nacional), reglas de grupo, cobertura clave y esperas, transcriptos de `PRECIOS ESSENTIAL.pdf` (21/08/2026) y `CUADERNILLO PLAN ESSENTIAL.pdf` (25/03/2026), con la contradicción de la tabla editable anotada. Otra estructura que Privilege: no entra en la grilla; su columna de `lib/prestaciones.json` sale de `essential-cobertura.json`. |
+| `essential.json` | **Essential (desde el 24/09/2026 reemplaza a Bronze).** Precio por zona (Asunción y Central · Interior · Nacional), reglas de grupo, cobertura clave y esperas, transcriptos de la tabla de precios del 09/10/2026 (imagen dentro del PDF, transcripta de la captura de Arturo del 23/10/2026; antes, `PRECIOS ESSENTIAL.pdf` del 21/08/2026) y de `CUADERNILLO PLAN ESSENTIAL.pdf` (25/03/2026). Otra estructura que Privilege: no entra en la grilla; su columna de `lib/prestaciones.json` sale de `essential-cobertura.json`. |
 | `essential-cobertura.json` | **Essential estudio por estudio (25/09/2026).** Reglas transcriptas del `CUADERNILLO PLAN ESSENTIAL.pdf` (25/03/2026), cada una con su cláusula: patrones sobre los nombres de la grilla (gana la primera que calza; las dudosas «?» van primero), mapeo de las 43 especialidades, exclusiones y números finos. Lo que el cuadernillo no nombra → «No entra en este plan»; lo dudoso → «Preguntale a tu asesor» (26 ítems, pendientes de SP; decía «Confirmalo con tu asesor» hasta la R1A del 17/10/2026, que dejó una sola forma, la constante `ASESOR` de `app/coverage.js`). `scripts/build-prestaciones.mjs` la lee y **corta el build si un patrón no calza con ninguna fila**. |
-| `bronce.json` / `silver.json` / `gold.json` | **Resumen curado** por plan Privilege: tarifa por edad/parentesco (IVA incl.) + coberturas clave. Vista cómoda; para el detalle fino, ir a la grilla. |
+| `bronce.json` / `silver.json` / `gold.json` | **Resumen curado** por plan Privilege: tarifa por edad/parentesco (IVA incl.) + coberturas clave. Silver y Gold, con la tabla de precios del 09/10/2026 y su regla deducida; Bronze ya no se vende y quedó con la de julio. Vista cómoda; para el detalle fino, ir a la grilla. |
 | `vital.json` | Plan Vital: resumen curado (tarifa + cobertura escalonada). El detalle completo está en `grilla-vital-coberturas-jul2026.json`. |
 
 ## Pipeline de datos (Drive → repo) — runbook
@@ -56,7 +87,7 @@ usuario actualiza un master:
 1. Leer el master por su **fileId** con la herramienta de Google Drive
    (`get_file_metadata` / `read_file_content`).
 2. Transcribir a JSON fiel (mismo formato que los `grilla-*.json`).
-3. **Verificar** los precios contra `TARIFAS` en `app/quote.js` (deben coincidir).
+3. **Verificar** los precios contra `TARIFAS` en `app/quote.js` (deben coincidir). Desde el 23/10/2026, los precios vigentes salen de la tabla del Drive (ver arriba) y los controla `node qa/precios.mjs`.
 4. **Regenerar el índice buscable de `/que-cubre`** (desde jul→ago 2026 la grilla ya
    no es solo referencia: la consulta el buscador de la web):
 
