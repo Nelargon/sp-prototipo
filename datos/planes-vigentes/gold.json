@@ -4,8 +4,9 @@
   "nombre_oficial": "Plan Privilege Gold",
   "fuente": {
     "cuadernillo": "CUADERNILLO_PRIVILEGE_GOLD.pdf (jul 2026)",
-    "tarifario": "PRECIOS_PLAN_PRIVILEGE_GOLD.pdf (jul 2026)",
-    "tarifario_consolidado": "Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf (pág. 1, jul 2026 — actualiza las filas 70+; las hojas por plan del mismo PDF son las anteriores)"
+    "tarifario": "9 octubre  2026 TABLA DE PRECIOS.pdf (tabla del 09/10/2026), Drive de Arturo: carpeta «Fuente de Planes - Productos - Guia» (1OB7DQnzbVLcDsh1E5h1m9VuUBo9ACess) → «Fuentes PDF» → «Precios», fileId 1qyh9LBvhzR4JpA9kTFswk5OOxo5_HBG2. Leído el 23/10/2026 del texto del PDF.",
+    "regla_de_la_fuente": "«Si no coincide el simulador con el archivo de Drive, el archivo de Drive gana.» (Arturo, 23/10/2026)",
+    "tarifarios_anteriores": "PRECIOS_PLAN_PRIVILEGE_GOLD.pdf (jul 2026) y Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf (pág. 1, jul 2026). Las tarifas por categoría son las mismas que en la tabla del 09/10/2026, salvo cónyuge 70+, que pasó de 70-74 a 70-99. Cambiaron los ejemplos «GRUPOS», y con ellos la regla: con dos personas o más, el titular pagaba la tarifa de cónyuge (titular y cónyuge hasta 54: 648.000); en la tabla del 09/10 paga la de titular solo (756.000)."
   },
   "moneda": "PYG",
   "iva_incluido": true,
@@ -29,7 +30,7 @@
         "solo_renovacion": true
       }
     ],
-    "titular_conyuge_cada_uno": [
+    "conyuge": [
       {
         "edad": "0-54",
         "prima": 324000
@@ -43,7 +44,7 @@
         "prima": 540000
       },
       {
-        "edad": "70-74",
+        "edad": "70-99",
         "prima": 816000,
         "solo_renovacion": true
       }
@@ -74,7 +75,7 @@
     "hijo_adicional_desde_3ro": {
       "edad": "0-20",
       "prima": 180000,
-      "condicion": "cuando el contrato aplica prima de grupo familiar"
+      "condicion": "La tabla dice: «hijo adicional cuando el contrato aplica prima de grupo fliar. a partir del 3er. hijo». Sus ejemplos «GRUPOS» lo aplican también sin grupo familiar (ver regla_deducida)."
     },
     "grupo_familiar_titular_conyuge_2_hijos_hasta_20": [
       {
@@ -93,19 +94,19 @@
       },
       {
         "grupo": "Titular y cónyuge hasta 54 años",
-        "prima": 648000
+        "prima": 756000
       },
       {
         "grupo": "Titular (h/54) y 1 hijo hasta 20 años",
-        "prima": 562000
+        "prima": 670000
       },
       {
         "grupo": "Titular (h/54) y 2 hijos hasta 20 años",
-        "prima": 800000
+        "prima": 908000
       },
       {
         "grupo": "Titular (h/54) y 3 hijos hasta 20 años",
-        "prima": 1038000
+        "prima": 1088000
       },
       {
         "grupo": "Titular, cónyuge (h/59) y 3 hijos hasta 20 años",
@@ -113,9 +114,19 @@
       },
       {
         "grupo": "Titular, cónyuge (h/54) y 1 hijo hasta 20 años",
-        "prima": 886000
+        "prima": 994000
       }
     ],
+    "regla_deducida": {
+      "estado": "DEDUCIDA de los 7 ejemplos «GRUPOS» de la tabla del 09/10/2026, que no escribe la regla. Reproduce los 7, en Silver y en Gold (14 de 14): lo controla qa/precios.mjs. El motor es priceFor, en app/quote.js.",
+      "titular": "Paga siempre «titular solo» por su edad, también acompañado.",
+      "conyuge": "Paga «cónyuge» por su edad.",
+      "hijos_0_20": "Adherente de 0 a 20 cada uno; desde el 3º, «hijo adicional», haya cónyuge o no (titular hasta 54 + 3 hijos: 432.000 + 2 × 238.000 + 180.000 = 1.088.000).",
+      "grupo_familiar": "Titular y cónyuge, los dos de hasta 64, con 2 hijos o más de 0 a 20: prima de grupo por la edad del mayor (hasta 59 / 60-64), «hijo adicional» desde el 3º y los adherentes de 21 o más, aparte.",
+      "hijos_21_o_mas_y_otros_adultos": "Adherente por su edad, cada uno; no cuentan para el grupo familiar ni como 3º hijo. Inferencia: ningún ejemplo lo prueba.",
+      "quien_es_titular": "Inferencia: el simulador toma como titular a la primera persona («Vos») y como cónyuge a la segunda.",
+      "renovacion_70": "La tabla marca los tramos 70+ como solo de renovación, no de venta nueva: el simulador muestra el precio de referencia y lo avisa."
+    },
     "descuento_debito_automatico": "CONFIRMADO (17 jul 2026): 10% de descuento pagando con débito automático o tarjeta de crédito. La prima publicada del tarifario es el PRECIO PARTICULAR — el descuento se aplica sobre ella. Activo en la web (engine() expone autoPay)."
   },
   "coberturas_clave": {
