@@ -40,6 +40,11 @@
    acentos sobre navy). El que lleva texto blanco es --sp-teal-deep (≈5:1).
    #00BCB4 con blanco da 2,37:1 y no pasa AA. */
 :root{
+  /* El sitio es solo claro (23/10/2026, BITACORA cap. 155): sin esto, el
+     navegador del celular en modo oscuro inventa sus propios colores (ver
+     viewport en app/layout.jsx). Chrome lo respeta; Samsung Internet, no
+     siempre: por eso el muro y el tapiz se pintan con transparencia. */
+  color-scheme:only light;
   /* Marca */
   --sp-navy:#003B71;        /* azul institucional, el color de los títulos */
   --sp-navy-deep:#002A52;   /* fondo de las secciones oscuras */
@@ -82,9 +87,13 @@
   --sp-estado-punto-2:#9AA3A2;
   /* El muro de nombres de «Dónde te atendés» (25/09/2026): gris apenas más
      oscuro que su fondo (--sp-estado-bg). Es textura, no texto: Arturo lo pidió
-     gris y claro, sin velo, para que la tarjeta blanca resalte sola. */
-  --sp-muro:#E9EBED;
-  --sp-muro-2:#E1E4E7;
+     gris y claro, sin velo, para que la tarjeta blanca resalte sola.
+     Desde el 23/10/2026 es navy transparente, no gris opaco: sobre #F4F5F6 da
+     el mismo #E9EBED y #E1E4E7, pero el modo oscuro que fuerza el celular
+     (Samsung Internet) aclara el texto y oscurece el fondo, y un gris opaco
+     quedaba blanco sobre negro (BITACORA cap. 155). */
+  --sp-muro:rgba(0,27,52,.0471);
+  --sp-muro-2:rgba(0,27,52,.0784);
   /* Marca interna de la guía («Revisar», «sin prestadores»): solo prototipo,
      nunca de cara al cliente. Era naranja #F28C28; desde el 05/10/2026 es el
      ámbar de la marca (lámina 74), y su texto, el ámbar oscuro del Centro de
@@ -724,8 +733,12 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    detrás de todo. Desde el 29/09/2026 cubre toda la pantalla, sin fade y sin
    dejar libre la columna: Arturo, «el muro no está insertado en el espacio de la
    guía, parece estar a los costados, lo cual no deseo». Las tarjetas y campos
-   son blancos, así que se leen encima; el muro se ve entre ellos. */
-.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:#EBEDEF;text-align:justify;pointer-events:none;user-select:none}
+   son blancos, así que se leen encima; el muro se ve entre ellos.
+   El color es navy al 9/255 y no el gris #EBEDEF (23/10/2026, BITACORA cap.
+   155): sobre --gm-fondo da el mismo píxel, pero en el modo oscuro forzado del
+   celular el gris opaco quedaba blanco pleno sobre negro y tapaba la guía. Con
+   transparencia, el navegador lo aclara y sigue siendo textura. */
+.gm-tapiz{position:fixed;inset:0;overflow:hidden;padding-top:70px;font-family:var(--font-display),'Segoe UI',sans-serif;font-size:22px;line-height:1.28;font-weight:900;letter-spacing:-.015em;color:rgba(0,27,52,.0353);text-align:justify;pointer-events:none;user-select:none}
 @media(min-width:1024px){.gm-tapiz{font-size:30px}}
 /* El mapa de la guía (25/09/2026, app/guia-medica/MapaRed.jsx): al costado de
    la lista desde 1400 px; en menos, detrás del botón «Lista | Mapa». */
