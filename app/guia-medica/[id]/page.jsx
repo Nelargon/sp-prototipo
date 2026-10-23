@@ -46,10 +46,10 @@ export default async function Ficha({ params }) {
   const p = filas[0];
   const inst = p.t === 'i';
   const redes = [...new Set(filas.flatMap((f) => f.r))];
-  // Si dos guías no coinciden, manda la más reciente (regla de la planilla):
-  // esa es la fecha que vale para esta ficha.
-  const aOrden = (dmy) => String(dmy).split('/').reverse().join('');
-  const fechaDatos = redes.map((r) => (datos.meta.guias[REDES[r].guia] || {}).fecha).filter(Boolean).sort((a, b) => aOrden(b).localeCompare(aOrden(a)))[0];
+  // La fecha es la de la planilla publicada (meta.datos_al), la misma de la
+  // Guía y del home. Hasta el 23/10/2026 era la del PDF más reciente de las
+  // redes de la ficha (17/09, 25/09 o 10/08): sp-interno#61.
+  const fechaDatos = (datos.meta.datos_al || '').split('-').reverse().join('/');
   const waDigits = String(WHATSAPP_NUMBER).replace(/\D/g, '');
   const waAviso = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent(`Hola! Quiero avisar un dato de la Guía Médica que no coincide: ${p.n} (${id}).`);
 

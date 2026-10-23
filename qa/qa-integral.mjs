@@ -20,6 +20,7 @@ const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 import { gzipSync } from 'node:zlib';
 import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from 'node:fs';
+import { autoprueba as autopruebaRadios, revisarApp as revisarEsquinas, EXCEPCIONES_RADIO, PRUEBAS_RADIOS } from './esquinas.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { revisarCarpeta as revisarSeguro } from './seguro-propio.mjs';
@@ -288,7 +289,8 @@ console.log('\n== 1. FUNCIONAL ==');
   const rescate = await page.locator('a[href*="wa.me"]:visible').count();
   if (rescate > 0) ok('funcional', 'guía: cero resultados ofrece rescate por WhatsApp (no es callejón)');
   else falla('funcional', 'roto', 'cero resultados sin rescate visible', 'guia_resultados');
-  // ?plan=silver, un plan que la guía conoce (bronce/silver/gold). Hasta el
+  // ?plan=silver, un plan que la guía conoce (silver/gold; bronce salió el
+  // 23/10/2026, sp-interno#61). Hasta el
   // 24/09/2026 decía ?plan=integral, un nombre viejo que la guía ignora: sin
   // internet (sin el CDN de Tailwind, la clase `hidden` no esconde nada) el
   // banner se veía igual y esto daba verde por accidente; con internet, rojo.
@@ -298,9 +300,17 @@ console.log('\n== 1. FUNCIONAL ==');
   const banner = page.locator('#banner-plan:visible');
   if ((await banner.count()) && /Plan Silver/.test(await banner.innerText())) ok('funcional', 'guía: modo personalizado muestra el banner con el plan pedido (Plan Silver)');
   else falla('funcional', 'confunde', 'modo personalizado sin banner visible con el nombre del plan', '?plan=silver');
-  // upsell: etiqueta dorada abre hoja, Escape la cierra
-  const dorada = page.locator('button:visible', { hasText: /Desde SP|Exclusivo/ }).first();
-  if (await dorada.count()) {
+  // upsell: etiqueta dorada abre hoja, Escape la cierra. Hasta el 23/10/2026
+  // buscaba /Desde SP|Exclusivo/, que no es ningún botón (la etiqueta dice
+  // «★ Con Plan Gold →» y «Exclusivo» es un span): no encontraba nada y se
+  // salteaba sin avisar (sp-interno#61). Ahora, si la etiqueta no está, falla.
+  // Abrir y cerrar depende de la clase `hidden` de Tailwind (CDN): si la hoja ya
+  // se ve antes de tocar, el CDN no cargó y eso no se puede medir acá; se dice
+  // en el contexto, no se calla (en el CI, con internet, se mide).
+  const dorada = page.locator('button:visible', { hasText: /★ Con Plan/ }).first();
+  if (!(await dorada.count())) falla('funcional', 'confunde', 'con ?plan=silver no aparece la etiqueta dorada de upsell («★ Con Plan Gold →»)', '?plan=silver');
+  else if (await page.locator('#upsell-hoja:visible').count()) console.log('    contexto: la hoja de upsell ya se ve antes de tocar la etiqueta: sin el CDN de Tailwind la clase hidden no esconde, y abrir y cerrar no se puede medir en este entorno');
+  else {
     await dorada.click();
     await page.waitForTimeout(400);
     if (await page.locator('#upsell-hoja:visible').count()) {
@@ -308,7 +318,35 @@ console.log('\n== 1. FUNCIONAL ==');
       await page.waitForTimeout(300);
       if (!(await page.locator('#upsell-hoja:visible').count())) ok('funcional', 'guía: hoja de upsell abre y cierra con Escape');
       else falla('funcional', 'confunde', 'la hoja de upsell no cierra con Escape', '?plan=silver');
+    } else falla('funcional', 'confunde', 'la etiqueta dorada «★ Con Plan Gold →» no abre la hoja de upsell', '?plan=silver');
+  }
+  // La guía vieja no muestra Bronze (sp-interno#61, 23/10/2026): salió de la
+  // venta el 24/09/2026. Se lee el texto que ve la persona, nodo por nodo y sin
+  // <script> ni <style>: así entran las opciones del «Mi plan» y las etiquetas
+  // «Desde Plan …» que arma el JS (el texto estático de «5. CONTENIDO» no las
+  // ve). Solo en /guia/: la Guía Médica real (/guia-medica) nombra Bronze a
+  // propósito, porque hay clientes que lo tienen (HANDOFF, 24/09/2026). Antes se
+  // prueba el patrón: tiene que encontrar «Plan Bronce» y «Bronze», y callar con
+  // «bronceado» y con Silver.
+  {
+    const BRONZE = /\bbron(?:ce|ze)\b/i;
+    const autoB = ['Desde Plan Bronce', 'Plan Bronze', 'protector para el bronceado', 'Desde Plan Silver'].map((t) => BRONZE.test(t));
+    if (!autoB[0] || !autoB[1] || autoB[2] || autoB[3]) falla('contenido', 'roto', 'el patrón de Bronze no distingue lo que debe marcar: ' + JSON.stringify(autoB), 'qa-integral 1c');
+    const conBronze = [];
+    for (const u of ['/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_resultados.html?plan=silver', '/guia/guia_resultados.html?plan=bronce', '/guia/guia_prestador.html']) {
+      await page.goto(BASE + u, { waitUntil: 'domcontentloaded' });
+      await page.waitForTimeout(800);
+      const hit = await page.evaluate((src) => {
+        const re = new RegExp(src, 'i');
+        const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (/^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentElement.tagName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+        const r = [];
+        while (w.nextNode()) { const t = w.currentNode.textContent.replace(/\s+/g, ' ').trim(); if (re.test(t)) r.push(t.slice(0, 50)); }
+        return r;
+      }, BRONZE.source);
+      if (hit.length) conBronze.push(u + ': ' + hit.join(' | '));
     }
+    if (conBronze.length) falla('contenido', 'confunde', 'la guía vieja muestra Bronze, que no se vende desde el 24/09/2026: ' + conBronze.join(' · '), '/guia/');
+    else ok('contenido', 'guía vieja: ninguna de sus 5 vistas (inicio, resultados sin plan, con Silver y con ?plan=bronce, y la ficha) muestra Bronze');
   }
   // 1d. Ficha de prestador: acciones de contacto presentes (tel: solo presencia)
   await page.goto(BASE + '/guia/guia_prestador.html', { waitUntil: 'domcontentloaded' });
@@ -783,19 +821,12 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
      presentación SVG (`fill="#..."` no acepta var()) y la paleta de
      blog/Cover.jsx, que alimenta esos atributos por variable. */
   const RAIZ_CSS = readFileSync(join(SRC, 'globals.css'), 'utf8');
-  const ESCALA_R = [...RAIZ_CSS.matchAll(/--r-[a-z]+:\s*(\d+)px/g)].map((m) => m[1]);
   const bloqueRoot = RAIZ_CSS.slice(RAIZ_CSS.indexOf(':root{'), RAIZ_CSS.indexOf('}', RAIZ_CSS.indexOf(':root{')) + 1);
 
-  const radios = new Map(), hexes = new Map();
+  const hexes = new Map();
   let usosToken = 0, nNeutro = 0, nSvg = 0, nCover = 0;
   for (const f of archivos) {
     const t = readFileSync(f, 'utf8');
-    // Un radio se escribe de dos maneras: `border-radius:14px` o, desde el
-    // sistema táctil (23-24/09/2026), `--sq:14px` en un elemento .sq. Contar
-    // solo la primera dejó ciego al guardián: cada esquina que pasaba al
-    // sistema desaparecía del conteo sin que nadie decidiera nada (BITACORA
-    // cap. 90).
-    for (const m of t.matchAll(/(?:border-radius|--sq):\s*(\d+)px/g)) radios.set(m[1], (radios.get(m[1]) || 0) + 1);
     usosToken += (t.match(/var\(--sp-|var\(--r-/g) || []).length;
     // El bloque :root es la DECLARACIÓN de los tokens: sus hex son el sistema,
     // no una fuga del sistema. Contarlos sería castigar al que define.
@@ -823,18 +854,21 @@ console.log('\n== 6. PUERTAS DEL CRITERIO ==');
   if (repetidos.length) falla('craft', 'confunde', repetidos.length + ' colores se repiten 3+ veces sin token (' + usosRep + ' usos): ' + repetidos.slice(0, 6).map(([k, v]) => k + '×' + v).join(' · ') + ' — son decisiones de diseño que un rebrand se saltearía', 'app/');
   else ok('craft', 'sin tokens implícitos: ningún color se repite 3+ veces fuera del sistema (' + usosToken + ' usos de token · ' + cola.length + ' tintes de uso único, admitidos)');
 
-  /* Radios: misma vara que los colores, para que el guardián sea uno solo y no
-     dos criterios distintos según qué se mire. Una fuga es escribir 20px a
-     mano teniendo --r-lg. Un valor fuera de escala repetido 3+ veces es un
-     paso del sistema que nadie declaró. Un valor fuera de escala usado una vez
-     es una excepción local, y se admite. */
-  const fugas = [...radios.entries()].filter(([k]) => ESCALA_R.includes(k));
-  const fuera = [...radios.entries()].filter(([k]) => !ESCALA_R.includes(k)).sort((a, b) => b[1] - a[1]);
-  const fueraRep = fuera.filter(([, v]) => v >= 3);
-  if (fugas.length) falla('craft', 'confunde', 'radios escritos a mano teniendo token: ' + fugas.map(([k, v]) => k + 'px×' + v).join(' · '), 'app/');
-  else ok('craft', 'radios: la escala declarada (' + ESCALA_R.map((r) => r + 'px').join('/') + ') se usa por token, sin valores duplicados a mano');
-  if (fueraRep.length) falla('craft', 'cosmetico', 'pasos de radio sin declarar: ' + fueraRep.map(([k, v]) => k + 'px×' + v).join(' · ') + ' — o entran a la escala con nombre, o se acercan al paso más próximo (decisión de diseño, no mecánica)', 'app/');
-  else ok('craft', 'radios fuera de escala: ' + fuera.length + ' excepciones locales, ninguna repetida');
+  /* Radios (sp-interno#60, 23/10/2026): «nunca un radio a mano» (CLAUDE.md),
+     con la vara de la regla escrita. Hasta el 23/10 este conteo perdonaba cada
+     valor fuera de escala usado menos de 3 veces («excepción local») y solo leía
+     `border-radius:Npx` y `--sq:Npx` con el primer número: daba verde con 13
+     radios a mano, entre ellos «0 12px 12px 0» y var(--sq,10px), dos valores
+     que tenían token. Ahora lo cuenta qa/esquinas.mjs (el mismo que corre el
+     CI): toda declaración de radio con un largo escrito, en CSS y en React, y
+     las excepciones declaradas con su porqué. Antes se prueba a sí mismo. */
+  const fallasRadios = autopruebaRadios();
+  if (fallasRadios.length) falla('craft', 'roto', 'el detector de esquinas no distingue lo que debe marcar: ' + fallasRadios.join(' · '), 'qa/esquinas.mjs');
+  else {
+    const r = revisarEsquinas();
+    if (r.hallazgos.length) r.hallazgos.forEach((h) => falla('craft', 'confunde', 'radio escrito a mano: ' + h + ' — elegí el token por su función (--r-xs, --r-sm, --r-md, --r-lg, --r-pill)', 'app/'));
+    else ok('craft', 'esquinas: ' + r.declaraciones + ' declaraciones de radio, todas por token; ' + EXCEPCIONES_RADIO.length + ' excepciones declaradas (qa/esquinas.mjs; el detector distingue sus ' + PRUEBAS_RADIOS.length + ' casos)');
+  }
 }
 
 await browser.close();

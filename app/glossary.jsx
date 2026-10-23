@@ -100,8 +100,11 @@ export const TERMS = {
 
 // `dict` permite usar el mismo componente con otro diccionario — hoy el médico
 // (app/glosario-medico.js), que está en borrador y vive aparte a propósito: no
-// se mezcla lo validado con lo que todavía no lo está.
-export function Term({ k, children, dict }) {
+// se mezcla lo validado con lo que todavía no lo está — y TOQUES de coverage.js,
+// las listas que se abren en las esperas (9A y 10A, 23/10/2026). `tipo` es cómo
+// se cuenta al abrirse: 'toque' para esas listas, así la medición no las mezcla
+// con las palabras del glosario.
+export function Term({ k, children, dict, tipo = 'glosario' }) {
   const term = (dict || TERMS)[k];
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -121,7 +124,7 @@ export function Term({ k, children, dict }) {
   const id = useId();
 
   // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
-  useEffect(() => { if (open) trackExplicacion('glosario', k); }, [open, k]);
+  useEffect(() => { if (open) trackExplicacion(tipo, k); }, [open, k, tipo]);
 
   useEffect(() => {
     if (!open) { setShift(0); setAbajo(false); return; }
@@ -138,10 +141,17 @@ export function Term({ k, children, dict }) {
     // pantalla. Solo se vio midiendo la caja contra la del ancestro.
     // (BITACORA cap. 76.) No se toca el overflow de la tarjeta: se acomoda
     // la burbuja adentro.
+    // Desde el 23/10/2026 cuentan todas las cajas que recortan, no solo la
+    // primera, y también las que scrollean por dentro (auto o scroll): la
+    // tarjeta de esperas del simulador está adentro del cuerpo del simulador,
+    // que en la computadora scrollea y recorta (10A).
     let corta = null;
     for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
       const cs = getComputedStyle(a);
-      if (/hidden|clip/.test(cs.overflow + cs.overflowX + cs.overflowY)) { corta = a; break; }
+      if (/hidden|clip|auto|scroll/.test(cs.overflow + cs.overflowX + cs.overflowY)) {
+        const q = a.getBoundingClientRect();
+        corta = corta ? { left: Math.max(corta.left, q.left), right: Math.min(corta.right, q.right), top: Math.max(corta.top, q.top), bottom: Math.min(corta.bottom, q.bottom) } : { left: q.left, right: q.right, top: q.top, bottom: q.bottom };
+      }
     }
     // clientWidth, NO innerWidth: en emulación móvil (y con barra de scroll)
     // innerWidth se ensancha cuando algo ya desbordó — medimos 373 en un
@@ -149,14 +159,27 @@ export function Term({ k, children, dict }) {
     // 26 jul 2026.)
     const vw = document.documentElement.clientWidth;
     let min = M, max = vw - M;
+    // El techo y el piso de lo que se ve: el ancestro que recorta (si hay) y,
+    // arriba, también la cabecera fija (nav[data-nav], z-index 100), que tapa lo
+    // que pasa por debajo. Hasta el 23/10/2026 el techo era el borde de la
+    // pantalla (o solo el del ancestro): una lista larga que abría hacia arriba
+    // quedaba debajo de la cabecera (las 26 cirugías miden unos 366 px; 10A).
+    const nav = document.querySelector('[data-nav]');
+    const techoNav = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    let techo = Math.max(M, techoNav + M), piso = window.innerHeight - M;
     if (corta) {
-      const rc = corta.getBoundingClientRect();
+      const rc = corta;
       min = Math.max(min, rc.left + 4);
       max = Math.min(max, rc.right - 4);
-      // Si arriba no entra, se abre hacia abajo.
-      if (r.top < rc.top) setAbajo(true);
-    } else if (r.top < M) {
-      setAbajo(true);
+      techo = Math.max(techo, rc.top);
+      piso = Math.min(piso, rc.bottom);
+    }
+    // Arriba por defecto. Si arriba no entra, se abre hacia abajo cuando abajo
+    // entra o hay más lugar que arriba.
+    if (r.top < techo && ref.current) {
+      const b = ref.current.getBoundingClientRect();
+      const lugarAbajo = piso - (b.bottom + 8), lugarArriba = b.top - 8 - techo;
+      if (lugarAbajo >= r.height || lugarAbajo > lugarArriba) setAbajo(true);
     }
 
     let s = 0;
@@ -197,7 +220,10 @@ export function Term({ k, children, dict }) {
         onBlur={() => setOpen(false)}
         // Subrayado punteado: la convención de "esto se puede consultar". No usa
         // color de link para no competir con los links reales de la página.
-        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px')}
+        // Un toque (9A y 10A) es una frase corta («de una lista de 26») que no se
+        // parte: como la caja es inline-block, partida se centraba en dos
+        // renglones con el subrayado debajo de los dos y el punto, suelto.
+        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px' + (tipo === 'toque' ? ';white-space:nowrap' : ''))}
       >
         {children || term.t}
       </button>
@@ -216,7 +242,11 @@ export function Term({ k, children, dict }) {
           // descarta la declaración entera en silencio. El signo va en el
           // operador, no pegado al número.
           'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);') + 'z-index:40;'
-          + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
+          // `ancho`: una entrada larga del diccionario puede pedir una burbuja más
+          // ancha (y así más baja): las 26 cirugías de Essential no entraban,
+          // a 260 px, en la tarjeta de esperas del simulador en la computadora,
+          // que recorta (10A, 23/10/2026). En el celular manda el 72vw.
+          + 'width:max-content;max-width:min(' + (term.ancho || 260) + 'px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
           + 'box-shadow:var(--sombra-abre);pointer-events:none;'
           + (open ? 'display:block' : 'display:none')

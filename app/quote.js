@@ -243,7 +243,10 @@ export const engine = (d) => {
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
   const P = {
     essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
-    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.' },
+    // Sin «y topes más altos» (1A, Arturo, 23/10/2026, sp-interno#193): en 10 de
+    // las 20 especialidades con tope de Silver, Essential puede dar más consultas
+    // al año. Lo que queda es cierto conteste lo que conteste SP en #110.
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y más sesiones de psicología.' },
     // Sin «los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189): si vale
     // la grilla, Gold tiene menos fisioterapia que Silver; lo aclara SP (#50).
     gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.' },
@@ -325,7 +328,8 @@ export const opts = () => ({
   ],
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y topes más altos.' },
+    // Silver, sin «y topes más altos» (1A, 23/10/2026, sp-interno#193), como su porqué.
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y más sesiones de psicología.' },
     // Gold, sin «los topes más altos» (8A, 20/10/2026, sp-interno#189), como su porqué.
     { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.' },
   ],

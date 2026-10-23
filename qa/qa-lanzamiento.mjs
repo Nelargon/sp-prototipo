@@ -209,6 +209,101 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.close();
 }
 
+// ── La fecha de la Guía Médica es la de la planilla (sp-interno#61) ────────
+// Hasta el 23/10/2026 la Guía decía «Datos al 17/09/2026» siempre: leía la
+// fecha del PDF de la red Privilege (meta.guias.privilege.fecha), que no se
+// mueve con la planilla, mientras el home ya decía «según la planilla al
+// 30/09». Y cada ficha mostraba la del PDF más reciente de sus redes (25/09 en
+// P-0001, 10/08 en P-0363, que es solo Essential). Ahora las dos dicen
+// meta.datos_al, el día en que build-guia-medica.py leyó la planilla del Drive.
+// La fecha esperada sale de lib/guia-medica.json, no de un literal que
+// envejece. Antes se prueba la comparación: la fecha vieja tiene que fallar.
+console.log('\n── La fecha de la Guía Médica es la de la planilla (#61)');
+{
+  const META_GM = JSON.parse(readFileSync(new URL('../lib/guia-medica.json', import.meta.url), 'utf8')).meta;
+  const AL = /^\d{4}-\d\d-\d\d$/.test(META_GM.datos_al || '') ? META_GM.datos_al.split('-').reverse().join('/') : '';
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const LARGA = AL ? (([d, m, y]) => `${+d} de ${MESES[+m - 1]} de ${y}`)(AL.split('/')) : '';
+  const deLaGuia = (t) => ((t || '').match(/Datos al \d\d\/\d\d\/\d{4}/) || [''])[0];
+  const deLaFicha = (t) => ((t || '').match(/Datos de la Guía Médica al \d{1,2} de [a-z]+ de \d{4}/) || [''])[0];
+  const guiaBien = (t) => !!AL && deLaGuia(t) === 'Datos al ' + AL;
+  const fichaBien = (t) => !!LARGA && deLaFicha(t) === 'Datos de la Guía Médica al ' + LARGA;
+  const auto = {
+    guiaVieja: guiaBien('Médicos, sanatorios y laboratorios. Datos al 17/09/2026'),
+    guiaNueva: guiaBien('Médicos, sanatorios y laboratorios. Datos al ' + AL),
+    fichaVieja: fichaBien('Datos de la Guía Médica al 10 de agosto de 2026.'),
+    fichaNueva: fichaBien('Datos de la Guía Médica al ' + LARGA + '.'),
+  };
+  const malas = [];
+  if (!AL) malas.push('lib/guia-medica.json no trae meta.datos_al con forma aaaa-mm-dd: ' + JSON.stringify(META_GM.datos_al));
+  if (auto.guiaVieja || !auto.guiaNueva || auto.fichaVieja || !auto.fichaNueva) malas.push('la comparación no distingue la fecha vieja de la buena: ' + JSON.stringify(auto));
+  for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    await page.goto(BASE + '/guia-medica/', { waitUntil: 'networkidle' });
+    const g = await page.evaluate(() => document.body.innerText);
+    if (!guiaBien(g)) malas.push(nombre + ': la Guía dice «' + (deLaGuia(g) || 'sin fecha') + '»; la planilla publicada es del ' + AL + ' (meta.datos_al)');
+    // P-0001 tiene varias redes; P-0363 es solo Essential (antes, 10/08).
+    for (const id of ['P-0001', 'P-0363']) {
+      await page.goto(BASE + '/guia-medica/' + id + '/', { waitUntil: 'networkidle' });
+      const f = await page.evaluate(() => document.body.innerText);
+      if (!fichaBien(f)) malas.push(nombre + ', ficha ' + id + ': «' + (deLaFicha(f) || 'sin fecha') + '», no «' + LARGA + '»');
+    }
+    await page.close();
+  }
+  if (malas.length) mal('la Guía Médica y sus fichas dicen la fecha de la planilla publicada (meta.datos_al) · ' + malas.join(' · '));
+  else bien('la Guía dice «Datos al ' + AL + '» y las fichas P-0001 y P-0363, «' + LARGA + '»: la fecha de la planilla publicada (meta.datos_al), a 390 y 1440; la comparación rechaza el 17/09 y el 10/08 de antes');
+}
+
+// ── Toda esquina del sistema táctil sale de la escala (sp-interno#60) ──────
+// Lo computado, no el código (CLAUDE.md): cada .sq visible tiene que tener su
+// --sq igual a uno de los valores de --r-xs, --r-sm, --r-md o --r-lg, leídos del
+// :root en el navegador. Atrapa lo que se arma en tiempo de ejecución (un
+// radio que llega por prop o un --sq calculado), que qa/esquinas.mjs, que mira
+// el código, no ve. En 35165a7 marcaba 26 px (la tarjeta «Conocé tu plan ideal
+// y su precio»), 24 px (la tarjeta del simulador), 9 px (zonas y Lista/Mapa de
+// la Guía), 5 px (el chip «Lister») y 6 px («Atiende con»). Antes se prueba con
+// dos .sq metidas en la página: una a mano (tiene que marcar) y una por token
+// (no).
+console.log('\n── Toda esquina del sistema táctil sale de la escala (#60)');
+{
+  const LEER_SQ = String((auto) => {
+    const raiz = getComputedStyle(document.documentElement);
+    const escala = ['--r-xs', '--r-sm', '--r-md', '--r-lg'].map((v) => raiz.getPropertyValue(v).trim()).filter(Boolean);
+    const metidas = [];
+    if (auto) for (const v of ['26px', 'var(--r-lg)']) { const d = document.createElement('div'); d.className = 'sq'; d.style.cssText = '--sq:' + v + ';width:40px;height:40px'; d.dataset.auto = v; document.body.appendChild(d); metidas.push(d); }
+    const fuera = [];
+    for (const e of document.querySelectorAll('.sq')) {
+      const r = e.getBoundingClientRect();
+      if (!r.width || !r.height || getComputedStyle(e).visibility === 'hidden') continue;
+      const v = getComputedStyle(e).getPropertyValue('--sq').trim();
+      // Sin --sq propio usa el respaldo del sistema (--r-xs).
+      if (v && !escala.includes(v)) fuera.push({ v, auto: e.dataset.auto || null, quien: (e.textContent || e.className).replace(/\s+/g, ' ').trim().slice(0, 40) });
+    }
+    metidas.forEach((d) => d.remove());
+    return { escala, fuera };
+  });
+  const malas = [];
+  let autoOk = null;
+  const RUTAS = ['/', '/planes/', '/simulador/', '/guia-medica/', '/guia-medica/?plan=silver-gold&esp=' + encodeURIComponent('Pediatría')];
+  for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    for (const ruta of RUTAS) {
+      await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+      if (ruta === '/simulador/') { const b = page.locator('button:visible', { hasText: 'Empecemos' }).first(); if (await b.count()) { await b.click(); await page.waitForTimeout(400); } }
+      const r = await page.evaluate(`(${LEER_SQ})(${autoOk === null})`);
+      if (autoOk === null) {
+        const a = r.fuera.filter((x) => x.auto);
+        autoOk = a.length === 1 && a[0].auto === '26px' && r.escala.length === 4;
+        if (!autoOk) malas.push('la lectura no distingue la esquina a mano de la de la escala: ' + JSON.stringify({ escala: r.escala, metidas: a }));
+      }
+      r.fuera.filter((x) => !x.auto).forEach((x) => malas.push(nombre + ' ' + ruta + ': --sq ' + x.v + ' fuera de la escala («' + x.quien + '»)'));
+    }
+    await page.close();
+  }
+  if (malas.length) mal('cada .sq visible tiene su --sq en la escala (--r-xs, --r-sm, --r-md, --r-lg) · ' + malas.slice(0, 8).join(' · '));
+  else bien('cada .sq visible del home, /planes, el simulador y la Guía Médica (también con Silver y Gold en Pediatría), a 390 y 1280, tiene su --sq en la escala, leída del :root; la lectura marca una esquina de 26 px metida a mano y deja pasar una por token');
+}
+
 // ── «Dónde te atendés» del home y el mapa de la guía (25/09/2026) ───────────
 // El desglose sale de la planilla (scripts/red-home.mjs): se prueba que los
 // números existan, no un valor fijo que envejece. Y que la sección siga corta
@@ -679,7 +774,7 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   await page.close();
 }
 
-// ── Lo que espera a SP no se afirma (3A y 8A, Arturo, 20/10/2026, «Adelante») ──
+// ── Lo que espera a SP no se afirma (3A y 8A, Arturo, 20/10/2026, «Adelante»; 1A, 23/10/2026) ──
 // 3A (sp-interno#184): la tarjeta de «Consultas por especialista» del home dice
 // para Silver «5 o 6 al año», sin «por persona», hasta que SP conteste #110. La
 // psicología es una de ese resto y su fila dice «¿quién?»: la tabla afirmaba y
@@ -719,9 +814,7 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        porque sus otros párrafos cambian con el precio, la zona, la red y las
 //        esperas) y cualquier otro texto de esas pantallas, del home y de
 //        /planes que no sea una de las líneas de arriba.
-//        En el simulador se mira solo lo de Gold: Silver dice «topes más altos»
-//        comparado con Essential; la 8A no lo tocó y lo decide Arturo en
-//        sp-interno#193.
+//        Silver, en el simulador, lo mira la 1A (abajo).
 //        Corrección del 20/10 (verificador): el simulador se miraba solo con
 //        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
 //        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
@@ -733,6 +826,22 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        cada tope» en /planes daba 133 ✓. Y el «5 o 6» del simulador se había
 //        medido una vez, a mano. Lo de la derecha de la opción lo miraba solo la
 //        lista.
+//   1A (Arturo, 23/10/2026, «Adelante con tus sugerencias», sp-interno#193):
+//        Silver dice lo que da de más sin depender de lo que conteste SP en
+//        #110: más días de terapia intensiva (5 contra 2; «por beneficiario» en
+//        silver.json y «por persona» en el cuadernillo de Essential) y más
+//        sesiones de psicología (5 contra 3, que en Essential son por familia y
+//        en un cupo compartido). Sale «y topes más altos»: en 10 de las 20
+//        especialidades con tope de Silver, Essential puede dar más consultas
+//        al año. Lo literal: la opción «Un equilibrio entre precio y cobertura»
+//        dice su rótulo y su nota (OPCION_EQUILIBRIO_NOTA) y a la derecha solo
+//        su precio, y el resultado de Silver tiene un párrafo que es su porqué,
+//        entero (SILVER_PORQUE), a 390 y a 1280 px con Silver puesto desde el
+//        enlace y a 390 px eligiendo la opción en el paso del nivel. Debajo, la
+//        segunda capa: el botón de la opción y cada pantalla de esos tres
+//        recorridos, el resultado incluido, no dicen TOPES_ALTOS. El mensaje
+//        del paso que sigue a elegir Silver («Un equilibrio entre precio y
+//        cobertura.») no lo tocó la 1A: lo mira solo la segunda capa.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
 // variantes (fallan) y los de ahora (pasan); la 3A del simulador, en texto, con
 // el resultado de Silver como se leyó y una línea metida (con «por persona»,
@@ -740,7 +849,11 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // leída con la misma lectura y devuelta: en la tarjeta de Silver (a 1280 px),
 // en la cabecera de Gold del home, en la línea de Gold de /planes (a 390 y a
 // 1280 px), en el mensaje del paso (en los tres recorridos de Gold), en la nota
-// de la opción, al lado de su precio y en el porqué de Gold.
+// de la opción, al lado de su precio y en el porqué de Gold. Y la 1A, igual: la
+// nota y el porqué de Silver de antes del 23/10 metidos en la página caen en
+// las dos capas; una paráfrasis que TOPES_ALTOS no conoce («…y más consultas
+// con especialistas.», justo lo que no es cierto en 10 especialidades), en la
+// literal; y una frase pegada al precio de la opción, en la que la mira.
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
 // del texto; una con paráfrasis del superlativo en la opción y en el porqué,
@@ -748,7 +861,12 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // paráfrasis en /planes), ✗ en los dos; y dos más del 20/10: «5 o 6 al año por
 // persona» en el resultado de Silver, ✗ en la 3A del simulador, y «La cobertura
 // más amplia, sin tope en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
-console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
+// Los de la 1A (23/10): la build de main de antes (35165a7) da ✗ en la nota de
+// la opción (en las dos capas) y en el porqué de los tres recorridos de Silver;
+// una copia de la build con la 1A y «…y los mejores topes.» en la nota y «…y
+// más consultas con especialistas.» en el porqué, ✗ en los dos (la nota, en las
+// dos capas; el porqué, solo en la literal), y la build con la 1A, ✓.
+console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold; 1A: Silver en el simulador)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
   // «por familia» o «para todo el grupo», que afirman lo contrario. «En cada
@@ -767,6 +885,16 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // sp-interno#189: Gold dice «La cobertura más amplia», sin «con los topes más
   // altos»); /planes ya lo decía así y no cambió.
   const GOLD_TAG = 'La cobertura más amplia';
+  // Lo aprobado el 23/10 (1A, sp-interno#193), literal: Silver sin «y topes más
+  // altos», con lo que da de más sin depender de #110.
+  const OPCION_EQUILIBRIO = 'Un equilibrio entre precio y cobertura';
+  const OPCION_EQUILIBRIO_NOTA = 'Más días de terapia intensiva y más sesiones de psicología.';
+  const SILVER_PORQUE = 'El equilibrio con respaldo de verdad: más días de terapia intensiva y más sesiones de psicología.';
+  // Las de antes del 23/10, para las autopruebas.
+  const OPCION_EQUILIBRIO_VIEJA = 'Más días de terapia intensiva y topes más altos.';
+  const SILVER_PORQUE_VIEJO = 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.';
+  // La paráfrasis que TOPES_ALTOS no ve: solo la ve el texto aprobado.
+  const SILVER_PARAFRASIS = 'Más días de terapia intensiva y más consultas con especialistas.';
   // Lo que sigue a cada «5 o 6» hasta el punto (o 80 caracteres). En la página
   // se lee el texto del bloque que lo tiene (subiendo por los padres en línea),
   // no el de todo el body: textContent pega bloques vecinos sin espacio («…en el
@@ -793,12 +921,14 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto', 'Sin topeen la mitad; 5 o 6 en el resto'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), false, 'QUIEN_DICHO']),
     ...['La cobertura más amplia, con los topes más altos.', 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.', 'Con los mayores topes.', 'Topes superiores a los de Silver.',
       // Las paráfrasis del verificador del 20/10, que pasaban en el simulador.
-      'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.', 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'los mejores topes', 'topes más amplios'].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
-    ...[GOLD_PARA, OPCION_AMPLIA_NOTA, GOLD_PORQUE, 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
+      'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.', 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'los mejores topes', 'topes más amplios',
+      // Los de Silver de antes del 23/10 (1A).
+      OPCION_EQUILIBRIO_VIEJA, SILVER_PORQUE_VIEJO].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
+    ...[GOLD_PARA, OPCION_AMPLIA_NOTA, GOLD_PORQUE, OPCION_EQUILIBRIO_NOTA, SILVER_PORQUE, 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
   ];
   const autoMal = auto.filter(([, dio, debe]) => dio !== debe).map(([t, dio, , re]) => re + (dio ? ' grita en falso con «' : ' no ve «') + t + '»');
   if (autoMal.length) mal('autoprueba de los detectores de la 3A y la 8A: ' + autoMal.join(' · '));
-  else bien('autoprueba: QUIEN_DICHO y TOPES_ALTOS ven los ' + auto.filter((a) => a[2]).length + ' textos de antes del 20/10 y sus variantes, y callan en los ' + auto.filter((a) => !a[2]).length + ' de ahora');
+  else bien('autoprueba: QUIEN_DICHO y TOPES_ALTOS ven los ' + auto.filter((a) => a[2]).length + ' textos de antes del 20/10 (y los de Silver de antes del 23/10) y sus variantes, y callan en los ' + auto.filter((a) => !a[2]).length + ' de ahora');
 
   // La línea de Silver de la tarjeta abierta (una sola), como se ve.
   const silverDe = (tsel) => {
@@ -961,33 +1091,39 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     }
     return r;
   };
-  const resultado = async (plan, pg = page, vieja = null) => {
-    await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+  // `porque`: el porqué aprobado del plan, cómo empieza (para encontrarlo si una
+  // build lo cambió) y la línea que la autoprueba mete en su lugar. `elegir`:
+  // sin plan en el enlace, el rótulo de la opción que se toca en el paso del
+  // nivel (1A).
+  const PORQUE_GOLD = [GOLD_PORQUE, '^La cobertura más amplia', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.'];
+  const PORQUE_SILVER = [SILVER_PORQUE, '^El equilibrio con respaldo', SILVER_PORQUE_VIEJO];
+  const resultado = async (plan, pg = page, vieja = null, porque = PORQUE_GOLD, elegir = null) => {
+    await pg.goto(BASE + '/simulador/' + (plan ? '?plan=' + plan : ''), { waitUntil: 'networkidle' });
     const pasos = [];
     for (let i = 0; i < 14; i++) {
       pasos.push(await pg.evaluate(leerPaso, [PASO_UBI, vieja]));
       if (await pg.locator('[data-sp-price]').count()) break;
       let hecho = false;
-      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) {
+      for (const t of ['Empecemos', 'Para mí', ...(elegir ? [elegir] : []), 'Asunción', 'Continuar', 'Ver mi precio']) {
         const b = pg.locator('button:visible', { hasText: t }).first();
         if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; }
       }
       if (!hecho) break;
       await pg.waitForTimeout(500);
     }
-    // La tarjeta del resultado y sus párrafos como se ven; con `vieja`, la
-    // autoprueba: el párrafo que hoy es el porqué aprobado pasa a decir `vieja`,
-    // se lee igual y se devuelve como estaba.
-    const r = await pg.evaluate(([aprobado, vieja]) => {
+    // La tarjeta del resultado y sus párrafos como se ven; la autoprueba: el
+    // párrafo que hoy es el porqué aprobado pasa a decir la línea de prueba de
+    // `porque`, se lee igual y se devuelve como estaba.
+    const r = await pg.evaluate(([aprobado, comienzo, vieja]) => {
       const p = document.querySelector('[data-sp-price]');
       const c = p && p.closest('div.sq');
       if (!c) return null;
       const parrafos = () => [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim());
       const r = { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.innerText, parrafos: parrafos() };
       // El párrafo aprobado; si no está (una build que lo cambió), el que empieza
-      // como el porqué de Gold, para que la autoprueba igual tenga dónde probar.
+      // como el porqué del plan, para que la autoprueba igual tenga dónde probar.
       const ps = [...c.querySelectorAll('p')];
-      const e = ps.find((x) => x.innerText.replace(/\s+/g, ' ').trim() === aprobado) || ps.find((x) => /^La cobertura más amplia/.test(x.innerText.trim()));
+      const e = ps.find((x) => x.innerText.replace(/\s+/g, ' ').trim() === aprobado) || ps.find((x) => new RegExp(comienzo).test(x.innerText.trim()));
       if (e && e.firstChild && e.firstChild.nodeType === 3 && e.childNodes.length === 1) {
         const antes = e.firstChild.data;
         e.firstChild.data = vieja;
@@ -995,16 +1131,19 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
         e.firstChild.data = antes;
       }
       return r;
-    }, [GOLD_PORQUE, 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.']);
+    }, porque);
     return Object.assign(r || { plan: null }, { pasos });
   };
   const gold = await resultado('gold', page, GOLD_PARA_VIEJA);
-  const silver = await resultado('silver');
+  const silver = await resultado('silver', page, null, PORQUE_SILVER);
   const essential = await resultado('essential');
-  let gold1280;
+  // 1A: Silver eligiendo la opción en el paso del nivel, hasta su resultado.
+  const silverElegida = await resultado(null, page, null, PORQUE_SILVER, OPCION_EQUILIBRIO);
+  let gold1280, silver1280;
   {
     const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     gold1280 = await resultado('gold', p, GOLD_PARA_VIEJA);
+    silver1280 = await resultado('silver', p, null, PORQUE_SILVER);
     await p.close();
   }
   // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido: el
@@ -1017,7 +1156,7 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     if (await b.count()) { await b.click().catch(() => {}); await page.waitForTimeout(500); }
   }
   const pasoNivel = await page.evaluate(leerPaso, [PASO_UBI, null]);
-  const opcion = await page.evaluate(([rotulo, vieja, pegada]) => {
+  const leerOpcion = ([rotulo, vieja, pegada]) => {
     const esRotulo = (s) => !s.children.length && s.textContent.trim() === rotulo;
     const b = [...document.querySelectorAll('button.sim-opt')].find((x) => [...x.querySelectorAll('span')].some(esRotulo));
     if (!b) return null;
@@ -1043,7 +1182,12 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       s.remove();
     }
     return r;
-  }, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'El máximo en todo']);
+  };
+  const opcion = await page.evaluate(leerOpcion, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'El máximo en todo']);
+  // 1A: la opción de Silver, con la nota de antes (y una frase pegada al precio)
+  // y con la paráfrasis.
+  const opcionEq = await page.evaluate(leerOpcion, [OPCION_EQUILIBRIO, OPCION_EQUILIBRIO_VIEJA, 'Y topes más altos']);
+  const opcionEqPar = await page.evaluate(leerOpcion, [OPCION_EQUILIBRIO, SILVER_PARAFRASIS, '']);
   // Y la persona elige ahí Gold: el paso que sigue es el de la ubicación.
   let elegida = null;
   const bAmplia = page.locator('button.sim-opt', { hasText: OPCION_AMPLIA }).first();
@@ -1133,23 +1277,23 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // derecha solo su precio; el mensaje del paso que sigue a elegir Gold es
   // GOLD_PARA; el resultado de Gold tiene un párrafo que es su porqué, entero),
   // y debajo TOPES_ALTOS sobre el botón y cada pantalla del recorrido de Gold.
-  const COL_APROBADA = OPCION_AMPLIA + ' ' + OPCION_AMPLIA_NOTA;
-  const opcionMal = (o) => {
-    if (!o) return ['no encontré la opción «' + OPCION_AMPLIA + '»'];
+  const opcionMal = (o, rotulo = OPCION_AMPLIA, notaAprobada = OPCION_AMPLIA_NOTA) => {
+    if (!o) return ['no encontré la opción «' + rotulo + '»'];
     const r = [];
-    if (o.nota !== OPCION_AMPLIA_NOTA) r.push('la nota dice «' + o.nota + '» y no «' + OPCION_AMPLIA_NOTA + '»');
-    else if (o.col !== COL_APROBADA) r.push('el texto del botón dice «' + o.col + '» y no «' + COL_APROBADA + '»');
+    const colAprobada = rotulo + ' ' + notaAprobada;
+    if (o.nota !== notaAprobada) r.push('la nota dice «' + o.nota + '» y no «' + notaAprobada + '»');
+    else if (o.col !== colAprobada) r.push('el texto del botón dice «' + o.col + '» y no «' + colAprobada + '»');
     const der = o.boton.startsWith(o.col) ? o.boton.slice(o.col.length).trim() : null;
     if (der === null || !/^desde Gs\. \d{1,3}(?:\.\d{3})*$/.test(der)) r.push('a la derecha dice «' + (der === null ? o.boton : der) + '» y no solo «desde Gs. …»');
     const m = o.boton.match(TOPES_ALTOS);
     if (m) r.push('dice «' + m[0] + '»');
     return r;
   };
-  const porqueMal = (g) => {
-    if (!g || g.plan !== 'Gold') return ['no llegué al resultado de Gold (' + JSON.stringify(g && g.plan) + ')'];
+  const porqueMal = (g, plan = 'Gold', aprobado = GOLD_PORQUE, pista = 'cobertura más amplia') => {
+    if (!g || g.plan !== plan) return ['no llegué al resultado de ' + plan + ' (' + JSON.stringify(g && g.plan) + ')'];
     const r = [];
-    const iguales = g.parrafos.filter((x) => x === GOLD_PORQUE).length;
-    if (iguales !== 1) r.push('ningún párrafo es, entero, «' + GOLD_PORQUE + '» (' + (g.parrafos.filter((x) => /cobertura más amplia/i.test(x)).map((x) => '«' + x + '»').join(', ') || 'no hay ninguno con «cobertura más amplia»') + ')');
+    const iguales = g.parrafos.filter((x) => x === aprobado).length;
+    if (iguales !== 1) r.push('ningún párrafo es, entero, «' + aprobado + '» (' + (g.parrafos.filter((x) => x.toLowerCase().includes(pista)).map((x) => '«' + x + '»').join(', ') || 'no hay ninguno con «' + pista + '»') + ')');
     const k = g.texto.search(TOPES_ALTOS);
     if (k >= 0) r.push('dice «…' + g.texto.slice(Math.max(0, k - 60), k + 25).replace(/\s+/g, ' ').trim() + '…»');
     return r;
@@ -1204,6 +1348,43 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   const mensajesVistos = recorridosGold.map(([, pasos]) => (pasos.find((x) => x && x.titulo === PASO_UBI) || { mensajes: [] }).mensajes.length).reduce((a, b) => a + b, 0);
   if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
   else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; «' + GOLD_TAG + '» en la tarjeta de Gold de /planes a 390 px, y en el texto de la cabecera de la tabla, que a 1280 px no se ve; en el simulador, el mensaje del paso que sigue a elegir Gold (' + mensajesVistos + ' lecturas), la nota de la opción «' + OPCION_AMPLIA + '», con solo su precio a la derecha, y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni ninguna pantalla del recorrido de Gold dicen que tiene los topes más altos');
+
+  // 1A (sp-interno#193): Silver en el simulador, con las mismas lecturas que la
+  // 8A. Primero las autopruebas; después lo literal y la segunda capa.
+  const OPC_EQ = [OPCION_EQUILIBRIO, OPCION_EQUILIBRIO_NOTA];
+  const PQ_SILVER = ['Silver', SILVER_PORQUE, 'respaldo de verdad'];
+  if (!opcionEq || !opcionEq.vieja) mal('1A, autoprueba en el simulador: no pude meter la nota de prueba en la opción «' + OPCION_EQUILIBRIO + '»');
+  else {
+    const v = opcionMal(opcionEq.vieja, ...OPC_EQ);
+    if (v.length < 2) mal('1A, autoprueba en el simulador: con la nota de antes del 23/10 en la opción, la lectura no la ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + OPCION_EQUILIBRIO_VIEJA + '» en la nota de la opción, la misma lectura ve que no es la nota aprobada y que dice «' + opcionEq.vieja.boton.match(TOPES_ALTOS)[0] + '»');
+  }
+  if (!opcionEqPar || !opcionEqPar.vieja) mal('1A, autoprueba en el simulador: no pude meter la paráfrasis en la opción «' + OPCION_EQUILIBRIO + '»');
+  else {
+    const v = opcionMal(opcionEqPar.vieja, ...OPC_EQ);
+    if (TOPES_ALTOS.test(opcionEqPar.vieja.boton) || !v.some((x) => x.startsWith('la nota dice'))) mal('1A, autoprueba en el simulador: con «' + SILVER_PARAFRASIS + '» en la nota, la lectura literal no lo ve o TOPES_ALTOS lo ve (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + SILVER_PARAFRASIS + '» en la nota, que TOPES_ALTOS no conoce, la lectura literal ve que no es la nota aprobada');
+  }
+  if (!opcionEq || !opcionEq.pegada) mal('1A, autoprueba en el simulador: no pude pegar la frase de prueba al precio de la opción «' + OPCION_EQUILIBRIO + '»');
+  else if (!opcionMal(opcionEq.pegada, ...OPC_EQ).some((x) => x.startsWith('a la derecha'))) mal('1A, autoprueba en el simulador: con «Y topes más altos» pegado al precio de la opción, la lectura no lo ve (' + (opcionMal(opcionEq.pegada, ...OPC_EQ).join(' · ') || 'no ve nada') + ')');
+  else bien('1A, autoprueba en el simulador: con «Y topes más altos» pegado al precio de la opción, la misma lectura ve que a la derecha no dice solo «desde Gs. …»');
+  if (!silver || !silver.vieja) mal('1A, autoprueba en el simulador: no pude meter el porqué de prueba en el resultado de Silver');
+  else {
+    const v = porqueMal(Object.assign({ plan: silver.plan }, silver.vieja), ...PQ_SILVER);
+    if (v.length < 2) mal('1A, autoprueba en el simulador: con el porqué de antes del 23/10 en el resultado de Silver, la lectura no lo ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + SILVER_PORQUE_VIEJO + '» en el porqué de Silver, la misma lectura ve que no es el porqué aprobado y que dice «' + silver.vieja.texto.match(TOPES_ALTOS)[0] + '»');
+  }
+  const mal1A = [];
+  opcionMal(opcionEq, ...OPC_EQ).forEach((x) => mal1A.push('/simulador/, la opción «' + OPCION_EQUILIBRIO + '»: ' + x));
+  const recorridosSilver = [['390 px, con Silver puesto desde el enlace', silver], ['1280 px, con Silver puesto desde el enlace', silver1280], ['390 px, eligiendo «' + OPCION_EQUILIBRIO + '»', silverElegida]];
+  for (const [d, res] of recorridosSilver) {
+    porqueMal(res, ...PQ_SILVER).forEach((x) => mal1A.push('/simulador/, ' + d + ', porqué del resultado: ' + x));
+    topesEnPasos(res.pasos || []).forEach((x) => mal1A.push('/simulador/, ' + d + ', ' + x));
+  }
+  if (!(silverElegida.pasos || []).some((x) => x.titulo === '¿Qué nivel de cobertura buscás?')) mal1A.push('/simulador/, ' + recorridosSilver[2][0] + ': no pasó por el paso del nivel');
+  const pantallasSilver = recorridosSilver.reduce((s, [, res]) => s + (res.pasos || []).length, 0);
+  if (mal1A.length) mal('1A: Silver «topes más altos», o su nota o su porqué cambiaron sin decisión (sp-interno#193) · ' + mal1A.join(' · '));
+  else bien('1A: los textos de Silver son, literales, los aprobados (la nota de la opción «' + OPCION_EQUILIBRIO + '», con solo su precio a la derecha, y el porqué del resultado en los tres recorridos), y ni esa opción ni ninguna de las ' + pantallasSilver + ' pantallas de los recorridos de Silver dicen que tiene los topes más altos');
 }
 
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────
@@ -1300,7 +1481,10 @@ const TARJETA_APROBADA = {
       pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Fisioterapia': {
-      Essential: '5 sesiones al año para toda la familia.',
+      // 23/10/2026, 190A (Arturo, sp-interno#190): solo la traumatológica
+      // (cuadernillo 1.11); lee la línea de coverage.js, como Silver y Gold.
+      // Decía «5 sesiones al año para toda la familia.».
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia.',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria.',
       pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
@@ -1343,7 +1527,7 @@ const TARJETA_APROBADA = {
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Resonancia (RM)': {
-      Essential: '1 al año por familia, sin contraste. 1 año de espera.',
+      Essential: '1 al año por familia, sin contraste ni sedación. 1 año de espera.',
       Silver: '1 al año. 5 meses de espera.',
       Gold: '1 al año. 5 meses de espera.',
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
@@ -1355,7 +1539,7 @@ const TARJETA_APROBADA = {
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Fisioterapia': {
-      Essential: 'Hasta 5 sesiones al año por familia. Sin espera.',
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia. Sin espera.',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5. 3 meses de espera.',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria. 3 meses de espera.',
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
@@ -1374,7 +1558,7 @@ const TARJETA_APROBADA = {
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
     },
     'Resonancia (RM)': {
-      Essential: '1 al año por familia, sin contraste · 1 año de espera',
+      Essential: '1 al año por familia, sin contraste ni sedación · 1 año de espera',
       Silver: '1 al año · 5 meses de espera',
       Gold: '1 al año · 5 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1386,7 +1570,7 @@ const TARJETA_APROBADA = {
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
     },
     'Fisioterapia': {
-      Essential: 'Hasta 5 sesiones al año por familia · Sin espera',
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia · Sin espera',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5 · 3 meses de espera',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria · 3 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1404,7 +1588,7 @@ const TARJETA_APROBADA = {
   // tres tarjetas: dice lo mismo en las nueve.
   tema: {
     'Tomografía y resonancia': {
-      Essential: 'Tomografía · Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera · Resonancia · 1 al año por familia, sin contraste · 1 año de espera',
+      Essential: 'Tomografía · Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera · Resonancia · 1 al año por familia, sin contraste ni sedación · 1 año de espera',
       Silver: 'Tomografía · Hasta 2 al año · 4 meses de espera · Resonancia · 1 al año · 5 meses de espera',
       Gold: 'Tomografía · Hasta 2 al año · 3 meses de espera · Resonancia · 1 al año · 5 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1777,7 +1961,7 @@ console.log('\n── La forma corta (P3A)');
       }
       return o;
     });
-    const esperado = { 'Tomografía (TAC)': '2/familia/año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1/familia/año, sin contraste', 'Sesión de psicología': '3/familia/año, en el mismo cupo que otras especialidades', 'Ecografía': '4/familia/año' };
+    const esperado = { 'Tomografía (TAC)': '2/familia/año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1/familia/año, sin contraste ni sedación', 'Fisioterapia': '5/familia/año, solo traumatológica', 'Sesión de psicología': '3/familia/año, en el mismo cupo que otras especialidades', 'Ecografía': '4/familia/año' };
     const faltan = Object.entries(esperado).filter(([k, v]) => !lista || !lista[k] || !lista[k][0].startsWith(v)).map(([k]) => k + ': ' + JSON.stringify(lista && lista[k]));
     if (faltan.length) mal(n + ': la lista de los once servicios tiene que conservar las condiciones de Essential con la forma corta · ' + faltan.join(' · '));
     else bien(n + ': la lista de los once servicios conserva lo que Essential decía («2/familia/año, junto con ecocardiograma y ergometría»…)');
@@ -2106,14 +2290,14 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
         f.forEach(([rol, n], j) => {
           if (rol !== 'cell' || n !== ASESOR) return;
           const fila = f[0][1], plan = planes[j];
-          const esperado = /^Fisioterapia/.test(fila) ? 'Gold' : /^En urgencia/.test(fila) ? 'Essential' : null;
+          const esperado = /^Fisioterapia/.test(fila) ? 'Gold' : /^En (?:urgencia|estudios y procedimientos)/.test(fila) ? 'Essential' : null;
           if (plan !== esperado) malas.push(id + ': «' + ASESOR + '» en «' + fila + '» cae en la columna ' + plan);
         });
       }
     }
   }
   const asesorEnPlegable = (await page.locator('#detalle-internacion').ariaSnapshot()).split('\n').filter((l) => l.includes('cell "' + ASESOR + '"')).length;
-  if (asesorEnPlegable !== 3) malas.push('detalle-internacion: tendrían que ser 3 celdas «' + ASESOR + '» (las dos de fisioterapia de Gold y la urgencia de Essential), hay ' + asesorEnPlegable);
+  if (asesorEnPlegable !== 4) malas.push('detalle-internacion: tendrían que ser 4 celdas «' + ASESOR + '» (las dos de fisioterapia de Gold, y la urgencia y el Cuadro 2 de Essential), hay ' + asesorEnPlegable);
   await page.close();
 
   // 3. El celular: la tabla del home no repite la fila (está al lado) y la lista de los once.
@@ -2193,7 +2377,12 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   // tipos, en el mismo orden. Una arrancaba por «15 sesiones al año (…)» y la
   // otra por «Traumatológica…», y el ojo tenía que reacomodarlas.
   const orden = (t) => TIPOS.map(([n, re]) => [n, (t || '').search(re)]).filter(([, i]) => i >= 0).sort((a, b) => a[1] - b[1]).map(([n]) => n).join(', ');
-  const arranque = (t) => (t || '').replace(/^\s*(?:Silver|Gold)/, '').trim();
+  const arranque = (t) => (t || '').replace(/^\s*(?:Essential|Silver|Gold)/, '').trim();
+  // Essential nombra un solo tipo y arranca por él (190A, Arturo, 23/10/2026):
+  // «Solo la traumatológica: hasta 5 sesiones…» (cuadernillo 1.11). Decía «Hasta
+  // 5 sesiones al año por familia» y, al lado de los tipos de Silver y Gold, se
+  // leía «cubre lo mismo».
+  const essentialBien = (t) => tipos(t) === 'traumatológica' && /^solo la traumatol/i.test(arranque(t));
   const mismaForma = (silver, gold) => /^(?:traumatol|neurol)/i.test(arranque(silver)) && /^(?:traumatol|neurol)/i.test(arranque(gold)) && orden(silver) === orden(gold);
   const autoprueba = {
     formaDeLaVuelta2: mismaForma('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
@@ -2202,9 +2391,11 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     lineaDeHoy: conNumero('Traumatológica, neurológica o después de una cirugía, y también respiratoria. 3 meses de espera.'),
     asimetriaDeLaVuelta1: mismosTipos('15 sesiones al año. 3 meses de espera.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias. 3 meses de espera.'),
     simetria: mismosTipos('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
+    essentialVieja: essentialBien('EssentialHasta 5 sesiones al año por familia.Sin espera'),
+    essentialNueva: essentialBien('EssentialSolo la traumatológica: hasta 5 sesiones al año por familia.Sin espera'),
   };
-  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria || autoprueba.formaDeLaVuelta2 || !autoprueba.formaNueva) malas.push('los detectores de número, de simetría y de forma no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
-  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold) && mismaForma(x.silver, x.gold);
+  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria || autoprueba.formaDeLaVuelta2 || !autoprueba.formaNueva || autoprueba.essentialVieja || !autoprueba.essentialNueva) malas.push('los detectores de número, de simetría y de forma no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
+  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold) && mismaForma(x.silver, x.gold) && essentialBien(x.essential);
   const visible = ([sel, nombre]) => {
     const t = document.querySelector(sel);
     if (!t) return null;
@@ -2234,7 +2425,7 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
+    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { essential: p[0] ? p[0].lastElementChild.textContent : null, silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
     await page.mouse.move(5, 5);
   }
   if (!lineasBien(tarjeta) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjeta));
@@ -2253,7 +2444,7 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
+    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { essential: p[0] ? p[0].lastElementChild.textContent : null, silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
     await page.mouse.move(5, 5);
   }
   if (!lineasBien(tarjetaPlanes) || !tarjetaPlanes.pie.includes(nota) || (tarjetaPlanes.todo.match(VECES) || []).length > 2) malas.push('/planes/ tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjetaPlanes && { silver: tarjetaPlanes.silver, gold: tarjetaPlanes.gold, pie: tarjetaPlanes.pie }));
@@ -2289,11 +2480,113 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   await cel.waitForTimeout(450);
   // La hoja se lee: la línea de Gold dice qué cubre, sin número, y el pedido
   // al asesor va en las notas, sin repetirse.
-  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
+  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { essential: b[0] ? b[0].textContent : null, silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
   if (!lineasBien(hoja) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(hoja && { silver: hoja.silver, gold: hoja.gold }));
   await ctx.close();
   if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50); en la tarjeta y la hoja, Silver y Gold nombran los mismos tipos con la misma forma · ' + malas.join(' · '));
   else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin ningún número para Gold, con los mismos tipos que Silver, en el mismo orden y arrancando por el tipo, y sin repetir el pedido; los detectores distinguen el caso malo del bueno');
+}
+
+// ── Las condiciones de Essential, a la vista en las tablas (185A y 190A) ────
+// Arturo, 23/10/2026 («Adelante con tus sugerencias»; sp-interno#185 y #190).
+// La celda de Essential decía «2/familia/año», «1/familia/año» y «5/familia/año»
+// y lo que cambia la elección quedaba a un toque: que los 2 se comparten con el
+// ecocardiograma y la ergometría (cuadernillo 3.2), que la resonancia es sin
+// contraste ni sedación (4.2) y que la fisioterapia es solo la traumatológica
+// (1.11). Ahora la celda lo dice debajo de la forma corta (`notaCelda` de
+// coverage.js: la misma `cola` de la lista de los once), en el home y en
+// /planes, en la computadora y en las tarjetas del home en el celular. Se mira:
+// - que esas tres filas, y solo esas, lleven nota, en la columna de Essential y
+//   con el texto literal (lista cerrada: una nota nueva tiene que entrar acá);
+// - que la nota vaya debajo del valor y adentro de la celda, y que la fila siga
+//   alineada con la columna de nombres (820, 1024, 1280 y 1440 px): la tabla son
+//   columnas sueltas y solo la altura fija las alinea; con la nota en el renglón,
+//   la de tomografía a 820 px ocupaba tres renglones y se salía de los 48 px;
+// - en el celular (360, 390 y 430 px), que la nota no le coma el ancho al nombre
+//   de la fila (en el renglón del valor, «Tomografía (TAC)» quedaba en 0 px);
+// - que el lector la oiga después del valor y separada por una coma.
+// La regla de «debajo, adentro y alineada» se prueba antes contra cuatro celdas
+// que tienen que fallar y dos que no. Falla en la build de 35165a7 (no hay
+// ninguna nota) y pasa con el cambio.
+console.log('\n── Las condiciones de Essential, a la vista en las tablas (185A y 190A)');
+{
+  const NOTA = { 'Tomografía (TAC)': 'junto con ecocardiograma y ergometría', 'Resonancia (RM)': 'sin contraste ni sedación', 'Fisioterapia': 'solo traumatológica' };
+  const OIDO = { 'Tomografía (TAC)': '2 por familia al año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1 por familia al año, sin contraste ni sedación', 'Fisioterapia': '5 por familia al año, solo traumatológica' };
+  const malas = [];
+  const srv = Object.fromEntries(COV.coverage().map((s) => [s.name, s]));
+  for (const [s, t] of Object.entries(NOTA)) if (!COV.notaCelda || COV.notaCelda(srv[s], 0) !== t) malas.push('coverage.js, ' + s + ': ' + JSON.stringify(COV.notaCelda ? COV.notaCelda(srv[s], 0) : 'sin notaCelda'));
+  // Debajo del valor, adentro de la celda y, en la computadora, a la altura de su
+  // fila en la columna de nombres; en el celular, sin comerle el nombre.
+  const bienPuesta = (c, fila, compu) => !!c && !!c.notaCaja
+    && c.notaCaja[0] >= c.valorCaja[1] - 1
+    && c.notaCaja[0] >= c.celda[0] - 0.5 && c.notaCaja[1] <= c.celda[1] + 0.5
+    && c.notaCaja[2] >= c.celda[2] - 0.5 && c.notaCaja[3] <= c.celda[3] + 0.5
+    && (compu ? !!fila && Math.abs(fila[0] - c.celda[0]) < 1 && Math.abs(fila[1] - c.celda[1]) < 1 : c.nombreAncho >= 0.4 * c.ancho);
+  const caja = (v, n, cel, nombre = 169, ancho = 282) => ({ valorCaja: v, notaCaja: n, celda: cel, nombreAncho: nombre, ancho });
+  const auto = {
+    enElRenglon: bienPuesta(caja([4, 27], [7, 44, 10, 170], [0, 48, 0, 177]), [0, 48], true),
+    seSale: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 48, 0, 177]), [0, 48], true),
+    desalineada: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 64, 0, 177]), [0, 48], true),
+    nombreComido: bienPuesta(caja([0, 22], [24, 40, 0, 282], [0, 63, 0, 282], 0, 282), null, false),
+    buenaCompu: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 64, 0, 177]), [0, 64], true),
+    buenaCel: bienPuesta(caja([0, 22], [24, 40, 0, 282], [0, 63, 0, 282]), null, false),
+  };
+  if (auto.enElRenglon || auto.seSale || auto.desalineada || auto.nombreComido || !auto.buenaCompu || !auto.buenaCel) malas.push('la regla no distingue la celda mala de la buena: ' + JSON.stringify(auto));
+  // Cada celda, columna por columna (la primera fila con ese nombre: en /planes,
+  // «Fisioterapia» también es una espera), y la caja de cada fila en la columna
+  // de nombres.
+  const LEER = String((sel) => {
+    const t = document.querySelector(sel);
+    if (!t) return null;
+    const ve = (e) => { if (!e) return null; const k = e.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((x) => x.remove()); return k.textContent.replace(/ /g, ' ').trim(); };
+    const celdas = {};
+    for (const pl of t.querySelectorAll('.cmp2-plan')) {
+      const plan = pl.querySelector('.cmp2-nombre').textContent.trim();
+      for (const c of pl.querySelectorAll('.cmp2-c')) {
+        const fila = ((c.querySelector('.cmp2-l') || {}).textContent || '').trim();
+        if (celdas[fila] && celdas[fila][plan]) continue;
+        const v = c.querySelector('.cmp2-v'), n = c.querySelector('.cmp2-bajo');
+        const rc = c.getBoundingClientRect(), rv = v.getBoundingClientRect(), rn = n && n.getBoundingClientRect();
+        (celdas[fila] = celdas[fila] || {})[plan] = { nota: ve(n), celda: [rc.top, rc.bottom, rc.left, rc.right], valorCaja: [rv.top, rv.bottom], notaCaja: rn ? [rn.top, rn.bottom, rn.left, rn.right] : null, nombreAncho: c.querySelector('.cmp2-l').getBoundingClientRect().width, ancho: rc.width };
+      }
+    }
+    const lab = {};
+    for (const c of t.querySelectorAll('.cmp2-lab .cmp2-c')) { const n = c.textContent.trim(); if (!lab[n]) { const r = c.getBoundingClientRect(); lab[n] = [r.top, r.bottom]; } }
+    return { celdas, lab };
+  });
+  const revisar = (r, donde, compu) => {
+    if (!r) { malas.push(donde + ': no encuentro la tabla'); return; }
+    for (const [fila, planes] of Object.entries(r.celdas)) {
+      for (const [plan, c] of Object.entries(planes)) {
+        const debe = plan === 'Essential' ? NOTA[fila] : undefined;
+        if (!debe) { if (c.nota) malas.push(donde + ', ' + fila + ', ' + plan + ': una nota que no está en la lista («' + c.nota + '»)'); continue; }
+        if (c.nota !== debe) malas.push(donde + ', ' + fila + ', Essential: ' + JSON.stringify(c.nota) + ' en vez de «' + debe + '»');
+        else if (!bienPuesta(c, r.lab[fila], compu)) malas.push(donde + ', ' + fila + ', Essential: la nota no va debajo, adentro y alineada · ' + JSON.stringify({ valor: c.valorCaja.map(Math.round), nota: c.notaCaja && c.notaCaja.map(Math.round), celda: c.celda.map(Math.round), fila: r.lab[fila] && r.lab[fila].map(Math.round), nombre: Math.round(c.nombreAncho) }));
+      }
+    }
+  };
+  for (const w of [820, 1024, 1280, 1440]) {
+    const page = await browser.newPage({ viewport: { width: w, height: 900 } });
+    for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+      await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+      revisar(await page.evaluate(`(${LEER})(${JSON.stringify(sel)})`), ruta + ' ' + w, true);
+      if (w === 1280) {
+        // Lo que oye el lector en la columna de Essential: el valor, una coma y la nota.
+        const leido = oido(await page.locator(sel + ' .cmp2-plan').first().ariaSnapshot()).replace(/\s+,/g, ',');
+        for (const [fila, t] of Object.entries(OIDO)) if (!leido.includes(fila + ', Essential: ' + t)) malas.push(ruta + ' lector, ' + fila + ': «' + (leido.split(fila + ', Essential:')[1] || '').slice(0, 70).trim() + '»');
+      }
+    }
+    await page.close();
+  }
+  for (const w of [360, 390, 430]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+    revisar(await cel.evaluate(`(${LEER})('#cartilla')`), '/ ' + w, false);
+    await ctx.close();
+  }
+  if (malas.length) mal('las condiciones de Essential van a la vista en las tablas, debajo de la forma corta (185A y 190A) · ' + malas.slice(0, 6).join(' · '));
+  else bien('tomografía «junto con ecocardiograma y ergometría», resonancia «sin contraste ni sedación» y fisioterapia «solo traumatológica», debajo de la forma corta de Essential en la tabla del home y en la de /planes (820, 1024, 1280 y 1440 px) y en las tarjetas del home (360, 390 y 430), sin salirse de la celda, con la fila alineada y oídas después del valor; ninguna otra celda lleva nota; la regla distingue la celda mala de la buena');
 }
 
 // ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────
@@ -2389,9 +2682,15 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
 // - en la tabla de /planes: el parto de Gold nombra la cesárea con ASESOR, el
 //   laboratorio de Essential dice «rutina», las cirugías de Essential dicen
 //   cirugía y familia, y las de Silver y Gold, «la mayoría»;
-// - en el plegable, la maternidad de Gold nombra la cesárea con ASESOR.
-// Cada regla se prueba antes contra lo que mostraba 02c733a (tiene que fallar) y
-// contra lo de hoy (tiene que pasar), y el ✓ dice lo que vio.
+// - en el plegable, la maternidad de Gold nombra la cesárea con ASESOR;
+// - las ecografías de Silver y Gold dicen «la mayoría» (9A, Arturo, 23/10/2026,
+//   sp-interno#191): en la tabla de /planes y en la lista del celular, en lo que
+//   se ve y en lo que oye el lector, todo plazo de la ecografía de Silver y Gold
+//   lleva «la mayoría». Es la misma clase de error que la cesárea de Gold: un
+//   plazo fuera de su fila que pierde su condición.
+// Cada regla se prueba antes contra lo que mostraba 02c733a (35165a7 para la
+// ecografía; tiene que fallar) y contra lo de hoy (tiene que pasar), y el ✓
+// dice lo que vio.
 console.log('\n── Las esperas llevan su condición (lista, tabla y plegable de /planes, y hoja)');
 {
   const { ASESOR } = COV;
@@ -2411,12 +2710,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     internacion: (renglones) => !plazosSin(renglones, /algo agudo/i).length,
     partoGoldOido: (t) => cesarea(t) && !plazosSin(enTrozos(t), /parto/i).length,
     internacionOida: (t) => !plazosSin(enTrozos(t), /algo agudo/i).length,
+    // 9A: el plazo de la ecografía de Silver y Gold va con «la mayoría», en su
+    // renglón; para el lector, cortado en comas, el trozo que sigue al plazo.
+    ecografia: (renglones) => !plazosSin(renglones, /la mayoría/i).length,
+    ecografiaOida: (t) => { const x = enTrozos(t).map(sinDuro); return x.every((y, k) => !esPlazo(y) || /la mayoría/i.test(y) || /^la mayoría\.?$/i.test(x[k + 1] || '')); },
   };
   // Las notas de la tabla de esperas de /planes, por fila y por plan.
   const TABLA = {
     'Parto': [null, null, cesarea],
     'Análisis de laboratorio': [(t) => /rutina/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
     'Cirugías programadas': [(t) => /cirug[ií]a/i.test(t) && /familia/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
+    'Ecografías': [null, (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
   };
   const tablaMala = (tabla) => Object.entries(TABLA).flatMap(([fila, rs]) => rs.map((r, i) => (r && !r(sinDuro((tabla[fila] || [])[i] || '')) ? fila + ', plan ' + (i + 1) + ': ' + JSON.stringify((tabla[fila] || [])[i] || null) : null)).filter(Boolean));
   // Lo que mostraba 02c733a (tiene que fallar) y lo de hoy (tiene que pasar).
@@ -2430,11 +2734,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     oidoBueno: reglas.partoGoldOido('con el bebé en nursery, medicamentos hasta 1,5 millones de guaraníes, 10 meses de espera para el parto; para una cesárea, preguntale a tu asesor cuánto esperás'),
     internacionOidaVieja: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera'),
     internacionOidaBuena: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera si es por algo agudo'),
-    tablaVieja: tablaMala({ 'Parto': [null, null, null], 'Análisis de laboratorio': [null, 'la mayoría', 'la mayoría'], 'Cirugías programadas': [null, 'la mayoría', 'la mayoría'] }).length,
-    tablaBuena: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'] }).length,
+    tablaVieja: tablaMala({ 'Parto': [null, null, null], 'Análisis de laboratorio': [null, 'la mayoría', 'la mayoría'], 'Cirugías programadas': [null, 'la mayoría', 'la mayoría'], 'Ecografías': [null, null, null] }).length,
+    tablaBuena: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'], 'Ecografías': [null, 'la mayoría', 'la mayoría'] }).length,
+    // La ecografía sola, como la mostraba 35165a7: tienen que caer Silver y Gold.
+    tablaEcoVieja: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'], 'Ecografías': [null, null, null] }).length,
+    ecografiaVieja: reglas.ecografia(['La mayoría, sin tope', '2 meses de espera']),
+    ecografiaBuena: reglas.ecografia(['La mayoría, sin tope', '2 meses de espera, la mayoría']),
+    ecografiaOidaVieja: reglas.ecografiaOida('la mayoría, sin tope, 2 meses de espera'),
+    ecografiaOidaBuena: reglas.ecografiaOida('la mayoría, sin tope, 2 meses de espera, la mayoría'),
   };
   const malas = [];
-  if (auto.partoGoldViejo || auto.partoGoldSinCesarea || !auto.partoGoldBueno || auto.internacionVieja || !auto.internacionBuena || auto.oidoViejo || !auto.oidoBueno || auto.internacionOidaVieja || !auto.internacionOidaBuena || !auto.tablaVieja || auto.tablaBuena) malas.push('las reglas no distinguen lo que mostraba 02c733a de lo de hoy: ' + JSON.stringify(auto));
+  if (auto.partoGoldViejo || auto.partoGoldSinCesarea || !auto.partoGoldBueno || auto.internacionVieja || !auto.internacionBuena || auto.oidoViejo || !auto.oidoBueno || auto.internacionOidaVieja || !auto.internacionOidaBuena || !auto.tablaVieja || auto.tablaBuena || auto.tablaEcoVieja !== 2 || auto.ecografiaVieja || !auto.ecografiaBuena || auto.ecografiaOidaVieja || !auto.ecografiaOidaBuena) malas.push('las reglas no distinguen lo que mostraba 02c733a de lo de hoy: ' + JSON.stringify(auto));
   const visto = {};
   // 1. La tabla de /planes en la computadora y el plegable, abierto.
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -2501,6 +2811,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     });
     visto.internacion = (inter.cols[1] || []).map(sinDuro).filter(esPlazo).join(' · ') || '(sin plazo)';
   }
+  // 9A: la ecografía de Silver y Gold, en lo que se ve y en lo que se oye.
+  const eco = lista['Ecografía'];
+  if (!eco) malas.push('lista: falta «Ecografía»');
+  else {
+    [1, 2].forEach((i) => {
+      const plan = ['Essential', 'Silver', 'Gold'][i];
+      if (!reglas.ecografia(eco.cols[i] || [])) malas.push('lista, Ecografía, ' + plan + ': ' + JSON.stringify((eco.cols[i] || []).map(sinDuro)) + ' (la espera sin «la mayoría»)');
+      if (!reglas.ecografiaOida(oidoDe(eco.nombre, plan))) malas.push('lista, Ecografía: el lector oye para ' + plan + ' ' + JSON.stringify(oidoDe(eco.nombre, plan)));
+    });
+    visto.ecografia = (eco.cols[1] || []).map(sinDuro).filter(esPlazo).join(' · ') || '(sin plazo)';
+  }
   // La hoja de cada servicio: lo que manda al asesor, arriba de los tres planes.
   const abajo = [];
   for (const servicio of Object.keys(lista)) {
@@ -2521,7 +2842,292 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
   if (abajo.length) malas.push('hoja: notas que mandan al asesor debajo de los planes · ' + abajo.join(' · '));
   await ctx.close();
   if (malas.length) mal('cada espera lleva su condición (la cesárea de Gold, la internación por algo agudo, el laboratorio y las cirugías de Essential) en la lista, la tabla y el plegable de /planes y la hoja, y lo que manda al asesor va arriba · ' + malas.slice(0, 6).join(' · '));
-  else bien('las reglas distinguen lo que mostraba 02c733a de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '» y Silver en «Internación», «' + visto.internacion + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
+  else bien('las reglas distinguen lo que mostraba 02c733a (y 35165a7, la ecografía) de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '», Silver en «Internación», «' + visto.internacion + '» y en «Ecografía», «' + visto.ecografia + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '» y las ecografías de Silver y Gold, «la mayoría», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
+}
+
+// ── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque ──
+// Arturo, 23/10/2026 («Adelante con tus sugerencias»; sp-interno#191):
+// - 9A: las ecografías de Silver y Gold decían «2 meses» y en la grilla del
+//   master esperan 90 días 10 de 33 en Silver y 15 de 32 en Gold, las del
+//   embarazo incluidas. Ahora dicen «2 meses, la mayoría» y, a un toque, cuáles
+//   esperan 3 (TOQUES de coverage.js, dibujado con Term).
+// - 10A: la cirugía de Essential es «de una lista de 26» (cuadernillo, 4.4.1 a
+//   4.4.26), y la lista se abre al tocar.
+// Los textos aprobados van escritos acá, no se leen de coverage.js: una prueba
+// no compara la página con la constante que la arma (cap. 151). Si cambia un
+// nombre de la lista, cambia en los dos lugares.
+// Un toque abierto se lee dos veces: lo que oye el lector (el texto al que
+// apunta aria-describedby) y lo que se ve (la burbuja). La burbuja tiene que
+// verse entera: dentro de la pantalla, dentro de la caja que la recorta y sin
+// nada encima (elementFromPoint en sus cuatro esquinas, con pointer-events
+// prendido un momento: la burbuja trae pointer-events:none).
+// Dónde: /planes a 1280 con el mouse (la banda de esperas y la tarjeta de la
+// ecografía, que no puede llevar un toque adentro y lo dice en su pie); /planes
+// a 360, 390 y 430 con el dedo (el cuadro de esperas y, a 390, la hoja de la
+// ecografía, cuya fila es un botón); el simulador a 390 y 1280 (Silver, Gold y
+// Essential); la pregunta frecuente del home, en oraciones (su caja recorta y
+// la lista no entra).
+// Antes se prueba cada detector: la lista de las 26 contra cinco listas malas,
+// y en la página, el texto del lector cambiado, la burbuja corrida y tapada, y
+// la nota borrada. En la build de 35165a7 (antes de 9A y 10A) falla todo.
+console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque');
+{
+  const NOTA = 'la mayoría', PALABRA_26 = 'de una lista de 26';
+  const EMB = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos y Doppler obstétrico)';
+  const DOP = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
+  const GOLD6 = 'las de riñón, de vías urinarias, de testículos, de próstata por vía rectal, la transvaginal y la vesical';
+  const may = (x) => x[0].toUpperCase() + x.slice(1);
+  const TOQUE = {
+    Silver: 'Ecografías que esperan 3 meses en Silver: ' + may(EMB) + ' y ' + DOP + '. Las demás, 2 meses.',
+    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + '; ' + DOP + ', y ' + GOLD6 + '. Las demás, 2 meses.',
+    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD6 + '. Las demás, 2 meses.',
+  };
+  const LAS_26 = ['Absceso junto al ano', 'amígdalas y adenoides juntas', 'adenoides', 'adenoma de próstata, a cielo abierto', 'amígdalas', 'apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'vesícula', 'colporrafía anterior', 'colporrafía posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroides', 'hernia crural de un lado, sin la malla', 'hernia de la ingle de un lado, sin la malla', 'hernia del ombligo o epigástrica, sin la malla', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado (raspado del útero)', 'ovario y trompa de un lado', 'piedra en el riñón, a cielo abierto', 'pterigión, con o sin injerto', 'quiste de un lado', 'nódulo de mama', 'varicocele de un lado'];
+  const lista26 = (v) => 'Las 26 cirugías de Essential: ' + v.slice(0, -1).join('; ') + '; y ' + v[v.length - 1] + '.';
+  const T26 = lista26(LAS_26);
+  // La lista, ítem por ítem: qué falta, qué sobra y qué está fuera de su lugar (4.4.n).
+  const difs26 = (t) => {
+    const m = /^Las 26 cirugías de Essential: (.*)\.$/.exec((t || '').replace(/\s+/g, ' ').trim());
+    if (!m) return ['no empieza con «Las 26 cirugías de Essential:»'];
+    const v = m[1].split(/; (?:y )?/), r = [];
+    LAS_26.forEach((x, i) => { if (!v.includes(x)) r.push('falta «' + x + '»'); else if (v[i] !== x) r.push('«' + x + '» no está en el lugar 4.4.' + (i + 1)); });
+    v.filter((x) => !LAS_26.includes(x)).forEach((x) => r.push('sobra «' + x + '»'));
+    if (v.length !== 26) r.push(v.length + ' ítems, no 26');
+    return r;
+  };
+  const malas = [];
+  // La regla de la lista contra cinco listas que tienen que fallar y la buena.
+  {
+    const cambiados = [...LAS_26]; [cambiados[1], cambiados[2]] = [cambiados[2], cambiados[1]];
+    const conFaco = [...LAS_26]; conFaco.splice(12, 0, 'facoemulsificación del cristalino');
+    const auto = {
+      buena: difs26(T26).length,
+      sinQuiste: difs26(lista26(LAS_26.filter((x) => x !== 'quiste de un lado'))).length,
+      conFaco: difs26(lista26(conFaco)).length,
+      catarataSinTecnica: difs26(lista26(LAS_26.map((x) => (/^catarata/.test(x) ? 'catarata de un ojo' : x)))).length,
+      cambiados: difs26(lista26(cambiados)).length,
+      sinTitulo: difs26(T26.replace('Las 26 cirugías de Essential: ', '')).length,
+    };
+    if (auto.buena || !auto.sinQuiste || !auto.conFaco || !auto.catarataSinTecnica || !auto.cambiados || !auto.sinTitulo) malas.push('la regla de las 26 no distingue la lista mala de la buena: ' + JSON.stringify(auto));
+  }
+  // Lo que se ve de un elemento: sin el texto para lectores, sin el texto al que
+  // apunta un aria-describedby y sin la burbuja de un toque (la forma corta, que
+  // también lleva aria-hidden, sí se ve).
+  const SE_VE = `(e) => {
+    if (!e) return null;
+    const k = e.cloneNode(true);
+    for (const b of k.querySelectorAll('button[aria-describedby]')) {
+      const d = k.querySelector('[id="' + b.getAttribute('aria-describedby') + '"]'); if (d) d.remove();
+      for (const s of [...b.parentElement.children]) if (s !== b && s.getAttribute('aria-hidden') === 'true') s.remove();
+    }
+    k.querySelectorAll('.sr-solo').forEach((x) => x.remove());
+    return k.textContent.replace(/\\u00a0/g, ' ').replace(/\\s+/g, ' ').trim();
+  }`;
+  const LEER = `(b) => {
+    const oido = ((document.getElementById(b.getAttribute('aria-describedby') || '') || {}).textContent || '').replace(/\\s+/g, ' ').trim();
+    const u = b.parentElement.querySelector(':scope > [aria-hidden="true"]');
+    if (!u || getComputedStyle(u).display === 'none') return { oido, visto: null };
+    const r = u.getBoundingClientRect();
+    // Lo que se ve: la pantalla, recortada por cada caja que recorta (hidden,
+    // clip, o una que scrollea por dentro, como el cuerpo del simulador).
+    let c = { left: 0, top: 0, right: document.documentElement.clientWidth, bottom: innerHeight };
+    for (let a = u.parentElement; a && a !== document.body; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/hidden|clip|auto|scroll/.test(s.overflow + s.overflowX + s.overflowY)) { const q = a.getBoundingClientRect(); c = { left: Math.max(c.left, q.left), top: Math.max(c.top, q.top), right: Math.min(c.right, q.right), bottom: Math.min(c.bottom, q.bottom) }; }
+    }
+    const entera = r.left >= c.left - 0.5 && r.right <= c.right + 0.5 && r.top >= c.top - 0.5 && r.bottom <= c.bottom + 0.5;
+    const pe = u.style.pointerEvents; u.style.pointerEvents = 'auto';
+    // Las esquinas, 8 px adentro: la burbuja tiene la esquina redondeada
+    // (--r-xs) y a 3 px el punto cae afuera de la curva, sobre lo de abajo.
+    const tapadas = [[r.left + 8, r.top + 8], [r.right - 8, r.top + 8], [r.left + 8, r.bottom - 8], [r.right - 8, r.bottom - 8]].filter(([x, y]) => { const e = document.elementFromPoint(x, y); return !e || !u.contains(e); }).length;
+    u.style.pointerEvents = pe;
+    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)] };
+  }`;
+  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && l.entera && !l.tapadas;
+  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && l.entera && !l.tapadas;
+  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 60), visto: (l.visto || '').slice(0, 60), entera: l.entera, tapadas: l.tapadas, caja: l.caja, clip: l.clip });
+  // Abre el toque como lo abre una persona: con el mouse, pasando por encima;
+  // con el dedo, tocando. Antes lo deja a un 62 % del alto de la pantalla, con
+  // lugar arriba para la lista más larga (366 px) debajo de la cabecera.
+  const abrir = async (pg, boton, dedo) => {
+    // Primero adentro de lo que scrollea por dentro (el cuerpo del simulador en
+    // la computadora), después la página.
+    await boton.evaluate((e) => { e.scrollIntoView({ block: 'center', behavior: 'instant' }); const r = e.getBoundingClientRect(); window.scrollBy({ top: r.top - innerHeight * 0.62, behavior: 'instant' }); });
+    await pg.waitForTimeout(150);
+    if (dedo) await boton.tap();
+    else { await pg.mouse.move(5, 5); const c = await boton.boundingBox(); await pg.mouse.move(c.x + c.width / 2, c.y + c.height / 2); }
+    await pg.waitForTimeout(300);
+    return boton.evaluate(eval(LEER));
+  };
+  const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(200); };
+  const visto = {};
+
+  // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    // Marca la celda de la banda de esperas de cada fila y plan, por índice.
+    const marcar = () => page.evaluate(() => {
+      const t = document.querySelector('#comparar-planes');
+      if (!t) return 0;
+      const grupos = [...t.querySelectorAll('.cmp2-lab .cmp2-grupo-y-fila')];
+      const desde = grupos.findIndex((g) => /Cuánto esperás/.test((g.querySelector('.cmp2-gt') || {}).textContent || ''));
+      let n = 0;
+      grupos.forEach((g, k) => {
+        if (desde < 0 || k < desde) return;
+        const fila = g.querySelector('.cmp2-c').textContent.trim();
+        [...t.querySelectorAll('.cmp2-plan')].forEach((pl, i) => { const c = pl.querySelectorAll('.cmp2-c')[k]; if (c) { c.dataset.qaBanda = fila + '|' + i; n++; } });
+      });
+      return n;
+    });
+    if (!(await marcar())) malas.push('/planes 1280: no encuentro la banda «Cuánto esperás para usarlo»');
+    const celda = (fila, i) => page.locator('[data-qa-banda="' + fila + '|' + i + '"]');
+    const nota = async (fila, i) => { const n = celda(fila, i).locator('.cmp2-fam'); return (await n.count()) ? n.evaluate(eval(SE_VE)) : null; };
+    if ((await nota('Ecografías', 0)) !== null) malas.push('/planes 1280, Ecografías, Essential: una nota que no va («' + (await nota('Ecografías', 0)) + '»)');
+    for (const [i, plan] of [[1, 'Silver'], [2, 'Gold']]) {
+      const n = await nota('Ecografías', i);
+      const b = celda('Ecografías', i).locator('.cmp2-fam button.txt');
+      if (n !== NOTA || !(await b.count()) || (await b.textContent()).trim() !== NOTA) { malas.push('/planes 1280, Ecografías, ' + plan + ': ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «' + NOTA + '» y tocarse)'); continue; }
+      const l = await abrir(page, b, false);
+      if (!bienAbierto(l, TOQUE[plan])) malas.push('/planes 1280, Ecografías, ' + plan + ', abierto: ' + corto(l));
+      await cerrar(page, false);
+      // Lo que oye el lector en la celda: la fila, el plan, la espera entera y la nota.
+      const oye = oido(await celda('Ecografías', i).ariaSnapshot()).replace(/\s+,/g, ',');
+      if (!new RegExp('^Ecografías, ' + plan + ': .*2 meses de espera, la mayoría').test(oye)) malas.push('/planes 1280, Ecografías, ' + plan + ': el lector oye «' + oye.slice(0, 80) + '»');
+      if (i === 1) visto.compu = n;
+    }
+    {
+      const n = await nota('Cirugías programadas', 0);
+      const b = celda('Cirugías programadas', 0).locator('.cmp2-fam button.txt');
+      if (n !== '1 cirugía/familia/año, ' + PALABRA_26 || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push('/planes 1280, Cirugías programadas, Essential: ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «1 cirugía/familia/año, ' + PALABRA_26 + '», y tocarse solo «' + PALABRA_26 + '»)');
+      else {
+        const l = await abrir(page, b, false);
+        if (!bien26(l)) malas.push('/planes 1280, las 26: ' + corto(l) + ' · ' + difs26(l && l.oido).concat(difs26(l && l.visto)).slice(0, 3).join(' · '));
+        // Autoprueba en la página: el texto del lector sin «nódulo de mama» tiene
+        // que fallar; devuelto, pasar.
+        const sab = await b.evaluate((e, t) => { const d = document.getElementById(e.getAttribute('aria-describedby')); const antes = d.textContent; d.textContent = t; return antes; }, T26.replace('; nódulo de mama', ''));
+        const lMala = await b.evaluate(eval(LEER));
+        await b.evaluate((e, t) => { document.getElementById(e.getAttribute('aria-describedby')).textContent = t; }, sab);
+        const lBuena = await b.evaluate(eval(LEER));
+        if (bien26(lMala) || !bien26(lBuena)) malas.push('autoprueba de las 26 en la página: sin «nódulo de mama» ' + (bien26(lMala) ? 'pasa' : 'falla') + ', devuelta ' + (bien26(lBuena) ? 'pasa' : 'falla'));
+        await cerrar(page, false);
+      }
+    }
+    // Autoprueba de «entera» y «tapadas» con el toque de Silver abierto.
+    {
+      const b = celda('Ecografías', 1).locator('.cmp2-fam button.txt');
+      if (await b.count()) {
+        const l0 = await abrir(page, b, false);
+        const corrida = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]'); const t = u.style.top; u.style.top = '-2000px'; const r = eval(LEER)(e); u.style.top = t; return r; }, LEER);
+        const tapada = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]'); const q = u.getBoundingClientRect(); const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:' + q.left + 'px;top:' + q.top + 'px;width:' + q.width + 'px;height:100px;z-index:1000;background:#fff'; document.body.appendChild(d); const r = eval(LEER)(e); d.remove(); return r; }, LEER);
+        const l1 = await b.evaluate(eval(LEER));
+        if (!bienAbierto(l0, TOQUE.Silver) || corrida.entera || !tapada.tapadas || !bienAbierto(l1, TOQUE.Silver)) malas.push('autoprueba de la burbuja: corrida ' + JSON.stringify({ entera: corrida.entera }) + ', tapada ' + JSON.stringify({ tapadas: tapada.tapadas }) + ', antes y después ' + bienAbierto(l0, TOQUE.Silver) + '/' + bienAbierto(l1, TOQUE.Silver));
+        await cerrar(page, false);
+      }
+    }
+    // La tarjeta de la ecografía (se abre al pasar el mouse por el nombre): la
+    // espera con su condición y la lista, en oraciones, en el pie.
+    {
+      const srv = page.locator('#comparar-planes .cmp2-lab .cmp2-srv', { hasText: /^Ecografía$/ }).first();
+      await srv.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.mouse.move(5, 5);
+      const c = await srv.boundingBox();
+      await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+      await page.waitForTimeout(250);
+      const t = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')].map((x) => x.lastElementChild.textContent.trim()); return { p, pie: ((t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '').trim() }; });
+      const LINEA = 'La mayoría, sin tope. 2 meses de espera, la mayoría.';
+      if (!t || t.p[1] !== LINEA || t.p[2] !== LINEA || t.pie !== TOQUE.juntos) malas.push('/planes 1280, tarjeta de la ecografía: ' + JSON.stringify(t && { silver: t.p[1], gold: t.p[2], pie: t.pie.slice(0, 60) }));
+      await page.mouse.move(5, 5);
+    }
+    // Autoprueba: sin la nota (lo que mostraba 35165a7), «falta la nota».
+    await page.evaluate(() => { const c = document.querySelector('[data-qa-banda="Ecografías|1"] .cmp2-fam'); if (c) c.remove(); });
+    if ((await nota('Ecografías', 1)) !== null) malas.push('autoprueba: borrada la nota de Silver, la lectura igual la encuentra');
+    await page.close();
+  }
+
+  // (2) /planes en el celular, con el dedo: el cuadro de esperas y la hoja.
+  for (const w of [360, 390, 430]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    const fila = (que) => cel.locator('.cmp-cel [role="table"] [role="row"]', { has: cel.locator('[role="rowheader"]', { hasText: que }) }).first();
+    const small = async (que) => { const s = fila(que).locator('[role="rowheader"] small'); return (await s.count()) ? s.evaluate(eval(SE_VE)) : null; };
+    {
+      const n = await small('Ecografías');
+      const b = fila('Ecografías').locator('small button.txt');
+      if (n !== 'En Silver y Gold, la mayoría.' || !(await b.count())) malas.push(w + ', cuadro de esperas, Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else { const l = await abrir(cel, b, true); if (!bienAbierto(l, TOQUE.juntos)) malas.push(w + ', cuadro de esperas, Ecografías, abierto: ' + corto(l)); await cerrar(cel, true); }
+      if (w === 390) visto.cel = n;
+    }
+    {
+      const n = await small('Cirugías programadas');
+      const b = fila('Cirugías programadas').locator('small button.txt');
+      if (n !== 'La mayoría. En Essential, una al año por familia, ' + PALABRA_26 + '.' || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push(w + ', cuadro de esperas, Cirugías programadas: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else { const l = await abrir(cel, b, true); if (!bien26(l)) malas.push(w + ', cuadro de esperas, las 26: ' + corto(l)); await cerrar(cel, true); }
+    }
+    if (w === 390) {
+      // La hoja de la ecografía, desde «Los once servicios».
+      await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+      await cel.waitForTimeout(450);
+      await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila', { hasText: /^Ecografía/ }).first().tap();
+      await cel.waitForTimeout(450);
+      const h = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; return { texto: d.textContent.replace(/\s+/g, ' '), planes: [...d.querySelectorAll('.sq')].map((x) => x.textContent) }; });
+      const PILDORA = '2 meses de espera, la mayoría';
+      if (!h || !h.texto.includes(TOQUE.juntos) || !h.planes[1] || !h.planes[1].includes(PILDORA) || !h.planes[2] || !h.planes[2].includes(PILDORA) || (h.planes[0] || '').includes('la mayoría')) malas.push('390, hoja de la ecografía: ' + JSON.stringify(h && { lista: h.texto.includes(TOQUE.juntos), planes: h.planes.map((x) => x.slice(-40)) }));
+    }
+    await ctx.close();
+  }
+
+  // (3) El simulador, a 390 con el dedo y a 1280 con el mouse.
+  for (const [w, dedo] of [[390, true], [1280, false]]) {
+    const ctx = await browser.newContext(dedo ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } : { viewport: { width: 1280, height: 900 } });
+    const pg = await ctx.newPage();
+    for (const plan of ['silver', 'gold', 'essential']) {
+      await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+      for (let i = 0; i < 14; i++) {
+        if (await pg.locator('[data-sp-carencias]').count()) break;
+        let hecho = false;
+        for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) { const b = pg.locator('button:visible', { hasText: t }).first(); if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; } }
+        if (!hecho) break;
+        await pg.waitForTimeout(450);
+      }
+      const fila = (que) => pg.locator('[data-sp-carencias] [data-sp-carencia-row]', { hasText: que }).first();
+      const notaDe = async (que) => { const s = fila(que).locator(':scope > span:first-child > span'); return (await s.count()) ? s.evaluate(eval(SE_VE)) : null; };
+      if (!(await pg.locator('[data-sp-carencias]').count())) { malas.push('simulador ' + w + ', ' + plan + ': no llega a las esperas'); continue; }
+      const n = await notaDe('Ecografías');
+      if (plan === 'essential') {
+        if (n !== null) malas.push('simulador ' + w + ', Essential, Ecografías: una nota que no va («' + n + '»)');
+        const c = await notaDe('Cirugías programadas');
+        const b = fila('Cirugías programadas').locator('button.txt');
+        if (c !== 'una al año por familia, ' + PALABRA_26 || !(await b.count())) malas.push('simulador ' + w + ', Essential, Cirugías programadas: ' + (c === null ? 'falta la nota' : '«' + c + '»'));
+        else { const l = await abrir(pg, b, dedo); if (!bien26(l)) malas.push('simulador ' + w + ', las 26: ' + corto(l)); await cerrar(pg, dedo); }
+      } else {
+        const P = plan === 'silver' ? 'Silver' : 'Gold';
+        const b = fila('Ecografías').locator('button.txt');
+        if (n !== NOTA || !(await b.count())) malas.push('simulador ' + w + ', ' + P + ', Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+        else { const l = await abrir(pg, b, dedo); if (!bienAbierto(l, TOQUE[P])) malas.push('simulador ' + w + ', ' + P + ', abierto: ' + corto(l)); await cerrar(pg, dedo); }
+      }
+    }
+    await ctx.close();
+  }
+
+  // (4) La pregunta frecuente del home, abierta como la abre una persona.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    const btn = page.locator('button[aria-controls]', { hasText: '¿Cuánto tengo que esperar para usar mi plan?' }).first();
+    await btn.scrollIntoViewIfNeeded();
+    await btn.click();
+    await page.waitForTimeout(400);
+    const r = await btn.evaluate((b) => { const r = document.getElementById(b.getAttribute('aria-controls')); return r ? r.innerText.replace(/\s+/g, ' ') : ''; });
+    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis)', 'cirugías (una al año por familia, de una lista de 26)'];
+    const faltan = debe.filter((x) => !r.includes(x));
+    if (faltan.length || r.includes('laboratorio y ecografías, unos 2 meses')) malas.push('home, FAQ de las esperas: ' + (faltan.length ? 'no dice «' + faltan.join('» ni «') + '»' : 'sigue diciendo «laboratorio y ecografías, unos 2 meses»'));
+    await page.close();
+  }
+
+  if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera y sin nada encima · ' + malas.slice(0, 8).join(' · '));
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las del embarazo y 5 Doppler; en Gold, 6 más), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26, en el orden del cuadernillo: en la banda de esperas de /planes a 1280 con el mouse, en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 390 y 1280; lo oye el lector y la burbuja se ve entera, sin nada encima; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y la FAQ del home también; la regla de las 26 rechaza cinco listas malas y la burbuja corrida, tapada o con otro texto falla');
 }
 
 // ── La nota de la cesárea del plegable, con letra de nota (cierre de la vuelta 3, 18/10) ──
@@ -2785,6 +3391,14 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   }
   const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
   if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));
+  // El Cuadro 2 de Essential (186A, Arturo, 23/10/2026, sp-interno#186): el mismo
+  // hueco de la fuente que la urgencia de arriba (null en essential-cobertura.json),
+  // y su «—» se leía «no cubre». Silver y Gold siguen con su monto, y ninguna
+  // celda del plegable queda en «—».
+  const cuadro2 = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En estudios y procedimientos/.test((d.firstElementChild || {}).textContent || '')); return f ? [...f.children].slice(1).map((c) => c.textContent.trim()) : null; });
+  if (!cuadro2 || cuadro2[0] !== ASESOR || !/^Gs\.\s80\smil/.test(cuadro2[1]) || !/^Gs\.\s100\smil/.test(cuadro2[2])) malas.push('/planes/ plegable, Cuadro 2 (Essential al asesor; Silver y Gold con su monto): ' + JSON.stringify(cuadro2));
+  const rayas = await page.evaluate(() => [...document.querySelectorAll('#detalle-internacion [role="cell"]')].filter((c) => c.textContent.trim() === '—').length);
+  if (rayas) malas.push('/planes/ plegable: ' + rayas + ' celda(s) con «—»');
   // La tarjeta del home lee la nota de coverage.js (comité, vuelta 3): escrita a
   // mano en page.jsx decía «no fija este tope» y, en /planes, «no fija el tope de
   // remedios en urgencias». Y dice qué preguntar, con el molde de la G1A.

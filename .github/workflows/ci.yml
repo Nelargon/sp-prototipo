@@ -34,7 +34,9 @@ jobs:
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.
-      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras)
+      # esquinas: ningún radio escrito a mano en app/ (sp-interno#60, 23/10/2026).
+      # Mira el código, no lo construido: corre una vez para las dos ediciones.
+      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras, esquinas)
         run: |
           node scripts/test-buscador.mjs
           node scripts/test-telefonos.mjs
@@ -43,6 +45,7 @@ jobs:
           node qa/links-internos.mjs out /sp-prototipo
           node qa/seguro-propio.mjs out
           node qa/titulos-y-sombras.mjs out
+          node qa/esquinas.mjs
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.

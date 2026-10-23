@@ -518,7 +518,7 @@
     }
   },
   "parametros": {
-    "_": "Los números finos de /que-cubre, en la columna de Essential. null = el cuadernillo no trae ese dato (se muestra «—»).",
+    "_": "Los números finos de /planes (el plegable de topes), en la columna de Essential. null = el cuadernillo no trae ese dato: el sitio dice «Preguntale a tu asesor» (R1A, 17/10/2026; el Cuadro 2, 186A, 23/10/2026).",
     "Habitación de internación": "Habitación privada",
     "Tope de días de internación (por año)": "20 días por familia",
     "Unidad de Terapia Intensiva – UTI (días por año)": "2 días",

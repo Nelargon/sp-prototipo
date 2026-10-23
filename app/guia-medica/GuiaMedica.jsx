@@ -144,7 +144,7 @@ function Tarjeta({ p, plan, abrirVisar }) {
     <article className="sq rel" style={css('--sq:var(--r-sm);background:#fff;border:1px solid var(--gm-linea);padding:15px 16px;display:flex;flex-direction:column;gap:6px')}>
       <div style={css('display:flex;justify-content:space-between;align-items:center;gap:8px')}>
         <span className="disp" style={css('font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-900)')}>{p.e}</span>
-        {p.l ? <span className="disp sq" style={css('--sq:5px;font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span> : null}
+        {p.l ? <span className="disp sq" style={css('--sq:var(--r-xs);font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span> : null}
       </div>
       <h3 className="disp" style={css('font-size:17px;line-height:1.28;color:var(--sp-navy);margin:0')}>
         <a href={`${BP}/guia-medica/${p.id}/`} onClick={() => track('guia_ficha', { origen: 'lista' })} style={css('color:inherit')}>{p.n}</a>
@@ -156,7 +156,7 @@ function Tarjeta({ p, plan, abrirVisar }) {
       {/* La etiqueta del plan se acomoda sola: con un plan elegido dice que
           atiende con él; sin plan, una línea gris dice con cuáles. */}
       {plan
-        ? <span className="sq" style={css(INTER + '--sq:6px;align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--sp-teal-ink);background:var(--sp-mint-bg);padding:3px 8px;display:inline-flex;align-items:center;gap:4px')}>{Icono.check} Atiende con {nombrePlan(plan)}</span>
+        ? <span className="sq" style={css(INTER + '--sq:var(--r-xs);align-self:flex-start;font-size:12.5px;font-weight:600;color:var(--sp-teal-ink);background:var(--sp-mint-bg);padding:3px 8px;display:inline-flex;align-items:center;gap:4px')}>{Icono.check} Atiende con {nombrePlan(plan)}</span>
         : <span style={css(INTER + 'font-size:12.5px;color:var(--sp-muted)')}>Planes: {redesCortas(p.r).join(' · ')}</span>}
       {p.k && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>{condicionTexto(p.k)}</p>}
       {p.e === 'Odontología' && <p style={css(INTER + 'font-size:13px;line-height:1.45;color:var(--sp-muted);margin:0')}>Antes de ir, preguntale a tu asesor qué cubre tu plan en odontología.</p>}
@@ -358,8 +358,10 @@ export default function GuiaMedica() {
   const elegirDesdeMapa = (l, origen) => { elegirLugar(l, origen); setVista('lista'); };
   const verVista = (v) => { setVista(v); track('guia_vista', { vista: v }); };
 
-  const G = datos.meta.guias;
-  const fecha = (G.privilege && G.privilege.fecha) || '';
+  // «Datos al»: el día en que build-guia-medica.py leyó la planilla publicada
+  // (meta.datos_al). Hasta el 23/10/2026 decía la fecha del PDF de Privilege
+  // (meta.guias.privilege.fecha, siempre 17/09): sp-interno#61.
+  const fecha = (datos.meta.datos_al || '').split('-').reverse().join('/');
   const waSinResultado = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Busqué «' + f.q + '» en la Guía Médica y no lo encontré. ¿Me ayudan?');
   const waNoEncuentro = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero saber si un profesional está en la red de mi plan.');
 
@@ -383,7 +385,7 @@ export default function GuiaMedica() {
             <button type="button" onClick={() => abrirVisar('encabezado')} className="disp" style={css('flex-shrink:0;margin-top:4px;height:36px;padding:0 12px;border-radius:var(--r-pill);border:1.5px solid var(--sp-teal-deep);background:#fff;color:var(--sp-teal-deep);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer')}>Visar una orden</button>
           </div>
           <p style={css(INTER + 'margin:0;font-size:15px;line-height:1.45;color:var(--sp-text-2)')}>Médicos, sanatorios y laboratorios, con dirección y teléfono.</p>
-          <div style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>Datos al <b style={css('color:var(--sp-navy)')}>{fecha}</b></div>
+          {fecha && <div style={css(INTER + 'font-size:13.5px;color:var(--sp-muted)')}>Datos al <b style={css('color:var(--sp-navy)')}>{fecha}</b></div>}
         </div>
 
         {/* Visar una orden */}
@@ -433,7 +435,7 @@ export default function GuiaMedica() {
         <div role="group" aria-label="Zona" className="sq" style={css('--sq:var(--r-sm);display:flex;gap:4px;background:var(--gm-linea);padding:4px')}>
           {ZONAS.map((z) => {
             const on = f.z === z.k;
-            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:9px;flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{z.n}</button>;
+            return <button key={z.k || 'todo'} type="button" aria-pressed={on} onClick={() => set({ z: z.k, dp: '', c: '' }, 'zona')} className="disp sq" style={css('--sq:var(--r-xs);flex:1;min-width:0;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;white-space:nowrap;' + (on ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{z.n}</button>;
           })}
         </div>
         <BuscaCiudad f={f} elegir={elegirLugar} limpiar={() => set({ c: '', dp: '' }, 'ciudad')} />
@@ -466,7 +468,7 @@ export default function GuiaMedica() {
                 </button>
               ))}
               <button type="button" onClick={() => { setQ('lister'); track('guia_filtro', { campo: 'lister' }); }} className="fila" style={css('width:100%;height:44px;padding:0 14px;border:none;background:#fff;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left')}>
-                <span className="disp sq" style={css('--sq:5px;font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span>
+                <span className="disp sq" style={css('--sq:var(--r-xs);font-size:11px;font-weight:800;color:var(--sp-navy);background:var(--sp-blue-bg);padding:2px 7px')}>Lister</span>
                 <span style={css(INTER + 'flex:1;font-size:15px;color:var(--sp-navy)')}>Nuestro centro médico</span>
                 <span style={css('color:var(--sp-blue-meta);display:flex')}>{Icono.der}</span>
               </button>
@@ -512,7 +514,7 @@ export default function GuiaMedica() {
             {res.length > 0 && (
               <div role="group" aria-label="Ver los resultados en" className="gm-mapa-conmutador sq" style={css('--sq:var(--r-sm);gap:4px;background:var(--gm-linea);padding:4px')}>
                 {[['lista', 'Lista'], ['mapa', 'Mapa']].map(([k, t]) => (
-                  <button key={k} type="button" aria-pressed={vista === k} onClick={() => verVista(k)} className="disp sq" style={css('--sq:9px;flex:1;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;' + (vista === k ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{t}</button>
+                  <button key={k} type="button" aria-pressed={vista === k} onClick={() => verVista(k)} className="disp sq" style={css('--sq:var(--r-xs);flex:1;height:36px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;' + (vista === k ? 'background:#fff;color:var(--sp-navy);box-shadow:var(--sombra-ctrl)' : 'background:transparent;color:var(--sp-estado-ink-2)'))}>{t}</button>
                 ))}
               </div>
             )}

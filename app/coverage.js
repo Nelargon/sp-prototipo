@@ -81,22 +81,33 @@ export const coverage = () => [
   // Silver y Gold va en la página de detalle (/planes), no en la vista rápida del
   // home. La lista de estudios con copago espera a SP.
   { name: 'Consulta con especialista', icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-1a6 6 0 0 1 12 0v1', nota: 'En Silver y Gold, hasta 3 consultas por mes en cada especialidad; después, con copago.', cov: [yes('Sin tope en Lister; en la red, hasta 3 por mes'), yes('Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto'), yes('Sin tope anual en casi todas')] },
-  { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', wait: [90, 60, 60], corta: [anual(4, 'familia'), null, null], cov: [yes('Hasta 4 al año por familia'), yes('La mayoría, sin tope'), yes('La mayoría, sin tope')] },
+  // `waitNote` de la ecografía (9A): la lista de las que esperan 3 meses, en
+  // oraciones, para la tarjeta de /planes y la hoja del celular, que no pueden
+  // llevar un toque adentro.
+  { name: 'Ecografía', icon: 'M3 12a9 9 0 0 1 18 0M3 12a9 9 0 0 0 18 0', wait: [90, 60, 60], waitNote: toqueEnTexto('eco-sg'), corta: [anual(4, 'familia'), null, null], cov: [yes('Hasta 4 al año por familia'), yes('La mayoría, sin tope'), yes('La mayoría, sin tope')] },
   // Tomografía: 120 días en Silver y 90 en Gold, como TODAS las filas TAC-TCMS
   // de la grilla. Decía 60/30: eran los de ORTOPANTOMOGRAFIA (una placa dental)
   // leída como "tomografía" por la subcadena (auditoría del 25/09/2026).
   // Gold decía «Hasta 2 al año y menos espera»: la espera ya va con su número
   // donde se muestra, y como ventaja rompía la simetría con Silver (regla de
   // esperas del 03/10).
-  { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', wait: [180, 120, 90], nota: notaDe(QUIEN_SG), corta: [anual(2, 'familia'), anual(2, QUIEN_SG), anual(2, QUIEN_SG)], cola: [', junto con ecocardiograma y ergometría', null, null], cov: [yes('Hasta 2 al año por familia, junto con ecocardiograma y ergometría'), yes('Hasta 2 al año'), yes('Hasta 2 al año')] },
-  { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', wait: [365, 150, 150], nota: notaDe(QUIEN_SG), corta: [anual(1, 'familia'), anual(1, QUIEN_SG), anual(1, QUIEN_SG)], cola: [', sin contraste', null, null], cov: [yes('1 al año por familia, sin contraste'), yes('1 al año'), yes('1 al año')] },
+  { name: 'Tomografía (TAC)', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8', wait: [180, 120, 90], nota: notaDe(QUIEN_SG), corta: [anual(2, 'familia'), anual(2, QUIEN_SG), anual(2, QUIEN_SG)], cola: [', junto con ecocardiograma y ergometría', null, null], enTabla: true, cov: [yes('Hasta 2 al año por familia, junto con ecocardiograma y ergometría'), yes('Hasta 2 al año'), yes('Hasta 2 al año')] },
+  { name: 'Resonancia (RM)', icon: 'M4 6h16v12H4zM8 6v12', wait: [365, 150, 150], nota: notaDe(QUIEN_SG), corta: [anual(1, 'familia'), anual(1, QUIEN_SG), anual(1, QUIEN_SG)], cola: [', sin contraste ni sedación', null, null], enTabla: true, cov: [yes('1 al año por familia, sin contraste ni sedación'), yes('1 al año'), yes('1 al año')] },
   { name: 'Sesión de psicología', icon: 'M12 3a7 7 0 0 0-4 12.7V19l2-1 2 1 2-1 2 1v-3.3A7 7 0 0 0 12 3Z', nota: notaDe(QUIEN_PSICO), corta: [anual(3, 'familia'), anual(5, QUIEN_PSICO), anual(6, QUIEN_PSICO)], cola: [', en el mismo cupo que otras especialidades', null, null], cov: [yes('Hasta 3 al año por familia, en el mismo cupo que otras especialidades'), yes('5 sesiones al año'), yes('6 sesiones al año')] },
   // Internación sí tiene para quién en las tres fuentes: «por grupo familiar»
   // en Essential y «tope 20/25 días por beneficiario/año» en Silver y Gold.
   // `sub`, lo que la hoja de los once servicios dice debajo de la forma corta;
   // `cola`, lo que sigue a la forma corta en esa hoja: las condiciones de
   // Essential que hoy se ven y no pueden quedar solo en el contrato (comité del
-  // 13/10, ajuste 4).
+  // 13/10, ajuste 4). Con `enTabla`, la misma `cola` va también debajo de la
+  // celda de Essential en las tablas del home y de /planes (`notaCelda`, abajo;
+  // 185A y 190A, Arturo, 23/10/2026): tomografía, resonancia y fisioterapia. La
+  // de psicología todavía no (no está decidida).
+  // La resonancia de Essential es «sin contraste ni sedación» (cuadernillo 4.2:
+  // «No incluye contraste, materiales descartables ni sedación»): decía solo
+  // «sin contraste» en la tarjeta y la hoja de /planes, en la lista y en el
+  // tema, mientras la tarjeta del home ya decía las dos (185A, con el agregado
+  // del comité).
   { name: 'Internación', icon: 'M3 18v-6h18v6M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4', wait: [365, null, null], waitNote: 'En Silver y Gold, 2 meses ' + SI_AGUDO + '; si es programada, ' + minuscula(ASESOR) + ' cuánto esperás.', corta: [anual('20 días', 'familia'), anual('20 días', 'persona'), anual('25 días', 'persona')], sub: ['Habitación privada', 'Semi-suite', 'Semi-suite'], cov: [yes('Habitación privada, hasta 20 días al año por familia'), yes('Semi-suite, hasta 20 días al año por persona'), yes('Semi-suite, hasta 25 días al año por persona')] },
   { name: 'Terapia intensiva', icon: 'M3 12h4l2-5 4 10 2-5h6', cov: [yes('Hasta 2 días al año'), yes('Hasta 5 días al año'), yes('Hasta 6 días al año')] },
   // Parto: 365 días en Essential y 300 en Silver y Gold. Es la espera más larga
@@ -147,9 +158,55 @@ export const coverage = () => [
   // el número y la otra por el tipo, y el ojo tenía que reacomodarlas para ver
   // que lo único distinto es que Gold no tiene número. La tarjeta del home lee
   // estas dos mismas líneas.
-  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cov: [yes('Hasta 5 sesiones al año por familia'), yes('Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5'), yes('Traumatológica, neurológica o después de una cirugía, y respiratoria')] },
+  // Essential (190A, Arturo, 23/10/2026, sp-interno#190): solo la
+  // traumatológica (cuadernillo 1.11: «Hasta cinco (5) sesiones traumatológicas,
+  // por grupo familiar»; regla fis-traumatologica de essential-cobertura.json).
+  // La línea arranca por el tipo, como Silver y Gold, y la forma corta lleva la
+  // `cola` («5/familia/año, solo traumatológica»). Decía «Hasta 5 sesiones al
+  // año por familia» y, al lado de los tipos de Silver y Gold, se leía «cubre lo
+  // mismo».
+  { name: 'Fisioterapia', icon: 'M12 5c-3-3-8-1-8 4 0 6 3 10 4 10s1-4 4-4 3 4 4 4 4-4 4-10c0-5-5-7-8-4Z', wait: [0, 90, 90], nota: notaDe(QUIEN_SG), notaAsesor: 'En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.', corta: [anual(5, 'familia'), anual(15, QUIEN_SG), ASESOR], cola: [', solo traumatológica', null, null], enTabla: true, cov: [yes('Solo la traumatológica: hasta 5 sesiones al año por familia'), yes('Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5'), yes('Traumatológica, neurológica o después de una cirugía, y respiratoria')] },
   { name: 'Medicamentos en internación', icon: 'M10 3 3 10a5 5 0 0 0 7 7l7-7a5 5 0 0 0-7-7ZM7 7l7 7', corta: ['Gs. 350 mil/evento', 'Gs. 1 millón/evento', 'Gs. 1,5 millones/evento'], dicho: ['hasta 350 mil guaraníes cada vez que te internan', 'hasta 1 millón de guaraníes cada vez que te internan', 'hasta 1,5 millones de guaraníes cada vez que te internan'], cov: [yes('Hasta Gs. 350 mil por evento'), yes('Hasta Gs. 1 millón por evento'), yes('Hasta Gs. 1,5 millones por evento')] },
 ];
+
+// LO QUE SE ABRE A UN TOQUE EN LAS ESPERAS (9A y 10A, Arturo, 23/10/2026,
+// «Adelante con tus sugerencias»; sp-interno#191). Dos condiciones que el sitio
+// callaba y cambian la elección:
+// - 9A, las ecografías de Silver y Gold: «2 meses» era la espera de la mayoría.
+//   En la grilla del master del 24/07, en Silver esperan 90 días 10 de las 33
+//   filas «ECOGRAFIA…» (las 4 del embarazo y 5 Doppler, una de ellas en dos
+//   filas) y en Gold 15 de 32 (esas mismas y 6 más). La celda dice «2 meses, la
+//   mayoría» y, a un toque, cuáles esperan 3. Los nombres siguen la grilla: la
+//   «vesical» de Gold queda como la dice el master, que también tiene una
+//   «de vejiga» a 60 días (no se completa por inferencia).
+// - 10A, las cirugías programadas de Essential: «1 cirugía/familia/año» es de
+//   una lista cerrada de 26 (CUADERNILLO PLAN ESSENTIAL.pdf, 4.4.1 a 4.4.26,
+//   25/03/2026; la lista literal está en essential.json, `cirugias_lista_26`).
+//   «de una lista de 26» se toca y abre la lista. Cada nombre es la palabra de
+//   la familia donde dice lo mismo (vesícula, amígdalas, hemorroides) y el del
+//   cuadernillo, con todos sus calificativos (de un lado, sin la malla, a cielo
+//   abierto), donde traducir sería prometer más (laparotomía exploradora,
+//   colporrafía, pterigión). En el mismo orden que el cuadernillo.
+// Se dibujan con `Term` de glossary.jsx (`dict={TOQUES}`): subrayado punteado,
+// mouse, dedo y teclado, y la lista entera para el lector de pantalla. Donde no
+// puede ir un toque (una tarjeta que se cierra al sacar el mouse, una fila que
+// ya es un botón, el texto de la cotización), la lista va en oraciones.
+const may = (x) => x.charAt(0).toUpperCase() + x.slice(1);
+const EMBARAZO = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos y Doppler obstétrico)';
+const DOPPLER = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
+const SOLO_GOLD = 'las de riñón, de vías urinarias, de testículos, de próstata por vía rectal, la transvaginal y la vesical';
+export const CIRUGIAS_26 = ['absceso junto al ano', 'amígdalas y adenoides juntas', 'adenoides', 'adenoma de próstata, a cielo abierto', 'amígdalas', 'apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'vesícula', 'colporrafía anterior', 'colporrafía posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroides', 'hernia crural de un lado, sin la malla', 'hernia de la ingle de un lado, sin la malla', 'hernia del ombligo o epigástrica, sin la malla', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado (raspado del útero)', 'ovario y trompa de un lado', 'piedra en el riñón, a cielo abierto', 'pterigión, con o sin injerto', 'quiste de un lado', 'nódulo de mama', 'varicocele de un lado'];
+if (CIRUGIAS_26.length !== 26) throw new Error('Essential: la lista de cirugías no tiene 26');
+export const TOQUES = {
+  'eco-silver': { t: 'Ecografías que esperan 3 meses en Silver', d: may(EMBARAZO) + ' y ' + DOPPLER + '. Las demás, 2 meses.' },
+  'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + '; ' + DOPPLER + ', y ' + SOLO_GOLD + '. Las demás, 2 meses.' },
+  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '. Las demás, 2 meses.' },
+  // `ancho` (Term): a 260 px la lista mide unos 366 px de alto y no entraba en la
+  // tarjeta de esperas del simulador en la computadora; a 420, unos 290.
+  'cir-26': { t: 'Las 26 cirugías de Essential', d: may(CIRUGIAS_26.slice(0, -1).join('; ') + '; y ' + CIRUGIAS_26[25]) + '.', ancho: 420 },
+};
+// La lista en oraciones, para donde no entra el toque: «título: lista».
+export const toqueEnTexto = (k) => TOQUES[k].t + ': ' + TOQUES[k].d;
 
 // LAS ESPERAS QUE IMPORTAN AL DECIDIR (7 sep 2026 — "Sería bueno ser ya
 // transparentes con las carencias", Arturo). Es lo que el simulador muestra
@@ -170,7 +227,12 @@ export const carencias = () => [
   // 90-120 días en Bronze/Silver y 30 en Gold — por eso "la mayoría".
   // En Essential: rutina sin espera, especializados a los 90 días.
   { que: 'Análisis de laboratorio', dias: [90, 60, 60], nota: 'la mayoría', notaPlan: ['los de rutina, sin espera', null, null] },
-  { que: 'Ecografías', dias: [90, 60, 60] },
+  // 9A (Arturo, 23/10/2026, sp-interno#191): «2 meses, la mayoría» y, a un
+  // toque, cuáles esperan 3 (TOQUES, arriba). `notaPlan` y no `nota`: Essential
+  // espera 3 meses para todas y no lleva «la mayoría». `toque` sin `palabra`: lo
+  // que se toca es la nota misma; `toqueJuntos`, donde una sola nota habla de
+  // Silver y Gold a la vez (el cuadro del celular).
+  { que: 'Ecografías', dias: [90, 60, 60], notaPlan: [null, 'la mayoría', 'la mayoría'], toque: [null, { k: 'eco-silver' }, { k: 'eco-gold' }], toqueJuntos: 'eco-sg' },
   { que: 'Tomografía', dias: [180, 120, 90] },
   // Parámetros clave: "Carencia – internación clínica por evento agudo: 60 días".
   // Essential no distingue: toda internación, a los 365 días. La internación
@@ -185,8 +247,10 @@ export const carencias = () => [
   // Essential: una cirugía al año por familia, de una lista de 26, a los 365.
   // `corta`, esa misma condición en la forma corta, para la celda de la tabla de
   // /planes en la computadora (lo que se escanea); `notaPlan` sigue en oraciones
-  // para el simulador y la cotización.
-  { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null], corta: [anual('1 cirugía', 'familia'), null, null] },
+  // para el simulador y la cotización. «de una lista de 26» va después de la
+  // nota y se toca (10A, Arturo, 23/10/2026, sp-interno#191): `palabra` es lo
+  // que se subraya.
+  { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null], corta: [anual('1 cirugía', 'familia'), null, null], toque: [{ k: 'cir-26', palabra: 'de una lista de 26' }, null, null] },
   // Parámetros clave: "Carencia de maternidad: 300 días". La cesárea de Gold
   // tiene la fuente contradicha: el Cuadro 3 de su contrato dice 150 días y la
   // cláusula de maternidad (2.5.2), 300. Hasta que SP lo aclare, en Gold manda
@@ -199,6 +263,12 @@ export const carencias = () => [
   // que en ese plan manda al asesor, dicha en corto con `conAsesor`.
   { que: 'Parto', dias: [365, 300, 300], notaPlan: [null, null, CESAREA_GOLD], cuando: [null, null, 'para el parto'], alAsesor: [null, null, 'Cesárea'] },
 ];
+
+// La condición de Essential que va debajo de la forma corta en las celdas de las
+// tablas del home y de /planes (185A y 190A, Arturo, 23/10/2026): la misma
+// `cola` de la lista de los once servicios, sin la coma. Solo en los servicios
+// con `enTabla` (tomografía, resonancia y fisioterapia).
+export const notaCelda = (s, i) => (s.enTabla && s.cola && s.cola[i] ? s.cola[i].replace(/^,\s*/, '') : undefined);
 
 // La nota de una espera en una celda que se escanea (la tabla de /planes en la
 // computadora): la forma corta si la hay, la parte que manda al asesor, lo que

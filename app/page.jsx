@@ -5,7 +5,7 @@ import { BP } from './basePath';
 import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
-import { coverage } from './coverage';
+import { coverage, notaCelda } from './coverage';
 import { Term, waitLabel, annotate } from './glossary';
 import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
@@ -59,7 +59,13 @@ export default function Page() {
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
     { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
-    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías y parto, 1 año. En Silver y Gold: laboratorio y ecografías, unos 2 meses; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses. Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    // 9A y 10A (Arturo, 23/10/2026, sp-interno#191): las ecografías de Silver y
+    // Gold esperan 2 meses la mayoría y 3 las del embarazo y las Doppler, y la
+    // cirugía de Essential es una al año de una lista de 26. La FAQ se lee: va
+    // en oraciones y sin toque (la respuesta vive en un Plegable que recorta, y
+    // la lista más corta no entra); las listas enteras están en /planes y en el
+    // simulador.
+    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías (una al año por familia, de una lista de 26) y parto, 1 año. En Silver y Gold: laboratorio, unos 2 meses; ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis); tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses. Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     // El 10% está confirmado para Silver y Gold; para Essential no hay fuente
     // (sp-interno#80, decisión 2A de Arturo, 13/10/2026): se pregunta al asesor.
     { q: '¿Hay descuento por la forma de pago?', a: 'En Silver y Gold, sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. En Essential, preguntale a tu asesor si también tiene el descuento. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
@@ -376,7 +382,7 @@ export default function Page() {
   const cartDe = Object.fromEntries(cartArr.map((s) => [s.name, s]));
   // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
   // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
-  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i] }));
+  const celdas = (servicio) => cartDe[servicio].corta.map((t, i) => ({ t, ok: true, dicho: cartDe[servicio].dicho && cartDe[servicio].dicho[i], n: notaCelda(cartDe[servicio], i), bajo: true }));
   // El pie de la fila: qué es «por familia» y, mientras SP no conteste, a quién
   // preguntarle lo de Silver y Gold (la `nota` de coverage.js, que se va sola
   // cuando el interruptor de ese servicio deja de ser DUDA).
@@ -401,10 +407,15 @@ export default function Page() {
       // que el cupo se comparte con otras especialidades (essential.json).
       d: ['Hasta 3 al año para toda la familia, en el mismo cupo que otras especialidades.', '5 sesiones al año.', '6 sesiones al año.'], pie: pieQuien('Sesión de psicología') },
     // Gold: sin número hasta que SP aclare si son 20 + 5 o 10 + 3 (G1A, sp-interno#50).
-    // Silver y Gold salen de `cov` en coverage.js, las mismas líneas que /planes:
-    // escritas dos veces ya se habían separado (comité, vuelta 2, 17/10).
+    // Las tres líneas salen de `cov` en coverage.js, las mismas que /planes:
+    // escritas dos veces ya se habían separado (comité, vuelta 2, 17/10). La de
+    // Essential, desde la 190A (Arturo, 23/10/2026, sp-interno#190): «Solo la
+    // traumatológica: hasta 5 sesiones al año por familia» (cuadernillo 1.11);
+    // decía «5 sesiones al año para toda la familia».
+    // `celdas` trae, en Essential, la condición debajo de la forma corta
+    // (`notaCelda`: tomografía, resonancia y fisioterapia; 185A y 190A).
     { name: 'Fisioterapia', unit: 'sesiones/año', kind: 'num', cells: celdas('Fisioterapia'),
-      d: ['5 sesiones al año para toda la familia.', cartDe['Fisioterapia'].cov[1].d + '.', cartDe['Fisioterapia'].cov[2].d + '.'], pie: pieQuien('Fisioterapia') },
+      d: cartDe['Fisioterapia'].cov.map((c) => c.d + '.'), pie: pieQuien('Fisioterapia') },
     // Internación (13/10/2026, decisión 2A de Arturo): los 60 días de Silver y
     // Gold son de la «internación clínica por evento agudo» (parámetros clave);
     // la programada no tiene espera escrita (sp-interno#82) y no se deduce. Y la
@@ -671,7 +682,7 @@ export default function Page() {
             sombra dice la verdad: está en algo que se toca. El nombre para el
             lector de pantalla sigue siendo el del botón. */}
         <div data-rv>
-        <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:26px;padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:var(--sombra-sup)')}>
+        <div className="sq tarjeta-toque" style={css('max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#004a8f 0%,#00294f 100%);border:1px solid rgba(128,221,216,0.18);--sq:var(--r-lg);padding:44px 40px;text-align:center;position:relative;isolation:isolate;overflow:hidden;box-shadow:var(--sombra-sup)')}>
           <div style={css('position:absolute;z-index:-1;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,188,180,0.22) 0%,rgba(0,188,180,0) 68%);pointer-events:none')}></div>
           <div style={css('max-width:640px;margin:0 auto')}>
             {/* Sin etiqueta "Simulá tu plan" (Arturo, 24/09/2026): repetía el

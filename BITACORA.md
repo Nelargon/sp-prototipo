@@ -5611,3 +5611,129 @@ cada plan y pasa por cada pregunta, con texto) y, leído, no hay ningún «5 o
 6». Y el HANDOFF decía que cada control se probaba también en la página, con
 la línea de antes metida, y no todos lo hacían: **lo que un documento dice de
 una prueba se verifica contra la prueba**, como el puntero contra el archivo.
+
+## Capítulo 155 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
+
+**Qué intentamos.** Cerrar sp-interno#60, que decide Claude: los radios
+escritos a mano que quedaban en el sitio y «la regex del QA no los ve todos».
+La regla está escrita desde septiembre: una esquina se elige por su función,
+nunca con un número (cap. 92), y «el QA integral lo cuenta».
+
+**Qué pasó.** El conteo de `qa-integral` daba verde: «9 excepciones locales,
+ninguna repetida». Contamos a mano y eran 13 radios a mano en `app/`. Había dos
+razones, y ninguna era un error de programación:
+- **La vara del control era más blanda que la de la regla.** Un valor fuera de
+  escala usado menos de tres veces era una «excepción local» y se admitía. La
+  regla no dice eso: dice «nunca».
+- **Leía una sola forma de escribir un radio**, con el primer número:
+  `border-radius:Npx` y `--sq:Npx`. No veía `0 12px 12px 0` (la cita del blog
+  y el `Callout`, justo con el valor exacto de `--r-sm`), el respaldo
+  `var(--sq,10px)` (el `--r-xs` escrito a mano), las esquinas sueltas, el
+  `borderRadius` de React, rem, decimales ni `radius={N}`. Es la familia del
+  cap. 90: cada forma nueva de escribir algo queda invisible para el guardián
+  que leía la vieja.
+
+El detector nuevo (`qa/esquinas.mjs`) marca toda declaración de radio con un
+largo escrito, en CSS y en React, y se prueba antes con veinte casos, diez que
+tienen que marcar y diez que no. En main encuentra 14; en la rama, 0. Las dos
+excepciones que quedan (los 14px de `/historia/` y la casilla de los adicionales
+del simulador) están declaradas con su porqué y con cuántas veces aparecen: si
+alguien las cambia, avisa. Y como el código no dice todo, en el navegador se
+mira lo computado: cada `.sq` visible tiene su `--sq` en la escala.
+
+**Qué aprendimos.**
+- **Un control más tolerante que la regla es, para lo que deja pasar, como no
+  tenerlo.** El verde decía «la escala se usa por token» y la escala tenía
+  trece fugas. La vara del control se copia de la regla escrita, no de lo que
+  parece razonable perdonar.
+- **Las excepciones se declaran, no se infieren.** «Usado una vez» no es un
+  porqué. Una excepción con nombre, archivo y motivo se puede discutir; una que
+  el contador deduce, no la ve nadie.
+
+## Capítulo 156 — La nota larga no entra en el lugar de la corta (23/10/2026)
+
+**Qué intentamos.** Las 185A y 190A: que la celda de Essential en las tablas del
+home y de `/planes` diga lo que cambia la elección («junto con ecocardiograma y
+ergometría», «sin contraste ni sedación», «solo traumatológica»). Lo primero
+fue copiar la forma que ya existía: la nota «en Lister», en el mismo renglón que
+el valor.
+
+**Qué pasó.** No entró. A 820 px la nota de la tomografía ocupaba tres renglones
+y se salía de la celda de 48 px; en la tarjeta del home en el celular dejaba el
+nombre de la fila en 0 px de ancho. Y midiendo apareció otra cosa: **el home
+nunca había mostrado sus notas de consultas** («en Lister · 3 por mes en la
+red», «en la mitad; 5 o 6 en el resto»). Estaban escritas en `page.jsx`, pero
+el Comparador del home va sin `notas` y solo dibuja «por familia». La nota fue
+debajo del valor, en su propio bloque, y la fila entera sube a 64 px: la tabla
+son columnas sueltas que solo alinea la altura fija, así que crece toda la fila
+o se desalinean las columnas.
+
+**Qué aprendimos.**
+- **Una nota larga no copia la forma de una corta.** «en Lister» cabe al lado
+  del número; una condición de cuatro palabras, no.
+- **Lo que el código dice que se ve, se mide en el navegador.** Las notas de
+  consultas del home estaban escritas hacía semanas y nadie las vio, porque
+  nadie las había buscado en la pantalla. Quedó como punto de revisión.
+
+## Capítulo 157 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
+
+**Qué intentamos.** La 9A y la 10A: «2 meses, la mayoría» en las ecografías de
+Silver y Gold y «de una lista de 26» en las cirugías de Essential, con la lista
+a un toque, con el mismo `Term` del glosario. La prueba lee cada toque abierto
+dos veces (lo que oye el lector y la burbuja) y pide que la burbuja se vea
+entera y sin nada encima.
+
+**Qué pasó.** Dos fallas, una del sitio y una de la prueba:
+- **La del sitio.** En el simulador, en la computadora, las 26 cirugías se
+  abrían hacia arriba y se cortaban. La tarjeta de esperas recorta
+  (`overflow:hidden`), y adentro del cuerpo del simulador, que scrollea por
+  dentro. `Term` miraba solo la primera caja que recorta, y la lista, a 260 px
+  de ancho, medía unos 366 de alto: no entraba ni arriba ni abajo. Ahora `Term`
+  cuenta todas las cajas que recortan (también las que scrollean) y la cabecera
+  fija como techo, abre hacia donde hay más lugar, y la lista de 26 pide una
+  burbuja más ancha (420 px en la computadora), que la deja en unos 290 de
+  alto.
+- **La de la prueba.** «Sin nada encima» se medía con `elementFromPoint` a 3 px
+  de cada esquina, y la burbuja tiene la esquina redondeada: a 3 px el punto
+  cae afuera de la curva, sobre lo que hay debajo, y la prueba gritaba
+  «tapada» donde no había nada. Se mide a 8 px. Y la caja del simulador que
+  scrollea no se contaba como caja que recorta: la prueba la cuenta ahora, igual
+  que `Term`.
+- **La de la vista, que ninguna prueba vio.** Con todo en verde, la captura del
+  cuadro de esperas del celular mostró «de una lista de 26» partido en dos
+  renglones centrados, con el subrayado debajo de los dos y el punto suelto en
+  un tercero: la caja de `Term` es inline-block, y una frase adentro se parte
+  como un bloque. El toque ya no se parte (`white-space:nowrap`, solo en los
+  toques) y el punto va pegado.
+
+**Qué aprendimos.**
+- **Un texto a un toque es un texto que alguien tiene que poder leer entero.**
+  Que el lector lo oiga no alcanza (es la lección del cap. 76, otra vez): la
+  burbuja se mide contra todo lo que la recorta, no contra la primera caja.
+- **Una prueba de geometría mide la forma real, no el rectángulo.** El
+  rectángulo de una caja redondeada no es la caja: lo que cae en la esquina es
+  de lo de abajo.
+- **Una prueba que lee el texto no ve cómo se parte.** El texto era el
+  aprobado, letra por letra, y se leía mal. Las capturas no son un trámite del
+  final: son la otra mitad de la verificación.
+
+## Capítulo 158 — El nombre del archivo no es su versión (23/10/2026)
+
+**Qué intentamos.** El punto 1 de sp-interno#61: que la fecha de la Guía Médica
+diga cuándo son los datos.
+
+**Qué pasó.** La Guía decía «Datos al 17/09/2026» siempre: leía la fecha del PDF
+de una red (Privilege), que no se mueve con la planilla. Cada ficha decía la del
+PDF más reciente de sus redes (25/09, 10/08 o 17/09), y el home, «según la
+planilla al 30/09». Tres fechas para el mismo dato. Y el Guardián había leído en
+el informe del script «20260923_…» como «la planilla del 23/09»: el archivo del
+Drive se edita en el lugar, su nombre nunca cambió y la versión publicada es la
+del 29/09, leída el 30/09. Ahora la Guía y las fichas dicen `meta.datos_al`, el
+día en que se leyó la planilla.
+
+**Qué aprendimos.**
+- **Una fecha que se muestra sale del hecho que nombra.** «Datos al» es la
+  lectura de la planilla, no el nombre de un archivo ni la fecha de un documento
+  vecino.
+- **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
+  la Guía no coinciden, una de las dos está leyendo otra cosa.

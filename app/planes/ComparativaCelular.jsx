@@ -4,7 +4,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, engine } from '../quote';
-import { coverage, carencias, ASESOR, conAsesor, minuscula } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, minuscula, TOQUES } from '../coverage';
 import { Term, waitLabel, annotate } from '../glossary';
 import { track, trackExplicacion } from '../track';
 import Hoja from '../components/Hoja';
@@ -122,10 +122,16 @@ export default function ComparativaCelular() {
   const abrirServicio = (n) => { setHoja({ tipo: 'serv', n }); trackExplicacion('servicio', n); };
   const abrirLista = () => { setHoja({ tipo: 'lista' }); trackExplicacion('servicio', 'once servicios'); };
 
+  // La espera de un plan con la condición que la fila de esperas abre a un toque
+  // («2 meses de espera, la mayoría»: 9A, 23/10/2026). Acá no hay toque: la
+  // píldora de la hoja y la fila de la lista no pueden llevar un botón adentro
+  // (la fila ya es uno), y la lista de las que esperan 3 meses va en la nota de
+  // la hoja (`waitNote` de coverage.js).
+  const conCondicion = (c, i, txt) => (txt && c && c.toque && c.toque[i] ? txt + ', ' + c.notaPlan[i] : txt);
   const chip = (nombre, i) => {
     const c = CAR[ESPERA_DE[nombre]];
     const d = c ? c.dias[i] : null;
-    const txt = waitLabel(d);
+    const txt = conCondicion(c, i, waitLabel(d));
     if (!txt) return null;
     return (
       <span className="disp" style={css('display:inline-flex;align-items:center;gap:5px;width:fit-content;font-size:12px;font-weight:700;line-height:1.2;padding:4px 9px;border-radius:var(--r-pill);' + (d === 0 ? 'background:var(--sp-mint-bg);color:var(--sp-teal-900)' : 'background:var(--sp-estado-bg);color:var(--sp-estado-ink-2)'))}>
@@ -194,7 +200,7 @@ export default function ComparativaCelular() {
     return {
       tipo: t === ASESOR ? 'asesor' : t && t.includes('/') ? 'corta' : 'frase',
       t, pre: (s.pre && s.pre[i]) || '', cola: (s.cola && s.cola[i]) || '', dicho: s.dicho && s.dicho[i],
-      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? waitLabel(e) + (cuando ? ' ' + cuando : '') : null,
+      d: s.cov[i].d, sub: s.sub ? s.sub[i] : null, espera: e != null ? conCondicion(c, i, waitLabel(e) + (cuando ? ' ' + cuando : '')) : null,
       aparte: alAsesor ? conAsesor(alAsesor) : null, aparteDicho: alAsesor ? c.notaPlan[i] : null,
     };
   };
@@ -261,13 +267,31 @@ export default function ComparativaCelular() {
   if (hoja && hoja.tipo === 'lista') { tituloHoja = 'Los once servicios'; contenido = lista; }
 
   // Las notas de cada espera salen de carencias(): «la mayoría» y lo que dice
-  // cada plan.
+  // cada plan. Los planes que dicen lo mismo van juntos: «En Silver y Gold, la
+  // mayoría.» (por separado se leía dos veces). Con `toque` (9A y 10A,
+  // 23/10/2026), la parte que abre su lista es un Term: la nota que comparten
+  // Silver y Gold abre `toqueJuntos`; la de un solo plan, su `toque`, y con
+  // `palabra` («de una lista de 26») lo que se toca va después de la nota. La
+  // fila no es un botón: nada queda anidado. Devuelve las partes, en orden.
   const notaEspera = (c) => {
     const partes = [];
     if (c.nota) partes.push(c.nota.charAt(0).toUpperCase() + c.nota.slice(1) + '.');
-    (c.notaPlan || []).forEach((t, i) => { if (t) partes.push(/^[A-ZÁÉÍÓÚ]/.test(t) ? t + '.' : 'En ' + planes[i].short + ', ' + t + '.'); });
+    const grupos = [];
+    (c.notaPlan || []).forEach((t, i) => { if (!t) return; const g = grupos.find((x) => x.t === t); if (g) g.i.push(i); else grupos.push({ t, i: [i] }); });
+    grupos.forEach(({ t, i }) => {
+      if (/^[A-ZÁÉÍÓÚ]/.test(t)) { partes.push(t + '.'); return; }
+      const quien = i.map((j) => planes[j].short);
+      const pre = 'En ' + (quien.length > 1 ? quien.slice(0, -1).join(', ') + ' y ' + quien[quien.length - 1] : quien[0]) + ', ';
+      const tq = i.length > 1 ? (c.toqueJuntos ? { k: c.toqueJuntos } : null) : c.toque && c.toque[i[0]];
+      // El punto va pegado al toque: después de una caja inline-block el
+      // navegador puede bajarlo solo al renglón de abajo.
+      const conPunto = (term) => <span style={css('white-space:nowrap')}>{term}.</span>;
+      if (!tq) partes.push(pre + t + '.');
+      else if (!tq.palabra) partes.push(<>{pre}{conPunto(<Term k={tq.k} dict={TOQUES} tipo="toque">{t}</Term>)}</>);
+      else partes.push(<>{pre}{t}, {conPunto(<Term k={tq.k} dict={TOQUES} tipo="toque">{tq.palabra}</Term>)}</>);
+    });
     if (NOTA_EXTRA[c.que]) partes.push(NOTA_EXTRA[c.que]);
-    return partes.join(' ');
+    return partes;
   };
 
   return (
@@ -362,7 +386,7 @@ export default function ComparativaCelular() {
               <div key={c.que} role="row" className="esp-f" style={css('border-top:1px solid var(--sp-line-2);background:' + (r % 2 ? '#fff' : 'var(--sp-surface-2)'))}>
                 <span role="rowheader" className="disp" style={css('display:flex;flex-direction:column;gap:2px;font-size:13.5px;font-weight:700;line-height:1.25;color:var(--sp-navy)')}>
                   {c.que}
-                  {nota && <small style={css(inter + 'font-size:11.5px;font-weight:400;line-height:1.35;color:var(--sp-muted)')}>{nota}</small>}
+                  {nota.length > 0 && <small style={css(inter + 'font-size:11.5px;font-weight:400;line-height:1.35;color:var(--sp-muted)')}>{nota.map((p, k) => <Fragment key={k}>{k ? ' ' : ''}{p}</Fragment>)}</small>}
                 </span>
                 {c.dias.map((d, i) => (
                   <span key={i} role="cell" className="disp num-tnum" style={css('font-size:12.5px;font-weight:700;line-height:1.2;text-align:center;white-space:nowrap;color:' + (d === 0 ? 'var(--sp-teal-900)' : 'var(--sp-navy)'))}>

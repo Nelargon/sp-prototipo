@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { css } from '../css';
 import { BP } from '../basePath';
 import { fmt, plans, essentialTitular, WHATSAPP_NUMBER } from '../quote';
-import { coverage, carencias, ASESOR, conAsesor, notaCorta } from '../coverage';
+import { coverage, carencias, ASESOR, conAsesor, notaCorta, notaCelda } from '../coverage';
 import { Term, waitLabel } from '../glossary';
 import { track } from '../track';
 import Header from '../Header';
@@ -139,10 +139,19 @@ export default function Planes() {
   // manda al asesor. Donde `corta` trae null, va la celda de `resto`.
   // Una celda sin barras que dice ASESOR (G1A) es texto: la tarjeta se abre
   // desde el nombre del servicio; solo «¿quién?» es botón (Comparador.jsx).
-  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, dicho: cv[servicio].dicho && cv[servicio].dicho[i] } : resto[i]));
+  // La condición de Essential que cambia la elección va debajo de la forma
+  // corta (`notaCelda` de coverage.js, `bajo`; 185A y 190A, 23/10/2026): la
+  // tomografía junto con ecocardiograma y ergometría, la resonancia sin
+  // contraste ni sedación y la fisioterapia solo traumatológica.
+  const corta = (servicio, resto = []) => cv[servicio].corta.map((t, i) => (t ? { t, dicho: cv[servicio].dicho && cv[servicio].dicho[i], n: notaCelda(cv[servicio], i), bajo: true } : resto[i]));
+  // La espera va con su condición cuando la fila de esperas la abre a un toque
+  // (9A, 23/10/2026: «2 meses de espera, la mayoría» en las ecografías de Silver
+  // y Gold). Esta tarjeta se cierra al sacar el mouse del nombre: un toque
+  // adentro no se alcanzaría, así que la lista va en su pie (`waitNote`).
   const conEspera = (servicio, carencia) => cv[servicio].cov.map((c, i) => {
     const e = carencia ? waitLabel(esp[carencia].dias[i]) : null;
-    return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) : '') + '.';
+    const cond = e && esp[carencia].toque && esp[carencia].toque[i] ? ', ' + esp[carencia].notaPlan[i] : '';
+    return c.d + (e ? '. ' + e.charAt(0).toUpperCase() + e.slice(1) + cond : '') + '.';
   });
   const odonto = excluidosOdonto();
   function excluidosOdonto() {
@@ -154,7 +163,7 @@ export default function Planes() {
     { g: 'Consultas y estudios', name: 'Consultas por especialista', kind: 'num', cells: [{ t: 'Sin tope', n: 'en Lister' }, { t: 'Sin tope', n: 'en la mitad' }, { t: 'Sin tope', n: 'en casi todas' }], d: conEspera('Consulta con especialista', 'Consultas y urgencias'), pie: cv['Consulta con especialista'].nota },
     { name: 'Sesiones de psicología', kind: 'num', cells: corta('Sesión de psicología'), d: conEspera('Sesión de psicología'), pie: cv['Sesión de psicología'].nota },
     { name: 'Fisioterapia', kind: 'num', cells: corta('Fisioterapia'), d: conEspera('Fisioterapia', 'Fisioterapia'), pie: [cv['Fisioterapia'].nota, cv['Fisioterapia'].notaAsesor].filter(Boolean).join(' ') },
-    { name: 'Ecografía', kind: 'num', cells: corta('Ecografía', [null, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }]), d: conEspera('Ecografía', 'Ecografías') },
+    { name: 'Ecografía', kind: 'num', cells: corta('Ecografía', [null, { t: 'Sin tope', n: 'la mayoría' }, { t: 'Sin tope', n: 'la mayoría' }]), d: conEspera('Ecografía', 'Ecografías'), pie: cv['Ecografía'].waitNote },
     // Silver y Gold no dicen para quién: la grilla dice «por año de contrato»,
     // no «por beneficiario» (sp-interno#110, decisión 2A de Arturo, 13/10/2026).
     // Su celda lleva «¿quién?» y el pie, la `nota` de coverage.js, manda al asesor.
@@ -182,9 +191,11 @@ export default function Planes() {
     // no llega al árbol de accesibilidad, y «Resonancia, Essential: 1 año» se
     // entendía como un cupo, al lado de «Resonancia (RM), Essential: 1 por
     // familia al año» (comité, vuelta 3, corrección, 18/10).
+    // `toque` (9A y 10A, 23/10/2026): «la mayoría» de las ecografías de Silver y
+    // Gold y «de una lista de 26» de las cirugías de Essential abren su lista.
     ...carencias().map((c, k) => ({ g: k === 0 ? 'Cuánto esperás para usarlo' : undefined, name: c.que, kind: 'num', cells: c.dias.map((d, i) => {
       const corto = waitLabel(d, true), largo = waitLabel(d);
-      return { t: corto || '—', dicho: largo && largo !== corto ? largo : undefined, n: notaCorta(c, i) || undefined };
+      return { t: corto || '—', dicho: largo && largo !== corto ? largo : undefined, n: notaCorta(c, i) || undefined, toque: (c.toque && c.toque[i]) || undefined };
     }) })),
   ];
   const planesCompu = plansArr.map((pl, i) => ({
@@ -245,9 +256,11 @@ export default function Planes() {
     // Fisioterapia de Gold: la grilla dice 10 y 3; gold.json, 20 y 5. Hasta que SP
     // lo aclare, manda al asesor como la tabla de arriba (G1A, sp-interno#50).
     if (/^Fisioterapia/i.test(f.p) && j === 2) return ASESOR;
-    // Remedios en urgencias de Essential: el cuadernillo no fija el tope. Un «—»
-    // se lee «no cubre»; manda al asesor como la tabla (R1A, 17/10/2026).
-    if (/^En urgencia/i.test(f.p) && !f.v[j]) return ASESOR;
+    // Remedios en urgencias y Cuadro 2 de Essential: el cuadernillo no fija el
+    // tope (null en essential-cobertura.json). Un «—» se lee «no cubre»; mandan
+    // al asesor como la tabla (R1A, 17/10/2026; el Cuadro 2, 186A, 23/10/2026,
+    // sp-interno#186). La guarda `!f.v[j]` deja a Silver y Gold con su monto.
+    if (/^En (?:urgencia|estudios y procedimientos)/i.test(f.p) && !f.v[j]) return ASESOR;
     // La cesárea de Gold manda al asesor también acá (2A, sp-interno#116). El
     // plegable decía «300 días» sin más, el lado que la 2A decidió no tomar,
     // mientras la tabla de arriba, el cuadro del celular y la lista ya decían

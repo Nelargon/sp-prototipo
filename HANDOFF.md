@@ -13,7 +13,170 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 22 oct 2026.*
+*Última actualización: 23 oct 2026.*
+
+---
+
+## ✅ DECIDIDO EL 23/10/2026 («Adelante con tus sugerencias»)
+
+Arturo contestó «Adelante con tus sugerencias» en la sesión del Guardián del
+23/10, sobre las opciones recomendadas de sp-interno #191 (puntos 9A y 10A),
+#190 (A), #185 (A, con el agregado del comité: también la resonancia «sin
+contraste ni sedación»), #186 (A) y #193 (1A). En la misma rama entran #60 y los
+puntos 1 y 2 de #61, que decide Claude. La 196A (Plan Vital, «laparotomía
+exploradora», sp-interno#196) entró aparte, en sp-prototipo#286. Todo vive en la
+rama `trabajo-2310`; las fuentes se releyeron el 23/10 en el cuadernillo de
+Essential del Drive (CUADERNILLO PLAN ESSENTIAL.pdf, 25/03/2026; fileId en
+`datos/planes-vigentes/essential.json`, `cirugias_lista_26`): 1.11 (fisioterapia
+«sesiones traumatológicas»), 3.2 (tomografía junto con ecocardiograma y
+ergometría), 4.2 (resonancia «No incluye contraste, materiales descartables ni
+sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
+
+1. **9A, las ecografías de Silver y Gold: «2 meses, la mayoría»** (sp-interno#191).
+   En la grilla del master del 24/07 esperan 90 días 10 de las 33 filas
+   «ECOGRAFIA…» de Silver (las 4 del embarazo y 5 Doppler) y 15 de las 32 de
+   Gold (esas y 6 más). «la mayoría» se toca y abre cuáles esperan 3 meses
+   (`TOQUES` de `app/coverage.js`, dibujado con `Term` de `glossary.jsx`, con
+   `tipo="toque"` para que GA no lo mezcle con el glosario): en la banda de
+   esperas de `/planes` en la computadora, en el cuadro de esperas del celular
+   («En Silver y Gold, la mayoría.») y en el simulador. Donde no puede ir un
+   toque, la lista va en oraciones: en el pie de la tarjeta de la ecografía de
+   `/planes` (se cierra al sacar el mouse del nombre), en la hoja del celular
+   (la fila de «Los once servicios» ya es un botón), en una segunda línea de la
+   cotización en texto y en la pregunta frecuente del home («ecografías, 2 meses
+   la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis)»;
+   su caja recorta y la lista no entra). La espera dice «2 meses de espera, la
+   mayoría» en la tarjeta, la lista y la píldora de la hoja. La «vesical» de
+   Gold queda como la dice el master, que también tiene una «de vejiga» a 60
+   días: no se completó por inferencia (ver lo que queda).
+2. **10A, la cirugía de Essential «de una lista de 26»** (sp-interno#191). La
+   nota dice «1 cirugía/familia/año, de una lista de 26» (en el simulador y el
+   cuadro del celular, «una al año por familia, de una lista de 26») y «de una
+   lista de 26» abre las 26 (`CIRUGIAS_26`), en el orden del cuadernillo, con la
+   palabra de la familia donde dice lo mismo (vesícula, amígdalas, hemorroides)
+   y el nombre del cuadernillo, con todos sus calificativos, donde traducir
+   prometería más (laparotomía exploradora, colporrafía, pterigión; «de un
+   lado», «sin la malla», «a cielo abierto»). La lista literal, con su fuente,
+   quedó en `essential.json` (`cirugias_lista_26`). La pregunta frecuente de las
+   esperas lo dice en la oración. La burbuja de esta lista es más ancha (`ancho:
+   420` en `TOQUES`): a 260 px medía unos 366 de alto y no entraba en la tarjeta
+   de esperas del simulador en la computadora.
+3. **185A, las condiciones de Essential en las tablas** (sp-interno#185). La
+   celda de Essential del home y de `/planes` dice, debajo de la forma corta,
+   «junto con ecocardiograma y ergometría» (tomografía) y «sin contraste ni
+   sedación» (resonancia). Es la misma `cola` de la lista de los once
+   (`notaCelda` y `enTabla` en `coverage.js`; `.cmp2-bajo` en `globals.css`); en
+   la computadora la fila entera pasa a 64 px para que las columnas sigan
+   alineadas (la tabla son columnas sueltas que solo alinea la altura). Se ve
+   también en las tarjetas del home en el celular. La resonancia decía solo
+   «sin contraste» en la tarjeta y la hoja de `/planes`, la lista y el tema:
+   ahora dice las dos, como la tarjeta del home.
+4. **190A, la fisioterapia de Essential «solo traumatológica»** (sp-interno#190).
+   La forma corta dice «5/familia/año, solo traumatológica» (lista y, debajo, la
+   celda) y las oraciones, «Solo la traumatológica: hasta 5 sesiones al año por
+   familia» (tarjetas del home y de `/planes`, y hoja). La tarjeta del home lee
+   ahora las tres líneas de `cov` (la unificación que esperaba «la 9»).
+   Corrección: #190 decía que lo decían «dos fuentes»; `lib/prestaciones.json`
+   se genera desde `essential-cobertura.json`, así que es una sola, la cláusula
+   1.11, y se releyó en el PDF. `essential.json` ahora también lo dice.
+5. **186A, el «—» de «Cuadro 2» de Essential** (sp-interno#186) dice
+   «Preguntale a tu asesor», como la urgencia de arriba (la regla de la R1A
+   ampliada a esa fila). Silver (Gs. 80 mil) y Gold (Gs. 100 mil) siguen con su
+   monto y el plegable no tiene ningún «—».
+6. **193, 1A: Silver sin «y topes más altos» en el simulador** (sp-interno#193).
+   La nota de la opción «Un equilibrio entre precio y cobertura» dice «Más días
+   de terapia intensiva y más sesiones de psicología.» y el porqué del
+   resultado, «El equilibrio con respaldo de verdad: más días de terapia
+   intensiva y más sesiones de psicología.». Las dos cosas son ciertas conteste
+   lo que conteste SP en #110. Lo controla la 1A del bloque «Lo que espera a SP
+   no se afirma», con los textos aprobados literales y `TOPES_ALTOS` de segunda
+   capa, en tres recorridos (390 y 1280 desde el enlace, y 390 eligiendo la
+   opción).
+7. **#60 (lo decide Claude), las esquinas y dos íconos.** Los 13 radios escritos
+   a mano pasaron a su token por función: la tarjeta «Conocé tu plan ideal y su
+   precio» del inicio y la del simulador, a `--r-lg` (el cambio más visible: en
+   Chrome la esquina pasa de 46,8 y 43,2 px a 36 px); la cita del blog y el
+   `Callout`, `0 var(--r-sm) var(--r-sm) 0` (cero píxeles de diferencia); el
+   respaldo de `.sq`, `--r-xs`; la hoja que sube, `--r-lg`, y su asa,
+   `--r-pill`; los chips «Lister» y «Atiende con» y los botones de las zonas y
+   de Lista/Mapa de la Guía, `--r-xs`. Quedan dos excepciones declaradas, cada
+   una con su porqué, en `EXCEPCIONES_RADIO` de `qa/esquinas.mjs`: los dos 14px
+   de `/historia/` (no se toca) y la casilla de 6px de los adicionales del
+   simulador (con `--r-xs` se leería redonda; hoy no se ve). Lo controla
+   `qa/esquinas.mjs`, nuevo, que corre en el CI y en `qa-integral` (sección 6c),
+   y en el navegador, la prueba de qa-lanzamiento «Toda esquina del sistema
+   táctil sale de la escala». «Descargar» y «Compartir» del resultado del
+   simulador perdieron sus íconos de librería (botones que ya dicen lo que
+   hacen). Se quedan, como señales de uso: «¿Por qué te preguntamos esto?» (el
+   círculo de pregunta avisa que se abre), «↺ Empezar de nuevo» y el pin de las
+   ciudades del buscador del simulador.
+8. **#61, puntos 1 y 2 (lo decide Claude).** La Guía Médica y cada ficha dicen
+   «Datos al» con `meta.datos_al` de `lib/guia-medica.json`, el día en que
+   `build-guia-medica.py` leyó la planilla del Drive (hoy, 30/09/2026, la misma
+   fecha que ya decía el home). Antes decían la fecha del PDF de una red (17/09
+   la Guía; 25/09, 10/08 o 17/09 las fichas). La planilla publicada es la
+   versión del 29/09 del archivo `20260923_…`: el nombre del archivo no es su
+   versión (se edita en el lugar). No se tocó el JSON. Y la guía vieja
+   (`guia/`) ya no muestra Bronze: su escalera es Silver ⊂ Gold, con Vital
+   aparte; Essential no entra porque es otra red. Bronze sigue en la Guía
+   Médica real a propósito (hay clientes que lo tienen). La prueba del upsell de
+   `qa-integral` (1c) buscaba un botón que no existe y se salteaba en silencio:
+   ahora busca «★ Con Plan» y, si no lo encuentra, falla.
+
+**Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
+un caso que falla y uno que pasa:
+- `qa-lanzamiento`, sección nueva «9A y 10A»: los textos aprobados literales
+  (no se leen de `coverage.js`), la lista de las 26 ítem por ítem contra cinco
+  listas malas (sin un ítem, con uno de más, la catarata sin su técnica, dos
+  cambiados de lugar, sin el título), y en la página el texto del lector
+  cambiado, la burbuja corrida y tapada y la nota borrada. Cada toque se lee
+  dos veces (lo que oye el lector y la burbuja), y la burbuja tiene que verse
+  entera y sin nada encima.
+- `qa-lanzamiento`, «Las esperas llevan su condición», ampliada a la ecografía
+  de Silver y Gold (tabla, lista y lector).
+- `qa-lanzamiento`, sección nueva «Las condiciones de Essential, a la vista en
+  las tablas (185A y 190A)», y las listas cerradas (`TARJETA_APROBADA`, la
+  lista de los once, la G1A y la R1A) con las líneas nuevas.
+- `qa-lanzamiento`, la 1A en el bloque de la 3A y la 8A.
+- `qa-lanzamiento`, «La fecha de la Guía Médica es la de la planilla» y «Toda
+  esquina del sistema táctil sale de la escala».
+- `qa/esquinas.mjs` (20 casos de autoprueba; en main da 14 radios a mano, en la
+  rama 0) y, en `qa-integral`, la guía vieja sin Bronze y el upsell reparado.
+- Sobre la build de main (35165a7), las ocho secciones nuevas o cambiadas de
+  `qa-lanzamiento` dan ✗; sobre la rama, ✓.
+
+**Lo que queda** (no entró, con su porqué):
+- #61 punto 3, los nombres de especialidades en Tipo Oración: lo elige Arturo
+  (se normaliza al generar o se corrige en la planilla). El PR lleva «Refs
+  Nelargon/sp-interno#61 (puntos 1 y 2)», no «Closes».
+- De la 9A, sin decisión: si la lista de Gold suma la ecocardiografía fetal, el
+  perfil biofísico y el monitoreo fetal (el master los pone en el grupo de las
+  perinatales y esperan 90 días; con ellos, 17 de 34 esperan 2 meses, la mitad);
+  la «vesical» contra «de vejiga» del master de Gold (pregunta a SP). Y de
+  Essential, que el sitio dice «3 meses» para todas sus ecografías y las del
+  embarazo esperan 6 (cuadernillo 3.1, 180 días): es otro punto de revisión.
+- De la 10A, sin decisión: decir que por videolaparoscopía la diferencia la
+  paga el asegurado (el párrafo que sigue a la lista en el cuadernillo; está
+  anotado en `cirugias_lista_26`), y sumar «una al año por familia, de una
+  lista de 26» a la FAQ «¿Cuál es la diferencia…?» y al porqué de Essential del
+  simulador (`app/quote.js`). Cuatro nombres de la lista son traducción de
+  Claude y conviene que los mire alguien que sepa: «ovario y trompa»,
+  «piedra en el riñón», «extracción extracapsular» y «adenoma de próstata».
+- De la 185A, sin decisión: la psicología de Essential («en el mismo cupo que
+  otras especialidades») no va todavía debajo de la celda; la línea
+  «Tomografía y resonancia» de la tarjeta de Essential del celular no dice
+  «sin contraste ni sedación»; y las notas de consultas del home («en Lister · 3
+  por mes en la red») están escritas y nunca se ven (el Comparador del home va
+  sin `notas`).
+- De la 1A: las notas de las opciones del simulador se ven en Nunito Sans y son
+  oraciones (van en Inter); es anterior a este cambio y pide el QA responsive
+  completo: punto de revisión aparte.
+- `scripts/build-guia-medica.py`: su informe dice «contra la publicación
+  anterior: <nombre del archivo>», y así el Guardián leyó «planilla del 23/09».
+  No se tocó el script de control de la publicación; conviene que diga también
+  la fecha de lectura.
+- La guía vieja (`guia/`) no se pudo ver con estilos en este entorno (el CDN de
+  Tailwind no carga); lo mide la salud nocturna, que tiene internet.
 
 ---
 
@@ -91,6 +254,11 @@ nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
    topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
    Lo decide Arturo en sp-interno#193 (abierto el 20/10): en 10 de las 20
    especialidades con tope en Silver, Essential puede dar más consultas al año.
+   *(23/10/2026: lo decidió Arturo, 1A de sp-interno#193: la nota dice «Más días
+   de terapia intensiva y más sesiones de psicología.» y el porqué «El
+   equilibrio con respaldo de verdad: más días de terapia intensiva y más
+   sesiones de psicología.»; lo controla la 1A de qa-lanzamiento. Ver «✅
+   DECIDIDO EL 23/10/2026».)*
    La prueba mira lo de Gold con sus textos aprobados, literales y como se ven:
    su línea de la tabla (`GOLD_PARA`) y, en el simulador, la opción (dice su
    rótulo y `OPCION_AMPLIA_NOTA`, y nada más) y el porqué del resultado (un
@@ -266,7 +434,9 @@ para fisioterapia (#183);
 «5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
 fusionar sin respuesta *(20/10/2026: decidida, 3A, sp-interno#184: sale «por
 persona»; ver «✅ DECIDIDO EL 20/10/2026»)*; (4) la condición de la tomografía de Essential en las
-tablas (#185); (5) el «—» de «Cuadro 2» de Essential (#186); (6) «y/o» y
+tablas (#185) *(23/10/2026: decidida, 185A, con la resonancia; ver «✅ DECIDIDO
+EL 23/10/2026»)*; (5) el «—» de «Cuadro 2» de Essential (#186) *(23/10/2026:
+decidida, 186A)*; (6) «y/o» y
 «post-quirúrgica» en los rótulos del plegable (#187); (7) si la proporción de
 tráfico que entra por celular (trece lugares) y la paciencia del personaje del
 `BRANDSCRIPT.md` también pasan al puntero (#188; las cifras, en
@@ -277,7 +447,10 @@ grilla es falso para la fisioterapia (#50) *(20/10/2026: decidida, 8A,
 sp-interno#189: Gold dice «La cobertura más amplia»; ver «✅ DECIDIDO EL
 20/10/2026»)*; y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
-planilla, y hoy solo el plegable; `essential.json` no lo trae; #190).
+planilla, y hoy solo el plegable; `essential.json` no lo trae; #190)
+*(23/10/2026: decidida, 190A. La «planilla» no es una segunda fuente:
+`lib/prestaciones.json` se genera desde `essential-cobertura.json`; la fuente es
+la cláusula 1.11, releída en el PDF. Ver «✅ DECIDIDO EL 23/10/2026».)*
 
 **Vuelta 3 del comité (17/10, 36 hallazgos, BITACORA cap. 151).** El Guardián
 separó lo que es de Claude (se arregló en la rama), lo que es de Arturo o de SP
@@ -508,7 +681,9 @@ la prueba de tipos tiene que comparar los tres planes, no solo Silver y Gold);
 **4**, que se amplía: la resonancia de Essential «sin contraste» tampoco está
 en la celda ni en la línea de la tarjeta, así que conviene contestar la
 tomografía y la resonancia juntas (E7: la condición de Essential que la celda
-no dice es una clase, no un caso); **3**,
+no dice es una clase, no un caso) *(23/10/2026: la 9 y la 4 decididas, 190A y
+185A con la resonancia; la prueba de tipos de la G1A compara ahora los tres
+planes; ver «✅ DECIDIDO EL 23/10/2026»)*; **3**,
 las consultas de Silver «por persona» *(20/10/2026: decidida, 3A,
 sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
 
@@ -517,10 +692,13 @@ sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
   Silver espera 60 días en 23 de 33 y 90 en 10; Gold, 60 en 17 de 32 y 90 en 15,
   obstétricas incluidas (conteo sobre la grilla del 24/07, no verificado contra
   el contrato). `app/coverage.js:173` (`{ que: 'Ecografías', … }`). Lo decide
-  Arturo, con su punto de revisión.
+  Arturo, con su punto de revisión. *(23/10/2026: decidido, 9A de sp-interno#191;
+  ver «✅ DECIDIDO EL 23/10/2026».)*
 - «De una lista cerrada de 26» de las cirugías de Essential: el cuadernillo lo
   dice (`essential.json`) y el sitio no, ni en la tabla ni en el simulador; es
   una afirmación nueva y no se escribió (`app/coverage.js:185`, comentario).
+  *(23/10/2026: decidido, 10A de sp-interno#191: «de una lista de 26» y la lista
+  a un toque; ver «✅ DECIDIDO EL 23/10/2026».)*
 - Datos escritos a mano en más de un lugar (resto de D8): los días de terapia
   intensiva (`app/coverage.js:101`, `app/page.jsx:413`,
   `app/planes/Planes.jsx:149`, `app/quote.js:180-184`); las celdas de consultas
@@ -533,6 +711,7 @@ sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
   home (`app/page.jsx:401`, «5 sesiones al año para toda la familia.», contra
   «Hasta 5 sesiones al año por familia» de `/planes`), que se unifica cuando
   Arturo conteste la 9 (moverla hoy cambiaba el texto de una de las dos).
+  *(23/10/2026: unificada con la 190A: las tres líneas del home salen de `cov`.)*
 - La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
   h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
 - El revisor de diseño de `sp-interno` (`.claude/skills/sp-disenador-ux/scripts/revisar.mjs`)
@@ -1734,20 +1913,31 @@ una firme y se regenera.
   20 que se medían en el navegador pasan a Inter; `sp-interno#59`.)*
 - Nombres de especialidades: salen de la planilla y algunos no son Tipo Oración.
 - Radios escritos a mano en algunos componentes, y la regex del QA no los ve
-  todos.
-- Botones que dicen lo que hacen y además llevan ícono.
+  todos. *(Resuelto el 23/10: 13 radios pasaron a su token y quedan dos
+  excepciones declaradas, con su porqué, en `EXCEPCIONES_RADIO` de
+  `qa/esquinas.mjs`, que corre en el CI y en `qa-integral`; `sp-interno#60`.)*
+- Botones que dicen lo que hacen y además llevan ícono. *(Resuelto el 23/10:
+  «Descargar» y «Compartir» del resultado del simulador, los dos que quedaban
+  con ícono de librería; `sp-interno#60`.)*
 - **Blog (territorio de `sp-contenido`, se coordina, no se edita):** define
   alta complejidad y copago distinto que el glosario, y pone «carencia» primero.
 - Silver y Gold: «máximo 3 al mes por especialidad, después copago» no está
   publicado en ningún lado.
 - Silver «al 100%» tiene excepciones con copago (URO-TAC, colangiorresonancia).
-- La fecha de la Guía Médica dice siempre 17/09.
+- La fecha de la Guía Médica dice siempre 17/09. *(Resuelto el 23/10: la Guía y
+  cada ficha dicen «Datos al» con `meta.datos_al`, el día en que se leyó la
+  planilla del Drive y se generó el JSON, la misma fecha del home.
+  `meta.guias.*.fecha` es la fecha del PDF de cada red y ya no se muestra;
+  `sp-interno#61`.)*
 - `track('sim_zona_sin_lista')` manda el texto libre que escribió la persona
   (no es nombre ni teléfono, pero podría serlo). *(Resuelto el 26/09: el texto
   viaja solo si parece un lugar —sin números, «@» ni más de cuatro palabras—;
   si no, va vacío con `descartado: true`. Se conserva el dato de qué ciudades
   faltan; `sp-interno#59`.)*
-- La guía vieja del prototipo (`guia/`) sigue con Bronze.
+- La guía vieja del prototipo (`guia/`) sigue con Bronze. *(Resuelto el 23/10:
+  la escalera del molde es Silver ⊂ Gold y Vital va aparte; Essential no entra
+  porque es otra red. Bronze sigue en `/guia-medica` a propósito, para los
+  clientes que lo tienen; `sp-interno#61`.)*
 - «SP SENIOR» en documentos de SP vs «Plan Vital» en el sitio (pendiente de
   antes).
 
@@ -2083,7 +2273,9 @@ otra), el rayo de la barra de abajo del celular, las frases de confianza de
 `/simulador/` y su candado, el ícono de «Retomar mi simulación» y el de «Visar
 una orden» en el encabezado de la guía. **Se había estimado en 22:** la lista
 línea por línea no quedó guardada y, rehecha con la misma regla, da 18
-(BITACORA cap. 97).
+(BITACORA cap. 97). *(23/10/2026: se suman «Descargar» y «Compartir» del
+resultado del simulador, que sobrevivieron a esta pasada; son 20.
+`sp-interno#60`.)*
 
 **Pendientes:**
 - Los momentos grandes («¡Listo!», estados vacíos) los podría redibujar un
@@ -2507,7 +2699,12 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
 
   Las portadas del blog también reciben el token (`Cover` acepta
   `radius="var(--r-lg)"`). Quedan dos 14px en `/historia/`, que no se toca:
-  excepción local. A la vista son 2px, casi invisibles (capturas ampliadas en
+  excepción local. *(23/10/2026: el conteo de `qa-integral` perdonaba toda
+  «excepción local» usada menos de tres veces y no leía «0 12px 12px 0» ni
+  `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
+  dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
+  casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
+  155.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que
