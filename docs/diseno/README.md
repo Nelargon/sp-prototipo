@@ -2440,3 +2440,27 @@ La revisión distingue tres grados de detalle sin cambiar la idea de la imagen.
 
 [Encargo, procedencia y verificación](fuentes/2026-10-23-dengue-rostros/README.md).
 Las lecciones 92 y 93 están reservadas por el PR #288, aún abierto.
+
+
+**Devolución posterior sobre la lección 94.** Arturo recuperó las originales
+de papel y facetada, incluido el contraste de la boca. La lámina anterior
+se conserva como exploración; ya no representa la elección actual.
+
+### 95 · La versión actual puede ser una anterior
+
+![Criaderos: trazo con el rostro revisado y las versiones originales recuperadas de papel y facetada](img/2026-10-23-laboratorio-dengue-rostros-v3.webp)
+
+**Qué muestra.** La devolución siguiente: trazo con cara completa y una nueva
+revisión de la relación entre ojo, nariz y boca; papel y facetada vuelven a
+sus rostros originales sin ojos y con boca contrastada. El historial conserva
+la prueba de bocas casi invisibles y el primer intento de cara completa.
+
+**Qué se decidió y por qué.** Arturo: «Al final, creo que me gustó cómo estaba
+antes». Prefiere el contraste inicial y solo mantiene los ojos en trazo.
+También señala que los rasgos de ese rostro no estaban bien ubicados; se
+revisan como un conjunto, no como un ojo añadido a una superficie vacía.
+
+**La lección.** Más sutil no significa mejor por definición. Una comparación
+puede servir para recuperar el original. El catálogo necesita elegir la
+versión actual por técnica y conservar la historia, en lugar de mostrar
+siempre la última generación. Sigue siendo una exploración del laboratorio.

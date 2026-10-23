@@ -6,18 +6,20 @@ y explorar cinco o seis artículos más. La subpágina vive en
 
 ## Inventario y criterio
 
-Nueve notas, 27 propuestas actuales y nueve versiones anteriores. Los archivos
-de trabajo publicados están en `public/blog/laboratorio/assets/`: 36 WebP
-completos y 30 miniaturas (tres miniaturas v1 de dengue quedan como archivo). Cada propuesta tiene un identificador estable que
+Nueve notas, 27 propuestas actuales y diez alternativas en el historial. Los archivos
+de trabajo publicados están en `public/blog/laboratorio/assets/`: 37 WebP
+completos y 31 miniaturas (cuatro miniaturas de revisiones no actuales quedan
+como archivo). Cada propuesta tiene un identificador estable que
 incluye su revisión; una v2 no hereda automáticamente una favorita v1. Las favoritas anteriores
 se conservan con su versión y se pueden abrir, exportar o quitar.
 
 La libreta conserva sus tres variantes. Escuela y caminar muestran la v2 y
 permiten recuperar la v1. Arturo valora los tres estilos de libreta y escuela;
 en caminar prefiere A editorial y B narrativa. La fotografía D sigue como
-antecedente, no como elección aprobada. Dengue tiene una segunda vuelta de rostros: boca sutil en los tres, ojos en
-trazo, omitidos en papel y sugeridos en facetada. Las otras cinco notas de
-la tanda siguen por comparar.
+antecedente, no como elección aprobada. Dengue recupera las originales v1 de papel y facetada, sin ojos y con boca
+contrastada. Trazo muestra v3 con cara completa y una corrección de anatomía
+facial. Las pruebas intermedias siguen en el historial. Las otras cinco notas
+de la tanda siguen por comparar.
 
 | Nota nueva | Idea de portada | Límite de la representación |
 |---|---|---|
@@ -53,7 +55,9 @@ GitHub. La descarga conserva la imagen entera, aunque se esté viendo un recorte
 Para sumar una nota: incorporar las imágenes completas y miniaturas, agregar
 su brief a `conceptos.json` y ejecutar `python3 scripts/build-laboratorio.py`.
 El script toma título, copete, categoría y slug del contenido real del blog.
-Para sumar una revisión se actualiza `revision` en su brief. Se conserva la revisión anterior para poder compararla.
+Para sumar una revisión se actualiza `revision` en su brief, o `revisions`
+si varía por estilo. `currentRevisions` permite elegir una anterior como
+actual por estilo. Se conserva la revisión anterior para poder compararla.
 
 Comprobaciones desde la raíz del repo:
 
@@ -66,7 +70,7 @@ PW_PATH=/ruta/a/playwright/index.mjs PW_CHROME=/ruta/a/chromium \
 
 El segundo comando no necesita navegador y corre en CI. El tercero necesita
 el export servido bajo el basePath. Comprueba nueve artículos, cuatro anchos,
-81 vistas de recorte, 36 versiones y el ciclo de selección y recuperación,
+81 vistas de recorte, 37 versiones y el ciclo de selección y recuperación,
 incluidas favoritas históricas sin aprobación automática de la revisión.
 Las capturas están en `docs/diseno/img/2026-10-23-laboratorio-*.webp`.
 La página queda fuera de la edición de lanzamiento porque se poda `/blog/`.
@@ -89,7 +93,7 @@ con exportar/importar: no se sincronizan solas.
 
 Verificado con Chromium sin conexión, entregando el HTML exacto mediante una
 ruta local de prueba (el entorno bloquea las direcciones `file://`): nueve
-artículos, 27 propuestas, 36 versiones, cero solicitudes externas ni errores,
+artículos, 27 propuestas, 37 versiones, cero solicitudes externas ni errores,
 persistencia y exportación correctas, sin desborde a 390 px. El script falla
 si la interfaz cambió y una adaptación ya no coincide, en vez de producir una
 copia que siga dependiendo del servidor. El HTML generado se entrega como

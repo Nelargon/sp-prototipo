@@ -34,6 +34,22 @@
         1774,
         887
       ]
+    },
+    {
+      "id": "dengue-trazo-v3",
+      "source": "image_gen",
+      "generatedFile": "exec-7dd52d5a-acf2-480a-90e1-fa2218b9fc4a.png",
+      "reference": "dengue-trazo-v1.webp",
+      "sha256": "897fdf382b7dd7f0708e7210895851719b034506235e4f900ff54655d7a4c9c7",
+      "dimensions": [
+        1774,
+        887
+      ]
     }
-  ]
+  ],
+  "current": {
+    "trazo": "dengue-trazo-v3",
+    "papel": "dengue-papel-v1",
+    "facetada": "dengue-facetada-v1"
+  }
 }

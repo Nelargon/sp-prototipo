@@ -5997,3 +5997,17 @@ estaban asociadas a ellos.
 
 Lámina y criterio: `docs/diseno/README.md`, lección 94. La numeración 161 de la
 bitácora y 92–93 de las láminas está reservada por el PR #288, aún abierto.
+
+
+**La devolución siguiente recuperó el original.** Antes de publicar esta
+vuelta en Pages, Arturo reconsideró: *«Al final, creo que me gustó cómo estaba
+antes»*. Conserva la cara completa solo en trazo, pero ve mal la posición
+relativa de ojo, nariz y boca. Para papel y facetada vuelve a preferir los
+rostros sin ojos y el contraste original de la boca. Se recuperan sus v1 como
+actuales; v2 queda en el historial. Trazo recibe una nueva corrección del
+conjunto de rasgos, con la boca visible del original como referencia.
+
+La lección se afina: reducir contraste no es automáticamente mejorar. La
+preferencia visual se confirma mirando la comparación. Por eso el catálogo
+separa «última generada» de «actual»: permite recuperar una versión anterior
+por técnica sin perder las demás exploraciones ni las favoritas.

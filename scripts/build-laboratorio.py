@@ -29,17 +29,22 @@ for brief in [*json.loads(BRIEFS.read_text()), *previous]:
         if not match: raise ValueError(f'{brief["file"]}: falta {field}')
         value = match[1]
         meta[field] = json.loads(value) if value.startswith('"') else value
-    revision = brief.get('revision',1)
     variants=[]
     for style in (['editorial','narrativa','foto'] if key=='caminar' else ['trazo','papel','facetada']):
+        revision = brief.get('revisions',{}).get(style,brief.get('revision',1))
+        current_revision = brief.get('currentRevisions',{}).get(style,revision)
+        if not 1 <= current_revision <= revision:
+            raise ValueError(f'{key}/{style}: revisión actual fuera del historial')
         versions=[]
         for v in range(1,revision+1):
             src=f'assets/{key}-{style}-v{v}.webp'
             if not (LAB/src).is_file(): raise FileNotFoundError(src)
-            versions.append({'label':('Revisión actual' if v==revision and revision>1 else f'Primera versión'),'src':src,'revision':v})
-        mini=f'assets/{key}-{style}-v{revision}-mini.webp'
+            label = 'Primera versión' if v==1 else f'Versión {v}'
+            if revision>1 and v==current_revision: label += ' · Actual'
+            versions.append({'label':label,'src':src,'revision':v})
+        mini=f'assets/{key}-{style}-v{current_revision}-mini.webp'
         if not (LAB/mini).is_file(): raise FileNotFoundError(mini)
-        variants.append({'id':f'{key}-{style}-v{revision}','style':style,'src':versions[-1]['src'],'thumbnail':mini,'versions':versions,'description':brief.get('styleNotes',{}).get(style,styles[style]['description']),'alt':brief['concept']+' Técnica: '+styles[style]['name']+'.'})
+        variants.append({'id':f'{key}-{style}-v{current_revision}','style':style,'src':versions[current_revision-1]['src'],'thumbnail':mini,'versions':versions,'description':brief.get('styleNotes',{}).get(style,styles[style]['description']),'alt':brief['concept']+' Técnica: '+styles[style]['name']+'.'})
     topics.append({'id':key,'short':brief['short'],'title':meta['title'],'slug':meta['slug'],'category':meta['categoria'],'description':meta['description'],'date':meta['date'],'concept':brief['concept'],'limit':brief['limit'],'review':brief.get('review','Nueva exploración: por comparar.'),'isNew':key not in previous_keys,'variants':variants})
 catalog={'version':1,'updated':'2026-10-23','styles':styles,'articles':topics}
 (LAB/'catalogo.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n')

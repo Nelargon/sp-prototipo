@@ -98,14 +98,14 @@
       "date": "2026-10-03",
       "concept": "Vaciar el agua que queda en el plato de una maceta.",
       "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
-      "review": "Los tres estilos te gustan. Segunda versión: bocas más sutiles y distinto detalle en los ojos. Podés comparar con la primera al ampliar.",
+      "review": "Volvemos a las originales de papel y facetada. En trazo conservamos la cara completa y revisamos la posición del ojo, la nariz y la boca. Las otras pruebas quedan al ampliar.",
       "isNew": true,
       "variants": [
         {
-          "id": "dengue-trazo-v2",
+          "id": "dengue-trazo-v3",
           "style": "trazo",
-          "src": "assets/dengue-trazo-v2.webp",
-          "thumbnail": "assets/dengue-trazo-v2-mini.webp",
+          "src": "assets/dengue-trazo-v3.webp",
+          "thumbnail": "assets/dengue-trazo-v3-mini.webp",
           "versions": [
             {
               "label": "Primera versión",
@@ -113,52 +113,57 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2",
               "src": "assets/dengue-trazo-v2.webp",
               "revision": 2
+            },
+            {
+              "label": "Versión 3 · Actual",
+              "src": "assets/dengue-trazo-v3.webp",
+              "revision": 3
             }
           ],
-          "description": "Rostro completo, mirada hacia la tarea y boca discreta.",
+          "description": "Cara completa y rasgos alineados con el ángulo de la cabeza.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Trazo explicativo."
         },
         {
-          "id": "dengue-papel-v2",
+          "id": "dengue-papel-v1",
           "style": "papel",
-          "src": "assets/dengue-papel-v2.webp",
-          "thumbnail": "assets/dengue-papel-v2-mini.webp",
+          "src": "assets/dengue-papel-v1.webp",
+          "thumbnail": "assets/dengue-papel-v1-mini.webp",
           "versions": [
             {
-              "label": "Primera versión",
+              "label": "Primera versión · Actual",
               "src": "assets/dengue-papel-v1.webp",
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2",
               "src": "assets/dengue-papel-v2.webp",
               "revision": 2
             }
           ],
-          "description": "Sin ojos dibujados y con la boca apenas insinuada.",
+          "description": "Original: sin ojos y con el contraste de la boca.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Siluetas y papel."
         },
         {
-          "id": "dengue-facetada-v2",
+          "id": "dengue-facetada-v1",
           "style": "facetada",
-          "src": "assets/dengue-facetada-v2.webp",
-          "thumbnail": "assets/dengue-facetada-v2-mini.webp",
+          "src": "assets/dengue-facetada-v1.webp",
+          "thumbnail": "assets/dengue-facetada-v1-mini.webp",
           "versions": [
             {
-              "label": "Primera versión",
+              "label": "Primera versión · Actual",
               "src": "assets/dengue-facetada-v1.webp",
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2",
               "src": "assets/dengue-facetada-v2.webp",
               "revision": 2
             }
           ],
-          "description": "Ojos sugeridos y boca suave entre los planos de color.",
+          "description": "Original: planos de color, sin ojos y con el gesto inicial.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Ilustración facetada."
         }
       ]
@@ -488,7 +493,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-trazo-v2.webp",
               "revision": 2
             }
@@ -508,7 +513,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-papel-v2.webp",
               "revision": 2
             }
@@ -528,7 +533,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-facetada-v2.webp",
               "revision": 2
             }
@@ -563,7 +568,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-editorial-v2.webp",
               "revision": 2
             }
@@ -583,7 +588,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-narrativa-v2.webp",
               "revision": 2
             }
@@ -603,7 +608,7 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-foto-v2.webp",
               "revision": 2
             }

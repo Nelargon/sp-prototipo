@@ -13,7 +13,7 @@ function allVariants() {
 function allVersions() {
   return allVariants().flatMap(v => v.versions.map((version,index) => ({
     ...v, id:`${v.article.id}-${v.style}-v${version.revision}`, src:version.src,
-    thumbnail:index===v.versions.length-1?v.thumbnail:version.src,
+    thumbnail:version.src===v.src?v.thumbnail:version.src,
     revision:version.revision, versionIndex:index
   })));
 }
