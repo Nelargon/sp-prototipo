@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-23",
+  "method": "Edición artística con image_gen; ImageMagick solo convierte a WebP y reduce miniaturas.",
+  "images": [
+    {
+      "id": "dengue-papel-v2",
+      "source": "image_gen",
+      "generatedFile": "exec-6d865d3a-7e65-4879-b231-a75ca81d4c03.png",
+      "reference": "dengue-papel-v1.webp",
+      "sha256": "46a58d1d2a3fb43f9ee10c5f6f7af76d29b6f477541e09665a8d8c6c24acac76",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "dengue-trazo-v2",
+      "source": "image_gen",
+      "generatedFile": "exec-8c5bf34a-b6f2-4feb-baeb-60a6e5058999.png",
+      "reference": "dengue-trazo-v1.webp",
+      "sha256": "70fa65cada58256117249260c8ab24feeb04f4ecf60f421633436ef803ff3ee5",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "dengue-facetada-v2",
+      "source": "image_gen",
+      "generatedFile": "exec-6c856e1b-6f8f-4707-8fea-1c996aae87ee.png",
+      "reference": "dengue-facetada-v1.webp",
+      "sha256": "86c455847fd3a55b4c90c1eccb9d10e885cc323d558056fbbd679dec48529154",
+      "dimensions": [
+        1774,
+        887
+      ]
+    }
+  ]
+}

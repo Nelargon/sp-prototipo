@@ -2182,8 +2182,8 @@ seis artículos: *«Me cuesta decidir para cada opción cuál me gusta más […
 con este laboratorio de imágenes y después podemos ir decidiendo»*.
 
 **Dónde:** https://nelargon.github.io/sp-prototipo/blog/laboratorio/
-Código y 33 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
-27 propuestas actuales y seis versiones anteriores de escuela y caminar.
+Código y 36 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
+27 propuestas actuales y nueve versiones anteriores de escuela, caminar y dengue.
 Son imágenes generadas para esta exploración. Las referencias ajenas del
 Drive no se copian al sitio.
 
@@ -2202,6 +2202,15 @@ explicativo, siluetas y papel e ilustración facetada. Títulos, copetes y links
 vienen de las notas reales. Conceptos, límites de representación, procedencia
 y capturas en `docs/diseno/fuentes/2026-10-23-laboratorio-imagenes/`.
 
+**Criaderos, segunda vuelta (23/10):** Arturo valora las tres técnicas y pide
+bocas mucho más sutiles. Trazo muestra ojos y rostro completo; papel conserva
+los ojos omitidos y una boca casi imperceptible; facetada sugiere ojos y boca
+con pocos rasgos. «Síntesis del rostro» / «abstracción selectiva» describe el
+recurso, no una escuela única. La técnica (rayado, capas, planos) y el detalle
+facial son decisiones distintas. Esta regla se aplica a dengue, no a todas
+las notas. La v1 sigue disponible al ampliar; las favoritas de versiones
+anteriores se conservan y se identifican, sin trasladarlas a la revisión.
+
 **Cómo se decide:** se pueden guardar varias favoritas y una nota por artículo,
 ampliar, ver recortes 2:1/16:9/1:1 y descargar la imagen completa. Favoritas y
 notas viven en `localStorage` del navegador: no son compartidas ni se guardan
@@ -2209,10 +2218,10 @@ en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selecci
 al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
 
 **Respaldo sin conexión:** `python3 scripts/export-laboratorio.py --output
-/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 17 MB, con las
+/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 18 MB, con las
 imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
 porque los primeros dos intentos de Pages agotaron el tiempo de publicación,
-con las compilaciones y pruebas en verde. Se verificó sin conexión: 33
+con las compilaciones y pruebas en verde. Se verificó sin conexión: 36
 versiones y cero solicitudes externas. Las favoritas de la copia y de la web
 se pasan con exportar/importar. Los links a las notas sí necesitan internet.
 
@@ -2223,7 +2232,7 @@ prototipo: la poda de `/blog/` la excluye de la edición de lanzamiento y del
 build para el dominio. No se empuja a `produccion`.
 
 **Pruebas:** `qa/laboratorio.mjs --datos` entra al CI; con la URL del build
-prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 33 versiones,
+prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 36 versiones,
 descargas, favoritas múltiples, notas, copia, exportación/importación,
 historial y almacenamiento bloqueado. `qa-integral` abre la nueva subpágina.
 Revisor UX sin hallazgos. Láminas y lecciones en `docs/diseno/README.md`.

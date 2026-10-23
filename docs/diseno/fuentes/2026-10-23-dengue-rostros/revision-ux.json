@@ -1,0 +1,10 @@
+[
+  {
+    "entrada": "http://127.0.0.1:8768/sp-prototipo/blog/laboratorio/#dengue",
+    "hallazgos": []
+  },
+  {
+    "entrada": "http://127.0.0.1:8769/rostros.html",
+    "hallazgos": []
+  }
+]

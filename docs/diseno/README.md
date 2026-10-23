@@ -2416,3 +2416,27 @@ nombre. La interfaz también tiene que decir dónde guarda las decisiones:
 un favorito en el navegador no es una decisión sincronizada con GitHub.
 
 [Conceptos, procedencia y verificación](fuentes/2026-10-23-laboratorio-imagenes/README.md).
+
+
+### 94 · La técnica y el detalle del rostro se eligen por separado
+
+![Revisar los criaderos: trazo con rostro completo, papel sin ojos y facetada con rasgos sugeridos; bocas más sutiles en las tres](img/2026-10-23-laboratorio-dengue-rostros-v2.webp)
+
+**Qué muestra.** La segunda versión de dengue conserva la escena y diferencia
+el detalle de la cara: ojos presentes en trazo, omitidos en papel, sugeridos
+en facetada. Las tres reducen la boca. Al ampliar se puede volver a la primera
+versión. [Ver en el laboratorio](https://nelargon.github.io/sp-prototipo/blog/laboratorio/#dengue).
+
+**Qué se decidió y por qué.** Arturo valora los tres estilos; pide reducir
+la boca en todos y recuperar los ojos en trazo. Le gusta la simplificación,
+pero no tiene que repetirse igual en las tres técnicas. Es un ajuste de esta
+nota, no la elección definitiva de un estilo para el blog.
+
+**La lección.** La síntesis del rostro es un recurso de abstracción selectiva:
+la postura, la inclinación de la cabeza y unos pocos rasgos sostienen la
+expresión. No define por sí sola una escuela ni una técnica. Si se eliminan
+los ojos y se conserva una boca contrastada, esa boca puede dominar el rostro.
+La revisión distingue tres grados de detalle sin cambiar la idea de la imagen.
+
+[Encargo, procedencia y verificación](fuentes/2026-10-23-dengue-rostros/README.md).
+Las lecciones 92 y 93 están reservadas por el PR #288, aún abierto.

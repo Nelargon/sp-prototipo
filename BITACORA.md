@@ -5970,3 +5970,30 @@ solicitudes externas y selección recuperada después de recargar. El entorno
 no permite abrir `file://`; se entregó el contenido exacto por una ruta local
 de prueba, sin simular que se había comprobado ese protocolo. El respaldo
 conserva las selecciones mediante exportación/importación entre copias.
+
+
+## Capítulo 162 — Una cara simple también necesita jerarquía (23/10/2026)
+
+**Qué intentamos.** Mantener las tres técnicas de «Revisar los criaderos»
+con una cara muy sintetizada. Al omitir los ojos en las tres, la boca quedó
+como el único rasgo de contraste y se llevó más atención de la buscada.
+Arturo: *«En los tres se ve demasiado la boca. Que no se vea mucho, que sea
+un poco más sutil»*. Para trazo pidió poder ver la cara y los ojos.
+
+**Qué pasó.** Se prepara una segunda versión: rostro completo en trazo,
+sin ojos y con boca apenas insinuada en papel, y rasgos mínimos en facetada.
+El laboratorio conserva las primeras versiones. Al incorporar esta revisión
+se detectó que la limpieza de favoritas solo reconocía los identificadores
+actuales: hubiera descartado las selecciones v1 al cargar v2. Ahora reconoce
+todas las revisiones y permite guardarlas o quitarlas desde la ampliación.
+Una preferencia por v1 nunca se convierte automáticamente en preferencia por v2.
+
+**Qué aprendimos.** La técnica y el detalle de la cara son decisiones
+independientes. Quitar rasgos cambia la importancia de los que quedan; una
+boca pequeña puede dominar un rostro sin ojos. «Síntesis del rostro» o
+«abstracción selectiva» nombra el recurso sin inventar una escuela artística.
+Conservar los archivos anteriores también exige conservar las decisiones que
+estaban asociadas a ellos.
+
+Lámina y criterio: `docs/diseno/README.md`, lección 94. La numeración 161 de la
+bitácora y 92–93 de las láminas está reservada por el PR #288, aún abierto.

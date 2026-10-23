@@ -19,6 +19,7 @@ previous = [
     {'key':'caminar','file':'2026-10-19-caminar-al-almacen-cuenta-como-actividad-fisica.md','short':'Caminar al almacén','concept':'Una caminata cotidiana con una bolsa de compras.','limit':'Son imágenes generadas; la versión fotográfica no documenta una persona o comercio real.','review':'A y B son tus preferidas. La fotográfica queda como antecedente para revisar.','revision':2},
 ]
 topics = []
+previous_keys = {brief['key'] for brief in previous}
 for brief in [*json.loads(BRIEFS.read_text()), *previous]:
     key = brief['key']
     raw = (ROOT/'contenido/blog/publicados'/brief['file']).read_text()
@@ -38,8 +39,8 @@ for brief in [*json.loads(BRIEFS.read_text()), *previous]:
             versions.append({'label':('Revisión actual' if v==revision and revision>1 else f'Primera versión'),'src':src,'revision':v})
         mini=f'assets/{key}-{style}-v{revision}-mini.webp'
         if not (LAB/mini).is_file(): raise FileNotFoundError(mini)
-        variants.append({'id':f'{key}-{style}-v{revision}','style':style,'src':versions[-1]['src'],'thumbnail':mini,'versions':versions,'alt':brief['concept']+' Técnica: '+styles[style]['name']+'.'})
-    topics.append({'id':key,'short':brief['short'],'title':meta['title'],'slug':meta['slug'],'category':meta['categoria'],'description':meta['description'],'date':meta['date'],'concept':brief['concept'],'limit':brief['limit'],'review':brief.get('review','Nueva exploración: por comparar.'),'isNew':'revision' not in brief,'variants':variants})
+        variants.append({'id':f'{key}-{style}-v{revision}','style':style,'src':versions[-1]['src'],'thumbnail':mini,'versions':versions,'description':brief.get('styleNotes',{}).get(style,styles[style]['description']),'alt':brief['concept']+' Técnica: '+styles[style]['name']+'.'})
+    topics.append({'id':key,'short':brief['short'],'title':meta['title'],'slug':meta['slug'],'category':meta['categoria'],'description':meta['description'],'date':meta['date'],'concept':brief['concept'],'limit':brief['limit'],'review':brief.get('review','Nueva exploración: por comparar.'),'isNew':key not in previous_keys,'variants':variants})
 catalog={'version':1,'updated':'2026-10-23','styles':styles,'articles':topics}
 (LAB/'catalogo.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n')
 print(f'Laboratorio: {len(topics)} artículos, {sum(len(t["variants"]) for t in topics)} propuestas.')

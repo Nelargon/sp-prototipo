@@ -6,15 +6,18 @@ y explorar cinco o seis artículos más. La subpágina vive en
 
 ## Inventario y criterio
 
-Nueve notas, 27 propuestas actuales y seis versiones anteriores. Los archivos
-de trabajo publicados están en `public/blog/laboratorio/assets/`: 33 WebP
-completos y 27 miniaturas. Cada propuesta tiene un identificador estable que
-incluye su revisión; una futura v2 no hereda automáticamente una favorita v1.
+Nueve notas, 27 propuestas actuales y nueve versiones anteriores. Los archivos
+de trabajo publicados están en `public/blog/laboratorio/assets/`: 36 WebP
+completos y 30 miniaturas (tres miniaturas v1 de dengue quedan como archivo). Cada propuesta tiene un identificador estable que
+incluye su revisión; una v2 no hereda automáticamente una favorita v1. Las favoritas anteriores
+se conservan con su versión y se pueden abrir, exportar o quitar.
 
 La libreta conserva sus tres variantes. Escuela y caminar muestran la v2 y
 permiten recuperar la v1. Arturo valora los tres estilos de libreta y escuela;
 en caminar prefiere A editorial y B narrativa. La fotografía D sigue como
-antecedente, no como elección aprobada. Las seis notas nuevas quedan por comparar.
+antecedente, no como elección aprobada. Dengue tiene una segunda vuelta de rostros: boca sutil en los tres, ojos en
+trazo, omitidos en papel y sugeridos en facetada. Las otras cinco notas de
+la tanda siguen por comparar.
 
 | Nota nueva | Idea de portada | Límite de la representación |
 |---|---|---|
@@ -50,8 +53,7 @@ GitHub. La descarga conserva la imagen entera, aunque se esté viendo un recorte
 Para sumar una nota: incorporar las imágenes completas y miniaturas, agregar
 su brief a `conceptos.json` y ejecutar `python3 scripts/build-laboratorio.py`.
 El script toma título, copete, categoría y slug del contenido real del blog.
-Para sumar una revisión se actualiza también el inventario de versiones del
-script. Se conserva la revisión anterior para poder compararla.
+Para sumar una revisión se actualiza `revision` en su brief. Se conserva la revisión anterior para poder compararla.
 
 Comprobaciones desde la raíz del repo:
 
@@ -64,7 +66,8 @@ PW_PATH=/ruta/a/playwright/index.mjs PW_CHROME=/ruta/a/chromium \
 
 El segundo comando no necesita navegador y corre en CI. El tercero necesita
 el export servido bajo el basePath. Comprueba nueve artículos, cuatro anchos,
-81 vistas de recorte, 33 versiones y el ciclo de selección y recuperación.
+81 vistas de recorte, 36 versiones y el ciclo de selección y recuperación,
+incluidas favoritas históricas sin aprobación automática de la revisión.
 Las capturas están en `docs/diseno/img/2026-10-23-laboratorio-*.webp`.
 La página queda fuera de la edición de lanzamiento porque se poda `/blog/`.
 
@@ -78,7 +81,7 @@ permite revisar el laboratorio mientras se resuelve el despliegue:
 python3 scripts/export-laboratorio.py --output /tmp/SP-Laboratorio-imagenes.html
 ```
 
-El resultado es un HTML de unos 17 MB con catálogo, 60 recursos de imágenes,
+El resultado incluye catálogo, todos los recursos de imágenes,
 tipografías y logo incluidos. Conserva favoritas, notas, versiones, descargas
 y exportación/importación. Los links a las notas y a GitHub necesitan conexión;
 la comparación no. Las selecciones de esta copia y las de la web se trasladan
@@ -86,7 +89,7 @@ con exportar/importar: no se sincronizan solas.
 
 Verificado con Chromium sin conexión, entregando el HTML exacto mediante una
 ruta local de prueba (el entorno bloquea las direcciones `file://`): nueve
-artículos, 27 propuestas, 33 versiones, cero solicitudes externas ni errores,
+artículos, 27 propuestas, 36 versiones, cero solicitudes externas ni errores,
 persistencia y exportación correctas, sin desborde a 390 px. El script falla
 si la interfaz cambió y una adaptación ya no coincide, en vez de producir una
 copia que siga dependiendo del servidor. El HTML generado se entrega como

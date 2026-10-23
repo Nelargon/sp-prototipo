@@ -1,0 +1,12 @@
+{
+  "offline": true,
+  "documentSource": "Exact standalone HTML fulfilled by a local test route; this environment blocks file URLs.",
+  "articles": 9,
+  "variants": 27,
+  "versions": 36,
+  "remoteRequests": [],
+  "pageErrors": [],
+  "persistence": true,
+  "export": true,
+  "mobileOverflow": false
+}
