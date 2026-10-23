@@ -278,9 +278,9 @@ de la videolaparoscopía). Entró en la misma rama:
   ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
   Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
   tiene que conservar de su ítem), aunque cambien las dos puntas del par.
-- **Documentos**: BITACORA caps. 161 («Lo que dice el ítem se queda en el
-  ítem») y 162 («La caja que redondeaba sus esquinas recortaba la lista»), y el
-  cap. 160 corregido donde decía más que el cuadernillo sobre la
+- **Documentos**: BITACORA caps. 162 («Lo que dice el ítem se queda en el
+  ítem») y 163 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 161 corregido donde decía más que el cuadernillo sobre la
   videolaparoscopía.
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
@@ -360,6 +360,26 @@ un caso que falla y uno que pasa:
   - los materiales descartables de la resonancia en las oraciones (4.2).
 - La guía vieja (`guia/`) no se pudo ver con estilos en este entorno: la mide
   la salud nocturna.
+
+---
+
+## 🌙 23/10/2026: EL SITIO ES SOLO CLARO, Y EL TAPIZ AGUANTA EL MODO OSCURO
+
+Arturo abrió la Guía Médica en su celular (Samsung Internet, teléfono en modo
+oscuro) y el navegador la había repintado: el tapiz de nombres quedó blanco
+pleno sobre negro, encima de toda la guía (BITACORA cap. 155, lámina 89).
+
+- **Qué se hizo.** Las páginas declaran `color-scheme: only light`
+  (`viewport` en `app/layout.jsx` y `:root` en `globals.css`): Chrome deja de
+  oscurecerlas. Y el tapiz de la guía y el muro pleno de «Dónde te atendés»
+  pasaron de gris opaco a navy transparente, el mismo píxel en modo claro: si
+  Samsung igual oscurece, quedan como textura suave. `qa/modo-oscuro.mjs` lo
+  controla en el CI.
+- **Lo que no se pudo verificar desde acá:** si la versión de Samsung Internet
+  de Arturo respeta la marca. Lo prueba él en su teléfono.
+- **Abierto:** el logo del header es una imagen navy; si Samsung oscurece la
+  página, se lee poco. Y un modo oscuro propio, diseñado, no existe: si algún
+  día se hace, la marca pasa a `light dark` junto con sus estilos, no antes.
 
 ---
 
@@ -2889,7 +2909,7 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
   `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
   dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
   casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
-  155.)* A la vista son 2px, casi invisibles (capturas ampliadas en
+  156.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que

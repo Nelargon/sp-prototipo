@@ -38,9 +38,12 @@ jobs:
       # listas-fuente: las listas que se abren a un toque (las ecografías que
       # esperan 3 meses, las 26 cirugías de Essential) contra la grilla y el
       # cuadernillo (23/10/2026).
-      # Miran el código y los datos, no lo construido: corren una vez para las
-      # dos ediciones.
-      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras, esquinas, listas contra su fuente)
+      # Esas dos miran el código y los datos, no lo construido: corren una vez
+      # para las dos ediciones.
+      # modo-oscuro: cada página declara «only light» y el texto de fondo
+      # (tapiz, muro) va transparente (BITACORA cap. 155); mira out/, así que
+      # corre también para la v1, más abajo.
+      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras, esquinas, listas contra su fuente, modo oscuro)
         run: |
           node scripts/test-buscador.mjs
           node scripts/test-telefonos.mjs
@@ -51,6 +54,7 @@ jobs:
           node qa/titulos-y-sombras.mjs out
           node qa/esquinas.mjs
           node qa/listas-fuente.mjs
+          node qa/modo-oscuro.mjs out
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.
@@ -80,3 +84,5 @@ jobs:
         run: node qa/seguro-propio.mjs out
       - name: Títulos sin punto y sombras de la v1
         run: node qa/titulos-y-sombras.mjs out
+      - name: Modo oscuro de la v1 (solo claro, texto de fondo transparente)
+        run: node qa/modo-oscuro.mjs out

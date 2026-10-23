@@ -2308,3 +2308,36 @@ sesiones de psicología»; ver el HANDOFF, «✅ DECIDIDO EL 23/10/2026».)*
 altos» no estaban en una celda: eran el final de una oración, y decían lo mismo
 que una celda, para quién cuenta un tope y qué plan da más. Si el sitio pone ese
 dato en duda en otro lado, la frase sale hasta que SP conteste.
+
+## Parte 35 · El modo oscuro que pone el celular (23/10/2026)
+
+Arturo mandó una captura de la Guía Médica en su celular, con Samsung Internet
+y el teléfono en modo oscuro: *«Se ve muy confuso y no sale bien»*. La lámina
+es la reproducción en Chromium con el modo oscuro forzado, antes y después del
+arreglo.
+
+### 89 · Lo sutil tiene que ser transparente
+
+![Tres capturas de la Guía Médica en el celular, a 390 px: hoy, con el modo oscuro del celular, los nombres del tapiz quedan blancos y gruesos encima del título y de los filtros; con el arreglo en Chrome, la guía se ve igual que en modo claro; con el arreglo, si Samsung igual la oscurece, la página queda oscura y el tapiz es una textura suave detrás](img/2026-10-23-modo-oscuro-guia.webp)
+
+**Qué muestra.** A 390 px y con el modo oscuro forzado del navegador:
+
+1. **Hoy.** El tapiz era gris claro opaco. El navegador oscurece los fondos y
+   aclara los textos oscuros, pero un texto que ya es claro lo deja como está:
+   el tapiz quedó blanco pleno sobre negro y tapa el título, el copete y «Lo
+   que más se busca».
+2. **Con el arreglo, en Chrome.** La página declara que es solo clara y el
+   navegador la respeta: se ve igual que con el teléfono en modo claro.
+3. **Con el arreglo, si el navegador igual la oscurece** (lo que puede hacer
+   Samsung Internet; se simuló sacando la marca). El tapiz va en navy con
+   transparencia: el navegador lo aclara y queda de fondo, suave.
+
+**Qué se decidió y por qué.** Arreglado el 23/10/2026, a pedido de Arturo («una
+propuesta de cómo podríamos solucionar esto lo más rápido posible»). En modo
+claro no cambia nada: el navy transparente da el mismo píxel que el gris
+(3/255 de diferencia como máximo, medido en las capturas). Queda abierto el
+logo del header, que es una imagen navy y en el caso 3 se lee poco.
+
+**La lección.** Un color «casi igual al fondo» solo es sutil mientras el fondo
+no cambie. Lo que es textura se pinta con transparencia, así guarda su
+relación con el fondo aunque alguien cambie el fondo.

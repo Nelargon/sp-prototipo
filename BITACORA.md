@@ -5612,7 +5612,73 @@ cada plan y pasa por cada pregunta, con texto) y, leído, no hay ningún «5 o
 la línea de antes metida, y no todos lo hacían: **lo que un documento dice de
 una prueba se verifica contra la prueba**, como el puntero contra el archivo.
 
-## Capítulo 155 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
+## Capítulo 155 — El modo oscuro que nadie diseñó (23/10/2026)
+
+**Qué intentamos.** Nada: el sitio nunca tuvo modo oscuro. Es claro desde el
+primer día y ninguna regla de CSS pregunta por `prefers-color-scheme`.
+
+**Qué pasó.** Arturo abrió la Guía Médica en su celular, con Samsung Internet y
+el teléfono en modo oscuro, y la mandó en una captura: *«Se ve muy confuso y no
+sale bien»*. El navegador había repintado la página con colores propios. El
+fondo gris claro pasó a casi negro; los títulos navy, a celeste; las tarjetas
+blancas, a gris oscuro. Y el tapiz de nombres de la red, que se ve casi como el
+fondo (`#EBEDEF` sobre `#F4F5F6`), quedó **blanco pleno sobre negro**,
+encima del título, del copete y de «Lo que más se busca». Lo mismo le pasaba a
+la nota de «Dónde te atendés» en el home, sobre su muro pleno.
+
+La razón está en cómo oscurece el navegador: no invierte la página entera.
+Separa fondos de textos. Un fondo claro lo oscurece; un texto oscuro lo aclara;
+un texto que **ya es claro lo deja como está**. El tapiz era texto gris claro
+opaco: no lo tocó, y lo que tenía alrededor sí. El muro del resto del home
+aguantó, porque está pintado en navy y en blanco con transparencia (`rgba` al
+8/255 y al 11/255): el navegador lo aclara y la transparencia sigue ahí.
+
+Lo reprodujimos en Chromium con el modo oscuro forzado
+(`--blink-settings=forceDarkModeEnabled=true`) y salió igual que la captura.
+
+**Qué hicimos.** Dos defensas, porque una sola no alcanza:
+
+1. **La página le avisa al navegador que es solo clara**:
+   `<meta name="color-scheme" content="only light">` (el `viewport` de
+   `app/layout.jsx`) y `color-scheme:only light` en `:root`. Chrome deja de
+   oscurecerla y se ve como la diseñamos. Pero Samsung Internet **no siempre lo
+   respeta**: en el foro de desarrolladores de Samsung (hilo 22937, sin fecha
+   verificada), su equipo dijo que un sitio no tenía forma de salir de su modo
+   oscuro, y en `mdn/browser-compat-data#17408` hay reportes de páginas
+   oscurecidas igual en mayo de 2024 y en abril de 2026. No lo podemos probar
+   desde acá: lo prueba Arturo en su teléfono.
+2. **El texto de fondo se pinta con transparencia, nunca opaco.** El tapiz pasó
+   de `#EBEDEF` a navy al 9/255 y el muro pleno, de `#E9EBED` y `#E1E4E7` a navy
+   al 12/255 y al 20/255. Sobre el fondo gris dan el mismo píxel (medido en las
+   capturas: 3/255 de diferencia como máximo, de suavizado, invisible). Si el
+   navegador igual oscurece la página, el texto oscuro se aclara, conserva la
+   transparencia y queda como textura suave.
+
+`qa/modo-oscuro.mjs` controla las dos cosas en el CI: que cada página tenga la
+marca y que ninguna regla de «tapiz» o «muro» use un color opaco. Se probó
+contra el `main` de antes, que marca (las páginas sin la marca y las tres
+reglas opacas), y contra la rama, que pasa.
+
+**Qué queda.** El logo del header es una imagen con el texto navy: si Samsung
+igual oscurece la página, queda navy sobre gris oscuro y se lee poco. Una imagen
+el navegador no la toca. Va como pregunta para Arturo, no se arregló a ciegas.
+
+**Qué aprendimos.**
+
+- **Un color «casi igual al fondo» solo es sutil mientras el fondo no cambie.**
+  La sutileza estaba en la relación entre dos colores, y el modo oscuro los
+  mueve por separado. La transparencia guarda la relación; el gris opaco, no.
+  Es la misma idea del cap. 119 vista desde el otro lado: allá la transparencia
+  baja se movía de a 1/255; acá es lo que salvó al muro.
+- **Lo que el sitio no declara, el navegador lo decide.** No tener modo oscuro
+  no es lo mismo que decir «soy claro». Mientras no lo dijimos, cada celular
+  inventó el suyo.
+- **Probamos en un solo navegador.** Toda la QA corre en Chromium, y el 77% del
+  tráfico es celular. Un navegador con reglas propias nos encontró la falla
+  antes que nosotros: la captura de Arturo fue la prueba de dispositivo real que
+  la QA no tenía.
+
+## Capítulo 156 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
 
 **Qué intentamos.** Cerrar sp-interno#60, que decide Claude: los radios
 escritos a mano que quedaban en el sitio y «la regex del QA no los ve todos».
@@ -5650,7 +5716,7 @@ mira lo computado: cada `.sq` visible tiene su `--sq` en la escala.
   porqué. Una excepción con nombre, archivo y motivo se puede discutir; una que
   el contador deduce, no la ve nadie.
 
-## Capítulo 156 — La nota larga no entra en el lugar de la corta (23/10/2026)
+## Capítulo 157 — La nota larga no entra en el lugar de la corta (23/10/2026)
 
 **Qué intentamos.** Las 185A y 190A: que la celda de Essential en las tablas del
 home y de `/planes` diga lo que cambia la elección («junto con ecocardiograma y
@@ -5675,7 +5741,7 @@ o se desalinean las columnas.
   consultas del home estaban escritas hacía semanas y nadie las vio, porque
   nadie las había buscado en la pantalla. Quedó como punto de revisión.
 
-## Capítulo 157 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
+## Capítulo 158 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
 
 **Qué intentamos.** La 9A y la 10A: «2 meses, la mayoría» en las ecografías de
 Silver y Gold y «de una lista de 26» en las cirugías de Essential, con la lista
@@ -5717,7 +5783,7 @@ entera y sin nada encima.
   aprobado, letra por letra, y se leía mal. Las capturas no son un trámite del
   final: son la otra mitad de la verificación.
 
-## Capítulo 158 — El nombre del archivo no es su versión (23/10/2026)
+## Capítulo 159 — El nombre del archivo no es su versión (23/10/2026)
 
 **Qué intentamos.** El punto 1 de sp-interno#61: que la fecha de la Guía Médica
 diga cuándo son los datos.
@@ -5738,7 +5804,7 @@ día en que se leyó la planilla.
 - **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
   la Guía no coinciden, una de las dos está leyendo otra cosa.
 
-## Capítulo 159 — La prueba abría la lista justo donde entraba (23/10/2026)
+## Capítulo 160 — La prueba abría la lista justo donde entraba (23/10/2026)
 
 **Qué intentamos.** Los tres verificadores de la 9A y la 10A (datos, textos y
 código) encontraron que en el celular la lista de las 26 cirugías quedaba
@@ -5780,7 +5846,7 @@ que «de una lista de 26.» no se saliera de su fila.
 - **Una autoprueba cuenta lo que rompió.** «Saqué 0 reglas y no pasó nada» no
   es un verde: es una prueba que no probó.
 
-## Capítulo 160 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
+## Capítulo 161 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
 
 **Qué intentamos.** En la primera tanda de la 10A, las 26 cirugías de Essential
 se dijeron con palabras de casa donde parecía decir lo mismo: «hemorroides»,
@@ -5815,10 +5881,10 @@ anestesista, al cierre de la lista.
   `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
   nombre al lado de su literal, de a pares.
 
-## Capítulo 161 — Lo que dice el ítem se queda en el ítem (23/10/2026)
+## Capítulo 162 — Lo que dice el ítem se queda en el ítem (23/10/2026)
 
 **Qué intentamos.** La segunda tanda de la 10A sacó el «a cielo abierto» de la
-próstata y el «abierta» de la pielolitotomía, porque el capítulo 160 enseñaba
+próstata y el «abierta» de la pielolitotomía, porque el capítulo 161 enseñaba
 que un calificativo suelto hace leer distinto a los que no lo llevan: la técnica
 iba una vez, en el título. Y tradujo el legrado como «legrado evacuador
 (raspado del útero)», con «evacuador» para no prometer el de diagnóstico.
@@ -5835,7 +5901,7 @@ Drive, encontró cuatro nombres que seguían abarcando más que su ítem:
 - **El apéndice.** «sin complicaciones» se leía «si la cirugía sale bien». El ítem
   dice «no complicada», y va así.
 - **La pielolitotomía** había perdido el «abierta» de su ítem.
-- Y el cap. 160 decía que el cuadernillo «deja la videolaparoscopía a cargo de
+- Y el cap. 161 decía que el cuadernillo «deja la videolaparoscopía a cargo de
   la persona». Deja a cargo la diferencia de honorarios y el equipo. El sitio,
   por su lado, decía «todo el uso del equipo y de los materiales», sin la torre
   ni el instrumental. Se corrigieron las dos cosas.
@@ -5845,7 +5911,7 @@ si cambiaban las dos puntas a la vez, daba verde.
 
 **Qué aprendimos.**
 - **Lo que vale para todas va arriba; lo que dice el ítem, en el ítem.** La
-  lección del cap. 160 sirve para lo que agregamos nosotros, no para lo que el
+  lección del cap. 161 sirve para lo que agregamos nosotros, no para lo que el
   contrato escribió en el renglón. Sacar un calificativo del ítem porque el
   título ya lo dice es resumir el contrato, y resumir es prometer de más.
 - **La traducción también promete.** El literal puede estar entero y la
@@ -5855,7 +5921,7 @@ si cambiaban las dos puntas a la vez, daba verde.
   «no complicada», «terapéutico»…), y la autoprueba cambia las dos puntas a la
   vez: tiene que caer por el calificativo, no por la igualdad.
 
-## Capítulo 162 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
+## Capítulo 163 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
 
 **Qué intentamos.** En la segunda tanda, la lista de las 26 que quedaba debajo
 de la cabecera fija pasó a abrirse hacia el lado más grande, con ese alto y
