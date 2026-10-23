@@ -17,8 +17,10 @@
 //
 // Uso:  node qa/modo-oscuro.mjs out
 // Antes de mirar el sitio se prueba a sí mismo con casos que tienen que marcar
-// y casos que no (CLAUDE.md, BITACORA cap. 89). Afuera: la guía vieja (guia/,
-// páginas sueltas que no pasan por el layout) y _next.
+// y casos que no (CLAUDE.md, BITACORA cap. 89). Afuera: _next. Hasta el
+// 23/10/2026 quedaba afuera también la guía vieja (guia/, páginas sueltas que no
+// pasaban por el layout), y el patrón /guia/ se llevaba de arrastre las guías
+// de lectura del blog (/blog/guia/…), que sí pasan por el layout: ahora entran.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -96,7 +98,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (fallas.length) { console.error('✗ el detector de modo oscuro falla en sus propios casos:\n  ' + fallas.join('\n  ')); process.exit(1); }
   const dir = process.argv[2] || 'out';
   const hallazgos = [];
-  const paginas = archivos(dir, /\.html$/, /\/(guia|_next)(\/|$)/);
+  const paginas = archivos(dir, /\.html$/, /\/_next(\/|$)/);
   for (const f of paginas) if (sinSoloClaro(readFileSync(f, 'utf8'))) hallazgos.push(`sin color-scheme «only light» en ${f.slice(dir.length) || '/'}`);
   const estilos = archivos('app', /\.css$/, /node_modules/);
   for (const f of estilos) for (const t of texturasOpacas(readFileSync(f, 'utf8'))) hallazgos.push(`texto de fondo con color opaco en ${f}: ${t}`);

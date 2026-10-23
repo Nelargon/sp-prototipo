@@ -18,9 +18,9 @@ Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
 **La v1 publica** inicio, simulador, planes y la **Guía Médica** (desde el 23
 sep 2026). «Qué cubre» ya no es una página: desde el 05/10/2026, `/que-cubre/`
 redirige a `/planes/`, la única página de detalle. **No publica** agendar
-turnos, Mi SP, el blog ni `/historia/`: siguen en el prototipo. El molde viejo
-de la guía (`/guia/guia_home.html`, datos ilustrativos) queda solo en el
-prototipo, como referencia.
+turnos, Mi SP, el blog ni `/historia/`: siguen en el prototipo, cada uno con
+la condición que le falta para entrar (`HANDOFF.md`, «🧩 23/10/2026»). El molde
+viejo de la guía (`/guia/`, datos ilustrativos) se retiró el 23/10/2026.
 
 **Quién la publica.** Está decidido desde el 29/09/2026 que la publique SP,
 desde este repo, en Cloudflare Pages (`Nelargon/sp-interno#101`). Todavía no
@@ -44,9 +44,9 @@ el `HANDOFF.md`.
   dicta estructura y texto de toda pieza digital.
 - [`PLAN-home-v2.md`](PLAN-home-v2.md) — plan de la home v2. ⚠ Su ejecución
   espera el «adelante» de Arturo.
-- [`guia/ANEXO-requisitos-backend.md`](guia/ANEXO-requisitos-backend.md) —
+- [`docs/ANEXO-requisitos-backend.md`](docs/ANEXO-requisitos-backend.md) —
   requisitos técnicos para la implementación real (eventos de medición,
-  seguridad, modelo de datos).
+  seguridad, modelo de datos). Vivía en `guia/` hasta el 23/10/2026.
 - [`HANDOVER.md`](HANDOVER.md) — detalles técnicos de la página de planes.
 - [`docs/PREVIEW.md`](docs/PREVIEW.md) — previews por rama (Cloudflare Pages).
 
@@ -83,11 +83,9 @@ lib/            # datos y lógica compartida: Guía Médica (guia-medica.json, s
                 #   regenera desde la planilla), lo que cubre cada plan, buscador, blog
 datos/          # transcripciones versionadas de las grillas y el glosario
 contenido/blog/ # las notas publicadas del blog (las publica el motor de contenido)
-guia/           # molde viejo de la guía (HTML + Tailwind), solo prototipo
-public/guia/    # copia publicada del molde — se genera en cada build, NO editar
 scripts/        # generadores (guía médica, glosario, prestaciones) y los hooks del build
 qa/             # pruebas: qa-integral, qa-lanzamiento, cobertura-rutas, links-internos
-docs/           # cómo publicar la v1 y las previews por rama
+docs/           # cómo publicar la v1, las previews por rama y el contrato de eventos (ANEXO)
 docs/diseno/    # las láminas de diseño y la lección de cada una (README.md, img/, fuentes/)
 ```
 

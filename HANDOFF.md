@@ -17,6 +17,107 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🧩 23/10/2026: LAS DOS EDICIONES, CONSOLIDADAS. LO PÚBLICO ESPERA
+
+**Arturo, 23/10/2026, textual:**
+
+> *«Todavía no podemos sacar lo público. Tenemos que preparar el espacio y
+> consolidar la versión de prototipo y la versión de lanzamiento. […] Ya
+> tenemos que mover esto hacia adelante de una forma que no genere problemas en
+> el futuro.»*
+
+**Lo público espera.** La v1 no se publica todavía: Arturo está analizando
+variables por detrás. Mientras tanto se ordena el repo y se prepara el espacio.
+Ninguna sesión prende la indexación ni conecta el dominio sin su OK.
+
+**Lo que se midió antes de decidir.** Arturo partía de que la edición de
+lanzamiento era «la más actualizada». No son dos versiones: es un solo código
+con un interruptor (`app/edicion.js`). Se construyeron las dos ediciones y se
+comparó el texto visible de home, `/planes/`, simulador, Guía Médica y 404: son
+iguales salvo los bloques que el interruptor apaga. El prototipo es **la v1 más
+lo que todavía no sale**. Lo que sí era cierto: las piezas solo del prototipo,
+salvo el blog, no tenían cambios de contenido desde julio, y algunas ya
+contradecían reglas posteriores (BITACORA cap. 156).
+
+**Lo que se decidió (Arturo, sobre la revisión del 23/10):**
+
+1. **Un solo repo, con los módulos que se prenden de a uno.** Arturo había
+   planteado también «crear todo en un nuevo repositorio y hacerlo bien». La
+   revisión lo calificó 3/10, por lo mismo que en el cap. 73: el motor del
+   blog, el correo, el CI de las dos ediciones, las pruebas y el Guardián viven
+   acá. Arturo contestó pidiendo **consolidar** las dos ediciones, y no volvió
+   sobre el repo nuevo. El orden que buscaba sale de limpiar lo vencido y,
+   cuando toque, de transferir este repo a la organización de SP
+   (`Nelargon/sp-interno#101`, paso 1).
+2. **Se retiraron del prototipo** (quedan en git):
+   - **el molde viejo de la guía** (`guia/`): datos de ejemplo, «Plan Bronce»,
+     títulos con punto y un buscador que invitaba a escribir «lo que te está
+     pasando», contra la regla médica del 04/10. Su contrato de eventos, que
+     sigue vigente, se mudó a `docs/ANEXO-requisitos-backend.md`. La tarjeta
+     principal de Mi SP («Ver mi red · Entrar con mi cédula») abría ese molde:
+     ahora es «Buscá tu médico» y lleva a la Guía Médica real. «Ver mi red»
+     salió también del desplegable de Mi SP. Cierra el punto 2 de
+     `Nelargon/sp-interno#61` y el 3 de `Nelargon/sp-interno#103`;
+   - **la caja del parto del home** («¿Están pensando en agrandar la
+     familia?»): usaba una espera de gancho, contra la regla del 02-03/10. El
+     dato sigue en la FAQ y en `/planes/`;
+   - **«Lo que te prometemos»** (los diferenciadores): Arturo, en el directorio
+     del 15/09, *«esto voy a borrar, esto no está, no está planeado»*. Sus
+     íconos (`letra`, `domicilio`, `mental`) y el de `espera` quedan en
+     `iconos-sp.js`, sin uso.
+3. **El glosario médico se conserva.** Arturo: *«Yo, mientras, voy a validarlo,
+   pero yo quiero que esté ese glosario.»* Lo valida él, en
+   `datos/glosario/Glosario-medico-SP-borradores.xlsx` (hoja «Términos»,
+   columnas «¿Correcta?» y «Corrección»). Hasta su validación sigue solo en el
+   prototipo (`CON_GLOSARIO_MEDICO`). Hoy ninguna página lo muestra: vivía en
+   el buscador de `/que-cubre/`, que redirige a `/planes/` desde el 05/10.
+   **Dónde se muestra lo decide Arturo** (pendiente). Ojo con el territorio:
+   los nombres de las cirugías de `/planes/` los está trabajando otra línea
+   (`Nelargon/sp-interno#206`). Una sola definición da un consejo además de
+   definir («Absceso… Casi siempre hay que drenarla»): conviene mirarla primero.
+
+**El modelo, de acá en adelante.** Cada pieza que vive solo en el prototipo
+tiene escrita la condición que le falta para entrar a la v1. **Si una pieza
+pierde su condición, se retira; no se deja detrás del interruptor.** Así se
+quedó tres meses la guía vieja: escondida en la v1, nadie la miraba, y las
+reglas nuevas no le llegaban.
+
+| Pieza | Prototipo | v1 | Lo que le falta para entrar a la v1 |
+|---|---|---|---|
+| Home, simulador, `/planes/`, Guía Médica | ✓ | ✓ | Nada: son iguales en las dos |
+| Blog (`CON_BLOG`) | ✓ | — | El OK de Arturo (el directorio dijo noviembre); una pasada de las notas viejas con el Orquestador («carencia» dicha primero en dos notas, «seguro» en seis títulos, la nota de chequeos por edad); el índice, que en el celular mide 44 pantallas; y que el correo (`SITIO` de `scripts/correo-blog/armar.mjs`) apunte al dominio real |
+| Agendar (`CON_AGENDA`) | ✓ | — | Decidir si convive con la reserva de turnos que ya existe o la reemplaza (directorio del 15/09) |
+| Mi SP (`CON_MI_SP`) | ✓ | — | El sistema real (padrón, SIP) y la frontera con la app |
+| Historia (`CON_HISTORIA`) | ✓ | — | Decisión de Arturo y otra forma: hoy son 720vh de scroll dirigido |
+| Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo y dónde se muestra |
+| Marca «Revisar» de la guía (`CON_MARCA_REVISAR`) | ✓ | nunca | Es interna. Dato del 23/10: 218 filas marcadas (eran 185 el 23/09) |
+| Botón «Revisión» (`CON_REVISION`) | ✓ | ✓ hoy | La respuesta de Arturo en `Nelargon/sp-interno#192` |
+
+**El espacio de la guía y los planes (anunciado por Arturo el 23/10).** Arturo
+va a crear en su Google Drive un espacio que va a ser **el centro de la
+información de la Guía Médica y de los planes**, y va a pasar el enlace para
+que se lea de ahí y se vigilen sus cambios. **Hasta que llegue el enlace, las
+fuentes siguen siendo las de hoy** (la planilla maestra por su fileId, ver
+`sp-interno/README.md`, y `datos/planes-vigentes/`). Ninguna sesión arma otra
+fuente en paralelo ni cambia de dónde se leen los datos sin ese enlace. Toca a
+`Nelargon/sp-interno#108` (datos semanales).
+
+**Lo que se arregló de paso.** El control de modo oscuro (`qa/modo-oscuro.mjs`)
+dejaba afuera toda ruta con `/guia/`, por la guía vieja, y con eso se llevaba
+las guías de lectura del blog (`/blog/guia/…`), que sí pasan por el layout.
+Ahora entran (BITACORA cap. 156).
+
+**Las pruebas.** `qa-integral` pide 404 en las tres páginas del molde viejo y
+recorre `/mi-sp/`; el CI corta si `out/guia` vuelve al export; cualquier link al
+molde lo ataja `qa/links-internos.mjs` en las dos ediciones.
+
+**Lo que sigue para preparar el espacio** (sin publicar): el build para el
+dominio real (`Nelargon/sp-interno#103`, puntos 1 y 4), la respuesta de Arturo
+sobre el botón «Revisión» (`#192`), y las cuentas y el DNS (`#101`), que son de
+Arturo.
+
+---
+
 ## 🌙 23/10/2026: EL SITIO ES SOLO CLARO, Y EL TAPIZ AGUANTA EL MODO OSCURO
 
 Arturo abrió la Guía Médica en su celular (Samsung Internet, teléfono en modo
@@ -2763,7 +2864,7 @@ Y ante la pregunta de qué hacer con la versión preliminar de agendar, eligió
 | Búsqueda y filtros (puro, se prueba con node) | `lib/red-medica.js` |
 | Buscador + filtros + Lister | `/guia-medica/` (`app/guia-medica/GuiaMedica.jsx`) |
 | Ficha estática por prestador (674) | `/guia-medica/P-0001/` … (`app/guia-medica/[id]/page.jsx`) |
-| El molde viejo (datos ilustrativos, "Ver mi red" por CI) | `guia/`, **solo en el prototipo** (`CON_GUIA_DEMO`) |
+| El molde viejo (datos ilustrativos, "Ver mi red" por CI) | ~~`guia/`, **solo en el prototipo** (`CON_GUIA_DEMO`)~~ → **retirado el 23/10/2026** (ver «🧩 23/10/2026»); su contrato de eventos, en `docs/ANEXO-requisitos-backend.md` |
 
 - **Números (planilla al 23/09/2026):** 847 filas → 839 publicadas, 674
   prestadores, 79 ciudades, 17 departamentos. Quedan afuera 7 filas que solo
@@ -3220,6 +3321,8 @@ agendar en la v1 son: `hero`, `nav`, `menu_movil`, `cobertura`.
   que la v1 no lanza, va detrás de su `CON_…`.
 - **Módulo nuevo que no está listo para el público**: constante `CON_…` en
   `app/edicion.js` + entrada en `PODAR` de `scripts/podar-edicion.mjs`.
+  *(23/10/2026)* Y su fila en la tabla de «🧩 23/10/2026» con la condición que
+  le falta para entrar a la v1. Si la pierde, se retira.
 - **Verificación**: `qa/qa-lanzamiento.mjs` (cabecera con el cómo). Revisa lo
   que el HTML estático no muestra — el menú móvil, que se arma al abrirlo, y
   las respuestas de la FAQ, que se renderizan al desplegarlas.

@@ -5678,7 +5678,66 @@ el navegador no la toca. Va como pregunta para Arturo, no se arregló a ciegas.
   antes que nosotros: la captura de Arturo fue la prueba de dispositivo real que
   la QA no tenía.
 
-## Capítulo 156 — Tres opciones con el mismo poco de rosa (23/10/2026)
+## Capítulo 156 — Las dos versiones eran una sola, y lo vencido vivía detrás del interruptor (23/10/2026)
+
+**Qué intentamos.** Arturo pidió una revisión completa de las diferencias entre
+la versión de lanzamiento y la versión prototipo, con opciones para que las dos
+fueran un plan completo. Partía de una idea: *«la versión de lanzamiento es la
+más actualizada, con la que más he trabajado»*. Y planteó dos caminos: sumar al
+lanzamiento lo del prototipo que lo complementa, o *«crear todo en un nuevo
+repositorio y hacerlo bien»*.
+
+**Qué pasó.** Antes de armar opciones se midió la premisa, y no se sostuvo. No
+hay dos versiones: hay un solo código con un interruptor (`app/edicion.js`,
+cap. 73). Se construyeron las dos ediciones y se comparó el texto visible de
+home, `/planes/`, simulador, Guía Médica y 404: son iguales, salvo los bloques
+que el interruptor apaga. Todo lo que Arturo trabajó «en lanzamiento» quedó
+también en el prototipo.
+
+Lo que sí era cierto estaba del otro lado. Las piezas que viven solo en el
+prototipo, salvo el blog, no tenían cambios de contenido desde julio, y tres
+contradecían reglas que llegaron después:
+- **la guía vieja** (`guia/`): datos de ejemplo, «Plan Bronce», siete títulos
+  con punto y un buscador que invitaba a escribir «lo que te está pasando»,
+  contra la regla médica del 04/10;
+- **la caja del parto**: usaba una espera de gancho, contra la regla de las
+  esperas del 03/10;
+- **«Lo que te prometemos»**: Arturo había dicho en el directorio *«esto voy a
+  borrar, esto no está, no está planeado»*. Salió de la v1 y se quedó en el
+  prototipo.
+
+Ninguna estaba rota para el CI. Estaban escondidas en la v1, que es la edición
+que todos miraban, y por eso las reglas nuevas no les llegaban.
+
+El repo nuevo se calificó 3/10, por lo mismo que en el cap. 73: el blog, el
+correo, el CI, las pruebas y el Guardián viven acá, y un repo nuevo no arregla
+lo que estaba mal, porque lo que estaba mal no era el código. Arturo contestó:
+*«Todavía no podemos sacar lo público. Tenemos que preparar el espacio y
+consolidar la versión de prototipo y la versión de lanzamiento.»* Estuvo de
+acuerdo con lo que se conserva y lo que se retira, salvo una pieza: *«yo quiero
+que esté ese glosario»*, que va a validar él.
+
+Al sacar la guía vieja apareció otra cosa. El control de modo oscuro
+(`qa/modo-oscuro.mjs`) excluía toda ruta que tuviera `/guia/`, pensando en el
+molde viejo. El patrón se llevaba también las guías de lectura del blog
+(`/blog/guia/…`), que sí pasan por el layout y que nadie había decidido dejar
+afuera.
+
+**Qué aprendimos.**
+
+1. **Un interruptor esconde, no mantiene.** Lo que vive solo detrás de un
+   `CON_…` sale de la vista de quien revisa la v1, y las reglas nuevas se
+   aplican donde alguien mira. Por eso, desde hoy, cada pieza solo del
+   prototipo tiene escrita la condición que le falta para entrar a la v1
+   (HANDOFF, «🧩 23/10/2026»). Si la pierde, se retira.
+2. **La premisa se mide antes que el plan.** «La versión más actualizada» era la
+   misma versión. Con la premisa sin medir, el plan hubiera sido mudar entre
+   dos ediciones algo que nunca estuvo separado.
+3. **Una exclusión por nombre corto atrapa más de lo que nombra.** `/guia/`
+   también era `/blog/guia/`. Es la otra cara del cap. 90: cuando se retira
+   algo, se revisan también los guardianes que lo esquivaban.
+
+## Capítulo 157 — Tres opciones con el mismo poco de rosa (23/10/2026)
 
 **Qué intentamos.** Arturo pidió ver la página con la temática de Octubre Rosa,
 en tres opciones, lo más rápido posible. Claude armó tres sobre la home real:
