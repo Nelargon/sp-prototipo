@@ -25,7 +25,7 @@
 // documento, y en 430 px desbordaba la página 2 px. Con display:none no ocupa
 // nada, y la accesibilidad no se pierde porque vive en el span oculto.
 
-import { useState, useRef, useEffect, useId } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useId } from 'react';
 import { css } from './css';
 import { trackExplicacion } from './track';
 
@@ -129,12 +129,73 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
   // poder llegar a ella: el cierre espera un momento y entrar lo cancela.
   const salida = useRef(null);
   const id = useId();
+  // Un toque (9A y 10A: las listas de las esperas) se dibuja distinto de una
+  // palabra del glosario: ver más abajo, en `Toca`, y la burbuja fija.
+  const enLinea = tipo === 'toque';
+  const tocaRef = useRef(null);
+  // Dónde va la burbuja de un toque, en píxeles de la pantalla (position:fixed).
+  // null mientras se mide: la burbuja se dibuja escondida en 0,0.
+  const [fijo, setFijo] = useState(null);
+  // La lista que scrollea arranca desde arriba una sola vez por apertura (no
+  // cada vez que se reacomoda al scrollear la página).
+  const desdeArriba = useRef(false);
 
   // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
   useEffect(() => { if (open) trackExplicacion(tipo, k); }, [open, k, tipo]);
 
-  useEffect(() => {
-    if (!open) { setShift(0); setAbajo(false); setAlto(null); return; }
+  // LA BURBUJA DE UN TOQUE, FIJA (tercera tanda, 23/10/2026, verificador de
+  // código). Con la fila arriba en la pantalla, la lista de las 26 se abría por
+  // una rendija de 73 a 153 px que scrolleaba: el techo era la cabecera fija y el
+  // piso, el borde de la caja que la contenía, que tiene overflow:hidden solo
+  // para redondear sus esquinas (el cuadro de esperas del celular, la tarjeta de
+  // esperas del simulador). Debajo quedaban 600 px libres. Ahora la burbuja va con
+  // position:fixed, que no la recorta ningún overflow de sus cajas (medido: en
+  // /planes y en el simulador ningún ancestro del toque tiene transform, filter,
+  // contain ni will-change, que harían de la caja el marco del fixed; la prueba de
+  // qa-lanzamiento lo vuelve a medir en cada apertura). El techo es el borde de
+  // abajo de la cabecera fija ([data-nav]) + 8 y el piso, el alto de la pantalla
+  // − 8. Arriba por defecto; abajo si arriba no entra; si no entra en ninguno, del
+  // lado más grande, con ese alto y scroll por dentro. Centrada en el toque, sin
+  // salirse de los costados. Al scrollear la página (o la caja que scrollea, como
+  // el cuerpo del simulador en la computadora) se reacomoda junto al toque, y
+  // mientras el toque está fuera de lo que se ve, se esconde (sigue abierta: la
+  // cierran, como siempre, salir con el mouse, tocar afuera, Escape o sacarle el
+  // foco). No se cierra al scrollear: al llegar con Tab, el navegador scrollea
+  // (suave) hasta el toque justo después de abrirlo, y la cerraba en el camino;
+  // y una burbuja suelta, lejos de su toque, no se ve nunca.
+  const colocarFijo = () => {
+    const el = bubbleRef.current, t = tocaRef.current;
+    if (!el || !t) return;
+    const M = 8;
+    const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    const nav = document.querySelector('[data-nav]');
+    const techo = (nav && getComputedStyle(nav).position === 'fixed' ? Math.max(0, nav.getBoundingClientRect().bottom) : 0) + M;
+    const piso = vh - M;
+    const b = t.getBoundingClientRect();
+    if (b.bottom < techo || b.top > piso) { setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true })); return; }
+    // scrollHeight y no el alto de la caja: con max-height, la caja mide lo que
+    // se ve y scrollHeight sigue midiendo la lista entera.
+    const w = el.offsetWidth, h = el.scrollHeight;
+    const lugarArriba = b.top - M - techo, lugarAbajo = piso - (b.bottom + M);
+    let haciaAbajo = false, max = null;
+    if (h <= lugarArriba) haciaAbajo = false;
+    else if (h <= lugarAbajo) haciaAbajo = true;
+    else { haciaAbajo = lugarAbajo > lugarArriba; max = Math.max(0, Math.floor(haciaAbajo ? lugarAbajo : lugarArriba)); }
+    const top = haciaAbajo ? b.bottom + M : b.top - M - (max === null ? h : max);
+    const left = Math.max(M, Math.min(b.left + b.width / 2 - w / 2, vw - M - w));
+    setFijo({ left: Math.round(left), top: Math.round(top), fuera: false });
+    setAbajo(haciaAbajo);
+    setAlto(max);
+  };
+
+  // useLayoutEffect y no useEffect (verificador de código, 23/10/2026): mide y
+  // acomoda antes de pintar. Con useEffect, con el dedo, el primer cuadro salía
+  // entero hacia arriba, debajo de la cabecera y fuera de la pantalla, y recién
+  // en el segundo bajaba a su lugar: un parpadeo justo al tocar.
+  useLayoutEffect(() => {
+    if (!open) { setShift(0); setAbajo(false); setAlto(null); setFijo(null); return; }
+    desdeArriba.current = true;
+    if (enLinea) { colocarFijo(); return; }
     const el = bubbleRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -206,8 +267,27 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
 
   // Cada vez que scrollea, la lista arranca desde arriba: el navegador guarda
   // dónde quedó la vez anterior y, al volver a abrirse, la mostraba por la mitad
-  // (medido el 23/10/2026). Va cuando ya tiene su alto: antes no scrollea.
-  useEffect(() => { if (open && alto !== null && bubbleRef.current) bubbleRef.current.scrollTop = 0; }, [open, alto]);
+  // (medido el 23/10/2026). Va cuando ya tiene su alto: antes no scrollea. Una
+  // vez por apertura: al reacomodarse con el scroll de la página, no se vuelve.
+  useLayoutEffect(() => {
+    if (open && alto !== null && bubbleRef.current && desdeArriba.current) { bubbleRef.current.scrollTop = 0; desdeArriba.current = false; }
+  }, [open, alto]);
+
+  // La burbuja fija de un toque sigue a su toque cuando algo scrollea (la página
+  // o una caja) o cambia el tamaño de la ventana (la barra del navegador del
+  // celular). El scroll de adentro de la burbuja no cuenta. Con captura: el
+  // scroll de una caja no sube hasta el documento.
+  useEffect(() => {
+    if (!open || !enLinea) return;
+    let pedido = 0;
+    const volver = (e) => {
+      if (e.type === 'scroll' && bubbleRef.current && e.target instanceof Node && bubbleRef.current.contains(e.target)) return;
+      if (!pedido) pedido = requestAnimationFrame(() => { pedido = 0; colocarFijo(); });
+    };
+    document.addEventListener('scroll', volver, { capture: true, passive: true });
+    window.addEventListener('resize', volver, { passive: true });
+    return () => { cancelAnimationFrame(pedido); document.removeEventListener('scroll', volver, { capture: true }); window.removeEventListener('resize', volver); };
+  }, [open, enLinea]);
 
   useEffect(() => {
     if (!open) return;
@@ -249,7 +329,6 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
   // Hasta el 23/10/2026 era un botón con nowrap: partido se centraba en dos
   // renglones, y entero se salía 17 px del encabezado de su fila en el cuadro de
   // esperas del celular, a 360 (verificador de código).
-  const enLinea = tipo === 'toque';
   const Toca = enLinea ? 'span' : 'button';
   const comoBoton = enLinea
     ? {
@@ -264,6 +343,7 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
     <span ref={ref} style={css('position:relative;display:' + (enLinea ? 'inline' : 'inline-block'))}>
       <Toca
         {...comoBoton}
+        ref={tocaRef}
         // .txt: una palabra dentro de una frase se atenúa al tocarla, no se
         // achica como un botón (sistema táctil, app/globals.css).
         className="txt"
@@ -319,7 +399,12 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
           // OJO con el signo: calc(-50% + -20px) es CSS INVÁLIDO y el navegador
           // descarta la declaración entera en silencio. El signo va en el
           // operador, no pegado al número.
-          'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);') + 'z-index:40;'
+          // Un toque, fija (arriba, «colocarFijo»): hasta que se mide, escondida en
+          // 0,0; y escondida mientras su toque está fuera de lo que se ve.
+          (enLinea
+            ? 'position:fixed;left:' + (fijo ? fijo.left : 0) + 'px;top:' + (fijo ? fijo.top : 0) + 'px;' + (fijo && !fijo.fuera ? '' : 'visibility:hidden;')
+            : 'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);'))
+          + 'z-index:40;'
           // `ancho`: una entrada larga del diccionario puede pedir una burbuja más
           // ancha (y así más baja): las 26 cirugías de Essential no entraban,
           // a 260 px, en la tarjeta de esperas del simulador en la computadora,

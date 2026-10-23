@@ -2885,9 +2885,15 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
 // /planes a 360 × 780, 390 × 844 y 430 × 932 con el dedo (el cuadro de esperas:
 // lo que oye el lector en cada encabezado de fila y que nada se salga de su
 // borde; y, a 390, la hoja de la ecografía, cuya fila es un botón); el teclado a
-// 1280 (Tab, Escape, Enter, Enter); el simulador a 360, 390, 430 y 1280 (Silver,
-// Gold y Essential, con el porqué de Essential); las preguntas frecuentes del
-// home, en oraciones.
+// 1280 (Tab, Escape, Enter, Enter, Espacio, Espacio, sin mover la página); el
+// simulador a 360, 390, 430 y 1280 (Silver, Gold y Essential, con el porqué de
+// Essential); las preguntas frecuentes del home, en oraciones.
+// LA BURBUJA FIJA (tercera tanda, 23/10): la de un toque va con position:fixed,
+// y cada apertura mide además que se vea grande (ALTO_MIN), que esté junto a su
+// toque y que ningún ancestro haga de marco del fixed; y las 26 se scrollean
+// con la burbuja abierta (seguir): se reacomoda junto al toque y se esconde
+// mientras el toque está fuera de la pantalla. Una build con el Term de 40d36ad
+// (la rendija de 153 px con la fila al 25 %) tiene que caer acá.
 // Antes se prueba cada detector: la lista de las 26 contra listas malas, y en la
 // página, el texto del lector cambiado, la burbuja corrida y tapada, el arreglo
 // de la cabecera de Gold sacado, un encabezado de fila con la lista adentro, un
@@ -2898,7 +2904,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   const EMB = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos, Doppler obstétrico, del corazón del bebé, perfil biofísico y monitoreo fetal)';
   const DOP = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
   const GOLD5 = 'las de riñón y de vías urinarias, la testicular, la de próstata por vía rectal y la transvaginal';
-  const VEJ = 'para la de vejiga, preguntale a tu asesor';
+  const VEJ = 'para la de vejiga, preguntale a tu asesor cuánto esperás';
   const may = (x) => x[0].toUpperCase() + x.slice(1);
   const escR = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // Lo que dice la burbuja (y oye el lector): «título: lista», como la escribe
@@ -2906,16 +2912,19 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   // de los dos puntos (toqueEnTexto, verificador de código, 23/10).
   const TOQUE = {
     Silver: 'Ecografías que esperan 3 meses en Silver: ' + may(EMB) + ' y ' + DOP + '.',
-    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + '; ' + DOP + ', y ' + GOLD5 + '. ' + may(VEJ) + '.',
-    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '; ' + VEJ + '.',
+    // Las Doppler, en su oración: con una coma, «… y de carótidas, y las de
+    // riñón» se leía «Doppler de riñón» (tercera tanda, 23/10).
+    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + ' y ' + DOP + '. También ' + GOLD5 + '. ' + may(VEJ) + '.',
+    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '. ' + may(VEJ) + '.',
   };
-  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '; ' + VEJ + '.';
+  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '. ' + may(VEJ) + '.';
   const { PARES_26 } = await import(new URL('../qa/listas-fuente.mjs', import.meta.url));
   const LAS_26 = PARES_26.map((p) => p[1]);
   const T26_TITULO = 'Las 26 cirugías de Essential, a cielo abierto';
   // Después de la lista, lo que dice el cuadernillo del anestesista (4.3.2) y de
-  // la videolaparoscopía (el párrafo que sigue a la lista).
-  const CIR_COLA = 'De los honorarios del anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía, pagás vos la diferencia de honorarios (del anestesista, el ayudante y el instrumentador) y todo el uso del equipo y de los materiales.';
+  // la videolaparoscopía (el párrafo que sigue a la lista, copia fiel desde la
+  // tercera tanda: con la torre y el instrumental).
+  const CIR_COLA = 'De los honorarios del anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía, pagás vos la diferencia de aranceles en los honorarios del anestesista, el ayudante y el instrumentador, y el costo total del uso del equipo, la torre, los materiales y el instrumental.';
   const lista26 = (v, titulo = T26_TITULO, cola = CIR_COLA) => titulo + ': ' + may(v.slice(0, -1).join('; ') + '; y ' + v[v.length - 1]) + '.' + (cola ? ' ' + cola : '');
   const T26 = lista26(LAS_26);
   // La lista, ítem por ítem: qué falta, qué sobra, qué está fuera de su lugar
@@ -2971,15 +2980,32 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     const top = Math.round(b.getBoundingClientRect().top);
     if (!u || getComputedStyle(u).display === 'none') return { oido, visto: null, top };
     const r = u.getBoundingClientRect();
+    const cs = getComputedStyle(u);
     // Lo que se ve: la pantalla, recortada por cada caja que recorta (hidden,
-    // clip, o una que scrollea por dentro, como el cuerpo del simulador).
+    // clip, o una que scrollea por dentro, como el cuerpo del simulador). Una
+    // burbuja fija (la de un toque, desde la tercera tanda del 23/10) no la
+    // recorta ninguna de sus cajas, salvo que un ancestro haga de marco del fixed
+    // (transform, filter, perspective, contain, will-change, container-type): si
+    // lo hay, se informa en «rompe» y desde él para arriba sí recortan.
+    const fija = cs.position === 'fixed';
+    const MARCO = (s) => s.transform !== 'none' || s.filter !== 'none' || s.perspective !== 'none' || (s.backdropFilter || 'none') !== 'none' || /paint|layout|strict|content/.test(s.contain || '') || /transform|filter|perspective/.test(s.willChange || '') || (s.containerType || 'normal') !== 'normal';
+    let rompe = null, desde = u.parentElement;
+    if (fija) {
+      desde = null;
+      for (let a = u.parentElement; a && a !== document.documentElement; a = a.parentElement) if (MARCO(getComputedStyle(a))) { rompe = a.tagName.toLowerCase() + (typeof a.className === 'string' && a.className.trim() ? '.' + a.className.trim().split(/\\s+/).join('.') : ''); desde = a; break; }
+    }
     let c = { left: 0, top: 0, right: document.documentElement.clientWidth, bottom: innerHeight };
-    for (let a = u.parentElement; a && a !== document.body; a = a.parentElement) {
+    for (let a = desde; a && a !== document.body; a = a.parentElement) {
       const s = getComputedStyle(a);
       if (/hidden|clip|auto|scroll/.test(s.overflow + s.overflowX + s.overflowY)) { const q = a.getBoundingClientRect(); c = { left: Math.max(c.left, q.left), top: Math.max(c.top, q.top), right: Math.min(c.right, q.right), bottom: Math.min(c.bottom, q.bottom) }; }
     }
     const entera = r.left >= c.left - 0.5 && r.right <= c.right + 0.5 && r.top >= c.top - 0.5 && r.bottom <= c.bottom + 0.5;
-    const cs = getComputedStyle(u);
+    // Junto a su toque: 8 px arriba o abajo (con el redondeo, de 4 a 12) y
+    // encima de él a lo ancho. Una burbuja fija que quedó en otro lado (un marco
+    // del fixed corrido, el scroll de la página sin reacomodarla) no lo está.
+    const t = b.getBoundingClientRect();
+    const hueco = r.top >= t.bottom - 1 ? r.top - t.bottom : t.top - r.bottom;
+    const junto = hueco >= 4 && hueco <= 12 && r.left <= t.right && r.right >= t.left;
     const scroll = u.scrollHeight > u.clientHeight + 1;
     // Si scrollea, que se pueda: overflow, el dedo (pointer-events) y que no
     // arrastre la página (overscroll-behavior).
@@ -2992,7 +3018,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     let tapadas = 0;
     for (const x of xs) for (const y of ys) { const e = document.elementFromPoint(x, y); if (!e || !u.contains(e)) tapadas++; }
     u.style.pointerEvents = pe;
-    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, scroll, puedeScroll, top, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)] };
+    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, scroll, puedeScroll, top, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)], alto: Math.round(r.height), largo: u.scrollHeight, fija, rompe, junto };
   }`;
   // Deja el borde de arriba del toque al `pos` del alto de la pantalla: primero
   // lo que scrollea por dentro (el cuerpo del simulador en la computadora),
@@ -3005,9 +3031,26 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     }
     window.scrollBy({ top: d, behavior: 'instant' });
   }`;
-  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && l.entera && !l.tapadas && (!l.scroll || (l.puedeScroll && l.sigue));
-  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && l.entera && !l.tapadas && (!l.scroll || (l.puedeScroll && l.sigue));
-  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip });
+  // EL ALTO QUE SE VE (tercera tanda, 23/10/2026, verificador de código). «Entera,
+  // sin nada encima y scrolleable» daba por buena una rendija: con la fila al
+  // 25 %, las 26 se abrían en 73 a 153 px que scrolleaban, porque el cuadro de
+  // esperas y la tarjeta del simulador recortan por sus esquinas, y debajo
+  // quedaban 600 px libres. Ahora la burbuja de un toque es fija, y se mide que se
+  // vea grande: al menos ALTO_MIN px de alto, o la lista entera si es más corta.
+  // Medido el 23/10 en las 63 aperturas: con la burbuja fija, el alto más chico
+  // que se ve de las 26 es 344 px; con el Term de 40d36ad, con la fila al 25 %,
+  // 153 px en el cuadro del celular (360, 390 y 430) y, según el verificador,
+  // 89 a 132 en el simulador. 240 px son unos 13 renglones: deja margen a lo de
+  // hoy y no deja pasar la rendija (la build con el Term de 40d36ad cae acá).
+  // Y la burbuja fija tiene que estar junto a su toque y sin un marco del fixed.
+  const ALTO_MIN = 240;
+  const grande = (l) => l.alto >= Math.min(l.largo, ALTO_MIN) - 1;
+  const bienPuesta = (l) => l.entera && !l.tapadas && grande(l) && (!l.fija || (l.junto && !l.rompe)) && (!l.scroll || (l.puedeScroll && l.sigue));
+  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && bienPuesta(l);
+  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && bienPuesta(l);
+  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip, alto: l.alto, largo: l.largo, fija: l.fija, junto: l.junto, rompe: l.rompe });
+  // Lo que se midió, para el informe: el alto más chico que se vio de cada lista.
+  const altos = { 26: Infinity, eco: Infinity };
   const POS = [0.25, 0.5, 0.85];
   // Abre el toque como lo abre una persona: con el mouse, pasando por encima de
   // su primer renglón; con el dedo, tocando. Si la burbuja scrollea, se scrollea
@@ -3043,15 +3086,64 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     return l;
   };
   const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(350); };
-  const visto = { posiciones: 0 };
+  const visto = { posiciones: 0, seguir: 0 };
   const abrirEn = async (pg, boton, dedo, esperado, donde) => {
     for (const pos of POS) {
       const l = await abrir(pg, boton, dedo, pos);
       visto.posiciones++;
+      if (l && l.visto !== null) { const k = esperado === 26 ? 26 : 'eco'; altos[k] = Math.min(altos[k], l.alto); }
       const ok = esperado === 26 ? bien26(l) : bienAbierto(l, esperado);
       if (!ok) malas.push(donde + ' al ' + Math.round(pos * 100) + ' %: ' + corto(l) + (esperado === 26 ? ' · ' + difs26(l && l.oido).concat(difs26(l && l.visto)).slice(0, 2).join(' · ') : ''));
       await cerrar(pg, dedo);
     }
+  };
+  // AL SCROLLEAR (tercera tanda, 23/10): la burbuja fija no se queda en la
+  // pantalla mientras su toque se va. Se eligió reacomodarla junto al toque, y
+  // esconderla mientras el toque está fuera de lo que se ve, y no cerrarla: al
+  // llegar con Tab, el navegador scrollea (suave) hasta el toque justo después
+  // de abrirlo, y cerrarla en el camino dejaba el toque con el foco y la lista
+  // cerrada (medido: la prueba del teclado caía). Se abre con la fila al 50 %
+  // (con el dedo, o con el teclado donde manda el mouse: con el mouse, salir del
+  // toque ya la cierra), se scrollean 60 px de lo que scrollea (la caja, como el
+  // cuerpo del simulador en la computadora, o la página) y se lee: abierta, junto
+  // al toque, entera, sin nada encima y grande. Después el toque se lleva arriba
+  // de la pantalla (la burbuja no se tiene que ver) y se vuelve al medio (se
+  // tiene que ver otra vez, junto a él).
+  const SCROLL60 = `(e) => {
+    let a = e.parentElement;
+    for (; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) break; }
+    const caja = !!a && a !== document.body;
+    (caja ? a : window).scrollBy({ top: 60, behavior: 'instant' });
+    return caja ? 'la caja' : 'la página';
+  }`;
+  const seguir = async (pg, boton, con, esperado, donde) => {
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(150);
+    if (con === 'dedo') { const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; }); await boton.tap({ position: { x: q.dx, y: q.dy } }); }
+    else { await boton.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); }); await pg.keyboard.press('Tab'); }
+    await pg.waitForTimeout(300);
+    const antes = await boton.evaluate(eval(LEER));
+    const que = await boton.evaluate(eval(SCROLL60));
+    await pg.waitForTimeout(300);
+    const l = await boton.evaluate(eval(LEER));
+    // Acá no se scrollea por dentro: eso lo mide abrirEn.
+    if (l.scroll) l.sigue = true;
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const ok = abierta && antes.visto !== null && l.visto !== null && Math.abs((antes.top - l.top) - 60) <= 1 && (esperado === 26 ? bien26(l) : bienAbierto(l, esperado));
+    const seVe = () => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+    await boton.evaluate(eval(COLOCAR), -0.3);
+    await pg.waitForTimeout(300);
+    const fuera = !(await seVe());
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.waitForTimeout(300);
+    const v = await boton.evaluate(eval(LEER));
+    if (v.scroll) v.sigue = true;
+    const vuelve = (await boton.getAttribute('aria-expanded')) === 'true' && (await seVe()) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
+    if (!ok || !fuera || !vuelve) malas.push(donde + ', al scrollear ' + que + ' 60 px (' + con + '): ' + (abierta ? corto(l) + ' · el toque subió ' + (antes.top - l.top) + ' px' : 'se cerró') + (fuera ? '' : ' · con el toque fuera de la pantalla, la burbuja se sigue viendo') + (vuelve ? '' : ' · con el toque de vuelta en el medio: ' + corto(v)));
+    visto.seguir++;
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(200);
   };
 
   // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
@@ -3125,7 +3217,17 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
         const lMala = await b.evaluate(eval(LEER));
         await b.evaluate((e, t) => { document.getElementById(e.getAttribute('aria-describedby')).textContent = t; }, sab);
         const lBuena = await b.evaluate(eval(LEER));
+        // El scroll de adentro lo mide abrirEn; acá se mira solo el texto.
+        lMala.sigue = lBuena.sigue = true;
         if (bien26(lMala) || !bien26(lBuena)) malas.push('autoprueba de las 26 en la página: sin «sacar un nódulo de la mama» ' + (bien26(lMala) ? 'pasa' : 'falla') + ', devuelta ' + (bien26(lBuena) ? 'pasa' : 'falla'));
+        await cerrar(page, false);
+        await seguir(page, b, 'teclado', 26, '/planes 1280, las 26');
+        // Autoprueba del alto: la misma burbuja con 89 px de alto (la rendija que
+        // se veía en el simulador a 1280 con el Term de 40d36ad) tiene que fallar.
+        await abrir(page, b, false, 0.5);
+        const lChica = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const m = u.style.maxHeight, o = u.style.overflowY; u.style.maxHeight = '89px'; u.style.overflowY = 'auto'; const r = eval(LEER)(e); u.style.maxHeight = m; u.style.overflowY = o; return r; }, LEER);
+        lChica.sigue = true;
+        if (grande(lChica)) malas.push('autoprueba del alto: la lista de las 26 con 89 px de alto pasa (' + corto(lChica) + ')');
         await cerrar(page, false);
       }
     }
@@ -3144,21 +3246,37 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       }
     }
     // El teclado (verificador de código, 23/10): con Tab se abre; Escape la
-    // cierra; Enter la vuelve a abrir y la cierra. Hasta el 23/10, después del
-    // Escape no había forma de reabrirla sin salir y volver a entrar. En un toque
-    // de la banda (span con role="button") y en una palabra del glosario (un
-    // botón), si la página la trae.
+    // cierra; Enter la vuelve a abrir y la cierra; Espacio también (tercera
+    // tanda: si alguien sacaba el Espacio del toque, la prueba seguía en verde), y
+    // sin mover la página: el Espacio, en un span, scrollea si no se le gana la
+    // tecla. Hasta el 23/10, después del Escape no había forma de reabrirla sin
+    // salir y volver a entrar. En un toque de la banda (span con role="button") y
+    // en una palabra del glosario (un botón), si la página la trae.
     {
       const prueba = async (b) => {
         await b.evaluate(eval(COLOCAR), 0.5);
         await page.mouse.move(5, 5);
         await b.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); });
         const pasos = [];
-        for (const k of ['Tab', 'Escape', 'Enter', 'Enter']) { await page.keyboard.press(k); await page.waitForTimeout(250); pasos.push(k + ' ' + (await b.getAttribute('aria-expanded')) + (await b.evaluate((e) => document.activeElement === e) ? '' : ' (sin foco)')); }
+        for (const k of ['Tab', 'Escape', 'Enter', 'Enter', 'Space', 'Space']) {
+          const y0 = await page.evaluate(() => scrollY);
+          await page.keyboard.press(k); await page.waitForTimeout(250);
+          const dy = Math.round((await page.evaluate(() => scrollY)) - y0);
+          pasos.push(k + ' ' + (await b.getAttribute('aria-expanded')) + (await b.evaluate((e) => document.activeElement === e) ? '' : ' (sin foco)') + (k === 'Space' && dy ? ' (movió la página ' + dy + ' px)' : ''));
+        }
         await page.keyboard.press('Escape');
         return pasos;
       };
-      const ESPERADO = ['Tab true', 'Escape false', 'Enter true', 'Enter false'];
+      const ESPERADO = ['Tab true', 'Escape false', 'Enter true', 'Enter false', 'Space true', 'Space false'];
+      // Autoprueba del «movió la página»: el Espacio sin nadie que se lo gane (el
+      // foco en el cuerpo de la página) scrollea, y la medida lo tiene que ver.
+      {
+        await page.evaluate(() => { window.scrollTo({ top: 0, behavior: 'instant' }); if (document.activeElement) document.activeElement.blur(); });
+        const y0 = await page.evaluate(() => scrollY);
+        await page.keyboard.press('Space'); await page.waitForTimeout(400);
+        const dy = Math.round((await page.evaluate(() => scrollY)) - y0);
+        if (!(dy > 0)) malas.push('autoprueba del teclado: el Espacio en el cuerpo de la página no movió la página (' + dy + ' px), así que la medida no ve un scroll');
+      }
       const toques = [celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]'), celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]')];
       const glosario = page.locator('button.txt[aria-describedby]:visible').first();
       if (await glosario.count()) toques.push(glosario);
@@ -3226,7 +3344,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       const n = await small('Cirugías programadas');
       const b = fila('Cirugías programadas').locator('small .txt[aria-describedby]');
       if (n !== 'En Essential, una al año por familia, ' + PALABRA_26 + '. En Silver y Gold, la mayoría.' || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push(vp + ', cuadro de esperas, Cirugías programadas: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
-      else await abrirEn(cel, b, true, 26, vp + ', cuadro de esperas, las 26');
+      else { await abrirEn(cel, b, true, 26, vp + ', cuadro de esperas, las 26'); await seguir(cel, b, 'dedo', 26, vp + ', cuadro de esperas, las 26'); }
     }
     // Nada se sale del encabezado de su fila. Autoprueba: una palabra larga que
     // no se parte, metida en el encabezado de Cirugías, tiene que salirse.
@@ -3282,9 +3400,9 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   }
 
   // (3) El simulador, a 360, 390 y 430 con el dedo y a 1280 con el mouse, con
-  // el porqué de Essential (10A: «una cirugía por año para la familia, de una
-  // lista de 26»; decía «las cirugías», sin más).
-  const ESS_PORQUE = 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía por año para la familia, de una lista de 26, se cubren al año de afiliarte.';
+  // el porqué de Essential (10A: «una cirugía al año por familia, de una lista
+  // de 26», como el cuadro y el simulador; decía «las cirugías», sin más).
+  const ESS_PORQUE = 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía al año por familia, de una lista de 26, se cubren al año de afiliarte.';
   for (const [w, h, dedo] of [[360, 780, true], [390, 844, true], [430, 932, true], [1280, 900, false]]) {
     const ctx = await browser.newContext(dedo ? { viewport: { width: w, height: h }, isMobile: true, hasTouch: true } : { viewport: { width: w, height: h } });
     const pg = await ctx.newPage();
@@ -3306,7 +3424,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
         const c = await notaDe('Cirugías programadas');
         const b = fila('Cirugías programadas').locator('.txt[aria-describedby]');
         if (c !== 'una al año por familia, ' + PALABRA_26 || !(await b.count())) malas.push('simulador ' + w + ', Essential, Cirugías programadas: ' + (c === null ? 'falta la nota' : '«' + c + '»'));
-        else await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26');
+        else { await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26'); await seguir(pg, b, dedo ? 'dedo' : 'teclado', 26, 'simulador ' + w + ', las 26'); }
         const porque = await pg.evaluate(() => { const p = document.querySelector('[data-sp-price]'); const c = p && p.closest('div.sq'); return c ? [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()) : []; });
         if (!porque.includes(ESS_PORQUE) || porque.some((x) => /las cirugías y el parto/.test(x))) malas.push('simulador ' + w + ', el porqué de Essential: ' + JSON.stringify(porque.find((x) => /^Cobertura de entrada/.test(x)) || porque.slice(0, 2)));
       } else {
@@ -3334,17 +3452,73 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       return btn.evaluate((b) => { const r = document.getElementById(b.getAttribute('aria-controls')); return r ? r.innerText.replace(/\s+/g, ' ') : ''; });
     };
     const r = await abrirFaq('¿Cuánto tengo que esperar para usar mi plan?');
-    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + GOLD5 + '; ' + VEJ + ')', 'cirugías (una al año por familia, de una lista de 26)'];
+    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + GOLD5 + ', y ' + VEJ + ')', 'cirugías (una al año por familia, de una lista de 26)'];
     const faltan = debe.filter((x) => !r.includes(x));
     if (faltan.length || /laboratorio y ecografías, unos 2 meses|otras seis/.test(r)) malas.push('home, FAQ de las esperas: ' + (faltan.length ? 'no dice «' + faltan.join('» ni «') + '»' : 'sigue diciendo «otras seis» o «unos 2 meses»'));
     const d = await abrirFaq('¿Cuál es la diferencia entre Essential, Silver y Gold?');
-    const DIF = 'La internación, el parto y una cirugía por año para la familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia.';
+    const DIF = 'La internación, el parto y una cirugía al año por familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia.';
     if (!d.includes(DIF) || /las cirugías y el parto/.test(d)) malas.push('home, FAQ de la diferencia: no dice «' + DIF + '»');
     await page.close();
   }
 
   if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera, sin nada encima y donde se abra · ' + malas.slice(0, 8).join(' · ') + (malas.length > 8 ? ' · (y ' + (malas.length - 8) + ' más)' : ''));
-  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja se ve entera y sin nada encima (5 × 5 puntos) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; el teclado la abre y la cierra (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
+}
+
+// ── «Compartir cotización» no mueve nada al copiar (#60, tercera tanda del 23/10) ──
+// Sin Web Share (la computadora con Linux y, deducido sin verificar, los
+// navegadores de adentro de Instagram y Facebook en Android), el botón copia y
+// su texto pasa a «¡Copiado!», que es más corto: a 360 y 390 los dos botones
+// entraban en un renglón y todo lo de abajo subía 54 px, y a los 2,2 s bajaba,
+// con el botón corriéndose de debajo del dedo (verificador de código, 23/10).
+// Ahora el texto largo va escondido en la misma celda de una grilla y el botón
+// mide siempre lo de «Compartir cotización». Se mide, con navigator.share sacado
+// y el portapapeles permitido, el link «Ver el detalle de los planes» y el ancho
+// de los dos botones antes y después de tocar; el lector oye lo que se ve.
+// Autoprueba: sin el texto largo escondido (lo de antes), el link se mueve.
+console.log('\n── «Compartir cotización» no mueve nada al copiar (#60)');
+{
+  const malas = [], visto = [];
+  for (const [w, h] of [[360, 780], [390, 844]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, permissions: ['clipboard-read', 'clipboard-write'] });
+    await ctx.addInitScript(() => { try { Object.defineProperty(Navigator.prototype, 'share', { value: undefined, configurable: true }); } catch (e) { /* ya no está */ } });
+    const pg = await ctx.newPage();
+    await pg.goto(BASE + '/simulador/?plan=silver', { waitUntil: 'networkidle' });
+    for (let i = 0; i < 14 && !(await pg.locator('[data-sp-price]').count()); i++) {
+      let hecho = false;
+      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) { const b = pg.locator('button:visible', { hasText: t }).first(); if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; } }
+      if (!hecho) break;
+      await pg.waitForTimeout(450);
+    }
+    // Por el nombre que oye el lector: el texto del botón trae también el largo
+    // escondido.
+    const comp = pg.getByRole('button', { name: /^(Compartir cotización|¡Copiado!)$/ }).first();
+    const link = pg.locator('a', { hasText: 'Ver el detalle de los planes' }).first();
+    if (!(await comp.count()) || !(await link.count())) { malas.push(w + ': no llego a «Compartir cotización» (' + (await comp.count()) + ') ni al link de abajo (' + (await link.count()) + ')'); await ctx.close(); continue; }
+    await comp.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await pg.waitForTimeout(150);
+    const medir = async () => ({
+      y: Math.round((await link.boundingBox()).y),
+      anchos: await pg.evaluate(() => [...document.querySelectorAll('button')].filter((b) => /^(Descargar cotización|Compartir cotización|¡Copiado!)$/.test(b.innerText.trim())).map((b) => Math.round(b.getBoundingClientRect().width))),
+      texto: (await comp.innerText()).trim(),
+      oye: oido(await comp.ariaSnapshot()),
+    });
+    const tocar = async () => { const a = await medir(); await comp.click(); await pg.waitForTimeout(300); const d = await medir(); return { a, d }; };
+    const { a, d } = await tocar();
+    if (d.texto !== '¡Copiado!') malas.push(w + ': al tocar sin Web Share no dice «¡Copiado!» («' + d.texto + '»): no se puede medir');
+    else if (Math.abs(d.y - a.y) > 0.5 || JSON.stringify(a.anchos) !== JSON.stringify(d.anchos)) malas.push(w + ': al copiar, el link de abajo se movió ' + (d.y - a.y) + ' px y los botones pasaron de ' + a.anchos.join('/') + ' a ' + d.anchos.join('/') + ' px');
+    if (a.oye !== 'Compartir cotización' || d.oye !== '¡Copiado!') malas.push(w + ': el lector oye «' + a.oye + '» y, al copiar, «' + d.oye + '» (tiene que ser lo que se ve)');
+    visto.push(w + ': ' + a.anchos.join('/') + ' px, el link en ' + a.y + ' antes y ' + d.y + ' después');
+    // Autoprueba: lo de antes (sin el texto largo escondido) tiene que moverse.
+    await pg.waitForTimeout(2400);
+    await comp.evaluate((e) => { const x = e.querySelector('[aria-hidden="true"]'); if (x) x.remove(); });
+    await pg.waitForTimeout(100);
+    const sab = await tocar();
+    if (!(Math.abs(sab.d.y - sab.a.y) > 0.5)) malas.push(w + ': autoprueba, sin el texto largo escondido el link no se mueve (' + sab.a.y + ' → ' + sab.d.y + ')');
+    await ctx.close();
+  }
+  if (malas.length) mal('«Compartir cotización» sin Web Share: ' + malas.join(' · '));
+  else bien('«Compartir cotización» sin Web Share: al pasar a «¡Copiado!» no cambia el ancho de los botones ni se mueve nada de abajo, y el lector oye lo que se ve (' + visto.join('; ') + '); sin el texto largo escondido, el link se mueve');
 }
 
 // ── La nota de la cesárea del plegable, con letra de nota (cierre de la vuelta 3, 18/10) ──

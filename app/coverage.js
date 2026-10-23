@@ -186,8 +186,14 @@ export const coverage = () => [
 //   cuatro se leía completa y la del corazón del bebé esperaba 3 meses), sin
 //   «Las demás, 2 meses» (repetía la celda y, debajo de las tres tarjetas,
 //   parecía valer también para Essential). La vesical y la de vejiga no eligen
-//   un lado: «Para la de vejiga, preguntale a tu asesor» (pregunta a SP). Lo
-//   controla qa/listas-fuente.mjs contra la grilla, fila por fila (`NOMBRE_WEB`).
+//   un lado: «Para la de vejiga, preguntale a tu asesor cuánto esperás»
+//   (pregunta a SP, sp-interno#204). Las Doppler van en su propia oración,
+//   separadas con punto de las de Gold: con una coma, «las Doppler de … y de
+//   carótidas, y las de riñón» se leía «Doppler de riñón», y la renal común es
+//   la que espera 3 meses en Gold (verificador de datos, 23/10, tercera tanda).
+//   Lo controla qa/listas-fuente.mjs contra la grilla, fila por fila
+//   (`NOMBRE_WEB`; las filas de los grupos de ecografías del master que el toque
+//   no cuenta, en `FUERA_DE_LA_FILA`, con su porqué).
 // - 10A, las cirugías programadas de Essential: «1 cirugía/familia/año» es de
 //   una lista cerrada de 26 (CUADERNILLO PLAN ESSENTIAL.pdf, 4.4 «Intervenciones
 //   Quirúrgicas (Abiertas)», 4.4.1 a 4.4.26, 25/03/2026; la lista literal está en
@@ -195,14 +201,25 @@ export const coverage = () => [
 //   lista. Ningún nombre promete más que el cuadernillo (verificadores de datos
 //   y de textos, 23/10): la palabra de la familia va donde dice lo mismo («sacar
 //   la vesícula»); donde no es segura, el nombre del cuadernillo con su
-//   traducción entre paréntesis («legrado evacuador (raspado del útero)»,
-//   «pielolitotomía (…)»), nunca una palabra más amplia («hemorroides» abarcaba
-//   la ligadura, que no entra; «quiste», cualquier quiste). Con todos sus
-//   calificativos: «de un lado», «la malla no entra», «con o sin autoinjerto». La
-//   técnica va en el título, como en el cuadernillo («a cielo abierto»), y la
-//   lista cierra con lo que el cuadernillo dice del anestesista (4.3.2) y de la
-//   videolaparoscopía (el párrafo que sigue a la lista). En el mismo orden que el
-//   cuadernillo; qa/listas-fuente.mjs controla que cada nombre tenga su par.
+//   traducción entre paréntesis, nunca una palabra más amplia («hemorroides»
+//   abarcaba la ligadura, que no entra; «quiste», cualquier quiste). Y la
+//   traducción tampoco puede abarcar más que el ítem (tercera tanda, 23/10):
+//   «(raspado del útero)» incluía el de diagnóstico, que no entra; ahora
+//   «legrado evacuador (raspado del útero como tratamiento)», que es lo que dice
+//   «terapéutico». Con todos los calificativos del ítem, también los que repiten
+//   el título: «sacar el adenoma de próstata, a cielo abierto» (la cirugía de
+//   próstata más común es por la uretra, que no es videolaparoscopía: el cierre
+//   de la lista no la nombra), «pielolitotomía abierta», «(apendicectomía no
+//   complicada)» tal como lo dice el ítem («sin complicaciones» se leía «si la
+//   cirugía sale bien»), «varicocele de un lado, inguinoescrotal», «de un
+//   lado», «la malla no entra», «con o sin autoinjerto». La técnica de todas va
+//   en el título, como en el cuadernillo («Intervenciones Quirúrgicas
+//   (Abiertas)»), y la lista cierra con lo que el cuadernillo dice del
+//   anestesista (4.3.2) y de la videolaparoscopía (el párrafo que sigue a la
+//   lista). En el mismo orden que el cuadernillo; qa/listas-fuente.mjs controla
+//   que cada nombre tenga su par y conserve los calificativos de su ítem
+//   (`CALIFICATIVOS`). Las palabras de casa esperan la lámina de Arturo
+//   (sp-interno#206).
 // Se dibujan con `Term` de glossary.jsx (`dict={TOQUES}`): subrayado punteado,
 // mouse, dedo y teclado, y la lista entera para el lector de pantalla. Donde no
 // puede ir un toque (una tarjeta que se cierra al sacar el mouse, una fila que
@@ -216,31 +233,43 @@ const DOPPLER = 'las Doppler de tiroides, de mama, de testículo, de venas de br
 // testículos»: en la misma oración ya está la Doppler «de testículo».
 export const SOLO_GOLD = 'las de riñón y de vías urinarias, la testicular, la de próstata por vía rectal y la transvaginal';
 // La «VESICAL» de Gold espera 90 días en el master y la «DE VEJIGA», 60: no se
-// elige un lado (sp-interno, pregunta a SP).
-export const VEJIGA_GOLD = 'para la de vejiga, ' + minuscula(ASESOR);
+// elige un lado (pregunta a SP, sp-interno#204). Con «cuánto esperás», como la
+// cesárea de Gold (CESAREA_GOLD): «preguntale a tu asesor» solo no decía qué
+// preguntar.
+export const VEJIGA_GOLD = 'para la de vejiga, ' + minuscula(ASESOR) + ' cuánto esperás';
 // La frase de la pregunta frecuente de las esperas del home: la misma lista,
 // dicha corta (la respuesta vive en un Plegable que recorta y no lleva toque).
-export const ECO_EN_FAQ = '2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + SOLO_GOLD + '; ' + VEJIGA_GOLD + ')';
-export const CIRUGIAS_26 = ['absceso perianal (junto al ano)', 'sacar las amígdalas y las adenoides juntas', 'sacar las adenoides', 'sacar el adenoma de próstata', 'sacar las amígdalas', 'sacar el apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'sacar la vesícula', 'colporrafia anterior', 'colporrafia posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroidectomía (cirugía para sacar las hemorroides)', 'hernia crural de un lado (la malla no entra)', 'hernia de la ingle de un lado (la malla no entra)', 'hernia del ombligo o epigástrica (la malla no entra)', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado evacuador (raspado del útero)', 'sacar el ovario y la trompa de un lado', 'pielolitotomía (sacar una piedra de la pelvis del riñón)', 'pterigión, con o sin autoinjerto', 'quistectomía de un lado (' + minuscula(ASESOR) + ' cuáles entran)', 'sacar un nódulo de la mama', 'varicocele de un lado'];
+// Sin punto y coma adentro del paréntesis: la oración de la respuesta ya separa
+// los servicios con punto y coma (verificador de textos, 23/10).
+export const ECO_EN_FAQ = '2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + SOLO_GOLD + ', y ' + VEJIGA_GOLD + ')';
+export const CIRUGIAS_26 = ['absceso perianal (junto al ano)', 'sacar las amígdalas y las adenoides juntas', 'sacar las adenoides', 'sacar el adenoma de próstata, a cielo abierto', 'sacar las amígdalas', 'sacar el apéndice (apendicectomía no complicada)', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'sacar la vesícula', 'colporrafia anterior', 'colporrafia posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroidectomía (cirugía para sacar las hemorroides)', 'hernia crural de un lado (la malla no entra)', 'hernia de la ingle de un lado (la malla no entra)', 'hernia del ombligo o epigástrica (la malla no entra)', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado evacuador (raspado del útero como tratamiento)', 'sacar el ovario y la trompa de un lado', 'pielolitotomía abierta (abrir la pelvis del riñón para sacar una piedra)', 'pterigión, con o sin autoinjerto', 'quistectomía de un lado (' + minuscula(ASESOR) + ' cuáles entran)', 'sacar un nódulo de la mama', 'varicocele de un lado, inguinoescrotal'];
 if (CIRUGIAS_26.length !== 26) throw new Error('Essential: la lista de cirugías no tiene 26');
 // Lo que el cuadernillo dice después de la lista (4.4) y del anestesista en toda
 // cirugía con internación (4.3.2: «50% cobertura honorarios del anestesiólogo»).
-// La videolaparoscopía, como el párrafo que sigue a la lista: «Queda a cargo del
-// asegurado el pago de la diferencia en aranceles en honorarios médicos
-// (anestesiólogo, ayudante, instrumentador) y el costo total del uso de equipo,
-// torre y materiales/instrumentales». «La torre» es parte del equipo: no se
-// nombra aparte (no es una palabra de la familia).
+// La videolaparoscopía, copia fiel del párrafo que sigue a la lista: «En caso de
+// que la intervención quirúrgica sea realizada por vía videolaparoscópica. Queda
+// a cargo del asegurado el pago de la diferencia en aranceles en honorarios
+// médicos (anestesiólogo, ayudante, instrumentador) y el costo total del uso de
+// equipo, torre y materiales/instrumentales» (releído en el PDF del Drive el
+// 23/10/2026). Hasta la tercera tanda decía «todo el uso del equipo y de los
+// materiales»: sin la torre ni el instrumental, la persona veía menos de lo que
+// iba a pagar (verificador de datos). «Anestesista» es «anestesiólogo», como en
+// la oración de arriba.
 const CIR_ANESTESISTA = 'De los honorarios del anestesista, el plan cubre la mitad.';
-const CIR_VIDEO = 'Si te operan por videolaparoscopía, pagás vos la diferencia de honorarios (del anestesista, el ayudante y el instrumentador) y todo el uso del equipo y de los materiales.';
+const CIR_VIDEO = 'Si te operan por videolaparoscopía, pagás vos la diferencia de aranceles en los honorarios del anestesista, el ayudante y el instrumentador, y el costo total del uso del equipo, la torre, los materiales y el instrumental.';
 export const TOQUES = {
   'eco-silver': { t: 'Ecografías que esperan 3 meses en Silver', d: may(EMBARAZO) + ' y ' + DOPPLER + '.' },
-  'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + '; ' + DOPPLER + ', y ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
-  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '; ' + VEJIGA_GOLD + '.' },
+  'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + ' y ' + DOPPLER + '. También ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
+  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
   // `ancho` (Term): a 260 px la lista mide unos 366 px de alto y no entraba en la
-  // tarjeta de esperas del simulador en la computadora; a 420, unos 290. Donde no
-  // entra ni arriba ni abajo (el celular), Term la abre hacia el lado más grande
-  // y scrollea por dentro.
-  'cir-26': { t: 'Las 26 cirugías de Essential, a cielo abierto', d: may(CIRUGIAS_26.slice(0, -1).join('; ') + '; y ' + CIRUGIAS_26[25]) + '. ' + CIR_ANESTESISTA + ' ' + CIR_VIDEO, ancho: 420 },
+  // tarjeta de esperas del simulador en la computadora; a 420, unos 290. Desde la
+  // tercera tanda (23/10) la burbuja es fija y ya no la recorta la tarjeta, pero
+  // la lista creció con los calificativos y la videolaparoscopía entera: a 420
+  // medía 421 px y, con la fila en el medio de la pantalla a 1280 × 900, le
+  // faltaban 3 para entrar (scrolleaba 3 px). A 480 entra. En el celular manda el
+  // 72vw; donde no entra ni arriba ni abajo, Term la abre hacia el lado más
+  // grande y scrollea por dentro.
+  'cir-26': { t: 'Las 26 cirugías de Essential, a cielo abierto', d: may(CIRUGIAS_26.slice(0, -1).join('; ') + '; y ' + CIRUGIAS_26[25]) + '. ' + CIR_ANESTESISTA + ' ' + CIR_VIDEO, ancho: 480 },
 };
 // La lista en oraciones, para donde no entra el toque: «título: lista», con
 // minúscula después de los dos puntos.

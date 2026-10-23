@@ -5794,8 +5794,11 @@ repo clasifica como «No entra» o «Preguntale» (`lib/prestaciones.json`):
 «legrado» sin «evacuador» incluía el de diagnóstico, que no entra; «amígdalas»,
 el drenaje alrededor de la amígdala. Y «a cielo abierto» en solo dos de las 26
 hacía leer que las otras 24 entraban con cualquier técnica, cuando el
-cuadernillo titula la lista entera «Intervenciones Quirúrgicas (Abiertas)» y
-deja la videolaparoscopía a cargo de la persona. Ahora la palabra de la familia
+cuadernillo titula la lista entera «Intervenciones Quirúrgicas (Abiertas)» y,
+si la cirugía es por videolaparoscopía, deja a cargo de la persona la
+diferencia de aranceles de los honorarios (anestesiólogo, ayudante e
+instrumentador) y el costo del equipo, la torre y los materiales e
+instrumental. Ahora la palabra de la familia
 va donde no hay duda («sacar la vesícula»); donde la hay, el nombre del
 cuadernillo con su traducción entre paréntesis («hemorroidectomía (cirugía para
 sacar las hemorroides)»); la técnica, en el título, y la videolaparoscopía y el
@@ -5811,3 +5814,83 @@ anestesista, al cierre de la lista.
 - **El repo ya sabía la respuesta.** La clasificación de cada cirugía estaba en
   `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
   nombre al lado de su literal, de a pares.
+
+## Capítulo 161 — Lo que dice el ítem se queda en el ítem (23/10/2026)
+
+**Qué intentamos.** La segunda tanda de la 10A sacó el «a cielo abierto» de la
+próstata y el «abierta» de la pielolitotomía, porque el capítulo 160 enseñaba
+que un calificativo suelto hace leer distinto a los que no lo llevan: la técnica
+iba una vez, en el título. Y tradujo el legrado como «legrado evacuador
+(raspado del útero)», con «evacuador» para no prometer el de diagnóstico.
+
+**Qué pasó.** La re-verificación de datos, con el cuadernillo releído en el
+Drive, encontró cuatro nombres que seguían abarcando más que su ítem:
+- **La próstata.** El «a cielo abierto» no era nuestro: está en el ítem mismo
+  («Adenomectomía prostática a cielo abierto»). La cirugía de próstata más común
+  es por la uretra, que no es videolaparoscopía: el cierre de la lista no la
+  nombraba, y el título solo quedaba lejos.
+- **El legrado.** «evacuador» estaba, pero la traducción entre paréntesis, que es
+  lo que lee la familia, decía «raspado del útero»: también el de diagnóstico.
+  El ítem dice «terapéutico»; ahora, «como tratamiento».
+- **El apéndice.** «sin complicaciones» se leía «si la cirugía sale bien». El ítem
+  dice «no complicada», y va así.
+- **La pielolitotomía** había perdido el «abierta» de su ítem.
+- Y el cap. 160 decía que el cuadernillo «deja la videolaparoscopía a cargo de
+  la persona». Deja a cargo la diferencia de honorarios y el equipo. El sitio,
+  por su lado, decía «todo el uso del equipo y de los materiales», sin la torre
+  ni el instrumental. Se corrigieron las dos cosas.
+
+La prueba no lo veía porque comparaba cada nombre contra el par escrito a mano:
+si cambiaban las dos puntas a la vez, daba verde.
+
+**Qué aprendimos.**
+- **Lo que vale para todas va arriba; lo que dice el ítem, en el ítem.** La
+  lección del cap. 160 sirve para lo que agregamos nosotros, no para lo que el
+  contrato escribió en el renglón. Sacar un calificativo del ítem porque el
+  título ya lo dice es resumir el contrato, y resumir es prometer de más.
+- **La traducción también promete.** El literal puede estar entero y la
+  traducción entre paréntesis abarcar más: la familia lee la traducción.
+- **Una prueba de pares no ve un par mal hecho.** Ahora `CALIFICATIVOS` pide a
+  cada nombre de la web lo que dice su ítem («unilateral», «a cielo abierto»,
+  «no complicada», «terapéutico»…), y la autoprueba cambia las dos puntas a la
+  vez: tiene que caer por el calificativo, no por la igualdad.
+
+## Capítulo 162 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
+
+**Qué intentamos.** En la segunda tanda, la lista de las 26 que quedaba debajo
+de la cabecera fija pasó a abrirse hacia el lado más grande, con ese alto y
+scroll por dentro. La prueba pedía «entera, sin nada encima y scrolleable», y
+daba verde.
+
+**Qué pasó.** Con la fila arriba en la pantalla, la lista se abría por una
+rendija: de 105 a 153 px en el celular y 73 a 89 en el simulador de la
+computadora, tres renglones de veintiséis, con 600 px libres debajo. El límite no
+era la pantalla: era el `overflow:hidden` del cuadro de esperas y de la tarjeta
+del simulador, que está ahí solo para redondear sus esquinas. La prueba no lo
+veía porque no pedía un alto. La burbuja pasó a `position:fixed`, que ningún
+overflow de sus cajas recorta (antes se midió que ningún ancestro tiene
+transform, filter, contain ni will-change, que la volverían a encerrar), con el
+techo en la cabecera y el piso en el borde de la pantalla. Dos cosas más, en el
+camino:
+- **Cerrarla al scrollear rompía el teclado.** Una burbuja fija no sigue sola a
+  su toque, así que la primera versión se cerraba cuando el toque salía de la
+  pantalla. La prueba del teclado cayó: al llegar con Tab, el navegador scrollea
+  suave hasta el toque justo después de abrirlo, y la cerraba en el camino.
+  Ahora se reacomoda junto al toque y, mientras el toque está fuera de la
+  pantalla, se esconde sin cerrarse.
+- **La lista que creció dejó de entrar por 3 px.** Con los calificativos y la
+  videolaparoscopía entera, a 420 px de ancho medía 421 de alto, y con la fila
+  en el medio de la pantalla a 1280 × 900 había 418: scrolleaba 3 px. La
+  autoprueba de la página falló por eso, y no por el texto. Pasó a 480 px en la
+  computadora.
+
+**Qué aprendimos.**
+- **«Se ve entera» no es «se ve».** Una prueba de que algo cabe tiene que pedir
+  también un tamaño: una rendija con scroll está entera y no se lee. Ahora pide
+  al menos 240 px o la lista entera, y la build con el `Term` de 40d36ad cae.
+- **Un overflow puesto para la forma recorta el contenido.** Las esquinas
+  redondeadas con `overflow:hidden` son también un marco para todo lo que se
+  abra adentro. Lo que flota (una burbuja, un menú) no puede depender de esa caja.
+- **Lo que sale del flujo pierde a su ancla.** Con `position:fixed` hay que
+  decidir qué pasa al scrollear, y medirlo con las tres entradas: el dedo, el
+  mouse y el teclado. La decisión obvia (cerrar) era la que rompía una de ellas.

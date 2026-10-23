@@ -48,9 +48,10 @@ sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
    toque, la lista va en oraciones: en el pie de la tarjeta de la ecografía de
    `/planes` (se cierra al sacar el mouse del nombre), en la hoja del celular
    (la fila de «Los once servicios» ya es un botón), en una segunda línea de la
-   cotización en texto y en la pregunta frecuente del home («ecografías, 2 meses
-   la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis)»;
-   su caja recorta y la lista no entra). La espera dice «2 meses de espera, la
+   cotización en texto y en la pregunta frecuente del home (decía «ecografías, 2
+   meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras
+   seis)»: así quedó la primera tanda; la frase de hoy, en «La tercera tanda»,
+   abajo; su caja recorta y la lista no entra). La espera dice «2 meses de espera, la
    mayoría» en la tarjeta, la lista y la píldora de la hoja.
    **Las listas finales (segunda tanda del 23/10, después de los
    verificadores).** Silver: «Las del embarazo (obstétrica, morfológica, de
@@ -58,7 +59,9 @@ sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
    biofísico y monitoreo fetal) y las Doppler de tiroides, de mama, de
    testículo, de venas de brazos o piernas y de carótidas.» Gold: lo mismo, «y
    las de riñón y de vías urinarias, la testicular, la de próstata por vía
-   rectal y la transvaginal. Para la de vejiga, preguntale a tu asesor.» Sin
+   rectal y la transvaginal. Para la de vejiga, preguntale a tu asesor.»
+   *(Tercera tanda: las Doppler van en su oración y la vejiga dice «cuánto
+   esperás»; ver «La tercera tanda».)* Sin
    «Las demás, 2 meses» (repetía la celda y, debajo de las tres tarjetas,
    parecía valer para Essential). La «VESICAL» (90 días) y la «DE VEJIGA» (60)
    de Gold son el mismo estudio en el master: no se elige un lado, va al
@@ -73,7 +76,9 @@ sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
    palabra de la familia donde dice lo mismo (vesícula, amígdalas, hemorroides)
    y el nombre del cuadernillo, con todos sus calificativos, donde traducir
    prometería más (laparotomía exploradora, colporrafía, pterigión; «de un
-   lado», «sin la malla», «a cielo abierto»). La lista literal, con su fuente,
+   lado», «sin la malla», «a cielo abierto»). *(Así quedó la primera tanda; la
+   segunda y la tercera la corrigieron: ver «La lista final», abajo, y «La
+   tercera tanda».)* La lista literal, con su fuente,
    quedó en `essential.json` (`cirugias_lista_26`).
    **La lista final (segunda tanda del 23/10).** Los verificadores encontraron
    nombres que prometían más que el cuadernillo («hemorroides» abarcaba la
@@ -83,7 +88,8 @@ sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
    «sacar un nódulo de la mama»); el literal con su traducción entre paréntesis
    donde la hay («absceso perianal (junto al ano)», «hemorroidectomía (cirugía
    para sacar las hemorroides)», «legrado evacuador (raspado del útero)»,
-   «pielolitotomía (sacar una piedra de la pelvis del riñón)»), y los
+   «pielolitotomía (sacar una piedra de la pelvis del riñón)»; *la tercera
+   tanda corrigió esas dos y tres más*), y los
    calificativos del cuadernillo («pterigión, con o sin autoinjerto», «(la
    malla no entra)», «quistectomía de un lado (preguntale a tu asesor cuáles
    entran)»: el cuadernillo no dice de qué órgano). «colporrafia», sin tilde. El
@@ -93,10 +99,12 @@ sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
    anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía,
    pagás vos la diferencia de honorarios (del anestesista, el ayudante y el
    instrumentador) y todo el uso del equipo y de los materiales.» (4.3.2 y el
-   párrafo que sigue a la lista, releídos en el PDF el 23/10). El porqué de
+   párrafo que sigue a la lista, releídos en el PDF el 23/10; *la tercera tanda
+   la copió fiel, con la torre y el instrumental*). El porqué de
    Essential del simulador y la pregunta frecuente «¿Cuál es la diferencia…?»
    dicen «una cirugía por año para la familia, de una lista de 26» (decían «las
-   cirugías»). `qa/listas-fuente.mjs` controla que cada ítem de
+   cirugías»; *desde la tercera tanda, «una cirugía al año por familia», como el
+   cuadro*). `qa/listas-fuente.mjs` controla que cada ítem de
    `cirugias_lista_26` tenga su nombre en `CIRUGIAS_26`, en el mismo índice
    (`PARES_26`, que también lee la prueba con navegador). La pregunta frecuente de las
    esperas lo dice en la oración. La burbuja de esta lista es más ancha (`ancho:
@@ -208,6 +216,73 @@ código).** Lo que encontraron sobre lo de arriba y entró en la misma rama:
   contra `essential.json`, con 10 casos que tienen que fallar (y el de hoy, que
   pasa). Sobre los datos de 72291ef da 27 hallazgos.
 
+**La tercera tanda (23/10, después de re-verificar la segunda: datos, textos y
+código).** El cuadernillo de Essential se releyó en el Drive (4.4 y el párrafo
+de la videolaparoscopía). Entró en la misma rama:
+- **Las 26, fieles al ítem** (`CIRUGIAS_26` y `PARES_26`): «sacar el adenoma de
+  próstata, a cielo abierto» (el ítem lo dice; la de próstata más común es por
+  la uretra, y el cierre de la lista no la nombra); «sacar el apéndice
+  (apendicectomía no complicada)», la condición como la dice el ítem («sin
+  complicaciones» se leía «si la cirugía sale bien»); «legrado evacuador
+  (raspado del útero como tratamiento)» («terapéutico»: la traducción ya no
+  incluye el raspado de diagnóstico); «pielolitotomía abierta (abrir la pelvis
+  del riñón para sacar una piedra)»; y «varicocele de un lado,
+  inguinoescrotal». La regla: ni el nombre ni su traducción entre paréntesis
+  abarcan más que el ítem, y el nombre conserva los calificativos de su ítem
+  aunque repitan el título. Las palabras de casa siguen esperando la lámina de
+  Arturo (#206).
+- **La videolaparoscopía, copia fiel**: «Si te operan por videolaparoscopía,
+  pagás vos la diferencia de aranceles en los honorarios del anestesista, el
+  ayudante y el instrumentador, y el costo total del uso del equipo, la torre,
+  los materiales y el instrumental.» (decía «todo el uso del equipo y de los
+  materiales»: sin la torre ni el instrumental). La burbuja de las 26 pasó a
+  480 px de ancho en la computadora (a 420 medía 421 px y, con la fila en el
+  medio a 1280 × 900, le faltaban 3 para entrar).
+- **Los toques de las ecografías**: en Gold y en el cuadro, las Doppler van en
+  su oración y «También las de riñón y de vías urinarias, …» en otra (con la
+  coma se leía «Doppler de riñón», y la renal común es la que espera 3 meses en
+  Gold); «Para la de vejiga, preguntale a tu asesor cuánto esperás» (como la
+  cesárea de Gold). La pregunta frecuente de las esperas, sin punto y coma
+  adentro del paréntesis: «(en Gold, también …, y la transvaginal, y para la de
+  vejiga, preguntale a tu asesor cuánto esperás)». La cirugía de Essential se
+  dice de una sola forma en lo que se lee: «una cirugía al año por familia, de
+  una lista de 26» (el porqué del simulador y la pregunta de la diferencia
+  decían «por año para la familia»).
+- **La burbuja de un toque es fija** (`Term`, `tipo="toque"`): con la fila
+  arriba, la lista de las 26 se abría por una rendija de 73 a 153 px que
+  scrolleaba, porque el cuadro de esperas del celular y la tarjeta del simulador
+  tienen `overflow:hidden` para redondear sus esquinas. Ahora va con
+  `position:fixed` (medido: ningún ancestro del toque tiene transform, filter,
+  contain ni will-change, y la prueba lo mide en cada apertura); el techo es el
+  borde de abajo de la cabecera fija (`[data-nav]`) + 8 y el piso, el alto de la
+  pantalla − 8; arriba por defecto, abajo si arriba no entra, y si no entra en
+  ninguno, del lado más grande con scroll; centrada en el toque, sin salirse de
+  los costados. Al scrollear la página o la caja que la contiene se reacomoda
+  junto al toque y, mientras el toque está fuera de la pantalla, se esconde
+  (sigue abierta). No se cierra al scrollear: al llegar con Tab, el navegador
+  scrollea (suave) hasta el toque justo después de abrirlo, y la cerraba en el
+  camino (lo vio la prueba del teclado). Con la fila al 25 %, en el celular se
+  ve la lista grande (el alto más chico que se vio de las 26 en las 63
+  aperturas: 344 px). Las palabras del glosario siguen como estaban
+  (`position:absolute`, adentro de su caja).
+- **Sin parpadeo**: el efecto de posición de `Term` (y el que lleva la lista
+  arriba) es `useLayoutEffect`: mide y acomoda antes de pintar.
+- **«Compartir cotización» no salta**: sin Web Share, al pasar a «¡Copiado!» el
+  botón ya no se achica (el texto largo va escondido en la misma celda de una
+  grilla), así que a 360 y 390 nada de abajo se mueve.
+- **`qa/listas-fuente.mjs`**: elige las filas por el grupo del master
+  («ECOGRAFIAS» y «ECOGRAFIAS PERINATALES») o el prefijo «ECOGRAFIA», con
+  `FUERA_DE_LA_FILA` declarado con su porqué y su espera (los dos ecocardiogramas,
+  la ECOCARDIOGRAFIA que SP borró por duplicada el 18/09 y la «MAMOGRAFIA 2 LADOS
+  ECOGRAFIA DOPPLER», de nombre pegado); una fila del grupo que no esté en
+  ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
+  Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
+  tiene que conservar de su ítem), aunque cambien las dos puntas del par.
+- **Documentos**: BITACORA caps. 161 («Lo que dice el ítem se queda en el
+  ítem») y 162 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 160 corregido donde decía más que el cuadernillo sobre la
+  videolaparoscopía.
+
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
 - *(Segunda tanda.)* La sección «9A y 10A» de `qa-lanzamiento` abre cada toque
@@ -243,51 +318,48 @@ un caso que falla y uno que pasa:
   rama 0) y, en `qa-integral`, la guía vieja sin Bronze y el upsell reparado.
 - Sobre la build de main (35165a7), las ocho secciones nuevas o cambiadas de
   `qa-lanzamiento` dan ✗; sobre la rama, ✓.
+- *(Tercera tanda.)* La sección «9A y 10A» exige además, en cada apertura, que
+  la burbuja se vea grande (al menos 240 px o la lista entera; autoprueba: la
+  de las 26 con 89 px de alto tiene que fallar), que la burbuja fija esté junto
+  a su toque y que ningún ancestro haga de marco del fixed; scrollea con las 26
+  abiertas (8 veces: /planes y el simulador a 1280 con el teclado, el cuadro y
+  el simulador en el celular con el dedo) y mide que se reacomode, se esconda
+  con el toque fuera de la pantalla y vuelva; y el teclado suma Espacio (abre y
+  cierra) sin mover la página (autoprueba: el Espacio en el cuerpo de la página
+  sí la mueve). Con el `Term` de 40d36ad cae (las 26 al 25 % del celular, en
+  153 px).
+- *(Tercera tanda.)* `qa-lanzamiento`, sección nueva «“Compartir cotización” no
+  mueve nada al copiar (#60)»: sin Web Share, a 360 y 390, el link de abajo y el
+  ancho de los botones no cambian al pasar a «¡Copiado!», y el lector oye lo que
+  se ve; sin el texto largo escondido, el link se mueve.
+- *(Tercera tanda.)* `qa/listas-fuente.mjs` tiene 18 casos que tienen que fallar
+  (entre ellos, los cuatro nombres de esta tanda cambiados en las dos puntas,
+  que caen por el calificativo, y el ecocardiograma del grupo sin declarar) y 3
+  que tienen que pasar. Con el `coverage.js` de 40d36ad da 14 hallazgos.
 
-**Lo que queda** (no entró, con su porqué):
-- #61 punto 3, los nombres de especialidades en Tipo Oración: lo elige Arturo
-  (se normaliza al generar o se corrige en la planilla). El PR lleva «Refs
-  Nelargon/sp-interno#61 (puntos 1 y 2)», no «Closes».
-- De la 9A, lo decide Arturo: la etiqueta «2 meses, la mayoría» de Gold. Con
-  las tres perinatales que ahora nombra el toque, en Gold esperan 2 meses 17 de
-  las 35 filas con dato: la mitad, no la mayoría (en Silver, 23 de 36). Y de
-  Essential, que el sitio dice «3 meses» para todas sus ecografías y las del
-  embarazo esperan 6 (cuadernillo 3.1, 180 días): otro punto de revisión. La
-  «vesical» contra la «de vejiga» de Gold, que hoy manda al asesor, es pregunta
-  a SP. La ECOCARDIOGRAFIA (no fetal) de Gold también espera 90 días en el
-  master; no es una «ECOGRAFIA…» ni del embarazo y no entra en el toque (el
-  sitio no la nombra entre las ecografías): conviene preguntarlo junto con lo
-  de la vejiga.
-- De la 9A, lo deciden SP y Arturo: las Doppler y la prostática transrectal
-  tienen copago del 50 % y tope de 1 al año en la grilla, y el toque no lo dice.
-- De la 10A: los nombres de la lista que son traducción de Claude («sacar el
-  ovario y la trompa de un lado», «sacar el adenoma de próstata», «catarata de
-  un ojo, por extracción extracapsular», «pielolitotomía (sacar una piedra de la
-  pelvis del riñón)», «hemorroidectomía (cirugía para sacar las hemorroides)»)
-  conviene que los mire alguien que sepa, con una lámina si Arturo quiere
-  elegir la palabra («hay casos y hay casos»).
-- Del celular: con la fila de «Cirugías programadas» al 25 % del alto, la lista
-  de las 26 se abre en una ventana de unos 105 a 153 px que scrollea (el cuadro
-  de esperas y la tarjeta del simulador recortan, por sus esquinas). Se lee
-  entera scrolleando, pero es chica; la alternativa de diseño que dejó el
-  verificador es abrirla en la Hoja que ya existe debajo de 820 px. Lo decide
-  Arturo (punto de revisión).
-- De la 185A, sin decisión: la psicología de Essential («en el mismo cupo que
-  otras especialidades») no va todavía debajo de la celda; y las notas de
-  consultas del home («en Lister · 3 por mes en la red») están escritas y nunca
-  se ven (el Comparador del home va sin `notas`). «junto con» → «compartidas
-  con» y el «y no ponés nada» de la resonancia y la tomografía de Silver y Gold
-  (el contraste podría tener tope en el Cuadro 2) también esperan a Arturo y a
-  SP.
-- De la 1A: las notas de las opciones del simulador se ven en Nunito Sans y son
-  oraciones (van en Inter); es anterior a este cambio y pide el QA responsive
-  completo: punto de revisión aparte.
-- `scripts/build-guia-medica.py`: su informe dice «contra la publicación
-  anterior: <nombre del archivo>», y así el Guardián leyó «planilla del 23/09».
-  No se tocó el script de control de la publicación; conviene que diga también
-  la fecha de lectura.
-- La guía vieja (`guia/`) no se pudo ver con estilos en este entorno (el CDN de
-  Tailwind no carga); lo mide la salud nocturna, que tiene internet.
+**Lo que queda** (no entró; cada punto apunta a su punto de revisión de
+`sp-interno`, donde se decide y se lleva el detalle):
+- La etiqueta «2 meses, la mayoría» de Gold (con las del embarazo, 17 de 35
+  filas con dato, el 48,6 %: menos de la mitad): no se tocó, **espera a Arturo
+  en #205**, y el PR no se fusiona hasta esa respuesta.
+- Las ecografías del embarazo de Essential (el sitio dice 3 meses): #202.
+- Consultas y psicología de Essential bajo la celda: #203.
+- El contraste, las Doppler y la transrectal (copago y tope), la vesical y la de
+  vejiga, la Doppler venosa de un lado y lo de Privilege en Essential: #204,
+  con #55 y #81.
+- Las palabras de casa de las 26, su lámina y el cierre de la lista: #206.
+- El «no entra» de Essential, deducido de su lista cerrada: #115.
+- Los ecocardiogramas fuera del toque, también la ECOCARDIOGRAFIA que SP borró
+  por duplicada el 18/09: #173.
+- Los nombres de especialidades en Tipo Oración: #61, punto 3 (el PR lleva
+  «Refs Nelargon/sp-interno#61 (puntos 1 y 2)», no «Closes»).
+- Sin punto de revisión todavía (lo abre quien orquesta):
+  - las notas de las opciones del simulador, en Nunito Sans (1A);
+  - la fecha de lectura en el informe de `build-guia-medica.py`;
+  - el 50 % del anestesista en la cesárea de Essential (pregunta para #204);
+  - los materiales descartables de la resonancia en las oraciones (4.2).
+- La guía vieja (`guia/`) no se pudo ver con estilos en este entorno: la mide
+  la salud nocturna.
 
 ---
 

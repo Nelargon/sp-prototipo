@@ -925,10 +925,17 @@ export default function Simulador() {
                     de textos, 23/10): «Descargar cotización», «Compartir
                     cotización». Si no entran los dos en un renglón (a 360), se
                     apilan: cada uno pide su texto entero (nowrap y flex-basis
-                    auto) y el que no entra baja, a lo ancho. */}
+                    auto) y el que no entra baja, a lo ancho.
+                    El ancho de «Compartir» no depende del aviso (tercera tanda,
+                    verificador de código): sin Web Share, el texto pasa a
+                    «¡Copiado!», más corto; los dos entraban en un renglón y todo
+                    lo de abajo subía 54 px a 360 y 390, y bajaba a los 2,2 s, con
+                    el botón corriéndose de debajo del dedo. Ahora el texto largo
+                    va escondido en la misma celda de una grilla y el botón mide
+                    siempre lo de «Compartir cotización». */}
                 <div style={css('display:flex;flex-wrap:wrap;gap:10px;margin-top:10px')}>
                   <button onClick={sim.download} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>Descargar cotización</button>
-                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>{sim.shareMsg || 'Compartir cotización'}</button>
+                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}><span style={css('display:grid;justify-items:center')}><span aria-hidden="true" style={css('grid-area:1/1;visibility:hidden')}>Compartir cotización</span><span style={css('grid-area:1/1')}>{sim.shareMsg || 'Compartir cotización'}</span></span></button>
                 </div>
                 <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
                   <a href={`${BP}/planes/`} className="link-teal" style={css('font-size:13px;color:var(--sp-muted);font-weight:600')}>Ver el detalle de los planes →</a>

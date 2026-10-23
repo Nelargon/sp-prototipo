@@ -54,9 +54,10 @@ export default function Page() {
     // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
-    // La cirugía, «una por año para la familia, de una lista de 26» (10A, 23/10):
-    // «las cirugías», sin más, era lo que la 10A vino a sacar.
-    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, el parto y una cirugía por año para la familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    // La cirugía, «una al año por familia, de una lista de 26» (10A, 23/10):
+    // «las cirugías», sin más, era lo que la 10A vino a sacar. Las mismas
+    // palabras que la pregunta de las esperas y el cuadro (tercera tanda).
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, el parto y una cirugía al año por familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     // 9A y 10A (Arturo, 23/10/2026, sp-interno#191): las ecografías de Silver y
     // Gold esperan 2 meses la mayoría y 3 las del embarazo y las Doppler, y la
     // cirugía de Essential es una al año de una lista de 26. La FAQ se lee: va

@@ -247,11 +247,14 @@ export const engine = (d) => {
      el formato viejo de simulaciones guardadas — solo se conserva para
      que un "Retomar mi simulación" anterior no rompa. */
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
-  // Essential: la cirugía, «una por año para la familia, de una lista de 26»
-  // (10A, Arturo, 23/10/2026): «las cirugías», sin más, hacía creer que entra
-  // cualquiera (verificadores de datos y de textos, 23/10).
+  // Essential: la cirugía, «una al año por familia, de una lista de 26» (10A,
+  // Arturo, 23/10/2026): «las cirugías», sin más, hacía creer que entra
+  // cualquiera (verificadores de datos y de textos, 23/10). Con las mismas
+  // palabras que el cuadro del celular, el simulador y la pregunta frecuente de
+  // las esperas (decía «una cirugía por año para la familia»: dos formas de
+  // decir lo mismo; verificador de textos, tercera tanda).
   const P = {
-    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía por año para la familia, de una lista de 26, se cubren al año de afiliarte.' },
+    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía al año por familia, de una lista de 26, se cubren al año de afiliarte.' },
     // Sin «y topes más altos» (1A, Arturo, 23/10/2026, sp-interno#193): en 10 de
     // las 20 especialidades con tope de Silver, Essential puede dar más consultas
     // al año. Lo que queda es cierto conteste lo que conteste SP en #110.
