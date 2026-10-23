@@ -45,7 +45,7 @@ Cloudflare además deja el link del preview como comentario en el PR.
    - **Build command:** `npm run build`
    - **Build output directory:** `out`
    - **Environment variables:** *ninguna* (en particular, **no** agregues
-     `NEXT_PUBLIC_BASE_PATH`). El `.node-version` del repo fija Node 20.
+     `NEXT_PUBLIC_BASE_PATH`). El `.node-version` del repo fija Node 22, el mismo del CI (hasta el 23/10/2026 decía 20, que ya no recibe parches de seguridad).
 4. **Save and Deploy.** Cloudflare hace el primer build de `main` (la producción
    queda en `<proyecto>.pages.dev`; la producción "de verdad" sigue siendo
    GitHub Pages — esto es solo para previsualizar).

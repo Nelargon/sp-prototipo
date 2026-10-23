@@ -3508,6 +3508,60 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.close();
 }
 
+// El botón «Revisión» (la sala de revisión, uso interno) sale de la v1 desde el
+// 23/10/2026: Arturo eligió dejarlo solo en el prototipo (sp-interno#192, A).
+// Se mira con el navegador porque en el celular vive en el menú, que se arma
+// al abrirlo; qa/produccion.mjs mira el HTML del build.
+console.log('\n── El botón «Revisión» no sale en la v1');
+for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  const vistos = [];
+  for (const ruta of ['/', '/planes/', '/simulador/', '/guia-medica/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    if (width < 900 && (await page.$('.nav-burger'))) { await page.click('.nav-burger'); await page.waitForTimeout(350); }
+    const n = await page.evaluate(() => document.querySelectorAll('.revision-btn, a[href*="claude.ai/artifact"]').length);
+    if (n) vistos.push(ruta + ' (' + n + ')');
+  }
+  if (vistos.length) mal(nombre + ': el botón «Revisión» aparece en la v1: ' + vistos.join(' · '));
+  else bien(nombre + ': sin el botón «Revisión» en home, planes, simulador y Guía Médica, con el menú abierto');
+  await page.close();
+}
+
+// Lo que se vende (Arturo, 23/10/2026): Essential, Silver, Gold y Vital. Bronze
+// ya no se vende, pero lo tienen clientes: se queda en la Guía Médica (sus
+// fichas y su filtro) y en ningún lugar de venta. Lo mismo los planes viejos de
+// la red. «Superior» e «Integral» quedan afuera de la lista a propósito: son
+// palabras comunes y nombres de prestadores del muro, y gritarían en falso.
+console.log('\n── En las páginas de venta, solo los planes que se venden');
+const NO_SE_VENDEN = /\b(Bronze|Bronce|Primordial|Bienestar|Estatal|Previsor|Privilege)\b/g;
+const leerVenta = (page) => page.evaluate((re) => {
+  const r = new RegExp(re, 'g');
+  const vistos = new Set();
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const el = n.parentElement;
+    if (!el || el.closest('[aria-hidden="true"], script, style')) continue;
+    for (const m of n.textContent.matchAll(r)) vistos.add(m[1]);
+  }
+  return [...vistos];
+}, NO_SE_VENDEN.source);
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  // La prueba del control: con «Plan Bronze» metido en la página, tiene que verlo.
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await page.evaluate(() => { const p = document.createElement('p'); p.textContent = 'Plan Bronze, desde Gs. 199.000'; document.body.appendChild(p); });
+  if (!(await leerVenta(page)).includes('Bronze')) mal('el control de planes que no se venden no ve «Plan Bronze» metido en la página');
+  const vistos = [];
+  for (const ruta of ['/', '/planes/', '/simulador/']) {
+    await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+    const v = await leerVenta(page);
+    if (v.length) vistos.push(ruta + ': ' + v.join(', '));
+  }
+  if (vistos.length) mal('una página de venta nombra planes que no se venden: ' + vistos.join(' · '));
+  else bien('home, planes y simulador nombran solo Essential, Silver, Gold y Vital (el control ve «Plan Bronze» si se lo mete)');
+  await page.close();
+}
+
 await browser.close();
 console.log('\n' + (fallas ? '✗ ' + fallas + ' falla(s)' : '✓ todo verde'));
 process.exit(fallas ? 1 : 0);
