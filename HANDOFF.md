@@ -57,6 +57,93 @@ se entra con el mismo usuario).
 
 ---
 
+## 💲 23/10/2026: LOS PRECIOS SALEN DEL DRIVE — TABLA DEL 09/10/2026
+
+**La regla (Arturo, 23/10/2026):** *«Si no coincide el simulador con el archivo
+de Drive, el archivo de Drive gana.»* Vale para los precios desde hoy, aunque
+el resto de la carpeta siga en carga (ver «🌐», abajo).
+
+**La fuente:** carpeta «Fuente de Planes - Productos - Guia»
+(`1OB7DQnzbVLcDsh1E5h1m9VuUBo9ACess`) → «Fuentes PDF» → «Precios» →
+`9 octubre  2026 TABLA DE PRECIOS.pdf` (fileId
+`1qyh9LBvhzR4JpA9kTFswk5OOxo5_HBG2`). El simulador cotizaba con las tarifas de
+julio (Silver y Gold) y de agosto (Essential): desde el 9/10 cotizaba mal.
+Este cambio entra con el OK de Arturo, no con el merge automático: es un cambio
+de precios.
+
+**Qué cambió:**
+- **Silver y Gold.** Las tarifas por categoría son las de julio (salvo el
+  cónyuge 70+, que llega a 99). Cambiaron los 7 ejemplos «GRUPOS» de cada plan, y
+  con ellos la regla: **el titular paga siempre «titular solo»**, aunque esté
+  acompañado (antes pagaba como cónyuge), y el **hijo adicional corre desde el
+  3er hijo también sin cónyuge**. La regla está deducida de los ejemplos (14 de
+  14) y anotada como deducida en `app/quote.js` (`priceFor`) y en `silver.json`
+  y `gold.json` (`regla_deducida`). Casos típicos: pareja de 30, 456.000 →
+  552.000 en Silver y 648.000 → 756.000 en Gold; titular + 2 hijos, 572.000 →
+  668.000 y 800.000 → 908.000; pareja + 1 hijo, 628.000 → 724.000 y 886.000 →
+  994.000. El grupo familiar (pareja + 2 hijos: 770.000 / 990.000) no cambió.
+- **Essential.** En el PDF su tabla es una **imagen**: el texto que extrae Drive
+  no la trae (BITACORA, «El texto extraído no es el documento»). Cifras
+  transcriptas de la captura de Arturo del 23/10/2026; las 10 filas, literales,
+  en `essential.json` (`tabla_09_10_2026`). Nuevas: adherente de 21 a 35
+  (125.000 / 150.000 / 170.000, Interior / Asunción y Central / Nacional),
+  titular y adherente
+  adulto (las mismas cifras que la pareja), **titular + 2 hijos** y **dos
+  adultos + 1 hijo** (345.000 / 415.000 / 475.000). En Asunción: mamá + 2 hijos,
+  485.000 → 415.000; pareja + 1 hijo, 505.000 → 415.000 (de 46 a 64, 585.000 →
+  415.000). Lo que la tabla no dice (1 adulto + 1 hijo, el 3er hijo, el hijo de
+  21 a 35 aparte) lo arma el motor y está marcado **inferencia** en el código y
+  en `reglas_de_grupo`.
+- **Quién entra en Essential:** ya no es «hijos hasta los 20». Sin tarifa:
+  adultos de más de 64, hijos de más de 35 y un tercer adulto de más de 35
+  (`essentialNoAplica`). El simulador deja cargar hijos **hasta los 35**
+  (`EDAD_MAX_HIJO`, antes 25): el último tramo de hijo con tarifa en los tres
+  planes.
+- **Vital:** sin cambios (283.000 con débito, 312.000 particular; está en la
+  misma tabla).
+- **Lo controla `qa/precios.mjs` en el CI:** el motor real contra los JSON (los
+  14 ejemplos, las 10 filas × 3 zonas, cada tarifa por categoría y las
+  inferencias). Se prueba contra la regla de antes del 09/10 y tiene que
+  fallar.
+
+**⚠ Para la próxima sesión que toque precios:**
+- La tabla de Essential **es una imagen dentro del PDF**. `read_file_content`
+  devuelve el texto de Silver, Gold, Vital y tablas sueltas sin nombre de plan,
+  y no la de Essential. Antes de decir que un dato no está, mirar la página o
+  pedir la captura.
+- Ese día llegó primero una tabla «Octubre 2026» con dos versiones de precio
+  para los mismos grupos; Arturo la reemplazó por la del 9/10. La vigente es la
+  del 9/10.
+- `grilla-coberturas-precios-jul2026.json` es la transcripción fiel del master
+  de julio y no se tocó: sus ejemplos de grupo son los de julio. Para precios,
+  mandan `silver.json`, `gold.json` y `essential.json`.
+- Solo precios: las coberturas de los cuadernillos nuevos van en otro PR, con
+  contradicciones que Arturo todavía no decidió (`Nelargon/sp-interno#211`).
+
+**Decidido por Arturo (23/10/2026, «4A»: las recomendadas del PR):**
+1. **La rareza de Essential se publica tal cual y se le pregunta a SP.** Una
+   pareja de 46 a 64 sola paga 475.000 (Asunción) y con un hijo, 415.000. Drive
+   gana: si es un error, se corrige en el Drive y el sitio lo sigue. Lo pregunta
+   Arturo; queda anotado en `Nelargon/sp-interno#211`.
+2. **Un hijo de 21 a 35 con un solo adulto, en Essential, paga el adherente de
+   21 a 35 aparte** (265.000 + 150.000 = 415.000), que es lo que hace el motor.
+3. **En Silver y Gold, el titular es «Vos»**, la persona que simula.
+4. **`sp-interno#162` se cierra** con este PR: con la tabla del 09/10, Silver
+   (552.000) ya no queda por debajo de Essential (475.000) para la pareja de 46
+   a 54.
+5. **El camino para mamá o papá solo con sus hijos se suma en otro PR, con
+   lámina** (`Nelargon/sp-interno#213`). Hoy «Para mi familia, con hijos» trae
+   dos adultos, y la fila nueva de Essential (titular + 2 hijos) solo se ve en
+   `/planes/` («Vos con tus hijos»).
+6. **Hijos hasta los 35 en el simulador** (`EDAD_MAX_HIJO`).
+
+**Territorio:** `app/quote.js` (compartido: tarifas, motor y textos de
+Essential), `app/components/Simulador.jsx` (solo el tope de edad de los hijos),
+`datos/planes-vigentes/` (silver, gold, essential y README), `qa/precios.mjs`
+(nuevo), `.github/workflows/ci.yml` (un paso). Refs `Nelargon/sp-interno#211`.
+
+---
+
 ## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
 
 Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)
@@ -81,6 +168,7 @@ ser el centro de la información de la Guía Médica y de los planes. **Arturo l
 está cargando: hasta que diga que está lista, no se lee ni se cambia de dónde
 salen los datos.** Mientras, valen los datos de hoy (la planilla maestra y
 `datos/planes-vigentes/`). Se verificó que la sesión tiene acceso.
+*(23/10/2026: para los precios, Arturo ya fijó que el Drive gana; ver «💲», arriba.)*
 
 **1A — El glosario médico:** Arturo lo valida en el Excel
 (`datos/glosario/Glosario-medico-SP-borradores.xlsx`). Validado, va a
@@ -1301,7 +1389,8 @@ antes estaba pendiente se resolvió así:
 **Pendiente con SP (4A):** una pareja de 46 a 54 años paga menos en Silver
 (₲ 456.000) que en Essential (₲ 475.000, Asunción y Central). Va como punto de
 revisión (`sp-interno#162`) para que SP diga si es así o si es un error del
-tarifario.
+tarifario. *(⚠ 23/10/2026: con la tabla del 09/10, la pareja de 46 a
+54 paga 552.000 en Silver, más que en Essential; ver «💲», arriba.)*
 
 **Dónde está todo:** en `sp-interno/project/comparativa-2026-09-27/`. Ahí
 están el `PASE.md` al día, las láminas navegables, la maqueta del 06/10, las

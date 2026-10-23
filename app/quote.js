@@ -48,32 +48,61 @@ export const YEARS_CARING = _now.getFullYear() - FOUNDED_YEAR - (_now.getMonth()
 export const fmt = (n) =>
   'Gs. ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-/* Tarifario vigente (IVA incluido). Tramos de edad: 0-54 / 55-64 / 65-69 /
-   70+ (el tramo 70+ es de renovación, no de venta nueva; se usa solo como
-   estimación). El tramo 70+ sale de la tabla consolidada de julio 2026
-   (Tabla_Precios_Planes_SP_Privilege_2026_Julio.pdf, pág. 1) — antes no
-   había cifra de titular solo 70+ y se estimaba con la de 65-69.
-   solo: titular sin adherentes · tc: titular/cónyuge cada uno (aplica en
-   cuanto hay más de una persona) · adh: adherente con parentesco ·
-   hijo3: hijo adicional desde el 3º (con prima de grupo familiar) ·
-   pkg: grupo familiar titular + cónyuge + 2 hijos (≤59 / 60-64). */
+/* LA FUENTE DE LOS PRECIOS (23/10/2026). Arturo: «Si no coincide el simulador
+   con el archivo de Drive, el archivo de Drive gana.» El archivo es «9 octubre
+   2026 TABLA DE PRECIOS.pdf», en su Drive: carpeta «Fuente de Planes -
+   Productos - Guia» (1OB7DQnzbVLcDsh1E5h1m9VuUBo9ACess) → «Fuentes PDF» →
+   «Precios» (fileId 1qyh9LBvhzR4JpA9kTFswk5OOxo5_HBG2). Tabla del 09/10/2026,
+   IVA incluido. La transcripción, con lo que es dato y lo que es regla
+   deducida, está en datos/planes-vigentes/silver.json, gold.json y
+   essential.json; qa/precios.mjs controla el motor contra los ejemplos de la
+   tabla. Vital no cambió (283.000 con débito, 312.000 particular).
+
+   SILVER Y GOLD. DATO DE LA TABLA: las cifras de abajo. Tramos de titular y de
+   cónyuge, 0-54 / 55-64 / 65-69 / 70-99; de adherente, 0-20 / 21-54 / 55-64 /
+   65-69 / 70-99. Los 70+ son SOLO DE RENOVACIÓN, no de venta nueva (lo dice la
+   tabla): el resultado lo avisa (aviso70) y el precio queda de referencia.
+   solo: titular sin adherente · conyuge: cónyuge · adh: adherente con
+   parentesco (hijo, hermano, nieto, padre, madre, suegro/a, sobrino), cada uno
+   · hijo3: hijo adicional de 0 a 20, desde el 3º · pkg: grupo familiar
+   titular + cónyuge + 2 hijos de hasta 20 (T-C hasta 59 / 60-64).
+   Las cifras por categoría son las mismas que en julio (salvo cónyuge 70+, que
+   ahora llega a 99). Lo que cambió son los ejemplos «GRUPOS» de la tabla, y con
+   ellos la regla de priceFor: el sitio cobraba al titular la tarifa de cónyuge
+   en cuanto había una segunda persona (pareja de 30: 456.000 en Silver); la
+   tabla del 09/10 dice 552.000 (324.000 + 228.000). */
 // Bronze salió de la venta el 24/09/2026; su tarifa queda en bronce.json.
 const TARIFAS = {
-  // adh21_54: hijos de 21 a 25 (el simulador deja cargarlos hasta 25). Antes
-  // pagaban la tarifa de hasta 20 (auditoría del 25/09/2026).
-  silver: { solo: [324000, 420000, 570000, 741000], tc: [228000, 330000, 430000, 684000], adh0_20: 172000, adh21_54: 226000, hijo3: 140000, pkg: [770000, 1000000] },
-  gold: { solo: [432000, 560000, 680000, 884000], tc: [324000, 440000, 540000, 816000], adh0_20: 238000, adh21_54: 324000, hijo3: 180000, pkg: [990000, 1300000] },
+  silver: { solo: [324000, 420000, 570000, 741000], conyuge: [228000, 330000, 430000, 684000], adh: [172000, 226000, 300000, 430000, 684000], hijo3: 140000, pkg: [770000, 1000000] },
+  gold: { solo: [432000, 560000, 680000, 884000], conyuge: [324000, 440000, 540000, 816000], adh: [238000, 324000, 420000, 540000, 816000], hijo3: 180000, pkg: [990000, 1300000] },
 };
-/* ESSENTIAL — precio POR ZONA (datos/planes-vigentes/essential.json).
-   Fuente: PRECIOS ESSENTIAL.pdf (21/08/2026), confirmado por la minuta del
-   18/08/2026. Otra estructura que Privilege: sin tramos por edad, titular
-   hasta 64, hijos hasta 20, pareja por el mayor de los dos (18-45 / 46-64)
-   y grupo familiar de titular + cónyuge + 2 hijos. */
+/* ESSENTIAL — precio POR ZONA (datos/planes-vigentes/essential.json). Misma
+   tabla del 09/10/2026, pero ahí Essential es una IMAGEN dentro del PDF: el
+   texto que extrae Drive no la ve (BITACORA, «El texto extraído no es el
+   documento»). Cifras transcriptas de la captura que pasó Arturo el
+   23/10/2026. Otra estructura que Silver y Gold: sin tramos por edad salvo el
+   de la pareja, y una fila por grupo.
+   DATO DE LA TABLA, por zona:
+   titular: titular de 0 a 64 · menor: adherente de 0 a 20, cada uno ·
+   adh21_35: adherente de 21 a 35, cada uno (nuevo: antes un hijo de más de 20
+   no tenía tarifa) · pareja: pareja matrimonial, o titular y adherente
+   adulto, por el mayor de los dos (18-45 / 46-64): son dos filas de la tabla
+   con las mismas cifras · unoMasDos: titular de 18 a 64 + 2 adherentes de 0 a
+   20 (nuevo) · dosMasUno: titular y adherente de 18 a 64 + 1 adherente de 0 a
+   20 (nuevo) · grupo: titular y adherente de 18 a 64 + 2 adherentes de 0 a 20.
+   ⚠ Rareza que la tabla trae y el sitio no corrige (Drive gana): una pareja de
+   46 a 64 sola paga más (475.000 en Asunción) que con un hijo (415.000). Va
+   como pregunta para SP en el PR. */
 const ESSENTIAL = {
-  asuncion_central: { titular: 265000, menor: 110000, pareja: [395000, 475000], grupo: 550000 },
-  interior: { titular: 220000, menor: 92000, pareja: [330000, 400000], grupo: 460000 },
-  nacional: { titular: 305000, menor: 125000, pareja: [455000, 545000], grupo: 635000 },
+  asuncion_central: { titular: 265000, menor: 110000, adh21_35: 150000, pareja: [395000, 475000], unoMasDos: 415000, dosMasUno: 415000, grupo: 550000 },
+  interior: { titular: 220000, menor: 92000, adh21_35: 125000, pareja: [330000, 400000], unoMasDos: 345000, dosMasUno: 345000, grupo: 460000 },
+  nacional: { titular: 305000, menor: 125000, adh21_35: 170000, pareja: [455000, 545000], unoMasDos: 475000, dosMasUno: 475000, grupo: 635000 },
 };
+/* Hasta qué edad se carga un hijo en el simulador: 35, el último tramo de
+   hijo con tarifa en los tres planes (Essential, adherente de 21 a 35; Silver
+   y Gold, adherente de 21 a 54). Era 25 desde septiembre; con la tabla del
+   09/10, un hijo de 26 a 35 tiene precio en Essential y no se podía cargar. */
+export const EDAD_MAX_HIJO = 35;
 // El precio de una persona sola por zona, para los textos que lo nombran:
 // así ningún número de Essential queda escrito a mano fuera de acá.
 export const essentialTitular = (zona) => ESSENTIAL[zona].titular;
@@ -93,30 +122,52 @@ export const zonaEssential = (d) => {
   return ubi.deptId === 'asuncion' || ubi.deptId === 'central' ? 'asuncion_central' : 'interior';
 };
 
-/* Quién no tiene tarifa en Essential: mayores de 64, hijos de más de 20 y un
-   tercer adulto (el PDF no tiene adherente adulto). Devuelve el motivo, en el
-   idioma de la persona, o null si el grupo entra. */
+/* Quién no tiene tarifa en Essential (tabla del 09/10/2026): adultos de más de
+   64 (el titular y el adherente adulto llegan hasta 64), hijos de más de 35 (el
+   último tramo de adherente es de 21 a 35) y un tercer adulto de más de 35 (la
+   tabla tiene filas para dos adultos; un tercero solo entra como adherente,
+   hasta 35). Devuelve el motivo, en el idioma de la persona, o null si el grupo
+   entra. */
 export const essentialNoAplica = (people) => {
   const adultos = people.filter((p) => p.kind !== 'kid');
   const hijos = people.filter((p) => p.kind === 'kid');
   if (adultos.some((p) => p.age > 64)) return 'Essential es para personas de hasta 64 años.';
-  if (hijos.some((p) => p.age > 20)) return 'En Essential los hijos entran hasta los 20 años.';
-  if (adultos.length > 2) return 'Essential cubre a una pareja con sus hijos, no a un tercer adulto.';
+  if (hijos.some((p) => p.age > 35)) return 'En Essential los hijos entran hasta los 35 años.';
+  if (adultos.slice(2).some((p) => p.age > 35)) return 'En Essential, un tercer adulto entra solo hasta los 35 años.';
   return null;
 };
 
-/* Precio de un grupo en Essential. El PDF no trae ejemplos de grupos: esta es
-   la lectura directa de sus categorías (inferencia anotada en essential.json):
-   pareja + cada hijo; grupo familiar desde 2 hijos, + cada hijo desde el 3º;
-   titular solo + cada hijo. */
+/* Precio de un grupo en Essential (tabla del 09/10/2026). La tabla no trae
+   ejemplos de grupos: tiene una fila por grupo. Lo que dice una fila es DATO;
+   lo marcado «inferencia» lo arma el motor con las filas que hay, y está
+   anotado en essential.json («reglas_de_grupo»):
+   - 1 adulto solo → titular. 1 adulto + 1 hijo de 0 a 20 → titular + 1
+     adherente de 0 a 20 (inferencia: la tabla no tiene esa fila).
+   - 1 adulto + 2 hijos de 0 a 20 → su fila (unoMasDos); desde el 3º, + 1
+     adherente de 0 a 20 cada uno (inferencia).
+   - 2 adultos sin hijos de 0 a 20 → pareja, por el mayor de los dos (18-45 /
+     46-64). 2 adultos + 1 hijo → su fila (dosMasUno). 2 adultos + 2 hijos →
+     grupo; desde el 3º, + 1 adherente de 0 a 20 cada uno (inferencia).
+   - Cada hijo de 21 a 35 paga aparte el adherente de 21 a 35, y no cuenta para
+     las filas de grupo, que son con hijos de 0 a 20 (inferencia).
+   - Un tercer adulto paga aparte como adherente por su edad: hasta 20, el de 0
+     a 20; de 21 a 35, el de 21 a 35 (inferencia). */
+const adhEssential = (T, edad) => (edad <= 20 ? T.menor : T.adh21_35);
 const priceEssential = (zona, people) => {
   const T = ESSENTIAL[zona];
   const adultos = people.filter((p) => p.kind !== 'kid');
-  const hijos = people.filter((p) => p.kind === 'kid').length;
-  if (adultos.length <= 1) return T.titular + hijos * T.menor;
-  if (hijos >= 2) return T.grupo + (hijos - 2) * T.menor;
+  const menores = people.filter((p) => p.kind === 'kid' && p.age <= 20).length;
+  const aparte = people.filter((p) => p.kind === 'kid' && p.age > 20).concat(adultos.slice(2))
+    .reduce((s, p) => s + adhEssential(T, p.age), 0);
+  const extra = (desde) => Math.max(0, menores - desde) * T.menor;
+  if (adultos.length <= 1) {
+    if (menores >= 2) return T.unoMasDos + extra(2) + aparte;
+    return T.titular + menores * T.menor + aparte;
+  }
+  if (menores >= 2) return T.grupo + extra(2) + aparte;
+  if (menores === 1) return T.dosMasUno + aparte;
   const mayor = Math.max(adultos[0].age, adultos[1].age);
-  return T.pareja[mayor <= 45 ? 0 : 1] + hijos * T.menor;
+  return T.pareja[mayor <= 45 ? 0 : 1] + aparte;
 };
 
 const VITAL_PRECIO = 283000; // titular 65+, costo con débito automático
@@ -132,7 +183,10 @@ const VITAL_PARTICULAR = 312000; // titular 65+, costo particular
    particular; Vital publica ambas columnas. */
 export const AUTO_PAY_DISCOUNT = 0.10;
 
+// Tramo de titular y de cónyuge: 0-54 / 55-64 / 65-69 / 70-99. Tramo de
+// adherente: 0-20 / 21-54 / 55-64 / 65-69 / 70-99 (tabla del 09/10/2026).
 const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
+const bracketAdh = (a) => (a <= 20 ? 0 : a <= 54 ? 1 : a <= 64 ? 2 : a <= 69 ? 3 : 4);
 
 // `nivel` es la clave interna del simulador; `short.toLowerCase()` es la clave
 // pública del `?plan=` del comparador. Ambas viven ACÁ (fuente única): el botón y
@@ -205,31 +259,39 @@ export const peopleFor = (who) => {
   return [{ role: 'Vos', age: 34, kind: 'adult' }];
 };
 
-/* Precio real de un grupo en Silver o Gold, siguiendo las
-   reglas del tarifario (verificado contra los ejemplos "GRUPOS" de los
-   PDFs oficiales):
-   - una sola persona → tarifa "titular solo" por edad;
-   - más de una → titular y cónyuge pagan la tarifa T/C por edad; los
-     hijos (0-20) pagan adherente; adultos extra pagan T/C por edad;
-   - titular + cónyuge + 2 hijos → prima de grupo familiar (≤59 / 60-64),
-     y del 3er hijo en adelante, la prima de hijo adicional. */
+/* Precio de un grupo en Silver o Gold (tabla del 09/10/2026). La tabla da las
+   tarifas por categoría y 7 ejemplos «GRUPOS» por plan, pero no escribe la
+   regla. ESTA REGLA ES DEDUCIDA, y reproduce los 7 ejemplos de los dos planes
+   (14 de 14; qa/precios.mjs):
+   - el titular paga SIEMPRE «titular solo» por su edad, aunque no esté solo
+     (antes pagaba la de cónyuge en cuanto había otra persona);
+   - el cónyuge (el segundo adulto) paga «cónyuge» por su edad;
+   - cada hijo de 0 a 20 paga el adherente de 0 a 20, y desde el 3º, «hijo
+     adicional», haya cónyuge o no (titular + 3 hijos: 808.000 en Silver);
+   - cada hijo de 21 o más paga el adherente por su edad, y no cuenta para el
+     grupo familiar ni como 3º hijo; un tercer adulto también paga adherente
+     por su edad;
+   - titular + cónyuge, los dos de hasta 64, con 2 hijos o más de 0 a 20 →
+     prima de grupo familiar por la edad del mayor (hasta 59 / 60-64), «hijo
+     adicional» desde el 3º, y los adherentes de 21 o más, aparte.
+   Inferencia que ningún ejemplo prueba: el titular es la primera persona del
+   simulador («Vos»), y la segunda es el cónyuge. Si el mayor de los dos fuera
+   el titular, el total podría cambiar unos miles. */
 const priceFor = (planKey, people) => {
   const T = TARIFAS[planKey];
   const adults = people.filter((p) => p.kind !== 'kid');
-  // La prima de grupo familiar y la de hijo es para hijos de HASTA 20 años;
-  // de 21 en adelante, cada hijo paga la de adherente de 21 a 54.
-  const menores = people.filter((p) => p.kind === 'kid' && p.age <= 20);
-  const mayores = people.filter((p) => p.kind === 'kid' && p.age > 20);
-  if (people.length === 1 && adults.length === 1) return T.solo[bracket(adults[0].age)];
-  if (adults.length === 2 && menores.length >= 2) {
-    const maxAd = Math.max(adults[0].age, adults[1].age);
-    if (maxAd <= 64) return T.pkg[maxAd <= 59 ? 0 : 1] + (menores.length - 2) * T.hijo3 + mayores.length * T.adh21_54;
+  const menores = people.filter((p) => p.kind === 'kid' && p.age <= 20).length;
+  const adherentes = people.filter((p) => p.kind === 'kid' && p.age > 20).concat(adults.slice(2))
+    .reduce((s, p) => s + T.adh[bracketAdh(p.age)], 0);
+  const [titular, conyuge] = adults;
+  if (titular && conyuge && menores >= 2) {
+    const mayor = Math.max(titular.age, conyuge.age);
+    if (mayor <= 64) return T.pkg[mayor <= 59 ? 0 : 1] + (menores - 2) * T.hijo3 + adherentes;
   }
-  let total = 0;
-  adults.forEach((p) => { total += T.tc[bracket(p.age)]; });
-  menores.forEach(() => { total += T.adh0_20; });
-  mayores.forEach(() => { total += T.adh21_54; });
-  return total;
+  let total = titular ? T.solo[bracket(titular.age)] : 0;
+  if (conyuge) total += T.conyuge[bracket(conyuge.age)];
+  total += Math.min(menores, 2) * T.adh[0] + Math.max(0, menores - 2) * T.hijo3;
+  return total + adherentes;
 };
 
 export const engine = (d) => {
