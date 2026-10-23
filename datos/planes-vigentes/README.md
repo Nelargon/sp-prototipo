@@ -80,7 +80,9 @@ usuario actualiza un master:
    revisor automático, haya terminado sin observaciones abiertas (sp-interno,
    `salud/GUARDIAN.md` §5 paso 4). Una diferencia que ya estaba en el JSON
    antes de esa versión se nombra en el PR y no se corrige ahí: va aparte,
-   con el OK de Arturo (en #281, «laparotomía»).
+   con el OK de Arturo (en #281, «laparotomía»). Esa se corrigió el 23 oct
+   2026 a «laparotomía exploradora», como dicen el master y el cuadernillo
+   (sp-interno#196, 196A).
 
 | Master (Drive) | fileId | Última ingestión |
 |---|---|---|
