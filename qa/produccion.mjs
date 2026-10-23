@@ -14,8 +14,9 @@
 //  2. el sitemap, los canonical y el og:url, todos en el dominio de SP;
 //  3. el botón «Revisión» afuera (sp-interno#192, A: solo en el prototipo);
 //  4. out/_redirects con las reglas de scripts/redirecciones-lista.mjs, cada
-//     destino publicado, y ninguna de las direcciones que esperan a Arturo
-//     (/login/, la reserva de turnos; /octubre_rosa/, unas bases legales);
+//     destino publicado o en un subdominio de SP (la reserva de turnos, que se
+//     muda: sp-interno#209, 1A), y ninguna de las direcciones que esperan a
+//     Arturo (NO_SE_REDIRIGEN; vacía desde el 23/10/2026);
 //  5. el 404 propio;
 //  6. la indexación apagada mientras NEXT_PUBLIC_INDEXABLE no diga «true»:
 //     lo público espera la decisión de Arturo.
@@ -24,7 +25,7 @@
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { reglas, NO_SE_REDIRIGEN } from '../scripts/redirecciones-lista.mjs';
+import { reglas, NO_SE_REDIRIGEN, SUBDOMINIO_SP } from '../scripts/redirecciones-lista.mjs';
 
 // Lo que no puede aparecer en un HTML de producción.
 export function rastrosDePrototipo(html) {
@@ -51,8 +52,9 @@ export function problemasRedirects(texto, esperadas, prohibidas) {
   const reglasArchivo = new Set(lineas);
   for (const [o, d, c] of esperadas) if (!reglasArchivo.has(`${o} ${d} ${c}`)) out.push(`falta la regla «${o} ${d} ${c}»`);
   for (const l of lineas) {
-    const [o] = l.split(/\s+/);
+    const [o, d] = l.split(/\s+/);
     for (const [p] of prohibidas) if (o === p || o === p.replace(/\/$/, '')) out.push(`«${o}» se redirige y espera una decisión de Arturo`);
+    if (/^https?:/.test(d || '') && !SUBDOMINIO_SP.test(d)) out.push(`«${o}» lleva afuera del sitio de SP: ${d}`);
   }
   return out;
 }
@@ -71,6 +73,9 @@ function autoprueba() {
   if (problemasRedirects('/que-cubre/ /planes/ 301\n', esperadas, prohibidas).length) f.push('marca un _redirects correcto');
   if (!problemasRedirects('# vacío\n', esperadas, prohibidas).length) f.push('no marca una regla que falta');
   if (!problemasRedirects('/que-cubre/ /planes/ 301\n/login / 302\n', esperadas, prohibidas).length) f.push('no marca /login redirigido');
+  if (problemasRedirects('/que-cubre/ /planes/ 301\n/turnos/ https://turnos.saludprotegida.com.py/login/ 302\n', esperadas, []).length) f.push('marca una regla a un subdominio de SP');
+  if (!problemasRedirects('/que-cubre/ /planes/ 301\n/turnos/ https://turnos.example.com/login/ 302\n', esperadas, []).length) f.push('no marca una regla que lleva afuera de SP');
+  if (!problemasRedirects('/que-cubre/ /planes/ 301\n/turnos/ http://turnos.saludprotegida.com.py/login/ 302\n', esperadas, []).length) f.push('no marca una regla sin https');
   return f;
 }
 
@@ -124,5 +129,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     for (const x of h.slice(0, 40)) console.error('  ' + x);
     process.exit(1);
   }
-  console.log(`✓ producción: 9 casos de prueba bien · ${htmls.length} páginas sin /sp-prototipo ni botón «Revisión», canonical en ${sitio} y ${indexable ? 'indexables' : 'con noindex'} · sitemap en el dominio · ${reglas().length} redirecciones, ninguna a /login/ ni a las bases de Octubre Rosa · 404 propio`);
+  console.log(`✓ producción: 12 casos de prueba bien · ${htmls.length} páginas sin /sp-prototipo ni botón «Revisión», canonical en ${sitio} y ${indexable ? 'indexables' : 'con noindex'} · sitemap en el dominio · ${reglas().length} redirecciones, cada una a una página publicada o a un subdominio de SP · 404 propio`);
 }

@@ -5796,7 +5796,182 @@ decía Node 20 y el CI construye con 22.
    que se retira se busca el nombre exacto (`guia_home`, `/guia/guia_`), no se
    resta el parecido.
 
-## Capítulo 158 — Tres opciones con el mismo poco de rosa (23/10/2026)
+## Capítulo 158 — El texto extraído no es el documento (23/10/2026)
+
+**Qué intentamos.** Poner el simulador al día con los precios. Cotizaba con las
+tarifas de julio (Silver y Gold) y de agosto (Essential), y desde el 9/10 hay
+otra tabla. Arturo fijó la regla ese mismo día: *«Si no coincide el simulador
+con el archivo de Drive, el archivo de Drive gana.»* Tiene su porqué en lo que
+ya estaba escrito: Arturo creó la carpeta «Fuente de Planes - Productos -
+Guia» de su Drive para que sea el centro de la información de los planes y de
+la Guía Médica (HANDOFF, «🌐»). El simulador es una copia; con dos versiones que
+no coinciden, la copia no puede ganar. El archivo es `9 octubre  2026 TABLA DE
+PRECIOS.pdf`, en «Fuentes PDF» → «Precios».
+
+**Qué pasó.** Tres cosas, en este orden.
+
+1. **Primero llegó otra tabla.** Ese día apareció antes una tabla «Octubre
+   2026» que tenía dos versiones de precio para los mismos grupos. Arturo la
+   reemplazó por la del 9/10. Si una tabla trae dos precios para el mismo
+   grupo, la pregunta no es cuál de los dos usar, sino cuál es la tabla.
+2. **«La tabla no trae Essential».** Una sesión de Claude leyó el PDF con la
+   herramienta de Drive, que devuelve el texto que extrae del archivo. Ahí
+   estaban Silver, Gold y Vital, y otras tablas sueltas sin el nombre del plan.
+   Essential no estaba, y la sesión lo reportó así. Pero estaba: en el PDF,
+   la tabla de Essential es una **imagen**, y una imagen no tiene texto que
+   extraer. Arturo tuvo que mandar la captura. Esta sesión volvió a leer el
+   archivo con la misma herramienta: el texto sigue sin traerla.
+3. **Lo que cambió en Silver y Gold no estaba en las tarifas.** Comparadas
+   fila por fila con las de julio, las tarifas por categoría son las mismas
+   (salvo el cónyuge de 70 o más, que ahora llega a 99). Lo que cambió son los
+   siete ejemplos «GRUPOS» de cada plan: una pareja de 30 pasó de 456.000 a
+   552.000 en Silver. La tabla no escribe la regla; la regla sale de los
+   ejemplos. Antes, en cuanto había una segunda persona, el titular pagaba como
+   cónyuge (228.000 + 228.000). Ahora paga siempre «titular solo» (324.000 +
+   228.000), y el hijo adicional corre desde el 3er hijo también sin cónyuge
+   (titular + 3 hijos: 808.000). Esa regla reproduce los 14 ejemplos y está
+   anotada como **deducida**, no como dato.
+
+En Essential la tabla sumó filas (adherente de 21 a 35, titular y adherente
+adulto, titular + 2 hijos, dos adultos + 1 hijo) y trae una rareza: una pareja
+de 46 a 64 sola paga 475.000 en Asunción, y con un hijo, 415.000. El sitio la
+aplica tal cual (Drive gana) y va como pregunta para SP, no como arreglo.
+
+**Qué aprendimos.**
+
+1. **El texto extraído no es el documento.** Es lo que una herramienta pudo
+   leer del documento. Una tabla pegada como imagen, un sello o una nota a
+   mano no están en ese texto y sí están en la página. Si un dato «falta», se
+   mira la página antes de afirmar que no está, o se dice lo que se hizo:
+   «en el texto que extrae Drive no aparece». Es el «no encontrado honesto»
+   de `sp-interno`, con una condición: decir dónde no se encontró.
+2. **En una tabla de precios, la regla vive en los ejemplos.** Un diff de las
+   tarifas habría dicho «sin cambios» y el simulador habría seguido cobrando
+   456.000. Lo que hay que comparar es lo que la tabla calcula, no solo sus
+   cifras. Por eso `qa/precios.mjs` corre el motor contra los ejemplos de la
+   tabla, y no las tarifas contra las tarifas. Se prueba contra la regla de
+   antes del 9/10: con ella tiene que fallar, y falla.
+3. **Lo que se deduce se escribe como deducido.** La regla de Silver y Gold y
+   lo que Essential no dice (un hijo cuando hay un solo adulto, el 3er hijo, el
+   hijo de 21 a 35 con dos adultos) quedan marcados en el código y en los JSON.
+   El día que SP la escriba, se sabe qué hay que contrastar.
+
+## Capítulo 159 — La reserva no se llamaba «turnos», y el subdominio no alcanzaba (23/10/2026)
+
+**Qué intentamos.** Arturo preguntó qué hacía falta para llevar el sitio a
+`saludprotegida.com.py`. Claude armó la lista mirando la web actual y le
+contestó, entre otras cosas, que la reserva de turnos por cédula que menciona
+el HANDOFF «no la encontré ni en el inicio ni en la guía del asegurado».
+
+**Qué pasó.** Tres cosas, en orden.
+
+1. **La reserva estaba en el menú de la primera página que se leyó.** Claude
+   buscó los links cuya *dirección* dijera `turno`, `agend` o `reserv`. La
+   reserva se llama `/login` y el menú la muestra como «Agendamiento»: la
+   dirección no decía nada y el texto sí. La encontró otra sesión ese mismo día
+   leyendo el menú (cap. 157), y Claude se lo corrigió a Arturo en el mensaje
+   siguiente. Si se hubiera quedado con el «no la encontré», el cambio de
+   dominio les cortaba los turnos a los clientes.
+2. **Mudar la reserva a un subdominio no alcanzaba.** Arturo eligió llevarla a
+   `turnos.saludprotegida.com.py` (1A). Al leer la página se vio qué es: un
+   complemento del WordPress (`appointment-scheduling`) que manda cada pedido a
+   `admin-ajax.php` por el nombre del dominio. Con solo el subdominio, la
+   página carga en `turnos.` pero cada pedido va al dominio que ya es de
+   Cloudflare: el formulario se ve y el turno no sale. Nadie se entera hasta
+   que un cliente se queja. Por eso el pedido al proveedor incluye cambiarle el
+   nombre al WordPress, y `scripts/antes-del-dns.mjs` mira a dónde manda los
+   pedidos la reserva antes de que se toque el DNS. Hoy da ✗, como tiene que
+   dar.
+3. **Un texto respondió que sí tenía sublista.** La página de las bases (2A)
+   arma listas con ítems que son texto o `{ t, sub }`. El build cortó con
+   `a.map is not a function`: `"PAP y colposcopía.".sub` existe en JavaScript
+   (`String.prototype.sub`, un método viejo que envuelve el texto en `<sub>`),
+   así que cada texto «tenía» sublista. Se arregló preguntando primero si el
+   ítem es texto.
+
+Y cambió el método: hasta hoy, fusionar a `main` era publicar. Desde la 4A, al
+dominio sale solo `produccion`, con el «publicá» de Arturo (`CLAUDE.md`, «Flujo
+git»). El merge automático se había autorizado para un prototipo que no lee
+ningún cliente.
+
+**Qué aprendimos.**
+
+1. **Se busca por lo que la persona ve, no por cómo se llama la dirección.**
+   Un menú dice «Agendamiento» y lleva a `/login`. El inventario de una web se
+   arma leyendo el texto de sus links, no filtrando sus direcciones. Es el cap.
+   157, punto 4, del otro lado: allá un filtro por nombre tapó una línea, acá un
+   filtro por dirección tapó un link.
+2. **Al mudar algo, mirá a quién llama por su nombre.** Una página que se muda
+   puede seguir mandando sus pedidos a la dirección vieja. Lo que hay que mirar
+   no es si la página carga, sino si lo que la persona hace ahí llega a algún
+   lado.
+3. **En JavaScript, preguntarle una propiedad a un texto puede dar verdadero**
+   (`sub`, `big`, `link`, `anchor`, `bold`…). Si un dato puede ser texto u
+   objeto, primero se pregunta cuál es.
+4. **La regla cero funcionó.** Claude le ofreció a Arturo preparar el build para
+   el dominio; antes de escribir una línea trajo `main` y estaba hecho por otra
+   sesión (#289 y #291, esa misma tarde). En el mensaje siguiente se le dijo
+   que eso ya estaba hecho, en vez de construirlo dos veces.
+
+
+## Capítulo 160 — El laboratorio permite que gusten varias opciones (23/10/2026)
+
+**Qué intentamos.** Encontrar imágenes para el blog comparando la misma escena
+en tres técnicas: caminar al almacén, una libreta de salud y una escuela.
+Después de las correcciones, Arturo seguía valorando varias opciones:
+*«Me cuesta decidir para cada opción cuál me gusta más. Son muy buenos
+estilos»*. Pidió un espacio dentro de GitHub para conservarlas y explorar
+cinco o seis artículos más.
+
+**Qué pasó.** La primera comparación había mostrado imágenes rotas fuera del
+servidor local; las siguientes entregas autónomas lo resolvieron, pero seguían
+siendo archivos separados. Además, que una técnica gustara no eliminaba
+problemas de dibujo: el almacén parecía pequeño respecto de la persona, las
+compras sobresalían demasiado y las sombras del árbol en la escuela repetían
+las baldosas. Se corrigieron esas relaciones y se conservaron ambas versiones.
+Arturo prefiere editorial y narrativa para caminar, y valora las tres variantes
+de libreta y escuela. No eligió una familia única para todas las notas.
+
+Se construyó `/blog/laboratorio/`, con nueve artículos y 27 propuestas actuales,
+18 de ellas nuevas. Seis temas nuevos repiten su composición entre trazo,
+papel y planos facetados: manos, dengue, presión, mellizos, medicamentos y
+hábitos familiares. El primer intento de papel tenía demasiado relieve;
+se revisó con las imágenes de libreta y escuela como referencia antes de
+trasladarlo a las otras técnicas. Las propuestas completas y sus miniaturas
+viven dentro del repositorio y se sirven desde el mismo sitio.
+
+**Qué aprendimos.**
+
+1. **Comparar y elegir son etapas distintas.** El laboratorio admite varias
+   favoritas y notas por artículo. No cambia portadas ni impone una técnica
+   global: permite volver a mirar y pedir un ajuste concreto.
+2. **Una escena coherente también importa en una ilustración.** Simplificar
+   manos, fondo o sombras exige decidir qué se conserva. La sombra que parece
+   una baldosa no se arregla cambiando el nombre del estilo.
+3. **El almacenamiento tiene que explicarse.** Favoritas y notas se guardan en
+   ese navegador, no en GitHub. Exportar/importar y copiar un resumen hacen
+   explícita la forma de conservarlas y compartirlas.
+4. **La publicación se prueba en su ruta real.** Se verificaron las nueve notas
+   bajo `/sp-prototipo/blog/laboratorio/`, con cuatro anchos, 81 vistas de
+   recorte, 33 versiones y recuperación de la selección. No alcanza con que
+   un archivo se vea en el directorio de la sesión.
+
+Fuentes y láminas: `docs/diseno/README.md`, lecciones 90 y 91. El laboratorio
+pertenece al prototipo; la poda del blog lo excluye de la v1 pública.
+
+
+**La entrega también necesitó un respaldo.** Los primeros dos despliegues de
+Pages del laboratorio agotaron los diez minutos de espera. El primero quedó
+en `updating_pages`; el reintento devolvía el estado vacío. La compilación y
+las pruebas estaban en verde. Por eso se agregó `scripts/export-laboratorio.py`:
+produce un HTML autónomo de 17 MB con las mismas 27 propuestas y 33 versiones,
+imágenes y fuentes incluidas. Se probó con la conexión desactivada: cero
+solicitudes externas y selección recuperada después de recargar. El entorno
+no permite abrir `file://`; se entregó el contenido exacto por una ruta local
+de prueba, sin simular que se había comprobado ese protocolo. El respaldo
+conserva las selecciones mediante exportación/importación entre copias.
+
+## Capítulo 161 — Tres opciones con el mismo poco de rosa (23/10/2026)
 
 **Qué intentamos.** Arturo pidió ver la página con la temática de Octubre Rosa,
 en tres opciones, lo más rápido posible. Claude armó tres sobre la home real:
@@ -5812,7 +5987,7 @@ antes de preguntarse cuánto había que moverlo, y puso las tres en la misma
 intensidad, la más baja. La segunda tanda abrió el rango: todo el azul pasado a
 rosa profundo con la foto teñida, un hero rosa claro con un lazo gigante en vez
 de la foto, y lo primero con dos fajas que se cruzan como el lazo
-(`docs/diseno/README.md`, lección 90).
+(`docs/diseno/README.md`, lección 92).
 
 **Qué aprendimos.**
 

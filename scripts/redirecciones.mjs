@@ -16,15 +16,20 @@
    - Fuera de la lista, a propósito: lo que no se redirige sin una decisión de
      Arturo (NO_SE_REDIRIGEN, abajo). Sin regla, esas direcciones dan el 404
      del sitio, que ofrece volver al inicio, en vez de llevar a un lugar que
-     alguien eligió sin saber.
+     alguien eligió sin saber. (Desde el 23/10/2026 no queda ninguna: ver
+     sp-interno#209.)
 
    Las direcciones viejas salen del sitemap público de la web actual
    (WordPress, leído el 23/10/2026: 37 direcciones). Cada destino tiene que
    existir en el export, o el build corta: una redirección a una página que no
-   está es un 404 con un paso de más. */
+   está es un 404 con un paso de más. La única excepción es lo que se muda a un
+   subdominio de SP (la reserva de turnos, 1A): ese destino no está en el
+   export, así que el build solo acepta direcciones https de
+   *.saludprotegida.com.py, y que respondan se controla el día del cambio de
+   DNS (scripts/antes-del-dns.mjs). */
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { REDIRECCIONES, NO_SE_REDIRIGEN, reglas } from './redirecciones-lista.mjs';
+import { REDIRECCIONES, NO_SE_REDIRIGEN, SUBDOMINIO_SP, reglas } from './redirecciones-lista.mjs';
 
 const LANZAMIENTO = process.env.NEXT_PUBLIC_EDICION === 'lanzamiento';
 if (!LANZAMIENTO) process.exit(0);
@@ -32,11 +37,14 @@ if (!LANZAMIENTO) process.exit(0);
 const OUT = 'out';
 
 // Un destino de la v1 es siempre una carpeta con su index.html («/» es la raíz).
-const resuelve = (ruta) => existsSync(join(OUT, ruta.replace(/^\/+|\/$/g, ''), 'index.html'));
+// Uno de afuera solo puede ser un subdominio de SP (la reserva de turnos).
+const resuelve = (ruta) => /^https?:/.test(ruta)
+  ? SUBDOMINIO_SP.test(ruta)
+  : existsSync(join(OUT, ruta.replace(/^\/+|\/$/g, ''), 'index.html'));
 
 const rotas = REDIRECCIONES.filter(([, destino]) => !resuelve(destino));
 if (rotas.length) {
-  console.error('\n✗ Redirecciones a páginas que la v1 no publica:\n');
+  console.error('\n✗ Redirecciones a páginas que la v1 no publica (o a un sitio que no es de SP):\n');
   for (const [o, d] of rotas) console.error(`   ${o} → ${d}`);
   process.exit(1);
 }
@@ -47,4 +55,4 @@ const lineas = [
   '',
 ];
 writeFileSync(join(OUT, '_redirects'), lineas.join('\n'));
-console.log(`✓ redirecciones: ${reglas().length} reglas en out/_redirects (${REDIRECCIONES.length} direcciones) · ${NO_SE_REDIRIGEN.length} direcciones esperan una decisión (${NO_SE_REDIRIGEN.map(([o]) => o).join(', ')})`);
+console.log(`✓ redirecciones: ${reglas().length} reglas en out/_redirects (${REDIRECCIONES.length} direcciones) · ` + (NO_SE_REDIRIGEN.length ? `${NO_SE_REDIRIGEN.length} direcciones esperan una decisión (${NO_SE_REDIRIGEN.map(([o]) => o).join(', ')})` : 'ninguna espera una decisión'));
