@@ -80,6 +80,9 @@ trabajo).
   `CNAME` de `marketing.` (la página de HubSpot de «Cotizá tu plan») y de `www.`.
 - `.node-version` pasó de 20 a 22, el Node del CI: Node 20 ya no recibe parches
   de seguridad.
+- **Arreglo de #289, que se había escapado:** la salud nocturna le seguía
+  pidiendo 200 a `/guia/guia_home.html` en el sitio en vivo. Ahora pide 404 en
+  las tres páginas del molde viejo (BITACORA cap. 157, punto 4).
 
 ---
 

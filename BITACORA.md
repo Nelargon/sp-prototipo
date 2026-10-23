@@ -5784,3 +5784,14 @@ decía Node 20 y el CI construye con 22.
    distinto que el CI, con otro Node u otras variables, lo que el CI dice no
    vale para producción. Por eso el CI construye la v1 con las variables de
    producción en cada PR.
+4. **La lección del capítulo anterior, rota el mismo día por quien la
+   escribió.** Al retirar la guía vieja (#289), Claude buscó en los workflows
+   todo lo que la nombrara con `grep guia` y descartó las líneas con
+   `guia-medica`. La línea de la salud nocturna que le pedía 200 a
+   `/guia/guia_home.html` tenía las dos cosas, así que el filtro la tapó. La
+   encontró la salud de este PR, en el paso «Sitio en vivo», antes de que la
+   corrida de la noche abriera un aviso rojo sobre `main`. Ahora pide 404 en las
+   tres páginas. Es el cap. 156 con otra cara: un filtro que excluye por un
+   nombre corto también tapa la línea que tiene los dos nombres. Para buscar lo
+   que se retira se busca el nombre exacto (`guia_home`, `/guia/guia_`), no se
+   resta el parecido.
