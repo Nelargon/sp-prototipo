@@ -10,7 +10,7 @@
     "lint": "next lint",
     "prebuild": "node scripts/red-home.mjs",
     "predev": "node scripts/red-home.mjs",
-    "postbuild": "node scripts/podar-edicion.mjs"
+    "postbuild": "node scripts/podar-edicion.mjs && node scripts/redirecciones.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

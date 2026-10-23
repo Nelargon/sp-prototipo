@@ -17,6 +17,75 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
+
+Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)
+y sumó dos definiciones. Lo público sigue esperando: nada de esto conecta el
+dominio ni prende la indexación.
+
+**Lo que se vende (Arturo, 23/10/2026):** *«Lo que vamos a comercializar por
+ahora es el Essential, el Silver, el Gold y el Vital. Así que manejate con los
+datos que tienes.»* Y sobre Bronze: *«El plan Bronce obviamente no se
+comercializa más, pero obviamente hay clientes que lo tienen, así que va a tener
+que estar en la Guía Médica, pero no se va a comercializar.»* Es lo que el sitio
+ya hacía (`lib/red-medica.js`: «Bronze sigue en la guía: ya no se vende, pero
+hay clientes que lo tienen»). Medido en el build: home, `/planes/` y simulador
+nombran solo Essential, Silver, Gold y Vital. Los otros nombres viven solo en el
+código de la Guía Médica. **Ahora lo controla `qa-lanzamiento`** («En las páginas
+de venta, solo los planes que se venden»). La prueba se verifica a sí misma: le
+mete «Plan Bronze» a la página y tiene que verlo.
+
+**El Drive de los planes y la guía.** Arturo creó la carpeta «Fuente de Planes -
+Productos - Guia» en su Drive; el enlace está en `sp-interno/README.md`. Va a
+ser el centro de la información de la Guía Médica y de los planes. **Arturo la
+está cargando: hasta que diga que está lista, no se lee ni se cambia de dónde
+salen los datos.** Mientras, valen los datos de hoy (la planilla maestra y
+`datos/planes-vigentes/`). Se verificó que la sesión tiene acceso.
+
+**1A — El glosario médico:** Arturo lo valida en el Excel
+(`datos/glosario/Glosario-medico-SP-borradores.xlsx`). Validado, va a
+`/planes/`, subrayado en las palabras difíciles como «carencia», después de que
+cierre `Nelargon/sp-interno#206` (los nombres de las cirugías, de otra línea de
+trabajo).
+
+**2A — El botón «Revisión», solo en el prototipo:** `CON_REVISION =
+!ES_LANZAMIENTO`. Lo controlan `qa-lanzamiento` (con el menú abierto, a 390 y a
+1280 px; contra el build anterior da ✗ en las cuatro páginas) y
+`qa/produccion.mjs`. Cierra `Nelargon/sp-interno#192`.
+
+**3A — El build para el dominio real** (`Nelargon/sp-interno#103`):
+- **El CI construye en cada PR la v1 como saldría en producción**: sin prefijo,
+  con `SITE_URL=https://saludprotegida.com.py` y sin indexación. Le corre
+  `qa/produccion.mjs` y `qa/links-internos.mjs`. El control mira que no haya
+  `/sp-prototipo`, que el sitemap, los canonical y el og:url estén en el
+  dominio, que no salga el botón, que estén las redirecciones y el 404, y que el
+  `noindex` y el robots sigan cerrados mientras `NEXT_PUBLIC_INDEXABLE` no diga
+  `true`. Probado en los dos sentidos: con el botón repuesto da ✗ en 686
+  páginas, y el build de GitHub Pages da ✗ por el prefijo.
+- **Las redirecciones**, para Cloudflare Pages: `scripts/redirecciones.mjs`
+  escribe `out/_redirects`, solo en la v1, desde
+  `scripts/redirecciones-lista.mjs`. Salen del sitemap público de la web actual
+  (WordPress, 37 direcciones). `301` para lo reemplazado (`/que-cubre/`) y
+  `302` para lo que todavía no tiene casa (el blog viejo, el contacto, la «Guía
+  para el asegurado»). El build corta si un destino no existe.
+- ⚠ **Tres direcciones de la web actual no se redirigen sin Arturo**
+  (`Nelargon/sp-interno#209`): `/login/` y `/dashboard/`, que son
+  «Agendamiento», la reserva de turnos de los clientes; `/octubre_rosa/`, las
+  bases legales de una promoción vigente; y el QR del carnet. **Si el dominio
+  cambia sin resolverlas, los clientes se quedan sin turnos.** El control falla
+  si alguna aparece redirigida.
+- La receta para SP en Cloudflare: `docs/IMPLEMENTAR-v1.md`, §0. Incluye las
+  variables, que van solo en producción para que las previews sigan mostrando el
+  prototipo, y la lista del día del DNS: MX, `mail.`, SPF, Brevo, DKIM, y los
+  `CNAME` de `marketing.` (la página de HubSpot de «Cotizá tu plan») y de `www.`.
+- `.node-version` pasó de 20 a 22, el Node del CI: Node 20 ya no recibe parches
+  de seguridad.
+- **Arreglo de #289, que se había escapado:** la salud nocturna le seguía
+  pidiendo 200 a `/guia/guia_home.html` en el sitio en vivo. Ahora pide 404 en
+  las tres páginas del molde viejo (BITACORA cap. 157, punto 4).
+
+---
+
 ## 🧩 23/10/2026: LAS DOS EDICIONES, CONSOLIDADAS. LO PÚBLICO ESPERA
 
 **Arturo, 23/10/2026, textual:**
@@ -89,9 +158,9 @@ reglas nuevas no le llegaban.
 | Agendar (`CON_AGENDA`) | ✓ | — | Decidir si convive con la reserva de turnos que ya existe o la reemplaza (directorio del 15/09) |
 | Mi SP (`CON_MI_SP`) | ✓ | — | El sistema real (padrón, SIP) y la frontera con la app |
 | Historia (`CON_HISTORIA`) | ✓ | — | Decisión de Arturo y otra forma: hoy son 720vh de scroll dirigido |
-| Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo y dónde se muestra |
+| Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo, en el Excel. Validado, va a `/planes/`, subrayado en las palabras difíciles, después de `Nelargon/sp-interno#206` (1A, 23/10) |
 | Marca «Revisar» de la guía (`CON_MARCA_REVISAR`) | ✓ | nunca | Es interna. Dato del 23/10: 218 filas marcadas (eran 185 el 23/09) |
-| Botón «Revisión» (`CON_REVISION`) | ✓ | ✓ hoy | La respuesta de Arturo en `Nelargon/sp-interno#192` |
+| Botón «Revisión» (`CON_REVISION`) | ✓ | nunca | Es interno: solo en el prototipo desde el 23/10 (`Nelargon/sp-interno#192`, 2A) |
 
 **El espacio de la guía y los planes (anunciado por Arturo el 23/10).** Arturo
 va a crear en su Google Drive un espacio que va a ser **el centro de la
@@ -114,7 +183,7 @@ molde lo ataja `qa/links-internos.mjs` en las dos ediciones.
 **Lo que sigue para preparar el espacio** (sin publicar): el build para el
 dominio real (`Nelargon/sp-interno#103`, puntos 1 y 4), la respuesta de Arturo
 sobre el botón «Revisión» (`#192`), y las cuentas y el DNS (`#101`), que son de
-Arturo.
+Arturo. *(Esa misma tarde: los dos primeros, hechos. Ver «🌐 23/10/2026».)*
 
 ---
 
