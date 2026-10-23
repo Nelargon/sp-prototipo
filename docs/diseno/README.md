@@ -2307,36 +2307,86 @@ altos» no estaban en una celda: eran el final de una oración, y decían lo mis
 que una celda, para quién cuenta un tope y qué plan da más. Si el sitio pone ese
 dato en duda en otro lado, la frase sale hasta que SP conteste.
 
-## Parte 35 · Octubre Rosa en la home (23/10/2026)
+## Parte 35 · El modo oscuro que pone el celular (23/10/2026)
+
+Arturo mandó una captura de la Guía Médica en su celular, con Samsung Internet
+y el teléfono en modo oscuro: *«Se ve muy confuso y no sale bien»*. La lámina
+es la reproducción en Chromium con el modo oscuro forzado, antes y después del
+arreglo.
+
+### 89 · Lo sutil tiene que ser transparente
+
+![Tres capturas de la Guía Médica en el celular, a 390 px: hoy, con el modo oscuro del celular, los nombres del tapiz quedan blancos y gruesos encima del título y de los filtros; con el arreglo en Chrome, la guía se ve igual que en modo claro; con el arreglo, si Samsung igual la oscurece, la página queda oscura y el tapiz es una textura suave detrás](img/2026-10-23-modo-oscuro-guia.webp)
+
+**Qué muestra.** A 390 px y con el modo oscuro forzado del navegador:
+
+1. **Hoy.** El tapiz era gris claro opaco. El navegador oscurece los fondos y
+   aclara los textos oscuros, pero un texto que ya es claro lo deja como está:
+   el tapiz quedó blanco pleno sobre negro y tapa el título, el copete y «Lo
+   que más se busca».
+2. **Con el arreglo, en Chrome.** La página declara que es solo clara y el
+   navegador la respeta: se ve igual que con el teléfono en modo claro.
+3. **Con el arreglo, si el navegador igual la oscurece** (lo que puede hacer
+   Samsung Internet; se simuló sacando la marca). El tapiz va en navy con
+   transparencia: el navegador lo aclara y queda de fondo, suave.
+
+**Qué se decidió y por qué.** Arreglado el 23/10/2026, a pedido de Arturo («una
+propuesta de cómo podríamos solucionar esto lo más rápido posible»). En modo
+claro no cambia nada: el navy transparente da el mismo píxel que el gris
+(3/255 de diferencia como máximo, medido en las capturas). Queda abierto el
+logo del header, que es una imagen navy y en el caso 3 se lee poco.
+
+**La lección.** Un color «casi igual al fondo» solo es sutil mientras el fondo
+no cambie. Lo que es textura se pinta con transparencia, así guarda su
+relación con el fondo aunque alguien cambie el fondo.
+
+## Parte 36 · Octubre Rosa en la home (23/10/2026)
 
 Arturo pidió ver, lo más rápido posible, cómo se vería la página con la temática
-de Octubre Rosa, en tres opciones, para decidir. Las tres se armaron encima de la
-home real (el `main` del 23/10), en el celular, a 390 px.
+de Octubre Rosa, en tres opciones, para decidir. Hubo dos tandas el mismo día,
+las dos armadas encima de la home real (el `main` del 23/10), en el celular, a
+390 px.
 
-### 89 · Un tema del mes se viste sin tocar lo que significa algo
+### 90 · Tres lugares para el mismo poco de rosa no son tres opciones
 
-![La home en el celular, hoy y con tres maneras de vestirla para Octubre Rosa: A, una cinta rosa fina arriba de todo; B, la etiqueta del hero cambiada por «Octubre Rosa · Leé la nota» con un lazo y «se siente» en rosa; C, una sección nueva debajo del hero con las dos notas del blog sobre el estudio de las mamas](img/2026-10-23-octubre-rosa-home-celular.webp)
+![Primera tanda: la home en el celular, hoy y con tres maneras de vestirla para Octubre Rosa: A, una cinta rosa fina arriba de todo; B, la etiqueta del hero cambiada por «Octubre Rosa · Leé la nota» con un lazo y «se siente» en rosa; C, una sección nueva debajo del hero con las dos notas del blog sobre el estudio de las mamas](img/2026-10-23-octubre-rosa-home-celular.webp)
 
-**Qué muestra.** «Hoy» y tres opciones. **A · Cinta arriba:** una franja rosa
-suave de 44 px sobre todo el sitio, con el lazo y «Octubre Rosa · Leé la nota
-del mes»; el hero no se toca. **B · Acento en el hero** (la recomendada): la
-etiqueta «+24 años…» cede su lugar, por el mes, a «Octubre Rosa · Leé la nota»
-con el lazo, y «se siente» pasa de turquesa a rosa. **C · Tramo propio:** una
-sección rosa suave debajo del hero con las dos notas publicadas del blog («Cada
-cuánto conviene hacerse el estudio de las mamas», 06/10, y «Por qué hacerse el
-estudio de las mamas si no te duele nada», 20/10) y «Mirá qué cubre cada plan»;
-empuja el resto de la home 569 px más abajo. En las tres, el botón principal
-sigue turquesa profundo, el logo no cambia y el rojo queda solo para el botón de
-urgencias. Ninguna afirma una cobertura ni da un consejo médico: el contenido es
-el de las notas, que ya pasaron por el filtro del blog. El revisor
-(`revisar.mjs`, a 360, 390 y 430 px) no encontró nada nuevo contra «Hoy» después
-de dos arreglos: la cinta y la etiqueta crecieron a 44 px para el dedo, y el
-enlace de C pasó a navy (el turquesa sobre rosa suave daba 4,48:1).
+**Qué muestra la primera.** «Hoy» y tres opciones. **A · Cinta arriba:** una
+franja rosa suave de 44 px sobre todo el sitio, con el lazo y «Octubre Rosa ·
+Leé la nota del mes». **B · Acento en el hero** (la que se recomendó): la
+etiqueta «+24 años…» cede su lugar, por el mes, a «Octubre Rosa · Leé la nota»,
+y «se siente» pasa a rosa. **C · Tramo propio:** una sección rosa suave debajo
+del hero con las dos notas publicadas del blog sobre el estudio de las mamas;
+empuja el resto de la home 569 px.
 
-**Qué se decidió y por qué.** Pendiente: la elige Arturo.
+**Qué dijo Arturo.** Ninguna: *«yo quiero que se sienta mucho más rosa. Hasta
+ahora todavía se ve muy azul. Haz algo loco e interesante»*.
 
-**La lección.** Un tema del mes se viste sin tocar lo que significa algo. El
-rosa entra como adorno y como etiqueta; no reemplaza al turquesa del botón, que
-es el que dice «por acá», ni se acerca al rojo de urgencias, ni cambia el logo.
-Y llega tarde si arranca el 23: lo que se construya para un mes vale más si se
-prende y se apaga solo por fecha.
+![Segunda tanda: la home en el celular, hoy y con tres maneras de sacarle el azul: A, todo berry, el fondo del hero y la tarjeta del simulador en rosa profundo y la foto teñida; B, lazo gigante, el hero en rosa claro, sin foto, con un lazo enorme detrás del texto; C, faja cruzada, la foto en rosa y dos fajas con «Octubre Rosa» que se cruzan como el lazo entre el hero y la tarjeta](img/2026-10-23-octubre-rosa-mas-rosa-celular.webp)
+
+**Qué muestra la segunda.** **A · Todo berry:** donde hoy hay azul (el fondo del
+hero, la barra de arriba, la tarjeta del simulador), rosa profundo; la foto,
+teñida de rosa; el fondo claro, rosa pálido. **B · Lazo gigante:** el hero pasa
+a rosa claro, sin la foto, y un lazo enorme, rosa claro, es la imagen; los
+títulos van en rosa profundo y el logo, en su versión a color. **C · Faja
+cruzada** (la recomendada): lo de A más dos fajas con «Octubre Rosa», una rosa
+profundo y otra rosa clara, que se cruzan como el lazo entre el hero y la
+tarjeta del simulador. En las seis, el botón principal sigue turquesa profundo,
+el logo es uno de los dos de siempre y el rojo queda solo para urgencias. Los
+rosas son del lado magenta (tono cerca de 330°), lejos del rojo de urgencias
+(`#E11900`, cerca de 7°). Ninguna afirma una cobertura ni da un consejo médico.
+El revisor (`revisar.mjs`, a 360, 390 y 430 px) no encontró nada nuevo contra
+«Hoy» en ninguna, después de agrandar la etiqueta y la cinta a 44 px y de pasar
+a navy un enlace que daba 4,48:1 sobre rosa suave.
+
+**Qué se decidió y por qué.** La primera tanda, descartada entera: se veía
+azul. La segunda, pendiente: la elige Arturo.
+
+**La lección.** Las tres opciones de la primera tanda cambiaban **dónde** iba el
+rosa, no **cuánto**: una cinta, una etiqueta, una sección, y la página seguía
+siendo azul en las tres. Tres variantes de la misma intensidad no son tres
+opciones (es la lámina 69 con otra cara). Pasó por cuidar el sistema antes de
+preguntar cuánto había que moverlo. Lo que no se toca sigue sin tocarse: el
+botón turquesa, que dice «por acá», el rojo de urgencias y el logo. Lo demás se
+puede pintar, y un pedido de tema se abre mostrando el rango entero, de un toque
+a la página entera.
