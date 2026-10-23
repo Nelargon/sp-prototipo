@@ -8,8 +8,9 @@ name: Salud nocturna
 #   2. las pruebas rápidas: buscador, cobertura de páginas, links internos y
 #      las listas a un toque contra su fuente (qa/listas-fuente.mjs, 23/10/2026)
 #   3. las pruebas con navegador: qa-integral (cero «roto») y qa-lanzamiento
-#   4. el sitio EN VIVO responde, la v1 no publica lo que no se lanza y la
-#      copia congelada /v1/ ya no existe (se bajó el 17/10/2026)
+#   4. el sitio EN VIVO responde, la v1 no publica lo que no se lanza, la
+#      copia congelada /v1/ ya no existe (se bajó el 17/10/2026) y el molde
+#      viejo de la guía tampoco (se retiró el 23/10/2026)
 #   5. producción = main: el último commit de main está publicado
 #   6. el Guardián (capa 2) está vivo: actualizó su tablero en las últimas 30 h
 #
@@ -158,7 +159,7 @@ jobs:
               echo "✗ $1 → $c en los 3 intentos (se esperaba $2; vistos:$visto)"; fallas=$((fallas+1))
             fi
           }
-          for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ /guia/guia_home.html \
+          for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ /mi-sp/ \
                    /lanzamiento/ /lanzamiento/simulador/ /lanzamiento/planes/ /lanzamiento/que-cubre/ \
                    /lanzamiento/guia-medica/ /lanzamiento/guia-medica/P-0001/; do
             mirar "$p" 200
@@ -168,6 +169,12 @@ jobs:
           for p in /lanzamiento/blog/ /lanzamiento/mi-sp/ /lanzamiento/agendar/ /lanzamiento/historia/ /lanzamiento/v1/; do
             mirar "$p" 404
           done
+          # El molde viejo de la guía (guia/) se retiró el 23/10/2026
+          # (sp-prototipo#289). Hasta ese día esta lista lo pedía con 200: sin
+          # este cambio, la primera noche después del retiro habría dado rojo
+          # por algo que está bien. Si vuelve a responder, alguien lo repuso. Se
+          # mira también en un PR: el sitio en vivo ya es el main sin el molde.
+          mirar /guia/guia_home.html 404
           # La copia congelada /v1/ se bajó el 17/10/2026 (sp-interno#181): si
           # vuelve a responder, alguien la repuso. En un PR no se mira: el sitio
           # en vivo todavía es main, y el PR que la baja la vería responder.

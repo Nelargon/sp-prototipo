@@ -19,12 +19,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Build del prototipo completo (incluye sincronización de la guía)
+      - name: Build del prototipo completo
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /sp-prototipo
-      - name: Verificar que la guía quedó en el export
-        run: test -f out/guia/guia_home.html && echo "✓ guía presente en el build"
+      # El molde viejo de la guía (guia/, datos de ejemplo) se retiró el
+      # 23/10/2026. Si alguien lo repone en public/, Next lo copia a out/.
+      - name: Verificar que el molde viejo de la guía no volvió
+        run: |
+          if [ -e out/guia ]; then echo "✗ out/guia quedó publicado (el molde viejo se retiró el 23/10/2026)"; exit 1; fi
+          echo "✓ sin el molde viejo de la guía"
       # La copia congelada /v1/ se bajó el 17/10/2026 (sp-interno#181). Next
       # copia public/ entero a out/: si alguien la repone, aparece acá.
       - name: Verificar que la copia congelada /v1/ no volvió

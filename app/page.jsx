@@ -6,14 +6,13 @@ import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
 import { coverage, notaCelda, ECO_EN_FAQ } from './coverage';
-import { Term, annotate } from './glossary';
+import { annotate } from './glossary';
 import Plegable from './components/Plegable';
-import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
 import DondeTeAtendes from './components/DondeTeAtendes';
 import Comparador from './components/Comparador';
 import MuroFondo from './components/MuroFondo';
-import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
+import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 
 const INITIAL = {
   mobileMenuOpen: false,
@@ -115,22 +114,6 @@ export default function Page() {
     { q: '¿Qué es Lister y en qué se diferencia de "la red"?', a: 'Lister es nuestro centro médico propio, con consultas, laboratorio e imagenología. "La red" es Lister más los médicos, sanatorios y laboratorios con los que trabajamos. Cuáles podés usar depende del plan que elijas y, en Essential, de tu zona.' },
     { q: '¿Cómo se calcula el precio de mi plan?', a: 'Depende de cuántas personas cubrís, sus edades y el plan que elijas; en Essential, también de tu zona. Siempre con IVA incluido.', cta: { label: 'Simulá tu plan →', sim: true } },
     { q: '¿Puedo cambiar de plan más adelante?', a: 'Sí. Si tu familia crece o cambian tus necesidades, podés pedir un cambio de plan cuando quieras — un asesor te muestra las opciones y la diferencia de precio.', cta: { label: 'Consultá tu cambio por WhatsApp →', wa: 'Hola! Quiero consultar por un cambio de plan.', tema: 'cambio_plan' } },
-  ];
-
-  // Cada tarjeta se gana su lugar con una cláusula real del cuadernillo
-  // (verificado contra los 4 contratos SP, jul 2026): telemedicina y
-  // "laboratorio a domicilio" NO figuran en ningún plan — se quitaron para
-  // no prometer lo que el contrato no respalda (el bloque "por escrito" no
-  // puede sobreprometer). Números de médico a domicilio y salud mental salen
-  // de las secciones 2.9.1.5 y consultas de los cuadernillos Silver/Gold.
-  // Essential (24/09/2026) no trae médico a domicilio ni psiquiatría en su
-  // cuadernillo: psicología sí, en el cupo de subespecialidades.
-  // La ambulancia de Silver y Gold dice «cubierta», sin tope escrito: que no
-  // tenga tope sería deducirlo (sp-interno#116). Va al asesor (decisión 2A).
-  const difsData = () => [
-    { icono: 'letra', title: 'Sin letra chica', body: 'Ves qué cubre tu plan y qué pagás aparte antes de firmar. Lo que está escrito es lo que recibís, sin sorpresas después.' },
-    { icono: 'domicilio', title: 'Médico a domicilio', body: 'El médico va a tu casa: 3 consultas a domicilio al año en Silver y 4 en Gold. Y en los tres planes, urgencias 24 h y ambulancia sin cargo en Asunción y alrededores (en Essential, hasta 3 veces al año por familia; en Silver y Gold, preguntale a tu asesor si tiene un tope).' },
-    { icono: 'mental', title: 'Salud mental incluida', body: 'Psicología cubierta en los tres planes, y psiquiatría en Silver y Gold, no como un extra aparte.' },
   ];
 
   // Count-up for the trust stats when they scroll into view (once).
@@ -476,7 +459,6 @@ export default function Page() {
     guiaHome,
     trackGuia: (via) => track('guia_handoff', { q: '', via }),
     planHead, cmp, cmpIgual, planesHref: `${BP}/planes/`, stepsHow, faqList,
-    difs: difsData(),
     // Orden del muro (26/09/2026): las tres farmacias juntas, después óptica y viajes.
     aliados: [
       { name: 'Farmatotal', file: 'farmatotal.webp' },
@@ -541,7 +523,6 @@ export default function Page() {
                 <div className="navmenu navmenu-right">
                   <div className="navmenu-card">
                     <a href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Agendar un turno</span><span className="navmenu-s">Pedí tu turno en Lister — directo, sin login</span></a>
-                    <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ver mi red</span><span className="navmenu-s">Con tu cédula, mirá qué entra en tu plan</span></a>
                     <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav_misp' })} className="navmenu-item"><span className="navmenu-t">Ir a Mi SP</span><span className="navmenu-s">Tu espacio: credencial, turnos y más</span></a>
                   </div>
                 </div>
@@ -853,34 +834,14 @@ export default function Page() {
           </div>
 
           <p className="cmp-nota">Precios de lista vigentes, IVA incluido. El detalle final lo confirmás con tu asesor.</p>
-          {/* La caja del parto sale de la edición de lanzamiento: la FAQ ya
-              contesta "¿Cuánto tengo que esperar para usar mi plan?" con el
-              mismo dato (1 año en Essential, 10 meses en Silver y Gold). El dato NO
-              se pierde — se dice una vez en vez de dos, que es de lo que se
-              trata acortar. En el prototipo se queda, con su porqué intacto. */}
-          {/* PARTO: LA ESPERA MÁS LARGA DE LA GRILLA (26 jul 2026).
-              Parto son 300 días en Silver y Gold (365 en Essential, desde el
-              24/09/2026) — el dato más caro de descubrir tarde de todo el sistema, y
-              que hasta hoy la web no decía en ningún lado (la FAQ lo derivaba
-              al asesor). Va en dorado, no en rojo: la regla de color reserva
-              el rojo para urgencias, y el dorado es "oportunidad". Y el
-              encuadre es deliberado — el mismo dato dicho a tiempo deja de ser
-              una trampa escondida y pasa a ser una razón para afiliarse antes.
-              No se suaviza el número: se le da un destino.
-              La «cesárea a 5 meses en Gold» salió el 13/10/2026 (decisión 2A de
-              Arturo): una sola fila de la grilla contra la cláusula de
-              maternidad (300 días). Vuelve si SP la confirma (sp-interno#116). */}
-          {!ES_LANZAMIENTO && (
-            <div className="sq" style={css('margin-top:18px;border:1px solid #E8D9A8;background:#FDFAF2;--sq:var(--r-md);padding:16px 18px;display:flex;gap:13px;align-items:flex-start')}>
-              <IconoSP nombre="espera" size={32} style={{ marginTop: -5 }} />
-              <div>
-                <div style={css('font-family:var(--font-display),system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sp-navy);margin-bottom:4px')}>¿Están pensando en agrandar la familia?</div>
-                <div style={css('font-family:var(--font-inter),system-ui,sans-serif;font-size:13.5px;color:var(--sp-text-2);line-height:1.55')}>
-                  El parto espera <strong>1 año en Essential y 10 meses en Silver y Gold</strong> (<Term k="carencia">carencia</Term>). Es la espera más larga de todos los servicios, y el reloj arranca el día que te afiliás — no el día que lo necesitás. Si el plan es para dentro de un año, <strong>afiliándote ahora llegás</strong>.
-                </div>
-              </div>
-            </div>
-          )}
+          {/* ⚠ LA CAJA DEL PARTO VIVÍA ACÁ («¿Están pensando en agrandar la
+              familia? El parto espera 1 año en Essential y 10 meses en Silver y
+              Gold… afiliándote ahora llegás»). Nació el 26/07/2026 y salió de la
+              v1 el 16/09 porque la FAQ ya da el dato. El 23/10/2026 se retiró
+              también del prototipo (decisión de Arturo al consolidar las dos
+              ediciones): usaba una espera de gancho para afiliarse, contra su
+              regla del 02-03/10 («tampoco al principio como hook para la
+              compra»). El dato sigue en la FAQ y en /planes/. */}
 
           {/* ⚠ "PARA QUE NO HAYA SORPRESAS" VIVÍA ACÁ hasta el 24/09/2026: la caja
               de lo que nuestros planes no cubren. Se mudó a la FAQ (pedido de
@@ -924,34 +885,14 @@ export default function Page() {
           lo mismo con cinco pantallas de distancia, y el argumento de la categoría
           tiene que llegar antes de la elección de plan, no después. */}
 
-      {/* DIFERENCIADORES — NO va en la edición de lanzamiento (16 sep 2026).
-          Dos razones que apuntan al mismo lado: Arturo dijo en el directorio
-          del 15/09, mirando esta sección, "esto voy a borrar, esto no está, no
-          está planeado"; y la decisión 12e ya la tenía marcada como uno de los
-          tres bloques que venden producto sin camino al simulador. Se conserva
-          en el prototipo: no está mal hecha, está de más en una v1 que tiene
-          que ser corta y copiable. */}
-      {!ES_LANZAMIENTO && (
-        <section className="sec con-muro" style={css('padding:64px 40px;background:var(--sp-mint-bg)')}>
-          <MuroFondo tono="claro" />
-          <div style={css('max-width:1080px;margin:0 auto')}>
-            <div data-rv style={css('text-align:center;max-width:660px;margin:0 auto 30px')}>
-              <div style={css('font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sp-teal-deep);margin-bottom:14px')}>Lo que ponemos por escrito</div>
-              <h2 className="disp" style={css('font-size:36px;font-weight:800;color:var(--sp-navy);line-height:1.16;letter-spacing:-0.02em;margin:0 0 12px')}>Lo que te <span style={css('color:var(--sp-teal-deep)')}>prometemos</span></h2>
-              <p style={css('font-size:16px;line-height:1.6;color:var(--sp-text);margin:0')}>No son promesas sueltas: quedan escritas en tu plan.</p>
-            </div>
-            <div data-rv className="two-col" style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:20px')}>
-              {v.difs.map((dz, i) => (
-                <div className="sq" key={i} style={css('background:#fff;--sq:var(--r-lg);padding:28px 24px;border:1px solid var(--sp-line)')}>
-                  <IconoSP nombre={dz.icono} size={52} style={{ marginBottom: 14 }} />
-                  <div style={css('font-size:17px;font-weight:800;color:var(--sp-navy);line-height:1.3;margin-bottom:7px')}>{dz.title}</div>
-                  <div style={css('font-size:14px;color:var(--sp-muted);line-height:1.55;font-family:var(--font-inter),sans-serif')}>{dz.body}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ⚠ LOS DIFERENCIADORES VIVÍAN ACÁ («Lo que te prometemos»: sin letra
+          chica, médico a domicilio y salud mental). Salieron de la v1 el
+          16/09/2026: Arturo, en el directorio del 15/09, mirando esta sección,
+          dijo «esto voy a borrar, esto no está, no está planeado», y la
+          decisión 12e los marcaba como un bloque que vende producto sin camino
+          al simulador. El 23/10/2026 se retiraron también del prototipo, con
+          su lista de textos (decisión de Arturo al consolidar las dos
+          ediciones). Quedan en git. */}
 
       {/* CONFIANZA / SOBRE SP (con boceto del edificio) */}
       <section className="sec-x con-muro" style={css('padding:72px 40px 64px;background:#fff')}>

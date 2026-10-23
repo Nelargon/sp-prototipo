@@ -55,7 +55,11 @@ const primeraDe = (dir, excluir = []) => {
 const NOTA_BLOG = primeraDe('blog', ['guia']); // cubre: /blog/[slug]/
 const GUIA_BLOG = primeraDe('blog/guia'); // cubre: /blog/guia/[slug]/
 
-const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/', '/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html'];
+// El molde viejo de la guía (/guia/guia_*.html, datos de ejemplo) salió del
+// prototipo el 23/10/2026: ahora tiene que dar 404 (abajo, junto a /v1/). La
+// Guía Médica real la prueba qa-lanzamiento. /mi-sp/ entra al recorrido porque
+// su tarjeta principal pasó del molde viejo a la Guía Médica.
+const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/historia/', '/mi-sp/'];
 // Con estilos propios (sin CDN). Desde el 24/09/2026 entran las que la corrida
 // no visitaba: /que-cubre/ y /guia-medica/ (las dos más importantes de la v1),
 // /mi-sp/ y una nota y una guía del blog. Una página que ninguna prueba abre
@@ -77,6 +81,14 @@ console.log('\n== 1. FUNCIONAL ==');
     const r = await page.request.get(BASE + '/v1/').catch(() => null);
     if (r && r.status() === 404) ok('funcional', '/v1/ da 404: la copia congelada no se publica');
     else falla('funcional', 'roto', 'la copia congelada /v1/ responde (' + (r ? r.status() : 'sin respuesta') + '): se bajó el 17/10/2026, sp-interno#181', '/v1/');
+  }
+  // El molde viejo de guia/ se retiró el 23/10/2026 (decisión de Arturo): datos
+  // de ejemplo, «Plan Bronce» y un buscador que invitaba a escribir síntomas.
+  // Si alguna de sus páginas vuelve a responder, alguien lo repuso.
+  for (const vieja of ['/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_prestador.html']) {
+    const r = await page.request.get(BASE + vieja).catch(() => null);
+    if (r && r.status() === 404) ok('funcional', vieja + ' da 404: el molde viejo de la guía no se publica');
+    else falla('funcional', 'roto', vieja + ' responde (' + (r ? r.status() : 'sin respuesta') + '): el molde viejo se retiró el 23/10/2026', vieja);
   }
   const links = new Set();
   for (const p of porVisitar) {
@@ -277,83 +289,9 @@ console.log('\n== 1. FUNCIONAL ==');
     await desk.close();
   }
 
-  // 1c. Guía: búsqueda con resultados, sin resultados (rescate), modo personalizado
-  await page.goto(BASE + '/guia/guia_resultados.html?q=cardio', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(1200);
-  const tarjetas = await page.locator('#lista-resultados > *:visible').count();
-  if (tarjetas > 0) ok('funcional', 'guía: búsqueda "cardio" muestra ' + tarjetas + ' resultados');
-  else falla('funcional', 'roto', 'búsqueda "cardio" sin resultados visibles', 'guia_resultados');
-  const inpG = page.locator('#q, input[type="search"], #busqueda').first();
-  await inpG.fill('zzzqqq');
-  await page.waitForTimeout(600);
-  const rescate = await page.locator('a[href*="wa.me"]:visible').count();
-  if (rescate > 0) ok('funcional', 'guía: cero resultados ofrece rescate por WhatsApp (no es callejón)');
-  else falla('funcional', 'roto', 'cero resultados sin rescate visible', 'guia_resultados');
-  // ?plan=silver, un plan que la guía conoce (silver/gold; bronce salió el
-  // 23/10/2026, sp-interno#61). Hasta el
-  // 24/09/2026 decía ?plan=integral, un nombre viejo que la guía ignora: sin
-  // internet (sin el CDN de Tailwind, la clase `hidden` no esconde nada) el
-  // banner se veía igual y esto daba verde por accidente; con internet, rojo.
-  // Por eso se mira también que el banner diga el plan pedido.
-  await page.goto(BASE + '/guia/guia_resultados.html?plan=silver', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(1200);
-  const banner = page.locator('#banner-plan:visible');
-  if ((await banner.count()) && /Plan Silver/.test(await banner.innerText())) ok('funcional', 'guía: modo personalizado muestra el banner con el plan pedido (Plan Silver)');
-  else falla('funcional', 'confunde', 'modo personalizado sin banner visible con el nombre del plan', '?plan=silver');
-  // upsell: etiqueta dorada abre hoja, Escape la cierra. Hasta el 23/10/2026
-  // buscaba /Desde SP|Exclusivo/, que no es ningún botón (la etiqueta dice
-  // «★ Con Plan Gold →» y «Exclusivo» es un span): no encontraba nada y se
-  // salteaba sin avisar (sp-interno#61). Ahora, si la etiqueta no está, falla.
-  // Abrir y cerrar depende de la clase `hidden` de Tailwind (CDN): si la hoja ya
-  // se ve antes de tocar, el CDN no cargó y eso no se puede medir acá; se dice
-  // en el contexto, no se calla (en el CI, con internet, se mide).
-  const dorada = page.locator('button:visible', { hasText: /★ Con Plan/ }).first();
-  if (!(await dorada.count())) falla('funcional', 'confunde', 'con ?plan=silver no aparece la etiqueta dorada de upsell («★ Con Plan Gold →»)', '?plan=silver');
-  else if (await page.locator('#upsell-hoja:visible').count()) console.log('    contexto: la hoja de upsell ya se ve antes de tocar la etiqueta: sin el CDN de Tailwind la clase hidden no esconde, y abrir y cerrar no se puede medir en este entorno');
-  else {
-    await dorada.click();
-    await page.waitForTimeout(400);
-    if (await page.locator('#upsell-hoja:visible').count()) {
-      await page.keyboard.press('Escape');
-      await page.waitForTimeout(300);
-      if (!(await page.locator('#upsell-hoja:visible').count())) ok('funcional', 'guía: hoja de upsell abre y cierra con Escape');
-      else falla('funcional', 'confunde', 'la hoja de upsell no cierra con Escape', '?plan=silver');
-    } else falla('funcional', 'confunde', 'la etiqueta dorada «★ Con Plan Gold →» no abre la hoja de upsell', '?plan=silver');
-  }
-  // La guía vieja no muestra Bronze (sp-interno#61, 23/10/2026): salió de la
-  // venta el 24/09/2026. Se lee el texto que ve la persona, nodo por nodo y sin
-  // <script> ni <style>: así entran las opciones del «Mi plan» y las etiquetas
-  // «Desde Plan …» que arma el JS (el texto estático de «5. CONTENIDO» no las
-  // ve). Solo en /guia/: la Guía Médica real (/guia-medica) nombra Bronze a
-  // propósito, porque hay clientes que lo tienen (HANDOFF, 24/09/2026). Antes se
-  // prueba el patrón: tiene que encontrar «Plan Bronce» y «Bronze», y callar con
-  // «bronceado» y con Silver.
-  {
-    const BRONZE = /\bbron(?:ce|ze)\b/i;
-    const autoB = ['Desde Plan Bronce', 'Plan Bronze', 'protector para el bronceado', 'Desde Plan Silver'].map((t) => BRONZE.test(t));
-    if (!autoB[0] || !autoB[1] || autoB[2] || autoB[3]) falla('contenido', 'roto', 'el patrón de Bronze no distingue lo que debe marcar: ' + JSON.stringify(autoB), 'qa-integral 1c');
-    const conBronze = [];
-    for (const u of ['/guia/guia_home.html', '/guia/guia_resultados.html', '/guia/guia_resultados.html?plan=silver', '/guia/guia_resultados.html?plan=bronce', '/guia/guia_prestador.html']) {
-      await page.goto(BASE + u, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(800);
-      const hit = await page.evaluate((src) => {
-        const re = new RegExp(src, 'i');
-        const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (/^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentElement.tagName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
-        const r = [];
-        while (w.nextNode()) { const t = w.currentNode.textContent.replace(/\s+/g, ' ').trim(); if (re.test(t)) r.push(t.slice(0, 50)); }
-        return r;
-      }, BRONZE.source);
-      if (hit.length) conBronze.push(u + ': ' + hit.join(' | '));
-    }
-    if (conBronze.length) falla('contenido', 'confunde', 'la guía vieja muestra Bronze, que no se vende desde el 24/09/2026: ' + conBronze.join(' · '), '/guia/');
-    else ok('contenido', 'guía vieja: ninguna de sus 5 vistas (inicio, resultados sin plan, con Silver y con ?plan=bronce, y la ficha) muestra Bronze');
-  }
-  // 1d. Ficha de prestador: acciones de contacto presentes (tel: solo presencia)
-  await page.goto(BASE + '/guia/guia_prestador.html', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(800);
-  const acciones = { tel: await page.locator('a[href^="tel:"]').count(), wa: await page.locator('a[href*="wa.me"]').count(), mapa: await page.locator('a[href*="maps"], a', { hasText: /llegar/i }).count() };
-  if (acciones.tel && acciones.wa) ok('funcional', 'ficha: acciones de contacto presentes (tel ' + acciones.tel + ', wa ' + acciones.wa + ', mapa ' + acciones.mapa + ')');
-  else falla('funcional', 'roto', 'ficha sin acciones de contacto completas', JSON.stringify(acciones));
+  // 1c y 1d probaban el molde viejo de la guía (búsqueda, rescate sin
+  // resultados, modo por plan, ficha de ejemplo). Se fueron con él el
+  // 23/10/2026; lo mismo, sobre la Guía Médica real, lo prueba qa-lanzamiento.
   await page.close();
 }
 

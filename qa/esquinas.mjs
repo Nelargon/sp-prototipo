@@ -30,8 +30,9 @@
 // Uso:  node qa/esquinas.mjs        (sale con 1 si hay un radio a mano)
 // Antes de mirar el código se prueba a sí mismo con casos que tienen que marcar
 // y casos que no (CLAUDE.md, BITACORA cap. 89). qa-integral lo usa también.
-// Afuera: la guía vieja (guia/, Tailwind), el correo del blog (los clientes de
-// correo no leen var()) y los `rx` de los SVG, que son parte del dibujo.
+// Afuera: el correo del blog (los clientes de correo no leen var()) y los `rx`
+// de los SVG, que son parte del dibujo. La guía vieja (guia/, Tailwind) también
+// quedaba afuera, porque no vivía en app/, hasta que se retiró (23/10/2026).
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';

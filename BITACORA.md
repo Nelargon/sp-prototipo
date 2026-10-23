@@ -5678,7 +5678,66 @@ el navegador no la toca. Va como pregunta para Arturo, no se arregló a ciegas.
   antes que nosotros: la captura de Arturo fue la prueba de dispositivo real que
   la QA no tenía.
 
-## Capítulo 156 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
+## Capítulo 156 — Las dos versiones eran una sola, y lo vencido vivía detrás del interruptor (23/10/2026)
+
+**Qué intentamos.** Arturo pidió una revisión completa de las diferencias entre
+la versión de lanzamiento y la versión prototipo, con opciones para que las dos
+fueran un plan completo. Partía de una idea: *«la versión de lanzamiento es la
+más actualizada, con la que más he trabajado»*. Y planteó dos caminos: sumar al
+lanzamiento lo del prototipo que lo complementa, o *«crear todo en un nuevo
+repositorio y hacerlo bien»*.
+
+**Qué pasó.** Antes de armar opciones se midió la premisa, y no se sostuvo. No
+hay dos versiones: hay un solo código con un interruptor (`app/edicion.js`,
+cap. 73). Se construyeron las dos ediciones y se comparó el texto visible de
+home, `/planes/`, simulador, Guía Médica y 404: son iguales, salvo los bloques
+que el interruptor apaga. Todo lo que Arturo trabajó «en lanzamiento» quedó
+también en el prototipo.
+
+Lo que sí era cierto estaba del otro lado. Las piezas que viven solo en el
+prototipo, salvo el blog, no tenían cambios de contenido desde julio, y tres
+contradecían reglas que llegaron después:
+- **la guía vieja** (`guia/`): datos de ejemplo, «Plan Bronce», siete títulos
+  con punto y un buscador que invitaba a escribir «lo que te está pasando»,
+  contra la regla médica del 04/10;
+- **la caja del parto**: usaba una espera de gancho, contra la regla de las
+  esperas del 03/10;
+- **«Lo que te prometemos»**: Arturo había dicho en el directorio *«esto voy a
+  borrar, esto no está, no está planeado»*. Salió de la v1 y se quedó en el
+  prototipo.
+
+Ninguna estaba rota para el CI. Estaban escondidas en la v1, que es la edición
+que todos miraban, y por eso las reglas nuevas no les llegaban.
+
+El repo nuevo se calificó 3/10, por lo mismo que en el cap. 73: el blog, el
+correo, el CI, las pruebas y el Guardián viven acá, y un repo nuevo no arregla
+lo que estaba mal, porque lo que estaba mal no era el código. Arturo contestó:
+*«Todavía no podemos sacar lo público. Tenemos que preparar el espacio y
+consolidar la versión de prototipo y la versión de lanzamiento.»* Estuvo de
+acuerdo con lo que se conserva y lo que se retira, salvo una pieza: *«yo quiero
+que esté ese glosario»*, que va a validar él.
+
+Al sacar la guía vieja apareció otra cosa. El control de modo oscuro
+(`qa/modo-oscuro.mjs`) excluía toda ruta que tuviera `/guia/`, pensando en el
+molde viejo. El patrón se llevaba también las guías de lectura del blog
+(`/blog/guia/…`), que sí pasan por el layout y que nadie había decidido dejar
+afuera.
+
+**Qué aprendimos.**
+
+1. **Un interruptor esconde, no mantiene.** Lo que vive solo detrás de un
+   `CON_…` sale de la vista de quien revisa la v1, y las reglas nuevas se
+   aplican donde alguien mira. Por eso, desde hoy, cada pieza solo del
+   prototipo tiene escrita la condición que le falta para entrar a la v1
+   (HANDOFF, «🧩 23/10/2026»). Si la pierde, se retira.
+2. **La premisa se mide antes que el plan.** «La versión más actualizada» era la
+   misma versión. Con la premisa sin medir, el plan hubiera sido mudar entre
+   dos ediciones algo que nunca estuvo separado.
+3. **Una exclusión por nombre corto atrapa más de lo que nombra.** `/guia/`
+   también era `/blog/guia/`. Es la otra cara del cap. 90: cuando se retira
+   algo, se revisan también los guardianes que lo esquivaban.
+
+## Capítulo 157 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
 
 **Qué intentamos.** Cerrar sp-interno#60, que decide Claude: los radios
 escritos a mano que quedaban en el sitio y «la regex del QA no los ve todos».
@@ -5716,7 +5775,7 @@ mira lo computado: cada `.sq` visible tiene su `--sq` en la escala.
   porqué. Una excepción con nombre, archivo y motivo se puede discutir; una que
   el contador deduce, no la ve nadie.
 
-## Capítulo 157 — La nota larga no entra en el lugar de la corta (23/10/2026)
+## Capítulo 158 — La nota larga no entra en el lugar de la corta (23/10/2026)
 
 **Qué intentamos.** Las 185A y 190A: que la celda de Essential en las tablas del
 home y de `/planes` diga lo que cambia la elección («junto con ecocardiograma y
@@ -5741,7 +5800,7 @@ o se desalinean las columnas.
   consultas del home estaban escritas hacía semanas y nadie las vio, porque
   nadie las había buscado en la pantalla. Quedó como punto de revisión.
 
-## Capítulo 158 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
+## Capítulo 159 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
 
 **Qué intentamos.** La 9A y la 10A: «2 meses, la mayoría» en las ecografías de
 Silver y Gold y «de una lista de 26» en las cirugías de Essential, con la lista
@@ -5783,7 +5842,7 @@ entera y sin nada encima.
   aprobado, letra por letra, y se leía mal. Las capturas no son un trámite del
   final: son la otra mitad de la verificación.
 
-## Capítulo 159 — El nombre del archivo no es su versión (23/10/2026)
+## Capítulo 160 — El nombre del archivo no es su versión (23/10/2026)
 
 **Qué intentamos.** El punto 1 de sp-interno#61: que la fecha de la Guía Médica
 diga cuándo son los datos.
@@ -5804,7 +5863,7 @@ día en que se leyó la planilla.
 - **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
   la Guía no coinciden, una de las dos está leyendo otra cosa.
 
-## Capítulo 160 — La prueba abría la lista justo donde entraba (23/10/2026)
+## Capítulo 161 — La prueba abría la lista justo donde entraba (23/10/2026)
 
 **Qué intentamos.** Los tres verificadores de la 9A y la 10A (datos, textos y
 código) encontraron que en el celular la lista de las 26 cirugías quedaba
@@ -5846,7 +5905,7 @@ que «de una lista de 26.» no se saliera de su fila.
 - **Una autoprueba cuenta lo que rompió.** «Saqué 0 reglas y no pasó nada» no
   es un verde: es una prueba que no probó.
 
-## Capítulo 161 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
+## Capítulo 162 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
 
 **Qué intentamos.** En la primera tanda de la 10A, las 26 cirugías de Essential
 se dijeron con palabras de casa donde parecía decir lo mismo: «hemorroides»,
@@ -5881,10 +5940,10 @@ anestesista, al cierre de la lista.
   `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
   nombre al lado de su literal, de a pares.
 
-## Capítulo 162 — Lo que dice el ítem se queda en el ítem (23/10/2026)
+## Capítulo 163 — Lo que dice el ítem se queda en el ítem (23/10/2026)
 
 **Qué intentamos.** La segunda tanda de la 10A sacó el «a cielo abierto» de la
-próstata y el «abierta» de la pielolitotomía, porque el capítulo 161 enseñaba
+próstata y el «abierta» de la pielolitotomía, porque el capítulo 162 enseñaba
 que un calificativo suelto hace leer distinto a los que no lo llevan: la técnica
 iba una vez, en el título. Y tradujo el legrado como «legrado evacuador
 (raspado del útero)», con «evacuador» para no prometer el de diagnóstico.
@@ -5901,7 +5960,7 @@ Drive, encontró cuatro nombres que seguían abarcando más que su ítem:
 - **El apéndice.** «sin complicaciones» se leía «si la cirugía sale bien». El ítem
   dice «no complicada», y va así.
 - **La pielolitotomía** había perdido el «abierta» de su ítem.
-- Y el cap. 161 decía que el cuadernillo «deja la videolaparoscopía a cargo de
+- Y el cap. 162 decía que el cuadernillo «deja la videolaparoscopía a cargo de
   la persona». Deja a cargo la diferencia de honorarios y el equipo. El sitio,
   por su lado, decía «todo el uso del equipo y de los materiales», sin la torre
   ni el instrumental. Se corrigieron las dos cosas.
@@ -5911,7 +5970,7 @@ si cambiaban las dos puntas a la vez, daba verde.
 
 **Qué aprendimos.**
 - **Lo que vale para todas va arriba; lo que dice el ítem, en el ítem.** La
-  lección del cap. 161 sirve para lo que agregamos nosotros, no para lo que el
+  lección del cap. 162 sirve para lo que agregamos nosotros, no para lo que el
   contrato escribió en el renglón. Sacar un calificativo del ítem porque el
   título ya lo dice es resumir el contrato, y resumir es prometer de más.
 - **La traducción también promete.** El literal puede estar entero y la
@@ -5921,7 +5980,7 @@ si cambiaban las dos puntas a la vez, daba verde.
   «no complicada», «terapéutico»…), y la autoprueba cambia las dos puntas a la
   vez: tiene que caer por el calificativo, no por la igualdad.
 
-## Capítulo 163 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
+## Capítulo 164 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
 
 **Qué intentamos.** En la segunda tanda, la lista de las 26 que quedaba debajo
 de la cabecera fija pasó a abrirse hacia el lado más grande, con ese alto y
@@ -5961,7 +6020,7 @@ camino:
   decidir qué pasa al scrollear, y medirlo con las tres entradas: el dedo, el
   mouse y el teclado. La decisión obvia (cerrar) era la que rompía una de ellas.
 
-## Capítulo 164 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
+## Capítulo 165 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
 
 **Qué intentamos.** En la tercera tanda, `CALIFICATIVOS` pasó a pedirle a cada
 nombre de las 26 lo que dice su ítem, y la burbuja de un toque pasó a ser fija,

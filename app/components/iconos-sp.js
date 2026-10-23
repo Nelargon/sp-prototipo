@@ -51,7 +51,9 @@ export const DIBUJOS = {
     'M20.4 40.3c-.1-3-.1-6 0-9 2.4-.2 4.8-.2 7.2 0 .1 3 .1 6 0 9',
   ],
 
-  // Lo que te prometemos (inicio; hasta el 04/10/2026, «Lo que casi nadie te garantiza»)
+  // Lo que te prometemos (inicio; hasta el 04/10/2026, «Lo que casi nadie te garantiza»).
+  // letra, domicilio y mental quedan sin uso desde el 23/10/2026, cuando esa
+  // sección salió también del prototipo: se guardan, son dibujos propios.
   letra: [
     'M28 37.2c-6.2.3-12.4.3-18.6 0-1-.1-1.6-.8-1.6-1.8-.3-9.5-.3-19 0-28.5.1-1 .8-1.7 1.8-1.7 6.7-.4 13.5-.4 20.3 0 1 .1 1.7.8 1.7 1.8.2 4.4.3 8.8.2 13.2',
     'M13 12.2c4.6-.2 9.3-.2 13.9 0M13 17.1c4.6-.1 9.2-.1 13.8.1M13.1 22c2-.1 4-.1 6 0',
@@ -85,7 +87,8 @@ export const DIBUJOS = {
     'M18.9 19.6c1.6-1.7 3.3-3.4 5.1-5 1.8 1.6 3.5 3.3 5.1 5.1',
   ],
 
-  // Tiempo de espera (aviso de «agrandar la familia»)
+  // Tiempo de espera (aviso de «agrandar la familia», retirado el 23/10/2026;
+  // sin uso por ahora, se guarda)
   espera: [
     'M37.5 17.2c-2.6-5.5-8.1-9.2-14.3-9-8.4.3-15 7.2-14.7 15.6.3 8.4 7.3 15 15.7 14.7 8.3-.3 14.8-7.2 14.6-15.5-.1-2-.6-4-1.6-6.1',
     'M23.9 14.4c-.1 3.2-.1 6.3 0 9.5 2.1 1.3 4.2 2.7 6.2 4.2',
