@@ -80,22 +80,22 @@ de precios.
 - Solo precios: las coberturas de los cuadernillos nuevos van en otro PR, con
   contradicciones que Arturo todavía no decidió (`Nelargon/sp-interno#211`).
 
-**Preguntas abiertas (para SP, en el PR):**
-1. **La rareza de Essential:** una pareja de 46 a 64 sola paga 475.000
-   (Asunción), y con un hijo, 415.000. ¿Es así o es un error de la tabla? El
-   sitio la aplica tal cual.
-2. **Un hijo de 21 a 35 con un solo adulto en Essential:** ¿paga el adherente de
-   21 a 35 (265.000 + 150.000 = 415.000, lo que hace el motor) o entra como el
-   adulto de «Titular y adherente de 18 a 45» (395.000)?
-3. **Quién es el titular en Silver y Gold:** el motor toma a «Vos». Si fuera
-   siempre el mayor, una pareja de 30 y 60 pagaría 648.000 en vez de 654.000.
-4. **`sp-interno#162` ya no pasa:** la pareja de 46 a 54 pagaba menos en Silver
-   (456.000) que en Essential (475.000). Con esta tabla, Silver da 552.000.
-   Queda para que Arturo lo cierre.
-5. **El simulador no tiene camino para un adulto solo con hijos:** «Para mi
-   familia, con hijos» siempre trae dos adultos. La fila nueva de Essential
-   (titular + 2 hijos) se ve en `/planes/` («Vos con tus hijos»), no en el
-   simulador. Encontrado, no arreglado: es una decisión de diseño.
+**Decidido por Arturo (23/10/2026, «4A»: las recomendadas del PR):**
+1. **La rareza de Essential se publica tal cual y se le pregunta a SP.** Una
+   pareja de 46 a 64 sola paga 475.000 (Asunción) y con un hijo, 415.000. Drive
+   gana: si es un error, se corrige en el Drive y el sitio lo sigue. Lo pregunta
+   Arturo; queda anotado en `Nelargon/sp-interno#211`.
+2. **Un hijo de 21 a 35 con un solo adulto, en Essential, paga el adherente de
+   21 a 35 aparte** (265.000 + 150.000 = 415.000), que es lo que hace el motor.
+3. **En Silver y Gold, el titular es «Vos»**, la persona que simula.
+4. **`sp-interno#162` se cierra** con este PR: con la tabla del 09/10, Silver
+   (552.000) ya no queda por debajo de Essential (475.000) para la pareja de 46
+   a 54.
+5. **El camino para mamá o papá solo con sus hijos se suma en otro PR, con
+   lámina** (`Nelargon/sp-interno#213`). Hoy «Para mi familia, con hijos» trae
+   dos adultos, y la fila nueva de Essential (titular + 2 hijos) solo se ve en
+   `/planes/` («Vos con tus hijos»).
+6. **Hijos hasta los 35 en el simulador** (`EDAD_MAX_HIJO`).
 
 **Territorio:** `app/quote.js` (compartido: tarifas, motor y textos de
 Essential), `app/components/Simulador.jsx` (solo el tope de edad de los hijos),
