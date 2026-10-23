@@ -5958,3 +5958,15 @@ viven dentro del repositorio y se sirven desde el mismo sitio.
 
 Fuentes y láminas: `docs/diseno/README.md`, lecciones 90 y 91. El laboratorio
 pertenece al prototipo; la poda del blog lo excluye de la v1 pública.
+
+
+**La entrega también necesitó un respaldo.** Los primeros dos despliegues de
+Pages del laboratorio agotaron los diez minutos de espera. El primero quedó
+en `updating_pages`; el reintento devolvía el estado vacío. La compilación y
+las pruebas estaban en verde. Por eso se agregó `scripts/export-laboratorio.py`:
+produce un HTML autónomo de 17 MB con las mismas 27 propuestas y 33 versiones,
+imágenes y fuentes incluidas. Se probó con la conexión desactivada: cero
+solicitudes externas y selección recuperada después de recargar. El entorno
+no permite abrir `file://`; se entregó el contenido exacto por una ruta local
+de prueba, sin simular que se había comprobado ese protocolo. El respaldo
+conserva las selecciones mediante exportación/importación entre copias.
