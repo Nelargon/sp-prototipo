@@ -5611,3 +5611,69 @@ cada plan y pasa por cada pregunta, con texto) y, leído, no hay ningún «5 o
 6». Y el HANDOFF decía que cada control se probaba también en la página, con
 la línea de antes metida, y no todos lo hacían: **lo que un documento dice de
 una prueba se verifica contra la prueba**, como el puntero contra el archivo.
+
+## Capítulo 155 — El modo oscuro que nadie diseñó (23/10/2026)
+
+**Qué intentamos.** Nada: el sitio nunca tuvo modo oscuro. Es claro desde el
+primer día y ninguna regla de CSS pregunta por `prefers-color-scheme`.
+
+**Qué pasó.** Arturo abrió la Guía Médica en su celular, con Samsung Internet y
+el teléfono en modo oscuro, y la mandó en una captura: *«Se ve muy confuso y no
+sale bien»*. El navegador había repintado la página con colores propios. El
+fondo gris claro pasó a casi negro; los títulos navy, a celeste; las tarjetas
+blancas, a gris oscuro. Y el tapiz de nombres de la red, que se ve casi como el
+fondo (`#EBEDEF` sobre `#F4F5F6`), quedó **blanco pleno sobre negro**,
+encima del título, del copete y de «Lo que más se busca». Lo mismo le pasaba a
+la nota de «Dónde te atendés» en el home, sobre su muro pleno.
+
+La razón está en cómo oscurece el navegador: no invierte la página entera.
+Separa fondos de textos. Un fondo claro lo oscurece; un texto oscuro lo aclara;
+un texto que **ya es claro lo deja como está**. El tapiz era texto gris claro
+opaco: no lo tocó, y lo que tenía alrededor sí. El muro del resto del home
+aguantó, porque está pintado en navy y en blanco con transparencia (`rgba` al
+8/255 y al 11/255): el navegador lo aclara y la transparencia sigue ahí.
+
+Lo reprodujimos en Chromium con el modo oscuro forzado
+(`--blink-settings=forceDarkModeEnabled=true`) y salió igual que la captura.
+
+**Qué hicimos.** Dos defensas, porque una sola no alcanza:
+
+1. **La página le avisa al navegador que es solo clara**:
+   `<meta name="color-scheme" content="only light">` (el `viewport` de
+   `app/layout.jsx`) y `color-scheme:only light` en `:root`. Chrome deja de
+   oscurecerla y se ve como la diseñamos. Pero Samsung Internet **no siempre lo
+   respeta**: en el foro de desarrolladores de Samsung (hilo 22937, sin fecha
+   verificada), su equipo dijo que un sitio no tenía forma de salir de su modo
+   oscuro, y en `mdn/browser-compat-data#17408` hay reportes de páginas
+   oscurecidas igual en mayo de 2024 y en abril de 2026. No lo podemos probar
+   desde acá: lo prueba Arturo en su teléfono.
+2. **El texto de fondo se pinta con transparencia, nunca opaco.** El tapiz pasó
+   de `#EBEDEF` a navy al 9/255 y el muro pleno, de `#E9EBED` y `#E1E4E7` a navy
+   al 12/255 y al 20/255. Sobre el fondo gris dan el mismo píxel (medido en las
+   capturas: 3/255 de diferencia como máximo, de suavizado, invisible). Si el
+   navegador igual oscurece la página, el texto oscuro se aclara, conserva la
+   transparencia y queda como textura suave.
+
+`qa/modo-oscuro.mjs` controla las dos cosas en el CI: que cada página tenga la
+marca y que ninguna regla de «tapiz» o «muro» use un color opaco. Se probó
+contra el `main` de antes, que marca (las páginas sin la marca y las tres
+reglas opacas), y contra la rama, que pasa.
+
+**Qué queda.** El logo del header es una imagen con el texto navy: si Samsung
+igual oscurece la página, queda navy sobre gris oscuro y se lee poco. Una imagen
+el navegador no la toca. Va como pregunta para Arturo, no se arregló a ciegas.
+
+**Qué aprendimos.**
+
+- **Un color «casi igual al fondo» solo es sutil mientras el fondo no cambie.**
+  La sutileza estaba en la relación entre dos colores, y el modo oscuro los
+  mueve por separado. La transparencia guarda la relación; el gris opaco, no.
+  Es la misma idea del cap. 119 vista desde el otro lado: allá la transparencia
+  baja se movía de a 1/255; acá es lo que salvó al muro.
+- **Lo que el sitio no declara, el navegador lo decide.** No tener modo oscuro
+  no es lo mismo que decir «soy claro». Mientras no lo dijimos, cada celular
+  inventó el suyo.
+- **Probamos en un solo navegador.** Toda la QA corre en Chromium, y el 77% del
+  tráfico es celular. Un navegador con reglas propias nos encontró la falla
+  antes que nosotros: la captura de Arturo fue la prueba de dispositivo real que
+  la QA no tenía.

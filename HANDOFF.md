@@ -13,7 +13,27 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 22 oct 2026.*
+*Última actualización: 23 oct 2026.*
+
+---
+
+## 🌙 23/10/2026: EL SITIO ES SOLO CLARO, Y EL TAPIZ AGUANTA EL MODO OSCURO
+
+Arturo abrió la Guía Médica en su celular (Samsung Internet, teléfono en modo
+oscuro) y el navegador la había repintado: el tapiz de nombres quedó blanco
+pleno sobre negro, encima de toda la guía (BITACORA cap. 155, lámina 89).
+
+- **Qué se hizo.** Las páginas declaran `color-scheme: only light`
+  (`viewport` en `app/layout.jsx` y `:root` en `globals.css`): Chrome deja de
+  oscurecerlas. Y el tapiz de la guía y el muro pleno de «Dónde te atendés»
+  pasaron de gris opaco a navy transparente, el mismo píxel en modo claro: si
+  Samsung igual oscurece, quedan como textura suave. `qa/modo-oscuro.mjs` lo
+  controla en el CI.
+- **Lo que no se pudo verificar desde acá:** si la versión de Samsung Internet
+  de Arturo respeta la marca. Lo prueba él en su teléfono.
+- **Abierto:** el logo del header es una imagen navy; si Samsung oscurece la
+  página, se lee poco. Y un modo oscuro propio, diseñado, no existe: si algún
+  día se hace, la marca pasa a `light dark` junto con sus estilos, no antes.
 
 ---
 

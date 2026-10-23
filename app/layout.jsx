@@ -29,6 +29,14 @@ export const metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
+// El sitio es solo claro (23/10/2026, BITACORA cap. 155). Sin esta marca, el
+// celular en modo oscuro repinta la página con colores propios: el tapiz de la
+// Guía Médica quedó blanco pleno sobre negro y tapó la guía. Next la escribe
+// como <meta name="color-scheme" content="only light">; :root la repite en CSS.
+// Lo controla qa/modo-oscuro.mjs. Si algún día hay modo oscuro propio, esto
+// pasa a 'light dark' junto con sus estilos, no antes.
+export const viewport = { colorScheme: 'only light' };
+
 // Datos reales confirmados por el usuario (jul 2026): teléfono, sedes, email.
 const ORG_JSONLD = {
   '@context': 'https://schema.org',

@@ -141,6 +141,13 @@ pierde (BITACORA cap. 96).
   todos los fondos (Arturo: *«Hay algo humano y auténtico en eso»*). No se suman
   íconos de librería, y un botón que ya dice lo que hace no lleva ícono. Las
   señales de uso (flechas, «×», lupa, WhatsApp, urgencias) se quedan simples.
+- **El sitio es solo claro, y el texto de fondo va transparente** (23 oct 2026,
+  BITACORA cap. 155). Las páginas declaran `color-scheme: only light` (el
+  `viewport` de `app/layout.jsx`), pero Samsung Internet puede oscurecerlas
+  igual: aclara el texto oscuro y deja el claro como está. Por eso un texto que
+  es textura (tapiz, muro) se pinta con navy o blanco con transparencia, nunca
+  con un gris opaco «casi igual al fondo», que en modo oscuro queda blanco
+  sobre negro. Lo controla `qa/modo-oscuro.mjs` en el CI.
 - **Una transparencia muy baja se mueve de a 1/255** (26 sep 2026, BITACORA
   cap. 119): el navegador la guarda en 255 pasos, así que un «5% más» sobre un
   alfa de .02 no cambia un solo píxel. Un ajuste fino se verifica midiendo los
