@@ -734,11 +734,22 @@ dos de otras sesiones:
     autoprueba no los tenía**: ahora hay un caso por cada pieza de las dos
     reglas.
   - **#288** (Octubre Rosa y Noviembre Azul, de otra sesión) sigue abierto y
-    toca la bitácora (usa el cap. 158, que ya es de main), el HANDOFF y
-    `docs/diseno/README.md`: los merges van de a uno, y el que entre segundo
-    trae main y renumera.
+    toca el HANDOFF y `docs/diseno/README.md`, así que los merges van de a uno.
+    #288 suma un capítulo a la bitácora; el que entre segundo trae main y
+    renumera por título.
   - **Documentos**: BITACORA cap. 172 («Lo que promete el comentario es la
     lista de sabotajes»).
+- **Después de la verificación de integración de 61c94ec (solo este
+  documento; sin cambios en el sitio ni en las pruebas):** el HANDOFF ya no
+  presenta el molde viejo de `guia/` como vigente. La tabla de «2. QUÉ EXISTE
+  HOY» lo tacha como retirado el 23/10/2026 y suma la fila de la Guía Médica
+  real (`/guia-medica/`); «5. CÓMO RETOMAR EL TRABAJO» explica cómo se
+  regenera desde la planilla, en vez de cómo se editaba `guia/`; el Anexo se
+  nombra en `docs/`, en §6 y en las otras citas; y lo pendiente que dependía
+  del molde (el `noindex` de sus tres HTML, el gemelo del header, el filtro de
+  Telemedicina, el ZIP de entrega) queda marcado sin objeto. Lo que era
+  historia fechada se tachó o se anotó, no se borró. La nota de #288 ya no
+  fija el número de capítulo de otro PR.
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -1984,7 +1995,7 @@ preguntamos esto?» del simulador mandan `abre_explicacion` con `{tipo:
 del servicio, `precio` o el paso, nunca nada de la persona. Cuentan
 una vez por página vista (`trackExplicacion` en `app/track.js`), porque con
 mouse se abren al pasar. El evento está en el contrato
-(`guia/ANEXO-requisitos-backend.md` §2). Hoy `track()` solo escribe en la consola:
+(`docs/ANEXO-requisitos-backend.md` §2; hasta el 23/10/2026 vivía en `guia/`). Hoy `track()` solo escribe en la consola:
 el número aparece cuando se conecte a una herramienta (PR-12 del plan de la
 revisión integral, todavía sin hacer). Una explicación nueva que se abra al
 tocar usa `trackExplicacion`; `qa/qa-lanzamiento.mjs` lo prueba en «carencia» y
@@ -4442,6 +4453,8 @@ documentado en el repo.
    "Sin letra chica"; "médico a domicilio" con números reales; salud mental
    acotada a Bronce/Silver/Gold). Queda afuera del home: el filtro
    "Telemedicina" de la guía (`guia_resultados.html`) si SP no va a ofrecerla.
+   *(23/10/2026: sin objeto. Ese filtro era del molde viejo de `guia/`, que se
+   retiró entero con #289; ver «🧩 23/10/2026».)*
 2. ~~**Bloque "qué no cubre / qué pagás aparte"**~~ ✔ **PRIMERA VERSIÓN HECHA
    (22 jul 2026, dec. 11m):** sección "Lo que pagás de tu bolsillo" en el home
    (después del comparador) — los 3 modos (Cubierto/Copago/Al precio de
@@ -4504,7 +4517,9 @@ Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-pues
 `app/que-cubre/Buscador.jsx`** *(18/10/2026: `Landing.jsx` se borró con «🔁
 04/10/2026: UNA SOLA PÁGINA DE DETALLE». Hoy está `app/que-cubre/page.jsx`, el
 redirect a `/planes/`, y el buscador quedó guardado sin página)* · Motor de
-precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
+precios `app/quote.js` · ~~Guía `guia/*.html`~~ Guía Médica `app/guia-medica/` +
+`lib/guia-medica.json` (se regenera desde la planilla con
+`scripts/build-guia-medica.py`; el molde `guia/` se retiró el 23/10/2026 con #289) · Datos de planes
 `datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
 `scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
 `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` · Blog `contenido/blog/`
@@ -4587,10 +4602,11 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 |---|---|---|
 | **Web de planes** (hero, manifiesto, cartilla viva, comparador, simulador embebido, FAQ) | `app/page.jsx` → [nelargon.github.io/sp-prototipo](https://nelargon.github.io/sp-prototipo/) | Prototipo funcional completo |
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
-| **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
+| ~~**Guía Médica rediseñada** (home + resultados + ficha de prestador)~~ | ~~`guia/` (fuente) y `public/guia/` (copia publicada) → /guia/guia_home.html~~ | ~~Funcional con datos ilustrativos~~ → **retirado el 23/10/2026** con #289 (ver «🧩 23/10/2026»); su dirección da 404 y queda en el historial de git |
+| **Guía Médica** (buscador con filtro «¿Qué plan tenés?» y ficha de cada prestador) | `app/guia-medica/` → [/guia-medica/](https://nelargon.github.io/sp-prototipo/guia-medica/); datos en `lib/guia-medica.json`, que se regenera desde la planilla maestra con `scripts/build-guia-medica.py` (ver «Cómo quedó la Guía Médica real») | Funcional, con la red de la planilla de SP; un PR de datos nuevos espera el OK de Arturo (ver `CLAUDE.md`) |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
 | ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) *(21/10/2026: decidido el 17/10 y bajado el 20/10: el PR #271 lo borró de `main` (`86ed718`) y su deploy, del sitio en vivo)* |
-| **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
+| **Anexo de requisitos backend** | `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
 **Contexto clave:** la guía en producción corre sobre el sistema de SIP con
@@ -4598,6 +4614,9 @@ plantillas ("un cambio en un prestador se aplica a todos"). SP puede
 modificar el diseño y pasárselo a la empresa desarrolladora, que lo evalúa e
 integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
+*(Historia: ese paquete se retiró el 23/10/2026 con #289. La Guía Médica del
+sitio es `/guia-medica/`, y el contrato de eventos sigue en
+`docs/ANEXO-requisitos-backend.md`.)*
 
 **Línea de base de datos reales (GA de la web activa de SP,
 15 may – 13 jul 2026, aportada por el usuario):** (las cifras de Google
@@ -4628,6 +4647,9 @@ usa `npm ci`).
 1. **La guía se rediseñó en HTML + Tailwind sueltos** (no Next.js): mismo
    formato que usa el proveedor → adopción sin fricción. El CDN de Tailwind
    es solo para prototipo; producción requiere build compilado.
+   *(Historia: ese molde se retiró el 23/10/2026 con #289. La Guía Médica del
+   sitio es `/guia-medica/`, en Next.js como el resto; ver «Cómo quedó la Guía
+   Médica real».)*
 2. **Identidad visual**: tokens SP — navy `#003B71`, teal `#00BCB4`, verde
    `#009690`, dorado `#C9A227` (solo planes premium), rojo `#D92D20`
    (SOLO urgencias). **Nunito Sans** ExtraBold/SemiBold para títulos
@@ -4938,9 +4960,10 @@ usa `npm ci`).
     la infra de las páginas Next.js ya está lista (robots/noindex/sitemap/
     canonicals/OG/JSON-LD, se prende con `NEXT_PUBLIC_INDEXABLE=true` +
     `SITE_URL`). Faltan, concretas: (a) el **hostname público del sitio** (para
-    `SITE_URL`) y el **dominio de la guía** (#9, ampliado); (b) **quitar el
+    `SITE_URL`) y el **dominio de la guía** (#9, ampliado); (b) ~~**quitar el
     `noindex` hardcodeado de los 3 `guia/*.html`** (checklist #8b — el flag de
-    Next.js NO los cubre); (c) la decisión de negocio de **cuándo salir
+    Next.js NO los cubre)~~ *(sin objeto desde el 23/10/2026: esos tres HTML
+    se retiraron con #289, y la Guía Médica, `/guia-medica/`, es Next.js)*; (c) la decisión de negocio de **cuándo salir
     público** (hoy noindex a propósito, por los precios de referencia). Lo que
     mueve la aguja ya está en marcha: el blog (2-3 notas/semana, ahora por
     categorías) y la guía médica como directorio verificable (esta última,
@@ -5015,6 +5038,8 @@ usa `npm ci`).
     **Sigue pendiente:** rodar `Header.jsx` a los módulos restantes (agendar,
     Mi SP, historia, simulador) y a la home (variant `hero`, reemplazando el nav
     inline de `app/page.jsx`), más su **gemelo en la guía** (HTML/Tailwind).
+    *(23/10/2026: el gemelo ya no hace falta; el molde de `guia/` se retiró con
+    #289.)*
     Territorio de esta ola: `app/Header.jsx` (nuevo), `app/blog/page.jsx`,
     `app/blog/Articulo.jsx`.
 
@@ -5528,9 +5553,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 
 1. ~~**Integrar la guía al homepage (A+B)**~~ ✔ **Hecho (julio 2026, PR #5)**:
    "Guía Médica" en menú desktop, menú móvil y footer (link directo a
-   `guia_home.html`); la sección se renombró "Guía Médica · sin letra
+   `guia_home.html`, del molde viejo, retirado el 23/10/2026 con #289); la sección se renombró "Guía Médica · sin letra
    chica" (el ancla sigue siendo `#cartilla`, en menú/footer aparece como
-   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…` (Enter, o
+   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…`, también del
+   molde (Enter, o
    la fila fija del dropdown — que aparece incluso sin matches locales,
    cero resultados nunca es un callejón), y bajo la tarjeta hay un link
    permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
@@ -5580,7 +5606,7 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 
 3b. ~~**Home v2**~~ ✔ **Ejecutado (julio 2026)**: hero de dos puertas
    ("Quiero un plan" → simulador · "Ya soy de SP" → `guia_home.html#mi-red`,
-   la consulta CI+fecha), herramientas arriba, manifiesto comprimido a
+   la consulta CI+fecha; retirado el 23/10/2026 con el molde, #289), herramientas arriba, manifiesto comprimido a
    una pantalla en segunda persona (el cinematográfico completo vive en
    `/historia/`), testimonios placeholder afuera (vuelven cuando haya
    reales con consentimiento), eventos `manifesto_scroll` y `puerta_home`
@@ -5667,7 +5693,7 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    **Criterios de contratación** (jul 2026, de la evaluación de
    arquitectura de conversión): buscar arquitecto de conversión /
    StoryBrand, no diseñador estético; el brief es `BRANDSCRIPT.md` +
-   `guia/ANEXO-requisitos-backend.md` + el prototipo funcionando;
+   `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) + el prototipo funcionando;
    prohibido lorem ipsum — el copy dicta el diseño.
 8b. **SEO** (sube de prioridad baja → media, jul 2026): los datos reales
    muestran que **Organic Search ya es el canal #1** de la web activa
@@ -5960,9 +5986,10 @@ Verificado: la tarjeta entra en la primera pantalla en 1280×900, 1440×900,
 intencional, viene de antes y no rompe nada. *"Modo app" significa que la
 tarjeta entra en la primera pantalla, no que la página no scrollee.*
 
-**Sigue pendiente:** el **gemelo del header en la guía** (`guia/`, HTML +
+**Sigue pendiente:** ~~el **gemelo del header en la guía** (`guia/`, HTML +
 Tailwind, otra tecnología) — es el único módulo que conserva navegación propia,
-y además no es fija. Y la home sigue con su `<nav>` inline (funciona y tiene el
+y además no es fija.~~ *(23/10/2026: sin objeto, el molde de `guia/` se retiró
+con #289.)* Y la home sigue con su `<nav>` inline (funciona y tiene el
 mapa completo; migrarla a `variant="hero"` es cosmética interna, no afecta al
 usuario).
 
@@ -6032,7 +6059,7 @@ auditoría la dejaba a decisión junto con el descuento, pero **no se puede
 resolver con copy**: hace falta la base real de prestadores por ciudad
 (pendiente B) para que "¿y en mi ciudad?" tenga respuesta. Queda abierta,
 esperando ese dato. Territorio de este cambio: `app/page.jsx`,
-`guia/ANEXO-requisitos-backend.md`.
+`guia/ANEXO-requisitos-backend.md` (desde el 23/10/2026, en `docs/`).
 
 ### La medición que originó todo esto (5 ago 2026) — insumo, ya ejecutado
 
@@ -6401,19 +6428,19 @@ npm install && npm run build
 cd out && python3 -m http.server 8080
 # → http://localhost:8080/            (web de planes)
 # → http://localhost:8080/simulador/  (simulador)
-# → http://localhost:8080/guia/guia_home.html (guía)
+# → http://localhost:8080/guia-medica/ (Guía Médica)
 ```
 
-- **La guía se edita solo en `guia/`** (la fuente y el paquete que se entrega
-  a la empresa). `public/guia/` se genera automáticamente en cada build
-  (`scripts/sync-guia.mjs`, hook `prebuild`) y está fuera de git — no editar.
-- Las páginas de la guía usan el CDN de Tailwind → necesitan internet para
-  verse con estilos. En entornos sin salida a internet: compilar Tailwind
-  local (v3, con los tokens del `tailwind.config` inline de cada página) e
-  inyectar el CSS al verificar con Playwright/Chromium
-  (`executablePath: '/opt/pw-browsers/chromium'`, instalar playwright-core
-  FUERA del repo — ver `HANDOVER.md`).
-- Probar el modo personalizado de la guía: `guia_resultados.html?plan=silver`.
+- **La Guía Médica es `/guia-medica/`** (`app/guia-medica/`), y sus datos,
+  `lib/guia-medica.json`, **se regeneran desde la planilla maestra de SP** con
+  `scripts/build-guia-medica.py`: nunca se editan a mano, y un PR de datos
+  nuevos espera el OK de Arturo (ver `CLAUDE.md` y «Cómo quedó la Guía Médica
+  real»). *(Hasta el 23/10/2026 acá se explicaba cómo editar el molde viejo
+  de `guia/`: `public/guia/` con `scripts/sync-guia.mjs`, el CDN de Tailwind
+  y `guia_resultados.html?plan=silver`. Se retiró entero con #289 y queda en el
+  historial de git; su contrato de eventos, en `docs/ANEXO-requisitos-backend.md`.)*
+- Verificar con Playwright/Chromium (`executablePath:
+  '/opt/pw-browsers/chromium'`), con playwright-core instalado FUERA del repo.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Flujo git de este proyecto: rama de trabajo → PR en borrador →
   verificación + CI verde → **merge automático** (el usuario autorizó en
@@ -6440,12 +6467,15 @@ cd out && python3 -m http.server 8080
   aprendimos); las observaciones del usuario entran dictadas ("anotá en
   la bitácora: …"). Solo crece — nunca reescribir entradas viejas.
 - `HANDOVER.md` — implementación técnica de la página de planes (v6).
-- `guia/ANEXO-requisitos-backend.md` — eventos de medición, seguridad de
-  cédula, campos de datos, higiene técnica. **Es el contrato con la empresa.**
+- `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) —
+  eventos de medición, seguridad de cédula, campos de datos, higiene técnica.
+  **Es el contrato con la empresa.**
 - **Material interno** (briefs 01–06, plan estratégico, los 3 HTML de la
   guía actual de SIP, transcripciones y prototipos históricos): vive en el
   repo **privado `Nelargon/sp-interno`** (carpetas `project/` y `chats/`,
   más las ramas `archivo/*`). Se movió ahí en julio 2026 para que el repo
   público no exponga documentos confidenciales. **No compartir acceso a
   sp-interno con proveedores.**
-- ZIP de entrega para la empresa: regenerable con `zip -r guia-medica-sp.zip guia/`.
+- ~~ZIP de entrega para la empresa: regenerable con `zip -r guia-medica-sp.zip guia/`.~~
+  *(Retirado el 23/10/2026: el molde de `guia/` se fue con #289 y ya no está
+  en el árbol; queda en el historial de git.)*
