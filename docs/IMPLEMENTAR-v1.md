@@ -10,6 +10,73 @@
 > resto se conserva como se escribió. Lo vigente sigue en el `HANDOFF.md`:
 > «🧭 DECIDIDO EL 29/09/2026» y «🔁 04/10/2026: UNA SOLA PÁGINA DE DETALLE».
 
+## 0. Lo vigente para SP en Cloudflare Pages (23/10/2026)
+
+> **Lo público espera.** Arturo, 23/10/2026: *«Todavía no podemos sacar lo
+> público. Tenemos que preparar el espacio»*. Esta sección deja el espacio
+> listo; no se conecta el dominio ni se prende la indexación sin su OK.
+
+**La configuración del proyecto de Cloudflare Pages** (la conecta el dueño de
+la cuenta de SP, `Nelargon/sp-interno#101`, pasos 2 y 3):
+
+| Campo | Valor |
+|---|---|
+| Repositorio y rama de producción | este repo, `main` |
+| Comando de build | `npm ci && npm run build` |
+| Carpeta de salida | `out` |
+| Node | 22, la de `.node-version`, la misma del CI |
+| `NEXT_PUBLIC_EDICION` | `lanzamiento` |
+| `NEXT_PUBLIC_BASE_PATH` | *(vacío)* |
+| `SITE_URL` | `https://saludprotegida.com.py` |
+| `NEXT_PUBLIC_INDEXABLE` | **no se pone** hasta que Arturo decida salir; recién ahí, `true` |
+
+Cloudflare deja poner variables distintas para la producción y para las vistas previas. Con las de esta tabla solo en **producción**, las vistas previas por rama siguen mostrando el prototipo completo, como describe `docs/PREVIEW.md`.
+
+**Ese build ya se prueba en cada PR.** El CI construye la v1 con esas mismas
+variables y corre `qa/produccion.mjs` y `qa/links-internos.mjs`. Controla que no
+quede ninguna dirección con `/sp-prototipo`, que el sitemap y los canonical
+estén en el dominio, que el botón «Revisión» no salga, que estén las
+redirecciones y el 404, y que la indexación siga apagada. El día del cambio no
+hay nada que adaptar: es el mismo build.
+
+**Las redirecciones.** Las escribe `scripts/redirecciones.mjs` en
+`out/_redirects`, solo en esta edición. La lista vive en
+`scripts/redirecciones-lista.mjs`. Salió del sitemap público de la web actual
+(WordPress, 37 direcciones, leído el 23/10/2026):
+- `301` (permanente) para lo que el sitio nuevo reemplazó: `/que-cubre/` →
+  `/planes/`.
+- `302` (temporal) para lo que hoy no tiene casa en la v1 pero la va a tener:
+  `/blog/`, las cuatro notas del blog viejo, etiquetas, categoría y autor
+  llevan al inicio; `/contacto/` también; `/guia-para-el-asegurado/` lleva a
+  la Guía Médica. Son temporales para poder cambiarlas el día que el blog salga
+  sin que cada navegador recuerde la vieja.
+- `/planes/` y `/` no necesitan regla: son la misma dirección.
+- ⚠ Lo que no se verificó: que Cloudflare aplique la regla de `/que-cubre/`
+  aunque exista la página de aviso (`out/que-cubre/index.html`). Se mira en la
+  primera vista previa de Cloudflare. Si no la aplica, el aviso igual lleva a
+  `/planes/`.
+
+**Lo que NO se redirige sin una decisión de Arturo** (`Nelargon/sp-interno#209`;
+el control falla si alguna aparece en `_redirects`):
+- `/login/` y `/dashboard/`: son **«Agendamiento»**, la reserva de turnos de los
+  clientes en la web actual, atada al sistema de SP. Si el dominio pasa a
+  Cloudflare sin resolverlas, los clientes se quedan sin turnos.
+- `/octubre_rosa/`: son las **bases y condiciones de la promoción Octubre Rosa
+  2026**. Un texto legal que tiene que seguir en línea mientras la promoción
+  corra.
+- El **QR del carnet** (ver §4, punto 4): falta saber a qué dirección lleva.
+
+**El día del cambio de DNS** (`Nelargon/sp-interno#101`, paso 5): copiar
+**exactos** del panel actual, antes de cambiar nada, todos los registros que no
+son la web, y probar el correo antes y después:
+- `MX` y el `A` de `mail.` (el correo de SP);
+- los `TXT`: el SPF, que incluye HubSpot, y el código de verificación de Brevo;
+- los `DKIM` (`*._domainkey`) que tenga el panel: el correo del blog firma con
+  `d=saludprotegida.com.py`;
+- el `CNAME` de `marketing.`, que es la página de HubSpot a la que lleva hoy
+  «Cotizá tu plan»;
+- el `CNAME` de `www.`.
+
 **Para el equipo que la publica (Buenavista).** Una página, sin supuestos.
 Última revisión: 24/09/2026.
 
@@ -27,7 +94,7 @@ es el camino más largo y el más propenso a errores.
 
 ## 2. Cómo se construye
 
-Requisito: Node 20.
+Requisito: Node 22 (el de `.node-version` y del CI).
 
 ```bash
 npm ci

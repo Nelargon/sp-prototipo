@@ -17,6 +17,75 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
+
+Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)
+y sumó dos definiciones. Lo público sigue esperando: nada de esto conecta el
+dominio ni prende la indexación.
+
+**Lo que se vende (Arturo, 23/10/2026):** *«Lo que vamos a comercializar por
+ahora es el Essential, el Silver, el Gold y el Vital. Así que manejate con los
+datos que tienes.»* Y sobre Bronze: *«El plan Bronce obviamente no se
+comercializa más, pero obviamente hay clientes que lo tienen, así que va a tener
+que estar en la Guía Médica, pero no se va a comercializar.»* Es lo que el sitio
+ya hacía (`lib/red-medica.js`: «Bronze sigue en la guía: ya no se vende, pero
+hay clientes que lo tienen»). Medido en el build: home, `/planes/` y simulador
+nombran solo Essential, Silver, Gold y Vital. Los otros nombres viven solo en el
+código de la Guía Médica. **Ahora lo controla `qa-lanzamiento`** («En las páginas
+de venta, solo los planes que se venden»). La prueba se verifica a sí misma: le
+mete «Plan Bronze» a la página y tiene que verlo.
+
+**El Drive de los planes y la guía.** Arturo creó la carpeta «Fuente de Planes -
+Productos - Guia» en su Drive; el enlace está en `sp-interno/README.md`. Va a
+ser el centro de la información de la Guía Médica y de los planes. **Arturo la
+está cargando: hasta que diga que está lista, no se lee ni se cambia de dónde
+salen los datos.** Mientras, valen los datos de hoy (la planilla maestra y
+`datos/planes-vigentes/`). Se verificó que la sesión tiene acceso.
+
+**1A — El glosario médico:** Arturo lo valida en el Excel
+(`datos/glosario/Glosario-medico-SP-borradores.xlsx`). Validado, va a
+`/planes/`, subrayado en las palabras difíciles como «carencia», después de que
+cierre `Nelargon/sp-interno#206` (los nombres de las cirugías, de otra línea de
+trabajo).
+
+**2A — El botón «Revisión», solo en el prototipo:** `CON_REVISION =
+!ES_LANZAMIENTO`. Lo controlan `qa-lanzamiento` (con el menú abierto, a 390 y a
+1280 px; contra el build anterior da ✗ en las cuatro páginas) y
+`qa/produccion.mjs`. Cierra `Nelargon/sp-interno#192`.
+
+**3A — El build para el dominio real** (`Nelargon/sp-interno#103`):
+- **El CI construye en cada PR la v1 como saldría en producción**: sin prefijo,
+  con `SITE_URL=https://saludprotegida.com.py` y sin indexación. Le corre
+  `qa/produccion.mjs` y `qa/links-internos.mjs`. El control mira que no haya
+  `/sp-prototipo`, que el sitemap, los canonical y el og:url estén en el
+  dominio, que no salga el botón, que estén las redirecciones y el 404, y que el
+  `noindex` y el robots sigan cerrados mientras `NEXT_PUBLIC_INDEXABLE` no diga
+  `true`. Probado en los dos sentidos: con el botón repuesto da ✗ en 686
+  páginas, y el build de GitHub Pages da ✗ por el prefijo.
+- **Las redirecciones**, para Cloudflare Pages: `scripts/redirecciones.mjs`
+  escribe `out/_redirects`, solo en la v1, desde
+  `scripts/redirecciones-lista.mjs`. Salen del sitemap público de la web actual
+  (WordPress, 37 direcciones). `301` para lo reemplazado (`/que-cubre/`) y
+  `302` para lo que todavía no tiene casa (el blog viejo, el contacto, la «Guía
+  para el asegurado»). El build corta si un destino no existe.
+- ⚠ **Tres direcciones de la web actual no se redirigen sin Arturo**
+  (`Nelargon/sp-interno#209`): `/login/` y `/dashboard/`, que son
+  «Agendamiento», la reserva de turnos de los clientes; `/octubre_rosa/`, las
+  bases legales de una promoción vigente; y el QR del carnet. **Si el dominio
+  cambia sin resolverlas, los clientes se quedan sin turnos.** El control falla
+  si alguna aparece redirigida.
+- La receta para SP en Cloudflare: `docs/IMPLEMENTAR-v1.md`, §0. Incluye las
+  variables, que van solo en producción para que las previews sigan mostrando el
+  prototipo, y la lista del día del DNS: MX, `mail.`, SPF, Brevo, DKIM, y los
+  `CNAME` de `marketing.` (la página de HubSpot de «Cotizá tu plan») y de `www.`.
+- `.node-version` pasó de 20 a 22, el Node del CI: Node 20 ya no recibe parches
+  de seguridad.
+- **Arreglo de #289, que se había escapado:** la salud nocturna le seguía
+  pidiendo 200 a `/guia/guia_home.html` en el sitio en vivo. Ahora pide 404 en
+  las tres páginas del molde viejo (BITACORA cap. 157, punto 4).
+
+---
+
 ## 🧩 23/10/2026: LAS DOS EDICIONES, CONSOLIDADAS. LO PÚBLICO ESPERA
 
 **Arturo, 23/10/2026, textual:**
@@ -89,9 +158,9 @@ reglas nuevas no le llegaban.
 | Agendar (`CON_AGENDA`) | ✓ | — | Decidir si convive con la reserva de turnos que ya existe o la reemplaza (directorio del 15/09) |
 | Mi SP (`CON_MI_SP`) | ✓ | — | El sistema real (padrón, SIP) y la frontera con la app |
 | Historia (`CON_HISTORIA`) | ✓ | — | Decisión de Arturo y otra forma: hoy son 720vh de scroll dirigido |
-| Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo y dónde se muestra |
+| Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo, en el Excel. Validado, va a `/planes/`, subrayado en las palabras difíciles, después de `Nelargon/sp-interno#206` (1A, 23/10) |
 | Marca «Revisar» de la guía (`CON_MARCA_REVISAR`) | ✓ | nunca | Es interna. Dato del 23/10: 218 filas marcadas (eran 185 el 23/09) |
-| Botón «Revisión» (`CON_REVISION`) | ✓ | ✓ hoy | La respuesta de Arturo en `Nelargon/sp-interno#192` |
+| Botón «Revisión» (`CON_REVISION`) | ✓ | nunca | Es interno: solo en el prototipo desde el 23/10 (`Nelargon/sp-interno#192`, 2A) |
 
 **El espacio de la guía y los planes (anunciado por Arturo el 23/10).** Arturo
 va a crear en su Google Drive un espacio que va a ser **el centro de la
@@ -114,7 +183,7 @@ molde lo ataja `qa/links-internos.mjs` en las dos ediciones.
 **Lo que sigue para preparar el espacio** (sin publicar): el build para el
 dominio real (`Nelargon/sp-interno#103`, puntos 1 y 4), la respuesta de Arturo
 sobre el botón «Revisión» (`#192`), y las cuentas y el DNS (`#101`), que son de
-Arturo.
+Arturo. *(Esa misma tarde: los dos primeros, hechos. Ver «🌐 23/10/2026».)*
 
 ---
 
@@ -386,15 +455,15 @@ de la videolaparoscopía). Entró en la misma rama:
   ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
   Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
   tiene que conservar de su ítem), aunque cambien las dos puntas del par.
-- **Documentos**: BITACORA caps. 163 («Lo que dice el ítem se queda en el
-  ítem») y 164 («La caja que redondeaba sus esquinas recortaba la lista»), y el
-  cap. 162 corregido donde decía más que el cuadernillo sobre la
+- **Documentos**: BITACORA caps. 164 («Lo que dice el ítem se queda en el
+  ítem») y 165 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 163 corregido donde decía más que el cuadernillo sobre la
   videolaparoscopía.
 
 **La cuarta tanda (23/10, después de re-verificar la tercera).** La rama trajo
 `main` con el modo oscuro (#287): el cap. 155 de main quedó como 155 y los ocho
 de la rama pasaron a 156-163, con sus citas renumeradas (*desde la quinta
-tanda son 157-164: el 156 es el de la consolidación de main*); el CI corre esquinas,
+tanda son 158-165: el 156 y el 157 son de main*); el CI corre esquinas,
 listas-fuente y modo-oscuro en el mismo paso. Y entró:
 - **La vejiga, dentro de la oración de Gold** en el toque de Silver y Gold
   juntos (`eco-sg`): «… En Gold, también las de riñón y de vías urinarias, la
@@ -426,16 +495,19 @@ listas-fuente y modo-oscuro en el mismo paso. Y entró:
   (medido con la transición pausada y llevada a cada milisegundo).
 - **El anestesista de la cesárea no era una pregunta**: lo contesta el
   cuadernillo (ver «Lo que queda»).
-- **Documentos**: BITACORA cap. 165 («La regla que no dejaba pasar a su propia
+- **Documentos**: BITACORA cap. 166 («La regla que no dejaba pasar a su propia
   fuente»).
 
 **La quinta tanda (23/10, después de la ronda 3 de verificación, y con `main`
-consolidado).** La rama trajo `main` con sp-prototipo#289, de otra sesión («🧩
-23/10/2026», arriba), con un merge y sin rebase:
-- **La bitácora**: el cap. 156 de main («Las dos versiones eran una sola…») se
-  queda con su número; los nueve de la rama pasan a 157-165, en el mismo orden,
-  con sus citas renumeradas por título (acá, en el capítulo «Lo que dice el ítem
-  se queda en el ítem» y en la nota de las esquinas).
+consolidado).** La rama trajo `main` dos veces, con merges y sin rebase: primero
+sp-prototipo#289 («🧩 23/10/2026», arriba) y después #291 («🌐 23/10/2026»), las
+dos de otras sesiones:
+- **La bitácora**: el cap. 156 («Las dos versiones eran una sola…») y el 157
+  («Preparar el dominio era inventariar lo que hace la web vieja») son de main y
+  se quedan con su número; los nueve de la rama pasan a 158-166, en el mismo
+  orden, con sus citas renumeradas por título (acá, en el capítulo «Lo que dice
+  el ítem se queda en el ítem» y en la nota de las esquinas). El nuevo es el
+  167.
 - **El molde viejo, retirado entero**: los dos `guia/*.html` que la rama había
   corregido por Bronze (#61, punto 2) se borraron con el resto, y con ellos la
   prueba de Bronze y la del upsell de `qa-integral`; las reemplazan el 404 de
@@ -446,11 +518,14 @@ consolidado).** La rama trajo `main` con sp-prototipo#289, de otra sesión («�
   (la rama). Salieron los imports que quedaron sin uso (`Term`, `waitLabel`).
 - **La salud nocturna pedía lo retirado**: su paso 4 esperaba
   `/guia/guia_home.html` con 200 en el sitio en vivo, que da 404 desde #289
-  (medido el 23/10); la primera corrida sobre main iba a dar rojo por algo que
-  está bien. Ahora lo pide con 404 y suma `/mi-sp/` a las que tienen que
-  responder. ⚠ Mientras esta rama no se fusione, **main sigue con el 200**: la
-  corrida de la noche sobre main va a dar rojo en el paso 4 hasta que entre este
-  cambio (o uno igual, solo, en un PR a main).
+  (medido el 23/10). La rama lo había cambiado a 404 y, la misma tarde, #291 lo
+  arregló en main por su lado, con las tres páginas del molde (BITACORA cap. 157,
+  punto 4). Al traer main quedó la versión de main, y la rama suma `/mi-sp/` a
+  las que tienen que responder 200.
+- **Lo de #291 en la v1**: el botón «Revisión» ya no sale en la v1
+  (`CON_REVISION = !ES_LANZAMIENTO`) y el CI construye además la v1 como saldría
+  en el dominio (`qa/produccion.mjs`). Las pruebas de esta rama no dependían del
+  botón: corren igual.
 - **La burbuja de un toque se esconde también cuando algo tapa al toque**
   (`colocarFijo`, ronda 3, hallazgo 2): además de lo que recorta, se le
   pregunta al navegador qué hay en el toque (`elementFromPoint`, y
@@ -463,9 +538,9 @@ consolidado).** La rama trajo `main` con sp-prototipo#289, de otra sesión («�
 - **`CALIFICATIVOS`** (hallazgo 3): «pterigión, con o sin injerto», sin «auto»,
   marca («injerto» es también el de donante); acepta «con o sin injerto propio».
   El apéndice acepta «no esté complicada».
-- **Documentos**: el cap. 165 decía «el primer caso de «pasan» es el cuadernillo
+- **Documentos**: el cap. 166 decía «el primer caso de «pasan» es el cuadernillo
   mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
-  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 166, «Lo
+  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 167, «Lo
   que no se ve no es solo lo que recorta».
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
@@ -596,10 +671,12 @@ un caso que falla y uno que pasa:
   tanto, `qa-lanzamiento` se corre sin otra suite al mismo tiempo, como lo hace
   la salud nocturna. Si se cambia, se sube la espera y no se toca dos veces: un
   segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
-- Lo que sigue para preparar el espacio, sin publicar (el build para el dominio
-  real, el botón «Revisión» de #192, las cuentas y el DNS de #101), está en
-  «🧩 23/10/2026», arriba: esta rama no lo toca. Fusionarla actualiza el sitio
-  de GitHub Pages, como cualquier PR; la v1 en el dominio real sigue esperando.
+- Lo que sigue para preparar el espacio, sin publicar, está en «🧩» y en «🌐
+  23/10/2026», arriba: el build para el dominio y el botón «Revisión» solo en el
+  prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101) y las
+  tres direcciones de la web actual que esperan a Arturo (#209). Esta rama no lo
+  toca. Fusionarla actualiza el sitio de GitHub Pages, como cualquier PR; la v1
+  en el dominio real sigue esperando.
 
 ---
 
@@ -3150,7 +3227,7 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
   `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
   dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
   casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
-  157.)* A la vista son 2px, casi invisibles (capturas ampliadas en
+  158.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que

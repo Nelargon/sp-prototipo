@@ -27,7 +27,9 @@ desde este repo, en Cloudflare Pages (`Nelargon/sp-interno#101`). Todavía no
 salió: hoy `main` se publica en GitHub Pages (`.github/workflows/deploy.yml`),
 con las dos ediciones del prototipo, en los links de arriba. Antes, la idea era
 que la agencia la copiara en su sitio: eso quedó como historia. El detalle, en
-el `HANDOFF.md`.
+el `HANDOFF.md`. El build para el dominio ya está preparado y se prueba en cada
+PR (`qa/produccion.mjs`); la configuración de Cloudflare, en
+`docs/IMPLEMENTAR-v1.md` §0. Lo público espera la decisión de Arturo.
 
 ## 📖 Para entender el proyecto
 
@@ -84,7 +86,7 @@ lib/            # datos y lógica compartida: Guía Médica (guia-medica.json, s
 datos/          # transcripciones versionadas de las grillas y el glosario
 contenido/blog/ # las notas publicadas del blog (las publica el motor de contenido)
 scripts/        # generadores (guía médica, glosario, prestaciones) y los hooks del build
-qa/             # pruebas: qa-integral, qa-lanzamiento, cobertura-rutas, links-internos
+qa/             # pruebas: qa-integral, qa-lanzamiento, cobertura-rutas, links-internos, produccion
 docs/           # cómo publicar la v1, las previews por rama y el contrato de eventos (ANEXO)
 docs/diseno/    # las láminas de diseño y la lección de cada una (README.md, img/, fuentes/)
 ```

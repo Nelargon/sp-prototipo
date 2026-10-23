@@ -169,12 +169,13 @@ jobs:
           for p in /lanzamiento/blog/ /lanzamiento/mi-sp/ /lanzamiento/agendar/ /lanzamiento/historia/ /lanzamiento/v1/; do
             mirar "$p" 404
           done
-          # El molde viejo de la guía (guia/) se retiró el 23/10/2026
-          # (sp-prototipo#289). Hasta ese día esta lista lo pedía con 200: sin
-          # este cambio, la primera noche después del retiro habría dado rojo
-          # por algo que está bien. Si vuelve a responder, alguien lo repuso. Se
-          # mira también en un PR: el sitio en vivo ya es el main sin el molde.
-          mirar /guia/guia_home.html 404
+          # El molde viejo de la guía se retiró el 23/10/2026 (#289): hasta ese
+          # día esta lista le pedía 200 a /guia/guia_home.html. Si vuelve a
+          # responder, alguien lo repuso. Se mira también en un PR: main ya no
+          # lo publica.
+          for p in /guia/guia_home.html /guia/guia_resultados.html /guia/guia_prestador.html; do
+            mirar "$p" 404
+          done
           # La copia congelada /v1/ se bajó el 17/10/2026 (sp-interno#181): si
           # vuelve a responder, alguien la repuso. En un PR no se mira: el sitio
           # en vivo todavía es main, y el PR que la baja la vería responder.

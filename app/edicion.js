@@ -64,15 +64,19 @@ export const CON_HISTORIA = !ES_LANZAMIENTO;
 // datos/glosario/. Validado, se corrigen los textos en
 // scripts/glosario-definiciones.py, se regenera con scripts/build-glosario-web.py
 // y esto pasa a `true` siempre. Hoy ninguna página lo muestra: vivía en el
-// buscador de /que-cubre/, que redirige a /planes/ desde el 05/10. Dónde se
-// muestra es una decisión pendiente de Arturo (HANDOFF, 23/10/2026).
+// buscador de /que-cubre/, que redirige a /planes/ desde el 05/10. Dónde va lo
+// decidió Arturo el 23/10 (1A): validado, en /planes/, subrayado en las
+// palabras difíciles como «carencia», después de que cierre sp-interno#206.
 export const CON_GLOSARIO_MEDICO = !ES_LANZAMIENTO;
 // Botón «Revisión» junto al logo: abre la sala de revisión del sitio. Pedido de
 // Arturo el 25/09/2026: «un pequeño botón […] donde podemos ver todos los
-// puntos de revisión necesarios […] y vamos agregando pendientes ahí». Está en
-// las dos ediciones por decisión suya: Buenavista sabe que no va en el sitio
-// real («van a tener el sentido común de no usar ese espacio»). Para quitarlo
-// de todo el sitio, esto pasa a `false`.
+// puntos de revisión necesarios […] y vamos agregando pendientes ahí». Estuvo
+// en las dos ediciones por decisión suya: Buenavista sabía que no iba en el
+// sitio real («van a tener el sentido común de no usar ese espacio»). Desde el
+// 29/09 la v1 la publica SP desde este repo (sp-interno#101), así que nadie lo
+// iba a sacar a mano en el camino: el 23/10/2026 Arturo eligió dejarlo solo en
+// el prototipo (sp-interno#192, opción A). Lo controlan qa/produccion.mjs y
+// qa-lanzamiento. Para quitarlo de todo el sitio, esto pasa a `false`.
 //
 // Desde la noche del 25/09 abre la SALA DE REVISIÓN, no GitHub: una página de
 // claude.ai, privada y por invitación, con los puntos, un chat con Claude y un
@@ -84,5 +88,5 @@ export const CON_GLOSARIO_MEDICO = !ES_LANZAMIENTO;
 // La lista de verdad sigue en los issues `revisión` de sp-interno. Cómo
 // funciona, en sp-interno/sala-revision/README.md; el porqué, en BITACORA
 // cap. 113.
-export const CON_REVISION = true;
+export const CON_REVISION = !ES_LANZAMIENTO;
 export const REVISION_URL = 'https://claude.ai/artifact/HsTwZywxrypycEjGb4xFxj';
