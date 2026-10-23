@@ -28,7 +28,7 @@ const pwMod = await import(process.env.PW_PATH || 'playwright-core');
 const { chromium } = pwMod.default ?? pwMod;
 
 const BASE = process.argv[2] || 'http://localhost:8080/sp-prototipo/lanzamiento';
-const PAGINAS = ['/', '/guia-medica/', '/guia-medica/P-0001/', '/planes/', '/simulador/'];
+const PAGINAS = ['/', '/guia-medica/', '/guia-medica/P-0001/', '/planes/', '/simulador/', '/bases/octubre-rosa-2026/'];
 // 360/390/430: el piso de verificación móvil del proyecto (77% del tráfico).
 const ANCHOS = [['escritorio', 1440, 900], ['móvil 360', 360, 780], ['móvil 390', 390, 844], ['móvil 430', 430, 932]];
 
@@ -3560,6 +3560,34 @@ const leerVenta = (page) => page.evaluate((re) => {
   if (vistos.length) mal('una página de venta nombra planes que no se venden: ' + vistos.join(' · '));
   else bien('home, planes y simulador nombran solo Essential, Silver, Gold y Vital (el control ve «Plan Bronze» si se lo mete)');
   await page.close();
+}
+
+// Las bases de una promoción son un texto legal y van literales (sp-interno#209,
+// 2A): lo que la página muestra tiene que ser, frase por frase, lo de
+// lib/bases.js, que es lo que SP publicó. Se lee el texto de la página, no el
+// del código, en el celular y en la computadora.
+console.log('\n── Las bases de Octubre Rosa, literales');
+{
+  const BAS = await import('data:text/javascript;base64,' + Buffer.from(readFileSync(new URL('../lib/bases.js', import.meta.url), 'utf8')).toString('base64'));
+  const b = BAS.getBases('octubre-rosa-2026');
+  const frases = [b.titulo, b.promo, b.intro, ...b.secciones.flatMap((s) => [s.titulo, ...s.bloques.flatMap((bl) => bl.p ? [bl.p] : bl.lista.flatMap((it) => typeof it === 'string' ? [it] : [it.t, ...it.sub]))])];
+  const faltantes = (page) => page.evaluate((fr) => {
+    const t = document.querySelector('main').textContent.replace(/\s+/g, ' ');
+    return fr.filter((f) => !t.includes(f));
+  }, frases);
+  for (const [w, h] of [[390, 844], [1280, 900]]) {
+    const page = await browser.newPage({ viewport: { width: w, height: h } });
+    await page.goto(BASE + '/bases/octubre-rosa-2026/', { waitUntil: 'networkidle' });
+    const f = await faltantes(page);
+    if (f.length) mal(`/bases/octubre-rosa-2026/ a ${w} px: no dice literal ${f.length} frase(s), por ejemplo «${f[0]}»`);
+    else bien(`/bases/octubre-rosa-2026/ a ${w} px: las ${frases.length} frases de las bases, literales`);
+    // La prueba del control: una cifra cambiada en la página tiene que verse.
+    if (w === 390) {
+      await page.evaluate(() => { for (const li of document.querySelectorAll('main li')) li.firstChild.textContent = li.firstChild.textContent.replace('15%', '20%'); });
+      if (!(await faltantes(page)).length) mal('el control de las bases no ve un «15%» cambiado por «20%»');
+    }
+    await page.close();
+  }
 }
 
 await browser.close();

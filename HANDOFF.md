@@ -17,6 +17,46 @@ que documenta la implementación técnica de la página de planes.
 
 ---
 
+## 🚦 23/10/2026: LA RESERVA DE TURNOS, LAS BASES Y EL «PUBLICÁ» (sp-interno#209)
+
+Arturo preguntó qué hace falta para llevar esto a `saludprotegida.com.py`, y
+pidió *«tener todo listito y después ya hacemos lo que queda»*. Contestó «1A,
+2A, 3A, 4A» a las cuatro decisiones de `Nelargon/sp-interno#209` (las tres del
+issue más una sobre cómo se publica). Lo público sigue esperando: nada de esto
+conecta el dominio.
+
+- **1A — La reserva de turnos se muda a `turnos.saludprotegida.com.py`**, en el
+  servidor de hoy, y `/login/` y `/dashboard/` llevan ahí (302). Medido el
+  23/10: la reserva («Agendamiento») es un complemento del WordPress
+  (`appointment-scheduling`) que manda los pedidos a `admin-ajax.php` **por el
+  nombre del dominio**. Crear el subdominio no alcanza: el WordPress tiene que
+  pasar a llamarse `turnos.…`, o la página carga y el turno no sale. Lo que
+  tiene que hacer el proveedor y el control que se corre antes de cambiar el
+  DNS (`scripts/antes-del-dns.mjs`, que hoy da ✗ a propósito) están en
+  `docs/IMPLEMENTAR-v1.md`, §0.
+- **2A — Las bases de Octubre Rosa 2026 viven en `/bases/octubre-rosa-2026/`**,
+  con el texto literal de SP (`lib/bases.js`, leído de la web actual; solo los
+  títulos pasan a tipo oración). `/octubre_rosa/` lleva ahí (301). Es la casa de
+  las bases de las próximas promociones: una entrada más en `lib/bases.js`.
+  `qa-lanzamiento` controla que la página diga las bases frase por frase. Tiene
+  que seguir en línea hasta enero de 2027 (el voucher vale 60 días). No lleva
+  la estética de campaña: esa guarda (PR #288) sigue en pie.
+- **3A — El QR del carnet:** Arturo escanea uno y pasa la dirección. Pendiente.
+- **4A — Al dominio sale solo `produccion`, con el «publicá» de Arturo.** `main`
+  sigue siendo el taller. Regla en `CLAUDE.md` («Flujo git»); el cómo, en
+  `docs/IMPLEMENTAR-v1.md`, §0. La tabla de Cloudflare ya dice `produccion`.
+
+⚠ **Abierto: cómo se entera el cliente del cambio de la reserva.** Arturo:
+*«sería bueno que […] tengamos información para que el usuario esté al tanto de
+los cambios que se hacen con eso del tema de reservas y turnos»*. Hoy la v1 no
+tiene ningún link a la reserva (el «Agendamiento» del menú viejo no tiene
+equivalente). Las opciones se le presentaron el 23/10 y están en
+`Nelargon/sp-interno#209`. **Hasta que conteste, no se construye el aviso ni
+el link**: el texto depende de lo que confirme el proveedor (por ejemplo, que
+se entra con el mismo usuario).
+
+---
+
 ## 🌐 23/10/2026: EL ESPACIO, LISTO PARA EL DOMINIO (SIN PUBLICAR)
 
 Arturo contestó «1A, 2A, 3A» a la revisión de la consolidación (ver «🧩», abajo)
@@ -73,7 +113,8 @@ trabajo).
   «Agendamiento», la reserva de turnos de los clientes; `/octubre_rosa/`, las
   bases legales de una promoción vigente; y el QR del carnet. **Si el dominio
   cambia sin resolverlas, los clientes se quedan sin turnos.** El control falla
-  si alguna aparece redirigida.
+  si alguna aparece redirigida. *(23/10/2026, más tarde: Arturo decidió las dos
+  primeras, «1A, 2A», y el QR espera a que escanee un carnet. Ver «🚦», arriba.)*
 - La receta para SP en Cloudflare: `docs/IMPLEMENTAR-v1.md`, §0. Incluye las
   variables, que van solo en producción para que las previews sigan mostrando el
   prototipo, y la lista del día del DNS: MX, `mail.`, SPF, Brevo, DKIM, y los
