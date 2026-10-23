@@ -91,11 +91,11 @@ pierde (BITACORA cap. 96).
 
 ## Reglas técnicas (destiladas de golpes reales — ver BITACORA)
 
-- La guía se edita **solo en `guia/`**; `public/guia/` se genera en el
-  build y no está en git. (Desde el 23/09/2026 `guia/` es el molde viejo, solo
-  del prototipo. La **Guía Médica real** es `/guia-medica/` y sus datos,
-  `lib/guia-medica.json`, **se regeneran desde la planilla maestra de SP** con
-  `scripts/build-guia-medica.py`: nunca se editan a mano. La planilla manda.)
+- La **Guía Médica** es `/guia-medica/` y sus datos, `lib/guia-medica.json`,
+  **se regeneran desde la planilla maestra de SP** con
+  `scripts/build-guia-medica.py`: nunca se editan a mano. La planilla manda.
+  (El molde viejo de `guia/`, con datos de ejemplo, se retiró el 23/10/2026; su
+  contrato de eventos sigue vigente en `docs/ANEXO-requisitos-backend.md`.)
 - **Publicar la Guía Médica tiene control (23/09/2026).** La planilla original
   es el Excel del Drive de Arturo (fileId en `sp-interno/README.md`). Se lee de
   ahí, se copia a `sp-interno` y se corre `build-guia-medica.py`: si da
@@ -192,8 +192,8 @@ pierde (BITACORA cap. 96).
 - **Regla tipográfica (julio 2026, pedido del usuario): Nunito Sans es
   display, Inter es lectura.** (Nunito Sans reemplazó a Gilroy el 20 jul
   2026 — la licencia anual de Gilroy no se podía pagar; Nunito Sans es
-  libre, SIL OFL, auto-hospedada: `--font-display` en la web y TTFs en
-  `guia/fonts/`. La regla no cambió, solo la fuente.) Nunito Sans SOLO
+  libre, SIL OFL, auto-hospedada: `--font-display` en la web, en woff2 en
+  `public/fonts/`. La regla no cambió, solo la fuente.) Nunito Sans SOLO
   para: títulos (h1/h2/h3, `.disp`), títulos de tarjetas, botones y CTAs,
   etiquetas cortas en mayúsculas (kickers, badges), navegación y cifras
   grandes. Inter (`--font-inter`, auto-hospedada en `public/fonts/`) para

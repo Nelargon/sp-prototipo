@@ -19,6 +19,10 @@
 // links se esconden con esa constante y la ruta se poda del export en
 // `scripts/podar-edicion.mjs`. Las dos cosas, siempre: un link escondido con
 // la página igual publicada es una página huérfana que Google puede encontrar.
+// Y desde el 23/10/2026, una tercera: la fila del módulo en la tabla del HANDOFF
+// («🧩 23/10/2026») con la condición que le falta para entrar a la v1. Si la
+// pierde, se retira: el molde viejo de la guía pasó tres meses escondido acá,
+// sin que las reglas nuevas le llegaran.
 export const EDICION = process.env.NEXT_PUBLIC_EDICION || 'completa';
 export const ES_LANZAMIENTO = EDICION === 'lanzamiento';
 
@@ -27,11 +31,11 @@ export const ES_LANZAMIENTO = EDICION === 'lanzamiento';
 // La Guía Médica ENTRA a la v1 desde el 23 sep 2026 (Arturo: "volveremos a
 // incorporar la guía médica"), con la red real de la planilla maestra de SP,
 // en la ruta /guia-medica/. CON_GUIA quedó en `true` para las dos ediciones.
-// El molde viejo de guia/ (datos ilustrativos, "Ver mi red" por cédula) sigue
-// solo en el prototipo, como referencia: CON_GUIA_DEMO.
+// El molde viejo de guia/ (datos ilustrativos, "Ver mi red" por cédula) vivió
+// solo en el prototipo detrás de CON_GUIA_DEMO hasta el 23/10/2026, cuando se
+// retiró (decisión de Arturo: consolidar las dos ediciones). Queda en git.
 export const CON_GUIA = true;
 export const GUIA_HREF = '/guia-medica/';
-export const CON_GUIA_DEMO = !ES_LANZAMIENTO;
 // Agendar SALE de la v1 el mismo día (Arturo: "la agenda de turnos aún no la
 // lanzaremos, pero podemos crear una versión preliminar"). Sigue en el
 // prototipo como versión preliminar. Salen juntas a propósito: la puerta del
@@ -52,11 +56,16 @@ export const CON_BLOG = !ES_LANZAMIENTO;
 // completa lleva a un espacio que no se ve muy práctico".
 export const CON_HISTORIA = !ES_LANZAMIENTO;
 // El glosario médico de `app/glosario-medico.js` es BORRADOR sin firma médica
-// (16 sep 2026). Se muestra en el prototipo para poder verlo y tocarlo, y NO
-// entra en la v1 que Buenavista copia: una definición médica sin validar es el
-// mismo error que una cobertura sin grilla, y pesa más. Cuando Lister devuelva
-// el Excel firmado (datos/glosario/), se corrigen los textos, se regenera con
-// scripts/build-glosario-web.py y esto pasa a `true` siempre.
+// (16 sep 2026): 185 definiciones en idioma de familia. NO entra en la v1: una
+// definición médica sin validar es el mismo error que una cobertura sin grilla,
+// y pesa más.
+// 23/10/2026, Arturo, al consolidar las dos ediciones: el glosario SE CONSERVA
+// («yo quiero que esté ese glosario») y lo valida él, sobre el Excel de
+// datos/glosario/. Validado, se corrigen los textos en
+// scripts/glosario-definiciones.py, se regenera con scripts/build-glosario-web.py
+// y esto pasa a `true` siempre. Hoy ninguna página lo muestra: vivía en el
+// buscador de /que-cubre/, que redirige a /planes/ desde el 05/10. Dónde se
+// muestra es una decisión pendiente de Arturo (HANDOFF, 23/10/2026).
 export const CON_GLOSARIO_MEDICO = !ES_LANZAMIENTO;
 // Botón «Revisión» junto al logo: abre la sala de revisión del sitio. Pedido de
 // Arturo el 25/09/2026: «un pequeño botón […] donde podemos ver todos los

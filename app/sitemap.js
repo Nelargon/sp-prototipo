@@ -1,8 +1,8 @@
-// sitemap.xml del ecosistema completo (web Next + guía estática).
+// sitemap.xml del sitio (hasta el 23/10/2026 sumaba la guía estática vieja de guia/).
 
 import { getPublishedPosts } from '../lib/blog';
 import { SERIES } from '../lib/series';
-import { CON_GUIA, CON_GUIA_DEMO, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
+import { CON_GUIA, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA } from './edicion';
 import red from '../lib/guia-medica.json';
 
 const SITE = (process.env.SITE_URL || 'https://saludprotegida.com.py') + (process.env.NEXT_PUBLIC_BASE_PATH || '');
@@ -24,12 +24,6 @@ export default function sitemap() {
     ...(CON_GUIA ? [
       u('/guia-medica/', 0.9),
       ...[...new Set(red.prestadores.map((p) => p.id))].map((id) => u(`/guia-medica/${id}/`, 0.5, 'monthly')),
-    ] : []),
-    // El molde viejo de guia/ (datos ilustrativos), solo en el prototipo.
-    ...(CON_GUIA_DEMO ? [
-      u('/guia/guia_home.html', 0.3),
-      u('/guia/guia_resultados.html', 0.3),
-      u('/guia/guia_prestador.html', 0.3),
     ] : []),
     ...(CON_MI_SP ? [u('/mi-sp/', 0.7)] : []),
     ...(CON_HISTORIA ? [u('/historia/', 0.6, 'monthly')] : []),

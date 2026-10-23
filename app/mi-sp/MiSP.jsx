@@ -3,6 +3,7 @@
 import { css } from '../css';
 import Header from '../Header';
 import { BP } from '../basePath';
+import { GUIA_HREF } from '../edicion';
 import { WHATSAPP_NUMBER, SP_TEL } from '../quote';
 import { track } from '../track';
 import IconoSP from '../components/IconoSP';
@@ -32,13 +33,18 @@ export default function MiSP() {
 
           {/* Lo que ya funciona */}
           <div className="misp-grid" style={css('display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:40px')}>
-            <a href={`${BP}/guia/guia_home.html#mi-red`} onClick={() => go('ver_red')} className="sq tarjeta-toque" style={css('display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:#fff;color:var(--sp-navy);--sq:var(--r-lg);padding:26px 24px;min-height:190px')}>
+            {/* Hasta el 23/10/2026 esta tarjeta era «Ver mi red de atención · Entrar
+                con mi cédula» y llevaba al molde viejo de guia/, con un asegurado de
+                ejemplo. Se retiró con ese molde (decisión de Arturo): una tarjeta de
+                «lo que ya podés hacer hoy» no puede abrir una demostración. Lleva a la
+                Guía Médica real; ver la red por cédula vuelve cuando exista el padrón. */}
+            <a href={`${BP}${GUIA_HREF}`} onClick={() => go('guia_medica')} className="sq tarjeta-toque" style={css('display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:#fff;color:var(--sp-navy);--sq:var(--r-lg);padding:26px 24px;min-height:190px')}>
               <div>
                 <IconoSP nombre="red" size={52} style={{ marginBottom: 12 }} />
-                <div style={css('font-size:19px;font-weight:800;margin-bottom:5px')}>Ver mi red de atención</div>
-                <div style={css('font-size:14px;color:var(--sp-text);line-height:1.55')}>Con tu cédula y fecha de nacimiento, mirá los sanatorios, médicos y farmacias que entran en tu plan.</div>
+                <div style={css('font-size:19px;font-weight:800;margin-bottom:5px')}>Buscá tu médico</div>
+                <div style={css('font-family:var(--font-inter),sans-serif;font-size:14px;color:var(--sp-text);line-height:1.55')}>Médicos, sanatorios y laboratorios de la red, por especialidad y por ciudad.</div>
               </div>
-              <span style={css('display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:800;color:var(--sp-teal-deep)')}>Entrar con mi cédula <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+              <span style={css('display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:800;color:var(--sp-teal-deep)')}>Abrir la Guía Médica <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
             </a>
             <div style={css('display:flex;flex-direction:column;gap:16px')}>
               <a href={waHref} onClick={() => go('whatsapp')} target="_blank" rel="noopener" className="sq tarjeta-toque" style={css('flex:1;display:flex;align-items:center;gap:13px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);--sq:var(--r-lg);padding:18px 20px;color:#fff')}>
