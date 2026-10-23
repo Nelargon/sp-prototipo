@@ -289,6 +289,7 @@ reglas nuevas no le llegaban.
 | Historia (`CON_HISTORIA`) | ✓ | — | Decisión de Arturo y otra forma: hoy son 720vh de scroll dirigido |
 | Glosario médico (`CON_GLOSARIO_MEDICO`) | en el código, sin página | — | La validación de Arturo, en el Excel. Validado, va a `/planes/`, subrayado en las palabras difíciles, después de `Nelargon/sp-interno#206` (1A, 23/10) |
 | Marca «Revisar» de la guía (`CON_MARCA_REVISAR`) | ✓ | nunca | Es interna. Dato del 23/10: 218 filas marcadas (eran 185 el 23/09) |
+| Laboratorio de imágenes (`/blog/laboratorio/`) | ✓ | nunca | Herramienta de revisión visual. Las imágenes elegidas podrán entrar al blog con la decisión de Arturo; el laboratorio queda en el prototipo |
 | Botón «Revisión» (`CON_REVISION`) | ✓ | nunca | Es interno: solo en el prototipo desde el 23/10 (`Nelargon/sp-interno#192`, 2A) |
 
 **El espacio de la guía y los planes (anunciado por Arturo el 23/10).** Arturo
@@ -2174,7 +2175,54 @@ era el estado del paso 1.
 
 ---
 
-## 🖼 PORTADAS DIBUJADAS DEL BLOG — ESTILO ELEGIDO, FALTA LA BIBLIOTECA (25 sep 2026)
+## 🖼 LABORATORIO DE IMÁGENES — NUEVA EXPLORACIÓN, ELECCIÓN POR NOTA ABIERTA (23 oct 2026)
+
+Arturo pidió conservar los estilos en una subpágina de GitHub y sumar cinco o
+seis artículos: *«Me cuesta decidir para cada opción cuál me gusta más […]
+con este laboratorio de imágenes y después podemos ir decidiendo»*.
+
+**Dónde:** https://nelargon.github.io/sp-prototipo/blog/laboratorio/
+Código y 33 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
+27 propuestas actuales y seis versiones anteriores de escuela y caminar.
+Son imágenes generadas para esta exploración. Las referencias ajenas del
+Drive no se copian al sitio.
+
+**Qué ya le gusta:** las tres opciones de libreta y escuela. En caminar,
+A (editorial) y B (narrativa); la fotográfica D sigue como antecedente porque
+Arturo la percibe artificial. La escuela conserva la revisión de sombras y
+el gesto casi imperceptible en papel. No hay una técnica única elegida para
+todo el blog. Esta exploración reabre la elección visual de septiembre
+documentada abajo; ese apartado es el antecedente, no una orden de aplicar
+el trazo blanco a todas las notas.
+
+**Seis notas nuevas, tres técnicas por nota:** lavado de manos, criaderos de
+dengue, control de presión, embarazo de mellizos, medicamentos y cobertura,
+y hábitos familiares. Cada una mantiene su composición entre trazo
+explicativo, siluetas y papel e ilustración facetada. Títulos, copetes y links
+vienen de las notas reales. Conceptos, límites de representación, procedencia
+y capturas en `docs/diseno/fuentes/2026-10-23-laboratorio-imagenes/`.
+
+**Cómo se decide:** se pueden guardar varias favoritas y una nota por artículo,
+ampliar, ver recortes 2:1/16:9/1:1 y descargar la imagen completa. Favoritas y
+notas viven en `localStorage` del navegador: no son compartidas ni se guardan
+en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selección
+al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
+
+**Pendiente de Arturo:** elegir y pedir ajustes por nota. Ejemplo: «Manos:
+trazo y papel; mellizos: papel; medicamentos: probar otra escena». Todas las
+portadas y los textos del blog siguen como estaban. La página es solo del
+prototipo: la poda de `/blog/` la excluye de la edición de lanzamiento y del
+build para el dominio. No se empuja a `produccion`.
+
+**Pruebas:** `qa/laboratorio.mjs --datos` entra al CI; con la URL del build
+prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 33 versiones,
+descargas, favoritas múltiples, notas, copia, exportación/importación,
+historial y almacenamiento bloqueado. `qa-integral` abre la nueva subpágina.
+Revisor UX sin hallazgos. Láminas y lecciones en `docs/diseno/README.md`.
+
+---
+
+## 🖼 PORTADAS DIBUJADAS DEL BLOG — ANTECEDENTE DE SEPTIEMBRE (25 sep 2026)
 
 Arturo pasó cinco portadas del newsroom de Anthropic: *«Son muy creativos,
 lucen genial y no tienen que ser fotos. Podés hacerlo e imitarlo, pero llevarlo

@@ -5912,3 +5912,49 @@ ningún cliente.
    el dominio; antes de escribir una línea trajo `main` y estaba hecho por otra
    sesión (#289 y #291, esa misma tarde). En el mensaje siguiente se le dijo
    que eso ya estaba hecho, en vez de construirlo dos veces.
+
+
+## Capítulo 160 — El laboratorio permite que gusten varias opciones (23/10/2026)
+
+**Qué intentamos.** Encontrar imágenes para el blog comparando la misma escena
+en tres técnicas: caminar al almacén, una libreta de salud y una escuela.
+Después de las correcciones, Arturo seguía valorando varias opciones:
+*«Me cuesta decidir para cada opción cuál me gusta más. Son muy buenos
+estilos»*. Pidió un espacio dentro de GitHub para conservarlas y explorar
+cinco o seis artículos más.
+
+**Qué pasó.** La primera comparación había mostrado imágenes rotas fuera del
+servidor local; las siguientes entregas autónomas lo resolvieron, pero seguían
+siendo archivos separados. Además, que una técnica gustara no eliminaba
+problemas de dibujo: el almacén parecía pequeño respecto de la persona, las
+compras sobresalían demasiado y las sombras del árbol en la escuela repetían
+las baldosas. Se corrigieron esas relaciones y se conservaron ambas versiones.
+Arturo prefiere editorial y narrativa para caminar, y valora las tres variantes
+de libreta y escuela. No eligió una familia única para todas las notas.
+
+Se construyó `/blog/laboratorio/`, con nueve artículos y 27 propuestas actuales,
+18 de ellas nuevas. Seis temas nuevos repiten su composición entre trazo,
+papel y planos facetados: manos, dengue, presión, mellizos, medicamentos y
+hábitos familiares. El primer intento de papel tenía demasiado relieve;
+se revisó con las imágenes de libreta y escuela como referencia antes de
+trasladarlo a las otras técnicas. Las propuestas completas y sus miniaturas
+viven dentro del repositorio y se sirven desde el mismo sitio.
+
+**Qué aprendimos.**
+
+1. **Comparar y elegir son etapas distintas.** El laboratorio admite varias
+   favoritas y notas por artículo. No cambia portadas ni impone una técnica
+   global: permite volver a mirar y pedir un ajuste concreto.
+2. **Una escena coherente también importa en una ilustración.** Simplificar
+   manos, fondo o sombras exige decidir qué se conserva. La sombra que parece
+   una baldosa no se arregla cambiando el nombre del estilo.
+3. **El almacenamiento tiene que explicarse.** Favoritas y notas se guardan en
+   ese navegador, no en GitHub. Exportar/importar y copiar un resumen hacen
+   explícita la forma de conservarlas y compartirlas.
+4. **La publicación se prueba en su ruta real.** Se verificaron las nueve notas
+   bajo `/sp-prototipo/blog/laboratorio/`, con cuatro anchos, 81 vistas de
+   recorte, 33 versiones y recuperación de la selección. No alcanza con que
+   un archivo se vea en el directorio de la sesión.
+
+Fuentes y láminas: `docs/diseno/README.md`, lecciones 90 y 91. El laboratorio
+pertenece al prototipo; la poda del blog lo excluye de la v1 pública.

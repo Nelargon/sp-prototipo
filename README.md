@@ -13,6 +13,7 @@ Este repo publica **dos sitios del mismo código** (ver `app/edicion.js`):
 | **Edición de lanzamiento (v1)** — el sitio que SP decidió publicar desde este repo (todavía no salió) | https://nelargon.github.io/sp-prototipo/lanzamiento/ |
 | Guía Médica de la v1 (red real, desde la planilla de SP) | https://nelargon.github.io/sp-prototipo/lanzamiento/guia-medica/ |
 | Prototipo completo — el laboratorio | https://nelargon.github.io/sp-prototipo/ |
+| Laboratorio de imágenes del blog — comparar estilos y guardar favoritas | https://nelargon.github.io/sp-prototipo/blog/laboratorio/ |
 | Simulador | https://nelargon.github.io/sp-prototipo/simulador/ |
 
 **La v1 publica** inicio, simulador, planes y la **Guía Médica** (desde el 23
