@@ -2306,3 +2306,37 @@ cuidan están en el HANDOFF, «✅ DECIDIDO EL 20/10/2026».
 altos» no estaban en una celda: eran el final de una oración, y decían lo mismo
 que una celda, para quién cuenta un tope y qué plan da más. Si el sitio pone ese
 dato en duda en otro lado, la frase sale hasta que SP conteste.
+
+## Parte 35 · Octubre Rosa en la home (23/10/2026)
+
+Arturo pidió ver, lo más rápido posible, cómo se vería la página con la temática
+de Octubre Rosa, en tres opciones, para decidir. Las tres se armaron encima de la
+home real (el `main` del 23/10), en el celular, a 390 px.
+
+### 89 · Un tema del mes se viste sin tocar lo que significa algo
+
+![La home en el celular, hoy y con tres maneras de vestirla para Octubre Rosa: A, una cinta rosa fina arriba de todo; B, la etiqueta del hero cambiada por «Octubre Rosa · Leé la nota» con un lazo y «se siente» en rosa; C, una sección nueva debajo del hero con las dos notas del blog sobre el estudio de las mamas](img/2026-10-23-octubre-rosa-home-celular.webp)
+
+**Qué muestra.** «Hoy» y tres opciones. **A · Cinta arriba:** una franja rosa
+suave de 44 px sobre todo el sitio, con el lazo y «Octubre Rosa · Leé la nota
+del mes»; el hero no se toca. **B · Acento en el hero** (la recomendada): la
+etiqueta «+24 años…» cede su lugar, por el mes, a «Octubre Rosa · Leé la nota»
+con el lazo, y «se siente» pasa de turquesa a rosa. **C · Tramo propio:** una
+sección rosa suave debajo del hero con las dos notas publicadas del blog («Cada
+cuánto conviene hacerse el estudio de las mamas», 06/10, y «Por qué hacerse el
+estudio de las mamas si no te duele nada», 20/10) y «Mirá qué cubre cada plan»;
+empuja el resto de la home 569 px más abajo. En las tres, el botón principal
+sigue turquesa profundo, el logo no cambia y el rojo queda solo para el botón de
+urgencias. Ninguna afirma una cobertura ni da un consejo médico: el contenido es
+el de las notas, que ya pasaron por el filtro del blog. El revisor
+(`revisar.mjs`, a 360, 390 y 430 px) no encontró nada nuevo contra «Hoy» después
+de dos arreglos: la cinta y la etiqueta crecieron a 44 px para el dedo, y el
+enlace de C pasó a navy (el turquesa sobre rosa suave daba 4,48:1).
+
+**Qué se decidió y por qué.** Pendiente: la elige Arturo.
+
+**La lección.** Un tema del mes se viste sin tocar lo que significa algo. El
+rosa entra como adorno y como etiqueta; no reemplaza al turquesa del botón, que
+es el que dice «por acá», ni se acerca al rojo de urgencias, ni cambia el logo.
+Y llega tarde si arranca el 23: lo que se construya para un mes vale más si se
+prende y se apaga solo por fecha.
