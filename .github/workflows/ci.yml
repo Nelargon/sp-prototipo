@@ -79,3 +79,18 @@ jobs:
         run: node qa/titulos-y-sombras.mjs out
       - name: Modo oscuro de la v1 (solo claro, texto de fondo transparente)
         run: node qa/modo-oscuro.mjs out
+      # La v1 como saldría en el dominio de SP (23/10/2026, sp-interno#103):
+      # sin el prefijo de GitHub Pages, con el sitemap y los canonical en el
+      # dominio, sin el botón «Revisión», con sus redirecciones y con la
+      # indexación apagada mientras Arturo no decida salir. No publica nada:
+      # prueba que el día del cambio de dominio sea un solo paso.
+      - name: Build de producción de la v1 (dominio de SP, sin publicar)
+        run: rm -rf .next && npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ''
+          NEXT_PUBLIC_EDICION: lanzamiento
+          SITE_URL: https://saludprotegida.com.py
+      - name: La v1 lista para el dominio
+        run: |
+          node qa/produccion.mjs out https://saludprotegida.com.py
+          node qa/links-internos.mjs out ''

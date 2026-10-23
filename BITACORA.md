@@ -5736,3 +5736,62 @@ afuera.
 3. **Una exclusión por nombre corto atrapa más de lo que nombra.** `/guia/`
    también era `/blog/guia/`. Es la otra cara del cap. 90: cuando se retira
    algo, se revisan también los guardianes que lo esquivaban.
+
+## Capítulo 157 — Preparar el dominio era inventariar lo que hace la web vieja (23/10/2026)
+
+**Qué intentamos.** Arturo eligió «3A»: dejar el build listo para el dominio
+real, sin publicar (`sp-interno#103`). Se partía de una idea razonable: el
+trabajo estaba en el sitio nuevo, es decir, sacar el prefijo de GitHub Pages,
+corregir el sitemap y sumar un 404 y un archivo de redirecciones.
+
+**Qué pasó.** El sitio nuevo ya estaba casi listo. Con
+`NEXT_PUBLIC_BASE_PATH` vacío y `SITE_URL` puesto, el build salía sin
+`/sp-prototipo`, con el sitemap y los canonical en el dominio. Faltaba que algo
+lo controlara para que no se rompiera en silencio, y eso se resolvió con un
+control y un paso en el CI.
+
+Lo que no estaba en ningún documento salió de leer la **web vieja**. Su
+sitemap público tenía 37 direcciones, y tres no se podían tratar como «páginas
+viejas»:
+- `/login/` es «Agendamiento», la reserva de turnos de los clientes. Si el
+  dominio cambiaba sin resolverlo, se cortaba;
+- `/octubre_rosa/` son las bases legales de una promoción que está corriendo;
+- y el QR del carnet, que la receta de la v1 ya mencionaba, sigue sin una
+  dirección confirmada.
+
+Ninguna de las tres se ve desde este repo. Una redirección «al inicio», que era
+lo que el plan tenía para todo lo que no tuviera casa, le habría cortado los
+turnos a los clientes el día del lanzamiento.
+
+En el camino se revirtió una decisión del 25/09: el botón «Revisión» estaba en
+las dos ediciones porque la agencia iba a copiar el sitio y lo iba a sacar. Desde
+el 29/09 publica SP desde este repo, y nadie lo iba a sacar en el camino. Arturo
+eligió dejarlo solo en el prototipo (2A). Y apareció un desfase: `.node-version`
+decía Node 20 y el CI construye con 22.
+
+**Qué aprendimos.**
+
+1. **Mudar un dominio es mudar lo que la web vieja hace**, no solo lo que la
+   nueva publica. El inventario se arma desde el sitemap y el menú de la web
+   que se va. Lo que tiene clientes del otro lado (turnos, bases legales, un QR
+   impreso) no se redirige sin una decisión: queda afuera a propósito, con un
+   control que falla si alguien lo redirige (`sp-interno#209`).
+2. **El código de una redirección dice qué va a pasar después.** `301` para lo
+   que no vuelve; `302` para lo que va a tener casa, como el blog. Un 301 queda
+   guardado en cada navegador y, el día que el blog salga, seguiría mandando al
+   inicio.
+3. **«El mismo build» se prueba, no se promete.** Si producción se construye
+   distinto que el CI, con otro Node u otras variables, lo que el CI dice no
+   vale para producción. Por eso el CI construye la v1 con las variables de
+   producción en cada PR.
+4. **La lección del capítulo anterior, rota el mismo día por quien la
+   escribió.** Al retirar la guía vieja (#289), Claude buscó en los workflows
+   todo lo que la nombrara con `grep guia` y descartó las líneas con
+   `guia-medica`. La línea de la salud nocturna que le pedía 200 a
+   `/guia/guia_home.html` tenía las dos cosas, así que el filtro la tapó. La
+   encontró la salud de este PR, en el paso «Sitio en vivo», antes de que la
+   corrida de la noche abriera un aviso rojo sobre `main`. Ahora pide 404 en las
+   tres páginas. Es el cap. 156 con otra cara: un filtro que excluye por un
+   nombre corto también tapa la línea que tiene los dos nombres. Para buscar lo
+   que se retira se busca el nombre exacto (`guia_home`, `/guia/guia_`), no se
+   resta el parecido.
