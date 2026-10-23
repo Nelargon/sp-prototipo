@@ -5795,3 +5795,63 @@ decía Node 20 y el CI construye con 22.
    nombre corto también tapa la línea que tiene los dos nombres. Para buscar lo
    que se retira se busca el nombre exacto (`guia_home`, `/guia/guia_`), no se
    resta el parecido.
+
+## Capítulo 158 — El texto extraído no es el documento (23/10/2026)
+
+**Qué intentamos.** Poner el simulador al día con los precios. Cotizaba con las
+tarifas de julio (Silver y Gold) y de agosto (Essential), y desde el 9/10 hay
+otra tabla. Arturo fijó la regla ese mismo día: *«Si no coincide el simulador
+con el archivo de Drive, el archivo de Drive gana.»* Tiene su porqué en lo que
+ya estaba escrito: Arturo creó la carpeta «Fuente de Planes - Productos -
+Guia» de su Drive para que sea el centro de la información de los planes y de
+la Guía Médica (HANDOFF, «🌐»). El simulador es una copia; con dos versiones que
+no coinciden, la copia no puede ganar. El archivo es `9 octubre  2026 TABLA DE
+PRECIOS.pdf`, en «Fuentes PDF» → «Precios».
+
+**Qué pasó.** Tres cosas, en este orden.
+
+1. **Primero llegó otra tabla.** Ese día apareció antes una tabla «Octubre
+   2026» que tenía dos versiones de precio para los mismos grupos. Arturo la
+   reemplazó por la del 9/10. Si una tabla trae dos precios para el mismo
+   grupo, la pregunta no es cuál de los dos usar, sino cuál es la tabla.
+2. **«La tabla no trae Essential».** Una sesión de Claude leyó el PDF con la
+   herramienta de Drive, que devuelve el texto que extrae del archivo. Ahí
+   estaban Silver, Gold y Vital, y otras tablas sueltas sin el nombre del plan.
+   Essential no estaba, y la sesión lo reportó así. Pero estaba: en el PDF,
+   la tabla de Essential es una **imagen**, y una imagen no tiene texto que
+   extraer. Arturo tuvo que mandar la captura. Esta sesión volvió a leer el
+   archivo con la misma herramienta: el texto sigue sin traerla.
+3. **Lo que cambió en Silver y Gold no estaba en las tarifas.** Comparadas
+   fila por fila con las de julio, las tarifas por categoría son las mismas
+   (salvo el cónyuge de 70 o más, que ahora llega a 99). Lo que cambió son los
+   siete ejemplos «GRUPOS» de cada plan: una pareja de 30 pasó de 456.000 a
+   552.000 en Silver. La tabla no escribe la regla; la regla sale de los
+   ejemplos. Antes, en cuanto había una segunda persona, el titular pagaba como
+   cónyuge (228.000 + 228.000). Ahora paga siempre «titular solo» (324.000 +
+   228.000), y el hijo adicional corre desde el 3er hijo también sin cónyuge
+   (titular + 3 hijos: 808.000). Esa regla reproduce los 14 ejemplos y está
+   anotada como **deducida**, no como dato.
+
+En Essential la tabla sumó filas (adherente de 21 a 35, titular y adherente
+adulto, titular + 2 hijos, dos adultos + 1 hijo) y trae una rareza: una pareja
+de 46 a 64 sola paga 475.000 en Asunción, y con un hijo, 415.000. El sitio la
+aplica tal cual (Drive gana) y va como pregunta para SP, no como arreglo.
+
+**Qué aprendimos.**
+
+1. **El texto extraído no es el documento.** Es lo que una herramienta pudo
+   leer del documento. Una tabla pegada como imagen, un sello o una nota a
+   mano no están en ese texto y sí están en la página. Si un dato «falta», se
+   mira la página antes de afirmar que no está, o se dice lo que se hizo:
+   «en el texto que extrae Drive no aparece». Es el «no encontrado honesto»
+   de `sp-interno`, con una condición: decir dónde no se encontró.
+2. **En una tabla de precios, la regla vive en los ejemplos.** Un diff de las
+   tarifas habría dicho «sin cambios» y el simulador habría seguido cobrando
+   456.000. Lo que hay que comparar es lo que la tabla calcula, no solo sus
+   cifras. Por eso `qa/precios.mjs` corre el motor contra los ejemplos de la
+   tabla, y no las tarifas contra las tarifas. Se prueba contra la regla de
+   antes del 9/10: con ella tiene que fallar, y falla.
+3. **Lo que se deduce se escribe como deducido.** La regla de Silver y Gold y
+   lo que Essential no dice (un hijo cuando hay un solo adulto, el 3er hijo, el
+   hijo de 21 a 35 con dos adultos) quedan marcados en el código y en los JSON.
+   El día que SP la escriba, se sabe qué hay que contrastar.
