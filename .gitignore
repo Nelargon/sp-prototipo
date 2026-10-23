@@ -14,7 +14,6 @@
 npm-debug.log*
 .env*.local
 next-env.d.ts
-/public/guia
 
 # Salida de la corrida de QA: es un ARTEFACTO, no fuente.
 # Estaba trackeado y se volvio un iman de conflictos entre sesiones paralelas

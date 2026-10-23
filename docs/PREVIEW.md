@@ -62,5 +62,6 @@ Cloudflare además deja el link del preview como comentario en el PR.
 
 - Es **gratis** para este caso (sitio estático, export de Next).
 - El build es idéntico al de CI/producción salvo el base path (ver arriba).
-- La guía (`public/guia/`) se genera en el `prebuild` (`npm run build` corre
-  `scripts/sync-guia.mjs` antes), así que también entra en el preview.
+- La Guía Médica (`/guia-medica/`) es parte del build de Next, así que entra
+  en el preview sin pasos extra. (Hasta el 23/10/2026 el `prebuild` copiaba
+  además el molde viejo de `guia/` a `public/guia/`; se retiró ese día.)

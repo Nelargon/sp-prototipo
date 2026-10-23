@@ -1,6 +1,12 @@
 # Guía Médica SP — Anexo de requisitos (backend / datos / medición)
 
-Complementa las tres páginas de este directorio (`guia_home.html`,
+> **Se mudó el 23/10/2026** de `guia/` a `docs/`, cuando se retiró el molde
+> viejo de la guía (decisión de Arturo). Las tres páginas que cita abajo ya no
+> existen en el repo: quedan en el historial de git (la última versión, en el
+> commit anterior a la mudanza). La Guía Médica real es `/guia-medica/`. **El
+> contrato de eventos (§2) y los requisitos de datos siguen vigentes.**
+
+Complementaba las tres páginas de ese directorio (`guia_home.html`,
 `guia_resultados.html`, `guia_prestador.html`). Las páginas muestran **el
 comportamiento y el molde de datos esperado**; este documento lista lo que no
 se ve en pantalla y debe implementarse del lado del sistema.
@@ -64,7 +70,7 @@ web → guía → contacto y debe poder reconstruirse por sesión anónima:
 | Evento (web)          | Datos                                    | Para qué sirve |
 |-----------------------|------------------------------------------|----------------|
 | `puerta_home`         | puerta (plan / ya_soy_sp), origen (hero / menu) | qué audiencia entra por el hero: prospecto vs. afiliado (la métrica de la puerta 2 es visita recurrente, no conversión) |
-| `mi_sp_accion`        | accion (ver_red / whatsapp / urgencias)  | qué buscan los clientes en su espacio Mi SP — ordena qué módulo del portal construir primero |
+| `mi_sp_accion`        | accion (guia_medica / whatsapp / urgencias; hasta el 23/10/2026, `ver_red` en lugar de `guia_medica`) | qué buscan los clientes en su espacio Mi SP — ordena qué módulo del portal construir primero |
 | `cta_agendar`         | origen (nav / menu_movil / …)            | intención de agendar un turno y desde dónde nace |
 | `agendar_envio`       | centro, cuando, horario, esp_dada, via   | qué turnos se piden (centro / urgencia / horario) — demanda de agendamiento, empezando por Lister; **sin PII** |
 | `agendar_llamar`      | via (tel)                                | prefirió llamar para agendar en vez del handoff por WhatsApp |

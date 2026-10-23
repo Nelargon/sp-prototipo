@@ -23,10 +23,10 @@ import BotonRevision from './components/BotonRevision';
 // Los anchors apuntan a la home (`${BP}/#…`) para funcionar desde cualquier
 // módulo; en la propia home el navegador hace scroll in-page sin recargar.
 // La Guía Médica real (/guia-medica/, desde el 23/09/2026) en las dos
-// ediciones. "Ver mi red" por cédula sigue apuntando al molde viejo de guia/,
-// que solo existe en el prototipo — igual que Mi SP, donde vive ese link.
+// ediciones. "Ver mi red" por cédula apuntaba al molde viejo de guia/, con
+// datos de ejemplo: salió del menú el 23/10/2026, cuando se retiró ese molde
+// (decisión de Arturo). Vuelve el día que exista el padrón real.
 const GUIA = `${BP}${GUIA_HREF}`;
-const GUIA_DEMO_MI_RED = `${BP}/guia/guia_home.html#mi-red`;
 
 const chev = (
   <svg className="navmenu-chev" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
@@ -106,7 +106,6 @@ export default function Header({ variant = 'dark' }) {
                 <a href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav' })} className="nav-link nav-link-menu" style={menuTriggerStyle}>Mi SP {chev}</a>
                 <div className="navmenu navmenu-right"><div className="navmenu-card">
                   <Item href={`${BP}/agendar/`} onClick={() => track('cta_agendar', { origen: 'nav_misp' })} t="Agendar un turno" s="Pedí tu turno en Lister — directo, sin login" />
-                  <Item href={GUIA_DEMO_MI_RED} onClick={() => track('puerta_home', { puerta: 'ver_red', origen: 'nav_misp' })} t="Ver mi red" s="Con tu cédula, mirá qué entra en tu plan" />
                   <Item href={`${BP}/mi-sp/`} onClick={() => track('puerta_home', { puerta: 'ya_soy_sp', origen: 'nav_misp' })} t="Ir a Mi SP" s="Tu espacio: credencial, turnos y más" />
                 </div></div>
               </div>
