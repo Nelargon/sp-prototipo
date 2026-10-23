@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 21 oct 2026.*
+*Última actualización: 22 oct 2026.*
 
 ---
 
@@ -643,14 +643,15 @@ Arturo eligió las cinco recomendadas. Qué cambia en el sitio y dónde sigue ca
    Silver sigue resaltado: decidido el 13/10, sí). Cuando un dato llega, el texto vuelve con su fuente y
    su fecha: el comentario de código de cada lugar dice cuál.
 3. **El Guardián mide cada mañana las dos grillas maestras de planes**,
-   Privilege y Vital, porque el chequeo quincenal corre sin Drive
+   Privilege y Vital, porque el chequeo quincenal corría sin Drive
    (sp-interno, `salud/GUARDIAN.md` y BITACORA cap. 45). El paso entró al
    manual con sp-interno#177 (fusionado el 20/10; `salud/GUARDIAN.md`, §5 paso
    4). Si un master cambió y la re-ingesta mueve algún dato, el PR de datos
    espera el OK de Arturo y cambia también cada copia a mano del sitio (`quote.js`,
    `coverage.js`, `page.jsx` y la tabla de `Planes.jsx`). Vital se guardó 47
-   minutos después de su última ingestión, y el Guardián lo marca desde su
-   primera corrida. Esa versión quedó anotada en la tabla de masters de
+   minutos después de su ingestión del 22/07, y el Guardián lo marcó cada
+   mañana desde que empezó a medir los masters, el 13/10, hasta el 21/10. Esa
+   versión quedó anotada en la tabla de masters de
    `datos/planes-vigentes/README.md` con #281 (21/10), un PR que no movía
    ningún dato. Desde el 21/10, por decisión de Arturo, un PR que solo anota
    la versión nueva de un master de planes sin cambiar ningún dato lo fusiona
@@ -931,7 +932,12 @@ nota del dengue la corrige `#240`; le queda el 36 % sin fuente) y #55 (el
 límite de 3 consultas por mes ya estaba en el comparador desde el 26/09; la
 lista de estudios con copago espera a SP y, para la página de detalle, a
 `#238`). Las otras diez siguen con Arturo, con láminas o con la sesión de
-`/planes`.
+`/planes`. *(22/10/2026: lo de #76 ya no es así. `#240` se cerró sin fusionar
+el 13/10; la nota del dengue del 22/09 se corrigió en la cocina
+(pedido en sp-contenido#268, hecho con sp-contenido#282 y, la espera, con
+sp-contenido#298) y está en la web sin el 36 % desde el 21/10 (el PR #279 de
+este repo), con la espera de 6 meses desde el 22/10 (el PR #282 de este repo).
+sp-interno#76 se cerró el 21/10.)*
 
 ---
 
@@ -2217,7 +2223,9 @@ todo lo que puedas».*
   lo cierra sola cuando vuelve a verde.
 - **Por qué el sitio en vivo lo mira la capa 1 y no el Guardián:** el
   contenedor de las sesiones de Claude no llega a `github.io` (la red lo
-  bloquea: medido el 24/09). GitHub Actions sí.
+  bloquea: medido el 24/09). GitHub Actions sí. *(22/10/2026: desde el 19/10
+  la sesión del Guardián sí llega a `github.io`. Si el Guardián mide también el
+  sitio en vivo es una pregunta abierta de su manual, §2.)*
 
 **Herramientas al día (25/09/2026, OK de Arturo).** Los cuatro workflows pasan a
 `actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-pages-artifact@v5`
@@ -3483,6 +3491,10 @@ El prefijo `quecubre_` existe para que la landing **se mida sola**, separada de
 El usuario pidió un chequeo mensual de si las grillas cambiaron (comparar
 `modifiedTime` de los masters vs la última ingestión del README). **Estado: a
 definir con el usuario** (la Routine automática quedó pendiente de su OK).
+*(22/10/2026: ya no es así. El recordatorio mensual existió desde el 22/07 y
+está apagado desde el 10/10; el chequeo quincenal está pausado desde el 13/10;
+y los masters los mide el Guardián cada mañana: ver «✅ DECIDIDO EL
+13/10/2026», punto 3.)*
 
 ---
 
