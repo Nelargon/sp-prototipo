@@ -270,13 +270,23 @@ export const CALIFICATIVOS = [
   // «abierta o cerrada» (la hemorroidectomía) nombra las dos técnicas: no limita.
   [/\babierta\b(?! o cerrada)/i, /\babierta\b|a cielo abierto/i, '«abierta»'],
   // «no está» y también «no esté» (ronda 3, 23/10): «cuando no esté
-  // complicada» dice lo mismo que el ítem.
-  [/no complicada/i, /no (est[aáé] )?complicada/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»)'],
+  // complicada» dice lo mismo que el ítem. Y «no es» (ronda 4): «cuando la
+  // apendicitis no es complicada», también.
+  // Sin una «o» que sume la complicada (ronda 4, 23/10): «no complicada» vive
+  // también adentro de «esté o no complicada» y de «complicada o no
+  // complicada», que dicen lo contrario del ítem. La «o» de antes (con o sin
+  // coma) y la de después no la dejan pasar. «si no se complicó» sigue
+  // marcando: como «sin complicaciones», se lee «si la cirugía sale bien».
+  [/no complicada/i, /(?<!\bo,? )\bno (?:(?:est[aáé]|es) )?complicada(?!,? o\b)/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada» suma la complicada)'],
   [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
   // Sin «auto» no (ronda 3, 23/10): «injerto» es también el de donante (la
   // membrana amniótica), que el cuadernillo no nombra. La traducción tiene que
   // decir que es del propio cuerpo.
-  [/con o sin autoinjerto/i, /con o sin autoinjerto|con o sin injerto (propio|de tu propi[oa])/i, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante)'],
+  // Y sin sumar otro después (ronda 4, 23/10): «con o sin injerto propio o de
+  // donante» empieza bien y abarca más que el ítem. Después del autoinjerto no
+  // puede venir una «o» (ni una «u») ni el donante. Acepta también «del propio
+  // ojo» y «un injerto propio», que dicen lo mismo.
+  [/con o sin autoinjerto/i, /con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))(?![^;]*(?:\b[ou]\b|donante))/i, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
   [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
   [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
   [/\btotal\b/i, /\btotal\b|\bentero\b|\bcompleto\b/i, '«total»'],
@@ -348,6 +358,10 @@ export function autoprueba() {
     ['«pielolitotomía (sacar una piedra de la pelvis del riñón)», sin «abierta»', porCalificativo(21, enLasDos(21, 'pielolitotomía (sacar una piedra de la pelvis del riñón)'))],
     // Ronda 3 (23/10): la regla del pterigión aceptaba «injerto» sin «auto».
     ['«pterigión, con o sin injerto», sin «auto» (también el de donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin injerto'))],
+    // Ronda 4 (23/10): la frase del ítem adentro de una que abarca más.
+    ['«sacar el apéndice, esté o no complicada» (suma la complicada)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, esté o no complicada'))],
+    ['«pterigión, con o sin injerto propio o de donante» (suma el de donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin injerto propio o de donante'))],
+    ['«pterigión, con o sin autoinjerto o injerto de donante» (el literal, con otro sumado)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto o injerto de donante'))],
   ];
   const pasan = [
     ['una fila nueva de otro grupo que no se llama «ECOGRAFIA…» (no se mira)', nuevos(revisarEcos(conFila(GRILLA, { item: 'TOMOGRAFIA NUEVA', grupo: 'TOMOGRAFIAS', silver: { carencia: '90 DIAS' }, gold: { carencia: '90 DIAS' } }), toques), hoyEco)],
@@ -361,6 +375,10 @@ export function autoprueba() {
     // Ronda 3 (23/10): las dos formas que la regla acepta además del literal.
     ['«sacar el apéndice, cuando no esté complicada», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice, cuando no esté complicada'), hoy26)],
     ['«pterigión, con o sin injerto propio», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin injerto propio'), hoy26)],
+    // Ronda 4 (23/10): formas que dicen lo mismo que el ítem y la regla marcaba.
+    ['«sacar el apéndice, cuando la apendicitis no es complicada», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice, cuando la apendicitis no es complicada'), hoy26)],
+    ['«pterigión, con o sin injerto del propio ojo», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin injerto del propio ojo'), hoy26)],
+    ['«pterigión, con o sin un injerto propio», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin un injerto propio'), hoy26)],
   ];
   for (const [que, h] of casos) if (!h.length) f.push(que + ': tenía que fallar y pasa');
   for (const [que, h] of pasan) if (h.length) f.push(que + ': tenía que pasar y falla (' + h[0] + ')');

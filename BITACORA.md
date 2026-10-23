@@ -6172,3 +6172,49 @@ punto 4): al traerlo, quedó una sola versión.
 - **Una prueba que prepara el caso también lo puede romper.** Antes de medir se
   mira que el caso sea el que se quiere probar; si no se pudo armar, la prueba
   lo dice, en vez de dar verde o rojo por otra cosa.
+
+## Capítulo 168 — La frase del ítem vivía adentro de la que dice lo contrario (23/10/2026)
+
+**Qué intentamos.** En la quinta tanda, `CALIFICATIVOS` aprendió a aceptar más
+formas de decir lo mismo que el cuadernillo («cuando no esté complicada», «con
+o sin injerto propio»), y `colocarFijo` aprendió a preguntarle al navegador qué
+hay en el toque, salteando la burbuja (cap. 167).
+
+**Qué pasó.** La ronda 4 de verificación encontró dos huecos del mismo tipo que
+la ronda 3, y una parte del arreglo sin quién la cuidara:
+- **La regla buscaba la frase, no lo que dice.** La regla del apéndice encontraba
+  «no complicada» adentro de «esté o no complicada» y de «complicada o no
+  complicada». Esas dos suman la complicada: dicen lo contrario del ítem, y
+  pasaban. En el pterigión, «con o sin injerto propio o de donante» empieza bien
+  y después suma el de donante. Es el hueco que la ronda 3 había encontrado en
+  el pterigión («injerto» sin «auto»): la regla preguntaba si estaba la palabra
+  buena, no si venía algo que la deshiciera. Y al revés, marcaba «cuando la
+  apendicitis no es complicada» y «con o sin injerto del propio ojo», que dicen
+  lo mismo. Ahora una «o» antes o después no deja pasar al apéndice, y después
+  del autoinjerto no puede venir otra opción ni el donante. «Si no se complicó»
+  sigue marcando, a propósito: como «sin complicaciones», se lee «si la cirugía
+  sale bien».
+- **La regla propuesta también tenía su hueco.** El verificador mandó las reglas
+  nuevas probadas con node. Con un caso más, la del pterigión dejaba pasar el
+  literal con otro sumado, «con o sin autoinjerto o injerto de donante»: el «que
+  no venga nada después» estaba pegado solo a la segunda forma de la
+  alternativa. Entró con la condición para las dos.
+- **La mitad del arreglo no tenía prueba.** El HANDOFF y el commit presentaban
+  como parte del arreglo el `elementsFromPoint` que saltea la burbuja. Pero si se
+  borraba, la sección seguía en verde. El caso existe: a 360, con las 26
+  abiertas con el dedo y la fila arriba, la burbuja abre abajo y scrollea por
+  dentro. Un salto de scroll deja el toque donde estaba ella, y el navegador,
+  preguntado en ese punto, contesta «la burbuja». La lista quedaba abierta y
+  escondida hasta el próximo scroll. La prueba arma ahora ese caso, confirma que
+  es ese, y con el sabotaje cae: abierta, escondida y lejos del toque.
+
+**Qué aprendimos.**
+- **Una regla de palabras mira también lo que las rodea.** La frase buscada puede
+  estar adentro de otra que la niega o la amplía («esté o no…», «… o de
+  donante»). Por cada forma que una regla acepta, va un caso que la contiene
+  diciendo otra cosa, y tiene que fallar.
+- **Un arreglo con dos piezas necesita dos sabotajes.** Probar el arreglo entero
+  contra la versión anterior no mira cada pieza, y la que nadie sabotea se puede
+  borrar sin que nada se ponga rojo.
+- **El arreglo que llega de afuera también se prueba.** Una regla propuesta con
+  sus casos sigue siendo una hipótesis: se le busca el caso que no trajo.

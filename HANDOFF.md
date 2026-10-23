@@ -542,6 +542,30 @@ dos de otras sesiones:
   mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
   las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 167, «Lo
   que no se ve no es solo lo que recorta».
+- **Después de la ronda 4 de verificación (sobre 15c56f9; sin cambios en el
+  sitio, solo en las pruebas):**
+  - **La parte de `colocarFijo` que saltea la burbuja tiene su prueba.** Si se
+    borraba el `elementsFromPoint` y `queHay` volvía a ser solo
+    `elementFromPoint`, la sección «9A y 10A» seguía en verde. El caso real:
+    en el cuadro de esperas a 360, con las 26 abiertas con el dedo y la fila al
+    15 %, la burbuja abre abajo y scrollea por dentro (`pointer-events:auto`);
+    un solo salto de scroll hacia arriba deja el toque donde estaba ella, el
+    navegador contesta «la burbuja» y la lista quedaba abierta y escondida
+    hasta el próximo scroll. A 390 y 430 la lista entra y no pasa.
+  - **`CALIFICATIVOS`, sin la «o» que suma.** El apéndice encontraba «no
+    complicada» adentro de «esté o no complicada» y de «complicada o no
+    complicada», que suman la complicada; ahora una «o» antes o después no la
+    deja pasar, y acepta «no es complicada». El pterigión dejaba pasar «con o
+    sin injerto propio o de donante»; ahora después del autoinjerto (o del
+    injerto propio) no puede venir una «o», una «u» ni el donante, y acepta
+    «del propio ojo» y «un injerto propio». La regla que propuso el
+    verificador dejaba pasar todavía «con o sin autoinjerto o injerto de
+    donante» (su «nada después» valía solo para la segunda forma): entró con
+    la condición para las dos. **«si no se complicó» sigue marcando a
+    propósito**: como «sin complicaciones», se lee «si la cirugía sale bien».
+    Si #206 elige palabras de casa, esa forma no sirve.
+  - **Documentos**: BITACORA cap. 168 («La frase del ítem vivía adentro de la
+    que dice lo contrario»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -632,6 +656,22 @@ un caso que falla y uno que pasa:
   suma el pterigión sin «auto») y 7 que tienen que pasar (se suman «cuando no
   esté complicada» y «con o sin injerto propio»). Con la regla vieja del
   pterigión, o con la vieja del apéndice, la autoprueba cae.
+- *(Quinta tanda, ronda 4.)* `qa-lanzamiento`, sección «9A y 10A», en el
+  cuadro de esperas a 360 con el dedo: las 26 se abren con la fila al 15 %, se
+  confirma que la burbuja quedó abajo, scrolleando por dentro y con
+  `pointer-events:auto` (si no, el caso no prueba nada y se informa), un salto
+  de scroll de `burbuja.top − toque.top + 12` px hacia arriba deja el toque
+  adentro de donde estaba la burbuja (también se confirma), y a los 250 ms la
+  lista tiene que estar abierta, a la vista y junto al toque. Con `queHay =
+  (x, y) => document.elementFromPoint(x, y)` cae: abierta, escondida y lejos
+  del toque (el toque en 167, la burbuja todavía en 155-772).
+- *(Quinta tanda, ronda 4.)* `qa/listas-fuente.mjs`: 22 casos que tienen que
+  fallar (se suman «esté o no complicada», «con o sin injerto propio o de
+  donante» y «con o sin autoinjerto o injerto de donante») y 10 que tienen que
+  pasar (se suman «cuando la apendicitis no es complicada», «con o sin injerto
+  del propio ojo» y «con o sin un injerto propio»). Con la regla de la quinta
+  tanda del apéndice o del pterigión la autoprueba cae, y con la que propuso el
+  verificador, también (el autoinjerto con el donante sumado).
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
