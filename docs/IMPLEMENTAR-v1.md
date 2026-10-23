@@ -21,7 +21,7 @@ la cuenta de SP, `Nelargon/sp-interno#101`, pasos 2 y 3):
 
 | Campo | Valor |
 |---|---|
-| Repositorio y rama de producción | este repo, `main` |
+| Repositorio y rama de producción | este repo, **`produccion`** (no `main`: ver «Cómo sale un cambio al dominio», abajo) |
 | Comando de build | `npm ci && npm run build` |
 | Carpeta de salida | `out` |
 | Node | 22, la de `.node-version`, la misma del CI |
@@ -31,6 +31,24 @@ la cuenta de SP, `Nelargon/sp-interno#101`, pasos 2 y 3):
 | `NEXT_PUBLIC_INDEXABLE` | **no se pone** hasta que Arturo decida salir; recién ahí, `true` |
 
 Cloudflare deja poner variables distintas para la producción y para las vistas previas. Con las de esta tabla solo en **producción**, las vistas previas por rama siguen mostrando el prototipo completo, como describe `docs/PREVIEW.md`.
+
+**Cómo sale un cambio al dominio** (decisión de Arturo, 23/10/2026, 4A). `main`
+sigue siendo el taller: cada PR se fusiona como hasta hoy y GitHub Pages
+publica el prototipo y la maqueta de la v1. **Al dominio sale solo la rama
+`produccion`, y `produccion` avanza solo con el «publicá» de Arturo.** El
+porqué: hay varias sesiones fusionando por día, y en el dominio cada cambio lo
+lee una familia que está decidiendo.
+- Antes de pedirle el «publicá», se le muestra qué cambió desde la última
+  publicación (`git log produccion..main`) y la maqueta de la v1 en GitHub
+  Pages, que es el mismo código.
+- Con su «publicá», una sesión confirma que el CI de `main` está verde en ese
+  commit y adelanta la rama sin reescribir nada:
+  `git push origin <commit>:refs/heads/produccion`. Nunca `--force`: si
+  `produccion` no es ancestro de ese commit, algo raro pasó y se pregunta.
+- El día que se conecte Cloudflare se crea `produccion` en el commit que Arturo
+  apruebe; hasta entonces no existe, a propósito.
+- Ninguna sesión empuja a `produccion` por su cuenta (regla en `CLAUDE.md`,
+  «Flujo git»).
 
 **Ese build ya se prueba en cada PR.** El CI construye la v1 con esas mismas
 variables y corre `qa/produccion.mjs` y `qa/links-internos.mjs`. Controla que no
@@ -50,25 +68,53 @@ hay nada que adaptar: es el mismo build.
   llevan al inicio; `/contacto/` también; `/guia-para-el-asegurado/` lleva a
   la Guía Médica. Son temporales para poder cambiarlas el día que el blog salga
   sin que cada navegador recuerde la vieja.
+- `301` para `/octubre_rosa/` → `/bases/octubre-rosa-2026/`: las bases de la
+  promoción, con el texto literal de SP (`Nelargon/sp-interno#209`, 2A). Viven
+  en `lib/bases.js`, que es también la casa de las bases de las promociones que
+  vengan. Tienen que seguir en línea hasta enero de 2027: la promoción vence el
+  04/11/2026 y el voucher vale 60 días desde que se recibe.
+- `302` para `/login/` y `/dashboard/` → `https://turnos.saludprotegida.com.py/…`:
+  la reserva de turnos, que se muda a su subdominio (`Nelargon/sp-interno#209`,
+  1A). Es el único destino fuera del sitio, y el build solo acepta subdominios
+  de SP por https. Temporal, por si un día la reemplaza una reserva nueva.
 - `/planes/` y `/` no necesitan regla: son la misma dirección.
 - ⚠ Lo que no se verificó: que Cloudflare aplique la regla de `/que-cubre/`
   aunque exista la página de aviso (`out/que-cubre/index.html`). Se mira en la
   primera vista previa de Cloudflare. Si no la aplica, el aviso igual lleva a
   `/planes/`.
 
-**Lo que NO se redirige sin una decisión de Arturo** (`Nelargon/sp-interno#209`;
-el control falla si alguna aparece en `_redirects`):
-- `/login/` y `/dashboard/`: son **«Agendamiento»**, la reserva de turnos de los
-  clientes en la web actual, atada al sistema de SP. Si el dominio pasa a
-  Cloudflare sin resolverlas, los clientes se quedan sin turnos.
-- `/octubre_rosa/`: son las **bases y condiciones de la promoción Octubre Rosa
-  2026**. Un texto legal que tiene que seguir en línea mientras la promoción
-  corra.
-- El **QR del carnet** (ver §4, punto 4): falta saber a qué dirección lleva.
+**Lo que esperaba una decisión de Arturo** (`Nelargon/sp-interno#209`; el
+control falla si algo de `NO_SE_REDIRIGEN` aparece en `_redirects`). El
+23/10/2026 Arturo contestó «1A, 2A, 3A»: la reserva de turnos y las bases de
+Octubre Rosa quedaron resueltas arriba, y la lista está vacía. Falta solo el
+**QR del carnet** (3A): Arturo escanea uno y pasa la dirección. Si es de este
+dominio, se suma su redirección antes del cambio.
+
+**Antes del día del DNS: la reserva de turnos en su subdominio** (1A). La
+reserva («Agendamiento») es un complemento del WordPress actual
+(`appointment-scheduling` 1.4.1) que manda cada pedido a
+`https://saludprotegida.com.py/wp-admin/admin-ajax.php`, por el nombre del
+dominio (medido el 23/10/2026). Por eso no alcanza con crear el subdominio: si
+el WordPress sigue llamándose como el dominio, la página de la reserva carga en
+`turnos.` y los turnos no salen. Lo hace quien maneja hoy el servidor:
+1. crear `turnos.saludprotegida.com.py` apuntando al servidor de hoy, con su
+   certificado https;
+2. cambiar la dirección del WordPress (`siteurl` y `home`) a
+   `https://turnos.saludprotegida.com.py`, y su acceso de administración pasa a
+   `turnos.…/wp-admin/`;
+3. pedirle a Google que no indexe ese WordPress (Ajustes → Lectura): adentro
+   sigue la web vieja entera, con planes y precios que ya no son los vigentes;
+4. confirmar que los clientes entran con el mismo usuario de siempre;
+5. correr `node scripts/antes-del-dns.mjs https://<proyecto>.pages.dev`: mira
+   que la reserva responda en `turnos.`, que mande los pedidos ahí, que `/login/`
+   lleve a ella desde Cloudflare y que las bases de Octubre Rosa estén
+   publicadas. **Si no da verde, no se cambia el DNS.** Hoy da ✗, como tiene que
+   dar: la reserva todavía vive en el dominio principal.
 
 **El día del cambio de DNS** (`Nelargon/sp-interno#101`, paso 5): copiar
 **exactos** del panel actual, antes de cambiar nada, todos los registros que no
 son la web, y probar el correo antes y después:
+- el `A` de `turnos.`, el nuevo (la reserva de turnos);
 - `MX` y el `A` de `mail.` (el correo de SP);
 - los `TXT`: el SPF, que incluye HubSpot, y el código de verificación de Brevo;
 - los `DKIM` (`*._domainkey`) que tenga el panel: el correo del blog firma con

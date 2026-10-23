@@ -5855,3 +5855,60 @@ aplica tal cual (Drive gana) y va como pregunta para SP, no como arreglo.
    lo que Essential no dice (un hijo cuando hay un solo adulto, el 3er hijo, el
    hijo de 21 a 35 con dos adultos) quedan marcados en el código y en los JSON.
    El día que SP la escriba, se sabe qué hay que contrastar.
+
+## Capítulo 159 — La reserva no se llamaba «turnos», y el subdominio no alcanzaba (23/10/2026)
+
+**Qué intentamos.** Arturo preguntó qué hacía falta para llevar el sitio a
+`saludprotegida.com.py`. Claude armó la lista mirando la web actual y le
+contestó, entre otras cosas, que la reserva de turnos por cédula que menciona
+el HANDOFF «no la encontré ni en el inicio ni en la guía del asegurado».
+
+**Qué pasó.** Tres cosas, en orden.
+
+1. **La reserva estaba en el menú de la primera página que se leyó.** Claude
+   buscó los links cuya *dirección* dijera `turno`, `agend` o `reserv`. La
+   reserva se llama `/login` y el menú la muestra como «Agendamiento»: la
+   dirección no decía nada y el texto sí. La encontró otra sesión ese mismo día
+   leyendo el menú (cap. 157), y Claude se lo corrigió a Arturo en el mensaje
+   siguiente. Si se hubiera quedado con el «no la encontré», el cambio de
+   dominio les cortaba los turnos a los clientes.
+2. **Mudar la reserva a un subdominio no alcanzaba.** Arturo eligió llevarla a
+   `turnos.saludprotegida.com.py` (1A). Al leer la página se vio qué es: un
+   complemento del WordPress (`appointment-scheduling`) que manda cada pedido a
+   `admin-ajax.php` por el nombre del dominio. Con solo el subdominio, la
+   página carga en `turnos.` pero cada pedido va al dominio que ya es de
+   Cloudflare: el formulario se ve y el turno no sale. Nadie se entera hasta
+   que un cliente se queja. Por eso el pedido al proveedor incluye cambiarle el
+   nombre al WordPress, y `scripts/antes-del-dns.mjs` mira a dónde manda los
+   pedidos la reserva antes de que se toque el DNS. Hoy da ✗, como tiene que
+   dar.
+3. **Un texto respondió que sí tenía sublista.** La página de las bases (2A)
+   arma listas con ítems que son texto o `{ t, sub }`. El build cortó con
+   `a.map is not a function`: `"PAP y colposcopía.".sub` existe en JavaScript
+   (`String.prototype.sub`, un método viejo que envuelve el texto en `<sub>`),
+   así que cada texto «tenía» sublista. Se arregló preguntando primero si el
+   ítem es texto.
+
+Y cambió el método: hasta hoy, fusionar a `main` era publicar. Desde la 4A, al
+dominio sale solo `produccion`, con el «publicá» de Arturo (`CLAUDE.md`, «Flujo
+git»). El merge automático se había autorizado para un prototipo que no lee
+ningún cliente.
+
+**Qué aprendimos.**
+
+1. **Se busca por lo que la persona ve, no por cómo se llama la dirección.**
+   Un menú dice «Agendamiento» y lleva a `/login`. El inventario de una web se
+   arma leyendo el texto de sus links, no filtrando sus direcciones. Es el cap.
+   157, punto 4, del otro lado: allá un filtro por nombre tapó una línea, acá un
+   filtro por dirección tapó un link.
+2. **Al mudar algo, mirá a quién llama por su nombre.** Una página que se muda
+   puede seguir mandando sus pedidos a la dirección vieja. Lo que hay que mirar
+   no es si la página carga, sino si lo que la persona hace ahí llega a algún
+   lado.
+3. **En JavaScript, preguntarle una propiedad a un texto puede dar verdadero**
+   (`sub`, `big`, `link`, `anchor`, `bold`…). Si un dato puede ser texto u
+   objeto, primero se pregunta cuál es.
+4. **La regla cero funcionó.** Claude le ofreció a Arturo preparar el build para
+   el dominio; antes de escribir una línea trajo `main` y estaba hecho por otra
+   sesión (#289 y #291, esa misma tarde). En el mensaje siguiente se le dijo
+   que eso ya estaba hecho, en vez de construirlo dos veces.

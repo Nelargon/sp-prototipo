@@ -3,11 +3,28 @@
    aparte para que el control la lea sin correr el script. Ver el porqué de
    cada familia (301, 302 y las que no se redirigen) en scripts/redirecciones.mjs. */
 
+// La reserva de turnos de la web actual («Agendamiento») se muda a su propio
+// subdominio, en el servidor de hoy (sp-interno#209, 1A, Arturo, 23/10/2026).
+// Es un complemento del WordPress (appointment-scheduling) que llama al
+// dominio por su nombre (admin-ajax.php), así que el subdominio solo funciona
+// si el WordPress pasa a llamarse así: ver docs/IMPLEMENTAR-v1.md, §0.
+export const TURNOS = 'https://turnos.saludprotegida.com.py';
+// Lo único de afuera que puede ser destino: un subdominio de SP, por https.
+export const SUBDOMINIO_SP = /^https:\/\/[a-z0-9-]+\.saludprotegida\.com\.py\//;
+
 // [origen, destino, código, por qué]. Cloudflare Pages toma la primera regla
-// que coincide; las de comodín (*) van al final.
+// que coincide; las de comodín (*) van al final. Un destino es una página de la
+// v1 («/planes/») o, solo para lo que se muda a un subdominio de SP, una
+// dirección completa (TURNOS).
 export const REDIRECCIONES = [
   // Lo que el sitio nuevo reemplazó.
   ['/que-cubre/', '/planes/', 301, '«qué cubre» es /planes/ desde el 05/10/2026 (HANDOFF, «UNA SOLA PÁGINA DE DETALLE»)'],
+  ['/octubre_rosa/', '/bases/octubre-rosa-2026/', 301, 'web actual: las bases de Octubre Rosa 2026. Su casa en la v1 es /bases/, con el texto literal (sp-interno#209, 2A)'],
+  // La reserva de turnos, en su subdominio. 302: si algún día la reemplaza una
+  // reserva nueva, la dirección vieja tiene que poder ir ahí sin que cada
+  // navegador recuerde esta.
+  ['/login/', TURNOS + '/login/', 302, 'web actual: «Agendamiento», la reserva de turnos de los clientes. Se muda a su subdominio (sp-interno#209, 1A)'],
+  ['/dashboard/', TURNOS + '/dashboard/', 302, 'web actual: la misma reserva de turnos, ya con la sesión iniciada'],
   // La web actual.
   ['/guia-para-el-asegurado/', '/guia-medica/', 302, 'web actual: dudas del asegurado (urgencias, documentos); su casa en la v1 es la Guía Médica, con la línea de emergencias. Temporal hasta que Arturo confirme'],
   ['/contacto/', '/', 302, 'web actual: formulario de contacto. La v1 contacta por WhatsApp y teléfono desde cada página'],
@@ -23,12 +40,10 @@ export const REDIRECCIONES = [
 
 // Direcciones de la web actual que NO se redirigen hasta que Arturo decida.
 // No es un olvido: qa/produccion.mjs falla si alguna aparece como origen.
-// La decisión está en Nelargon/sp-interno#209.
-export const NO_SE_REDIRIGEN = [
-  ['/login/', 'es «Agendamiento»: la reserva de turnos de los clientes, atada al sistema de SP. No se toca desde acá (HANDOFF, guarda de la Guía Médica)'],
-  ['/dashboard/', 'la misma reserva de turnos (redirige a /login/)'],
-  ['/octubre_rosa/', 'son las bases y condiciones de la promoción Octubre Rosa 2026: un texto legal que tiene que seguir en línea mientras la promoción corra'],
-];
+// Vacía desde el 23/10/2026: Arturo decidió /login/ y /dashboard/ (1A) y
+// /octubre_rosa/ (2A) en Nelargon/sp-interno#209. Queda el QR del carnet (3A):
+// Arturo escanea uno y, si la dirección es de este dominio, se suma acá o arriba.
+export const NO_SE_REDIRIGEN = [];
 
 // Cada regla exacta sale con y sin la barra final: no está verificado que
 // Cloudflare Pages trate «/blog» y «/blog/» como la misma dirección, y una
