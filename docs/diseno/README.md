@@ -2416,3 +2416,51 @@ nombre. La interfaz también tiene que decir dónde guarda las decisiones:
 un favorito en el navegador no es una decisión sincronizada con GitHub.
 
 [Conceptos, procedencia y verificación](fuentes/2026-10-23-laboratorio-imagenes/README.md).
+
+
+### 94 · La técnica y el detalle del rostro se eligen por separado
+
+![Revisar los criaderos: trazo con rostro completo, papel sin ojos y facetada con rasgos sugeridos; bocas más sutiles en las tres](img/2026-10-23-laboratorio-dengue-rostros-v2.webp)
+
+**Qué muestra.** La segunda versión de dengue conserva la escena y diferencia
+el detalle de la cara: ojos presentes en trazo, omitidos en papel, sugeridos
+en facetada. Las tres reducen la boca. Al ampliar se puede volver a la primera
+versión. [Ver en el laboratorio](https://nelargon.github.io/sp-prototipo/blog/laboratorio/#dengue).
+
+**Qué se decidió y por qué.** Arturo valora los tres estilos; pide reducir
+la boca en todos y recuperar los ojos en trazo. Le gusta la simplificación,
+pero no tiene que repetirse igual en las tres técnicas. Es un ajuste de esta
+nota, no la elección definitiva de un estilo para el blog.
+
+**La lección.** La síntesis del rostro es un recurso de abstracción selectiva:
+la postura, la inclinación de la cabeza y unos pocos rasgos sostienen la
+expresión. No define por sí sola una escuela ni una técnica. Si se eliminan
+los ojos y se conserva una boca contrastada, esa boca puede dominar el rostro.
+La revisión distingue tres grados de detalle sin cambiar la idea de la imagen.
+
+[Encargo, procedencia y verificación](fuentes/2026-10-23-dengue-rostros/README.md).
+Las lecciones 92 y 93 están reservadas por el PR #288, aún abierto.
+
+
+**Devolución posterior sobre la lección 94.** Arturo recuperó las originales
+de papel y facetada, incluido el contraste de la boca. La lámina anterior
+se conserva como exploración; ya no representa la elección actual.
+
+### 95 · La versión actual puede ser una anterior
+
+![Criaderos: trazo con el rostro revisado y las versiones originales recuperadas de papel y facetada](img/2026-10-23-laboratorio-dengue-rostros-v3.webp)
+
+**Qué muestra.** La devolución siguiente: trazo con cara completa y una nueva
+revisión de la relación entre ojo, nariz y boca; papel y facetada vuelven a
+sus rostros originales sin ojos y con boca contrastada. El historial conserva
+la prueba de bocas casi invisibles y el primer intento de cara completa.
+
+**Qué se decidió y por qué.** Arturo: «Al final, creo que me gustó cómo estaba
+antes». Prefiere el contraste inicial y solo mantiene los ojos en trazo.
+También señala que los rasgos de ese rostro no estaban bien ubicados; se
+revisan como un conjunto, no como un ojo añadido a una superficie vacía.
+
+**La lección.** Más sutil no significa mejor por definición. Una comparación
+puede servir para recuperar el original. El catálogo necesita elegir la
+versión actual por técnica y conservar la historia, en lugar de mostrar
+siempre la última generación. Sigue siendo una exploración del laboratorio.

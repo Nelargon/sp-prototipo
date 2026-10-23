@@ -11,7 +11,23 @@
     "file": "2026-10-03-donde-se-cria-el-mosquito-del-dengue-en-tu-casa.md",
     "short": "Revisar los criaderos",
     "concept": "Vaciar el agua que queda en el plato de una maceta.",
-    "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos."
+    "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
+    "review": "Volvemos a las originales de papel y facetada. En trazo conservamos la cara completa y revisamos la posición del ojo, la nariz y la boca. Las otras pruebas quedan al ampliar.",
+    "styleNotes": {
+      "trazo": "Cara completa y rasgos alineados con el ángulo de la cabeza.",
+      "papel": "Original: sin ojos y con el contraste de la boca.",
+      "facetada": "Original: planos de color, sin ojos y con el gesto inicial."
+    },
+    "revisions": {
+      "trazo": 3,
+      "papel": 2,
+      "facetada": 2
+    },
+    "currentRevisions": {
+      "trazo": 3,
+      "papel": 1,
+      "facetada": 1
+    }
   },
   {
     "key": "presion",
