@@ -67,3 +67,27 @@ el export servido bajo el basePath. Comprueba nueve artículos, cuatro anchos,
 81 vistas de recorte, 33 versiones y el ciclo de selección y recuperación.
 Las capturas están en `docs/diseno/img/2026-10-23-laboratorio-*.webp`.
 La página queda fuera de la edición de lanzamiento porque se poda `/blog/`.
+
+## Copia que se puede llevar
+
+Los primeros dos intentos de Pages agotaron el tiempo de espera de publicación
+el 23/10/2026; la compilación y los controles habían pasado. La copia autónoma
+permite revisar el laboratorio mientras se resuelve el despliegue:
+
+```sh
+python3 scripts/export-laboratorio.py --output /tmp/SP-Laboratorio-imagenes.html
+```
+
+El resultado es un HTML de unos 17 MB con catálogo, 60 recursos de imágenes,
+tipografías y logo incluidos. Conserva favoritas, notas, versiones, descargas
+y exportación/importación. Los links a las notas y a GitHub necesitan conexión;
+la comparación no. Las selecciones de esta copia y las de la web se trasladan
+con exportar/importar: no se sincronizan solas.
+
+Verificado con Chromium sin conexión, entregando el HTML exacto mediante una
+ruta local de prueba (el entorno bloquea las direcciones `file://`): nueve
+artículos, 27 propuestas, 33 versiones, cero solicitudes externas ni errores,
+persistencia y exportación correctas, sin desborde a 390 px. El script falla
+si la interfaz cambió y una adaptación ya no coincide, en vez de producir una
+copia que siga dependiendo del servidor. El HTML generado se entrega como
+archivo y no se duplica dentro del repositorio.

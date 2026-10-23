@@ -2208,6 +2208,14 @@ notas viven en `localStorage` del navegador: no son compartidas ni se guardan
 en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selección
 al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
 
+**Respaldo sin conexión:** `python3 scripts/export-laboratorio.py --output
+/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 17 MB, con las
+imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
+porque los primeros dos intentos de Pages agotaron el tiempo de publicación,
+con las compilaciones y pruebas en verde. Se verificó sin conexión: 33
+versiones y cero solicitudes externas. Las favoritas de la copia y de la web
+se pasan con exportar/importar. Los links a las notas sí necesitan internet.
+
 **Pendiente de Arturo:** elegir y pedir ajustes por nota. Ejemplo: «Manos:
 trazo y papel; mellizos: papel; medicamentos: probar otra escena». Todas las
 portadas y los textos del blog siguen como estaban. La página es solo del
