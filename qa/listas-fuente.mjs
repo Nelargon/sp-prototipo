@@ -269,9 +269,14 @@ export const CALIFICATIVOS = [
   [/a cielo abierto/i, /a cielo abierto|cirug[ií]a abierta/i, '«a cielo abierto» (la de próstata más común es por la uretra, y no es videolaparoscopía)'],
   // «abierta o cerrada» (la hemorroidectomía) nombra las dos técnicas: no limita.
   [/\babierta\b(?! o cerrada)/i, /\babierta\b|a cielo abierto/i, '«abierta»'],
-  [/no complicada/i, /no (est[aá] )?complicada/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»)'],
+  // «no está» y también «no esté» (ronda 3, 23/10): «cuando no esté
+  // complicada» dice lo mismo que el ítem.
+  [/no complicada/i, /no (est[aáé] )?complicada/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»)'],
   [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
-  [/con o sin autoinjerto/i, /con o sin (auto)?injerto/i, '«con o sin autoinjerto»'],
+  // Sin «auto» no (ronda 3, 23/10): «injerto» es también el de donante (la
+  // membrana amniótica), que el cuadernillo no nombra. La traducción tiene que
+  // decir que es del propio cuerpo.
+  [/con o sin autoinjerto/i, /con o sin autoinjerto|con o sin injerto (propio|de tu propi[oa])/i, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante)'],
   [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
   [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
   [/\btotal\b/i, /\btotal\b|\bentero\b|\bcompleto\b/i, '«total»'],
@@ -341,6 +346,8 @@ export function autoprueba() {
     ['«sacar el apéndice, sin complicaciones», sin «no complicada»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, sin complicaciones'))],
     ['«legrado evacuador (raspado del útero)», con la traducción que incluye el de diagnóstico', porCalificativo(19, enLasDos(19, 'legrado evacuador (raspado del útero)'))],
     ['«pielolitotomía (sacar una piedra de la pelvis del riñón)», sin «abierta»', porCalificativo(21, enLasDos(21, 'pielolitotomía (sacar una piedra de la pelvis del riñón)'))],
+    // Ronda 3 (23/10): la regla del pterigión aceptaba «injerto» sin «auto».
+    ['«pterigión, con o sin injerto», sin «auto» (también el de donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin injerto'))],
   ];
   const pasan = [
     ['una fila nueva de otro grupo que no se llama «ECOGRAFIA…» (no se mira)', nuevos(revisarEcos(conFila(GRILLA, { item: 'TOMOGRAFIA NUEVA', grupo: 'TOMOGRAFIAS', silver: { carencia: '90 DIAS' }, gold: { carencia: '90 DIAS' } }), toques), hoyEco)],
@@ -351,6 +358,9 @@ export function autoprueba() {
     // de casa para el apéndice que dice la condición con otras palabras.
     ['las 26 en literal, en las dos puntas', nuevos(revisar26(items, LITERAL(items), items.map((x, i) => [x, LITERAL(items)[i]])), hoy26)],
     ['«sacar el apéndice, si la apendicitis no está complicada», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice, si la apendicitis no está complicada'), hoy26)],
+    // Ronda 3 (23/10): las dos formas que la regla acepta además del literal.
+    ['«sacar el apéndice, cuando no esté complicada», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice, cuando no esté complicada'), hoy26)],
+    ['«pterigión, con o sin injerto propio», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin injerto propio'), hoy26)],
   ];
   for (const [que, h] of casos) if (!h.length) f.push(que + ': tenía que fallar y pasa');
   for (const [que, h] of pasan) if (h.length) f.push(que + ': tenía que pasar y falla (' + h[0] + ')');

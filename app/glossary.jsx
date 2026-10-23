@@ -193,7 +193,41 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
         visAbajo = Math.min(visAbajo, q.bottom);
       }
     }
-    if (b.bottom <= visArriba || b.top >= visAbajo) { setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true })); return; }
+    const esconder = () => setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true }));
+    if (b.bottom <= visArriba || b.top >= visAbajo) { esconder(); return; }
+    // ¿Y algo lo tapa? (verificador de la ronda 3, 23/10/2026.) Lo que no se ve
+    // no es solo lo que recorta: una cabecera pegajosa (la de cada plan en la
+    // tabla de /planes, .cmp2-h, sticky) tapa al toque sin recortar nada. Con la
+    // lista abierta por teclado y la página scrolleada con la rueda hasta dejar
+    // el toque debajo de esa cabecera, la burbuja seguía a la vista, encima de la
+    // columna de Silver, apuntando a nada. Se pregunta al navegador qué hay en
+    // el toque, en el medio de su franja visible y cerca de sus dos bordes (así
+    // cuenta también un toque que asoma 1 px, o la mitad de abajo que deja una
+    // cabecera), renglón por renglón (un toque partido tiene una caja por
+    // renglón). Si en ningún punto está el toque (o algo de adentro suyo), se
+    // esconde. La burbuja no cuenta: mientras se scrollea, la que quedó del
+    // cuadro anterior puede estar encima del toque, y lo que importa es lo que
+    // hay debajo de ella. Cuesta poco: corre una vez por cuadro mientras la
+    // burbuja está abierta, y casi siempre el primer punto ya es el toque.
+    const queHay = (x, y) => {
+      const h = document.elementFromPoint(x, y);
+      return h && el.contains(h) ? document.elementsFromPoint(x, y).find((n) => !el.contains(n)) || null : h;
+    };
+    const esElToque = (h) => !!h && (h === t || t.contains(h) || h === ref.current);
+    let seVe = false;
+    const renglones = t.getClientRects();
+    for (let i = 0; i < renglones.length && i < 4 && !seVe; i++) {
+      const r = renglones[i];
+      const arriba = Math.max(r.top, visArriba, 0), abajoR = Math.min(r.bottom, visAbajo, vh);
+      const izq = Math.max(r.left, 0), der = Math.min(r.right, vw);
+      if (abajoR - arriba <= 0 || der - izq <= 0) continue;
+      const x = (izq + der) / 2;
+      for (const y of [(arriba + abajoR) / 2, abajoR - 1, arriba + 1]) {
+        if (y <= arriba || y >= abajoR) continue;
+        if (esElToque(queHay(x, y))) { seVe = true; break; }
+      }
+    }
+    if (!seVe) { esconder(); return; }
     // scrollHeight y no el alto de la caja: con max-height, la caja mide lo que
     // se ve y scrollHeight sigue midiendo la lista entera.
     const w = el.offsetWidth, h = el.scrollHeight;

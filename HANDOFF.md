@@ -429,6 +429,45 @@ listas-fuente y modo-oscuro en el mismo paso. Y entró:
 - **Documentos**: BITACORA cap. 165 («La regla que no dejaba pasar a su propia
   fuente»).
 
+**La quinta tanda (23/10, después de la ronda 3 de verificación, y con `main`
+consolidado).** La rama trajo `main` con sp-prototipo#289, de otra sesión («🧩
+23/10/2026», arriba), con un merge y sin rebase:
+- **La bitácora**: el cap. 156 de main («Las dos versiones eran una sola…») se
+  queda con su número; los nueve de la rama pasan a 157-165, en el mismo orden,
+  con sus citas renumeradas por título (acá, en el capítulo «Lo que dice el ítem
+  se queda en el ítem» y en la nota de las esquinas).
+- **El molde viejo, retirado entero**: los dos `guia/*.html` que la rama había
+  corregido por Bronze (#61, punto 2) se borraron con el resto, y con ellos la
+  prueba de Bronze y la del upsell de `qa-integral`; las reemplazan el 404 de
+  sus tres páginas y el corte de `out/guia` en el CI, que trajo main. El punto 2
+  de #61 queda resuelto por el retiro (ver el punto 8, arriba).
+- **El home**: sin la caja del parto ni «Lo que te prometemos» (main) y con las
+  preguntas frecuentes, las celdas con `notaCelda` y sin el explorador muerto
+  (la rama). Salieron los imports que quedaron sin uso (`Term`, `waitLabel`).
+- **La salud nocturna pedía lo retirado**: su paso 4 esperaba
+  `/guia/guia_home.html` con 200 en el sitio en vivo, que da 404 desde #289
+  (medido el 23/10); la primera corrida sobre main iba a dar rojo por algo que
+  está bien. Ahora lo pide con 404 y suma `/mi-sp/` a las que tienen que
+  responder. ⚠ Mientras esta rama no se fusione, **main sigue con el 200**: la
+  corrida de la noche sobre main va a dar rojo en el paso 4 hasta que entre este
+  cambio (o uno igual, solo, en un PR a main).
+- **La burbuja de un toque se esconde también cuando algo tapa al toque**
+  (`colocarFijo`, ronda 3, hallazgo 2): además de lo que recorta, se le
+  pregunta al navegador qué hay en el toque (`elementFromPoint`, y
+  `elementsFromPoint` para saltear la burbuja cuando está encima), en el medio
+  de su franja visible y a 1 px de sus bordes, renglón por renglón. En `/planes`
+  a 1280, con la lista abierta por teclado y la página scrolleada con la rueda
+  hasta dejar el toque debajo de la cabecera pegajosa de su plan (`.cmp2-h`), la
+  burbuja seguía a la vista apuntando a nada. Corre una vez por cuadro mientras
+  la burbuja está abierta, y casi siempre el primer punto ya es el toque.
+- **`CALIFICATIVOS`** (hallazgo 3): «pterigión, con o sin injerto», sin «auto»,
+  marca («injerto» es también el de donante); acepta «con o sin injerto propio».
+  El apéndice acepta «no esté complicada».
+- **Documentos**: el cap. 165 decía «el primer caso de «pasan» es el cuadernillo
+  mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
+  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 166, «Lo
+  que no se ve no es solo lo que recorta».
+
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
 - *(Segunda tanda.)* La sección «9A y 10A» de `qa-lanzamiento` abre cada toque
@@ -497,6 +536,27 @@ un caso que falla y uno que pasa:
 - *(Cuarta tanda.)* `qa/listas-fuente.mjs` suma a «pasan» las 26 en literal en
   las dos puntas y «sacar el apéndice, si la apendicitis no está complicada»:
   18 casos que tienen que fallar y 5 que tienen que pasar.
+- *(Quinta tanda.)* `qa-lanzamiento`, sección «9A y 10A», en `/planes` a 1280:
+  la ecografía de Silver y las 26 se abren con Tab, la rueda (con el mouse
+  sobre la cabecera del sitio, lejos del toque) lleva el centro del toque al
+  medio de la cabecera pegajosa de su plan, y antes de medir se confirma con
+  `elementsFromPoint` que el toque está tapado (si no, el caso no prueba nada y
+  se informa). La burbuja no se tiene que ver; con la rueda de vuelta, se ve
+  junto a él. Con el `Term` de b44c1a1 cae en los dos: el toque en 128-143, la
+  cabecera en 88-184 y la burbuja a la vista. El foco previo al Tab va con
+  `preventScroll`: lo anterior a la ecografía de Silver en el orden del Tab
+  está en otra columna, y el scroll suave hasta ahí seguía después del Tab y se
+  llevaba el toque de la pantalla.
+- *(Quinta tanda.)* `qa-lanzamiento`, sección «9A y 10A», en el simulador a
+  1280: las 26 con el toque asomando 3 y 7 px debajo de la cabecera del sitio
+  (confirmado: en esa franja está el toque), abiertas con el mouse por la franja
+  que se ve: abiertas, a la vista, junto al toque y bien puestas. Con la regla
+  «fuera» de 3db7cb7 (`b.bottom < techo`, con el margen) cae en los dos: abierta
+  y escondida.
+- *(Quinta tanda.)* `qa/listas-fuente.mjs`: 19 casos que tienen que fallar (se
+  suma el pterigión sin «auto») y 7 que tienen que pasar (se suman «cuando no
+  esté complicada» y «con o sin injerto propio»). Con la regla vieja del
+  pterigión, o con la vieja del apéndice, la autoprueba cae.
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -529,6 +589,13 @@ un caso que falla y uno que pasa:
 - ~~La guía vieja (`guia/`) no se pudo ver con estilos en este entorno: la mide
   la salud nocturna.~~ Ya no hace falta: el molde se retiró entero con
   sp-prototipo#289 (quinta tanda).
+- La espera de 2 s después de tocar una tarjeta en «Lo que dicen las tarjetas y
+  la hoja» de `qa-lanzamiento`: con la máquina cargada (otra suite corriendo al
+  mismo tiempo) una tarjeta del home no abre a tiempo y caen dos ✗ en falso. Esa
+  sección es de 8b1afc63 (18/10), anterior a esta rama: no se tocó acá. Mientras
+  tanto, `qa-lanzamiento` se corre sin otra suite al mismo tiempo, como lo hace
+  la salud nocturna. Si se cambia, se sube la espera y no se toca dos veces: un
+  segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
 - Lo que sigue para preparar el espacio, sin publicar (el build para el dominio
   real, el botón «Revisión» de #192, las cuentas y el DNS de #101), está en
   «🧩 23/10/2026», arriba: esta rama no lo toca. Fusionarla actualiza el sitio

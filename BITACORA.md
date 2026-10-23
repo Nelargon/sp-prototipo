@@ -6035,8 +6035,8 @@ una prueba que estaba bien escrita en apariencia:
   «como tratamiento». Las 26 dichas tal como las dice el cuadernillo daban 12
   hallazgos. sp-interno#206 le ofrece a Arturo quedarse con el literal, así que
   la opción B le habría puesto el CI en rojo por algo que está bien. Ahora cada
-  regla acepta el literal y su traducción, y el primer caso de «pasan» es el
-  cuadernillo mismo.
+  regla acepta el literal y su traducción, y entre los casos de «pasan» está el
+  cuadernillo mismo, dicho en las dos puntas.
 - **«Fuera» era fuera de la pantalla.** En el simulador de la computadora, con
   la lista abierta por teclado y el cuerpo scrolleado hasta esconder el toque
   debajo del borde de la tarjeta, la burbuja seguía a la vista, apuntando a
@@ -6073,3 +6073,47 @@ sin ubicar.
 - **La puntuación decide el alcance.** Mover un punto no es solo estilo:
   cambia a qué plan le toca lo que sigue. Un arreglo de redacción en una lista
   que nombra planes se vuelve a leer plan por plan.
+
+## Capítulo 166 — Lo que no se ve no es solo lo que recorta (23/10/2026)
+
+**Qué intentamos.** En la cuarta tanda, la burbuja de un toque pasó a
+esconderse mientras su toque está «fuera de lo que se ve», y lo que se ve quedó
+definido como una cuenta de cajas: la pantalla, debajo de la cabecera del sitio,
+cortada por cada caja del toque que recorta. En la misma rama entró `main` con
+la consolidación de las dos ediciones (#289), que retiró el molde viejo de la
+guía.
+
+**Qué pasó.** La ronda 3 de verificación y el merge encontraron tres cosas:
+- **Una cabecera pegajosa tapa sin recortar.** En `/planes`, en la computadora,
+  cada plan tiene su cabecera pegajosa. Con la lista abierta por teclado y la
+  página scrolleada con la rueda hasta dejar el toque debajo de esa cabecera, la
+  burbuja seguía a la vista, encima de la columna de Silver, apuntando a nada.
+  Para la cuenta de cajas el toque se veía: ninguna lo recortaba. Ahora, además,
+  se le pregunta al navegador qué hay en el toque (`elementFromPoint`, sin
+  contar la burbuja), en el medio de su franja visible y cerca de sus bordes,
+  renglón por renglón.
+- **La prueba nueva dio rojo antes de probar nada.** Para abrir con Tab, las
+  pruebas ponen el foco en lo anterior y aprietan Tab. En `/planes`, lo anterior
+  a la ecografía de Silver en el orden del Tab está en otra columna, lejos: el
+  foco scrolleaba suave hasta ahí, el scroll seguía después del Tab y se llevaba
+  el toque de la pantalla. La burbuja se escondía con razón y la prueba caía por
+  la prueba. La del teclado de esa misma página usa el mismo paso y nunca lo
+  vio, porque mira `aria-expanded` y el foco, no la burbuja. El foco previo va
+  ahora con `preventScroll`, y antes de medir se confirma que el toque está de
+  verdad debajo de la cabecera.
+- **La noche pedía lo que se retiró.** #289 revisó los guardianes que esquivaban
+  el molde viejo (cap. 156), pero la salud nocturna, en su paso 4, pedía
+  `/guia/guia_home.html` con 200 en el sitio en vivo. Desde el deploy de #289
+  da 404: la primera corrida sobre main iba a dar rojo por algo que está bien.
+  En la rama se pide con 404.
+
+**Qué aprendimos.**
+- **«Se ve» se le pregunta al navegador.** Una cuenta de cajas siempre se queda
+  corta: una cabecera pegajosa, un botón fijo o una franja encima tapan sin
+  recortar. Es la regla de lo computado (cap. 76) llevada a lo que está encima.
+- **Una prueba que prepara el caso también lo puede romper.** Antes de medir se
+  mira que el caso sea el que se quiere probar; si no se pudo armar, la prueba
+  lo dice, en vez de dar verde o rojo por otra cosa.
+- **Al retirar algo, se revisan también los guardianes que lo pedían.** El cap.
+  156 dice «los que lo esquivaban»; la otra mitad son los que exigían que
+  existiera. Un 200 esperado también es un guardián.

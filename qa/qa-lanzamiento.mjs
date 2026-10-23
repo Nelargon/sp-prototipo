@@ -3130,7 +3130,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     return l;
   };
   const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(350); };
-  const visto = { posiciones: 0, seguir: 0, cuadros: 0, recortado: 0 };
+  const visto = { posiciones: 0, seguir: 0, cuadros: 0, recortado: 0, cabecera: 0, asoma: 0 };
   const abrirEn = async (pg, boton, dedo, esperado, donde) => {
     for (const pos of POS) {
       const l = await abrir(pg, boton, dedo, pos);
@@ -3265,6 +3265,111 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     }
     if (!probados) malas.push(donde + ', el toque escondido por su caja: no se pudo dejar escondido dentro de la pantalla por ningún lado · ' + sinProbar.join(' · '));
     visto.recortado += probados;
+  };
+
+  // EL TOQUE TAPADO POR UNA CABECERA PEGAJOSA (ronda 3, 23/10/2026, verificador).
+  // Lo que no se ve no es solo lo que recorta. En /planes, en la computadora,
+  // cada plan tiene su cabecera pegajosa (.cmp2-h, position:sticky), que no
+  // recorta nada: tapa. Con la lista abierta por teclado y la página scrolleada
+  // con la rueda hasta dejar el toque debajo de esa cabecera, la burbuja seguía
+  // a la vista, encima de la columna, apuntando a nada (con el mouse no pasa:
+  // salir del toque la cierra). Acá se abre con Tab, la rueda (con el mouse
+  // sobre la cabecera del sitio, lejos del toque) lleva el centro del toque al
+  // medio de la cabecera del plan, y se mira qué hay de verdad en el toque
+  // (elementsFromPoint, sin contar la burbuja): si no es la cabecera, el caso
+  // no prueba nada y se informa. La burbuja no se tiene que ver; con la rueda de
+  // vuelta, se ve otra vez, junto al toque. Con el Term de b44c1a1 cae: la
+  // burbuja, a la vista con el toque debajo de la cabecera.
+  const BAJO_CABECERA = `(e) => {
+    const plan = e.closest('.cmp2-plan'), h = plan && plan.querySelector('.cmp2-h');
+    if (!h) return null;
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const q = h.getBoundingClientRect(), t = e.getBoundingClientRect();
+    const y = t.top + t.height / 2;
+    const hay = document.elementsFromPoint(t.left + t.width / 2, y).find((n) => !u.contains(n));
+    return { pegajosa: getComputedStyle(h).position === 'sticky', cabecera: [Math.round(q.top), Math.round(q.bottom)], toque: [Math.round(t.top), Math.round(t.bottom)], falta: Math.round(y - (q.top + q.bottom) / 2), tapado: !!hay && h.contains(hay) && !e.contains(hay) };
+  }`;
+  // El foco va primero a lo de antes sin scrollear (preventScroll): en /planes,
+  // lo de antes en el orden del Tab está en otra columna, lejos, y el scroll
+  // suave hasta ahí seguía después del Tab y se llevaba el toque de la pantalla.
+  const FOCO_ANTES = (e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus({ preventScroll: true }); };
+  const seVeLa = (boton) => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+  const tapadoPorCabecera = async (pg, boton, esperado, donde) => {
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(150);
+    await boton.evaluate(FOCO_ANTES);
+    await pg.keyboard.press('Tab');
+    await pg.waitForTimeout(300);
+    const antes = await seVeLa(boton);
+    const arriba = () => boton.evaluate((e) => Math.round(e.getBoundingClientRect().top));
+    const t0 = await arriba();
+    let m = await boton.evaluate(eval(BAJO_CABECERA));
+    for (let i = 0; i < 6 && m && Math.abs(m.falta) > 3; i++) {
+      await pg.mouse.wheel(0, m.falta);
+      await pg.waitForTimeout(400);
+      m = await boton.evaluate(eval(BAJO_CABECERA));
+    }
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const tapadaSeVe = await seVeLa(boton);
+    // De vuelta con la rueda, hasta donde estaba.
+    for (let i = 0, f = (await arriba()) - t0; i < 6 && Math.abs(f) > 3; i++, f = (await arriba()) - t0) {
+      await pg.mouse.wheel(0, f);
+      await pg.waitForTimeout(400);
+    }
+    const v = await boton.evaluate(eval(LEER));
+    if (v.scroll) v.sigue = true;
+    const vuelve = (await seVeLa(boton)) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(200);
+    if (!m || !m.pegajosa) { malas.push(donde + ': no encuentro la cabecera pegajosa de su plan (.cmp2-h) ' + JSON.stringify(m)); return; }
+    if (!m.tapado) { malas.push(donde + ': la rueda no dejó el toque debajo de la cabecera de su plan, y el caso no prueba nada ' + JSON.stringify(m)); return; }
+    visto.cabecera++;
+    if (!antes || !abierta || tapadaSeVe || !vuelve) malas.push(donde + ', con el toque debajo de la cabecera pegajosa de su plan (teclado y la rueda): ' + JSON.stringify({ antes, abierta, seVeConElToqueTapado: tapadaSeVe, ...m }) + (vuelve ? '' : ' · con la rueda de vuelta: ' + corto(v)));
+  };
+  // EL TOQUE QUE ASOMA DEBAJO DE LA CABECERA DEL SITIO (ronda 3, 23/10/2026,
+  // verificador). Hasta la cuarta tanda, «fuera» se medía con el margen de 8 px
+  // de la burbuja: un toque que asomaba de 1 a 8 px debajo de [data-nav] se
+  // abría con el mouse (aria-expanded true) con la burbuja escondida. Se arregló
+  // en la cuarta tanda sin prueba propia. Acá, en el simulador a 1280, el toque
+  // queda con 3 y con 7 px a la vista debajo de la cabecera (lo que scrollea por
+  // dentro primero y después la página, como COLOCAR), el mouse pasa por la
+  // franja que se ve y la burbuja tiene que estar abierta, a la vista y junto a
+  // su toque. Antes se mira que el caso sea real: que en la franja esté el
+  // toque. Con la regla «fuera» de 3db7cb7 (`b.bottom < techo`, con el margen)
+  // cae.
+  const ASOMAR = `(e, px) => {
+    const nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    let d = e.getBoundingClientRect().bottom - (techo + px);
+    for (let a = e.parentElement; a && a !== document.body && Math.abs(d) > 0.5; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) { const t0 = a.scrollTop; a.scrollBy({ top: d, behavior: 'instant' }); d -= a.scrollTop - t0; }
+    }
+    window.scrollBy({ top: d, behavior: 'instant' });
+    const rs = e.getClientRects(), r = rs[rs.length - 1], b = e.getBoundingClientRect();
+    const x = r.left + r.width / 2, y = (Math.max(r.top, techo) + r.bottom) / 2;
+    const hay = document.elementFromPoint(x, y);
+    return { techo: Math.round(techo), toque: [Math.round(b.top), Math.round(b.bottom)], asoma: Math.round((b.bottom - techo) * 10) / 10, x, y, real: !!hay && (hay === e || e.contains(hay)) };
+  }`;
+  const asoma = async (pg, boton, donde) => {
+    for (const px of [3, 7]) {
+      await pg.mouse.move(5, 5);
+      await pg.waitForTimeout(300);
+      const a = await boton.evaluate(eval(ASOMAR), px);
+      await pg.waitForTimeout(150);
+      if (!a.real || Math.abs(a.asoma - px) > 1) { malas.push(donde + ', el toque asomando ' + px + ' px debajo de la cabecera: no se pudo dejar así, y el caso no prueba nada ' + JSON.stringify(a)); continue; }
+      await pg.mouse.move(a.x, a.y);
+      await pg.waitForTimeout(350);
+      const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+      const l = await boton.evaluate(eval(LEER));
+      if (l.scroll) l.sigue = true;
+      const se = await seVeLa(boton);
+      visto.asoma++;
+      if (!abierta || !se || !bien26(l)) malas.push(donde + ', el toque asomando ' + px + ' px debajo de la cabecera, abierto con el mouse: ' + JSON.stringify({ abierta, seVe: se, ...a }) + ' · ' + corto(l));
+    }
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(300);
   };
 
   // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
@@ -3408,6 +3513,11 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       }
       visto.teclado = toques.length;
     }
+    // El toque debajo de la cabecera pegajosa de su plan (ronda 3): la
+    // ecografía de Silver y las 26 de Essential, abiertas con Tab.
+    for (const [b, esperado, donde] of [[celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]'), TOQUE.Silver, '/planes 1280, Ecografías, Silver'], [celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]'), 26, '/planes 1280, las 26']]) {
+      if (await b.count()) await tapadoPorCabecera(page, b, esperado, donde);
+    }
     // La tarjeta de la ecografía (se abre al pasar el mouse por el nombre): la
     // espera con su condición y la lista, en oraciones, en el pie.
     {
@@ -3548,7 +3658,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
         else {
           await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26');
           await seguir(pg, b, dedo ? 'dedo' : 'teclado', 26, 'simulador ' + w + ', las 26');
-          if (!dedo) await recortado(pg, b, 'simulador ' + w + ', las 26');
+          if (!dedo) { await recortado(pg, b, 'simulador ' + w + ', las 26'); await asoma(pg, b, 'simulador ' + w + ', las 26'); }
         }
         const porque = await pg.evaluate(() => { const p = document.querySelector('[data-sp-price]'); const c = p && p.closest('div.sq'); return c ? [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()) : []; });
         if (!porque.includes(ESS_PORQUE) || porque.some((x) => /las cirugías y el parto/.test(x))) malas.push('simulador ' + w + ', el porqué de Essential: ' + JSON.stringify(porque.find((x) => /^Cobertura de entrada/.test(x)) || porque.slice(0, 2)));
@@ -3587,7 +3697,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   }
 
   if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera, sin nada encima y donde se abra · ' + malas.slice(0, 8).join(' · ') + (malas.length > 8 ? ' · (y ' + (malas.length - 8) + ' más)' : ''));
-  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces), y también mientras su caja lo esconde (el simulador a 1280 con el teclado, ' + visto.recortado + (visto.recortado === 1 ? ' borde' : ' bordes') + '); con el dedo, el primer cuadro en que se dibuja ya está junto a su toque y debajo de la cabecera (' + visto.cuadros + ' toques); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces), y también mientras su caja lo esconde (el simulador a 1280 con el teclado, ' + visto.recortado + (visto.recortado === 1 ? ' borde' : ' bordes') + ') o la cabecera pegajosa de su plan lo tapa (/planes a 1280 con el teclado y la rueda, ' + visto.cabecera + ' toques); con el toque asomando 3 y 7 px debajo de la cabecera del sitio, el mouse la abre a la vista y junto a él (' + visto.asoma + ' veces); con el dedo, el primer cuadro en que se dibuja ya está junto a su toque y debajo de la cabecera (' + visto.cuadros + ' toques); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
 }
 
 // ── «Compartir cotización» no mueve nada al copiar (#60, tercera tanda del 23/10) ──
