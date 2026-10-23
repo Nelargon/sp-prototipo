@@ -121,13 +121,20 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
   const [shift, setShift] = useState(0);
   // Arriba por defecto; abajo cuando arriba no hay lugar. Ver el efecto.
   const [abajo, setAbajo] = useState(false);
+  // El alto máximo cuando no entra ni arriba ni abajo (null: entra entera). Con
+  // alto, la burbuja scrollea por dentro (23/10/2026, verificador de código: en
+  // el celular, las 26 cirugías quedaban debajo de la cabecera fija).
+  const [alto, setAlto] = useState(null);
+  // Con el mouse, salir del botón cierra; pero si la burbuja scrollea, hay que
+  // poder llegar a ella: el cierre espera un momento y entrar lo cancela.
+  const salida = useRef(null);
   const id = useId();
 
   // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
   useEffect(() => { if (open) trackExplicacion(tipo, k); }, [open, k, tipo]);
 
   useEffect(() => {
-    if (!open) { setShift(0); setAbajo(false); return; }
+    if (!open) { setShift(0); setAbajo(false); setAlto(null); return; }
     const el = bubbleRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -174,12 +181,21 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
       techo = Math.max(techo, rc.top);
       piso = Math.min(piso, rc.bottom);
     }
-    // Arriba por defecto. Si arriba no entra, se abre hacia abajo cuando abajo
-    // entra o hay más lugar que arriba.
+    // Arriba por defecto. Si arriba no entra y abajo sí, se abre hacia abajo.
+    // Si no entra en ninguno de los dos (las 26 cirugías en el celular: unos
+    // 400 px, contra la cabecera fija arriba y el cuadro de esperas, que
+    // recorta, abajo), se abre hacia el lado más grande, con ese alto como
+    // máximo y scroll por dentro (23/10/2026). Hasta entonces quedaba del lado
+    // más grande pero entera, y lo que no entraba quedaba tapado.
     if (r.top < techo && ref.current) {
       const b = ref.current.getBoundingClientRect();
       const lugarAbajo = piso - (b.bottom + 8), lugarArriba = b.top - 8 - techo;
-      if (lugarAbajo >= r.height || lugarAbajo > lugarArriba) setAbajo(true);
+      if (lugarAbajo >= r.height) setAbajo(true);
+      else {
+        const haciaAbajo = lugarAbajo > lugarArriba;
+        setAbajo(haciaAbajo);
+        setAlto(Math.max(0, Math.floor(haciaAbajo ? lugarAbajo : lugarArriba)));
+      }
     }
 
     let s = 0;
@@ -188,21 +204,66 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
     if (s) setShift(s);
   }, [open]);
 
+  // Cada vez que scrollea, la lista arranca desde arriba: el navegador guarda
+  // dónde quedó la vez anterior y, al volver a abrirse, la mostraba por la mitad
+  // (medido el 23/10/2026). Va cuando ya tiene su alto: antes no scrollea.
+  useEffect(() => { if (open && alto !== null && bubbleRef.current) bubbleRef.current.scrollTop = 0; }, [open, alto]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    // Tocar adentro (la burbuja, cuando scrollea) no cierra: ref la contiene.
     const onOut = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener('keydown', onKey);
     document.addEventListener('pointerdown', onOut);
-    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onOut); };
+    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onOut); clearTimeout(salida.current); };
   }, [open]);
+
+  // Con el mouse: salir cierra; si la burbuja scrollea, después de un momento,
+  // para poder pasar a ella. Entrar al botón o a la burbuja cancela el cierre.
+  const quedar = () => { clearTimeout(salida.current); };
+  const irse = (e) => {
+    if ((e.pointerType || 'mouse') !== 'mouse') return;
+    clearTimeout(salida.current);
+    if (alto === null) setOpen(false);
+    else salida.current = setTimeout(() => setOpen(false), 250);
+  };
+  // Con el teclado, cuando la burbuja scrollea: las flechas y las páginas la
+  // mueven (no se puede llegar a ella con Tab: está fuera del orden).
+  const mover = (e) => {
+    const u = bubbleRef.current;
+    if (!open || alto === null || !u) return;
+    const d = { ArrowDown: 40, ArrowUp: -40, PageDown: u.clientHeight - 32, PageUp: 32 - u.clientHeight }[e.key];
+    if (d) { e.preventDefault(); u.scrollBy({ top: d, behavior: 'instant' }); }
+  };
 
   if (!term) return children || null;
 
+  // Un toque (9A y 10A) es una frase («de una lista de 26») que tiene que poder
+  // partirse como el texto que la rodea: la caja va en línea (inline, no
+  // inline-block) y el subrayado es text-decoration, que se dibuja en cada
+  // renglón. Por eso un toque no es un <button>: Chrome dibuja un botón con
+  // display:inline como inline-block (lo pide el estándar de HTML; medido el
+  // 23/10/2026), y una caja así no se parte. Es un <span role="button">, que el
+  // teclado alcanza (tabIndex 0) y abre con Enter o Espacio, como un botón.
+  // Hasta el 23/10/2026 era un botón con nowrap: partido se centraba en dos
+  // renglones, y entero se salía 17 px del encabezado de su fila en el cuadro de
+  // esperas del celular, a 360 (verificador de código).
+  const enLinea = tipo === 'toque';
+  const Toca = enLinea ? 'span' : 'button';
+  const comoBoton = enLinea
+    ? {
+      role: 'button', tabIndex: 0,
+      onKeyDown: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((o) => !o); return; }
+        mover(e);
+      },
+    }
+    : { type: 'button', onKeyDown: mover };
   return (
-    <span ref={ref} style={css('position:relative;display:inline-block')}>
-      <button
-        type="button"
+    <span ref={ref} style={css('position:relative;display:' + (enLinea ? 'inline' : 'inline-block'))}>
+      <Toca
+        {...comoBoton}
         // .txt: una palabra dentro de una frase se atenúa al tocarla, no se
         // achica como un botón (sistema táctil, app/globals.css).
         className="txt"
@@ -210,33 +271,50 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
         aria-expanded={open}
         onPointerDown={(e) => { lastPointer.current = e.pointerType || 'mouse'; }}
         // Con mouse manda el hover, así que el click no toca nada (si toggleara,
-        // hacer click sobre algo ya abierto lo cerraría de golpe).
-        onClick={(e) => { e.stopPropagation(); if (lastPointer.current !== 'mouse') setOpen((o) => !o); }}
-        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') setOpen(true); }}
-        onPointerLeave={(e) => { if ((e.pointerType || 'mouse') === 'mouse') setOpen(false); }}
+        // hacer click sobre algo ya abierto lo cerraría de golpe). Con el
+        // teclado (Enter o Espacio, un click con e.detail 0) abre y cierra: una
+        // tecla no dispara pointerdown, y lastPointer quedaba en 'mouse', así que
+        // después de un Escape no había forma de reabrir (verificador de código,
+        // 23/10/2026).
+        onClick={(e) => { e.stopPropagation(); if (e.detail === 0 || lastPointer.current !== 'mouse') setOpen((o) => !o); }}
+        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') { quedar(); setOpen(true); } }}
+        onPointerLeave={irse}
         // Solo el foco de TECLADO abre. En mouse y touch el click también enfoca
         // el botón, y abrir ahí volvería a pelearse con el toggle de arriba.
         onFocus={(e) => { if (e.target.matches?.(':focus-visible')) setOpen(true); }}
-        onBlur={() => setOpen(false)}
+        onBlur={(e) => { if (!(ref.current && e.relatedTarget && ref.current.contains(e.relatedTarget))) setOpen(false); }}
         // Subrayado punteado: la convención de "esto se puede consultar". No usa
         // color de link para no competir con los links reales de la página.
-        // Un toque (9A y 10A) es una frase corta («de una lista de 26») que no se
-        // parte: como la caja es inline-block, partida se centraba en dos
-        // renglones con el subrayado debajo de los dos y el punto, suelto.
-        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px' + (tipo === 'toque' ? ';white-space:nowrap' : ''))}
+        style={css(enLinea
+          ? 'cursor:help;text-decoration:underline dotted var(--sp-teal-deep);text-decoration-thickness:1px;text-underline-offset:2px'
+          : 'font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px')}
       >
         {children || term.t}
-      </button>
+      </Toca>
       {/* (1) La definición para lectores de pantalla: siempre presente, nunca
-          visible, y con clip para que no ocupe ni un píxel de layout. */}
-      <span id={id} style={css('position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0')}>
+          visible, y con clip para que no ocupe ni un píxel de layout. Con
+          aria-hidden: la lee el botón como su descripción (aria-describedby
+          apunta acá, y un nodo oculto que se nombra directo se lee igual), pero
+          no se suma al nombre de lo que la rodea. Sin aria-hidden, en el cuadro de
+          esperas del celular el encabezado de fila «Cirugías programadas» se
+          llamaba con las 26 cirugías enteras, 839 caracteres que el lector
+          repetía en cada celda (verificador de código, 23/10/2026). */}
+      <span id={id} aria-hidden="true" style={css('position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0')}>
         {term.t}: {term.d}
       </span>
       {/* (2) La burbuja visual: decorativa (el texto ya lo da el span de arriba),
           y con display:none cuando está cerrada para no inflar el scrollWidth. */}
+      {/* Cuando scrollea (alto), recibe el dedo y la rueda: pointer-events y
+          overscroll-behavior, y apretarla no le saca el foco al botón (si no, el
+          onBlur la cerraba). Fuera del orden del Tab (tabIndex -1): Chrome hace
+          enfocable con el teclado una caja que scrollea, y esta es decorativa. */}
       <span
         ref={bubbleRef}
         aria-hidden="true"
+        tabIndex={alto !== null ? -1 : undefined}
+        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') quedar(); }}
+        onPointerLeave={irse}
+        onMouseDown={(e) => { if (alto !== null) e.preventDefault(); }}
         style={css(
           // OJO con el signo: calc(-50% + -20px) es CSS INVÁLIDO y el navegador
           // descarta la declaración entera en silencio. El signo va en el
@@ -248,7 +326,8 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
           // que recorta (10A, 23/10/2026). En el celular manda el 72vw.
           + 'width:max-content;max-width:min(' + (term.ancho || 260) + 'px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
-          + 'box-shadow:var(--sombra-abre);pointer-events:none;'
+          + 'box-shadow:var(--sombra-abre);'
+          + (alto !== null ? 'max-height:' + alto + 'px;overflow-y:auto;overscroll-behavior:contain;pointer-events:auto;' : 'pointer-events:none;')
           + (open ? 'display:block' : 'display:none')
         )}
       >

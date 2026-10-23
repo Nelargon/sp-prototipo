@@ -1604,9 +1604,13 @@ const TARJETA_APROBADA = {
   // (Arturo, 03/10), y en Silver y Gold nada dice para quién (P3A).
   linea: {
     'Tomografía y resonancia': {
+      // 23/10/2026, 185A con el agregado del comité (Arturo, sp-interno#185): la
+      // resonancia de Essential lleva su condición también en esta línea, la
+      // primera que ve en /planes quien entra desde el celular. Decía «… y 1
+      // resonancia/familia/año», sin «(sin contraste ni sedación)».
       Essential: {
-        ve: 'Tomografía y resonancia: 2 estudios/familia/año (tomografía, ecocardiograma o ergometría) y 1 resonancia/familia/año',
-        oye: 'Tomografía y resonancia: 2 estudios por familia al año (tomografía, ecocardiograma o ergometría) y 1 resonancia por familia al año',
+        ve: 'Tomografía y resonancia: 2 estudios/familia/año (tomografía, ecocardiograma o ergometría) y 1 resonancia/familia/año (sin contraste ni sedación)',
+        oye: 'Tomografía y resonancia: 2 estudios por familia al año (tomografía, ecocardiograma o ergometría) y 1 resonancia por familia al año (sin contraste ni sedación)',
       },
       Silver: {
         ve: 'Tomografía y resonancia: 2 tomografías/¿quién?/año y 1 resonancia/¿quién?/año',
@@ -2848,75 +2852,113 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
 // ── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque ──
 // Arturo, 23/10/2026 («Adelante con tus sugerencias»; sp-interno#191):
 // - 9A: las ecografías de Silver y Gold decían «2 meses» y en la grilla del
-//   master esperan 90 días 10 de 33 en Silver y 15 de 32 en Gold, las del
-//   embarazo incluidas. Ahora dicen «2 meses, la mayoría» y, a un toque, cuáles
-//   esperan 3 (TOQUES de coverage.js, dibujado con Term).
-// - 10A: la cirugía de Essential es «de una lista de 26» (cuadernillo, 4.4.1 a
-//   4.4.26), y la lista se abre al tocar.
+//   master esperan 90 días las del embarazo (las siete), las Doppler y, en Gold,
+//   cinco más (y la vesical, que el master contradice con la de vejiga: va al
+//   asesor). Dicen «2 meses, la mayoría» y, a un toque, cuáles esperan 3 (TOQUES
+//   de coverage.js, dibujado con Term).
+// - 10A: la cirugía de Essential es «de una lista de 26» (cuadernillo, 4.4
+//   «Intervenciones Quirúrgicas (Abiertas)», 4.4.1 a 4.4.26), y la lista se
+//   abre al tocar, con lo que el cuadernillo dice del anestesista y de la
+//   videolaparoscopía.
 // Los textos aprobados van escritos acá, no se leen de coverage.js: una prueba
-// no compara la página con la constante que la arma (cap. 151). Si cambia un
-// nombre de la lista, cambia en los dos lugares.
+// no compara la página con la constante que la arma (cap. 151). Las 26 se leen
+// de PARES_26 de qa/listas-fuente.mjs (una prueba, no el sitio), que además las
+// controla contra essential.json: así hay una sola copia escrita a mano.
 // Un toque abierto se lee dos veces: lo que oye el lector (el texto al que
 // apunta aria-describedby) y lo que se ve (la burbuja). La burbuja tiene que
-// verse entera: dentro de la pantalla, dentro de la caja que la recorta y sin
-// nada encima (elementFromPoint en sus cuatro esquinas, con pointer-events
-// prendido un momento: la burbuja trae pointer-events:none).
-// Dónde: /planes a 1280 con el mouse (la banda de esperas y la tarjeta de la
-// ecografía, que no puede llevar un toque adentro y lo dice en su pie); /planes
-// a 360, 390 y 430 con el dedo (el cuadro de esperas y, a 390, la hoja de la
-// ecografía, cuya fila es un botón); el simulador a 390 y 1280 (Silver, Gold y
-// Essential); la pregunta frecuente del home, en oraciones (su caja recorta y
-// la lista no entra).
-// Antes se prueba cada detector: la lista de las 26 contra cinco listas malas,
-// y en la página, el texto del lector cambiado, la burbuja corrida y tapada, y
-// la nota borrada. En la build de 35165a7 (antes de 9A y 10A) falla todo.
+// verse entera (dentro de la pantalla y de cada caja que la recorta) y sin nada
+// encima (elementFromPoint en una grilla de 5 × 5 puntos, con pointer-events
+// prendido un momento). Si no entra y scrollea por dentro, se tiene que poder
+// scrollear sin que se cierre: con el dedo (un arrastre de verdad, por CDP) y
+// con el mouse (pasar a la burbuja y la rueda).
+// DÓNDE SE ABRE (verificador de código, 23/10/2026): cada toque se abre en tres
+// posiciones naturales, con su borde de arriba al 25 %, al 50 % y al 85 % del
+// alto de la pantalla (scrolleando con behavior:'instant', primero lo que
+// scrollea por dentro y después la página). Hasta el 23/10 se abría siempre al
+// 62 %, el único lugar donde la lista más larga entraba: con el Term de main
+// daba verde, y en el celular las 26 quedaban debajo de la cabecera fija. Una
+// build con el Term de main (35165a7) tiene que caer acá, y una con el Term de
+// 72291ef (la burbuja sin scroll), también.
+// Dónde: /planes a 1280 con el mouse (la banda de esperas, también con la fila
+// de Ecografías a 320 px del borde, donde la cabecera fija de Gold cortaba la
+// burbuja de Silver, y la tarjeta de la ecografía, que lo dice en su pie);
+// /planes a 360 × 780, 390 × 844 y 430 × 932 con el dedo (el cuadro de esperas:
+// lo que oye el lector en cada encabezado de fila y que nada se salga de su
+// borde; y, a 390, la hoja de la ecografía, cuya fila es un botón); el teclado a
+// 1280 (Tab, Escape, Enter, Enter); el simulador a 360, 390, 430 y 1280 (Silver,
+// Gold y Essential, con el porqué de Essential); las preguntas frecuentes del
+// home, en oraciones.
+// Antes se prueba cada detector: la lista de las 26 contra listas malas, y en la
+// página, el texto del lector cambiado, la burbuja corrida y tapada, el arreglo
+// de la cabecera de Gold sacado, un encabezado de fila con la lista adentro, un
+// texto que se sale de su fila y la nota borrada.
 console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque');
 {
   const NOTA = 'la mayoría', PALABRA_26 = 'de una lista de 26';
-  const EMB = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos y Doppler obstétrico)';
+  const EMB = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos, Doppler obstétrico, del corazón del bebé, perfil biofísico y monitoreo fetal)';
   const DOP = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
-  const GOLD6 = 'las de riñón, de vías urinarias, de testículos, de próstata por vía rectal, la transvaginal y la vesical';
+  const GOLD5 = 'las de riñón y de vías urinarias, la testicular, la de próstata por vía rectal y la transvaginal';
+  const VEJ = 'para la de vejiga, preguntale a tu asesor';
   const may = (x) => x[0].toUpperCase() + x.slice(1);
+  const escR = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Lo que dice la burbuja (y oye el lector): «título: lista», como la escribe
+  // TOQUES. En oraciones (el pie de la tarjeta, la hoja), con minúscula después
+  // de los dos puntos (toqueEnTexto, verificador de código, 23/10).
   const TOQUE = {
-    Silver: 'Ecografías que esperan 3 meses en Silver: ' + may(EMB) + ' y ' + DOP + '. Las demás, 2 meses.',
-    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + '; ' + DOP + ', y ' + GOLD6 + '. Las demás, 2 meses.',
-    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD6 + '. Las demás, 2 meses.',
+    Silver: 'Ecografías que esperan 3 meses en Silver: ' + may(EMB) + ' y ' + DOP + '.',
+    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + '; ' + DOP + ', y ' + GOLD5 + '. ' + may(VEJ) + '.',
+    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '; ' + VEJ + '.',
   };
-  const LAS_26 = ['Absceso junto al ano', 'amígdalas y adenoides juntas', 'adenoides', 'adenoma de próstata, a cielo abierto', 'amígdalas', 'apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'vesícula', 'colporrafía anterior', 'colporrafía posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroides', 'hernia crural de un lado, sin la malla', 'hernia de la ingle de un lado, sin la malla', 'hernia del ombligo o epigástrica, sin la malla', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado (raspado del útero)', 'ovario y trompa de un lado', 'piedra en el riñón, a cielo abierto', 'pterigión, con o sin injerto', 'quiste de un lado', 'nódulo de mama', 'varicocele de un lado'];
-  const lista26 = (v) => 'Las 26 cirugías de Essential: ' + v.slice(0, -1).join('; ') + '; y ' + v[v.length - 1] + '.';
+  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '; ' + VEJ + '.';
+  const { PARES_26 } = await import(new URL('../qa/listas-fuente.mjs', import.meta.url));
+  const LAS_26 = PARES_26.map((p) => p[1]);
+  const T26_TITULO = 'Las 26 cirugías de Essential, a cielo abierto';
+  // Después de la lista, lo que dice el cuadernillo del anestesista (4.3.2) y de
+  // la videolaparoscopía (el párrafo que sigue a la lista).
+  const CIR_COLA = 'De los honorarios del anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía, pagás vos la diferencia de honorarios (del anestesista, el ayudante y el instrumentador) y todo el uso del equipo y de los materiales.';
+  const lista26 = (v, titulo = T26_TITULO, cola = CIR_COLA) => titulo + ': ' + may(v.slice(0, -1).join('; ') + '; y ' + v[v.length - 1]) + '.' + (cola ? ' ' + cola : '');
   const T26 = lista26(LAS_26);
-  // La lista, ítem por ítem: qué falta, qué sobra y qué está fuera de su lugar (4.4.n).
+  // La lista, ítem por ítem: qué falta, qué sobra, qué está fuera de su lugar
+  // (4.4.n), y el título y el cierre.
   const difs26 = (t) => {
-    const m = /^Las 26 cirugías de Essential: (.*)\.$/.exec((t || '').replace(/\s+/g, ' ').trim());
-    if (!m) return ['no empieza con «Las 26 cirugías de Essential:»'];
+    const m = new RegExp('^' + escR(T26_TITULO) + ': (.*?)\\. (De los honorarios del anestesista.*)$').exec((t || '').replace(/\s+/g, ' ').trim());
+    if (!m) return ['no empieza con «' + T26_TITULO + ':» o no cierra con lo del anestesista y la videolaparoscopía'];
     const v = m[1].split(/; (?:y )?/), r = [];
+    if (v[0]) v[0] = minus(v[0]);
     LAS_26.forEach((x, i) => { if (!v.includes(x)) r.push('falta «' + x + '»'); else if (v[i] !== x) r.push('«' + x + '» no está en el lugar 4.4.' + (i + 1)); });
     v.filter((x) => !LAS_26.includes(x)).forEach((x) => r.push('sobra «' + x + '»'));
     if (v.length !== 26) r.push(v.length + ' ítems, no 26');
+    if (m[2] !== CIR_COLA) r.push('el cierre dice «' + m[2].slice(0, 80) + '»');
     return r;
   };
   const malas = [];
-  // La regla de la lista contra cinco listas que tienen que fallar y la buena.
+  // La regla de la lista contra listas que tienen que fallar y la buena.
   {
     const cambiados = [...LAS_26]; [cambiados[1], cambiados[2]] = [cambiados[2], cambiados[1]];
     const conFaco = [...LAS_26]; conFaco.splice(12, 0, 'facoemulsificación del cristalino');
     const auto = {
       buena: difs26(T26).length,
-      sinQuiste: difs26(lista26(LAS_26.filter((x) => x !== 'quiste de un lado'))).length,
+      sinQuiste: difs26(lista26(LAS_26.filter((_, i) => i !== 23))).length,
       conFaco: difs26(lista26(conFaco)).length,
       catarataSinTecnica: difs26(lista26(LAS_26.map((x) => (/^catarata/.test(x) ? 'catarata de un ojo' : x)))).length,
+      // «legrado» sin «evacuador» promete también el de diagnóstico, que no
+      // entra (verificador de datos, 23/10).
+      legradoSinEvacuador: difs26(lista26(LAS_26.map((x) => (/^legrado/.test(x) ? 'legrado (raspado del útero)' : x)))).length,
       cambiados: difs26(lista26(cambiados)).length,
-      sinTitulo: difs26(T26.replace('Las 26 cirugías de Essential: ', '')).length,
+      sinTitulo: difs26(T26.replace(T26_TITULO + ': ', '')).length,
+      sinCieloAbierto: difs26(lista26(LAS_26, 'Las 26 cirugías de Essential')).length,
+      sinVideolaparoscopia: difs26(lista26(LAS_26, T26_TITULO, CIR_COLA.replace(/ Si te operan.*$/, ''))).length,
     };
-    if (auto.buena || !auto.sinQuiste || !auto.conFaco || !auto.catarataSinTecnica || !auto.cambiados || !auto.sinTitulo) malas.push('la regla de las 26 no distingue la lista mala de la buena: ' + JSON.stringify(auto));
+    if (auto.buena || Object.entries(auto).some(([k, n]) => k !== 'buena' && !n)) malas.push('la regla de las 26 no distingue la lista mala de la buena: ' + JSON.stringify(auto));
   }
   // Lo que se ve de un elemento: sin el texto para lectores, sin el texto al que
   // apunta un aria-describedby y sin la burbuja de un toque (la forma corta, que
-  // también lleva aria-hidden, sí se ve).
+  // también lleva aria-hidden, sí se ve). Un toque es un botón o, en una frase,
+  // un span con role="button" (Term, tipo «toque», 23/10/2026).
   const SE_VE = `(e) => {
     if (!e) return null;
     const k = e.cloneNode(true);
-    for (const b of k.querySelectorAll('button[aria-describedby]')) {
+    for (const b of k.querySelectorAll('[aria-describedby]')) {
       const d = k.querySelector('[id="' + b.getAttribute('aria-describedby') + '"]'); if (d) d.remove();
       for (const s of [...b.parentElement.children]) if (s !== b && s.getAttribute('aria-hidden') === 'true') s.remove();
     }
@@ -2925,8 +2967,9 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   }`;
   const LEER = `(b) => {
     const oido = ((document.getElementById(b.getAttribute('aria-describedby') || '') || {}).textContent || '').replace(/\\s+/g, ' ').trim();
-    const u = b.parentElement.querySelector(':scope > [aria-hidden="true"]');
-    if (!u || getComputedStyle(u).display === 'none') return { oido, visto: null };
+    const u = b.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const top = Math.round(b.getBoundingClientRect().top);
+    if (!u || getComputedStyle(u).display === 'none') return { oido, visto: null, top };
     const r = u.getBoundingClientRect();
     // Lo que se ve: la pantalla, recortada por cada caja que recorta (hidden,
     // clip, o una que scrollea por dentro, como el cuerpo del simulador).
@@ -2936,31 +2979,80 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       if (/hidden|clip|auto|scroll/.test(s.overflow + s.overflowX + s.overflowY)) { const q = a.getBoundingClientRect(); c = { left: Math.max(c.left, q.left), top: Math.max(c.top, q.top), right: Math.min(c.right, q.right), bottom: Math.min(c.bottom, q.bottom) }; }
     }
     const entera = r.left >= c.left - 0.5 && r.right <= c.right + 0.5 && r.top >= c.top - 0.5 && r.bottom <= c.bottom + 0.5;
+    const cs = getComputedStyle(u);
+    const scroll = u.scrollHeight > u.clientHeight + 1;
+    // Si scrollea, que se pueda: overflow, el dedo (pointer-events) y que no
+    // arrastre la página (overscroll-behavior).
+    const puedeScroll = /auto|scroll/.test(cs.overflowY) && cs.pointerEvents === 'auto' && cs.overscrollBehaviorY === 'contain';
     const pe = u.style.pointerEvents; u.style.pointerEvents = 'auto';
-    // Las esquinas, 8 px adentro: la burbuja tiene la esquina redondeada
-    // (--r-xs) y a 3 px el punto cae afuera de la curva, sobre lo de abajo.
-    const tapadas = [[r.left + 8, r.top + 8], [r.right - 8, r.top + 8], [r.left + 8, r.bottom - 8], [r.right - 8, r.bottom - 8]].filter(([x, y]) => { const e = document.elementFromPoint(x, y); return !e || !u.contains(e); }).length;
+    // Una grilla de 5 × 5 puntos, 8 px adentro en los bordes: la burbuja tiene
+    // la esquina redondeada (--r-xs) y a 3 px el punto cae afuera de la curva.
+    const xs = [r.left + 8, r.left + r.width / 4, r.left + r.width / 2, r.left + r.width * 3 / 4, r.right - 8];
+    const ys = [r.top + 8, r.top + r.height / 4, r.top + r.height / 2, r.top + r.height * 3 / 4, r.bottom - 8];
+    let tapadas = 0;
+    for (const x of xs) for (const y of ys) { const e = document.elementFromPoint(x, y); if (!e || !u.contains(e)) tapadas++; }
     u.style.pointerEvents = pe;
-    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)] };
+    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, scroll, puedeScroll, top, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)] };
   }`;
-  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && l.entera && !l.tapadas;
-  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && l.entera && !l.tapadas;
-  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 60), visto: (l.visto || '').slice(0, 60), entera: l.entera, tapadas: l.tapadas, caja: l.caja, clip: l.clip });
-  // Abre el toque como lo abre una persona: con el mouse, pasando por encima;
-  // con el dedo, tocando. Antes lo deja a un 62 % del alto de la pantalla, con
-  // lugar arriba para la lista más larga (366 px) debajo de la cabecera.
-  const abrir = async (pg, boton, dedo) => {
-    // Primero adentro de lo que scrollea por dentro (el cuerpo del simulador en
-    // la computadora), después la página.
-    await boton.evaluate((e) => { e.scrollIntoView({ block: 'center', behavior: 'instant' }); const r = e.getBoundingClientRect(); window.scrollBy({ top: r.top - innerHeight * 0.62, behavior: 'instant' }); });
+  // Deja el borde de arriba del toque al `pos` del alto de la pantalla: primero
+  // lo que scrollea por dentro (el cuerpo del simulador en la computadora),
+  // después la página. Siempre con behavior:'instant' (cap. 140).
+  const COLOCAR = `(e, pos) => {
+    let d = e.getBoundingClientRect().top - innerHeight * pos;
+    for (let a = e.parentElement; a && a !== document.body && Math.abs(d) > 1; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) { const t0 = a.scrollTop; a.scrollBy({ top: d, behavior: 'instant' }); d -= a.scrollTop - t0; }
+    }
+    window.scrollBy({ top: d, behavior: 'instant' });
+  }`;
+  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && l.entera && !l.tapadas && (!l.scroll || (l.puedeScroll && l.sigue));
+  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && l.entera && !l.tapadas && (!l.scroll || (l.puedeScroll && l.sigue));
+  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip });
+  const POS = [0.25, 0.5, 0.85];
+  // Abre el toque como lo abre una persona: con el mouse, pasando por encima de
+  // su primer renglón; con el dedo, tocando. Si la burbuja scrollea, se scrollea
+  // por dentro como se scrollea: con el dedo, un arrastre (CDP, eventos de
+  // toque de verdad); con el mouse, pasando a la burbuja y con la rueda. Tiene
+  // que moverse y seguir abierta (`sigue`).
+  const abrir = async (pg, boton, dedo, pos) => {
+    await boton.evaluate(eval(COLOCAR), pos);
     await pg.waitForTimeout(150);
-    if (dedo) await boton.tap();
-    else { await pg.mouse.move(5, 5); const c = await boton.boundingBox(); await pg.mouse.move(c.x + c.width / 2, c.y + c.height / 2); }
+    // En su primer renglón: un toque partido en dos tiene el centro de su caja
+    // entre los renglones, fuera del texto.
+    const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { x: r.left + r.width / 2, y: r.top + r.height / 2, dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; });
+    if (dedo) await boton.tap({ position: { x: q.dx, y: q.dy } });
+    else { await pg.mouse.move(5, 5); await pg.mouse.move(q.x, q.y); }
     await pg.waitForTimeout(300);
-    return boton.evaluate(eval(LEER));
+    const l = await boton.evaluate(eval(LEER));
+    l.pos = pos;
+    if (l.visto !== null && l.scroll) {
+      const u = await boton.evaluateHandle((e) => e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'));
+      const c = await u.evaluate((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2), h: r.height, st: x.scrollTop }; });
+      if (dedo) {
+        const cdp = await pg.context().newCDPSession(pg);
+        const paso = Math.max(4, Math.floor(c.h / 30));
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: c.x, y: c.y + paso * 5 }] });
+        for (let i = 1; i <= 10; i++) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: c.x, y: c.y + paso * 5 - i * paso }] }); await pg.waitForTimeout(16); }
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        await cdp.detach();
+      } else { await pg.mouse.move(c.x, c.y, { steps: 4 }); await pg.waitForTimeout(400); await pg.mouse.wheel(0, 120); }
+      await pg.waitForTimeout(400);
+      const despues = await u.evaluate((x, b) => ({ st: x.scrollTop, abierta: getComputedStyle(x).display !== 'none' && b.getAttribute('aria-expanded') === 'true' }), await boton.elementHandle());
+      l.sigue = despues.abierta && despues.st > c.st;
+    }
+    return l;
   };
-  const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(200); };
-  const visto = {};
+  const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(350); };
+  const visto = { posiciones: 0 };
+  const abrirEn = async (pg, boton, dedo, esperado, donde) => {
+    for (const pos of POS) {
+      const l = await abrir(pg, boton, dedo, pos);
+      visto.posiciones++;
+      const ok = esperado === 26 ? bien26(l) : bienAbierto(l, esperado);
+      if (!ok) malas.push(donde + ' al ' + Math.round(pos * 100) + ' %: ' + corto(l) + (esperado === 26 ? ' · ' + difs26(l && l.oido).concat(difs26(l && l.visto)).slice(0, 2).join(' · ') : ''));
+      await cerrar(pg, dedo);
+    }
+  };
 
   // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
   {
@@ -2986,44 +3078,96 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     if ((await nota('Ecografías', 0)) !== null) malas.push('/planes 1280, Ecografías, Essential: una nota que no va («' + (await nota('Ecografías', 0)) + '»)');
     for (const [i, plan] of [[1, 'Silver'], [2, 'Gold']]) {
       const n = await nota('Ecografías', i);
-      const b = celda('Ecografías', i).locator('.cmp2-fam button.txt');
+      const b = celda('Ecografías', i).locator('.cmp2-fam .txt[aria-describedby]');
       if (n !== NOTA || !(await b.count()) || (await b.textContent()).trim() !== NOTA) { malas.push('/planes 1280, Ecografías, ' + plan + ': ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «' + NOTA + '» y tocarse)'); continue; }
-      const l = await abrir(page, b, false);
-      if (!bienAbierto(l, TOQUE[plan])) malas.push('/planes 1280, Ecografías, ' + plan + ', abierto: ' + corto(l));
-      await cerrar(page, false);
+      await abrirEn(page, b, false, TOQUE[plan], '/planes 1280, Ecografías, ' + plan);
       // Lo que oye el lector en la celda: la fila, el plan, la espera entera y la nota.
       const oye = oido(await celda('Ecografías', i).ariaSnapshot()).replace(/\s+,/g, ',');
       if (!new RegExp('^Ecografías, ' + plan + ': .*2 meses de espera, la mayoría').test(oye)) malas.push('/planes 1280, Ecografías, ' + plan + ': el lector oye «' + oye.slice(0, 80) + '»');
       if (i === 1) visto.compu = n;
     }
+    // La fila de Ecografías a 320 px del borde de arriba: la burbuja de Silver
+    // abre hacia arriba, sobre las cabeceras fijas. Silver arma su propia pila
+    // (z-index 2) y la cabecera fija de Gold (4) se le pintaba encima; con un
+    // toque abierto, la columna sube a 7 (globals.css). Autoprueba: sin esa
+    // regla, la misma apertura tiene que dar «tapada».
+    {
+      const b = celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]');
+      if (await b.count()) {
+        const l = await abrir(page, b, false, 320 / 900);
+        if (!bienAbierto(l, TOQUE.Silver)) malas.push('/planes 1280, Ecografías, Silver con la fila a 320 px: ' + corto(l));
+        await cerrar(page, false);
+        const sacadas = await page.evaluate(() => {
+          const fuera = [];
+          const recorrer = (rules, padre) => { for (let i = rules.length - 1; i >= 0; i--) { const r = rules[i]; if (r.selectorText !== undefined) { if (/cmp2-plan:has\(/.test(r.selectorText)) { fuera.push({ padre, texto: r.cssText, i }); padre.deleteRule(i); } } else if (r.cssRules) recorrer(r.cssRules, r); } };
+          for (const s of document.styleSheets) { try { recorrer(s.cssRules, s); } catch (e) { /* hoja de otro origen */ } }
+          window.__qaReglas = fuera;
+          return fuera.length;
+        });
+        const lSin = await abrir(page, b, false, 320 / 900);
+        await cerrar(page, false);
+        await page.evaluate(() => { for (const f of window.__qaReglas || []) f.padre.insertRule(f.texto, f.i); });
+        const lCon = await abrir(page, b, false, 320 / 900);
+        await cerrar(page, false);
+        if (sacadas !== 1 || !lSin.tapadas || !bienAbierto(lCon, TOQUE.Silver)) malas.push('autoprueba de la cabecera de Gold: reglas sacadas ' + sacadas + ', sin la regla ' + corto(lSin) + ', devuelta ' + corto(lCon));
+      }
+    }
     {
       const n = await nota('Cirugías programadas', 0);
-      const b = celda('Cirugías programadas', 0).locator('.cmp2-fam button.txt');
+      const b = celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]');
       if (n !== '1 cirugía/familia/año, ' + PALABRA_26 || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push('/planes 1280, Cirugías programadas, Essential: ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «1 cirugía/familia/año, ' + PALABRA_26 + '», y tocarse solo «' + PALABRA_26 + '»)');
       else {
-        const l = await abrir(page, b, false);
-        if (!bien26(l)) malas.push('/planes 1280, las 26: ' + corto(l) + ' · ' + difs26(l && l.oido).concat(difs26(l && l.visto)).slice(0, 3).join(' · '));
-        // Autoprueba en la página: el texto del lector sin «nódulo de mama» tiene
-        // que fallar; devuelto, pasar.
-        const sab = await b.evaluate((e, t) => { const d = document.getElementById(e.getAttribute('aria-describedby')); const antes = d.textContent; d.textContent = t; return antes; }, T26.replace('; nódulo de mama', ''));
+        await abrirEn(page, b, false, 26, '/planes 1280, las 26');
+        // Autoprueba en la página: el texto del lector sin «sacar un nódulo de la
+        // mama» tiene que fallar; devuelto, pasar.
+        await abrir(page, b, false, 0.5);
+        const sab = await b.evaluate((e, t) => { const d = document.getElementById(e.getAttribute('aria-describedby')); const antes = d.textContent; d.textContent = t; return antes; }, T26.replace('; sacar un nódulo de la mama', ''));
         const lMala = await b.evaluate(eval(LEER));
         await b.evaluate((e, t) => { document.getElementById(e.getAttribute('aria-describedby')).textContent = t; }, sab);
         const lBuena = await b.evaluate(eval(LEER));
-        if (bien26(lMala) || !bien26(lBuena)) malas.push('autoprueba de las 26 en la página: sin «nódulo de mama» ' + (bien26(lMala) ? 'pasa' : 'falla') + ', devuelta ' + (bien26(lBuena) ? 'pasa' : 'falla'));
+        if (bien26(lMala) || !bien26(lBuena)) malas.push('autoprueba de las 26 en la página: sin «sacar un nódulo de la mama» ' + (bien26(lMala) ? 'pasa' : 'falla') + ', devuelta ' + (bien26(lBuena) ? 'pasa' : 'falla'));
         await cerrar(page, false);
       }
     }
     // Autoprueba de «entera» y «tapadas» con el toque de Silver abierto.
     {
-      const b = celda('Ecografías', 1).locator('.cmp2-fam button.txt');
+      const b = celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]');
       if (await b.count()) {
-        const l0 = await abrir(page, b, false);
-        const corrida = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]'); const t = u.style.top; u.style.top = '-2000px'; const r = eval(LEER)(e); u.style.top = t; return r; }, LEER);
-        const tapada = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]'); const q = u.getBoundingClientRect(); const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:' + q.left + 'px;top:' + q.top + 'px;width:' + q.width + 'px;height:100px;z-index:1000;background:#fff'; document.body.appendChild(d); const r = eval(LEER)(e); d.remove(); return r; }, LEER);
+        const l0 = await abrir(page, b, false, 0.5);
+        const corrida = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const t = u.style.top; u.style.top = '-2000px'; const r = eval(LEER)(e); u.style.top = t; return r; }, LEER);
+        // Una franja de 40 px sobre el medio de la burbuja: las cuatro esquinas
+        // quedan libres; solo la grilla la ve.
+        const tapada = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const q = u.getBoundingClientRect(); const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:' + q.left + 'px;top:' + (q.top + q.height / 2 - 20) + 'px;width:' + q.width + 'px;height:40px;z-index:1000;background:#fff'; document.body.appendChild(d); const r = eval(LEER)(e); d.remove(); return r; }, LEER);
         const l1 = await b.evaluate(eval(LEER));
-        if (!bienAbierto(l0, TOQUE.Silver) || corrida.entera || !tapada.tapadas || !bienAbierto(l1, TOQUE.Silver)) malas.push('autoprueba de la burbuja: corrida ' + JSON.stringify({ entera: corrida.entera }) + ', tapada ' + JSON.stringify({ tapadas: tapada.tapadas }) + ', antes y después ' + bienAbierto(l0, TOQUE.Silver) + '/' + bienAbierto(l1, TOQUE.Silver));
+        if (!bienAbierto(l0, TOQUE.Silver) || corrida.entera || !tapada.tapadas || !bienAbierto(l1, TOQUE.Silver)) malas.push('autoprueba de la burbuja: corrida ' + JSON.stringify({ entera: corrida.entera }) + ', tapada por el medio ' + JSON.stringify({ tapadas: tapada.tapadas }) + ', antes y después ' + bienAbierto(l0, TOQUE.Silver) + '/' + bienAbierto(l1, TOQUE.Silver));
         await cerrar(page, false);
       }
+    }
+    // El teclado (verificador de código, 23/10): con Tab se abre; Escape la
+    // cierra; Enter la vuelve a abrir y la cierra. Hasta el 23/10, después del
+    // Escape no había forma de reabrirla sin salir y volver a entrar. En un toque
+    // de la banda (span con role="button") y en una palabra del glosario (un
+    // botón), si la página la trae.
+    {
+      const prueba = async (b) => {
+        await b.evaluate(eval(COLOCAR), 0.5);
+        await page.mouse.move(5, 5);
+        await b.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); });
+        const pasos = [];
+        for (const k of ['Tab', 'Escape', 'Enter', 'Enter']) { await page.keyboard.press(k); await page.waitForTimeout(250); pasos.push(k + ' ' + (await b.getAttribute('aria-expanded')) + (await b.evaluate((e) => document.activeElement === e) ? '' : ' (sin foco)')); }
+        await page.keyboard.press('Escape');
+        return pasos;
+      };
+      const ESPERADO = ['Tab true', 'Escape false', 'Enter true', 'Enter false'];
+      const toques = [celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]'), celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]')];
+      const glosario = page.locator('button.txt[aria-describedby]:visible').first();
+      if (await glosario.count()) toques.push(glosario);
+      for (const b of toques) {
+        if (!(await b.count())) continue;
+        const pasos = await prueba(b);
+        if (JSON.stringify(pasos) !== JSON.stringify(ESPERADO)) malas.push('teclado, «' + (await b.textContent()).trim() + '»: ' + pasos.join(' · ') + ' (tiene que ser ' + ESPERADO.join(' · ') + ')');
+      }
+      visto.teclado = toques.length;
     }
     // La tarjeta de la ecografía (se abre al pasar el mouse por el nombre): la
     // espera con su condición y la lista, en oraciones, en el pie.
@@ -3036,7 +3180,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       await page.waitForTimeout(250);
       const t = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')].map((x) => x.lastElementChild.textContent.trim()); return { p, pie: ((t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '').trim() }; });
       const LINEA = 'La mayoría, sin tope. 2 meses de espera, la mayoría.';
-      if (!t || t.p[1] !== LINEA || t.p[2] !== LINEA || t.pie !== TOQUE.juntos) malas.push('/planes 1280, tarjeta de la ecografía: ' + JSON.stringify(t && { silver: t.p[1], gold: t.p[2], pie: t.pie.slice(0, 60) }));
+      if (!t || t.p[1] !== LINEA || t.p[2] !== LINEA || t.pie !== EN_TEXTO) malas.push('/planes 1280, tarjeta de la ecografía: ' + JSON.stringify(t && { silver: t.p[1], gold: t.p[2], pie: t.pie.slice(0, 60) }));
       await page.mouse.move(5, 5);
     }
     // Autoprueba: sin la nota (lo que mostraba 35165a7), «falta la nota».
@@ -3046,24 +3190,83 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   }
 
   // (2) /planes en el celular, con el dedo: el cuadro de esperas y la hoja.
-  for (const w of [360, 390, 430]) {
-    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+  // Lo que se sale del encabezado de su fila: cada renglón de texto visible
+  // contra el borde derecho del encabezado (el control de desborde de la página
+  // no lo ve: scrollWidth sigue igual). «de una lista de 26.» se salía 17 px a
+  // 360 (verificador de código, 23/10).
+  const SALE = `(rh) => {
+    const R = rh.getBoundingClientRect().right;
+    let max = 0;
+    const w = document.createTreeWalker(rh, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (n.parentElement.closest('[aria-hidden="true"], .sr-solo')) continue;
+      const g = document.createRange(); g.selectNodeContents(n);
+      for (const q of g.getClientRects()) if (q.width) max = Math.max(max, q.right - R);
+    }
+    return Math.round(max * 10) / 10;
+  }`;
+  for (const [w, h] of [[360, 780], [390, 844], [430, 932]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true });
     const cel = await ctx.newPage();
     await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    const vp = w + ' × ' + h;
     const fila = (que) => cel.locator('.cmp-cel [role="table"] [role="row"]', { has: cel.locator('[role="rowheader"]', { hasText: que }) }).first();
     const small = async (que) => { const s = fila(que).locator('[role="rowheader"] small'); return (await s.count()) ? s.evaluate(eval(SE_VE)) : null; };
     {
       const n = await small('Ecografías');
-      const b = fila('Ecografías').locator('small button.txt');
-      if (n !== 'En Silver y Gold, la mayoría.' || !(await b.count())) malas.push(w + ', cuadro de esperas, Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
-      else { const l = await abrir(cel, b, true); if (!bienAbierto(l, TOQUE.juntos)) malas.push(w + ', cuadro de esperas, Ecografías, abierto: ' + corto(l)); await cerrar(cel, true); }
+      const b = fila('Ecografías').locator('small .txt[aria-describedby]');
+      if (n !== 'En Silver y Gold, la mayoría.' || !(await b.count())) malas.push(vp + ', cuadro de esperas, Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else await abrirEn(cel, b, true, TOQUE.juntos, vp + ', cuadro de esperas, Ecografías');
       if (w === 390) visto.cel = n;
     }
     {
+      // «la mayoría» de Silver y Gold va por plan, después de Essential (11,
+      // verificador de textos, 23/10): un «La mayoría.» suelto delante parecía
+      // valer también para Essential.
       const n = await small('Cirugías programadas');
-      const b = fila('Cirugías programadas').locator('small button.txt');
-      if (n !== 'La mayoría. En Essential, una al año por familia, ' + PALABRA_26 + '.' || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push(w + ', cuadro de esperas, Cirugías programadas: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
-      else { const l = await abrir(cel, b, true); if (!bien26(l)) malas.push(w + ', cuadro de esperas, las 26: ' + corto(l)); await cerrar(cel, true); }
+      const b = fila('Cirugías programadas').locator('small .txt[aria-describedby]');
+      if (n !== 'En Essential, una al año por familia, ' + PALABRA_26 + '. En Silver y Gold, la mayoría.' || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push(vp + ', cuadro de esperas, Cirugías programadas: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else await abrirEn(cel, b, true, 26, vp + ', cuadro de esperas, las 26');
+    }
+    // Nada se sale del encabezado de su fila. Autoprueba: una palabra larga que
+    // no se parte, metida en el encabezado de Cirugías, tiene que salirse.
+    {
+      const sale = await cel.evaluate((f) => [...document.querySelectorAll('.cmp-cel [role="table"] [role="rowheader"]')].map((rh) => [rh.firstChild.textContent.trim(), eval(f)(rh)]).filter((x) => x[1] > 0.5), SALE);
+      const auto = await fila('Cirugías programadas').locator('[role="rowheader"]').evaluate((rh, f) => { const s = document.createElement('span'); s.style.whiteSpace = 'nowrap'; s.textContent = ' de una lista larguísima de 26.'; rh.querySelector('small').appendChild(s); const r = eval(f)(rh); s.remove(); return r; }, SALE);
+      if (sale.length) malas.push(vp + ', cuadro de esperas: se sale del encabezado de su fila ' + sale.map((x) => x[0] + ' ' + x[1] + ' px').join(', '));
+      if (!(auto > 0.5)) malas.push(vp + ', autoprueba del desborde de la fila: una frase que no se parte no se sale (' + auto + ')');
+    }
+    // Lo que oye el lector (el árbol de accesibilidad de Chromium, por CDP): el
+    // encabezado de fila se llama con lo que se ve, sin la lista (el texto del
+    // lector de la burbuja lleva aria-hidden); la lista llega como descripción
+    // del toque. Hasta el 23/10 «Cirugías programadas» se llamaba con las 26
+    // enteras (839 caracteres) y terminaba con un punto doble. Autoprueba: la
+    // lista metida en el encabezado, sin aria-hidden, tiene que verse.
+    {
+      const cdp = await ctx.newCDPSession(cel);
+      const arbol = async () => (await cdp.send('Accessibility.getFullAXTree')).nodes;
+      const val = (x) => (x && x.value) || '';
+      const leerArbol = (nodos) => ({
+        filas: nodos.filter((n) => val(n.role) === 'rowheader').map((n) => val(n.name)),
+        toques: nodos.filter((n) => val(n.role) === 'button' && /^(la mayoría|de una lista de 26)$/.test(val(n.name))).map((n) => ({ nombre: val(n.name), desc: val(n.description) })),
+      });
+      const a = leerArbol(await arbol());
+      const plano = (t) => t.replace(/\s+/g, '').replace(/\.+/g, '.');
+      const vistos = new Set((await cel.evaluate((f) => [...document.querySelectorAll('[role="rowheader"]')].map((rh) => eval(f)(rh)), SE_VE)).map(plano));
+      const filasMal = a.filas.filter((n) => !vistos.has(plano(n)) || n.length > 120 || /Ecografías que esperan|Las 26 cirugías|\.\s*\./.test(n));
+      if (!a.filas.some((n) => /^Ecografías/.test(n)) || !a.filas.some((n) => /^Cirugías programadas/.test(n))) filasMal.push('no encuentro los encabezados de Ecografías y de Cirugías en el árbol');
+      const eco = a.toques.find((t) => t.nombre === 'la mayoría'), cir = a.toques.find((t) => t.nombre === PALABRA_26);
+      if (a.filas.length < 5 || filasMal.length) malas.push(vp + ', lector: el encabezado de fila no se llama con lo que se ve · ' + filasMal.map((x) => x.length + ' caracteres: «' + x.slice(0, 70) + '»').join(' · '));
+      if (!eco || eco.desc !== TOQUE.juntos || !cir || difs26(cir.desc).length) malas.push(vp + ', lector: la descripción del toque no trae la lista · ' + JSON.stringify({ eco: eco && eco.desc.slice(0, 50), cir: cir && cir.desc.slice(0, 50) }));
+      if (w === 390) {
+        const id = await fila('Cirugías programadas').locator('small .txt[aria-describedby]').getAttribute('aria-describedby');
+        await cel.evaluate((id) => { const d = document.getElementById(id); window.__qaAria = d.getAttribute('aria-hidden'); d.removeAttribute('aria-hidden'); }, id);
+        const sin = leerArbol(await arbol()).filas.find((n) => /^Cirugías programadas/.test(n)) || '';
+        await cel.evaluate((id) => { document.getElementById(id).setAttribute('aria-hidden', window.__qaAria); }, id);
+        if (!(sin.length > 120)) malas.push('autoprueba del lector: sin aria-hidden, el encabezado de Cirugías mide ' + sin.length + ' caracteres');
+        visto.fila = (a.filas.find((n) => /^Cirugías programadas/.test(n)) || '').length;
+      }
+      await cdp.detach();
     }
     if (w === 390) {
       // La hoja de la ecografía, desde «Los once servicios».
@@ -3071,16 +3274,19 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       await cel.waitForTimeout(450);
       await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila', { hasText: /^Ecografía/ }).first().tap();
       await cel.waitForTimeout(450);
-      const h = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; return { texto: d.textContent.replace(/\s+/g, ' '), planes: [...d.querySelectorAll('.sq')].map((x) => x.textContent) }; });
+      const hj = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; return { texto: d.textContent.replace(/\s+/g, ' '), planes: [...d.querySelectorAll('.sq')].map((x) => x.textContent) }; });
       const PILDORA = '2 meses de espera, la mayoría';
-      if (!h || !h.texto.includes(TOQUE.juntos) || !h.planes[1] || !h.planes[1].includes(PILDORA) || !h.planes[2] || !h.planes[2].includes(PILDORA) || (h.planes[0] || '').includes('la mayoría')) malas.push('390, hoja de la ecografía: ' + JSON.stringify(h && { lista: h.texto.includes(TOQUE.juntos), planes: h.planes.map((x) => x.slice(-40)) }));
+      if (!hj || !hj.texto.includes(EN_TEXTO) || /Las demás, 2 meses/.test(hj.texto) || !hj.planes[1] || !hj.planes[1].includes(PILDORA) || !hj.planes[2] || !hj.planes[2].includes(PILDORA) || (hj.planes[0] || '').includes('la mayoría')) malas.push('390, hoja de la ecografía: ' + JSON.stringify(hj && { lista: hj.texto.includes(EN_TEXTO), planes: hj.planes.map((x) => x.slice(-40)) }));
     }
     await ctx.close();
   }
 
-  // (3) El simulador, a 390 con el dedo y a 1280 con el mouse.
-  for (const [w, dedo] of [[390, true], [1280, false]]) {
-    const ctx = await browser.newContext(dedo ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } : { viewport: { width: 1280, height: 900 } });
+  // (3) El simulador, a 360, 390 y 430 con el dedo y a 1280 con el mouse, con
+  // el porqué de Essential (10A: «una cirugía por año para la familia, de una
+  // lista de 26»; decía «las cirugías», sin más).
+  const ESS_PORQUE = 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía por año para la familia, de una lista de 26, se cubren al año de afiliarte.';
+  for (const [w, h, dedo] of [[360, 780, true], [390, 844, true], [430, 932, true], [1280, 900, false]]) {
+    const ctx = await browser.newContext(dedo ? { viewport: { width: w, height: h }, isMobile: true, hasTouch: true } : { viewport: { width: w, height: h } });
     const pg = await ctx.newPage();
     for (const plan of ['silver', 'gold', 'essential']) {
       await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
@@ -3098,36 +3304,47 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
       if (plan === 'essential') {
         if (n !== null) malas.push('simulador ' + w + ', Essential, Ecografías: una nota que no va («' + n + '»)');
         const c = await notaDe('Cirugías programadas');
-        const b = fila('Cirugías programadas').locator('button.txt');
+        const b = fila('Cirugías programadas').locator('.txt[aria-describedby]');
         if (c !== 'una al año por familia, ' + PALABRA_26 || !(await b.count())) malas.push('simulador ' + w + ', Essential, Cirugías programadas: ' + (c === null ? 'falta la nota' : '«' + c + '»'));
-        else { const l = await abrir(pg, b, dedo); if (!bien26(l)) malas.push('simulador ' + w + ', las 26: ' + corto(l)); await cerrar(pg, dedo); }
+        else await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26');
+        const porque = await pg.evaluate(() => { const p = document.querySelector('[data-sp-price]'); const c = p && p.closest('div.sq'); return c ? [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()) : []; });
+        if (!porque.includes(ESS_PORQUE) || porque.some((x) => /las cirugías y el parto/.test(x))) malas.push('simulador ' + w + ', el porqué de Essential: ' + JSON.stringify(porque.find((x) => /^Cobertura de entrada/.test(x)) || porque.slice(0, 2)));
       } else {
         const P = plan === 'silver' ? 'Silver' : 'Gold';
-        const b = fila('Ecografías').locator('button.txt');
+        const b = fila('Ecografías').locator('.txt[aria-describedby]');
         if (n !== NOTA || !(await b.count())) malas.push('simulador ' + w + ', ' + P + ', Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
-        else { const l = await abrir(pg, b, dedo); if (!bienAbierto(l, TOQUE[P])) malas.push('simulador ' + w + ', ' + P + ', abierto: ' + corto(l)); await cerrar(pg, dedo); }
+        else await abrirEn(pg, b, dedo, TOQUE[P], 'simulador ' + w + ', ' + P);
       }
     }
     await ctx.close();
   }
 
-  // (4) La pregunta frecuente del home, abierta como la abre una persona.
+  // (4) Las preguntas frecuentes del home, abiertas como las abre una persona:
+  // la de las esperas nombra las cinco de Gold y manda al asesor por la de
+  // vejiga (decía «otras seis»: 12, verificador de textos, 23/10); la de la
+  // diferencia dice la cirugía de Essential con su condición (10A).
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(BASE + '/', { waitUntil: 'networkidle' });
-    const btn = page.locator('button[aria-controls]', { hasText: '¿Cuánto tengo que esperar para usar mi plan?' }).first();
-    await btn.scrollIntoViewIfNeeded();
-    await btn.click();
-    await page.waitForTimeout(400);
-    const r = await btn.evaluate((b) => { const r = document.getElementById(b.getAttribute('aria-controls')); return r ? r.innerText.replace(/\s+/g, ' ') : ''; });
-    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis)', 'cirugías (una al año por familia, de una lista de 26)'];
+    const abrirFaq = async (q) => {
+      const btn = page.locator('button[aria-controls]', { hasText: q }).first();
+      await btn.scrollIntoViewIfNeeded();
+      await btn.click();
+      await page.waitForTimeout(400);
+      return btn.evaluate((b) => { const r = document.getElementById(b.getAttribute('aria-controls')); return r ? r.innerText.replace(/\s+/g, ' ') : ''; });
+    };
+    const r = await abrirFaq('¿Cuánto tengo que esperar para usar mi plan?');
+    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + GOLD5 + '; ' + VEJ + ')', 'cirugías (una al año por familia, de una lista de 26)'];
     const faltan = debe.filter((x) => !r.includes(x));
-    if (faltan.length || r.includes('laboratorio y ecografías, unos 2 meses')) malas.push('home, FAQ de las esperas: ' + (faltan.length ? 'no dice «' + faltan.join('» ni «') + '»' : 'sigue diciendo «laboratorio y ecografías, unos 2 meses»'));
+    if (faltan.length || /laboratorio y ecografías, unos 2 meses|otras seis/.test(r)) malas.push('home, FAQ de las esperas: ' + (faltan.length ? 'no dice «' + faltan.join('» ni «') + '»' : 'sigue diciendo «otras seis» o «unos 2 meses»'));
+    const d = await abrirFaq('¿Cuál es la diferencia entre Essential, Silver y Gold?');
+    const DIF = 'La internación, el parto y una cirugía por año para la familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia.';
+    if (!d.includes(DIF) || /las cirugías y el parto/.test(d)) malas.push('home, FAQ de la diferencia: no dice «' + DIF + '»');
     await page.close();
   }
 
-  if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera y sin nada encima · ' + malas.slice(0, 8).join(' · '));
-  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las del embarazo y 5 Doppler; en Gold, 6 más), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26, en el orden del cuadernillo: en la banda de esperas de /planes a 1280 con el mouse, en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 390 y 1280; lo oye el lector y la burbuja se ve entera, sin nada encima; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y la FAQ del home también; la regla de las 26 rechaza cinco listas malas y la burbuja corrida, tapada o con otro texto falla');
+  if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera, sin nada encima y donde se abra · ' + malas.slice(0, 8).join(' · ') + (malas.length > 8 ? ' · (y ' + (malas.length - 8) + ' más)' : ''));
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja se ve entera y sin nada encima (5 × 5 puntos) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; el teclado la abre y la cierra (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
 }
 
 // ── La nota de la cesárea del plegable, con letra de nota (cierre de la vuelta 3, 18/10) ──

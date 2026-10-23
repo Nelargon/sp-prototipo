@@ -283,9 +283,11 @@ export default function ComparativaCelular() {
       const quien = i.map((j) => planes[j].short);
       const pre = 'En ' + (quien.length > 1 ? quien.slice(0, -1).join(', ') + ' y ' + quien[quien.length - 1] : quien[0]) + ', ';
       const tq = i.length > 1 ? (c.toqueJuntos ? { k: c.toqueJuntos } : null) : c.toque && c.toque[i[0]];
-      // El punto va pegado al toque: después de una caja inline-block el
-      // navegador puede bajarlo solo al renglón de abajo.
-      const conPunto = (term) => <span style={css('white-space:nowrap')}>{term}.</span>;
+      // El punto va pegado al toque. Desde el 23/10/2026 el toque es una caja en
+      // línea (Term, tipo «toque»), que se parte como el texto: entre su última
+      // letra y el punto el navegador no corta. Antes era inline-block y el
+      // punto iba en un nowrap, que lo hacía salirse de la columna a 360.
+      const conPunto = (term) => <>{term}.</>;
       if (!tq) partes.push(pre + t + '.');
       else if (!tq.palabra) partes.push(<>{pre}{conPunto(<Term k={tq.k} dict={TOQUES} tipo="toque">{t}</Term>)}</>);
       else partes.push(<>{pre}{t}, {conPunto(<Term k={tq.k} dict={TOQUES} tipo="toque">{tq.palabra}</Term>)}</>);

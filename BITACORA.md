@@ -5737,3 +5737,77 @@ día en que se leyó la planilla.
   vecino.
 - **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
   la Guía no coinciden, una de las dos está leyendo otra cosa.
+
+## Capítulo 159 — La prueba abría la lista justo donde entraba (23/10/2026)
+
+**Qué intentamos.** Los tres verificadores de la 9A y la 10A (datos, textos y
+código) encontraron que en el celular la lista de las 26 cirugías quedaba
+debajo de la cabecera fija cada vez que la fila estaba en la mitad de arriba de
+la pantalla. La prueba daba verde. El arreglo pedido era mínimo: que `Term`,
+cuando la burbuja no entra ni arriba ni abajo, la abra hacia el lado más grande,
+con ese alto y scroll por dentro; y que el toque se parta como el texto, para
+que «de una lista de 26.» no se saliera de su fila.
+
+**Qué pasó.** Cuatro cosas que no eran lo que parecían:
+- **La prueba abría siempre al 62 % del alto**, el único lugar donde la lista
+  más larga entraba arriba. Con el `Term` de main (35165a7) también daba verde.
+  Abierta con la fila al 25, al 50 y al 85 %, el `Term` de main cae con 45
+  hallazgos, y el de la primera tanda, también.
+- **Un `<button>` con `display:inline` no se parte.** Chrome lo dibuja como
+  inline-block, porque así lo pide el estándar de HTML: `getClientRects()` da
+  una sola caja. El toque pasó a ser un `<span role="button">`, que el teclado
+  alcanza y abre con Enter o Espacio. El CSS decía «inline» y el navegador
+  dibujaba otra cosa.
+- **La burbuja que scrollea recordaba dónde había quedado.** La prueba de
+  scrollear con el dedo falló solo a partir de la segunda apertura: el navegador
+  guardaba el scroll de la vez anterior y la lista se reabría por la mitad, ya
+  en el tope. El `scrollTop = 0` del primer intento no hacía nada, porque corría
+  antes de que la burbuja tuviera su alto (todavía no scrolleaba).
+- **La autoprueba que sacaba una regla de CSS no sacaba nada.** Para probar el
+  arreglo de la cabecera de Gold, la prueba borra la regla y espera «tapada».
+  Dio «0 reglas sacadas»: en Chrome una regla de estilo también tiene
+  `cssRules` (por el CSS anidado) y el recorrido se metía adentro en vez de
+  leer su selector. Como la autoprueba exige haber sacado una, falló, y por eso
+  se vio.
+
+**Qué aprendimos.**
+- **Una prueba de lugar se corre donde está la persona, no donde entra la
+  lista.** Una sola posición elegida para que pase prueba la posición, no el
+  componente. Y se demuestra con la versión vieja: si la de main no cae, la
+  prueba no cuida nada.
+- **Lo que el navegador dibuja se mide, también la forma de la caja.** Es la
+  regla de lo computado (cap. 76) llevada a `display`.
+- **Una autoprueba cuenta lo que rompió.** «Saqué 0 reglas y no pasó nada» no
+  es un verde: es una prueba que no probó.
+
+## Capítulo 160 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
+
+**Qué intentamos.** En la primera tanda de la 10A, las 26 cirugías de Essential
+se dijeron con palabras de casa donde parecía decir lo mismo: «hemorroides»,
+«quiste de un lado», «legrado (raspado del útero)», «amígdalas», «piedra en el
+riñón, a cielo abierto».
+
+**Qué pasó.** El verificador de datos cruzó cada nombre con lo que el propio
+repo clasifica como «No entra» o «Preguntale» (`lib/prestaciones.json`):
+«hemorroides» abarcaba la ligadura elástica y la trombectomía, que no entran;
+«quiste» era cualquier quiste, y el cuadernillo no dice de qué órgano;
+«legrado» sin «evacuador» incluía el de diagnóstico, que no entra; «amígdalas»,
+el drenaje alrededor de la amígdala. Y «a cielo abierto» en solo dos de las 26
+hacía leer que las otras 24 entraban con cualquier técnica, cuando el
+cuadernillo titula la lista entera «Intervenciones Quirúrgicas (Abiertas)» y
+deja la videolaparoscopía a cargo de la persona. Ahora la palabra de la familia
+va donde no hay duda («sacar la vesícula»); donde la hay, el nombre del
+cuadernillo con su traducción entre paréntesis («hemorroidectomía (cirugía para
+sacar las hemorroides)»); la técnica, en el título, y la videolaparoscopía y el
+anestesista, al cierre de la lista.
+
+**Qué aprendimos.**
+- **Traducir es elegir un conjunto.** La palabra de casa sirve si nombra lo
+  mismo que la del contrato, no algo que lo contiene. Si no hay una que nombre
+  lo mismo, va la del contrato, explicada.
+- **Un calificativo suelto dice algo de los que no lo llevan.** Si dos de 26
+  dicen «a cielo abierto», las otras 24 se leen distinto. Lo que vale para todas
+  va una vez, arriba.
+- **El repo ya sabía la respuesta.** La clasificación de cada cirugía estaba en
+  `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
+  nombre al lado de su literal, de a pares.

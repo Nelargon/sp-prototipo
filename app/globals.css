@@ -542,6 +542,17 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp2-h{height:96px;position:sticky;top:88px;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
   .cmp2-lab .cmp2-h{align-items:flex-start;padding:0 14px}
   .cmp2-plan.rec .cmp2-h{border-radius:var(--r-lg) var(--r-lg) 0 0}
+  /* Con un toque abierto (9A, la lista de «la mayoría»), su columna pasa arriba
+     de las cabeceras fijas (4) y de la columna de los nombres (5): Silver arma su
+     propia pila con z-index 2, y la cabecera fija de Gold le cortaba la burbuja
+     cuando la fila de Ecografías estaba a unos 320 px del borde de arriba
+     (verificador de código, 23/10/2026). Las columnas son ítems de la grilla:
+     el z-index vale sin position. */
+  .cmp2-plan:has(.txt[aria-expanded="true"]){z-index:7}
+  /* En las celdas de la tabla el toque entra entero en un renglón: no se parte
+     («de una lista / de 26»), baja junto. En el cuadro del celular, que es más
+     angosto que la frase, sí se parte (Term, tipo «toque», 23/10/2026). */
+  .cmp2-fam .txt{white-space:nowrap}
   .cmp2-mes,.cmp2-para,.cmp2-l{display:none}
   .cmp2-gt{height:36px;display:flex;align-items:flex-end;padding:0 14px 6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-deep)}
   .cmp2-plan .cmp2-gt span{visibility:hidden}

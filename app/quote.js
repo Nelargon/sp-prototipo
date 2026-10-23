@@ -13,7 +13,7 @@
    es vieja y hoy quiere decir Essential. */
 
 import { DEPT_AJUSTE } from './geo';
-import { coverage } from './coverage';
+import { coverage, notaCelda } from './coverage';
 
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
@@ -166,11 +166,17 @@ const bracket = (a) => (a <= 54 ? 0 : a <= 64 ? 1 : a <= 69 ? 2 : 3);
 // forma corta con su frase completa para los lectores de pantalla.
 const nombrar = (t, cosa) => t.replace(/^([^/]+)/, '$1 ' + cosa); // «2/familia/año» → «2 tomografías/familia/año»
 const lineasCortas = (i) => {
-  const c = Object.fromEntries(coverage().map((s) => [s.name, s.corta]));
+  const cov = Object.fromEntries(coverage().map((s) => [s.name, s]));
+  const c = Object.fromEntries(Object.entries(cov).map(([n, s]) => [n, s.corta]));
   const tom = i === 0
     ? nombrar(c['Tomografía (TAC)'][0], 'estudios') + ' (tomografía, ecocardiograma o ergometría)'
     : nombrar(c['Tomografía (TAC)'][i], 'tomografías');
-  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia'), internacion: c['Internación'][i] };
+  // La condición de la resonancia de Essential, «sin contraste ni sedación», va
+  // también en esta línea (185A con el agregado del comité, Arturo, 23/10/2026):
+  // es la misma `cola` de coverage.js que va debajo de la celda en las tablas
+  // (notaCelda), no se escribe acá.
+  const rm = notaCelda(cov['Resonancia (RM)'], i);
+  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia') + (rm ? ' (' + rm + ')' : ''), internacion: c['Internación'][i] };
 };
 export const plans = () => {
   const [e, s, g] = [0, 1, 2].map(lineasCortas);
@@ -241,8 +247,11 @@ export const engine = (d) => {
      el formato viejo de simulaciones guardadas — solo se conserva para
      que un "Retomar mi simulación" anterior no rompa. */
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
+  // Essential: la cirugía, «una por año para la familia, de una lista de 26»
+  // (10A, Arturo, 23/10/2026): «las cirugías», sin más, hacía creer que entra
+  // cualquiera (verificadores de datos y de textos, 23/10).
   const P = {
-    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
+    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía por año para la familia, de una lista de 26, se cubren al año de afiliarte.' },
     // Sin «y topes más altos» (1A, Arturo, 23/10/2026, sp-interno#193): en 10 de
     // las 20 especialidades con tope de Silver, Essential puede dar más consultas
     // al año. Lo que queda es cierto conteste lo que conteste SP en #110.

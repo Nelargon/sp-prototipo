@@ -160,7 +160,8 @@ export const coverage = () => [
   // estas dos mismas líneas.
   // Essential (190A, Arturo, 23/10/2026, sp-interno#190): solo la
   // traumatológica (cuadernillo 1.11: «Hasta cinco (5) sesiones traumatológicas,
-  // por grupo familiar»; regla fis-traumatologica de essential-cobertura.json).
+  // por grupo familiar por año de contrato»; regla fis-traumatologica de
+  // essential-cobertura.json).
   // La línea arranca por el tipo, como Silver y Gold, y la forma corta lleva la
   // `cola` («5/familia/año, solo traumatológica»). Decía «Hasta 5 sesiones al
   // año por familia» y, al lado de los tipos de Silver y Gold, se leía «cubre lo
@@ -175,38 +176,75 @@ export const coverage = () => [
 // - 9A, las ecografías de Silver y Gold: «2 meses» era la espera de la mayoría.
 //   En la grilla del master del 24/07, en Silver esperan 90 días 10 de las 33
 //   filas «ECOGRAFIA…» (las 4 del embarazo y 5 Doppler, una de ellas en dos
-//   filas) y en Gold 15 de 32 (esas mismas y 6 más). La celda dice «2 meses, la
-//   mayoría» y, a un toque, cuáles esperan 3. Los nombres siguen la grilla: la
-//   «vesical» de Gold queda como la dice el master, que también tiene una
-//   «de vejiga» a 60 días (no se completa por inferencia).
+//   filas) y en Gold 15 de las 32 con dato (esas 9, porque la Doppler venosa de
+//   un lado no tiene dato en Gold, y 6 más; entre ellas la «VESICAL», que el
+//   master pone a 90 mientras su «DE VEJIGA» espera 60). Esperan 90 también tres
+//   perinatales que no se llaman «ECOGRAFIA…»: el monitoreo fetal, el perfil
+//   biofísico y la ecocardiografía fetal (la del corazón del bebé). La celda dice
+//   «2 meses, la mayoría» y, a un toque, cuáles esperan 3: TODAS las del
+//   embarazo, nombradas una por una (verificador de textos, 23/10: la lista de
+//   cuatro se leía completa y la del corazón del bebé esperaba 3 meses), sin
+//   «Las demás, 2 meses» (repetía la celda y, debajo de las tres tarjetas,
+//   parecía valer también para Essential). La vesical y la de vejiga no eligen
+//   un lado: «Para la de vejiga, preguntale a tu asesor» (pregunta a SP). Lo
+//   controla qa/listas-fuente.mjs contra la grilla, fila por fila (`NOMBRE_WEB`).
 // - 10A, las cirugías programadas de Essential: «1 cirugía/familia/año» es de
-//   una lista cerrada de 26 (CUADERNILLO PLAN ESSENTIAL.pdf, 4.4.1 a 4.4.26,
-//   25/03/2026; la lista literal está en essential.json, `cirugias_lista_26`).
-//   «de una lista de 26» se toca y abre la lista. Cada nombre es la palabra de
-//   la familia donde dice lo mismo (vesícula, amígdalas, hemorroides) y el del
-//   cuadernillo, con todos sus calificativos (de un lado, sin la malla, a cielo
-//   abierto), donde traducir sería prometer más (laparotomía exploradora,
-//   colporrafía, pterigión). En el mismo orden que el cuadernillo.
+//   una lista cerrada de 26 (CUADERNILLO PLAN ESSENTIAL.pdf, 4.4 «Intervenciones
+//   Quirúrgicas (Abiertas)», 4.4.1 a 4.4.26, 25/03/2026; la lista literal está en
+//   essential.json, `cirugias_lista_26`). «de una lista de 26» se toca y abre la
+//   lista. Ningún nombre promete más que el cuadernillo (verificadores de datos
+//   y de textos, 23/10): la palabra de la familia va donde dice lo mismo («sacar
+//   la vesícula»); donde no es segura, el nombre del cuadernillo con su
+//   traducción entre paréntesis («legrado evacuador (raspado del útero)»,
+//   «pielolitotomía (…)»), nunca una palabra más amplia («hemorroides» abarcaba
+//   la ligadura, que no entra; «quiste», cualquier quiste). Con todos sus
+//   calificativos: «de un lado», «la malla no entra», «con o sin autoinjerto». La
+//   técnica va en el título, como en el cuadernillo («a cielo abierto»), y la
+//   lista cierra con lo que el cuadernillo dice del anestesista (4.3.2) y de la
+//   videolaparoscopía (el párrafo que sigue a la lista). En el mismo orden que el
+//   cuadernillo; qa/listas-fuente.mjs controla que cada nombre tenga su par.
 // Se dibujan con `Term` de glossary.jsx (`dict={TOQUES}`): subrayado punteado,
 // mouse, dedo y teclado, y la lista entera para el lector de pantalla. Donde no
 // puede ir un toque (una tarjeta que se cierra al sacar el mouse, una fila que
 // ya es un botón, el texto de la cotización), la lista va en oraciones.
 const may = (x) => x.charAt(0).toUpperCase() + x.slice(1);
-const EMBARAZO = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos y Doppler obstétrico)';
+// Lo que se lee de cada fila de la grilla, en la misma forma que el sitio. La
+// tabla de nombres de la grilla a nombres de la web está en qa/listas-fuente.mjs.
+const EMBARAZO = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos, Doppler obstétrico, del corazón del bebé, perfil biofísico y monitoreo fetal)';
 const DOPPLER = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
-const SOLO_GOLD = 'las de riñón, de vías urinarias, de testículos, de próstata por vía rectal, la transvaginal y la vesical';
-export const CIRUGIAS_26 = ['absceso junto al ano', 'amígdalas y adenoides juntas', 'adenoides', 'adenoma de próstata, a cielo abierto', 'amígdalas', 'apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'vesícula', 'colporrafía anterior', 'colporrafía posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroides', 'hernia crural de un lado, sin la malla', 'hernia de la ingle de un lado, sin la malla', 'hernia del ombligo o epigástrica, sin la malla', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado (raspado del útero)', 'ovario y trompa de un lado', 'piedra en el riñón, a cielo abierto', 'pterigión, con o sin injerto', 'quiste de un lado', 'nódulo de mama', 'varicocele de un lado'];
+// Las que en Gold esperan 3 meses y en Silver 2. «la testicular» y no «de
+// testículos»: en la misma oración ya está la Doppler «de testículo».
+export const SOLO_GOLD = 'las de riñón y de vías urinarias, la testicular, la de próstata por vía rectal y la transvaginal';
+// La «VESICAL» de Gold espera 90 días en el master y la «DE VEJIGA», 60: no se
+// elige un lado (sp-interno, pregunta a SP).
+export const VEJIGA_GOLD = 'para la de vejiga, ' + minuscula(ASESOR);
+// La frase de la pregunta frecuente de las esperas del home: la misma lista,
+// dicha corta (la respuesta vive en un Plegable que recorta y no lleva toque).
+export const ECO_EN_FAQ = '2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + SOLO_GOLD + '; ' + VEJIGA_GOLD + ')';
+export const CIRUGIAS_26 = ['absceso perianal (junto al ano)', 'sacar las amígdalas y las adenoides juntas', 'sacar las adenoides', 'sacar el adenoma de próstata', 'sacar las amígdalas', 'sacar el apéndice, sin complicaciones', 'orzuelo, chalazión o absceso del párpado', 'circuncisión', 'sacar la vesícula', 'colporrafia anterior', 'colporrafia posterior', 'catarata de un ojo, por extracción extracapsular', 'hemorroidectomía (cirugía para sacar las hemorroides)', 'hernia crural de un lado (la malla no entra)', 'hernia de la ingle de un lado (la malla no entra)', 'hernia del ombligo o epigástrica (la malla no entra)', 'hidrocele de un lado', 'sacar el útero (histerectomía total)', 'laparotomía exploradora', 'legrado evacuador (raspado del útero)', 'sacar el ovario y la trompa de un lado', 'pielolitotomía (sacar una piedra de la pelvis del riñón)', 'pterigión, con o sin autoinjerto', 'quistectomía de un lado (' + minuscula(ASESOR) + ' cuáles entran)', 'sacar un nódulo de la mama', 'varicocele de un lado'];
 if (CIRUGIAS_26.length !== 26) throw new Error('Essential: la lista de cirugías no tiene 26');
+// Lo que el cuadernillo dice después de la lista (4.4) y del anestesista en toda
+// cirugía con internación (4.3.2: «50% cobertura honorarios del anestesiólogo»).
+// La videolaparoscopía, como el párrafo que sigue a la lista: «Queda a cargo del
+// asegurado el pago de la diferencia en aranceles en honorarios médicos
+// (anestesiólogo, ayudante, instrumentador) y el costo total del uso de equipo,
+// torre y materiales/instrumentales». «La torre» es parte del equipo: no se
+// nombra aparte (no es una palabra de la familia).
+const CIR_ANESTESISTA = 'De los honorarios del anestesista, el plan cubre la mitad.';
+const CIR_VIDEO = 'Si te operan por videolaparoscopía, pagás vos la diferencia de honorarios (del anestesista, el ayudante y el instrumentador) y todo el uso del equipo y de los materiales.';
 export const TOQUES = {
-  'eco-silver': { t: 'Ecografías que esperan 3 meses en Silver', d: may(EMBARAZO) + ' y ' + DOPPLER + '. Las demás, 2 meses.' },
-  'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + '; ' + DOPPLER + ', y ' + SOLO_GOLD + '. Las demás, 2 meses.' },
-  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '. Las demás, 2 meses.' },
+  'eco-silver': { t: 'Ecografías que esperan 3 meses en Silver', d: may(EMBARAZO) + ' y ' + DOPPLER + '.' },
+  'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + '; ' + DOPPLER + ', y ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
+  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '; ' + VEJIGA_GOLD + '.' },
   // `ancho` (Term): a 260 px la lista mide unos 366 px de alto y no entraba en la
-  // tarjeta de esperas del simulador en la computadora; a 420, unos 290.
-  'cir-26': { t: 'Las 26 cirugías de Essential', d: may(CIRUGIAS_26.slice(0, -1).join('; ') + '; y ' + CIRUGIAS_26[25]) + '.', ancho: 420 },
+  // tarjeta de esperas del simulador en la computadora; a 420, unos 290. Donde no
+  // entra ni arriba ni abajo (el celular), Term la abre hacia el lado más grande
+  // y scrollea por dentro.
+  'cir-26': { t: 'Las 26 cirugías de Essential, a cielo abierto', d: may(CIRUGIAS_26.slice(0, -1).join('; ') + '; y ' + CIRUGIAS_26[25]) + '. ' + CIR_ANESTESISTA + ' ' + CIR_VIDEO, ancho: 420 },
 };
-// La lista en oraciones, para donde no entra el toque: «título: lista».
-export const toqueEnTexto = (k) => TOQUES[k].t + ': ' + TOQUES[k].d;
+// La lista en oraciones, para donde no entra el toque: «título: lista», con
+// minúscula después de los dos puntos.
+export const toqueEnTexto = (k) => TOQUES[k].t + ': ' + minuscula(TOQUES[k].d);
 
 // LAS ESPERAS QUE IMPORTAN AL DECIDIR (7 sep 2026 — "Sería bueno ser ya
 // transparentes con las carencias", Arturo). Es lo que el simulador muestra
@@ -249,8 +287,12 @@ export const carencias = () => [
   // /planes en la computadora (lo que se escanea); `notaPlan` sigue en oraciones
   // para el simulador y la cotización. «de una lista de 26» va después de la
   // nota y se toca (10A, Arturo, 23/10/2026, sp-interno#191): `palabra` es lo
-  // que se subraya.
-  { que: 'Cirugías programadas', dias: [365, 180, 150], nota: 'la mayoría', notaPlan: ['una al año por familia', null, null], corta: [anual('1 cirugía', 'familia'), null, null], toque: [{ k: 'cir-26', palabra: 'de una lista de 26' }, null, null] },
+  // que se subraya. «la mayoría» va por plan (`notaPlan`) y no como `nota` de
+  // los tres: en el cuadro del celular salía un «La mayoría.» suelto delante de
+  // «En Essential, una al año…», y parecía valer también para Essential
+  // (verificador de textos, 23/10). Ahora dice «En Essential, una al año por
+  // familia, de una lista de 26. En Silver y Gold, la mayoría.».
+  { que: 'Cirugías programadas', dias: [365, 180, 150], notaPlan: ['una al año por familia', 'la mayoría', 'la mayoría'], corta: [anual('1 cirugía', 'familia'), null, null], toque: [{ k: 'cir-26', palabra: 'de una lista de 26' }, null, null] },
   // Parámetros clave: "Carencia de maternidad: 300 días". La cesárea de Gold
   // tiene la fuente contradicha: el Cuadro 3 de su contrato dice 150 días y la
   // cláusula de maternidad (2.5.2), 300. Hasta que SP lo aclare, en Gold manda

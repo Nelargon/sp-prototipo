@@ -920,10 +920,15 @@ export default function Simulador() {
                 {/* «Descargar» y «Compartir» sin ícono (sp-interno#60, 23/10/2026): eran
                     los de una librería, en botones que ya dicen lo que hacen. La
                     regla de los íconos propios (CLAUDE.md) deja solo las señales
-                    de uso (flechas, «×», lupa, WhatsApp, urgencias). */}
-                <div style={css('display:flex;gap:10px;margin-top:10px')}>
-                  <button onClick={sim.download} className="btn-wa-outline sq" style={css('flex:1;display:flex;align-items:center;justify-content:center;height:44px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>Descargar</button>
-                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1;display:flex;align-items:center;justify-content:center;height:44px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>{sim.shareMsg || 'Compartir'}</button>
+                    de uso (flechas, «×», lupa, WhatsApp, urgencias). Sin el ícono,
+                    el texto nombra qué se descarga y qué se comparte (verificador
+                    de textos, 23/10): «Descargar cotización», «Compartir
+                    cotización». Si no entran los dos en un renglón (a 360), se
+                    apilan: cada uno pide su texto entero (nowrap y flex-basis
+                    auto) y el que no entra baja, a lo ancho. */}
+                <div style={css('display:flex;flex-wrap:wrap;gap:10px;margin-top:10px')}>
+                  <button onClick={sim.download} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>Descargar cotización</button>
+                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>{sim.shareMsg || 'Compartir cotización'}</button>
                 </div>
                 <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
                   <a href={`${BP}/planes/`} className="link-teal" style={css('font-size:13px;color:var(--sp-muted);font-weight:600')}>Ver el detalle de los planes →</a>

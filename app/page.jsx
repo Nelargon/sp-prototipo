@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, createElement } from 'react';
+import { useState, useEffect } from 'react';
 import { BP } from './basePath';
 import { css } from './css';
 import { fmt, plans, WHATSAPP_NUMBER, SP_PHONE_DISPLAY, SP_TEL, YEARS_CARING } from './quote';
 import { track } from './track';
-import { coverage, notaCelda } from './coverage';
-import { Term, waitLabel, annotate } from './glossary';
+import { coverage, notaCelda, ECO_EN_FAQ } from './coverage';
+import { Term, annotate } from './glossary';
 import Plegable from './components/Plegable';
 import IconoSP from './components/IconoSP';
 import BotonRevision from './components/BotonRevision';
@@ -16,7 +16,6 @@ import MuroFondo from './components/MuroFondo';
 import { CON_GUIA, GUIA_HREF, CON_AGENDA, CON_MI_SP, CON_BLOG, CON_HISTORIA, ES_LANZAMIENTO } from './edicion';
 
 const INITIAL = {
-  sel: 'Resonancia (RM)',
   mobileMenuOpen: false,
   faqOpen: null,
 };
@@ -34,9 +33,6 @@ export default function Page() {
   const patch = (p) => setState((s) => Object.assign({}, s, p));
 
   // ===== pure data / helpers =====
-  const iconEl = (path) =>
-    createElement('svg', { viewBox: '0 0 24 24', width: 20, height: 20, fill: 'none', stroke: 'var(--sp-mint)', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }, createElement('path', { d: path }));
-
   const toggleMenu = () => setState((s) => ({ mobileMenuOpen: !s.mobileMenuOpen }));
   const closeMenu = () => patch({ mobileMenuOpen: false });
   const toggleFaq = (i) => setState((s) => ({ faqOpen: s.faqOpen === i ? null : i }));
@@ -58,14 +54,18 @@ export default function Page() {
     // Essential reemplazó a Bronze el 24/09/2026. Ya no se dice "cada plan
     // incluye todo lo del anterior": Essential tiene otra red y otros topes
     // (muchos por familia), así que eso dejó de ser cierto entre él y Silver.
-    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, las cirugías y el parto los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
+    // La cirugía, «una por año para la familia, de una lista de 26» (10A, 23/10):
+    // «las cirugías», sin más, era lo que la 10A vino a sacar.
+    { q: '¿Cuál es la diferencia entre Essential, Silver y Gold?', a: 'Essential es el plan de entrada y su precio depende de tu zona: consultas sin tope en Lister, urgencias 24 h, laboratorio, radiografías, ecografías, tomografía y resonancia (con topes por familia) y odontología básica en Lister. La internación, el parto y una cirugía por año para la familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia. Silver es el salto más grande: resonancia y tomografía con menos espera, consultas sin tope en la mitad de las especialidades (5 o 6 al año en el resto) y más días de terapia intensiva. Gold saca casi todos los topes de consultas, baja algunas esperas y sube los montos de medicamentos en internación.', cta: { label: 'Compará los tres al detalle →', to: 'planes' } },
     // 9A y 10A (Arturo, 23/10/2026, sp-interno#191): las ecografías de Silver y
     // Gold esperan 2 meses la mayoría y 3 las del embarazo y las Doppler, y la
     // cirugía de Essential es una al año de una lista de 26. La FAQ se lee: va
     // en oraciones y sin toque (la respuesta vive en un Plegable que recorta, y
     // la lista más corta no entra); las listas enteras están en /planes y en el
-    // simulador.
-    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías (una al año por familia, de una lista de 26) y parto, 1 año. En Silver y Gold: laboratorio, unos 2 meses; ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras seis); tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses. Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
+    // simulador. Las de Gold se nombran (ECO_EN_FAQ, la misma fuente que los
+    // toques de coverage.js): «otras seis» dejaba sin contestar cuáles
+    // (verificador de textos, 23/10).
+    { q: '¿Cuánto tengo que esperar para usar mi plan?', a: 'Depende de lo que necesites y de tu plan. Ese tiempo de espera —en el contrato se llama carencia— arranca el día que te afiliás, no el día que lo necesitás. Consultas y urgencias, sin espera en los tres. En Essential: laboratorio de rutina, radiografías y fisioterapia, sin espera; análisis especializados y ecografías, 3 meses; tomografía, 6 meses; resonancia, internación, cirugías (una al año por familia, de una lista de 26) y parto, 1 año. En Silver y Gold: laboratorio, unos 2 meses; ecografías, ' + ECO_EN_FAQ + '; tomografía, 4 meses (3 en Gold); fisioterapia, 3 meses; resonancia, 5 meses; la mayoría de las cirugías programadas, 6 meses en Silver y 5 en Gold; y parto, 10 meses. Por eso conviene afiliarse antes de necesitarlo: el reloj corre desde la firma.' },
     // El 10% está confirmado para Silver y Gold; para Essential no hay fuente
     // (sp-interno#80, decisión 2A de Arturo, 13/10/2026): se pregunta al asesor.
     { q: '¿Hay descuento por la forma de pago?', a: 'En Silver y Gold, sí: pagando con débito automático o tarjeta de crédito tenés 10% de descuento sobre el precio de lista, todos los meses. En Essential, preguntale a tu asesor si también tiene el descuento. Los precios que ves publicados son de lista, sin ese descuento aplicado.', cta: { label: 'Simulá tu plan →', sim: true } },
@@ -291,29 +291,6 @@ export default function Page() {
   // allá, donde devuelve resultados; el home solo abre la puerta.
   const guiaHome = `${BP}${GUIA_HREF}`;
 
-  // Qué cubre — explorador curado de coberturas (ex "buscador" que expulsaba a
-  // la Guía Médica al no encontrar: BITACORA cap. 44). Con 11 coberturas reales
-  // una caja de texto abierta promete saber todo y falla; los chips muestran lo
-  // que REALMENTE tenemos y responden ahí mismo, sin redirección.
-  const chips = cartArr.map((c) => ({
-    name: c.name, onPick: () => { track('cartilla_select', { practica: c.name, via: 'chip' }); setState({ sel: c.name }); },
-    // Chip activo en teal accesible var(--sp-teal-deep) (blanco sobre var(--sp-teal) daba 2.37:1 —
-    // hallazgo QA; mismo arreglo que /agendar). El resto, borde gris neutro.
-    style: 'padding:9px 15px;border-radius:var(--r-pill);border:1.5px solid ' + (state.sel === c.name ? 'var(--sp-teal-deep)' : '#d9e4e2') + ';background:' + (state.sel === c.name ? 'var(--sp-teal-deep)' : '#fff') + ';color:' + (state.sel === c.name ? '#fff' : 'var(--sp-text)') + ';font-size:13px;font-weight:' + (state.sel === c.name ? '700' : '500') + ';cursor:pointer;transition:all .15s',
-  }));
-  const sel = cartArr.find((c) => c.name === state.sel) || cartArr[0];
-  const selRows = sel.cov.map((cv, i) => {
-    const ok = cv.ok;
-    // La carencia solo se muestra donde HAY cobertura: en un plan que no cubre
-    // el servicio no hay espera que contar (ver la regla AD en coverage.js).
-    const wait = ok && sel.wait ? waitLabel(sel.wait[i]) : null;
-    return {
-      plan: plansArr[i].name, color: plansArr[i].color, status: cv.s, detail: cv.d, wait,
-      wrap: 'padding:18px 20px;border-left:' + (i === 0 ? '0' : '1px solid var(--sp-line-2)'),
-      badge: 'display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 11px;border-radius:var(--r-pill);' + (ok ? 'background:var(--sp-mint-bg);color:var(--sp-teal-deep)' : 'background:var(--sp-gold-bg);color:var(--sp-gold-ink)'),
-    };
-  });
-
   // Comparador "lo que cambia" (ola 2, iter 3 — feedback CX del usuario, BITACORA
   // cap. 48). Iter 2 (el teal condicional) apagaba a Gold y obligaba a leer una
   // regla antes de entender: "no me hagas pensar". Ahora: "Al 100%" en teal
@@ -495,10 +472,8 @@ export default function Page() {
     waHref,
     mobileMenuOpen: state.mobileMenuOpen, mobileMenuClosed: !state.mobileMenuOpen,
     toggleMenu, closeMenu,
-    chips,
     guiaHome,
     trackGuia: (via) => track('guia_handoff', { q: '', via }),
-    selKey: sel.name, selName: sel.name, selIcon: iconEl(sel.icon), selRows,
     planHead, cmp, cmpIgual, planesHref: `${BP}/planes/`, stepsHow, faqList,
     difs: difsData(),
     // Orden del muro (26/09/2026): las tres farmacias juntas, después óptica y viajes.

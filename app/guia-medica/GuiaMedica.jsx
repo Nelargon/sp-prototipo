@@ -14,6 +14,7 @@ import IconoSP from '../components/IconoSP';
 import { CON_MARCA_REVISAR } from '../edicion';
 import datos from '../../lib/guia-medica.json';
 import red from '../../lib/red-home.json';
+import { fechaDatosAl } from '../../lib/fecha';
 import { GRUPOS_PLAN, grupoDePlan, nombrePlan, indexar, filtrar, catalogos, sugerir, redesCortas, telHref, telVisible, mapaHref, condicionTexto, interpretar, norm } from '../../lib/red-medica';
 
 /* El tapiz (25/09/2026, docs/diseno n.º 36 y 38; Arturo eligió el 2a): el muro
@@ -361,7 +362,7 @@ export default function GuiaMedica() {
   // «Datos al»: el día en que build-guia-medica.py leyó la planilla publicada
   // (meta.datos_al). Hasta el 23/10/2026 decía la fecha del PDF de Privilege
   // (meta.guias.privilege.fecha, siempre 17/09): sp-interno#61.
-  const fecha = (datos.meta.datos_al || '').split('-').reverse().join('/');
+  const fecha = fechaDatosAl(datos.meta.datos_al);
   const waSinResultado = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Busqué «' + f.q + '» en la Guía Médica y no lo encontré. ¿Me ayudan?');
   const waNoEncuentro = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola! Quiero saber si un profesional está en la red de mi plan.');
 
