@@ -5960,3 +5960,57 @@ camino:
 - **Lo que sale del flujo pierde a su ancla.** Con `position:fixed` hay que
   decidir qué pasa al scrollear, y medirlo con las tres entradas: el dedo, el
   mouse y el teclado. La decisión obvia (cerrar) era la que rompía una de ellas.
+
+## Capítulo 164 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
+
+**Qué intentamos.** En la tercera tanda, `CALIFICATIVOS` pasó a pedirle a cada
+nombre de las 26 lo que dice su ítem, y la burbuja de un toque pasó a ser fija,
+escondida mientras su toque está «fuera de lo que se ve». En el texto de las
+ecografías de Gold, las Doppler fueron a su propia oración para que la renal no
+se leyera como Doppler.
+
+**Qué pasó.** La re-verificación encontró cuatro cosas, y arreglar una hizo caer
+una prueba que estaba bien escrita en apariencia:
+- **El detector no dejaba pasar al cuadernillo.** Cada regla pedía la palabra
+  que había elegido el sitio: «unilateral» exigía «de un lado» y «terapéutico»,
+  «como tratamiento». Las 26 dichas tal como las dice el cuadernillo daban 12
+  hallazgos. sp-interno#206 le ofrece a Arturo quedarse con el literal, así que
+  la opción B le habría puesto el CI en rojo por algo que está bien. Ahora cada
+  regla acepta el literal y su traducción, y el primer caso de «pasan» es el
+  cuadernillo mismo.
+- **«Fuera» era fuera de la pantalla.** En el simulador de la computadora, con
+  la lista abierta por teclado y el cuerpo scrolleado hasta esconder el toque
+  debajo del borde de la tarjeta, la burbuja seguía a la vista, apuntando a
+  nada. Ahora se mide contra lo que se ve: la pantalla, debajo de la cabecera,
+  cortada por cada caja del toque que recorta.
+- **Con ese arreglo cayó `seguir`, la prueba del scroll.** Llevaba el toque
+  afuera de la pantalla y lo devolvía «al medio». En el simulador, la ida
+  scrolleaba el cuerpo y también la página, y la vuelta solo el cuerpo: el toque
+  quedaba a media pantalla, pero debajo del borde de su caja, escondido. La
+  burbuja aparecía igual porque el código tenía el mismo punto ciego que la
+  prueba, y la prueba daba verde. Cuando el código empezó a ver bien, la que
+  cayó fue la prueba. No se tocó el código: la prueba ahora vuelve el toque a
+  donde estaba.
+- **Un punto cambió a quién le toca la vejiga.** Al separar las oraciones, la
+  de vejiga quedó suelta después de la de Gold, en el toque de Silver y Gold
+  juntos, y se leía que valía para los dos. En Silver sus dos filas esperan 60
+  días. Volvió adentro de la oración de Gold, como en la pregunta frecuente.
+
+Además, el arreglo del parpadeo (`useLayoutEffect`) no tenía quién lo cuidara.
+Ahora, con el dedo, se registra la burbuja en cada cuadro y el primero en que se
+dibuja ya tiene que estar junto a su toque. Una copia con el efecto en
+`useEffect` cae en las 45 aperturas: el primer cuadro sale escondido, todavía
+sin ubicar.
+
+**Qué aprendimos.**
+- **Una regla sacada de una fuente tiene que dejar pasar a la fuente.** Es la
+  primera prueba de un detector así, y la que nos faltó. Una regla que solo
+  acepta nuestra traducción vigila nuestra elección, no el contrato.
+- **Lo que se ve no es la pantalla, tampoco para el ancla.** El cap. 76 lo
+  aprendió para la burbuja; esta vez faltaba para el toque al que apunta.
+- **Si el código empieza a ver bien y una prueba cae, primero se mira la
+  prueba.** Puede tener el mismo punto ciego que tenía el código. Hacerla pasar
+  tocando el código habría devuelto el error.
+- **La puntuación decide el alcance.** Mover un punto no es solo estilo:
+  cambia a qué plan le toca lo que sigue. Un arreglo de redacción en una lista
+  que nombra planes se vuelve a leer plan por plan.

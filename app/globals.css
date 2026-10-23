@@ -158,7 +158,12 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .body{font-family:var(--font-display),'Aptos','Segoe UI',system-ui,sans-serif;font-weight:400}
 .rv{transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1.05s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
 .rvon .rv{opacity:0;transform:translateY(18px)}
-.rvon .rv.in{opacity:1;transform:none}
+/* Al entrar, sin will-change (verificador de la ronda 2, 23/10/2026): hace
+   falta mientras espera, no después. Un will-change de transform que queda
+   puesto convierte a la caja en el marco de lo fijo que lleve adentro: el
+   Comparador del home (div.cmp2[data-rv]) es el mismo de /planes, y el día que
+   una fila suya lleve un toque, su burbuja fija saldría corrida. */
+.rvon .rv.in{opacity:1;transform:none;will-change:auto}
 .sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--sp-teal),var(--sp-teal-hover));z-index:120;transition:width .12s linear;pointer-events:none}
 /* Header translúcido en ambos estados: vidrio esmerilado oscuro sobre el
    hero, claro al scrollear (.solid). El blur vive acá para que aplique

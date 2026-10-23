@@ -169,10 +169,31 @@ export function Term({ k, children, dict, tipo = 'glosario' }) {
     const M = 8;
     const vw = document.documentElement.clientWidth, vh = window.innerHeight;
     const nav = document.querySelector('[data-nav]');
-    const techo = (nav && getComputedStyle(nav).position === 'fixed' ? Math.max(0, nav.getBoundingClientRect().bottom) : 0) + M;
+    const bajoNav = nav && getComputedStyle(nav).position === 'fixed' ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    const techo = bajoNav + M;
     const piso = vh - M;
     const b = t.getBoundingClientRect();
-    if (b.bottom < techo || b.top > piso) { setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true })); return; }
+    // ¿El toque se ve? (verificador de la ronda 2, 23/10/2026.) Se mide contra
+    // lo que de verdad se ve: la pantalla, debajo de la cabecera fija, cortada
+    // por las cajas del toque que recortan (overflow hidden, clip, auto o
+    // scroll; el mismo bucle que la burbuja del glosario, abajo), y sin el
+    // margen. Hasta entonces se medía contra la pantalla sola y con el margen:
+    // en el simulador de la computadora, con la lista abierta por teclado y el
+    // cuerpo scrolleado hasta esconder el toque debajo del borde de la tarjeta,
+    // la burbuja seguía a la vista apuntando a nada; y un toque que asomaba
+    // entre 1 y 8 px debajo de la cabecera quedaba abierto con la burbuja
+    // invisible. Dónde va la burbuja sigue usando la pantalla entera: ella es
+    // fija y no la recorta ninguna caja.
+    let visArriba = bajoNav, visAbajo = vh;
+    for (let a = t.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (/hidden|clip|auto|scroll/.test(cs.overflow + cs.overflowX + cs.overflowY)) {
+        const q = a.getBoundingClientRect();
+        visArriba = Math.max(visArriba, q.top);
+        visAbajo = Math.min(visAbajo, q.bottom);
+      }
+    }
+    if (b.bottom <= visArriba || b.top >= visAbajo) { setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true })); return; }
     // scrollHeight y no el alto de la caja: con max-height, la caja mide lo que
     // se ve y scrollHeight sigue midiendo la lista entera.
     const w = el.offsetWidth, h = el.scrollHeight;

@@ -260,7 +260,11 @@ const CIR_VIDEO = 'Si te operan por videolaparoscopía, pagás vos la diferencia
 export const TOQUES = {
   'eco-silver': { t: 'Ecografías que esperan 3 meses en Silver', d: may(EMBARAZO) + ' y ' + DOPPLER + '.' },
   'eco-gold': { t: 'Ecografías que esperan 3 meses en Gold', d: may(EMBARAZO) + ' y ' + DOPPLER + '. También ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
-  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + '. ' + may(VEJIGA_GOLD) + '.' },
+  // Con Silver y Gold juntos, la vejiga va dentro de la oración de Gold, como
+  // en ECO_EN_FAQ: suelta, después de esa oración, se leía que valía también
+  // para Silver, y en Silver sus dos filas esperan 60 días (verificador de la
+  // ronda 2, 23/10). En 'eco-gold' puede ir sola: ahí todo es de Gold.
+  'eco-sg': { t: 'Ecografías que esperan 3 meses', d: 'En Silver y Gold, ' + EMBARAZO + ' y ' + DOPPLER + '. En Gold, también ' + SOLO_GOLD + ', y ' + VEJIGA_GOLD + '.' },
   // `ancho` (Term): a 260 px la lista mide unos 366 px de alto y no entraba en la
   // tarjeta de esperas del simulador en la computadora; a 420, unos 290. Desde la
   // tercera tanda (23/10) la burbuja es fija y ya no la recorta la tarjeta, pero

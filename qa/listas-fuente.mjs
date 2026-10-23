@@ -258,22 +258,28 @@ export const PARES_26 = [
 // evacuador (raspado del útero)» decía «evacuador» pero su traducción incluía el
 // raspado de diagnóstico, y «sacar el adenoma de próstata» había perdido el «a
 // cielo abierto» de su ítem: la prueba solo veía que faltara «evacuador».
+// Cada regla acepta el literal del cuadernillo y su traducción (verificador de
+// la ronda 2, 23/10): hasta entonces pedía solo la palabra que eligió el sitio,
+// y la lista dicha tal como la dice el cuadernillo daba 12 hallazgos. Era un
+// detector que grita en falso (CLAUDE.md, BITACORA cap. 89): sp-interno#206 le
+// ofrece a Arturo quedarse con el literal o elegir palabras de casa, y con
+// cualquiera de las dos el CI se habría puesto en rojo por algo que está bien.
 export const CALIFICATIVOS = [
-  [/unilateral/i, /de un (lado|ojo)/, '«unilateral»: de un lado'],
-  [/a cielo abierto/i, /a cielo abierto/, '«a cielo abierto» (la de próstata más común es por la uretra, y no es videolaparoscopía)'],
+  [/unilateral/i, /unilateral|de un (solo )?(lado|ojo)/i, '«unilateral»: de un lado'],
+  [/a cielo abierto/i, /a cielo abierto|cirug[ií]a abierta/i, '«a cielo abierto» (la de próstata más común es por la uretra, y no es videolaparoscopía)'],
   // «abierta o cerrada» (la hemorroidectomía) nombra las dos técnicas: no limita.
-  [/\babierta\b(?! o cerrada)/i, /\babierta\b/, '«abierta»'],
-  [/no complicada/i, /no complicada/, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»)'],
-  [/no incluye malla/i, /la malla no entra/, '«no incluye malla»'],
-  [/con o sin autoinjerto/i, /con o sin autoinjerto/, '«con o sin autoinjerto»'],
-  [/evacuador/i, /evacuador/, '«evacuador» (sin él, también el legrado de diagnóstico)'],
-  [/terap[eé]utico/i, /como tratamiento/, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
-  [/\btotal\b/i, /\btotal\b/, '«total»'],
-  [/exploradora/i, /exploradora/, '«exploradora»'],
-  [/inguinoescrotal/i, /inguinoescrotal/, '«inguinoescrotal»'],
-  [/\banterior\b/i, /\banterior\b/, '«anterior»'],
-  [/\bposterior\b/i, /\bposterior\b/, '«posterior»'],
-  [/\(EECC\)/, /extracapsular/, '«EECC», la extracción extracapsular'],
+  [/\babierta\b(?! o cerrada)/i, /\babierta\b|a cielo abierto/i, '«abierta»'],
+  [/no complicada/i, /no (est[aá] )?complicada/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»)'],
+  [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
+  [/con o sin autoinjerto/i, /con o sin (auto)?injerto/i, '«con o sin autoinjerto»'],
+  [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
+  [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
+  [/\btotal\b/i, /\btotal\b|\bentero\b|\bcompleto\b/i, '«total»'],
+  [/exploradora/i, /exploradora|para explorar/i, '«exploradora»'],
+  [/inguinoescrotal/i, /inguinoescrotal|de la ingle y (del|el) escroto/i, '«inguinoescrotal»'],
+  [/\banterior\b/i, /\banterior\b|de adelante/i, '«anterior»'],
+  [/\bposterior\b/i, /\bposterior\b|de atr[aá]s/i, '«posterior»'],
+  [/\(EECC\)/, /EECC|extracapsular/i, '«EECC», la extracción extracapsular'],
 ];
 
 export function revisar26(items, web, pares = PARES_26) {
@@ -310,6 +316,7 @@ export function autoprueba() {
   // Un nombre de la web cambiado en las dos puntas (CIRUGIAS_26 y PARES_26): la
   // igualdad de los pares no lo ve; solo CALIFICATIVOS.
   const enLasDos = (i, nombre) => revisar26(items, COV.CIRUGIAS_26.map((x, k) => (k === i ? nombre : x)), PARES_26.map((p, k) => (k === i ? [p[0], nombre] : p)));
+  const LITERAL = (xs) => xs.map((x) => x[0].toLowerCase() + x.slice(1));
   const porCalificativo = (i, h) => h.filter((x) => x.startsWith('4.4.' + (i + 1) + ':') && /perdió un calificativo/.test(x));
   const sinFuera = (item) => Object.fromEntries(Object.entries(FUERA_DE_LA_FILA).filter(([k]) => k !== item));
   const casos = [
@@ -339,6 +346,11 @@ export function autoprueba() {
     ['una fila nueva de otro grupo que no se llama «ECOGRAFIA…» (no se mira)', nuevos(revisarEcos(conFila(GRILLA, { item: 'TOMOGRAFIA NUEVA', grupo: 'TOMOGRAFIAS', silver: { carencia: '90 DIAS' }, gold: { carencia: '90 DIAS' } }), toques), hoyEco)],
     ['otra palabra de casa con los calificativos de su ítem, en las dos puntas', nuevos(enLasDos(3, 'sacar el adenoma de la próstata, a cielo abierto'), hoy26)],
     ['la hemorroidectomía «abierta o cerrada» sin «abierta» (nombra las dos técnicas)', nuevos(enLasDos(12, 'hemorroidectomía (cirugía para sacar las hemorroides)'), hoy26)],
+    // El literal del cuadernillo pasa su propia regla (ronda 2, 23/10): las 26
+    // tal como las dice el ítem, en minúscula, en las dos puntas; y una palabra
+    // de casa para el apéndice que dice la condición con otras palabras.
+    ['las 26 en literal, en las dos puntas', nuevos(revisar26(items, LITERAL(items), items.map((x, i) => [x, LITERAL(items)[i]])), hoy26)],
+    ['«sacar el apéndice, si la apendicitis no está complicada», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice, si la apendicitis no está complicada'), hoy26)],
   ];
   for (const [que, h] of casos) if (!h.length) f.push(que + ': tenía que fallar y pasa');
   for (const [que, h] of pasan) if (h.length) f.push(que + ': tenía que pasar y falla (' + h[0] + ')');

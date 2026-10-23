@@ -283,6 +283,43 @@ de la videolaparoscopía). Entró en la misma rama:
   cap. 161 corregido donde decía más que el cuadernillo sobre la
   videolaparoscopía.
 
+**La cuarta tanda (23/10, después de re-verificar la tercera).** La rama trajo
+`main` con el modo oscuro (#287): el cap. 155 de main quedó como 155 y los ocho
+de la rama pasaron a 156-163, con sus citas renumeradas; el CI corre esquinas,
+listas-fuente y modo-oscuro en el mismo paso. Y entró:
+- **La vejiga, dentro de la oración de Gold** en el toque de Silver y Gold
+  juntos (`eco-sg`): «… En Gold, también las de riñón y de vías urinarias, la
+  testicular, la de próstata por vía rectal y la transvaginal, y para la de
+  vejiga, preguntale a tu asesor cuánto esperás.», como la pregunta frecuente
+  (`ECO_EN_FAQ`). Suelta, después de la oración de Gold, se leía que valía
+  también para Silver, y en Silver sus dos filas esperan 60 días. Se ve en el
+  cuadro de esperas del celular, la tarjeta y la hoja de la ecografía.
+  `eco-gold` queda como estaba: ahí todo es de Gold.
+- **`CALIFICATIVOS` acepta el literal del cuadernillo y su traducción**
+  («unilateral» o «de un lado»; «no complicada» o «no está complicada»; «no
+  incluye malla» o «la malla no entra»; «terapéutico» o «como tratamiento»;
+  «EECC» o «extracapsular», y lo análogo en las demás). Pedía solo la palabra
+  que eligió el sitio: las 26 dichas tal como las dice el cuadernillo daban 12
+  hallazgos, y con cualquiera de las dos opciones de #206 el CI se habría puesto
+  en rojo por algo que está bien.
+- **La burbuja de un toque se esconde cuando su caja esconde al toque**
+  (`colocarFijo`): «fuera» se mide contra lo que se ve (la pantalla, debajo de
+  la cabecera fija, cortada por las cajas del toque que recortan), sin el
+  margen; dónde va la burbuja sigue usando la pantalla entera. En el simulador
+  de la computadora, con la lista abierta por teclado y el cuerpo scrolleado
+  hasta esconder el toque debajo del borde de la tarjeta, la burbuja seguía a
+  la vista apuntando a nada.
+- **Sin `will-change` después de la animación de entrada** (`.rvon .rv.in`): un
+  `will-change: transform` que queda puesto hace de la caja el marco de lo fijo
+  que lleve adentro, y el Comparador del home es el mismo de `/planes`. La
+  animación sigue igual: los mismos valores de opacidad y desplazamiento en
+  cada milisegundo y la misma caja de cada uno de los 400 elementos al terminar
+  (medido con la transición pausada y llevada a cada milisegundo).
+- **El anestesista de la cesárea no era una pregunta**: lo contesta el
+  cuadernillo (ver «Lo que queda»).
+- **Documentos**: BITACORA cap. 164 («La regla que no dejaba pasar a su propia
+  fuente»).
+
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
 - *(Segunda tanda.)* La sección «9A y 10A» de `qa-lanzamiento` abre cada toque
@@ -336,6 +373,19 @@ un caso que falla y uno que pasa:
   (entre ellos, los cuatro nombres de esta tanda cambiados en las dos puntas,
   que caen por el calificativo, y el ecocardiograma del grupo sin declarar) y 3
   que tienen que pasar. Con el `coverage.js` de 40d36ad da 14 hallazgos.
+- *(Cuarta tanda.)* `qa-lanzamiento`, sección «9A y 10A»: con el dedo, en cada
+  apertura se registra la caja de la burbuja en cada cuadro desde que deja de
+  estar en `display:none`, y el primero ya tiene que verse junto a su toque y
+  debajo de la cabecera (una copia con el efecto de posición en `useEffect`
+  cae en las 45 aperturas: el primer cuadro sale escondido, todavía sin ubicar). En el simulador a 1280, con la
+  lista abierta por teclado, el cuerpo se scrollea hasta esconder el toque por
+  el borde de la tarjeta y la burbuja no se tiene que ver (con el `Term` de
+  3db7cb7 cae: el toque en 884-898, la tarjeta cortando en 865 y la burbuja a la
+  vista). `seguir` vuelve el toque a donde estaba en lugar de «al medio»: en el
+  simulador de la computadora, «al medio» lo dejaba debajo del borde de su caja.
+- *(Cuarta tanda.)* `qa/listas-fuente.mjs` suma a «pasan» las 26 en literal en
+  las dos puntas y «sacar el apéndice, si la apendicitis no está complicada»:
+  18 casos que tienen que fallar y 5 que tienen que pasar.
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -353,11 +403,18 @@ un caso que falla y uno que pasa:
   por duplicada el 18/09: #173.
 - Los nombres de especialidades en Tipo Oración: #61, punto 3 (el PR lleva
   «Refs Nelargon/sp-interno#61 (puntos 1 y 2)», no «Closes»).
-- Sin punto de revisión todavía (lo abre quien orquesta):
-  - las notas de las opciones del simulador, en Nunito Sans (1A);
-  - la fecha de lectura en el informe de `build-guia-medica.py`;
-  - el 50 % del anestesista en la cesárea de Essential (pregunta para #204);
-  - los materiales descartables de la resonancia en las oraciones (4.2).
+- Las notas de las opciones del simulador, en Nunito Sans (son oraciones: van
+  en Inter, con el QA responsive completo), y la fecha «Datos al» de la Guía
+  Médica, que hoy es el día en que corrió `build-guia-medica.py` y no la de la
+  planilla: #207.
+- Los materiales descartables de la resonancia en las oraciones (4.2: «No
+  incluye contraste, materiales descartables ni sedación»): #203, pregunta 3.
+- El anestesista en la cesárea de Essential **no es un pendiente**: lo contesta
+  el cuadernillo (releído en el Drive el 23/10). El 50 % de los honorarios del
+  anestesiólogo es de las cirugías con internación (4.3.2); en el parto, el
+  4.5.4 cubre «honorarios del anestesiólogo» sin porcentaje, y el sitio no dice
+  otra cosa. No hace falta preguntar. *(Hasta la tercera tanda figuraba como
+  pregunta para #204.)*
 - La guía vieja (`guia/`) no se pudo ver con estilos en este entorno: la mide
   la salud nocturna.
 

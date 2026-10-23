@@ -2915,9 +2915,11 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     // Las Doppler, en su oración: con una coma, «… y de carótidas, y las de
     // riñón» se leía «Doppler de riñón» (tercera tanda, 23/10).
     Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + ' y ' + DOP + '. También ' + GOLD5 + '. ' + may(VEJ) + '.',
-    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '. ' + may(VEJ) + '.',
+    // Con los dos planes, la vejiga va dentro de la oración de Gold (en
+    // Silver espera 60): suelta, se leía que valía para los dos (ronda 2).
+    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + ', y ' + VEJ + '.',
   };
-  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + '. ' + may(VEJ) + '.';
+  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + ', y ' + VEJ + '.';
   const { PARES_26 } = await import(new URL('../qa/listas-fuente.mjs', import.meta.url));
   const LAS_26 = PARES_26.map((p) => p[1]);
   const T26_TITULO = 'Las 26 cirugías de Essential, a cielo abierto';
@@ -3045,10 +3047,10 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   // Y la burbuja fija tiene que estar junto a su toque y sin un marco del fixed.
   const ALTO_MIN = 240;
   const grande = (l) => l.alto >= Math.min(l.largo, ALTO_MIN) - 1;
-  const bienPuesta = (l) => l.entera && !l.tapadas && grande(l) && (!l.fija || (l.junto && !l.rompe)) && (!l.scroll || (l.puedeScroll && l.sigue));
+  const bienPuesta = (l) => l.entera && !l.tapadas && grande(l) && (!l.fija || (l.junto && !l.rompe)) && (!l.scroll || (l.puedeScroll && l.sigue)) && (!l.cuadros || primerBien(l.cuadros));
   const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && bienPuesta(l);
   const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && bienPuesta(l);
-  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip, alto: l.alto, largo: l.largo, fija: l.fija, junto: l.junto, rompe: l.rompe });
+  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip, alto: l.alto, largo: l.largo, fija: l.fija, junto: l.junto, rompe: l.rompe, primerCuadro: l.cuadros && (l.cuadros[0] || 'ninguno') });
   // Lo que se midió, para el informe: el alto más chico que se vio de cada lista.
   const altos = { 26: Infinity, eco: Infinity };
   const POS = [0.25, 0.5, 0.85];
@@ -3057,17 +3059,59 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   // por dentro como se scrollea: con el dedo, un arrastre (CDP, eventos de
   // toque de verdad); con el mouse, pasando a la burbuja y con la rueda. Tiene
   // que moverse y seguir abierta (`sigue`).
+  // EL PRIMER CUADRO (ronda 2, 23/10/2026, verificador). El efecto que pone la
+  // burbuja fija en su lugar es useLayoutEffect: mide y acomoda antes de
+  // pintar. Con useEffect, al tocar con el dedo el primer cuadro salía en otro
+  // lado (con el Term de 40d36ad, entera hacia arriba, de −446 a 192, y recién
+  // en el segundo bajaba junto al toque): un parpadeo que ninguna prueba veía,
+  // porque todas miran 300 ms después. Con el dedo, antes del toque, se registra
+  // en cada cuadro (requestAnimationFrame, que corre antes de pintar) la caja de
+  // la burbuja desde que deja de estar en display:none, y el primero ya tiene
+  // que verse junto a su toque y por debajo de la cabecera fija. Sabotaje
+  // probado: en una copia con el efecto de posición en useEffect, cae en las 45
+  // aperturas con el dedo (el primer cuadro sale escondido, todavía sin ubicar).
+  const CUADROS = `(e) => {
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const nav = document.querySelector('[data-nav]');
+    const c = window.__cuadros = [];
+    const t0 = performance.now();
+    const vuelta = () => {
+      const cs = getComputedStyle(u);
+      if (cs.display !== 'none') {
+        const r = u.getBoundingClientRect(), t = e.getBoundingClientRect();
+        const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+        const hueco = r.top >= t.bottom - 1 ? r.top - t.bottom : t.top - r.bottom;
+        c.push({ ms: Math.round(performance.now() - t0), visible: cs.visibility === 'visible', caja: [Math.round(r.top), Math.round(r.bottom)], junto: hueco >= 4 && hueco <= 12 && r.left <= t.right && r.right >= t.left, bajoTecho: r.top >= techo - 0.5 });
+      }
+      if (c.length < 3 && performance.now() - t0 < 2000) requestAnimationFrame(vuelta);
+    };
+    requestAnimationFrame(vuelta);
+  }`;
+  const primerBien = (c) => c.length > 0 && c[0].visible && c[0].junto && c[0].bajoTecho;
+  // La regla, contra un primer cuadro escondido (el de useEffect: la burbuja
+  // dibujada antes de medirse), uno corrido hacia arriba, ninguno, y el bueno.
+  {
+    const bueno = { visible: true, junto: true, bajoTecho: true };
+    const auto = {
+      bueno: primerBien([bueno]),
+      escondido: !primerBien([{ ...bueno, visible: false, junto: false }, bueno]),
+      corrido: !primerBien([{ ...bueno, junto: false, bajoTecho: false }, bueno]),
+      ninguno: !primerBien([]),
+    };
+    if (Object.values(auto).some((x) => !x)) malas.push('la regla del primer cuadro no distingue el bueno de los malos: ' + JSON.stringify(auto));
+  }
   const abrir = async (pg, boton, dedo, pos) => {
     await boton.evaluate(eval(COLOCAR), pos);
     await pg.waitForTimeout(150);
     // En su primer renglón: un toque partido en dos tiene el centro de su caja
     // entre los renglones, fuera del texto.
     const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { x: r.left + r.width / 2, y: r.top + r.height / 2, dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; });
-    if (dedo) await boton.tap({ position: { x: q.dx, y: q.dy } });
+    if (dedo) { await boton.evaluate(eval(CUADROS)); await boton.tap({ position: { x: q.dx, y: q.dy } }); }
     else { await pg.mouse.move(5, 5); await pg.mouse.move(q.x, q.y); }
     await pg.waitForTimeout(300);
     const l = await boton.evaluate(eval(LEER));
     l.pos = pos;
+    if (dedo) { l.cuadros = await pg.evaluate(() => window.__cuadros || []); visto.cuadros++; }
     if (l.visto !== null && l.scroll) {
       const u = await boton.evaluateHandle((e) => e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'));
       const c = await u.evaluate((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2), h: r.height, st: x.scrollTop }; });
@@ -3086,7 +3130,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     return l;
   };
   const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(350); };
-  const visto = { posiciones: 0, seguir: 0 };
+  const visto = { posiciones: 0, seguir: 0, cuadros: 0, recortado: 0 };
   const abrirEn = async (pg, boton, dedo, esperado, donde) => {
     for (const pos of POS) {
       const l = await abrir(pg, boton, dedo, pos);
@@ -3107,8 +3151,8 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   // toque ya la cierra), se scrollean 60 px de lo que scrollea (la caja, como el
   // cuerpo del simulador en la computadora, o la página) y se lee: abierta, junto
   // al toque, entera, sin nada encima y grande. Después el toque se lleva arriba
-  // de la pantalla (la burbuja no se tiene que ver) y se vuelve al medio (se
-  // tiene que ver otra vez, junto a él).
+  // de la pantalla (la burbuja no se tiene que ver) y se vuelve a donde estaba
+  // (se tiene que ver otra vez, junto a él).
   const SCROLL60 = `(e) => {
     let a = e.parentElement;
     for (; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) break; }
@@ -3116,6 +3160,19 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     (caja ? a : window).scrollBy({ top: 60, behavior: 'instant' });
     return caja ? 'la caja' : 'la página';
   }`;
+  // Volver a donde estaba, y no «al medio» con COLOCAR (ronda 2, 23/10/2026):
+  // en el simulador de la computadora, COLOCAR(−0.3) scrollea el cuerpo del
+  // simulador y también la página, y COLOCAR(0.5) devolvía todo con el cuerpo
+  // solo, así que el toque quedaba a media pantalla pero debajo del borde de su
+  // caja, escondido. La burbuja lo seguía mostrando porque «fuera» se medía
+  // contra la pantalla; desde que se mide contra lo que se ve, se esconde (está
+  // bien), y la prueba tiene que devolver el toque a un lugar donde se vea.
+  const GUARDAR = `(e) => {
+    const v = [[null, scrollY]];
+    for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) v.push([a, a.scrollTop]); }
+    window.__vuelta = v;
+  }`;
+  const VOLVER = `() => { for (const [a, y] of window.__vuelta || []) (a || window).scrollTo({ top: y, behavior: 'instant' }); }`;
   const seguir = async (pg, boton, con, esperado, donde) => {
     await boton.evaluate(eval(COLOCAR), 0.5);
     await pg.mouse.move(5, 5);
@@ -3132,18 +3189,82 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
     const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
     const ok = abierta && antes.visto !== null && l.visto !== null && Math.abs((antes.top - l.top) - 60) <= 1 && (esperado === 26 ? bien26(l) : bienAbierto(l, esperado));
     const seVe = () => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+    await boton.evaluate(eval(GUARDAR));
     await boton.evaluate(eval(COLOCAR), -0.3);
     await pg.waitForTimeout(300);
     const fuera = !(await seVe());
-    await boton.evaluate(eval(COLOCAR), 0.5);
+    await boton.evaluate(eval(VOLVER));
     await pg.waitForTimeout(300);
     const v = await boton.evaluate(eval(LEER));
     if (v.scroll) v.sigue = true;
     const vuelve = (await boton.getAttribute('aria-expanded')) === 'true' && (await seVe()) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
-    if (!ok || !fuera || !vuelve) malas.push(donde + ', al scrollear ' + que + ' 60 px (' + con + '): ' + (abierta ? corto(l) + ' · el toque subió ' + (antes.top - l.top) + ' px' : 'se cerró') + (fuera ? '' : ' · con el toque fuera de la pantalla, la burbuja se sigue viendo') + (vuelve ? '' : ' · con el toque de vuelta en el medio: ' + corto(v)));
+    if (!ok || !fuera || !vuelve) malas.push(donde + ', al scrollear ' + que + ' 60 px (' + con + '): ' + (abierta ? corto(l) + ' · el toque subió ' + (antes.top - l.top) + ' px' : 'se cerró') + (fuera ? '' : ' · con el toque fuera de la pantalla, la burbuja se sigue viendo') + (vuelve ? '' : ' · con el toque de vuelta donde estaba: ' + corto(v)));
     visto.seguir++;
     await pg.keyboard.press('Escape');
     await pg.waitForTimeout(200);
+  };
+  // EL TOQUE ESCONDIDO POR SU CAJA (ronda 2, 23/10/2026, verificador). En el
+  // simulador de la computadora, con la lista abierta por teclado, la persona
+  // puede scrollear el cuerpo del simulador (la rueda, el touchpad) hasta que el
+  // toque quede escondido por el borde de la tarjeta, todavía dentro de la
+  // pantalla. «Fuera» se medía contra la pantalla sola: la burbuja seguía a la
+  // vista, encima de «Tu plan, a tu medida», apuntando a nada. `seguir` no lo
+  // veía: saca el toque de la pantalla, no de la caja. Acá se abre con Tab, se
+  // scrollea la caja hasta dejar el toque 20 px más allá de su borde (o lo que
+  // haya hasta el borde de la pantalla o de la cabecera), abajo y arriba donde
+  // se pueda, y la burbuja no se tiene que ver; vuelta al medio, se ve otra vez.
+  // Si por ningún lado el toque queda escondido dentro de la pantalla, el caso
+  // no prueba nada y se informa. Con el Term de 3db7cb7 cae: a 1280 × 900, el
+  // toque en 885-899 y la caja cortando en 865, la burbuja se seguía viendo.
+  const RECORTAR = `(e, lado) => {
+    let a = e.parentElement;
+    for (; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) break; }
+    if (!a || a === document.body) return { sinCaja: true };
+    const q = a.getBoundingClientRect(), t = e.getBoundingClientRect(), nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    // 20 px más allá del borde, o lo que haya hasta el borde de lo que se ve.
+    const dist = Math.min(20, Math.floor(lado === 'abajo' ? innerHeight - q.bottom - t.height - 1 : q.top - techo - t.height - 1));
+    if (dist < 4) return { caja: [Math.round(q.top), Math.round(q.bottom)], sinLugar: true };
+    a.scrollBy({ top: lado === 'abajo' ? t.top - (q.bottom + dist) : t.bottom - (q.top - dist), behavior: 'instant' });
+    const t2 = e.getBoundingClientRect();
+    const escondido = lado === 'abajo' ? t2.top >= q.bottom + dist - 1 : t2.bottom <= q.top - dist + 1;
+    return { caja: [Math.round(q.top), Math.round(q.bottom)], toque: [Math.round(t2.top), Math.round(t2.bottom)], dist, escondido, enPantalla: t2.top >= techo && t2.bottom <= innerHeight };
+  }`;
+  const recortado = async (pg, boton, donde) => {
+    const seVe = () => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+    let probados = 0;
+    const sinProbar = [];
+    for (const lado of ['abajo', 'arriba']) {
+      // Desde la página arriba, con la caja entera a la vista: COLOCAR mueve
+      // primero la caja, y así deja el toque adentro de ella.
+      await pg.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+      await boton.evaluate(eval(COLOCAR), 0.5);
+      await pg.mouse.move(5, 5);
+      await pg.waitForTimeout(150);
+      await boton.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); });
+      await pg.keyboard.press('Tab');
+      await pg.waitForTimeout(300);
+      const antes = await seVe();
+      const r = await boton.evaluate(eval(RECORTAR), lado);
+      await pg.waitForTimeout(300);
+      const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+      const despues = await seVe();
+      await boton.evaluate(eval(COLOCAR), 0.5);
+      await pg.waitForTimeout(300);
+      const v = await boton.evaluate(eval(LEER));
+      if (v.scroll) v.sigue = true;
+      const vuelve = (await seVe()) && bien26(v);
+      await pg.keyboard.press('Escape');
+      await pg.waitForTimeout(200);
+      if (r.sinCaja) { malas.push(donde + ': no encontró la caja que scrollea'); return; }
+      // Cada lado existe solo si entre el borde de la caja y el de lo que se ve
+      // (la cabecera arriba, la pantalla abajo) queda lugar para el toque.
+      if (!r.escondido || !r.enPantalla) { sinProbar.push(lado + ' ' + JSON.stringify(r)); continue; }
+      probados++;
+      if (!antes || !abierta || despues || !vuelve) malas.push(donde + ', con la caja scrolleada hasta esconder el toque por ' + lado + ' (teclado): ' + JSON.stringify({ antes, abierta, seVeConElToqueEscondido: despues, ...r }) + (vuelve ? '' : ' · de vuelta en el medio: ' + corto(v)));
+    }
+    if (!probados) malas.push(donde + ', el toque escondido por su caja: no se pudo dejar escondido dentro de la pantalla por ningún lado · ' + sinProbar.join(' · '));
+    visto.recortado += probados;
   };
 
   // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
@@ -3424,7 +3545,11 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
         const c = await notaDe('Cirugías programadas');
         const b = fila('Cirugías programadas').locator('.txt[aria-describedby]');
         if (c !== 'una al año por familia, ' + PALABRA_26 || !(await b.count())) malas.push('simulador ' + w + ', Essential, Cirugías programadas: ' + (c === null ? 'falta la nota' : '«' + c + '»'));
-        else { await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26'); await seguir(pg, b, dedo ? 'dedo' : 'teclado', 26, 'simulador ' + w + ', las 26'); }
+        else {
+          await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26');
+          await seguir(pg, b, dedo ? 'dedo' : 'teclado', 26, 'simulador ' + w + ', las 26');
+          if (!dedo) await recortado(pg, b, 'simulador ' + w + ', las 26');
+        }
         const porque = await pg.evaluate(() => { const p = document.querySelector('[data-sp-price]'); const c = p && p.closest('div.sq'); return c ? [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()) : []; });
         if (!porque.includes(ESS_PORQUE) || porque.some((x) => /las cirugías y el parto/.test(x))) malas.push('simulador ' + w + ', el porqué de Essential: ' + JSON.stringify(porque.find((x) => /^Cobertura de entrada/.test(x)) || porque.slice(0, 2)));
       } else {
@@ -3462,7 +3587,7 @@ console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una li
   }
 
   if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera, sin nada encima y donde se abra · ' + malas.slice(0, 8).join(' · ') + (malas.length > 8 ? ' · (y ' + (malas.length - 8) + ' más)' : ''));
-  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces), y también mientras su caja lo esconde (el simulador a 1280 con el teclado, ' + visto.recortado + (visto.recortado === 1 ? ' borde' : ' bordes') + '); con el dedo, el primer cuadro en que se dibuja ya está junto a su toque y debajo de la cabecera (' + visto.cuadros + ' toques); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
 }
 
 // ── «Compartir cotización» no mueve nada al copiar (#60, tercera tanda del 23/10) ──
