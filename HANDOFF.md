@@ -697,6 +697,48 @@ dos de otras sesiones:
     Si #206 elige palabras de casa, esa forma no sirve.
   - **Documentos**: BITACORA cap. 171 («La frase del ítem vivía adentro de la
     que dice lo contrario»).
+- **Después de la ronda 5 de verificación (sobre 564a291; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`main` entró por tercera vez**, con un merge y sin rebase (089255b): #292
+    (los precios del simulador con la tabla del 09/10/2026), #293 (la reserva
+    de turnos a su subdominio, las bases de Octubre Rosa y el «publicá»,
+    sp-interno#209) y #294 y #295 (el laboratorio visual del blog). Solo chocó
+    la bitácora: el 158, el 159 y el 160 son de main y se quedan con su número;
+    los once de la rama pasan a 161-171, en el mismo orden, con sus citas
+    renumeradas por título. El verificador había pedido 160-170, pero cuando se
+    trajo main ya tenía también el 160. En «Lo que queda», #209 ya no espera:
+    Arturo lo decidió. Con main, `qa-lanzamiento` recorre además
+    `/bases/octubre-rosa-2026/` y el CI corre `qa/precios.mjs` y
+    `qa/laboratorio.mjs`.
+  - **Las otras dos piezas de `colocarFijo` tienen su prueba.** El comentario
+    dice que pregunta «en el medio de su franja visible y a 1 px de sus bordes,
+    renglón por renglón», y solo el medio tenía sabotaje: sin los puntos de los
+    bordes, o mirando solo el primer renglón, la sección «9A y 10A» seguía en
+    verde, y en los dos casos la burbuja se escondía con su toque a la vista.
+    Ahora, (a) en /planes a 1280, desde el toque tapado por la cabecera de su
+    plan, la rueda lo deja asomando 4 px debajo de `.cmp2-h`; y (b) en el
+    cuadro de esperas a 360 y 390, donde «de una lista de 26» se parte en dos
+    renglones, la página deja el primero debajo de `[data-nav]` y el segundo a
+    la vista. En los dos se confirma antes que el caso es ese, y la burbuja
+    tiene que estar abierta, a la vista y junto al toque.
+  - **`CALIFICATIVOS`, sin sumar por otra puerta.** El apéndice no deja pasar
+    ningún «complicad…» sin un «no» (o «no está», «no esté», «no es») delante:
+    caen «complicada y no complicada» y «tanto complicada como no complicada».
+    Después de «no complicada» no puede venir una «o» ni una «u» («o
+    perforada» suma la complicada sin nombrarla), salvo «o sea», que explica:
+    «no complicada, o sea, sin peritonitis» pasa. El pterigión tampoco deja
+    pasar la membrana amniótica, que es el injerto de donante sin nombrarlo, y
+    acepta «o sea». Marcan de más, a propósito, «no complicada (no entra la
+    complicada)» y «con o sin autoinjerto (no de donante)»: ante la duda, se
+    lee. **El commit de la ronda 4 prometía la «u» y el donante, y la
+    autoprueba no los tenía**: ahora hay un caso por cada pieza de las dos
+    reglas.
+  - **#288** (Octubre Rosa y Noviembre Azul, de otra sesión) sigue abierto y
+    toca la bitácora (usa el cap. 158, que ya es de main), el HANDOFF y
+    `docs/diseno/README.md`: los merges van de a uno, y el que entre segundo
+    trae main y renumera.
+  - **Documentos**: BITACORA cap. 172 («Lo que promete el comentario es la
+    lista de sabotajes»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -803,6 +845,32 @@ un caso que falla y uno que pasa:
   del propio ojo» y «con o sin un injerto propio»). Con la regla de la quinta
   tanda del apéndice o del pterigión la autoprueba cae, y con la que propuso el
   verificador, también (el autoinjerto con el donante sumado).
+- *(Quinta tanda, ronda 5.)* `qa-lanzamiento`, sección «9A y 10A»: (a) en
+  /planes a 1280, la ecografía de Silver y las 26, abiertas con Tab y tapadas
+  por la cabecera de su plan, la rueda las deja asomando 4 px debajo de
+  `.cmp2-h` (medido: el toque en 173-188, la cabecera en 88-184); se confirma
+  con `elementsFromPoint`, sin contar la burbuja, que en el medio del toque
+  está la cabecera y a 1 px de su borde de abajo, el toque (si no, el caso no
+  prueba nada y se informa), y la burbuja tiene que estar abierta, a la vista y
+  junto. Con solo el punto del medio (`for (const y of [(arriba + abajoR) /
+  2])`) cae en los dos: abierta y escondida. (b) En el cuadro de esperas a 360
+  y 390, las 26 se abren con el dedo y la página deja el primer renglón de «de
+  una lista de 26» debajo de `[data-nav]` y el segundo a la vista (medido: los
+  renglones en 69-83 y 85-99, la cabecera hasta 84); se confirma que en el
+  primero no está el toque y en el segundo sí, y la burbuja tiene que estar
+  abierta, a la vista y junto. Con `i < 1` en el bucle de los renglones cae en
+  los dos anchos: abierta y escondida. Con la rama, ✓ (2 toques en cada caso).
+- *(Quinta tanda, ronda 5.)* `qa/listas-fuente.mjs`: 33 casos que tienen que
+  fallar y 12 que tienen que pasar (se suman, entre otros, «no complicada o
+  complicada», «no complicada o perforada», «complicada y no complicada»,
+  «tanto complicada como no complicada», «con o sin autoinjerto u otro
+  injerto», «… también de donante», «… y con membrana amniótica» y «… o con
+  injerto de otra persona»; pasan los dos «o sea»). Once sabotajes, uno por
+  pieza, y cada uno cae: el apéndice sin la condición de «complicad…» suelta,
+  sin la «o» y la «u» de después, sin la «u», sin la coma de antes, sin la de
+  después y sin «o sea»; el pterigión sin la «u», sin la «o», sin el donante,
+  sin la membrana amniótica y sin «o sea». Con las reglas de la ronda 4, una o
+  las dos, también cae.
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -842,6 +910,18 @@ un caso que falla y uno que pasa:
   tanto, `qa-lanzamiento` se corre sin otra suite al mismo tiempo, como lo hace
   la salud nocturna. Si se cambia, se sube la espera y no se toca dos veces: un
   segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
+- Tres hallazgos de `qa-integral` que no son de esta rama (ronda 5, medidos el
+  23/10 sobre la build del prototipo con `main` en 61ed0a9): en
+  `/blog/laboratorio/` (#294, que la rama no toca), un campo sin etiqueta
+  accesible («confunde») y dos imágenes bajo el pliegue sin `loading="lazy"`
+  («cosmético»); y **la home en 3G rápido tarda unos 7 s** («confunde», vara
+  3 s): 6.910 ms en `main` y 6.965 en la rama, de cuatro medidas cada una. El
+  documento (313 KB) termina de bajar último porque comparte la línea con los
+  scripts, las fuentes y la foto del inicio (unos 1,4 MB). Cuando la prueba da
+  verde marca 31 a 36 ms, que con 150 ms de latencia emulada no puede ser: en
+  esas corridas la emulación no se aplicó. Es decir, el verde de esa medida no
+  es confiable, y el rojo es el número real. Necesita un punto de revisión
+  propio en `sp-interno` (esta rama no abre issues).
 - Lo que sigue para preparar el espacio, sin publicar, está en «🧩» y en «🌐
   23/10/2026», arriba: el build para el dominio y el botón «Revisión» solo en el
   prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101). Las

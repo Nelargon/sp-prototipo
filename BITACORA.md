@@ -6393,3 +6393,57 @@ la ronda 3, y una parte del arreglo sin quién la cuidara:
   borrar sin que nada se ponga rojo.
 - **El arreglo que llega de afuera también se prueba.** Una regla propuesta con
   sus casos sigue siendo una hipótesis: se le busca el caso que no trajo.
+
+## Capítulo 172 — Lo que promete el comentario es la lista de sabotajes (23/10/2026)
+
+**Qué intentamos.** En la ronda 4, la prueba de `colocarFijo` sumó el sabotaje
+que le faltaba (`queHay` sin `elementsFromPoint`), y `CALIFICATIVOS` dejó de
+aceptar la frase del ítem adentro de una «o» que suma lo contrario (cap. 171).
+El comentario del código, el commit y el HANDOFF lo contaron con detalle.
+
+**Qué pasó.** La ronda 5 de verificación leyó ese detalle frase por frase y lo
+saboteó pieza por pieza:
+- **Tres piezas, un sabotaje.** El comentario de `colocarFijo` dice que pregunta
+  «en el medio de su franja visible y a 1 px de sus bordes, renglón por
+  renglón». Si se borraban los dos puntos de los bordes, o se miraba solo el
+  primer renglón, la sección «9A y 10A» seguía en verde. Las dos cambian lo que
+  ve la persona: en /planes a 1280, con el toque asomando 3 o 5 px debajo de la
+  cabecera de su plan, la burbuja se escondía; y donde «de una lista de 26» se
+  parte en dos renglones (de 320 a 412 px), con el primero debajo de la
+  cabecera del sitio y el segundo a la vista, también. Es el mismo hueco que la
+  ronda 4 encontró en el `elementsFromPoint`: la lección del cap. 171 se aplicó
+  a la pieza que la enseñó y no a sus vecinas.
+- **El commit prometía casos que no estaban.** Decía que en el apéndice «una
+  «o» antes o después no la deja pasar» y que en el pterigión «no puede venir
+  una «o», una «u» ni el donante». En la autoprueba había solo la «o»: sin la
+  «o» de después, sin la «u» o sin el donante, seguía en verde.
+- **La «o» no era la única forma de sumar.** «apendicectomía complicada y no
+  complicada», la forma más común en los textos médicos, y «tanto complicada
+  como no complicada» pasaban. Y se puede sumar sin nombrar: «con o sin
+  autoinjerto y con membrana amniótica» suma el injerto de donante sin decir
+  «donante». Al revés, marcaba «no complicada, o sea, sin peritonitis», que
+  explica y no suma.
+- **Y main avanzó otra vez.** El verificador pidió renumerar la rama a 160-170
+  porque main tenía el 158 y el 159; cuando se trajo main, ya tenía también el
+  160. Se renumeró a 161-171, por título, contra el main que se trajo.
+
+Ahora la prueba arma los dos casos de `colocarFijo` (confirmando antes que son
+esos) y cada uno cae con su sabotaje. El apéndice no deja pasar ningún
+«complicad…» sin un «no» delante, ni una «o» o una «u» después, salvo «o sea»;
+el pterigión tampoco deja pasar la membrana amniótica, y sí «o sea». La
+autoprueba tiene un caso por pieza: 33 que fallan y 12 que pasan. Cae con cada
+uno de los once sabotajes de pieza y con las reglas de la ronda 4.
+
+**Qué aprendimos.**
+- **Cada cláusula que describe un arreglo es una pieza, y lleva su sabotaje.**
+  «A 1 px de sus bordes», «renglón por renglón», «una «u»», «el donante»: si una
+  frase del comentario, del commit o del HANDOFF no tiene un sabotaje que la
+  haga caer, promete algo que nadie cuida. La lista de sabotajes se arma
+  leyendo ese texto, no recordando qué se tocó.
+- **«Sumar» no es una palabra.** Se suma con «o», con «y», con «tanto… como»,
+  con «ni», y también sin nombrar lo que se suma («perforada» es la complicada;
+  la membrana amniótica, el injerto de donante). La regla mira lo que la frase
+  incluye; la conjunción es solo una de las puertas.
+- **El número que llega para renumerar puede estar viejo.** Se renumera contra
+  el `main` que se trae en el momento del merge, y por título, nunca copiando el
+  número que propuso otra lectura.
