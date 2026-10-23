@@ -1,0 +1,575 @@
+{
+  "version": 1,
+  "updated": "2026-10-23",
+  "styles": {
+    "trazo": {
+      "name": "Trazo explicativo",
+      "description": "Contorno y rayado para describir la acción."
+    },
+    "papel": {
+      "name": "Siluetas y papel",
+      "description": "Formas superpuestas, textura y gestos mínimos."
+    },
+    "facetada": {
+      "name": "Ilustración facetada",
+      "description": "Volumen construido con planos de color."
+    },
+    "editorial": {
+      "name": "A · Ilustración editorial",
+      "description": "Textura y una escena cotidiana con aire."
+    },
+    "narrativa": {
+      "name": "B · Ilustración narrativa",
+      "description": "Personajes y entorno cuentan la situación."
+    },
+    "foto": {
+      "name": "D · Apariencia fotográfica",
+      "description": "Prueba conservada; todavía se percibe artificial."
+    }
+  },
+  "articles": [
+    {
+      "id": "manos",
+      "short": "Lavarse las manos",
+      "title": "¿Alcanza con enjuagarse las manos?",
+      "slug": "alcanza-con-enjuagarse-las-manos",
+      "category": "Prevención",
+      "description": "Mojarse las manos un segundo no las deja limpias. Qué hace falta para sacar lo que no se ve, según el Ministerio de Salud, y cuánto tiempo lleva.",
+      "date": "2026-10-16",
+      "concept": "Jabón y fricción, vistos de cerca en una pileta de casa.",
+      "limit": "La imagen muestra el uso de jabón; el tiempo y los pasos del lavado los explica la nota.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "manos-trazo-v1",
+          "style": "trazo",
+          "src": "assets/manos-trazo-v1.webp",
+          "thumbnail": "assets/manos-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/manos-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "manos-papel-v1",
+          "style": "papel",
+          "src": "assets/manos-papel-v1.webp",
+          "thumbnail": "assets/manos-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/manos-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "manos-facetada-v1",
+          "style": "facetada",
+          "src": "assets/manos-facetada-v1.webp",
+          "thumbnail": "assets/manos-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/manos-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "dengue",
+      "short": "Revisar los criaderos",
+      "title": "Dónde se cría el mosquito del dengue en tu casa y cómo cortarlo",
+      "slug": "donde-se-cria-el-mosquito-del-dengue-en-tu-casa",
+      "category": "Prevención",
+      "description": "Casi no hay dengue en Paraguay hoy. Es buen momento para vaciar la tapita, el plato de la maceta y la canaleta donde el mosquito pone sus huevos.",
+      "date": "2026-10-03",
+      "concept": "Vaciar el agua que queda en el plato de una maceta.",
+      "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "dengue-trazo-v1",
+          "style": "trazo",
+          "src": "assets/dengue-trazo-v1.webp",
+          "thumbnail": "assets/dengue-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/dengue-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "dengue-papel-v1",
+          "style": "papel",
+          "src": "assets/dengue-papel-v1.webp",
+          "thumbnail": "assets/dengue-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/dengue-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "dengue-facetada-v1",
+          "style": "facetada",
+          "src": "assets/dengue-facetada-v1.webp",
+          "thumbnail": "assets/dengue-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/dengue-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "presion",
+      "short": "Controlarse la presión",
+      "title": "Por qué controlar la presión importa aunque te sientas perfecto",
+      "slug": "por-que-controlar-la-presion-importa-aunque-te-sientas-bien",
+      "category": "Vivir más años",
+      "description": "Más del 38% de los adultos paraguayos tiene hipertensión, según la encuesta oficial del MSPBS. Por qué el control de rutina pesa más que sentirte bien.",
+      "date": "2026-09-18",
+      "concept": "Un control tranquilo de presión, aunque la persona se sienta bien.",
+      "limit": "El aparato no muestra cifras: la ilustración no interpreta una medición ni representa un diagnóstico.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "presion-trazo-v1",
+          "style": "trazo",
+          "src": "assets/presion-trazo-v1.webp",
+          "thumbnail": "assets/presion-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presion-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "presion-papel-v1",
+          "style": "papel",
+          "src": "assets/presion-papel-v1.webp",
+          "thumbnail": "assets/presion-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presion-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "presion-facetada-v1",
+          "style": "facetada",
+          "src": "assets/presion-facetada-v1.webp",
+          "thumbnail": "assets/presion-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presion-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "mellizos",
+      "short": "Esperar mellizos",
+      "title": "Qué cambia en el control prenatal cuando esperás mellizos",
+      "slug": "que-cambia-en-el-control-prenatal-cuando-esperas-mellizos",
+      "category": "Primeros años",
+      "description": "En San Pedro nacieron cinco pares de gemelos en un mes. Qué cambia en el seguimiento médico de un embarazo múltiple, y qué preguntar sobre tu cobertura antes de necesitarlo.",
+      "date": "2026-09-11",
+      "concept": "Dos pares de escarpines junto a una agenda de controles.",
+      "limit": "Los objetos sugieren la espera de dos bebés; el seguimiento prenatal se entiende con el título de la nota.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "mellizos-trazo-v1",
+          "style": "trazo",
+          "src": "assets/mellizos-trazo-v1.webp",
+          "thumbnail": "assets/mellizos-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/mellizos-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "mellizos-papel-v1",
+          "style": "papel",
+          "src": "assets/mellizos-papel-v1.webp",
+          "thumbnail": "assets/mellizos-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/mellizos-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "mellizos-facetada-v1",
+          "style": "facetada",
+          "src": "assets/mellizos-facetada-v1.webp",
+          "thumbnail": "assets/mellizos-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/mellizos-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "medicamentos",
+      "short": "Medicamentos y cobertura",
+      "title": "Cómo funciona la cobertura de medicamentos en tu plan",
+      "slug": "como-funciona-cobertura-medicamentos",
+      "category": "Entendé tu plan",
+      "description": "Qué suele cubrir un plan de salud en medicamentos, cómo saber qué te toca a vos y qué hacer cuando la farmacia no tiene lo que buscás.",
+      "date": "2026-07-20",
+      "concept": "Revisar la receta y la información del plan antes de comprar.",
+      "limit": "No se representa un descuento, una marca ni una cobertura concreta.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "medicamentos-trazo-v1",
+          "style": "trazo",
+          "src": "assets/medicamentos-trazo-v1.webp",
+          "thumbnail": "assets/medicamentos-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/medicamentos-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "medicamentos-papel-v1",
+          "style": "papel",
+          "src": "assets/medicamentos-papel-v1.webp",
+          "thumbnail": "assets/medicamentos-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/medicamentos-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "medicamentos-facetada-v1",
+          "style": "facetada",
+          "src": "assets/medicamentos-facetada-v1.webp",
+          "thumbnail": "assets/medicamentos-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/medicamentos-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "familia",
+      "short": "Hábitos que se aprenden en casa",
+      "title": "El corazón de tus hijos se cuida con lo que ven en casa",
+      "slug": "el-corazon-de-tus-hijos-se-cuida-con-lo-que-ven-en-casa",
+      "category": "Prevención",
+      "description": "El Ministerio de Salud dice que cuidar el corazón empieza en la niñez. Qué hábitos de casa cuentan y cómo empezar de a poco, todos juntos.",
+      "date": "2026-09-30",
+      "concept": "Una niña participa con su mamá en la preparación de la comida familiar.",
+      "limit": "La escena ilustra el ejemplo cotidiano en la alimentación, uno de los hábitos que aborda la nota.",
+      "review": "Nueva exploración: por comparar.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "familia-trazo-v1",
+          "style": "trazo",
+          "src": "assets/familia-trazo-v1.webp",
+          "thumbnail": "assets/familia-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/familia-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "familia-papel-v1",
+          "style": "papel",
+          "src": "assets/familia-papel-v1.webp",
+          "thumbnail": "assets/familia-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/familia-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "familia-facetada-v1",
+          "style": "facetada",
+          "src": "assets/familia-facetada-v1.webp",
+          "thumbnail": "assets/familia-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/familia-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "libreta",
+      "short": "La libreta de salud",
+      "title": "Para qué sirve la libreta de salud de tu hijo",
+      "slug": "la-libreta-de-salud-del-nino-es-el-cuaderno-de-obra-de-su-cuidado",
+      "category": "Primeros años",
+      "description": "La libreta de salud del niño guarda las vacunas que ya recibió. Qué se anota, desde cuándo y por qué conviene llevarla a cada control.",
+      "date": "2026-10-15",
+      "concept": "Una libreta preparada junto al bolso que acompaña al niño.",
+      "limit": "El título identifica el documento como libreta de salud. Las páginas son genéricas.",
+      "review": "Los tres estilos te gustan. Conservamos las tres opciones.",
+      "isNew": false,
+      "variants": [
+        {
+          "id": "libreta-trazo-v1",
+          "style": "trazo",
+          "src": "assets/libreta-trazo-v1.webp",
+          "thumbnail": "assets/libreta-trazo-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/libreta-trazo-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "libreta-papel-v1",
+          "style": "papel",
+          "src": "assets/libreta-papel-v1.webp",
+          "thumbnail": "assets/libreta-papel-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/libreta-papel-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "libreta-facetada-v1",
+          "style": "facetada",
+          "src": "assets/libreta-facetada-v1.webp",
+          "thumbnail": "assets/libreta-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/libreta-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "escuela",
+      "short": "Una escuela saludable",
+      "title": "Qué hace que una escuela sea saludable, más allá del cartel",
+      "slug": "que-hace-que-una-escuela-sea-saludable",
+      "category": "Prevención",
+      "description": "Escuelas de Alto Paraná y Ñeembucú avanzan hacia el reconocimiento de la OPS/OMS. Los cuatro criterios reales detrás del sello \"Escuela Saludable\".",
+      "date": "2026-07-31",
+      "concept": "Una docente conversa con una familia en el patio.",
+      "limit": "La escena muestra participación familiar. No representa una escuela real ni una certificación.",
+      "review": "Los tres estilos te gustan. Esta es la revisión de sombras y del gesto mínimo en papel.",
+      "isNew": false,
+      "variants": [
+        {
+          "id": "escuela-trazo-v2",
+          "style": "trazo",
+          "src": "assets/escuela-trazo-v2.webp",
+          "thumbnail": "assets/escuela-trazo-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/escuela-trazo-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/escuela-trazo-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una docente conversa con una familia en el patio. Técnica: Trazo explicativo."
+        },
+        {
+          "id": "escuela-papel-v2",
+          "style": "papel",
+          "src": "assets/escuela-papel-v2.webp",
+          "thumbnail": "assets/escuela-papel-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/escuela-papel-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/escuela-papel-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una docente conversa con una familia en el patio. Técnica: Siluetas y papel."
+        },
+        {
+          "id": "escuela-facetada-v2",
+          "style": "facetada",
+          "src": "assets/escuela-facetada-v2.webp",
+          "thumbnail": "assets/escuela-facetada-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/escuela-facetada-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/escuela-facetada-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una docente conversa con una familia en el patio. Técnica: Ilustración facetada."
+        }
+      ]
+    },
+    {
+      "id": "caminar",
+      "short": "Caminar al almacén",
+      "title": "¿Caminar al almacén cuenta como actividad física?",
+      "slug": "caminar-al-almacen-cuenta-como-actividad-fisica",
+      "category": "Prevención",
+      "description": "Mucha gente cree que solo cuenta la actividad que termina en sudor. La OMS pone la meta por semana y dice que toda actividad cuenta.",
+      "date": "2026-10-19",
+      "concept": "Una caminata cotidiana con una bolsa de compras.",
+      "limit": "Son imágenes generadas; la versión fotográfica no documenta una persona o comercio real.",
+      "review": "A y B son tus preferidas. La fotográfica queda como antecedente para revisar.",
+      "isNew": false,
+      "variants": [
+        {
+          "id": "caminar-editorial-v2",
+          "style": "editorial",
+          "src": "assets/caminar-editorial-v2.webp",
+          "thumbnail": "assets/caminar-editorial-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/caminar-editorial-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/caminar-editorial-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: A · Ilustración editorial."
+        },
+        {
+          "id": "caminar-narrativa-v2",
+          "style": "narrativa",
+          "src": "assets/caminar-narrativa-v2.webp",
+          "thumbnail": "assets/caminar-narrativa-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/caminar-narrativa-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/caminar-narrativa-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: B · Ilustración narrativa."
+        },
+        {
+          "id": "caminar-foto-v2",
+          "style": "foto",
+          "src": "assets/caminar-foto-v2.webp",
+          "thumbnail": "assets/caminar-foto-v2-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/caminar-foto-v1.webp",
+              "revision": 1
+            },
+            {
+              "label": "Revisión actual",
+              "src": "assets/caminar-foto-v2.webp",
+              "revision": 2
+            }
+          ],
+          "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: D · Apariencia fotográfica."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "viewports": [
+    {
+      "width": 360,
+      "articles": 9,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "articles": 9,
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "articles": 9,
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "articles": 9,
+      "overflow": false
+    }
+  ],
+  "imageViews": 81,
+  "versions": 33,
+  "errors": [],
+  "badResponses": []
+}

@@ -2339,3 +2339,80 @@ logo del header, que es una imagen navy y en el caso 3 se lee poco.
 **La lección.** Un color «casi igual al fondo» solo es sutil mientras el fondo
 no cambie. Lo que es textura se pinta con transparencia, así guarda su
 relación con el fondo aunque alguien cambie el fondo.
+
+
+## Parte 36 · El laboratorio de imágenes del blog (23/10/2026)
+
+### 90 · Conservar la comparación permite decidir sin perder el recorrido
+
+![Caminar al almacén, segunda vuelta en editorial, narrativa y apariencia fotográfica](img/2026-10-23-blog-caminar-estilos-abd-v2.webp)
+
+![Libreta y escuela en trazo, papel y planos facetados, primera exploración](img/2026-10-23-blog-otros-estilos.webp)
+
+![Escuela: sombras antes y después, en las tres técnicas](img/2026-10-23-blog-escuela-sombras-v2.webp)
+
+**Qué muestra.** El recorrido previo al laboratorio: la misma situación de
+caminar al almacén en A editorial, B narrativa y D fotográfica; después,
+libreta y escuela en trazo explicativo, siluetas y papel e ilustración
+facetada. La revisión de caminar recupera el fondo de B y ajusta escala de
+la tienda y compras. La revisión de escuela separa las sombras de las personas,
+rompe la repetición del pavimento en las manchas del árbol e insinúa una sonrisa
+mínima en papel. Las versiones completas están en el laboratorio.
+
+**Qué se decidió y por qué.** Arturo valora A y B de caminar; la fotográfica
+le sigue pareciendo artificial. Valora los tres estilos de libreta y escuela,
+y pide conservarlos para decidir más adelante. No se elige una técnica para
+las nueve notas ni se aplican portadas. Preferir un estilo no aprueba cada
+mano, sombra o proporción que produjo la generación.
+
+**La lección.** Cambiar de técnica manteniendo composición, título y acción
+permite ver qué aporta cada lenguaje. La simplificación necesita una decisión
+de dibujo: un fondo vacío, una tienda demasiado baja o sombras que calcan las
+baldosas son problemas de la escena, incluso cuando el estilo gusta.
+
+Otras láminas de ese recorrido, conservadas en este repositorio:
+
+- [Caminar, primera prueba](img/2026-10-23-blog-caminar-estilos-abd.webp) y [recortes](img/2026-10-23-blog-caminar-recortes.webp).
+- [Editorial antes/ahora](img/2026-10-23-blog-caminar-a-antes-ahora-v2.webp) y [recortes de la segunda vuelta](img/2026-10-23-blog-caminar-recortes-v2.webp).
+- [Libreta](img/2026-10-23-blog-libreta-tres-estilos.webp), [escuela inicial](img/2026-10-23-blog-escuela-tres-estilos.webp) y [recortes de ambas](img/2026-10-23-blog-otros-estilos-recortes.webp).
+- [Escuela revisada](img/2026-10-23-blog-escuela-tres-estilos-v2.webp) y [gestos mínimos en papel](img/2026-10-23-blog-escuela-gestos-v2.webp).
+
+### 91 · El laboratorio guarda posibilidades, no una elección obligatoria
+
+![Laboratorio: lavado de manos en las tres técnicas](img/2026-10-23-laboratorio-manos.webp)
+
+**Qué muestra.** Una subpágina del prototipo con nueve artículos y 27 propuestas
+actuales, más seis versiones anteriores. Las 18 imágenes nuevas cubren seis
+notas reales del blog. Cada imagen se puede ampliar, recortar y descargar;
+cada artículo admite varias favoritas y una nota. El laboratorio está en
+[/blog/laboratorio/](https://nelargon.github.io/sp-prototipo/blog/laboratorio/).
+
+Las seis comparaciones nuevas:
+
+| Tema | Comparación |
+|---|---|
+| Lavado de manos | [Ver las tres](img/2026-10-23-laboratorio-manos.webp) |
+| Criaderos de dengue | [Ver las tres](img/2026-10-23-laboratorio-dengue.webp) |
+| Control de presión | [Ver las tres](img/2026-10-23-laboratorio-presion.webp) |
+| Embarazo de mellizos | [Ver las tres](img/2026-10-23-laboratorio-mellizos.webp) |
+| Medicamentos y cobertura | [Ver las tres](img/2026-10-23-laboratorio-medicamentos.webp) |
+| Hábitos familiares | [Ver las tres](img/2026-10-23-laboratorio-familia.webp) |
+
+[Vista completa en computadora](img/2026-10-23-laboratorio-desktop.webp) ·
+[Comparación en celular](img/2026-10-23-laboratorio-movil.webp).
+
+**Qué se decidió y por qué.** Arturo: *«Me cuesta decidir para cada opción
+cuál me gusta más […] crear un espacio dentro de GitHub […] y después podemos
+ir decidiendo»*. Se construye un lugar para esa etapa: favoritas múltiples,
+notas y versiones, sin convertir una preferencia en aprobación para publicar.
+Las seis notas nuevas están por revisar. El almacenamiento es local al
+navegador; copiar, exportar e importar permiten traer la selección al chat y
+moverla entre dispositivos. El laboratorio queda fuera de la v1.
+
+**La lección.** El primer resultado nuevo de papel tenía demasiado relieve;
+volver a la libreta y la escuela como referencia ayudó a recuperar las capas
+planas. Una técnica se define mejor con ejemplos aprobados que solo con su
+nombre. La interfaz también tiene que decir dónde guarda las decisiones:
+un favorito en el navegador no es una decisión sincronizada con GitHub.
+
+[Conceptos, procedencia y verificación](fuentes/2026-10-23-laboratorio-imagenes/README.md).

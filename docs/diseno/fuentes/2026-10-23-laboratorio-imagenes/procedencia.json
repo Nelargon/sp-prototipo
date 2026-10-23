@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-23",
+  "method": "Se generó una composición por tema, se ajustó a las referencias aprobadas de papel y se trasladó a trazo y facetada. WebP y miniaturas son conversiones técnicas; sin retoque artístico por script.",
+  "images": [
+    {
+      "id": "manos-trazo-v1",
+      "sha256": "386f8eebef3d1a4658cf2c81ab9d5003ee6b583465b7f7c49bfb2c006b61aaf6",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "manos-papel-v1",
+      "sha256": "e69b4cdfe37aeaf807d368810c12b6579764f0cc22912110783602ef137cea05",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "manos-facetada-v1",
+      "sha256": "88ec3150b4446e2a16b8ab8421c89a6ac506cb5dd5ccb448a25304bc21869ea1",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "dengue-trazo-v1",
+      "sha256": "0cc0e9ffefa284d0703b83ae555a68dedf5212d1c39f5d75c18373fceff3f484",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "dengue-papel-v1",
+      "sha256": "2f9fad0048982c4214668861e5bb37b8769d44c4056b409dfaf5aba785530d9c",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "dengue-facetada-v1",
+      "sha256": "54a89f80855da20ada67ca23cb8bcc4532227717e7b25e8851097c4c790591b5",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "presion-trazo-v1",
+      "sha256": "e31638160a5f5290298e84119784450721b10b86da826e226649d0e032646719",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "presion-papel-v1",
+      "sha256": "0da11ed7e62baa1e113cb33558390b2068f9baa9a5383f4ae16bc63f9a92acca",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "presion-facetada-v1",
+      "sha256": "22b661cea86e4620188b77db33de69616935ad9f6a0b763cd9d98e26182a6c87",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "mellizos-trazo-v1",
+      "sha256": "7731a58bdebd3d047e54ae10c4b133fbeb69a3c2a8f3d4820b8c63e51f4ed43e",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "mellizos-papel-v1",
+      "sha256": "d67385312407fb0abaaa0577754051cc0bc0908f303b7c592f653395d0cf05ed",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "mellizos-facetada-v1",
+      "sha256": "e331bcd3dd3b43c64b58376beb367051197a0f976794c5aa86bf61dbe0e15c2b",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "medicamentos-trazo-v1",
+      "sha256": "22f7c95f4116a64d9f099a1cfb8b897463f7e5a594470aa320c20818fc254d13",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "medicamentos-papel-v1",
+      "sha256": "ae5784a383805c94f2805bb764acc63407b431ab15b517ab083fb79e2cc7025f",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "medicamentos-facetada-v1",
+      "sha256": "7461515b1f2acec74538db17f07af37cc64329fe5b2a95a40faea373b1a628ae",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "familia-trazo-v1",
+      "sha256": "257fa9206cef64fdee4c4fd9d87772c1266dfc754ccf87440bfb70d22a9ea924",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "familia-papel-v1",
+      "sha256": "7cfffab8ba79ed116354f7973842d3cf974146fa75b47d685434a8831df72761",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "id": "familia-facetada-v1",
+      "sha256": "4c5e12d1c28b3eb733b289865f0b0379ef4f4894b10beddad639d16308976002",
+      "source": "image_gen",
+      "dimensions": [
+        1774,
+        887
+      ]
+    }
+  ]
+}

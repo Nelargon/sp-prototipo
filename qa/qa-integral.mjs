@@ -51,7 +51,7 @@ const primeraDe = (dir, excluir = []) => {
     .map((e) => e.name).sort();
   return hijos.length ? `/${dir}/${hijos[0]}/` : null;
 };
-const NOTA_BLOG = primeraDe('blog', ['guia']); // cubre: /blog/[slug]/
+const NOTA_BLOG = primeraDe('blog', ['guia', 'laboratorio']); // cubre: /blog/[slug]/
 const GUIA_BLOG = primeraDe('blog/guia'); // cubre: /blog/guia/[slug]/
 
 // El molde viejo de la guía (/guia/guia_*.html, datos de ejemplo) salió del
@@ -63,7 +63,7 @@ const PAGINAS = ['/', '/simulador/', '/planes/', '/agendar/', '/blog/', '/histor
 // no visitaba: /que-cubre/ y /guia-medica/ (las dos más importantes de la v1),
 // /mi-sp/ y una nota y una guía del blog. Una página que ninguna prueba abre
 // puede estar rota sin que nadie se entere.
-const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/guia-medica/', '/agendar/', '/blog/', '/historia/', '/mi-sp/', NOTA_BLOG, GUIA_BLOG].filter(Boolean);
+const PAGINAS_APP = ['/', '/simulador/', '/planes/', '/guia-medica/', '/agendar/', '/blog/', '/blog/laboratorio/', '/historia/', '/mi-sp/', NOTA_BLOG, GUIA_BLOG].filter(Boolean);
 
 const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 
