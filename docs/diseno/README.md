@@ -2464,3 +2464,28 @@ revisan como un conjunto, no como un ojo añadido a una superficie vacía.
 puede servir para recuperar el original. El catálogo necesita elegir la
 versión actual por técnica y conservar la historia, en lugar de mostrar
 siempre la última generación. Sigue siendo una exploración del laboratorio.
+
+
+### 96 · Cinco materiales para una misma idea (24/10/2026)
+
+![Longevidad: cinco estilos](img/2026-10-24-laboratorio-longevidad.webp)
+
+![Presupuesto: cinco estilos](img/2026-10-24-laboratorio-presupuesto.webp)
+
+![Nutrición: cinco estilos](img/2026-10-24-laboratorio-nutricion.webp)
+
+**Qué muestra.** Tres notas nuevas con cinco enfoques cada una: facetada,
+collage editorial, gouache pintado a mano, serigrafía y fotografía conceptual
+de objetos. Cada tema conserva los protagonistas y la idea; cambian los
+materiales, el encuadre y la construcción de la imagen.
+
+**Qué se decidió y por qué.** Arturo confirmó «Cinco estilos por artículo:
+15 imágenes», pidiendo mayor diferencia. La facetada conserva una referencia
+familiar; las otras cuatro amplían el repertorio. Las 21 favoritas compartidas
+se registran como referencia, sin convertirlas en portadas elegidas.
+
+**La lección.** Se puede mantener la idea al variar la composición. Recortes,
+pinceladas, planos, tramas y materiales fotografiados aportan diferencias
+visibles. Estas metáforas necesitan leerse junto al título de cada nota.
+
+[Conceptos, preferencias y procedencia](fuentes/2026-10-24-cinco-estilos/README.md).

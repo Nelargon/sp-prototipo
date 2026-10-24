@@ -1,7 +1,23 @@
 {
   "version": 1,
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "styles": {
+    "collage": {
+      "name": "Collage editorial",
+      "description": "Recortes, capas y fragmentos de distintos materiales."
+    },
+    "gouache": {
+      "name": "Gouache pintado a mano",
+      "description": "Pinceladas opacas y formas orgánicas."
+    },
+    "serigrafia": {
+      "name": "Serigrafía de dos tintas",
+      "description": "Siluetas, trama y contraste con pocos colores."
+    },
+    "foto-objetos": {
+      "name": "Fotografía conceptual",
+      "description": "Objetos escenificados en una imagen generada."
+    },
     "trazo": {
       "name": "Trazo explicativo",
       "description": "Contorno y rayado para describir la acción."
@@ -24,10 +40,280 @@
     },
     "foto": {
       "name": "D · Apariencia fotográfica",
-      "description": "Prueba conservada; todavía se percibe artificial."
+      "description": "Exploración de apariencia fotográfica."
     }
   },
   "articles": [
+    {
+      "id": "longevidad",
+      "short": "Más años por vivir",
+      "title": "Vivimos 14 años más que nuestros abuelos: qué hacer con ese regalo",
+      "slug": "vivimos-14-anos-mas",
+      "category": "Vivir más años",
+      "description": "La esperanza de vida en Paraguay pasó de 60 a casi 74 años en dos generaciones. Por qué una vida más larga cambia la forma de pensar tu salud a los 30.",
+      "date": "2026-07-20",
+      "concept": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote.",
+      "limit": "La escena simboliza el cuidado a lo largo del tiempo; no promete años de vida ni representa datos.",
+      "review": "Nueva exploración: cinco enfoques para comparar materiales, composición y forma de contar la idea.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "longevidad-facetada-v1",
+          "style": "facetada",
+          "src": "assets/longevidad-facetada-v1.webp",
+          "thumbnail": "assets/longevidad-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/longevidad-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Volumen construido con planos de color.",
+          "alt": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote. Técnica: Ilustración facetada."
+        },
+        {
+          "id": "longevidad-collage-v1",
+          "style": "collage",
+          "src": "assets/longevidad-collage-v1.webp",
+          "thumbnail": "assets/longevidad-collage-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/longevidad-collage-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Recortes, capas y fragmentos de distintos materiales.",
+          "alt": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote. Técnica: Collage editorial."
+        },
+        {
+          "id": "longevidad-gouache-v1",
+          "style": "gouache",
+          "src": "assets/longevidad-gouache-v1.webp",
+          "thumbnail": "assets/longevidad-gouache-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/longevidad-gouache-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Pinceladas opacas y formas orgánicas.",
+          "alt": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote. Técnica: Gouache pintado a mano."
+        },
+        {
+          "id": "longevidad-serigrafia-v1",
+          "style": "serigrafia",
+          "src": "assets/longevidad-serigrafia-v1.webp",
+          "thumbnail": "assets/longevidad-serigrafia-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/longevidad-serigrafia-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Siluetas, trama y contraste con pocos colores.",
+          "alt": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote. Técnica: Serigrafía de dos tintas."
+        },
+        {
+          "id": "longevidad-foto-objetos-v1",
+          "style": "foto-objetos",
+          "src": "assets/longevidad-foto-objetos-v1.webp",
+          "thumbnail": "assets/longevidad-foto-objetos-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/longevidad-foto-objetos-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Objetos escenificados en una imagen generada.",
+          "alt": "Herramientas de jardinería de dos generaciones acompañan una planta madura y un brote. Técnica: Fotografía conceptual."
+        }
+      ]
+    },
+    {
+      "id": "presupuesto",
+      "short": "Un gasto imprevisto",
+      "title": "Lo que un gasto de salud imprevisto le puede hacer a la economía de una familia",
+      "slug": "gasto-de-salud-imprevisto-economia-familiar",
+      "category": "Entendé tu plan",
+      "description": "La OMS calcula que 1.600 millones de personas cayeron en la pobreza en 2022 por gastos de salud que no vieron venir. Qué dice esa cifra global y por qué conviene pensarla antes de que te toque a vos.",
+      "date": "2026-08-12",
+      "concept": "Un recibo inesperado atraviesa el orden del presupuesto de una casa.",
+      "limit": "Los sobres y el recibo son una metáfora del presupuesto. No muestran precios ni una cobertura.",
+      "review": "Nueva exploración: cinco enfoques para comparar materiales, composición y forma de contar la idea.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "presupuesto-facetada-v1",
+          "style": "facetada",
+          "src": "assets/presupuesto-facetada-v1.webp",
+          "thumbnail": "assets/presupuesto-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presupuesto-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Volumen construido con planos de color.",
+          "alt": "Un recibo inesperado atraviesa el orden del presupuesto de una casa. Técnica: Ilustración facetada."
+        },
+        {
+          "id": "presupuesto-collage-v1",
+          "style": "collage",
+          "src": "assets/presupuesto-collage-v1.webp",
+          "thumbnail": "assets/presupuesto-collage-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presupuesto-collage-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Recortes, capas y fragmentos de distintos materiales.",
+          "alt": "Un recibo inesperado atraviesa el orden del presupuesto de una casa. Técnica: Collage editorial."
+        },
+        {
+          "id": "presupuesto-gouache-v1",
+          "style": "gouache",
+          "src": "assets/presupuesto-gouache-v1.webp",
+          "thumbnail": "assets/presupuesto-gouache-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presupuesto-gouache-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Pinceladas opacas y formas orgánicas.",
+          "alt": "Un recibo inesperado atraviesa el orden del presupuesto de una casa. Técnica: Gouache pintado a mano."
+        },
+        {
+          "id": "presupuesto-serigrafia-v1",
+          "style": "serigrafia",
+          "src": "assets/presupuesto-serigrafia-v1.webp",
+          "thumbnail": "assets/presupuesto-serigrafia-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presupuesto-serigrafia-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Siluetas, trama y contraste con pocos colores.",
+          "alt": "Un recibo inesperado atraviesa el orden del presupuesto de una casa. Técnica: Serigrafía de dos tintas."
+        },
+        {
+          "id": "presupuesto-foto-objetos-v1",
+          "style": "foto-objetos",
+          "src": "assets/presupuesto-foto-objetos-v1.webp",
+          "thumbnail": "assets/presupuesto-foto-objetos-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/presupuesto-foto-objetos-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Objetos escenificados en una imagen generada.",
+          "alt": "Un recibo inesperado atraviesa el orden del presupuesto de una casa. Técnica: Fotografía conceptual."
+        }
+      ]
+    },
+    {
+      "id": "nutricion",
+      "short": "Nutrición entre tantos mensajes",
+      "title": "Cómo distinguir un dato nutricional real de un mito de redes sociales",
+      "slug": "como-distinguir-un-dato-nutricional-de-un-mito",
+      "category": "Prevención",
+      "description": "Nunca hubo tanta información sobre alimentación disponible y, al mismo tiempo, tanta dificultad para saber qué es evidencia y qué es un mito repetido mil veces.",
+      "date": "2026-08-13",
+      "concept": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular.",
+      "limit": "La imagen propone mirar la información con cuidado. No califica alimentos ni da indicaciones nutricionales.",
+      "review": "Nueva exploración: cinco enfoques para comparar materiales, composición y forma de contar la idea.",
+      "isNew": true,
+      "variants": [
+        {
+          "id": "nutricion-facetada-v1",
+          "style": "facetada",
+          "src": "assets/nutricion-facetada-v1.webp",
+          "thumbnail": "assets/nutricion-facetada-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/nutricion-facetada-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Volumen construido con planos de color.",
+          "alt": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular. Técnica: Ilustración facetada."
+        },
+        {
+          "id": "nutricion-collage-v1",
+          "style": "collage",
+          "src": "assets/nutricion-collage-v1.webp",
+          "thumbnail": "assets/nutricion-collage-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/nutricion-collage-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Recortes, capas y fragmentos de distintos materiales.",
+          "alt": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular. Técnica: Collage editorial."
+        },
+        {
+          "id": "nutricion-gouache-v1",
+          "style": "gouache",
+          "src": "assets/nutricion-gouache-v1.webp",
+          "thumbnail": "assets/nutricion-gouache-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/nutricion-gouache-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Pinceladas opacas y formas orgánicas.",
+          "alt": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular. Técnica: Gouache pintado a mano."
+        },
+        {
+          "id": "nutricion-serigrafia-v1",
+          "style": "serigrafia",
+          "src": "assets/nutricion-serigrafia-v1.webp",
+          "thumbnail": "assets/nutricion-serigrafia-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/nutricion-serigrafia-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Siluetas, trama y contraste con pocos colores.",
+          "alt": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular. Técnica: Serigrafía de dos tintas."
+        },
+        {
+          "id": "nutricion-foto-objetos-v1",
+          "style": "foto-objetos",
+          "src": "assets/nutricion-foto-objetos-v1.webp",
+          "thumbnail": "assets/nutricion-foto-objetos-v1-mini.webp",
+          "versions": [
+            {
+              "label": "Primera versión",
+              "src": "assets/nutricion-foto-objetos-v1.webp",
+              "revision": 1
+            }
+          ],
+          "description": "Objetos escenificados en una imagen generada.",
+          "alt": "Una fruta real y una lupa junto a mensajes repetidos sobre alimentación en el celular. Técnica: Fotografía conceptual."
+        }
+      ]
+    },
     {
       "id": "manos",
       "short": "Lavarse las manos",
@@ -38,8 +324,8 @@
       "date": "2026-10-16",
       "concept": "Jabón y fricción, vistos de cerca en una pileta de casa.",
       "limit": "La imagen muestra el uso de jabón; el tiempo y los pasos del lavado los explica la nota.",
-      "review": "Nueva exploración: por comparar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando.",
+      "isNew": false,
       "variants": [
         {
           "id": "manos-trazo-v1",
@@ -98,8 +384,8 @@
       "date": "2026-10-03",
       "concept": "Vaciar el agua que queda en el plato de una maceta.",
       "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
-      "review": "Volvemos a las originales de papel y facetada. En trazo conservamos la cara completa y revisamos la posición del ojo, la nariz y la boca. Las otras pruebas quedan al ampliar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: siluetas y papel e ilustración facetada. Son las originales v1; la corrección de trazo queda disponible para comparar.",
+      "isNew": false,
       "variants": [
         {
           "id": "dengue-trazo-v3",
@@ -178,8 +464,8 @@
       "date": "2026-09-18",
       "concept": "Un control tranquilo de presión, aunque la persona se sienta bien.",
       "limit": "El aparato no muestra cifras: la ilustración no interpreta una medición ni representa un diagnóstico.",
-      "review": "Nueva exploración: por comparar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: siluetas y papel e ilustración facetada.",
+      "isNew": false,
       "variants": [
         {
           "id": "presion-trazo-v1",
@@ -238,8 +524,8 @@
       "date": "2026-09-11",
       "concept": "Dos pares de escarpines junto a una agenda de controles.",
       "limit": "Los objetos sugieren la espera de dos bebés; el seguimiento prenatal se entiende con el título de la nota.",
-      "review": "Nueva exploración: por comparar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando.",
+      "isNew": false,
       "variants": [
         {
           "id": "mellizos-trazo-v1",
@@ -298,8 +584,8 @@
       "date": "2026-07-20",
       "concept": "Revisar la receta y la información del plan antes de comprar.",
       "limit": "No se representa un descuento, una marca ni una cobertura concreta.",
-      "review": "Nueva exploración: por comparar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando.",
+      "isNew": false,
       "variants": [
         {
           "id": "medicamentos-trazo-v1",
@@ -358,8 +644,8 @@
       "date": "2026-09-30",
       "concept": "Una niña participa con su mamá en la preparación de la comida familiar.",
       "limit": "La escena ilustra el ejemplo cotidiano en la alimentación, uno de los hábitos que aborda la nota.",
-      "review": "Nueva exploración: por comparar.",
-      "isNew": true,
+      "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando.",
+      "isNew": false,
       "variants": [
         {
           "id": "familia-trazo-v1",
@@ -418,7 +704,7 @@
       "date": "2026-10-15",
       "concept": "Una libreta preparada junto al bolso que acompaña al niño.",
       "limit": "El título identifica el documento como libreta de salud. Las páginas son genéricas.",
-      "review": "Los tres estilos te gustan. Conservamos las tres opciones.",
+      "review": "Tu favorita compartida: ilustración facetada. Las otras opciones se conservan.",
       "isNew": false,
       "variants": [
         {
@@ -478,7 +764,7 @@
       "date": "2026-07-31",
       "concept": "Una docente conversa con una familia en el patio.",
       "limit": "La escena muestra participación familiar. No representa una escuela real ni una certificación.",
-      "review": "Los tres estilos te gustan. Esta es la revisión de sombras y del gesto mínimo en papel.",
+      "review": "Tus favoritas compartidas: papel y facetada, ambas en su segunda versión.",
       "isNew": false,
       "variants": [
         {
@@ -553,7 +839,7 @@
       "date": "2026-10-19",
       "concept": "Una caminata cotidiana con una bolsa de compras.",
       "limit": "Son imágenes generadas; la versión fotográfica no documenta una persona o comercio real.",
-      "review": "A y B son tus preferidas. La fotográfica queda como antecedente para revisar.",
+      "review": "Tus favoritas compartidas: B narrativa y D fotográfica, ambas v2.",
       "isNew": false,
       "variants": [
         {
@@ -613,7 +899,7 @@
               "revision": 2
             }
           ],
-          "description": "Prueba conservada; todavía se percibe artificial.",
+          "description": "Exploración de apariencia fotográfica.",
           "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: D · Apariencia fotográfica."
         }
       ]

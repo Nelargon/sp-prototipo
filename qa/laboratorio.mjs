@@ -10,7 +10,7 @@ const LAB=join(ROOT,'public/blog/laboratorio');
 const catalog=JSON.parse(readFileSync(join(LAB,'catalogo.json'),'utf8'));
 const ids=new Set(),assets=new Set();
 for(const a of catalog.articles){
-  assert.match(a.id,/^[a-z-]+$/);assert.equal(a.variants.length,3);
+  assert.match(a.id,/^[a-z-]+$/);assert.equal(a.variants.length,['longevidad','presupuesto','nutricion'].includes(a.id)?5:3);
   assert.ok(a.title&&a.slug&&a.concept&&a.limit);
   for(const v of a.variants){
     assert.ok(!ids.has(v.id));ids.add(v.id);assert.ok(catalog.styles[v.style]);
@@ -95,7 +95,7 @@ try{
   assert.equal(await page.locator('.favorite-item').count(),3);
   // Browser history and missing hash recover without an empty screen.
   await page.selectOption('#article-select','dengue');await page.selectOption('#article-select','presion');await page.goBack();assert.equal(await page.inputValue('#article-select'),'dengue');
-  await page.goto(url+'#desconocido');await ready();assert.equal(await page.inputValue('#article-select'),'manos');
+  await page.goto(url+'#desconocido');await ready();assert.equal(await page.inputValue('#article-select'),catalog.articles[0].id);
   // A new image revision must preserve earlier favorites without approving v2.
   await page.evaluate(()=>localStorage.setItem('sp-blog-laboratorio-v1',JSON.stringify({schema:1,favorites:['dengue-trazo-v1'],notes:{dengue:'Conservar la primera comparación.'}})));
   await page.goto(url+'#dengue');await page.reload();await ready();

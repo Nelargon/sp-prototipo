@@ -2182,18 +2182,27 @@ seis artículos: *«Me cuesta decidir para cada opción cuál me gusta más […
 con este laboratorio de imágenes y después podemos ir decidiendo»*.
 
 **Dónde:** https://nelargon.github.io/sp-prototipo/blog/laboratorio/
-Código y 37 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
-27 propuestas actuales y diez alternativas conservadas en el historial.
+Código y 52 imágenes completas en `public/blog/laboratorio/`: doce artículos,
+42 propuestas actuales y diez alternativas conservadas en el historial.
 Son imágenes generadas para esta exploración. Las referencias ajenas del
 Drive no se copian al sitio.
 
-**Qué ya le gusta:** las tres opciones de libreta y escuela. En caminar,
-A (editorial) y B (narrativa); la fotográfica D sigue como antecedente porque
-Arturo la percibe artificial. La escuela conserva la revisión de sombras y
-el gesto casi imperceptible en papel. No hay una técnica única elegida para
-todo el blog. Esta exploración reabre la elección visual de septiembre
-documentada abajo; ese apartado es el antecedente, no una orden de aplicar
-el trazo blanco a todas las notas.
+**Preferencias compartidas el 24/10:** Arturo pegó el resumen del laboratorio:
+21 favoritas en nueve artículos. Facetada aparece en los ocho temas que la
+ofrecen, papel en siete y trazo en cuatro. Libreta: solo facetada. Dengue:
+papel y facetada originales. Presión y escuela: papel y facetada. Manos,
+mellizos, medicamentos y familia: las tres. Caminar: B narrativa y D
+fotográfica v2; esta selección reemplaza la preferencia anterior por A y B.
+El resumen fuente está en `docs/diseno/fuentes/2026-10-24-cinco-estilos/`.
+Son preferencias de comparación; todavía no se aplican portadas.
+
+**Tanda del 24/10:** Arturo confirmó «Cinco estilos por artículo: 15 imágenes».
+Se suman longevidad, gasto imprevisto y mitos nutricionales, con facetada,
+collage editorial, gouache, serigrafía de dos tintas y fotografía conceptual
+de objetos. El catálogo admite tres o cinco variantes por artículo; la
+cantidad se muestra desde los datos. Las composiciones comparten una idea y
+objetos principales, con libertad de encuadre para diferenciar los lenguajes.
+Las imágenes fotográficas también son generadas, no documentación real.
 
 **Seis notas nuevas, tres técnicas por nota:** lavado de manos, criaderos de
 dengue, control de presión, embarazo de mellizos, medicamentos y cobertura,
@@ -2221,10 +2230,9 @@ en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selecci
 al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
 
 **Respaldo sin conexión:** `python3 scripts/export-laboratorio.py --output
-/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 19 MB, con las
-imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
+/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML con las imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
 porque los primeros dos intentos de Pages agotaron el tiempo de publicación,
-con las compilaciones y pruebas en verde. Se verificó sin conexión: 37
+con las compilaciones y pruebas en verde. Se verificó sin conexión: 52
 versiones y cero solicitudes externas. Las favoritas de la copia y de la web
 se pasan con exportar/importar. Los links a las notas sí necesitan internet.
 
@@ -2235,7 +2243,7 @@ prototipo: la poda de `/blog/` la excluye de la edición de lanzamiento y del
 build para el dominio. No se empuja a `produccion`.
 
 **Pruebas:** `qa/laboratorio.mjs --datos` entra al CI; con la URL del build
-prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 37 versiones,
+prueba las doce notas a cuatro anchos, 126 vistas de recorte, 52 versiones,
 descargas, favoritas múltiples, notas, copia, exportación/importación,
 historial y almacenamiento bloqueado. `qa-integral` abre la nueva subpágina.
 Revisor UX sin hallazgos. Láminas y lecciones en `docs/diseno/README.md`.

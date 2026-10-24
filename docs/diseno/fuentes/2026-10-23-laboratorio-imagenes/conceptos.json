@@ -4,7 +4,8 @@
     "file": "2026-10-16-alcanza-con-enjuagarse-las-manos.md",
     "short": "Lavarse las manos",
     "concept": "Jabón y fricción, vistos de cerca en una pileta de casa.",
-    "limit": "La imagen muestra el uso de jabón; el tiempo y los pasos del lavado los explica la nota."
+    "limit": "La imagen muestra el uso de jabón; el tiempo y los pasos del lavado los explica la nota.",
+    "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando."
   },
   {
     "key": "dengue",
@@ -12,7 +13,7 @@
     "short": "Revisar los criaderos",
     "concept": "Vaciar el agua que queda en el plato de una maceta.",
     "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
-    "review": "Volvemos a las originales de papel y facetada. En trazo conservamos la cara completa y revisamos la posición del ojo, la nariz y la boca. Las otras pruebas quedan al ampliar.",
+    "review": "Tus favoritas compartidas: siluetas y papel e ilustración facetada. Son las originales v1; la corrección de trazo queda disponible para comparar.",
     "styleNotes": {
       "trazo": "Cara completa y rasgos alineados con el ángulo de la cabeza.",
       "papel": "Original: sin ojos y con el contraste de la boca.",
@@ -34,27 +35,31 @@
     "file": "2026-09-18-por-que-controlar-la-presion-importa-aunque-te-sientas-bien.md",
     "short": "Controlarse la presión",
     "concept": "Un control tranquilo de presión, aunque la persona se sienta bien.",
-    "limit": "El aparato no muestra cifras: la ilustración no interpreta una medición ni representa un diagnóstico."
+    "limit": "El aparato no muestra cifras: la ilustración no interpreta una medición ni representa un diagnóstico.",
+    "review": "Tus favoritas compartidas: siluetas y papel e ilustración facetada."
   },
   {
     "key": "mellizos",
     "file": "2026-09-11-que-cambia-en-el-control-prenatal-cuando-esperas-mellizos.md",
     "short": "Esperar mellizos",
     "concept": "Dos pares de escarpines junto a una agenda de controles.",
-    "limit": "Los objetos sugieren la espera de dos bebés; el seguimiento prenatal se entiende con el título de la nota."
+    "limit": "Los objetos sugieren la espera de dos bebés; el seguimiento prenatal se entiende con el título de la nota.",
+    "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando."
   },
   {
     "key": "medicamentos",
     "file": "2026-07-20-como-funciona-cobertura-medicamentos.md",
     "short": "Medicamentos y cobertura",
     "concept": "Revisar la receta y la información del plan antes de comprar.",
-    "limit": "No se representa un descuento, una marca ni una cobertura concreta."
+    "limit": "No se representa un descuento, una marca ni una cobertura concreta.",
+    "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando."
   },
   {
     "key": "familia",
     "file": "2026-09-30-el-corazon-de-tus-hijos-se-cuida-con-lo-que-ven-en-casa.md",
     "short": "Hábitos que se aprenden en casa",
     "concept": "Una niña participa con su mamá en la preparación de la comida familiar.",
-    "limit": "La escena ilustra el ejemplo cotidiano en la alimentación, uno de los hábitos que aborda la nota."
+    "limit": "La escena ilustra el ejemplo cotidiano en la alimentación, uno de los hábitos que aborda la nota.",
+    "review": "Tus favoritas compartidas: las tres técnicas. Conservamos las opciones para seguir comparando."
   }
 ]

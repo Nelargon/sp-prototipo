@@ -1,0 +1,14 @@
+[
+ {
+  "entrada": "http://127.0.0.1:8768/sp-prototipo/blog/laboratorio/#longevidad",
+  "hallazgos": []
+ },
+ {
+  "entrada": "http://127.0.0.1:8768/sp-prototipo/blog/laboratorio/#presupuesto",
+  "hallazgos": []
+ },
+ {
+  "entrada": "http://127.0.0.1:8768/sp-prototipo/blog/laboratorio/#nutricion",
+  "hallazgos": []
+ }
+]
