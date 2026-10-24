@@ -6599,8 +6599,8 @@ de nombres creció, «perforada», «injerto de otra persona» y «otro injerto�
 empezaron a caer también por su nombre, y en esos casos se cambiaron por
 «reventada», «tejido ajeno» y «otro tejido». El comentario lo explicaba con
 todas las letras: se eligieron porque ninguna lista las nombraba. Y el HANDOFF
-resumió lo que cubría la regla: «lo que no está en la lista y no lleva «o»,
-«u» ni barra pasa».
+dijo de la lista de nombres: «lo que no está en ella y no lleva «o», «u» ni
+barra («y con tejido ajeno») pasa, y lo cuida la lectura de #206».
 
 **Qué pasó.** La ronda 8 de verificación (sobre 8f785e9) leyó ese comentario
 como lo que era:
@@ -6608,7 +6608,8 @@ como lo que era:
   servían para aislar la «o», era porque la regla no las veía. Dichas con «y»
   o después de «o sea», pasaban: «no complicada y la reventada», «con o sin
   autoinjerto y con tejido ajeno». La autoprueba tenía escrito un falso
-  negativo, con su explicación al lado, y nadie lo leyó así.
+  negativo, con su explicación al lado, y se leyó como un límite aceptado
+  («lo cuida la lectura de #206»), no como palabras que faltaban en la lista.
 - **El resumen se quedaba corto.** «o sea reventada» lleva una «o» y pasaba,
   porque «o sea» explica y la regla lo deja pasar.
 - **El comentario prometía la categoría.** «Ni el donante», «ni la complicada
@@ -6640,3 +6641,57 @@ complicada y también con pus» sigue pasando, y está escrito.
   de un PR sale de `git diff --stat` contra `main`; la búsqueda de lo retirado,
   de buscar la palabra en el documento entero. Las secciones que uno recuerda
   haber tocado son justo las que ya revisó.
+
+## Capítulo 178 — El nombre que entra a la lista entra también negado (24/10/2026)
+
+**Qué intentamos.** La ronda 8 cerró los huecos de `CALIFICATIVOS` sumando a
+sus listas las palabras que la autoprueba usaba como lo contrario: «revent…»,
+«revient…» y «rota» en las formas de la complicada; «ajeno», «tercer…» y «otro
+tejido» en el donante. Cada una entró con su caso que tenía que fallar, y la
+autoprueba quedó en verde. El comentario y el HANDOFF dijeron, «sin promesas»,
+qué cubría el detector.
+
+**Qué pasó.** La ronda 9 de verificación (sobre 038249f) probó las mismas
+palabras dichas para explicar el ítem, no para sumarle algo:
+- **Las palabras nuevas marcaban su negación.** La regla exime una forma solo
+  con «sin» delante, que alcanzaba para «sin peritonitis». Pero «reventar» se
+  niega de otras maneras: «(apendicectomía no complicada, antes de que se
+  reviente)», «…, o sea, que no se reventó», «…, cuando todavía no está roto».
+  En el pterigión, «(tejido de tu propio ojo, no ajeno)» y «(…, no de un
+  tercero)». Esas frases dicen lo mismo que el ítem, pasaban en 8f785e9 y ahora
+  daban «perdió un calificativo». Y son la forma más probable de una palabra de
+  casa para estos dos ítems: la palabra de casa con el literal entre
+  paréntesis, como el resto de la lista (sp-interno#206).
+- **«Sin promesas» describía un solo lado.** El comentario y el HANDOFF decían
+  qué se escapa («no complicada y también con pus»), no qué marca de más. La
+  clase ya existía («ni perforada», «(no de donante)», anotadas a mano en cada
+  regla), y la ronda 8 la agrandó sin anotarla.
+- **Una afirmación sobre los casos se había vencido.** «Cada uno cae solo por
+  su pieza», escrito en la ronda 5, no era cierto para tres: los dos de «o
+  perforada» caen también por su nombre desde que la lista sumó «perforada»
+  (ronda 6), y «no complicada o complicada», también por el «complic…» sin
+  «no».
+- **Y la bitácora citó de memoria.** El cap. 177 puso entre comillas un
+  resumen del HANDOFF sin el ejemplo de su paréntesis («y con tejido ajeno»), y
+  sin él podía decir que nadie había leído el hueco. Lo habían leído, como un
+  límite aceptado.
+
+Se eligió anotarlo (la 1A del verificador) y no ampliar la excepción a «no se»
+y «no está» (la 1B): la 1B destraba algunas frases del apéndice, ninguna del
+pterigión, y suma otra pieza que probar, y la regla de la casa ya es «ante la
+duda, se lee». El comentario y el HANDOFF dicen ahora los dos lados, y si #206
+elige una palabra de casa así, la regla se ajusta en ese mismo PR.
+
+**Qué aprendimos.**
+- **Sumar un nombre a la lista cierra un falso negativo y puede abrir un falso
+  positivo.** El nombre entra con todas sus formas, también la que lo niega o
+  lo usa para explicar. Antes de sumarlo, se lo prueba dicho como lo diría
+  quien explica el ítem, no solo como lo diría quien le suma algo.
+- **Qué cubre un detector se dice de los dos lados**: lo que se le escapa y lo
+  que marca de más. Un «sin promesas» que nombra uno solo promete el otro.
+- **Una afirmación sobre los casos se vence cuando crece la regla.** «Cada uno
+  cae solo por su pieza» se vuelve a probar con sabotajes cada vez que se suma
+  una pieza, como cualquier otra promesa del comentario (cap. 174).
+- **Entre comillas va el texto, entero.** La paráfrasis se acomoda a la
+  conclusión, y lo que se recorta suele ser justo el ejemplo que la
+  contradice.

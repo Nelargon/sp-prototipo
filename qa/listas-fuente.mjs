@@ -289,6 +289,15 @@ export const PARES_26 = [
 // detector: es que la lista de la web dice el literal del cuadernillo en estos
 // dos ítems («apendicectomía no complicada», «con o sin autoinjerto»), y que
 // una palabra de casa nueva para ellos la lee una persona (sp-interno#206).
+// Y del otro lado, marca de más, a propósito (ronda 9, 24/10/2026): un nombre
+// de la lista marca aunque la frase lo niegue o lo use para explicar el ítem,
+// salvo con «sin» delante. Marcan «no complicada ni perforada»,
+// «(apendicectomía no complicada, antes de que se reviente)», «…, o sea, que
+// no se reventó», «con o sin autoinjerto (no de donante)», «(tejido de tu
+// propio ojo, no ajeno)» y «(se cubre con otro tejido de tu propio ojo)», que
+// dicen lo mismo que el ítem; «…, sin reventar» pasa. Ante la duda, se lee. Si
+// sp-interno#206 elige para uno de estos dos ítems una palabra de casa así, la
+// regla se ajusta en ese mismo PR, con la frase en `pasan`.
 const SUELTA = String.raw`(?<!\p{L})[ouó](?!\p{L})(?! sea)|\/`;
 // `acepta` sin la bandera g (exec sin estado). Lo aceptado se reemplaza por « · »
 // y no por nada, para que no se peguen las palabras de los dos lados: es
@@ -347,6 +356,10 @@ export const CALIFICATIVOS = [
   // `(?!\p{L})` de «rota» es defensivo, como el separador: que no marque
   // «rotación». Ningún caso lo pone a prueba (sin él, la autoprueba sigue en
   // verde), porque ninguna frase razonable de este ítem lo necesita.
+  // Marca de más, a propósito, como «no complicada ni perforada» (ronda 9,
+  // 24/10): las formas nuevas negadas sin «sin» («antes de que se reviente»,
+  // «que no se reventó», «cuando todavía no está roto»), que dicen lo mismo
+  // que el ítem (ver «Qué cubren», arriba).
   [/no complicada/i, sinSumar(/\bno (?:(?:est[aáé]|es) )?complicada/i, new RegExp(SUELTA + String.raw`|\bcomplic|(?<!\bsin )\b(?:perfora|revent|revient|rot[ao](?!\p{L})|gangren|peritonitis|absceso|plastr[oó]n)`, 'iu')), '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada», «complicada y no complicada» y «no complicada y/o perforada» suman la complicada)'],
   [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
   // Sin «auto» no (ronda 3, 23/10): «injerto» es también el de donante (la
@@ -378,6 +391,9 @@ export const CALIFICATIVOS = [
   // 8, 24/10): la autoprueba los usaba como lo contrario, y «con o sin
   // autoinjerto y con tejido ajeno» o «…, o sea, con tejido ajeno» pasaban. Son
   // los nombres listados, no todos los que hay (ver «Qué cubren», arriba).
+  // Marca de más, a propósito, como «(no de donante)» (ronda 9, 24/10):
+  // «(tejido de tu propio ojo, no ajeno)», «(…, no de un tercero)» y «(se
+  // cubre con otro tejido de tu propio ojo)», que dicen lo mismo que el ítem.
   [/con o sin autoinjerto/i, sinSumar(/con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))/i, new RegExp(SUELTA + '|donante|donad|amni[oó]|injert(?!o (?:propio|del? (?:tu )?propi))|banco|cad[aá]ver|otra persona|ajen[oa]|tercer|otro tejido', 'iu')), '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
   [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
   [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
@@ -455,7 +471,12 @@ export function autoprueba() {
     ['«pterigión, con o sin injerto propio o de donante» (suma el de donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin injerto propio o de donante'))],
     ['«pterigión, con o sin autoinjerto o injerto de donante» (el literal, con otro sumado)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto o injerto de donante'))],
     // Ronda 5 (23/10): una pieza de cada regla, un caso que la contiene diciendo
-    // otra cosa. Cada uno cae solo por su pieza (los sabotajes del HANDOFF).
+    // otra cosa. Cada uno cae solo por su pieza (los sabotajes del HANDOFF),
+    // salvo tres que hoy caen por dos (ronda 9, 24/10): «no complicada o
+    // complicada», también por el «complic…» sin «no», y los dos de «o
+    // perforada», también por su nombre desde la ronda 6. La «o» de después la
+    // aísla «(o la otra)», de la ronda 6; la de antes, «la otra o, no
+    // complicada» y «la otra o bien no complicada».
     ['«sacar el apéndice, no complicada o complicada» (la «o» después)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada o complicada'))],
     ['«sacar el apéndice, no complicada o perforada» (la «o» después, sin nombrar la complicada)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada o perforada'))],
     ['«sacar el apéndice, no complicada, o perforada» (con coma)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada, o perforada'))],

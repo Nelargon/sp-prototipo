@@ -744,7 +744,7 @@ dos de otras sesiones:
     toca el HANDOFF y `docs/diseno/README.md`, así que los merges van de a uno.
     #288 suma un capítulo a la bitácora y dos láminas. *(Ronda 6: `main` le
     reservó el cap. 161 y las láminas 92-93 con #296, que sumó el 162 y la
-    lección 94; esta rama usa del 163 al 177, así que ya nadie renumera por
+    lección 94; esta rama usa del 163 al 178, así que ya nadie renumera por
     #288. El que entre segundo trae main y resuelve el HANDOFF integrando.)*
   - **Documentos**: BITACORA cap. 174 («Lo que promete el comentario es la
     lista de sabotajes»).
@@ -857,11 +857,38 @@ dos de otras sesiones:
     dos ítems («apendicectomía no complicada», «con o sin autoinjerto»), y que
     una palabra de casa nueva para ellos la lee una persona (#206). Lo dice el
     comentario de la regla, y quedaron anotadas las frases de las rondas 6 y 7
-    que prometían más.
+    que prometían más. Y del otro lado, **marca de más, a propósito** (ronda
+    9): un nombre de las listas marca aunque la frase lo niegue o lo use para
+    explicar el ítem, salvo con «sin» delante, como ya pasaba con «no
+    complicada ni perforada» y «(no de donante)». Marcan «sacar el apéndice
+    (apendicectomía no complicada, antes de que se reviente)», «…, o sea, que
+    no se reventó», «(tejido de tu propio ojo, no ajeno)» y «(se cubre con otro
+    tejido de tu propio ojo)», que dicen lo mismo que el ítem; «…, sin
+    reventar» pasa. Ante la duda, se lee. **Si #206 elige para uno de estos
+    dos ítems una palabra de casa así, la regla se ajusta en ese mismo PR**,
+    con la frase entre los casos que tienen que pasar.
   - **Documentos.** En §4, «Preguntas abiertas», la de quién carga `min_plan`
     quedó anotada como historia: el barrido de la ronda 7 la dejó pasar. La
     nota de #288 decía «del 163 al 174»: la rama usa del 163 al 177. BITACORA
     cap. 177 («La palabra que el caso eligió porque nadie la nombraba»).
+- **Después de la ronda 9 de verificación (sobre 038249f; sin cambios en el
+  sitio ni en lo que hacen las pruebas, solo en comentarios y documentos):**
+  - **La marca de más de las palabras nuevas, anotada.** Las formas que sumó
+    la ronda 8 («revent…», «revient…», «rota»; «ajeno», «tercer…», «otro
+    tejido») marcan también la frase que las niega para explicar el ítem, que
+    en 8f785e9 pasaba: va arriba, en «Qué cubre el detector», y en el
+    comentario de cada regla y de «Qué cubren». Se eligió anotarla y no
+    ampliar la excepción del «sin» a «no se» y «no está»: eso destraba algunas
+    frases del apéndice y ninguna del pterigión, y suma otra pieza que probar.
+  - **El comentario de los casos de la ronda 5** decía que cada uno cae solo
+    por su pieza. Tres caen por dos: los dos de «o perforada», también por su
+    nombre desde la ronda 6, y «no complicada o complicada», también por el
+    «complic…» sin «no». Ahora lo dice, y nombra qué casos aíslan la «o» de
+    antes y la de después.
+  - **Documentos.** El cap. 177 cita el HANDOFF textual, con su ejemplo
+    («y con tejido ajeno»), y dice que el hueco se leyó como un límite
+    aceptado. La nota de #288: la rama usa del 163 al 178. BITACORA cap. 178
+    («El nombre que entra a la lista entra también negado»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
