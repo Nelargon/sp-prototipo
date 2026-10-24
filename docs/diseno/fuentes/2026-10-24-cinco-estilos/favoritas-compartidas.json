@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "source": "Resumen copiado por Arturo desde su navegador al chat. Preferencias de comparación; no aplicación de portadas.",
+  "favorites": [
+    "manos-trazo-v1",
+    "manos-papel-v1",
+    "manos-facetada-v1",
+    "dengue-papel-v1",
+    "dengue-facetada-v1",
+    "presion-papel-v1",
+    "presion-facetada-v1",
+    "mellizos-trazo-v1",
+    "mellizos-papel-v1",
+    "mellizos-facetada-v1",
+    "medicamentos-trazo-v1",
+    "medicamentos-papel-v1",
+    "medicamentos-facetada-v1",
+    "familia-trazo-v1",
+    "familia-papel-v1",
+    "familia-facetada-v1",
+    "libreta-facetada-v1",
+    "escuela-papel-v2",
+    "escuela-facetada-v2",
+    "caminar-narrativa-v2",
+    "caminar-foto-v2"
+  ],
+  "notes": {}
+}

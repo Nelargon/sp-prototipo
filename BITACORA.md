@@ -6011,3 +6011,25 @@ La lección se afina: reducir contraste no es automáticamente mejorar. La
 preferencia visual se confirma mirando la comparación. Por eso el catálogo
 separa «última generada» de «actual»: permite recuperar una versión anterior
 por técnica sin perder las demás exploraciones ni las favoritas.
+
+
+## Capítulo 163 — Quince imágenes para ampliar el repertorio (24/10/2026)
+
+**Qué intentamos.** Leer las preferencias de Arturo y abrir la siguiente tanda.
+Su resumen contiene 21 favoritas: facetada en los ocho artículos que la
+ofrecen, papel en siete, trazo en cuatro; en caminar eligió narrativa y
+fotográfica. Esta última selección actualiza lo que había dicho antes.
+
+**Qué pasó.** Pidió tres artículos más y «cinco opciones, un poco más de
+variedad y un poco más de diferencia». Aclaró: «Cinco estilos por artículo:
+15 imágenes». Se mantienen los objetos e ideas centrales por tema, pero se
+amplían los materiales y las composiciones: facetada, collage, gouache,
+serigrafía y fotografía conceptual. El laboratorio pasa de nueve artículos
+a doce y de 27 a 42 propuestas actuales. Conserva las versiones y favoritas.
+
+**Qué aprendimos.** Cinco técnicas necesitan diferencias visibles de volumen,
+contorno, textura y composición; cambiar solo colores no alcanza. Una metáfora
+puede ampliar el repertorio de escenas cotidianas, siempre que el título
+complete su sentido. La versión fotográfica generada se presenta como una
+exploración visual. Las marcas compartidas son preferencias para comparar,
+no aprobación para sustituir las portadas del blog.

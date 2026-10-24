@@ -1,0 +1,137 @@
+[
+  {
+    "topic": "longevidad",
+    "style": "facetada",
+    "source": "/workspace/generated_images/exec-bad13396-ef47-4119-b18b-967d08b40adb.png",
+    "asset": "public/blog/laboratorio/assets/longevidad-facetada-v1.webp",
+    "sha256": "2e64278778ea3f807ee13d6516c56ceab7e568de2b6edfdb015ac16aa21850a2",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "longevidad",
+    "style": "collage",
+    "source": "/workspace/generated_images/exec-94d11221-7924-4188-bca0-9ddf1093be04.png",
+    "asset": "public/blog/laboratorio/assets/longevidad-collage-v1.webp",
+    "sha256": "ba6962d8e505943263eae2debaddcc1c7e055d949b711014eb2c7cabfa2d24c4",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "longevidad",
+    "style": "gouache",
+    "source": "/workspace/generated_images/exec-c0031e51-7a54-49c8-a242-209ba606824a.png",
+    "asset": "public/blog/laboratorio/assets/longevidad-gouache-v1.webp",
+    "sha256": "b004ff58c02d280bbec94884b6702ede1379f397bddb92975ec515c53e7bc243",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "longevidad",
+    "style": "serigrafia",
+    "source": "/workspace/generated_images/exec-e1981f9d-c958-4b03-aeb4-c40c265b6e0b.png",
+    "asset": "public/blog/laboratorio/assets/longevidad-serigrafia-v1.webp",
+    "sha256": "d9a449837107df8795342dfc663db81459a3831d725267967e2e7d2fb77ae041",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "longevidad",
+    "style": "foto-objetos",
+    "source": "/workspace/generated_images/exec-bd426c72-bb86-437d-9572-33f0c4739145.png",
+    "asset": "public/blog/laboratorio/assets/longevidad-foto-objetos-v1.webp",
+    "sha256": "c45345f57d7a864665d1dd558cd505f48049fc9889eea0b3cce0c221765c977c",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "presupuesto",
+    "style": "facetada",
+    "source": "/workspace/generated_images/exec-0d3b5152-30bc-4cfe-948c-883ac70ed7cd.png",
+    "asset": "public/blog/laboratorio/assets/presupuesto-facetada-v1.webp",
+    "sha256": "3910e2d1d9883f7665a9b41999ac6076092ca09111fd8e22ab7aa255936c137e",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "presupuesto",
+    "style": "collage",
+    "source": "/workspace/generated_images/exec-d5ac848f-46e4-4368-a5c7-053ca41d77b3.png",
+    "asset": "public/blog/laboratorio/assets/presupuesto-collage-v1.webp",
+    "sha256": "b381be3883ce220e913b5379cb7def927fee351af565f4a045e5318e39f0ebc8",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "presupuesto",
+    "style": "gouache",
+    "source": "/workspace/generated_images/exec-71c3b778-66cd-488b-bb75-ed0305ed244f.png",
+    "asset": "public/blog/laboratorio/assets/presupuesto-gouache-v1.webp",
+    "sha256": "ca6191c9d903cc099fa2707b6e1c8e2857e95ad24002ea4b79ee155b7af15808",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "presupuesto",
+    "style": "serigrafia",
+    "source": "/workspace/generated_images/exec-71db0fb0-eaa6-440a-b122-f3f82ae8210b.png",
+    "asset": "public/blog/laboratorio/assets/presupuesto-serigrafia-v1.webp",
+    "sha256": "af48f1d459185a3a38064f20bde89f9732f9e76a01ac491c84b4a6ce07f1ac63",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "presupuesto",
+    "style": "foto-objetos",
+    "source": "/workspace/generated_images/exec-64c4dffc-bc4b-4bca-82f0-cc800aa391bf.png",
+    "asset": "public/blog/laboratorio/assets/presupuesto-foto-objetos-v1.webp",
+    "sha256": "5a4fea8a1b320c700899b4271a4445e3803b5cd48097769a9295ca1c0aea9bbe",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "nutricion",
+    "style": "facetada",
+    "source": "/workspace/generated_images/exec-3641e343-611a-46f0-939d-38f949034005.png",
+    "asset": "public/blog/laboratorio/assets/nutricion-facetada-v1.webp",
+    "sha256": "01d4988fc4d4b05b744ddb87f3ffe527cde41a2d64068176b1251be3ab000f91",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "nutricion",
+    "style": "collage",
+    "source": "/workspace/generated_images/exec-48106e7b-fe90-40d7-8647-90b51790eab3.png",
+    "asset": "public/blog/laboratorio/assets/nutricion-collage-v1.webp",
+    "sha256": "539a3488b68067eecb0c30c0ca7e1e11432b9e6cfe4c0e3feb6768e8d55076c1",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "nutricion",
+    "style": "gouache",
+    "source": "/workspace/generated_images/exec-0e80f198-4e65-408c-8c1e-7e661656b15a.png",
+    "asset": "public/blog/laboratorio/assets/nutricion-gouache-v1.webp",
+    "sha256": "787089e80e9baf8d57ee3dfeabdff70e4d9e92f02172d6c1aa03717721e32b1b",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "nutricion",
+    "style": "serigrafia",
+    "source": "/workspace/generated_images/exec-6ccead4c-4eaf-4b32-88d3-19cf9276b1e6.png",
+    "asset": "public/blog/laboratorio/assets/nutricion-serigrafia-v1.webp",
+    "sha256": "df1690e0bba7e36265795e9f1d30281380a08f9277695f9f36ce98d9cd4120f4",
+    "dimensions": "1774x887",
+    "generated": true
+  },
+  {
+    "topic": "nutricion",
+    "style": "foto-objetos",
+    "source": "/workspace/generated_images/exec-74708690-ab55-49ab-9435-3cef74898b9d.png",
+    "asset": "public/blog/laboratorio/assets/nutricion-foto-objetos-v1.webp",
+    "sha256": "11314a4cb43594451bba1da4d5c792d99c1dd770c7132f052cd4a3edb9927ef2",
+    "dimensions": "1774x887",
+    "generated": true
+  }
+]

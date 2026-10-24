@@ -125,7 +125,7 @@ async function init() {
   catch { canStore=false; }
   $('#inventory').textContent=`${catalog.articles.length} artículos · ${allVariants().length} propuestas · ${allVersions().length} versiones`;
   $('#article-select').innerHTML=['Nueva tanda','Exploraciones anteriores'].map((name,i)=>`<optgroup label="${name}">${catalog.articles.filter(a=>a.isNew===(i===0)).map(a=>`<option value="${esc(a.id)}">${esc(a.short)}</option>`).join('')}</optgroup>`).join('');
-  $('#article-library').innerHTML=catalog.articles.map(a=>{const v=a.variants.find(v=>v.style==='papel')||a.variants[0];return `<a class="article-tile" href="#${esc(a.id)}" data-article="${esc(a.id)}" aria-current="false"><img src="${esc(v.thumbnail)}" alt="" loading="lazy" width="112" height="78"><div><h3>${esc(a.short)}</h3><small>${a.isNew?'Nueva tanda':'Ya revisado'} · 3 estilos</small></div></a>`}).join('');
+  $('#article-library').innerHTML=catalog.articles.map(a=>{const v=a.variants.find(v=>v.style==='papel')||a.variants[0];return `<a class="article-tile" href="#${esc(a.id)}" data-article="${esc(a.id)}" aria-current="false"><img src="${esc(v.thumbnail)}" alt="" loading="lazy" width="112" height="78"><div><h3>${esc(a.short)}</h3><small>${a.isNew?'Nueva tanda':'Ya revisado'} · ${a.variants.length} estilos</small></div></a>`}).join('');
   document.querySelectorAll('[data-article]').forEach(b=>b.onclick=e=>{e.preventDefault();navigate(b.dataset.article,true)});
   $('#article-select').onchange=e=>navigate(e.target.value);
   $('#previous').onclick=()=>navigate(catalog.articles[catalog.articles.indexOf(article)-1].id);
