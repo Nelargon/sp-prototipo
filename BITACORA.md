@@ -5971,6 +5971,48 @@ no permite abrir `file://`; se entregó el contenido exacto por una ruta local
 de prueba, sin simular que se había comprobado ese protocolo. El respaldo
 conserva las selecciones mediante exportación/importación entre copias.
 
+## Capítulo 161 — Tres opciones con el mismo poco de rosa (23/10/2026)
+
+**Qué intentamos.** Arturo pidió ver la página con la temática de Octubre Rosa,
+en tres opciones, lo más rápido posible. Claude armó tres sobre la home real:
+una cinta rosa arriba de todo, un acento rosa en el hero (la etiqueta y «se
+siente») y una sección rosa con las dos notas del blog. Recomendó el acento.
+
+**Qué pasó.** Arturo no eligió ninguna: *«yo quiero que se sienta mucho más
+rosa. Hasta ahora todavía se ve muy azul. Haz algo loco e interesante»*. Tenía
+razón, y la lámina lo mostraba: en las tres la página seguía siendo azul. Las
+opciones cambiaban **dónde** iba el rosa, no **cuánto**. El error fue de Claude:
+cuidó el sistema (el turquesa, el navy, la regla de «una sola cosa destacada»)
+antes de preguntarse cuánto había que moverlo, y puso las tres en la misma
+intensidad, la más baja. La segunda tanda abrió el rango: todo el azul pasado a
+rosa profundo con la foto teñida, un hero rosa claro con un lazo gigante en vez
+de la foto, y lo primero con dos fajas que se cruzan como el lazo
+(`docs/diseno/README.md`, lección 92).
+
+**Qué aprendimos.**
+
+- **Tres variantes de la misma intensidad no son tres opciones.** Es la lección
+  de la lámina 69 con otra cara: allá eran tres órdenes de la misma lista; acá,
+  tres lugares para el mismo poco de rosa. Un pedido de tema o de tono se abre
+  mostrando el rango entero, de un toque a la página entera, y Arturo elige el
+  punto.
+- **Lo que significa algo no se pinta; lo demás, sí.** El botón turquesa dice
+  «por acá», el rojo es de urgencias y el logo no se toca: eso se sostuvo en las
+  seis opciones. El navy de los fondos y el turquesa de adorno no significan
+  nada que un mes de campaña rompa. Los rosas se eligieron del lado magenta
+  (cerca de 330°), lejos del rojo de urgencias (`#E11900`, cerca de 7°).
+
+*(23/10/2026, más tarde.)* Arturo eligió vestir la web en dos campañas y solo en
+esas: Octubre Rosa y Noviembre Azul. Septiembre Rojo, la campaña del corazón del
+Ministerio, quedó afuera por una regla de seguridad, no de gusto: si la página
+se pone roja, el botón de urgencias deja de destacar. Y pidió que nada entre al
+sitio hasta que el artifact tenga todas las páginas vestidas, no solo la home.
+Lo que eso enseñó: **un tema de mes se prueba en el sitio entero antes de
+construirlo**. La home se diseña a mano; el resto lo pinta una regla (lo azul
+pasa a rosa profundo, lo menta a rosa pálido), y una regla se ve recién cuando
+se aplica a todas las páginas. Ahí apareció lo que la home no mostraba: Nuestra
+historia depende de su animación y sin ella quedaba con las frases encimadas.
+
 
 ## Capítulo 162 — Una cara simple también necesita jerarquía (23/10/2026)
 

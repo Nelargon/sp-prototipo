@@ -2417,6 +2417,106 @@ un favorito en el navegador no es una decisión sincronizada con GitHub.
 
 [Conceptos, procedencia y verificación](fuentes/2026-10-23-laboratorio-imagenes/README.md).
 
+## Parte 37 · Octubre Rosa en la home (23/10/2026)
+
+Arturo pidió ver, lo más rápido posible, cómo se vería la página con la temática
+de Octubre Rosa, en tres opciones, para decidir. Hubo dos tandas el mismo día,
+las dos armadas encima de la home real (el `main` del 23/10), en el celular, a
+390 px.
+
+### 92 · Tres lugares para el mismo poco de rosa no son tres opciones
+
+![Primera tanda: la home en el celular, hoy y con tres maneras de vestirla para Octubre Rosa: A, una cinta rosa fina arriba de todo; B, la etiqueta del hero cambiada por «Octubre Rosa · Leé la nota» con un lazo y «se siente» en rosa; C, una sección nueva debajo del hero con las dos notas del blog sobre el estudio de las mamas](img/2026-10-23-octubre-rosa-home-celular.webp)
+
+**Qué muestra la primera.** «Hoy» y tres opciones. **A · Cinta arriba:** una
+franja rosa suave de 44 px sobre todo el sitio, con el lazo y «Octubre Rosa ·
+Leé la nota del mes». **B · Acento en el hero** (la que se recomendó): la
+etiqueta «+24 años…» cede su lugar, por el mes, a «Octubre Rosa · Leé la nota»,
+y «se siente» pasa a rosa. **C · Tramo propio:** una sección rosa suave debajo
+del hero con las dos notas publicadas del blog sobre el estudio de las mamas;
+empuja el resto de la home 569 px.
+
+**Qué dijo Arturo.** Ninguna: *«yo quiero que se sienta mucho más rosa. Hasta
+ahora todavía se ve muy azul. Haz algo loco e interesante»*.
+
+![Segunda tanda: la home en el celular, hoy y con tres maneras de sacarle el azul: A, todo berry, el fondo del hero y la tarjeta del simulador en rosa profundo y la foto teñida; B, lazo gigante, el hero en rosa claro, sin foto, con un lazo enorme detrás del texto; C, faja cruzada, la foto en rosa y dos fajas con «Octubre Rosa» que se cruzan como el lazo entre el hero y la tarjeta](img/2026-10-23-octubre-rosa-mas-rosa-celular.webp)
+
+**Qué muestra la segunda.** **A · Todo berry:** donde hoy hay azul (el fondo del
+hero, la barra de arriba, la tarjeta del simulador), rosa profundo; la foto,
+teñida de rosa; el fondo claro, rosa pálido. **B · Lazo gigante:** el hero pasa
+a rosa claro, sin la foto, y un lazo enorme, rosa claro, es la imagen; los
+títulos van en rosa profundo y el logo, en su versión a color. **C · Faja
+cruzada** (la recomendada): lo de A más dos fajas con «Octubre Rosa», una rosa
+profundo y otra rosa clara, que se cruzan como el lazo entre el hero y la
+tarjeta del simulador. En las seis, el botón principal sigue turquesa profundo,
+el logo es uno de los dos de siempre y el rojo queda solo para urgencias. Los
+rosas son del lado magenta (tono cerca de 330°), lejos del rojo de urgencias
+(`#E11900`, cerca de 7°). Ninguna afirma una cobertura ni da un consejo médico.
+El revisor (`revisar.mjs`, a 360, 390 y 430 px) no encontró nada nuevo contra
+«Hoy» en ninguna, después de agrandar la etiqueta y la cinta a 44 px y de pasar
+a navy un enlace que daba 4,48:1 sobre rosa suave.
+
+**Qué se decidió y por qué.** La primera tanda, descartada entera: se veía
+azul. De la segunda, Arturo tomó la B y le sumó algo de la C: *«me está
+gustando muchísimo la opción B, pero de la opción C me gusta esa cinta que se
+cruza en tonos de rosa»* (23/10). La versión combinada se armó sobre la home
+entera y se publicó como maqueta en un artifact privado de claude.ai, con un
+rótulo ámbar «Maqueta · Octubre Rosa»: el hero rosa claro con el lazo gigante,
+las dos fajas cruzadas entre el hero y la tarjeta del simulador, y el resto de
+la página con el azul pasado a rosa profundo (los fondos menta, a rosa pálido).
+El turquesa que significa algo (botones, planes, lo cubierto, los íconos) y el
+rojo de urgencias no cambian. El revisor da sobre ella lo mismo que sobre la
+home de hoy: 0 🔴 y los mismos 27 🟡, a 360, 390, 430 y 1280 px.
+
+Después Arturo pidió no tocar el sitio todavía: *«todavía no queremos poner
+nada de esto en la página mientras creamos un artefacto y nos aseguramos de que
+todos sus espacios, no solamente la home, tengan ese nuevo estilo»* (23/10). El
+artifact pasó a tener el sitio entero: la home, `/planes/`, el simulador, la
+Guía Médica con tres fichas, Mi SP, Agendar, Nuestra historia (con su animación
+al bajar, rehecha para el artifact), el blog con todas sus notas y la 404. El
+lazo gigante y las fajas quedan solo en la home; en las demás páginas el tema
+es la paleta. Página por página, el revisor da lo mismo que el sitio de hoy (los
+🔴 que aparecen en el blog, una nota y Agendar ya están en el sitio publicado).
+
+![El sitio vestido de Octubre Rosa, en el celular: la home, Planes, el simulador, la Guía Médica, una ficha, el blog, una nota, una guía del blog, Nuestra historia, Mi SP, Agendar y la 404](img/2026-10-23-octubre-rosa-todas-las-paginas.webp)
+
+### 93 · Si el sitio ya es del color del mes, el mes lo cuenta la forma
+
+Arturo eligió vestir la web en dos campañas del Ministerio de Salud y solo en
+esas: Octubre Rosa y Noviembre Azul (próstata y colon), «1A» del 23/10.
+Septiembre Rojo queda afuera porque el rojo es de urgencias, y los días mundiales
+sueltos van al blog. El problema de Noviembre Azul: el sitio ya es azul, así que
+«pasar el azul a azul» no se nota.
+
+![Noviembre Azul en la home, en el celular: hoy; A, el molde de octubre en celeste, con el hero claro, el lazo gigante y las fajas azules; B, el navy pasado a un azul más vivo con la foto teñida; C, la foto de siempre con el lazo en la etiqueta y las dos fajas azules](img/2026-10-23-noviembre-azul-celular.webp)
+
+**Qué muestra.** «Hoy» y tres opciones. **A · El molde de octubre** (la
+recomendada): lo mismo que eligió para Octubre Rosa, en celeste, con el hero
+claro, el lazo gigante y las dos fajas. **B · Azul de campaña:** el navy pasa a
+un azul más vivo, la foto se tiñe, sin fajas. **C · Foto y fajas:** la foto de
+siempre, el lazo en la etiqueta y las dos fajas azules. La etiqueta lleva a la
+nota «Los chequeos que conviene hacerse a cada edad». El revisor no encontró
+nada nuevo contra «Hoy» en ninguna.
+
+**Qué se decidió y por qué.** Pendiente. La recomendación es A: una sola pieza
+para los dos meses, que cambia la paleta y el texto por fecha.
+
+**La lección.** Cuando el color del mes ya es el de la marca, recolorear no
+cuenta nada. Lo que hace que se note es la forma que la persona asocia con la
+campaña (el lazo, las fajas) y un tono distinto del de todos los días.
+
+![La versión combinada: hoy en el celular, y la home con el hero rosa claro, el lazo gigante y las dos fajas cruzadas, en el celular y en la computadora](img/2026-10-23-octubre-rosa-b-con-fajas.webp)
+
+**La lección.** Las tres opciones de la primera tanda cambiaban **dónde** iba el
+rosa, no **cuánto**: una cinta, una etiqueta, una sección, y la página seguía
+siendo azul en las tres. Tres variantes de la misma intensidad no son tres
+opciones (es la lámina 69 con otra cara). Pasó por cuidar el sistema antes de
+preguntar cuánto había que moverlo. Lo que no se toca sigue sin tocarse: el
+botón turquesa, que dice «por acá», el rojo de urgencias y el logo. Lo demás se
+puede pintar, y un pedido de tema se abre mostrando el rango entero, de un toque
+a la página entera.
+
+## Parte 36 (sigue) · El laboratorio de imágenes del blog (23/10/2026)
 
 ### 94 · La técnica y el detalle del rostro se eligen por separado
 
