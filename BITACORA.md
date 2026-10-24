@@ -6590,3 +6590,53 @@ y no eran ciertas:
   sacar algo de un documento largo, se buscan sus palabras (`upsell`,
   `min_plan`, «CI+fecha», «ilustrativos»), sección por sección, y no solo la
   tabla o el capítulo que lo nombraba.
+
+## Capítulo 177 — La palabra que el caso eligió porque nadie la nombraba (24/10/2026)
+
+**Qué intentamos.** Desde la ronda 6, cada caso de la autoprueba de
+`CALIFICATIVOS` tenía que caer por una sola pieza de la regla. Cuando la lista
+de nombres creció, «perforada», «injerto de otra persona» y «otro injerto»
+empezaron a caer también por su nombre, y en esos casos se cambiaron por
+«reventada», «tejido ajeno» y «otro tejido». El comentario lo explicaba con
+todas las letras: se eligieron porque ninguna lista las nombraba. Y el HANDOFF
+resumió lo que cubría la regla: «lo que no está en la lista y no lleva «o»,
+«u» ni barra pasa».
+
+**Qué pasó.** La ronda 8 de verificación (sobre 8f785e9) leyó ese comentario
+como lo que era:
+- **Las palabras elegidas eran los huecos.** Si «reventada» y «tejido ajeno»
+  servían para aislar la «o», era porque la regla no las veía. Dichas con «y»
+  o después de «o sea», pasaban: «no complicada y la reventada», «con o sin
+  autoinjerto y con tejido ajeno». La autoprueba tenía escrito un falso
+  negativo, con su explicación al lado, y nadie lo leyó así.
+- **El resumen se quedaba corto.** «o sea reventada» lleva una «o» y pasaba,
+  porque «o sea» explica y la regla lo deja pasar.
+- **El comentario prometía la categoría.** «Ni el donante», «ni la complicada
+  por sus formas»: el detector cubre una lista de nombres, no la idea.
+- **Y la lección del capítulo anterior, otra vez a medias.** El cap. 176 pidió
+  buscar lo retirado por sus palabras, con `min_plan` de ejemplo, y en «Preguntas
+  abiertas» de §4 quedó la pregunta de quién carga `min_plan`. En la
+  descripción del PR, el territorio se escribió de memoria (faltaban, entre
+  otros, el simulador, el comparador, el artículo del blog, la Guía Médica y
+  /planes) y la cuenta de páginas se corrió de renglón al reagrupar la lista.
+
+Ahora las dos listas suman esas palabras («revent…», «revient…», «rota»;
+«ajeno», «tercer…», «otro tejido»), cada una con su caso, y los casos que
+aíslan una pieza dicen «la otra» y «otra cosa». El comentario y el HANDOFF
+dicen qué cubre: las formas listadas, no toda paráfrasis posible. «no
+complicada y también con pus» sigue pasando, y está escrito.
+
+**Qué aprendimos.**
+- **Una palabra que se elige porque el detector no la conoce es un hueco
+  anotado.** Para aislar una pieza hace falta una palabra que no dispare las
+  otras, y la tentación es tomar una que diga lo contrario sin que la lista la
+  vea. Eso prueba que el detector no ve lo contrario. Se suma a la lista o se
+  nombra como límite; y para aislar, una palabra que no diga nada.
+- **Un detector de listas se describe por su lista.** «Ni el donante» promete
+  la categoría; «los nombres del donante que están en la lista» dice lo que
+  hace. Y se escribe cuál es la defensa de verdad: acá, que la web dice el
+  literal del cuadernillo y que una palabra de casa nueva la lee una persona.
+- **Lo que se declara se saca de la fuente, no de la memoria.** El territorio
+  de un PR sale de `git diff --stat` contra `main`; la búsqueda de lo retirado,
+  de buscar la palabra en el documento entero. Las secciones que uno recuerda
+  haber tocado son justo las que ya revisó.

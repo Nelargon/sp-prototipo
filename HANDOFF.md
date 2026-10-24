@@ -744,7 +744,7 @@ dos de otras sesiones:
     toca el HANDOFF y `docs/diseno/README.md`, así que los merges van de a uno.
     #288 suma un capítulo a la bitácora y dos láminas. *(Ronda 6: `main` le
     reservó el cap. 161 y las láminas 92-93 con #296, que sumó el 162 y la
-    lección 94; esta rama usa del 163 al 174, así que ya nadie renumera por
+    lección 94; esta rama usa del 163 al 177, así que ya nadie renumera por
     #288. El que entre segundo trae main y resuelve el HANDOFF integrando.)*
   - **Documentos**: BITACORA cap. 174 («Lo que promete el comentario es la
     lista de sabotajes»).
@@ -790,7 +790,11 @@ dos de otras sesiones:
     («y con tejido ajeno») pasa, y lo cuida la lectura de #206. *(Ronda 7:
     «toda la frase» era todo lo que seguía a «con o sin autoinjerto», sin la
     barra, y la «o» de antes de «no complicada» solo contaba pegada. Desde la
-    ronda 7 las dos reglas miran los dos lados: ver abajo.)*
+    ronda 7 las dos reglas miran los dos lados: ver abajo.)* *(Ronda 8: esto
+    se quedaba corto. Lo que no estaba en la lista también pasaba dicho
+    después de «o sea», que lleva una «o» («no complicada o sea reventada»).
+    El detector cubre las formas listadas, no toda paráfrasis posible, y
+    «tejido ajeno» y «reventada» ya están en la lista: ver abajo.)*
   - **El borde de arriba de `colocarFijo` tiene su prueba.** El punto
     `arriba + 1` no tenía caso: el de la ronda 5 deja el toque asomando por
     debajo de lo que lo tapa, y ahí alcanza el punto de abajo. En el sitio de
@@ -821,7 +825,11 @@ dos de otras sesiones:
     complicada por sus formas (salvo con «sin» delante), y en el pterigión, ni
     el donante. La lista de nombres sigue sin terminarse nunca (cap. 153):
     «y con tejido ajeno», sin «o» ni barra, pasa, y lo cuida la lectura de
-    #206.
+    #206. *(Ronda 8: esto se quedaba corto. «el donante» y «la complicada por
+    sus formas» son los nombres de una lista, no la categoría entera, y «o
+    sea reventada» lleva una «o» y pasaba. Desde la ronda 8, «tejido ajeno» y
+    «reventada» están en la lista; lo que cubre el detector, dicho sin
+    promesas, va abajo.)*
   - **El barrido del molde llegó a §3 y §4.** Las decisiones 3, 5, 6, 8, 9 y
     11 y los pendientes 6 y 13 todavía presentaban como vigente lo que era del
     molde de `guia/` (la lógica demo en JS, el `min_plan`, «Desde SP X», el
@@ -830,6 +838,30 @@ dos de otras sesiones:
     anotados como historia, sin borrar, como la decisión 1.
   - **Documentos**: BITACORA cap. 176 («Lo aceptado se saca, y se mira lo que
     queda»).
+- **Después de la ronda 8 de verificación (sobre 8f785e9; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`CALIFICATIVOS` suma las palabras que su autoprueba usaba como lo
+    contrario.** Desde la ronda 6, los casos que aíslan una pieza decían
+    «reventada», «tejido ajeno» y «otro tejido», elegidas justo porque ninguna
+    lista las nombraba, y caían solo por la «o», la «u» o la barra. Dichas con
+    «y» o después de «o sea», pasaban: «no complicada y la reventada», «no
+    complicada o sea reventada», «con o sin autoinjerto y con tejido ajeno» y
+    «…, o sea, con tejido ajeno». Ahora las formas de la complicada suman
+    «revent…», «revient…» y «rota», y el donante, «ajeno» o «ajena», «tercer…»
+    y «otro tejido». Los casos que aíslan una pieza dicen «la otra» y «otra
+    cosa», que no nombran nada.
+  - **Qué cubre el detector, dicho sin promesas.** Las formas listadas (una
+    «o» suelta, una «u», una barra y los nombres de sus dos listas), no toda
+    paráfrasis posible: «no complicada y también con pus» pasa. La última
+    defensa es que la lista de la web dice el literal del cuadernillo en esos
+    dos ítems («apendicectomía no complicada», «con o sin autoinjerto»), y que
+    una palabra de casa nueva para ellos la lee una persona (#206). Lo dice el
+    comentario de la regla, y quedaron anotadas las frases de las rondas 6 y 7
+    que prometían más.
+  - **Documentos.** En §4, «Preguntas abiertas», la de quién carga `min_plan`
+    quedó anotada como historia: el barrido de la ronda 7 la dejó pasar. La
+    nota de #288 decía «del 163 al 174»: la rama usa del 163 al 177. BITACORA
+    cap. 177 («La palabra que el caso eligió porque nadie la nombraba»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -1006,6 +1038,24 @@ un caso que falla y uno que pasa:
   autoprueba sigue en verde, y el comentario lo dice. Una sonda de 54 frases
   (las siete del verificador que pasaban, sus controles y la barra antes) da
   lo esperado; contra a1e4e89, once la contradecían.
+- *(Quinta tanda, ronda 8.)* `qa/listas-fuente.mjs`: 61 casos que tienen que
+  fallar y 16 que tienen que pasar. Se suman ocho, sin una «o» suelta: los
+  cuatro del verificador («no complicada y la reventada», «no complicada o sea
+  reventada», «con o sin autoinjerto y con tejido ajeno» y «…, o sea, con
+  tejido ajeno») y uno por cada nombre nuevo que ellos no nombran («…, además
+  de la que se revienta», «… y también si está rota», «… y con tejido de un
+  tercero» y «… y otro tejido»). Ocho casos que aíslan una pieza cambiaron
+  «reventada», «tejido ajeno» u «otro tejido» por «la otra» u «otra cosa»,
+  para seguir cayendo solo por ella. 36 sabotajes, uno por pieza: los seis
+  nombres nuevos, cada regla de 8f785e9 y de a1e4e89 en lugar de la nueva
+  (cuatro), los cinco de la ronda 7 (solo antes, solo después, sin la barra,
+  sin la «ó», sin «o sea»), diecinueve del verificador de la ronda 8 (la «o»
+  con `\b`, la «u», cada nombre de las dos listas, la mirada hacia adelante
+  de `injert`, las formas aceptadas) y dos defensivos. Caen los 34; los dos
+  defensivos (el separador « · » y el `(?!\p{L})` de «rota») siguen en verde,
+  y el comentario lo dice. La sonda del verificador (64 frases): de las once
+  que pasaban y no debían, diez marcan; queda «no complicada y también con
+  pus», el límite que nombra el comentario.
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -6603,6 +6653,11 @@ del árbol actual y no lo es**. La evidencia se genera corriendo la suite.
   pasar el usuario** (pendiente #2).
 - ¿Quién carga `min_plan` por prestador y quién corrige teléfonos/
   direcciones/horarios? → SP + empresa desarrolladora.
+  *(24/10/2026: `min_plan` era del molde de `guia/`, que se retiró con #289. La
+  Guía Médica no guarda un plan mínimo por prestador: la red de cada plan está
+  en `PLANES` y `REDES` de `lib/red-medica.js`. Los teléfonos y las direcciones
+  salen de la planilla maestra de SP, con `scripts/build-guia-medica.py`, y se
+  corrigen ahí; los horarios que publica son los de Lister.)*
 - ~~¿WordPress o Next.js para la web pública?~~ ✔ RESUELTO (dec. 11p): Next.js
   (el prototipo). BuenaVista, si entra, es implementador/hosting.
   *(18/10/2026: el 29/09 Arturo decidió que lo publique SP desde este repo, en
