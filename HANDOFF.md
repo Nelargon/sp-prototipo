@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 23 oct 2026.*
+*Última actualización: 24 oct 2026.*
 
 ---
 
@@ -859,7 +859,9 @@ dos de otras sesiones:
     comentario de la regla, y quedaron anotadas las frases de las rondas 6 y 7
     que prometían más. Y del otro lado, **marca de más, a propósito** (ronda
     9): un nombre de las listas marca aunque la frase lo niegue o lo use para
-    explicar el ítem, salvo con «sin» delante, como ya pasaba con «no
+    explicar el ítem, salvo, en el apéndice, con «sin» justo delante del
+    nombre («…, sin reventar» pasa; «sin que se haya reventado» marca; en el
+    pterigión el «sin» no exime: «(sin donante)» marca), como ya pasaba con «no
     complicada ni perforada» y «(no de donante)». Marcan «sacar el apéndice
     (apendicectomía no complicada, antes de que se reviente)», «…, o sea, que
     no se reventó», «(tejido de tu propio ojo, no ajeno)» y «(se cubre con otro
@@ -889,6 +891,23 @@ dos de otras sesiones:
     («y con tejido ajeno»), y dice que el hueco se leyó como un límite
     aceptado. La nota de #288: la rama usa del 163 al 178. BITACORA cap. 178
     («El nombre que entra a la lista entra también negado»).
+- **Después de la ronda 10 de verificación (sobre 34d594e; sin cambios en el
+  sitio):**
+  - **Las otras formas de las clases, con su caso.** «ajena» (de `ajen[oa]`) y
+    «roto» (de `rot[ao]`) no tenían un caso: acortar la clase a «ajeno» o a
+    «rota» dejaba la autoprueba en verde. Se suman «pterigión, con o sin
+    autoinjerto, también con conjuntiva ajena» y «sacar el apéndice, no
+    complicada y también si el apéndice está roto». La autoprueba queda en 63
+    casos que fallan y 16 que pasan, y cada sabotaje (`ajen[oa]`→«ajeno»,
+    `rot[ao]`→«rota») cae solo por su caso.
+  - **La excepción del «sin», dicha como es.** Vale solo en el apéndice y con
+    el «sin» justo delante del nombre («…, sin reventar» pasa; «sin que se haya
+    reventado» marca). En el pterigión no exime: «(sin donante)» marca. Lo
+    corrigen el comentario «Qué cubren» y «Qué cubre el detector», arriba, que
+    lo decían de las dos reglas.
+  - **Documentos.** La fecha de la cabecera pasa al 24/10, y la descripción
+    del PR nombra todo lo que la rama cambia en `app/coverage.js`,
+    `app/page.jsx` y el simulador.
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:

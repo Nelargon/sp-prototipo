@@ -291,7 +291,9 @@ export const PARES_26 = [
 // una palabra de casa nueva para ellos la lee una persona (sp-interno#206).
 // Y del otro lado, marca de más, a propósito (ronda 9, 24/10/2026): un nombre
 // de la lista marca aunque la frase lo niegue o lo use para explicar el ítem,
-// salvo con «sin» delante. Marcan «no complicada ni perforada»,
+// salvo, en el apéndice, con «sin» justo delante del nombre («…, sin reventar»
+// pasa; «sin que se haya reventado» marca). En el pterigión el «sin» no exime:
+// «(sin donante)» marca. Marcan «no complicada ni perforada»,
 // «(apendicectomía no complicada, antes de que se reviente)», «…, o sea, que
 // no se reventó», «con o sin autoinjerto (no de donante)», «(tejido de tu
 // propio ojo, no ajeno)» y «(se cubre con otro tejido de tu propio ojo)», que
@@ -534,6 +536,12 @@ export function autoprueba() {
     ['«sacar el apéndice, no complicada, además de la que se revienta»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada, además de la que se revienta'))],
     ['«sacar el apéndice, no complicada y también si está rota»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también si está rota'))],
     ['«pterigión, con o sin autoinjerto y con tejido de un tercero»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de un tercero'))],
+    // Las otras formas de las clases (ronda 10, 24/10/2026): sin un caso,
+    // acortar `ajen[oa]` a «ajeno» o `rot[ao]` a «rota» dejaba la autoprueba en
+    // verde (BITACORA cap. 174: lo que promete el comentario es la lista de
+    // sabotajes).
+    ['«pterigión, con o sin autoinjerto, también con conjuntiva ajena» («ajena»)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto, también con conjuntiva ajena'))],
+    ['«sacar el apéndice, no complicada y también si el apéndice está roto» («roto»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también si el apéndice está roto'))],
     ['«pterigión, con o sin autoinjerto y otro tejido»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y otro tejido'))],
   ];
   const pasan = [
