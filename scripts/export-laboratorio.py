@@ -33,6 +33,8 @@ for relative in ['../../assets/favicon.png', '../../assets/brand/logo-sp-color.p
     html = replace_once(html, relative, data_url((lab / relative).resolve()))
 html = replace_once(html, 'href="../../"', 'href="https://nelargon.github.io/sp-prototipo/"')
 
+html = replace_once(html, 'href="grillas.html"', 'href="https://nelargon.github.io/sp-prototipo/blog/laboratorio/grillas.html"')
+
 catalog = json.loads((lab / 'catalogo.json').read_text(encoding='utf-8'))
 assets = {p.relative_to(lab).as_posix(): data_url(p) for p in sorted((lab / 'assets').glob('*.webp'))}
 prefix = 'const embeddedCatalog=' + json.dumps(catalog, ensure_ascii=False).replace('<', '\\u003c') + ';\n'

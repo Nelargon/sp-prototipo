@@ -6033,3 +6033,23 @@ puede ampliar el repertorio de escenas cotidianas, siempre que el título
 complete su sentido. La versión fotográfica generada se presenta como una
 exploración visual. Las marcas compartidas son preferencias para comparar,
 no aprobación para sustituir las portadas del blog.
+
+
+## Capítulo 164 — Una favorita también tiene vecinas (24/10/2026)
+
+**Qué intentamos.** Arturo devolvió 32 favoritas y dijo «El serigrafía de dos
+tintas no me gusta tanto». La facetada fue elegida en los once temas que la
+ofrecían; collage y fotografía conceptual, en los tres nuevos. Aceptó probar
+las favoritas juntas en una grilla: «Adelante».
+
+**Qué pasó.** Armamos Hoy y tres mezclas: una familia predominantemente
+facetada, texturas ilustradas y una combinación con fotografía conceptual.
+Doce notas en el mismo orden, las mismas tarjetas y sus textos reales. Así
+el cambio de técnica no se confunde con un cambio de contenido o composición.
+La propuesta C alterna objetos fotográficos y escenas ilustradas; se recomienda
+para comparar, no se declara ganadora. Las portadas del blog no se sustituyen.
+
+**Qué aprendimos.** Elegir imágenes por separado y elegir un conjunto son dos
+decisiones distintas. Una imagen puede gustar y aun así competir con sus
+vecinas. La vista de conjunto permite mirar ritmo, temperatura y protagonismo;
+las favoritas compartidas limitan la selección sin imponer una técnica única.

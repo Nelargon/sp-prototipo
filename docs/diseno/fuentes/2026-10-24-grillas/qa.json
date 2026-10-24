@@ -1,0 +1,104 @@
+{
+  "measurements": [
+    {
+      "width": 360,
+      "option": "hoy",
+      "gridHeight": 5566,
+      "cards": 12
+    },
+    {
+      "width": 360,
+      "option": "a",
+      "gridHeight": 5566,
+      "cards": 12
+    },
+    {
+      "width": 360,
+      "option": "b",
+      "gridHeight": 5566,
+      "cards": 12
+    },
+    {
+      "width": 360,
+      "option": "c",
+      "gridHeight": 5566,
+      "cards": 12
+    },
+    {
+      "width": 390,
+      "option": "hoy",
+      "gridHeight": 5615,
+      "cards": 12
+    },
+    {
+      "width": 390,
+      "option": "a",
+      "gridHeight": 5615,
+      "cards": 12
+    },
+    {
+      "width": 390,
+      "option": "b",
+      "gridHeight": 5615,
+      "cards": 12
+    },
+    {
+      "width": 390,
+      "option": "c",
+      "gridHeight": 5615,
+      "cards": 12
+    },
+    {
+      "width": 430,
+      "option": "hoy",
+      "gridHeight": 5592,
+      "cards": 12
+    },
+    {
+      "width": 430,
+      "option": "a",
+      "gridHeight": 5592,
+      "cards": 12
+    },
+    {
+      "width": 430,
+      "option": "b",
+      "gridHeight": 5592,
+      "cards": 12
+    },
+    {
+      "width": 430,
+      "option": "c",
+      "gridHeight": 5592,
+      "cards": 12
+    },
+    {
+      "width": 1280,
+      "option": "hoy",
+      "gridHeight": 1908,
+      "cards": 12
+    },
+    {
+      "width": 1280,
+      "option": "a",
+      "gridHeight": 1908,
+      "cards": 12
+    },
+    {
+      "width": 1280,
+      "option": "b",
+      "gridHeight": 1908,
+      "cards": 12
+    },
+    {
+      "width": 1280,
+      "option": "c",
+      "gridHeight": 1908,
+      "cards": 12
+    }
+  ],
+  "errors": [],
+  "copy": true,
+  "hash": true,
+  "favoritesPreserved": true
+}

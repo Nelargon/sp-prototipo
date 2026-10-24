@@ -2489,3 +2489,26 @@ pinceladas, planos, tramas y materiales fotografiados aportan diferencias
 visibles. Estas metáforas necesitan leerse junto al título de cada nota.
 
 [Conceptos, preferencias y procedencia](fuentes/2026-10-24-cinco-estilos/README.md).
+
+
+### 97. Las favoritas también se comparan como conjunto — 24/10/2026
+
+Arturo: «El serigrafía de dos tintas no me gusta tanto». Compartió 32 favoritas
+y aceptó probarlas juntas: «Adelante». Se conserva la serigrafía en el laboratorio
+individual, sin priorizarla en las mezclas nuevas.
+
+[Comparación interactiva](https://nelargon.github.io/sp-prototipo/blog/laboratorio/grillas.html):
+Hoy, A (predominio facetado), B (texturas ilustradas) y C (ilustración y
+fotografía conceptual). Misma selección de doce artículos y mismo orden;
+ninguna propuesta incluye una imagen que Arturo no haya marcado como favorita.
+C es la recomendación por variedad, con el costo de vigilar el protagonismo de
+las fotos. Queda pendiente la elección de Arturo; no se aplican portadas.
+
+Láminas a tamaño real y medidas del alto de cada grilla:
+
+- [Hoy y opciones en computadora](img/2026-10-24-grillas-desktop.webp)
+- [Hoy y opciones en celular](img/2026-10-24-grillas-mobile.webp)
+- [Datos, preferencias y QA](fuentes/2026-10-24-grillas/)
+
+La maqueta toma las tarjetas y la firma visual de Cover.jsx. Es una comparación
+de imágenes, no una propuesta de quitar la destacada o las secciones del blog.
