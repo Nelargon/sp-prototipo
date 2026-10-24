@@ -6488,3 +6488,62 @@ uno de los once sabotajes de pieza y con las reglas de la ronda 4.
 - **El número que llega para renumerar puede estar viejo.** Se renumera contra
   el `main` que se trae en el momento del merge, y por título, nunca copiando el
   número que propuso otra lectura.
+
+## Capítulo 175 — La explicación también se mide (24/10/2026)
+
+**Qué intentamos.** En la ronda 5, `qa-integral` daba a veces verde y a veces
+rojo en la home en 3G rápido. El rojo, unos 7 s, era el mismo en `main` y en la
+rama. El verde marcaba de 31 a 36 ms, que con 150 ms de latencia emulada no
+puede ser. Lo anotamos en «Lo que queda» del HANDOFF con su explicación: «en
+esas corridas la emulación no se aplicó». Nadie la midió. Sonaba razonable, y
+el número imposible parecía probarla.
+
+**Qué pasó.** La ronda 6 de verificación la midió con una sonda, y no era eso:
+- **Era la caché.** La home sale de la caché de disco del navegador, que ya la
+  visitó en la misma página: el documento llega `fromDiskCache`, y 16 recursos
+  más, también de la caché. La emulación sí se aplicaba. Con la caché apagada,
+  o en un contexto nuevo, tarda unos 7 s.
+- **Y el servidor decidía.** Lo medimos después: `python3 -m http.server`
+  manda `Last-Modified`, y con eso el navegador se guarda la home y la sirve en
+  31 ms. El servidor de las corridas rojas no lo mandaba, y la volvía a bajar:
+  6.977 ms. La salud nocturna usa el de Python, así que **ahí esa medida da
+  siempre verde**.
+- **El texto iba a mandar a otro lado.** El punto de revisión de `sp-interno`
+  iba a partir de esa viñeta, y habría mandado a revisar la emulación en lugar
+  de la caché.
+
+La misma ronda encontró dos lecciones del cap. 174 aplicadas a medias:
+- **«Sumar no es una palabra», y tampoco es una conjunción.** La regla del
+  apéndice cerró las puertas que nombraba y dejó pasar las mismas frases con
+  otra puntuación: «no complicada y/o perforada», «(o perforada)», «; o
+  perforada», «/ perforada». Al buscar la «o» en toda la frase y no solo en la
+  palabra siguiente apareció otro problema: el `\b` de JavaScript no sabe que
+  «ñ» o «í» son letras. Para él, «año», «niño» y «río» terminan en una «o»
+  suelta, y la regla habría gritado en falso con «la más común en un niño».
+- **«Cerca de sus dos bordes» eran dos piezas.** La ronda 5 armó la prueba del
+  borde de abajo de `colocarFijo` y escribió que «las otras dos piezas» tenían
+  la suya. Eran tres: el punto del borde de arriba (`arriba + 1`) seguía sin
+  caso, y sin él la sección seguía en verde.
+
+Y cambió la forma de numerar. `main` trajo el cap. 162 de #296 y le reservó el
+161 a #288, que sigue abierto. Esta rama pasó de 161-172 a 163-174, y ya nadie
+renumera por #288.
+
+**Qué aprendimos.**
+- **Una explicación es un dato, y se mide como cualquier otro.** Antes de
+  escribir por qué pasa algo, una sonda que separe las hipótesis: acá, la misma
+  página contra un contexto nuevo y contra la caché apagada. Lo que dice el
+  HANDOFF es lo que la próxima sesión va a investigar, y una causa supuesta
+  escrita como hecho la manda al lugar equivocado. Si no se midió, se escribe
+  como pregunta: «no sabemos por qué».
+- **El entorno de la prueba es parte de la prueba.** El mismo control, con dos
+  servidores, daba dos resultados. Antes de escribir «a veces», hay que buscar
+  qué cambia entre una vez y otra.
+- **En castellano, `\b` no sirve para buscar una palabra corta.** En
+  JavaScript, `\b` y `\w` son ASCII: la «ñ» y las vocales con tilde no cuentan
+  como letras, ni con la bandera `u`. Para una «o» suelta va
+  `(?<!\p{L})o(?!\p{L})`, con la bandera `u`, y un caso que pase con «niño».
+- **La lista de sabotajes sale de leer el comentario palabra por palabra.** El
+  cap. 174 lo dijo, y la ronda 5 leyó «a 1 px de sus bordes» como una pieza.
+  Un plural en el comentario («sus bordes», «los renglones») es más de una
+  pieza, y cada una lleva su sabotaje.

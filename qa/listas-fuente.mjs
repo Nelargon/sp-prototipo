@@ -286,7 +286,20 @@ export const CALIFICATIVOS = [
   // nombrarla), salvo «o sea», que explica y no suma: «no complicada, o sea,
   // sin peritonitis» dice lo mismo que el ítem. Marca de más, a propósito, «no
   // complicada (no entra la complicada)»: ante la duda, se lee.
-  [/no complicada/i, /^(?!.*(?<!\bno (?:(?:est[aáé]|es) )?)\bcomplicad)(?=.*(?<!\bo,? )\bno (?:(?:est[aáé]|es) )?complicada(?!,? [ou]\b(?! sea)))/i, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada» y «complicada y no complicada» suman la complicada)'],
+  // Y sin sumarla con otra puntuación (ronda 6, 24/10): la «o» de después se
+  // buscaba solo en la palabra siguiente, y pasaban «no complicada y/o
+  // perforada», «no complicada (o perforada)», «no complicada; o perforada» y
+  // «no complicada / perforada», que son la misma frase. Ahora no puede haber
+  // una «o», una «u» ni una barra en todo lo que sigue (salvo «o sea»). La «o»
+  // se busca entre letras, no con \b, que en JavaScript no sabe que «ñ» o «í»
+  // son letras: con \b, «la más común en un niño» o «una vez al año» tenían
+  // una «o» suelta. Tampoco puede nombrar la complicada por sus formas
+  // (perforada, gangrenosa, con peritonitis, con absceso, con plastrón) salvo
+  // con «sin» delante: «o sea, sin peritonitis» explica. Y ningún «complic…»
+  // sin «no» delante, no solo «complicad…»: «no complicada y también con
+  // complicaciones» pasaba. Marca de más, a propósito, «no complicada ni
+  // perforada»: ante la duda, se lee.
+  [/no complicada/i, /^(?!.*(?<!\bno (?:(?:est[aáé]|es) )?)\bcomplic)(?!.*(?<!\bsin )\b(?:perfora|gangren|peritonitis|absceso|plastr[oó]n))(?=.*(?<!\bo,? )\bno (?:(?:est[aáé]|es) )?complicada(?!.*(?:(?<!\p{L})[ou](?!\p{L})(?! sea)|\/)))/iu, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada», «complicada y no complicada» y «no complicada y/o perforada» suman la complicada)'],
   [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
   // Sin «auto» no (ronda 3, 23/10): «injerto» es también el de donante (la
   // membrana amniótica), que el cuadernillo no nombra. La traducción tiene que
@@ -300,7 +313,14 @@ export const CALIFICATIVOS = [
   // explica y no suma: «con o sin autoinjerto, o sea, con tejido del propio
   // ojo» dice lo mismo que el ítem. Marca de más, a propósito, «(no de
   // donante)»: ante la duda, se lee.
-  [/con o sin autoinjerto/i, /con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))(?![^;]*(?:\b[ou]\b(?! sea)|donante|amni[oó]tic))/i, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
+  // Y sin cortarse en el «;» (ronda 6, 24/10): «con o sin autoinjerto; también
+  // con membrana amniótica» pasaba, porque se miraba solo hasta el punto y
+  // coma, y un nombre de la lista no lo lleva. Al donante se lo nombra de más
+  // maneras: «amnios» (no solo «amniótica»), «de banco», «de cadáver», «de otra
+  // persona», «donado», y cualquier otro injerto («aloinjerto», «homoinjerto»,
+  // «otro injerto»), salvo el propio: «un injerto de tu propio ojo» explica.
+  // La «o», entre letras, como en el apéndice.
+  [/con o sin autoinjerto/i, /con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))(?!.*(?:(?<!\p{L})[ou](?!\p{L})(?! sea)|donante|donad|amni[oó]|injert(?!o (?:propio|del? (?:tu )?propi))|banco|cad[aá]ver|otra persona))/iu, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
   [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
   [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
   [/\btotal\b/i, /\btotal\b|\bentero\b|\bcompleto\b/i, '«total»'],
@@ -382,13 +402,37 @@ export function autoprueba() {
     ['«sacar el apéndice, no complicada o perforada» (la «o» después, sin nombrar la complicada)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada o perforada'))],
     ['«sacar el apéndice, no complicada, o perforada» (con coma)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada, o perforada'))],
     ['«sacar el apéndice, no complicada u obstruida» (la «u»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada u obstruida'))],
-    ['«sacar el apéndice, perforada o, no complicada» (la «o» antes, con coma)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, perforada o, no complicada'))],
+    // «reventada», y no «perforada», desde la ronda 6: «perforada» cae también
+    // por su nombre, y el caso tiene que caer solo por la «o» de antes.
+    ['«sacar el apéndice, reventada o, no complicada» (la «o» antes, con coma)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, reventada o, no complicada'))],
     ['«sacar el apéndice (apendicectomía complicada y no complicada)» (con «y»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice (apendicectomía complicada y no complicada)'))],
     ['«sacar el apéndice, tanto complicada como no complicada»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, tanto complicada como no complicada'))],
-    ['«pterigión, con o sin autoinjerto o con injerto de otra persona» (la «o», sin nombrar al donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto o con injerto de otra persona'))],
-    ['«pterigión, con o sin autoinjerto u otro injerto» (la «u»)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto u otro injerto'))],
+    // «tejido ajeno» y «otro tejido», desde la ronda 6: «injerto de otra persona»
+    // y «otro injerto» caen también por sus palabras, y estos dos tienen que
+    // caer solo por la «o» y por la «u».
+    ['«pterigión, con o sin autoinjerto o con tejido ajeno» (la «o», sin nombrar al donante)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto o con tejido ajeno'))],
+    ['«pterigión, con o sin autoinjerto u otro tejido» (la «u»)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto u otro tejido'))],
     ['«pterigión, con o sin autoinjerto, también de donante» (el donante, sin «o»)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto, también de donante'))],
     ['«pterigión, con o sin autoinjerto y con membrana amniótica» (el de donante, sin nombrarlo)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con membrana amniótica'))],
+    // Ronda 6 (24/10): otra puntuación y otros nombres para lo mismo. Uno por
+    // pieza nueva. El de «y/o», como lo propuso el verificador, cae por tres
+    // (la «o», la barra y «perforada»).
+    ['«sacar el apéndice (apendicectomía no complicada y/o perforada)» (la «y/o»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice (apendicectomía no complicada y/o perforada)'))],
+    ['«sacar el apéndice, no complicada (o reventada)» (la «o» más adelante, en un paréntesis)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada (o reventada)'))],
+    ['«sacar el apéndice, no complicada / reventada» (la barra)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada / reventada'))],
+    ['«sacar el apéndice, no complicada y también la perforada» (la perforada, sin «o»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también la perforada'))],
+    ['«sacar el apéndice, no complicada y también la gangrenosa»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también la gangrenosa'))],
+    ['«sacar el apéndice, no complicada y también con peritonitis»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también con peritonitis'))],
+    ['«sacar el apéndice, no complicada y también con absceso»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también con absceso'))],
+    ['«sacar el apéndice, no complicada y también con plastrón»', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también con plastrón'))],
+    ['«sacar el apéndice, no complicada y también con complicaciones» (un «complic…» sin «no»)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada y también con complicaciones'))],
+    ['«pterigión, con o sin autoinjerto; también con membrana amniótica» (después del «;»)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto; también con membrana amniótica'))],
+    ['«pterigión, con o sin autoinjerto y con amnios»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con amnios'))],
+    ['«pterigión, con o sin autoinjerto, también aloinjerto» (otro injerto)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto, también aloinjerto'))],
+    ['«pterigión, con o sin autoinjerto y con tejido de banco»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de banco'))],
+    ['«pterigión, con o sin autoinjerto y con tejido de cadáver»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de cadáver'))],
+    ['«pterigión, con o sin autoinjerto y con tejido de otra persona»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de otra persona'))],
+    ['«pterigión, con o sin autoinjerto y con tejido donado»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido donado'))],
   ];
   const pasan = [
     ['una fila nueva de otro grupo que no se llama «ECOGRAFIA…» (no se mira)', nuevos(revisarEcos(conFila(GRILLA, { item: 'TOMOGRAFIA NUEVA', grupo: 'TOMOGRAFIAS', silver: { carencia: '90 DIAS' }, gold: { carencia: '90 DIAS' } }), toques), hoyEco)],
@@ -409,6 +453,11 @@ export function autoprueba() {
     // Ronda 5 (23/10): «o sea» explica, no suma.
     ['«sacar el apéndice (apendicectomía no complicada, o sea, sin peritonitis)», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice (apendicectomía no complicada, o sea, sin peritonitis)'), hoy26)],
     ['«pterigión, con o sin autoinjerto, o sea, con tejido del propio ojo», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin autoinjerto, o sea, con tejido del propio ojo'), hoy26)],
+    // Ronda 6 (24/10): la «o» de «niño» y de «tamaño» no es una «o» suelta, y el
+    // injerto propio, dicho otra vez para explicarlo, no suma otro.
+    ['«sacar el apéndice (apendicectomía no complicada), la más común en un niño», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice (apendicectomía no complicada), la más común en un niño'), hoy26)],
+    ['«pterigión, con o sin autoinjerto (un trocito de tu propio ojo, del tamaño justo)», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin autoinjerto (un trocito de tu propio ojo, del tamaño justo)'), hoy26)],
+    ['«pterigión, con o sin autoinjerto (un injerto de tu propio ojo)», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin autoinjerto (un injerto de tu propio ojo)'), hoy26)],
   ];
   for (const [que, h] of casos) if (!h.length) f.push(que + ': tenía que fallar y pasa');
   for (const [que, h] of pasan) if (h.length) f.push(que + ': tenía que pasar y falla (' + h[0] + ')');

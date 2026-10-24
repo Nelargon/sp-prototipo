@@ -715,9 +715,11 @@ dos de otras sesiones:
     Arturo lo decidió. Con main, `qa-lanzamiento` recorre además
     `/bases/octubre-rosa-2026/` y el CI corre `qa/precios.mjs` y
     `qa/laboratorio.mjs`.
-  - **Las otras dos piezas de `colocarFijo` tienen su prueba.** El comentario
-    dice que pregunta «en el medio de su franja visible y a 1 px de sus bordes,
-    renglón por renglón», y solo el medio tenía sabotaje: sin los puntos de los
+  - **Las otras dos piezas de `colocarFijo` tienen su prueba.** *(Ronda 6:
+    eran tres. El caso (a) prueba el punto del borde de abajo; el del borde de
+    arriba, `arriba + 1`, quedó sin prueba hasta la ronda 6: ver abajo.)* El
+    comentario dice que pregunta «en el medio de su franja visible y a 1 px de
+    sus bordes, renglón por renglón», y solo el medio tenía sabotaje: sin los puntos de los
     bordes, o mirando solo el primer renglón, la sección «9A y 10A» seguía en
     verde, y en los dos casos la burbuja se escondía con su toque a la vista.
     Ahora, (a) en /planes a 1280, desde el toque tapado por la cabecera de su
@@ -757,6 +759,49 @@ dos de otras sesiones:
   Telemedicina, el ZIP de entrega) queda marcado sin objeto. Lo que era
   historia fechada se tachó o se anotó, no se borró. La nota de #288 ya no
   fija el número de capítulo de otro PR.
+- **Después de la ronda 6 de verificación (sobre d6d77d4; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`main` entró por quinta vez**, con un merge y sin rebase (b8027e8): #296,
+    los rostros de «Revisar los criaderos» en el laboratorio del blog, con el
+    cap. 162 («Una cara simple también necesita jerarquía») y la lección 94.
+    Ese capítulo dejó reservados para #288 el cap. 161 y las láminas 92-93.
+    Solo chocó la bitácora: el 162 de main se queda, el 161 queda libre para
+    #288, y los doce de la rama pasan a 163-174, en el mismo orden, con sus
+    citas renumeradas por título (en la bitácora y acá; los rangos viejos se
+    anotaron sin borrar). Con main, `qa/laboratorio.mjs --datos` cuenta 64
+    recursos.
+  - **`CALIFICATIVOS`, sin sumar por la puntuación.** La «o» de después de «no
+    complicada» se buscaba solo en la palabra siguiente: pasaban «no complicada
+    y/o perforada», «no complicada (o perforada)», «; o perforada» y «/
+    perforada», que son la misma frase. Ahora no puede haber una «o», una «u»
+    ni una barra en todo lo que sigue (salvo «o sea»); ni la complicada por sus
+    formas (perforada, gangrenosa, con peritonitis, con absceso, con plastrón),
+    salvo con «sin» delante («o sea, sin peritonitis» explica); ni un
+    «complic…» sin «no» delante («y también con complicaciones» pasaba). El
+    pterigión mira toda la frase, no hasta el «;», y suma los otros nombres del
+    donante: «amnios», «de banco», «de cadáver», «de otra persona», «donado» y
+    cualquier otro injerto («aloinjerto», «otro injerto»), salvo el propio
+    («un injerto de tu propio ojo» explica). Las dos buscan la «o» entre letras
+    y no con `\b`, que en JavaScript no sabe que «ñ» o «í» son letras: con `\b`,
+    «la más común en un niño» o «una vez al año» tenían una «o» suelta y la
+    regla gritaba en falso (cap. 89). Marca de más, a propósito, «no complicada
+    ni perforada»: ante la duda, se lee. **La lista de nombres no se termina
+    nunca** (cap. 153): lo que no está en ella y no lleva «o», «u» ni barra
+    («y con tejido ajeno») pasa, y lo cuida la lectura de #206.
+  - **El borde de arriba de `colocarFijo` tiene su prueba.** El punto
+    `arriba + 1` no tenía caso: el de la ronda 5 deja el toque asomando por
+    debajo de lo que lo tapa, y ahí alcanza el punto de abajo. En el sitio de
+    hoy nada tapa un toque desde abajo (la barra fija de abajo es del home, que
+    no tiene toques), así que la prueba arma el caso en /planes a 1280: una tapa
+    fija y opaca, con `pointer-events`, cubre el toque y deja a la vista sus 4
+    px de arriba.
+  - **Documentos.** La viñeta de la home en 3G de «Lo que queda» decía que en
+    las corridas verdes la emulación no se aplicaba: es la caché de disco, y el
+    servidor decide (ver ahí). §1, «Dos audiencias», ya no dice que «Ya soy de
+    SP» lleva a la guía en modo personalizado (era del molde viejo). La ronda 5
+    dice «por cuarta vez» (también cuenta el merge de #287) y la nota de #288,
+    que main le reservó su número. BITACORA cap. 175 («La explicación también
+    se mide»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -889,6 +934,35 @@ un caso que falla y uno que pasa:
   después y sin «o sea»; el pterigión sin la «u», sin la «o», sin el donante,
   sin la membrana amniótica y sin «o sea». Con las reglas de la ronda 4, una o
   las dos, también cae.
+- *(Quinta tanda, ronda 6.)* `qa/listas-fuente.mjs`: 49 casos que tienen que
+  fallar y 15 que tienen que pasar. Se suman, en el apéndice, «no complicada
+  y/o perforada», «no complicada (o reventada)», «no complicada / reventada»,
+  la perforada, la gangrenosa, con peritonitis, con absceso, con plastrón y
+  «con complicaciones», cada una con «y también» (sin «o»); y en el pterigión,
+  «; también con membrana amniótica», «y con amnios», «también aloinjerto» y
+  el tejido de banco, de cadáver, de otra persona y donado. Pasan «… la más
+  común en un niño», «… (un trocito de tu propio ojo, del tamaño justo)» y «…
+  (un injerto de tu propio ojo)». Tres casos de la ronda 5 cambiaron una
+  palabra para seguir cayendo por su pieza sola («reventada o, no
+  complicada», «o con tejido ajeno», «u otro tejido»): con las palabras
+  nuevas, «perforada», «otra persona» y «otro injerto» caían también por su
+  nombre. 33 sabotajes, uno por pieza (los once de la ronda 5, sobre la regla
+  nueva; diecisiete de las piezas nuevas, entre ellos la «o» con `\b` y el
+  pterigión hasta el «;»; y cinco de la ronda 5 del verificador), y cada uno
+  cae. La sonda del verificador da lo esperado salvo «no complicada ni
+  perforada», que marca a propósito.
+- *(Quinta tanda, ronda 6.)* `qa-lanzamiento`, sección «9A y 10A», en /planes
+  a 1280: la ecografía de Silver y las 26, abiertas con Tab con el toque al
+  medio de la pantalla; una tapa fija y opaca (`pointer-events:auto`) cubre el
+  toque desde 4 px debajo de su borde de arriba hasta 4 px debajo del de abajo
+  (sin llegar a la burbuja), y un scroll de 1 px hace que `colocarFijo` mida
+  otra vez. Se confirma con `elementsFromPoint`, sin contar la burbuja, que en
+  el medio del toque y a 1 px de su borde de abajo está la tapa, y a 1 px del
+  de arriba, el toque (medido: el toque en 449-464, la tapa en 453-468); si
+  no, el caso no prueba nada y se informa. La burbuja tiene que estar abierta,
+  a la vista y junto al toque, y sin la tapa, también. Con `for (const y of
+  [(arriba + abajoR) / 2, abajoR - 1])` cae en los dos toques: abierta y
+  escondida, y nada más cae. Con la rama, ✓ (2 toques).
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -929,17 +1003,30 @@ un caso que falla y uno que pasa:
   la salud nocturna. Si se cambia, se sube la espera y no se toca dos veces: un
   segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
 - Tres hallazgos de `qa-integral` que no son de esta rama (ronda 5, medidos el
-  23/10 sobre la build del prototipo con `main` en 61ed0a9): en
+  23/10 sobre la build del prototipo con `main` en 61ed0a9; los mismos tres en
+  la ronda 6, el 24/10, con `main` en 3dc5215): en
   `/blog/laboratorio/` (#294, que la rama no toca), un campo sin etiqueta
   accesible («confunde») y dos imágenes bajo el pliegue sin `loading="lazy"`
   («cosmético»); y **la home en 3G rápido tarda unos 7 s** («confunde», vara
   3 s): 6.910 ms en `main` y 6.965 en la rama, de cuatro medidas cada una. El
   documento (313 KB) termina de bajar último porque comparte la línea con los
   scripts, las fuentes y la foto del inicio (unos 1,4 MB). Cuando la prueba da
-  verde marca 31 a 36 ms, que con 150 ms de latencia emulada no puede ser: en
-  esas corridas la emulación no se aplicó. Es decir, el verde de esa medida no
-  es confiable, y el rojo es el número real. Necesita un punto de revisión
-  propio en `sp-interno` (esta rama no abre issues).
+  verde marca 31 a 36 ms, que con 150 ms de latencia emulada no puede ser: **la
+  home sale de la caché de disco del navegador**, que ya la visitó en la misma
+  página (el documento llega `fromDiskCache`, y 16 recursos más, de la caché).
+  La emulación sí se aplica. Con la caché apagada (`Network.setCacheDisabled`)
+  o en un contexto nuevo, tarda unos 7 s: 6.971 y 6.974 ms sobre d6d77d4
+  (verificador de la ronda 6) y 6.951 y 6.997 ms sobre la rama de la ronda 6.
+  Y el verde o el rojo dependen del servidor: `python3 -m http.server`, el de
+  la salud nocturna, manda `Last-Modified`, y con eso el navegador guarda la
+  home y da verde (31 ms); un servidor sin `Last-Modified`, como el de las
+  corridas de la ronda 5, la vuelve a bajar y da rojo (6.977 ms). Es decir,
+  **en la salud nocturna esa medida da siempre verde**, y el rojo es el número
+  real. *(Hasta la ronda 6 este punto decía que en esas corridas la emulación
+  no se aplicaba: era una suposición, no una medida; BITACORA cap. 175.)*
+  Necesita un punto de revisión propio en `sp-interno` (esta rama no abre
+  issues); el arreglo del control es medir en un contexto nuevo
+  (`browser.newContext()`) o con la caché apagada, no revisar la emulación.
 - Lo que sigue para preparar el espacio, sin publicar, está en «🧩» y en «🌐
   23/10/2026», arriba: el build para el dominio y el botón «Revisión» solo en el
   prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101). Las
@@ -4600,7 +4687,11 @@ preguntas sirven igual al **prospecto** ("¿qué plan me conviene?") y al
 **afiliado** ("¿qué me cubre *mi* plan?"). La home hace el triaje en el
 hero con dos puertas: "Quiero un plan" → simulador · "Ya soy de SP" →
 guía en modo personalizado (fase 1 del portal; el portal completo es
-destino declarado, ver `PLAN-home-v2.md` §3).
+destino declarado, ver `PLAN-home-v2.md` §3). *(24/10/2026: el modo
+personalizado era del molde viejo de `guia/`, retirado el 23/10/2026 con
+#289. Hoy la puerta lleva a Mi SP («Ya soy de SP · Mi SP») en el prototipo y a
+la Guía Médica («Ya soy de SP · Buscá tu médico») en la v1; ver «🧩
+23/10/2026».)*
 
 ### 1c. El círculo que se alimenta solo *(para negocio e inversión — el retorno)*
 
