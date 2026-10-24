@@ -9,6 +9,7 @@ intro: "En el cajón de los papeles de la casa suele haber una libreta chica, co
 tags: ["salud", "paraguay", "bebés", "vacunas"]
 sources:
   - "https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html"
+  - "https://pai.mspbs.gov.py/esquema-de-vacunacion-2-2/"
 status: "publicado"
 author: "Equipo Salud Protegida"
 ---
@@ -20,16 +21,20 @@ En una obra, el capataz tiene un cuaderno. Ahí anota qué se hizo y cuándo: la
 > [!clave]
 > La libreta de tu hijo anota qué vacunas ya recibió.
 
-El Ministerio de Salud pide dos vacunas antes del alta. La de hepatitis B, en las primeras 24 horas de vida, y la BCG, que previene formas graves de tuberculosis. Cada dosis se anota enseguida en la Libreta de Salud del Niño y en el [registro electrónico de vacunación](https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html) (MSPBS, 14/10/2026).
+El Ministerio de Salud pide dos vacunas antes del alta. Se pueden postergar si una razón de salud del bebé lo justifica: el [Ministerio](https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html) habla de «contraindicación o condición clínica».
 
-Así, cuando tu hijo llega a un control, el pediatra abre la libreta y ve qué ya se aplicó. Lo que sigue lo define él con lo que tiene escrito.
+La de hepatitis B, en las primeras 24 horas de vida. La BCG, que previene formas graves de tuberculosis, antes de salir del hospital, si el bebé está en condiciones de recibirla ([MSPBS](https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html), 14/10/2026).
+
+El Ministerio pide anotar cada dosis enseguida en la Libreta de Salud del Niño y en el [registro electrónico de vacunación](https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html).
+
+Así, cuando tu hijo llega a un control o al vacunatorio, quien lo atiende abre la libreta y ve qué ya se aplicó. Las dosis que siguen van por el [esquema regular](https://pai.mspbs.gov.py/esquema-de-vacunacion-2-2/) del Ministerio: conviene ir al vacunatorio en los plazos establecidos ([MSPBS](https://www.mspbs.gov.py/portal/36690/proteccion-desde-el-primer-dia-vacunar-a-los-recien-nacidos-antes-de-dejar-el-hospital.html), 14/10/2026).
 
 Lo mismo vale si cambian de médico, de barrio o de ciudad: la libreta viaja con el niño. Quien lo atienda por primera vez no parte de cero.
 
 Para llevarse:
 
 - **Llevá la libreta a cada control**, aunque el motivo sea otro.
-- Al salir del hospital, mirá que las primeras vacunas estén anotadas.
+- Al salir del hospital, mirá que las primeras vacunas estén anotadas; si alguna quedó para después, preguntá cuándo le toca.
 - Si no la encontrás, preguntá en el vacunatorio o con tu pediatra.
 
 En Salud Protegida nos gusta acompañar a las familias con estas cosas chicas que ordenan lo importante. Si querés conversarlo con un asesor, estamos.
