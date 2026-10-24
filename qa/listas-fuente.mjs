@@ -264,6 +264,29 @@ export const PARES_26 = [
 // detector que grita en falso (CLAUDE.md, BITACORA cap. 89): sp-interno#206 le
 // ofrece a Arturo quedarse con el literal o elegir palabras de casa, y con
 // cualquiera de las dos el CI se habría puesto en rojo por algo que está bien.
+//
+// Las dos reglas que aceptan una frase entera (el apéndice y el pterigión) la
+// sacan y miran lo que queda, a los dos lados (ronda 7, 24/10/2026). Hasta la
+// ronda 6 cada una miraba con lookaheads hacia un solo lado, y cada lado tenía
+// sus piezas: el pterigión miraba solo lo que venía después de «con o sin
+// autoinjerto» («pterigión con membrana amniótica, con o sin autoinjerto»
+// pasaba) y no miraba la barra; el apéndice veía la «o» de antes solo pegada a
+// «no complicada» («reventada o bien no complicada» pasaba). Ahora lo que suma
+// se busca en un solo lugar, el resto, con un solo patrón por regla.
+// La «o» suelta se busca entre letras, no con \b, que en JavaScript no sabe que
+// «ñ» o «í» son letras (BITACORA cap. 175): «niño» y «año» no tienen una «o»
+// suelta. También la «ó» con tilde, la «u» y la barra. «o sea» explica y no suma.
+const SUELTA = String.raw`(?<!\p{L})[ouó](?!\p{L})(?! sea)|\/`;
+// `acepta` sin la bandera g (exec sin estado). Lo aceptado se reemplaza por « · »
+// y no por nada, para que no se peguen las palabras de los dos lados: es
+// defensivo, y con las frases de hoy da lo mismo que sacarlo sin más.
+const sinSumar = (acepta, suma) => ({
+  test: (s) => {
+    const m = acepta.exec(s);
+    if (!m) return false;
+    return !suma.test(s.slice(0, m.index) + ' · ' + s.slice(m.index + m[0].length));
+  },
+});
 export const CALIFICATIVOS = [
   [/unilateral/i, /unilateral|de un (solo )?(lado|ojo)/i, '«unilateral»: de un lado'],
   [/a cielo abierto/i, /a cielo abierto|cirug[ií]a abierta/i, '«a cielo abierto» (la de próstata más común es por la uretra, y no es videolaparoscopía)'],
@@ -299,7 +322,12 @@ export const CALIFICATIVOS = [
   // sin «no» delante, no solo «complicad…»: «no complicada y también con
   // complicaciones» pasaba. Marca de más, a propósito, «no complicada ni
   // perforada»: ante la duda, se lee.
-  [/no complicada/i, /^(?!.*(?<!\bno (?:(?:est[aáé]|es) )?)\bcomplic)(?!.*(?<!\bsin )\b(?:perfora|gangren|peritonitis|absceso|plastr[oó]n))(?=.*(?<!\bo,? )\bno (?:(?:est[aáé]|es) )?complicada(?!.*(?:(?<!\p{L})[ou](?!\p{L})(?! sea)|\/)))/iu, '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada», «complicada y no complicada» y «no complicada y/o perforada» suman la complicada)'],
+  // Y a los dos lados (ronda 7, 24/10): se saca «no complicada» (o «no está»,
+  // «no esté», «no es complicada») y en lo que queda, antes y después, no puede
+  // haber una «o» suelta (tampoco «ó»), una «u», una barra, ningún «complic…»
+  // ni la complicada por sus formas (salvo con «sin» delante). Con la «o» de
+  // antes pegada a la frase, «reventada o bien no complicada» pasaba.
+  [/no complicada/i, sinSumar(/\bno (?:(?:est[aáé]|es) )?complicada/i, new RegExp(SUELTA + String.raw`|\bcomplic|(?<!\bsin )\b(?:perfora|gangren|peritonitis|absceso|plastr[oó]n)`, 'iu')), '«no complicada», como lo dice el ítem («sin complicaciones» se leía «si la cirugía sale bien»; «esté o no complicada», «complicada y no complicada» y «no complicada y/o perforada» suman la complicada)'],
   [/no incluye malla/i, /no incluye malla|la malla no entra/i, '«no incluye malla»'],
   // Sin «auto» no (ronda 3, 23/10): «injerto» es también el de donante (la
   // membrana amniótica), que el cuadernillo no nombra. La traducción tiene que
@@ -320,7 +348,13 @@ export const CALIFICATIVOS = [
   // persona», «donado», y cualquier otro injerto («aloinjerto», «homoinjerto»,
   // «otro injerto»), salvo el propio: «un injerto de tu propio ojo» explica.
   // La «o», entre letras, como en el apéndice.
-  [/con o sin autoinjerto/i, /con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))(?!.*(?:(?<!\p{L})[ou](?!\p{L})(?! sea)|donante|donad|amni[oó]|injert(?!o (?:propio|del? (?:tu )?propi))|banco|cad[aá]ver|otra persona))/iu, '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
+  // Y a los dos lados, con la barra (ronda 7, 24/10): solo se miraba lo que
+  // venía después de la frase, y sin la barra. «pterigión con membrana
+  // amniótica, con o sin autoinjerto», «pterigión con aloinjerto o con o sin
+  // autoinjerto» y «con o sin autoinjerto / tejido ajeno» pasaban. Ahora se saca
+  // la frase aceptada (que tiene su propia «o») y en lo que queda, antes y
+  // después, no puede haber una «o» suelta, una «u», una barra ni el donante.
+  [/con o sin autoinjerto/i, sinSumar(/con o sin (?:autoinjerto|(?:un )?injerto (?:propio|del? (?:tu )?propi[oa]))/i, new RegExp(SUELTA + '|donante|donad|amni[oó]|injert(?!o (?:propio|del? (?:tu )?propi))|banco|cad[aá]ver|otra persona', 'iu')), '«con o sin autoinjerto» («injerto», sin «auto», también es el de donante, y no se le suma otro)'],
   [/evacuador/i, /evacuador/i, '«evacuador» (sin él, también el legrado de diagnóstico)'],
   [/terap[eé]utico/i, /terap[eé]utic|como tratamiento/i, '«terapéutico»: la traducción no puede incluir el raspado de diagnóstico'],
   [/\btotal\b/i, /\btotal\b|\bentero\b|\bcompleto\b/i, '«total»'],
@@ -433,6 +467,13 @@ export function autoprueba() {
     ['«pterigión, con o sin autoinjerto y con tejido de cadáver»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de cadáver'))],
     ['«pterigión, con o sin autoinjerto y con tejido de otra persona»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido de otra persona'))],
     ['«pterigión, con o sin autoinjerto y con tejido donado»', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto y con tejido donado'))],
+    // Ronda 7 (24/10): lo que suma, del otro lado de la frase, y la barra y la
+    // «ó» en las dos reglas. Uno por hueco, y cada uno cae solo por su pieza:
+    // el lado de antes, la barra del pterigión, la «ó».
+    ['«sacar el apéndice, reventada o bien no complicada» (la «o» antes, con una palabra en el medio)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, reventada o bien no complicada'))],
+    ['«pterigión con membrana amniótica, con o sin autoinjerto» (el donante antes de la frase)', porCalificativo(22, enLasDos(22, 'pterigión con membrana amniótica, con o sin autoinjerto'))],
+    ['«pterigión, con o sin autoinjerto / tejido ajeno» (la barra)', porCalificativo(22, enLasDos(22, 'pterigión, con o sin autoinjerto / tejido ajeno'))],
+    ['«sacar el apéndice, no complicada ó reventada» (la «ó» con tilde)', porCalificativo(5, enLasDos(5, 'sacar el apéndice, no complicada ó reventada'))],
   ];
   const pasan = [
     ['una fila nueva de otro grupo que no se llama «ECOGRAFIA…» (no se mira)', nuevos(revisarEcos(conFila(GRILLA, { item: 'TOMOGRAFIA NUEVA', grupo: 'TOMOGRAFIAS', silver: { carencia: '90 DIAS' }, gold: { carencia: '90 DIAS' } }), toques), hoyEco)],
@@ -458,6 +499,9 @@ export function autoprueba() {
     ['«sacar el apéndice (apendicectomía no complicada), la más común en un niño», en las dos puntas', nuevos(enLasDos(5, 'sacar el apéndice (apendicectomía no complicada), la más común en un niño'), hoy26)],
     ['«pterigión, con o sin autoinjerto (un trocito de tu propio ojo, del tamaño justo)», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin autoinjerto (un trocito de tu propio ojo, del tamaño justo)'), hoy26)],
     ['«pterigión, con o sin autoinjerto (un injerto de tu propio ojo)», en las dos puntas', nuevos(enLasDos(22, 'pterigión, con o sin autoinjerto (un injerto de tu propio ojo)'), hoy26)],
+    // Ronda 7 (24/10): lo de antes de la frase también se mira, y una palabra
+    // que explica qué es no suma.
+    ['«pterigión (la telita que crece sobre el ojo), con o sin autoinjerto», en las dos puntas', nuevos(enLasDos(22, 'pterigión (la telita que crece sobre el ojo), con o sin autoinjerto'), hoy26)],
   ];
   for (const [que, h] of casos) if (!h.length) f.push(que + ': tenía que fallar y pasa');
   for (const [que, h] of pasan) if (h.length) f.push(que + ': tenía que pasar y falla (' + h[0] + ')');

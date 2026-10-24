@@ -787,7 +787,10 @@ dos de otras sesiones:
     regla gritaba en falso (cap. 89). Marca de más, a propósito, «no complicada
     ni perforada»: ante la duda, se lee. **La lista de nombres no se termina
     nunca** (cap. 153): lo que no está en ella y no lleva «o», «u» ni barra
-    («y con tejido ajeno») pasa, y lo cuida la lectura de #206.
+    («y con tejido ajeno») pasa, y lo cuida la lectura de #206. *(Ronda 7:
+    «toda la frase» era todo lo que seguía a «con o sin autoinjerto», sin la
+    barra, y la «o» de antes de «no complicada» solo contaba pegada. Desde la
+    ronda 7 las dos reglas miran los dos lados: ver abajo.)*
   - **El borde de arriba de `colocarFijo` tiene su prueba.** El punto
     `arriba + 1` no tenía caso: el de la ronda 5 deja el toque asomando por
     debajo de lo que lo tapa, y ahí alcanza el punto de abajo. En el sitio de
@@ -802,6 +805,31 @@ dos de otras sesiones:
     dice «por cuarta vez» (también cuenta el merge de #287) y la nota de #288,
     que main le reservó su número. BITACORA cap. 175 («La explicación también
     se mide»).
+- **Después de la ronda 7 de verificación (sobre a1e4e89; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`CALIFICATIVOS` mira los dos lados, con un solo patrón.** Lo que decía
+    la ronda 6 de arriba («el pterigión mira toda la frase», «lo que lleva
+    «o», «u» o barra no pasa») no era del todo cierto: el pterigión miraba
+    solo lo que venía después de «con o sin autoinjerto» y no miraba la barra,
+    y el apéndice veía la «o» de antes solo pegada a «no complicada». Pasaban
+    «pterigión con membrana amniótica, con o sin autoinjerto», «pterigión con
+    aloinjerto o con o sin autoinjerto», «con o sin autoinjerto / tejido
+    ajeno» y «reventada o bien no complicada». Ahora las dos reglas sacan la
+    frase aceptada (`sinSumar`) y miran lo que queda, antes y después, con un
+    solo patrón: ni una «o» suelta (salvo «o sea»; tampoco la «ó» con tilde),
+    ni una «u», ni una barra; en el apéndice, ni un «complic…» ni la
+    complicada por sus formas (salvo con «sin» delante), y en el pterigión, ni
+    el donante. La lista de nombres sigue sin terminarse nunca (cap. 153):
+    «y con tejido ajeno», sin «o» ni barra, pasa, y lo cuida la lectura de
+    #206.
+  - **El barrido del molde llegó a §3 y §4.** Las decisiones 3, 5, 6, 8, 9 y
+    11 y los pendientes 6 y 13 todavía presentaban como vigente lo que era del
+    molde de `guia/` (la lógica demo en JS, el `min_plan`, «Desde SP X», el
+    modo personalizado, el asegurado de ejemplo, los datos ilustrativos, «Ver
+    mi red con CI+fecha», los mapas NIVEL/NOMBRE y `upsell_view`). Quedaron
+    anotados como historia, sin borrar, como la decisión 1.
+  - **Documentos**: BITACORA cap. 176 («Lo aceptado se saca, y se mira lo que
+    queda»).
 
 **Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
 un caso que falla y uno que pasa:
@@ -963,6 +991,21 @@ un caso que falla y uno que pasa:
   a la vista y junto al toque, y sin la tapa, también. Con `for (const y of
   [(arriba + abajoR) / 2, abajoR - 1])` cae en los dos toques: abierta y
   escondida, y nada más cae. Con la rama, ✓ (2 toques).
+- *(Quinta tanda, ronda 7.)* `qa/listas-fuente.mjs`: 53 casos que tienen que
+  fallar y 16 que tienen que pasar. Se suman uno por hueco: «sacar el apéndice,
+  reventada o bien no complicada» (la «o» antes, con una palabra en el medio),
+  «pterigión con membrana amniótica, con o sin autoinjerto» (el donante antes),
+  «pterigión, con o sin autoinjerto / tejido ajeno» (la barra) y «sacar el
+  apéndice, no complicada ó reventada» (la «ó»); y pasa «pterigión (la telita
+  que crece sobre el ojo), con o sin autoinjerto» (lo de antes también se
+  mira, y lo que explica no suma). Sabotajes, uno por pieza, y cada uno cae:
+  mirar solo después (seis casos, entre ellos los dos nuevos de antes), mirar
+  solo antes (veintiocho), sin la barra (dos), `[ou]` sin la «ó» (uno), sin «o sea»
+  (dos de «pasan») y cada regla de a1e4e89 en lugar de la nueva (dos cada
+  una). El separador « · » entre los dos lados es defensivo: sin él, la
+  autoprueba sigue en verde, y el comentario lo dice. Una sonda de 54 frases
+  (las siete del verificador que pasaban, sus controles y la barra antes) da
+  lo esperado; contra a1e4e89, once la contradecían.
 
 **Lo que queda** (no entró; cada punto apunta a su punto de revisión de
 `sp-interno`, donde se decide y se lleva el detalle):
@@ -4772,11 +4815,20 @@ usa `npm ci`).
    ("me duele la espalda"→Traumatología, con disclaimer). Sugerencias
    agrupadas por categoría, navegables por teclado (ARIA combobox).
    La lógica demo en JS es la espec ejecutable para el backend.
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». «La lógica demo en JS» era la de los
+   `guia/*.html`. La búsqueda de la Guía Médica de hoy es `lib/red-medica.js`,
+   lógica pura que se prueba con node (`scripts/test-buscador.mjs`), y la de
+   «¿Y esto, me lo cubre?» de /planes, `lib/buscar-prestaciones.js`.)*
 4. **Cero resultados nunca es un callejón**: "¿quisiste decir…?" + WhatsApp
    con la búsqueda prellenada. Cada falla es un lead y un dato.
 5. **Cobertura jerárquica**: Premium ⊇ Integral ⊇ Esencial. SP Senior corre
    por su propio carril (Senior / Senior Plus). Por eso basta almacenar el
    **nivel mínimo** (`min_plan`) por prestador.
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». La jerarquía no vale para la red: cada
+   guía en PDF es una red, y Silver y Gold comparten la misma. Por eso la Guía
+   Médica pregunta «¿Qué plan tenés?» y no guarda un plan mínimo.)*
 6. **Combo aprobado A1 + B3 + C3**:
    - **A1**: menú móvil desplegable (mismo patrón que la web).
    - **B3**: en listas, una sola etiqueta "Desde SP X" / "★ Exclusivo SP
@@ -4784,6 +4836,10 @@ usa `npm ci`).
    - **C3**: modo personalizado (con CI) = una sola lista, lo cubierto
      primero con "✓ Con tu plan", lo no cubierto con etiqueta dorada que
      abre la **hoja de upsell** → "Simulá el cambio" → simulador.
+   *(Historia: B3 y C3 eran del molde de `guia/`, retirado el 23/10/2026 con
+   #289; ver «Cómo quedó la Guía Médica real». La Guía Médica de hoy no dice
+   «Desde SP X» ni tiene modo personalizado ni hoja de upsell: su filtro es
+   «¿Qué plan tenés?».)*
 7. **Regla de tono comercial**: nunca "No cubierto", nunca rojo para
    cobertura. La ausencia se comunica como oportunidad (dorado). La guía
    genera el deseo; el simulador cierra la venta.
@@ -4791,11 +4847,21 @@ usa `npm ci`).
    (segundo factor liviano), POST (nunca la cédula en la URL), rate
    limiting + CAPTCHA invisible, respuesta mínima (ni nombre ni plan del
    titular en pantalla). Hoy la demo simula un asegurado SP Integral.
+   *(Historia: esa demo era del molde de `guia/`, retirado el 23/10/2026 con
+   #289; ver «Cómo quedó la Guía Médica real». Las reglas de seguridad de la
+   consulta siguen en `docs/ANEXO-requisitos-backend.md` (§3) para cuando
+   exista; hoy ninguna página la simula, y «ver mi red por cédula» vuelve a
+   `/mi-sp/` cuando exista el padrón.)*
 9. **Los datos de prestadores del prototipo son ilustrativos a propósito**:
    son el *molde* del formato correcto (sedes separadas, un teléfono por
    acción, horarios, planes). Los datos reales de SIP existen pero están
    sucios (teléfonos concatenados que rompen el botón Llamar, dos
    direcciones en un campo, "fax: 30", typo "SERVICIO DE AMBULACIA").
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». Desde septiembre de 2026, `/guia-medica/`
+   sale de la planilla maestra de SP, no de esos datos de SIP:
+   `lib/guia-medica.json` se regenera con `scripts/build-guia-medica.py`, que
+   valida la planilla, separa los teléfonos y no publica si da errores.)*
 10. **Integración guía ↔ homepage**: aprobado **A+B ahora, C como destino**
     (ver pendiente #1 abajo).
 11. **El espacio del afiliado se llama "Mi SP"** (julio 2026, elegido por
@@ -4807,6 +4873,10 @@ usa `npm ci`).
     de SP · Mi SP") llevan ahí. Evento `mi_sp_accion` (ANEXO §2) mide
     qué buscan los clientes — ese dato ordena qué módulo construir
     primero.
+    *(23/10/2026: «Ver mi red con CI+fecha» era del molde de `guia/`, que se
+    retiró con #289. La tarjeta de `/mi-sp/` lleva ahora a la Guía Médica
+    real («Buscá tu médico»), y ver la red por cédula vuelve cuando exista el
+    padrón.)*
 11b. **El simulador acompaña como una persona** (julio 2026, pedido del
     usuario): los mensajes laterales reaccionan a cada elección ("Toda la
     familia junta — de eso se trata") en vez de repetir texto fijo, la
@@ -5785,6 +5855,14 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    nuevos (Esencial/Integral/Premium); cuando existan, el volcado es el
    mismo mecanismo (plans() + TARIFAS en `app/quote.js`, cart() en
    `app/page.jsx`, mapas NIVEL/NOMBRE en la guía).
+   *(23/10/2026: los mapas NIVEL/NOMBRE eran constantes de
+   `guia/guia_resultados.html`, el molde que se retiró con #289. La Guía
+   Médica de hoy no los tiene: los prestadores salen de `lib/guia-medica.json`,
+   que se regenera desde la planilla maestra con `scripts/build-guia-medica.py`
+   (nunca a mano, y el PR de datos espera el OK de Arturo), y qué red usa cada
+   plan está en `PLANES` y `REDES` de `lib/red-medica.js`, con su columna de
+   la planilla en `REDES` del script. Un plan nuevo pasa por esos tres
+   lugares.)*
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
 8. ⚠ **Superado el 16/09/2026** — ver "LEER PRIMERO" arriba: la v1 la publica
@@ -5845,6 +5923,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 12. **"Cerca de mi ubicación" + mapa** (necesita coordenadas en la base).
 13. **Variante C2 del modo personalizado** (lista dividida "Tu red / El
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
+    *(Sin objeto desde el 23/10/2026: el modo personalizado y `upsell_view`
+    eran del molde de `guia/`, que se retiró con #289. Hoy nada emite
+    `upsell_view`; el evento sigue en el contrato,
+    `docs/ANEXO-requisitos-backend.md` §2.)*
 14. ~~**Agendamiento de turnos**, empezando por Lister~~ ✔ **PRIMERA VERSIÓN
     (24 jul 2026, dec. 11r):** espacio directo `/agendar`, **sin login**, con
     handoff a la recepción de Lister por WhatsApp — el paso de "dónde atenderse"

@@ -6547,3 +6547,46 @@ renumera por #288.
   cap. 174 lo dijo, y la ronda 5 leyó «a 1 px de sus bordes» como una pieza.
   Un plural en el comentario («sus bordes», «los renglones») es más de una
   pieza, y cada una lleva su sabotaje.
+
+## Capítulo 176 — Lo aceptado se saca, y se mira lo que queda (24/10/2026)
+
+**Qué intentamos.** Desde la ronda 4, cada hueco de `CALIFICATIVOS` se cerró
+con una pieza más en la regla, en el lado donde había aparecido: un lookbehind
+para la «o» de antes de «no complicada», un lookahead hasta el final para lo de
+después, la barra en el apéndice, los nombres del donante después del
+autoinjerto. El HANDOFF lo resumió en dos frases: «el pterigión mira toda la
+frase» y lo que lleva «o», «u» o barra no pasa.
+
+**Qué pasó.** La ronda 7 de verificación leyó esas dos frases contra el código,
+y no eran ciertas:
+- **Cada regla tenía su propia forma.** El pterigión miraba solo lo que venía
+  después de «con o sin autoinjerto»: «pterigión con membrana amniótica, con o
+  sin autoinjerto» y «pterigión con aloinjerto o con o sin autoinjerto»
+  pasaban. No miraba la barra, y el apéndice sí. Y en el apéndice la «o» de
+  antes contaba solo si estaba pegada: «reventada o bien no complicada» pasaba.
+  No eran palabras que le faltaban a la lista (cap. 153): estaban en la lista,
+  o llevaban «o» o barra. Eran huecos de la forma de la regla.
+- **El arreglo no fue una pieza más, sino menos piezas.** El verificador
+  propuso sacar de la frase lo aceptado y buscar lo que suma en lo que queda,
+  antes y después, con un solo patrón por regla. Entró así (`sinSumar`), con la
+  «ó» con tilde, que tampoco contaba. Cada hueco tiene su caso, y cada pieza, su
+  sabotaje.
+- **El barrido del molde también quedó a medias.** El commit que sacó el molde
+  viejo de `guia/` del HANDOFF tachó la tabla de §2 y corrigió §5, y §3 y §4
+  seguían diciendo «hoy la demo simula un asegurado SP Integral», «basta
+  almacenar el nivel mínimo» y «solo si los datos de `upsell_view` muestran
+  tracción». Se barrió por sección, no por lo que el molde había dejado escrito.
+
+**Qué aprendimos.**
+- **Cuando los parches de una regla tienen lado, la regla pide otra forma.**
+  Si cada hueco se cierra donde apareció, las reglas hermanas terminan con
+  piezas distintas, y la frase que las describe («mira toda la frase») deja de
+  ser cierta sin que nadie lo decida. Sacar lo aceptado y mirar el resto pone lo
+  que suma en un solo lugar: lo que vale para un lado vale para el otro, y lo
+  que vale para una regla vale para su hermana.
+- **El resumen del HANDOFF es una afirmación sobre el código, y se prueba como
+  el comentario** (cap. 174). «Toda la frase» incluye lo que viene antes.
+- **Lo retirado se busca por lo que dejó escrito, no por dónde estaba.** Para
+  sacar algo de un documento largo, se buscan sus palabras (`upsell`,
+  `min_plan`, «CI+fecha», «ilustrativos»), sección por sección, y no solo la
+  tabla o el capítulo que lo nombraba.
