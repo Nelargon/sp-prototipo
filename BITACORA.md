@@ -6012,3 +6012,44 @@ construirlo**. La home se diseña a mano; el resto lo pinta una regla (lo azul
 pasa a rosa profundo, lo menta a rosa pálido), y una regla se ve recién cuando
 se aplica a todas las páginas. Ahí apareció lo que la home no mostraba: Nuestra
 historia depende de su animación y sin ella quedaba con las frases encimadas.
+
+
+## Capítulo 162 — Una cara simple también necesita jerarquía (23/10/2026)
+
+**Qué intentamos.** Mantener las tres técnicas de «Revisar los criaderos»
+con una cara muy sintetizada. Al omitir los ojos en las tres, la boca quedó
+como el único rasgo de contraste y se llevó más atención de la buscada.
+Arturo: *«En los tres se ve demasiado la boca. Que no se vea mucho, que sea
+un poco más sutil»*. Para trazo pidió poder ver la cara y los ojos.
+
+**Qué pasó.** Se prepara una segunda versión: rostro completo en trazo,
+sin ojos y con boca apenas insinuada en papel, y rasgos mínimos en facetada.
+El laboratorio conserva las primeras versiones. Al incorporar esta revisión
+se detectó que la limpieza de favoritas solo reconocía los identificadores
+actuales: hubiera descartado las selecciones v1 al cargar v2. Ahora reconoce
+todas las revisiones y permite guardarlas o quitarlas desde la ampliación.
+Una preferencia por v1 nunca se convierte automáticamente en preferencia por v2.
+
+**Qué aprendimos.** La técnica y el detalle de la cara son decisiones
+independientes. Quitar rasgos cambia la importancia de los que quedan; una
+boca pequeña puede dominar un rostro sin ojos. «Síntesis del rostro» o
+«abstracción selectiva» nombra el recurso sin inventar una escuela artística.
+Conservar los archivos anteriores también exige conservar las decisiones que
+estaban asociadas a ellos.
+
+Lámina y criterio: `docs/diseno/README.md`, lección 94. La numeración 161 de la
+bitácora y 92–93 de las láminas está reservada por el PR #288, aún abierto.
+
+
+**La devolución siguiente recuperó el original.** Antes de publicar esta
+vuelta en Pages, Arturo reconsideró: *«Al final, creo que me gustó cómo estaba
+antes»*. Conserva la cara completa solo en trazo, pero ve mal la posición
+relativa de ojo, nariz y boca. Para papel y facetada vuelve a preferir los
+rostros sin ojos y el contraste original de la boca. Se recuperan sus v1 como
+actuales; v2 queda en el historial. Trazo recibe una nueva corrección del
+conjunto de rasgos, con la boca visible del original como referencia.
+
+La lección se afina: reducir contraste no es automáticamente mejorar. La
+preferencia visual se confirma mirando la comparación. Por eso el catálogo
+separa «última generada» de «actual»: permite recuperar una versión anterior
+por técnica sin perder las demás exploraciones ni las favoritas.
