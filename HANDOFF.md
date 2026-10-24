@@ -585,15 +585,16 @@ de la videolaparoscopía). Entró en la misma rama:
   ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
   Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
   tiene que conservar de su ítem), aunque cambien las dos puntas del par.
-- **Documentos**: BITACORA caps. 167 («Lo que dice el ítem se queda en el
-  ítem») y 168 («La caja que redondeaba sus esquinas recortaba la lista»), y el
-  cap. 166 corregido donde decía más que el cuadernillo sobre la
+- **Documentos**: BITACORA caps. 169 («Lo que dice el ítem se queda en el
+  ítem») y 170 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 168 corregido donde decía más que el cuadernillo sobre la
   videolaparoscopía.
 
 **La cuarta tanda (23/10, después de re-verificar la tercera).** La rama trajo
 `main` con el modo oscuro (#287): el cap. 155 de main quedó como 155 y los ocho
 de la rama pasaron a 156-163, con sus citas renumeradas (*desde la ronda 5
-de verificación son 161-168: del 156 al 160 son de main*); el CI corre esquinas,
+de verificación son 161-168: del 156 al 160 son de main*; *desde la ronda 6,
+163-170: el 161 lo reservó main para #288 y el 162 es de main, #296*); el CI corre esquinas,
 listas-fuente y modo-oscuro en el mismo paso. Y entró:
 - **La vejiga, dentro de la oración de Gold** en el toque de Silver y Gold
   juntos (`eco-sg`): «… En Gold, también las de riñón y de vías urinarias, la
@@ -625,7 +626,7 @@ listas-fuente y modo-oscuro en el mismo paso. Y entró:
   (medido con la transición pausada y llevada a cada milisegundo).
 - **El anestesista de la cesárea no era una pregunta**: lo contesta el
   cuadernillo (ver «Lo que queda»).
-- **Documentos**: BITACORA cap. 169 («La regla que no dejaba pasar a su propia
+- **Documentos**: BITACORA cap. 171 («La regla que no dejaba pasar a su propia
   fuente»).
 
 **La quinta tanda (23/10, después de la ronda 3 de verificación, y con `main`
@@ -638,7 +639,9 @@ dos de otras sesiones:
   orden, con sus citas renumeradas por título (acá, en el capítulo «Lo que dice
   el ítem se queda en el ítem» y en la nota de las esquinas). El nuevo es el
   170. *(Al principio pasaron a 158-166; desde la ronda 5 de verificación el
-  158, el 159 y el 160 también son de main: ver abajo.)*
+  158, el 159 y el 160 también son de main: ver abajo. Desde la ronda 6, los
+  nueve son 163-171 y el nuevo, el 172: el 161 queda reservado para #288 y el
+  162 es de main, #296.)*
 - **El molde viejo, retirado entero**: los dos `guia/*.html` que la rama había
   corregido por Bronze (#61, punto 2) se borraron con el resto, y con ellos la
   prueba de Bronze y la del upsell de `qa-integral`; las reemplazan el 404 de
@@ -669,9 +672,9 @@ dos de otras sesiones:
 - **`CALIFICATIVOS`** (hallazgo 3): «pterigión, con o sin injerto», sin «auto»,
   marca («injerto» es también el de donante); acepta «con o sin injerto propio».
   El apéndice acepta «no esté complicada».
-- **Documentos**: el cap. 169 decía «el primer caso de «pasan» es el cuadernillo
+- **Documentos**: el cap. 171 decía «el primer caso de «pasan» es el cuadernillo
   mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
-  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 170, «Lo
+  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 172, «Lo
   que no se ve no es solo lo que recorta».
 - **Después de la ronda 4 de verificación (sobre 15c56f9; sin cambios en el
   sitio, solo en las pruebas):**
@@ -695,18 +698,20 @@ dos de otras sesiones:
     la condición para las dos. **«si no se complicó» sigue marcando a
     propósito**: como «sin complicaciones», se lee «si la cirugía sale bien».
     Si #206 elige palabras de casa, esa forma no sirve.
-  - **Documentos**: BITACORA cap. 171 («La frase del ítem vivía adentro de la
+  - **Documentos**: BITACORA cap. 173 («La frase del ítem vivía adentro de la
     que dice lo contrario»).
 - **Después de la ronda 5 de verificación (sobre 564a291; sin cambios en el
   sitio, solo en las pruebas y los documentos):**
-  - **`main` entró por tercera vez**, con un merge y sin rebase (089255b): #292
+  - **`main` entró por cuarta vez** (la tercera desde la quinta tanda; la
+    primera fue #287, en la cuarta), con un merge y sin rebase (089255b): #292
     (los precios del simulador con la tabla del 09/10/2026), #293 (la reserva
     de turnos a su subdominio, las bases de Octubre Rosa y el «publicá»,
     sp-interno#209) y #294 y #295 (el laboratorio visual del blog). Solo chocó
     la bitácora: el 158, el 159 y el 160 son de main y se quedan con su número;
     los once de la rama pasan a 161-171, en el mismo orden, con sus citas
     renumeradas por título. El verificador había pedido 160-170, pero cuando se
-    trajo main ya tenía también el 160. En «Lo que queda», #209 ya no espera:
+    trajo main ya tenía también el 160. *(Desde la ronda 6 son 163-173: ver
+    abajo.)* En «Lo que queda», #209 ya no espera:
     Arturo lo decidió. Con main, `qa-lanzamiento` recorre además
     `/bases/octubre-rosa-2026/` y el CI corre `qa/precios.mjs` y
     `qa/laboratorio.mjs`.
@@ -735,9 +740,11 @@ dos de otras sesiones:
     reglas.
   - **#288** (Octubre Rosa y Noviembre Azul, de otra sesión) sigue abierto y
     toca el HANDOFF y `docs/diseno/README.md`, así que los merges van de a uno.
-    #288 suma un capítulo a la bitácora; el que entre segundo trae main y
-    renumera por título.
-  - **Documentos**: BITACORA cap. 172 («Lo que promete el comentario es la
+    #288 suma un capítulo a la bitácora y dos láminas. *(Ronda 6: `main` le
+    reservó el cap. 161 y las láminas 92-93 con #296, que sumó el 162 y la
+    lección 94; esta rama usa del 163 al 174, así que ya nadie renumera por
+    #288. El que entre segundo trae main y resuelve el HANDOFF integrando.)*
+  - **Documentos**: BITACORA cap. 174 («Lo que promete el comentario es la
     lista de sabotajes»).
 - **Después de la verificación de integración de 61c94ec (solo este
   documento; sin cambios en el sitio ni en las pruebas):** el HANDOFF ya no
@@ -2837,8 +2844,8 @@ seis artículos: *«Me cuesta decidir para cada opción cuál me gusta más […
 con este laboratorio de imágenes y después podemos ir decidiendo»*.
 
 **Dónde:** https://nelargon.github.io/sp-prototipo/blog/laboratorio/
-Código y 33 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
-27 propuestas actuales y seis versiones anteriores de escuela y caminar.
+Código y 37 imágenes completas en `public/blog/laboratorio/`: nueve artículos,
+27 propuestas actuales y diez alternativas conservadas en el historial.
 Son imágenes generadas para esta exploración. Las referencias ajenas del
 Drive no se copian al sitio.
 
@@ -2857,6 +2864,18 @@ explicativo, siluetas y papel e ilustración facetada. Títulos, copetes y links
 vienen de las notas reales. Conceptos, límites de representación, procedencia
 y capturas en `docs/diseno/fuentes/2026-10-23-laboratorio-imagenes/`.
 
+**Criaderos, última devolución (23/10):** Arturo volvió a preferir las
+originales: «El resto de las otras ilustraciones sin los ojos lo dejaría, y
+también con el contraste en la boca, como estaba antes». Papel y facetada
+muestran otra vez v1; sus pruebas de boca sutil (v2) quedan en el historial.
+Solo trazo conserva la cara completa: v3 revisa la relación entre ojo, nariz
+y boca y recupera el contraste de la boca del original. V1 y v2 de trazo
+siguen disponibles. La técnica y el detalle facial son decisiones separadas;
+esta devolución reemplaza la preferencia provisional por bocas casi invisibles.
+La revisión anterior no llegó a publicarse como actual en Pages antes de la
+nueva indicación. La revisión activa se elige por estilo y puede ser una
+anterior; las favoritas conservan su imagen e identificador.
+
 **Cómo se decide:** se pueden guardar varias favoritas y una nota por artículo,
 ampliar, ver recortes 2:1/16:9/1:1 y descargar la imagen completa. Favoritas y
 notas viven en `localStorage` del navegador: no son compartidas ni se guardan
@@ -2864,10 +2883,10 @@ en GitHub. «Copiar resumen» y exportar/importar JSON permiten traer la selecci
 al chat o pasarla a otro dispositivo. Marcar favorita no cambia una portada.
 
 **Respaldo sin conexión:** `python3 scripts/export-laboratorio.py --output
-/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 17 MB, con las
+/tmp/SP-Laboratorio-imagenes.html` produce un solo HTML de unos 19 MB, con las
 imágenes y fuentes incluidas y las mismas funciones de comparación. Nació
 porque los primeros dos intentos de Pages agotaron el tiempo de publicación,
-con las compilaciones y pruebas en verde. Se verificó sin conexión: 33
+con las compilaciones y pruebas en verde. Se verificó sin conexión: 37
 versiones y cero solicitudes externas. Las favoritas de la copia y de la web
 se pasan con exportar/importar. Los links a las notas sí necesitan internet.
 
@@ -2878,7 +2897,7 @@ prototipo: la poda de `/blog/` la excluye de la edición de lanzamiento y del
 build para el dominio. No se empuja a `produccion`.
 
 **Pruebas:** `qa/laboratorio.mjs --datos` entra al CI; con la URL del build
-prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 33 versiones,
+prueba las nueve notas a cuatro anchos, 81 vistas de recorte, 37 versiones,
 descargas, favoritas múltiples, notas, copia, exportación/importación,
 historial y almacenamiento bloqueado. `qa-integral` abre la nueva subpágina.
 Revisor UX sin hallazgos. Láminas y lecciones en `docs/diseno/README.md`.
@@ -3547,7 +3566,7 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
   `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
   dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
   casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
-  161.)* A la vista son 2px, casi invisibles (capturas ampliadas en
+  163.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que

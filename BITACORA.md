@@ -5971,7 +5971,48 @@ no permite abrir `file://`; se entregó el contenido exacto por una ruta local
 de prueba, sin simular que se había comprobado ese protocolo. El respaldo
 conserva las selecciones mediante exportación/importación entre copias.
 
-## Capítulo 161 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
+
+## Capítulo 162 — Una cara simple también necesita jerarquía (23/10/2026)
+
+**Qué intentamos.** Mantener las tres técnicas de «Revisar los criaderos»
+con una cara muy sintetizada. Al omitir los ojos en las tres, la boca quedó
+como el único rasgo de contraste y se llevó más atención de la buscada.
+Arturo: *«En los tres se ve demasiado la boca. Que no se vea mucho, que sea
+un poco más sutil»*. Para trazo pidió poder ver la cara y los ojos.
+
+**Qué pasó.** Se prepara una segunda versión: rostro completo en trazo,
+sin ojos y con boca apenas insinuada en papel, y rasgos mínimos en facetada.
+El laboratorio conserva las primeras versiones. Al incorporar esta revisión
+se detectó que la limpieza de favoritas solo reconocía los identificadores
+actuales: hubiera descartado las selecciones v1 al cargar v2. Ahora reconoce
+todas las revisiones y permite guardarlas o quitarlas desde la ampliación.
+Una preferencia por v1 nunca se convierte automáticamente en preferencia por v2.
+
+**Qué aprendimos.** La técnica y el detalle de la cara son decisiones
+independientes. Quitar rasgos cambia la importancia de los que quedan; una
+boca pequeña puede dominar un rostro sin ojos. «Síntesis del rostro» o
+«abstracción selectiva» nombra el recurso sin inventar una escuela artística.
+Conservar los archivos anteriores también exige conservar las decisiones que
+estaban asociadas a ellos.
+
+Lámina y criterio: `docs/diseno/README.md`, lección 94. La numeración 161 de la
+bitácora y 92–93 de las láminas está reservada por el PR #288, aún abierto.
+
+
+**La devolución siguiente recuperó el original.** Antes de publicar esta
+vuelta en Pages, Arturo reconsideró: *«Al final, creo que me gustó cómo estaba
+antes»*. Conserva la cara completa solo en trazo, pero ve mal la posición
+relativa de ojo, nariz y boca. Para papel y facetada vuelve a preferir los
+rostros sin ojos y el contraste original de la boca. Se recuperan sus v1 como
+actuales; v2 queda en el historial. Trazo recibe una nueva corrección del
+conjunto de rasgos, con la boca visible del original como referencia.
+
+La lección se afina: reducir contraste no es automáticamente mejorar. La
+preferencia visual se confirma mirando la comparación. Por eso el catálogo
+separa «última generada» de «actual»: permite recuperar una versión anterior
+por técnica sin perder las demás exploraciones ni las favoritas.
+
+## Capítulo 163 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
 
 **Qué intentamos.** Cerrar sp-interno#60, que decide Claude: los radios
 escritos a mano que quedaban en el sitio y «la regex del QA no los ve todos».
@@ -6009,7 +6050,7 @@ mira lo computado: cada `.sq` visible tiene su `--sq` en la escala.
   porqué. Una excepción con nombre, archivo y motivo se puede discutir; una que
   el contador deduce, no la ve nadie.
 
-## Capítulo 162 — La nota larga no entra en el lugar de la corta (23/10/2026)
+## Capítulo 164 — La nota larga no entra en el lugar de la corta (23/10/2026)
 
 **Qué intentamos.** Las 185A y 190A: que la celda de Essential en las tablas del
 home y de `/planes` diga lo que cambia la elección («junto con ecocardiograma y
@@ -6034,7 +6075,7 @@ o se desalinean las columnas.
   consultas del home estaban escritas hacía semanas y nadie las vio, porque
   nadie las había buscado en la pantalla. Quedó como punto de revisión.
 
-## Capítulo 163 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
+## Capítulo 165 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
 
 **Qué intentamos.** La 9A y la 10A: «2 meses, la mayoría» en las ecografías de
 Silver y Gold y «de una lista de 26» en las cirugías de Essential, con la lista
@@ -6076,7 +6117,7 @@ entera y sin nada encima.
   aprobado, letra por letra, y se leía mal. Las capturas no son un trámite del
   final: son la otra mitad de la verificación.
 
-## Capítulo 164 — El nombre del archivo no es su versión (23/10/2026)
+## Capítulo 166 — El nombre del archivo no es su versión (23/10/2026)
 
 **Qué intentamos.** El punto 1 de sp-interno#61: que la fecha de la Guía Médica
 diga cuándo son los datos.
@@ -6097,7 +6138,7 @@ día en que se leyó la planilla.
 - **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
   la Guía no coinciden, una de las dos está leyendo otra cosa.
 
-## Capítulo 165 — La prueba abría la lista justo donde entraba (23/10/2026)
+## Capítulo 167 — La prueba abría la lista justo donde entraba (23/10/2026)
 
 **Qué intentamos.** Los tres verificadores de la 9A y la 10A (datos, textos y
 código) encontraron que en el celular la lista de las 26 cirugías quedaba
@@ -6139,7 +6180,7 @@ que «de una lista de 26.» no se saliera de su fila.
 - **Una autoprueba cuenta lo que rompió.** «Saqué 0 reglas y no pasó nada» no
   es un verde: es una prueba que no probó.
 
-## Capítulo 166 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
+## Capítulo 168 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
 
 **Qué intentamos.** En la primera tanda de la 10A, las 26 cirugías de Essential
 se dijeron con palabras de casa donde parecía decir lo mismo: «hemorroides»,
@@ -6174,10 +6215,10 @@ anestesista, al cierre de la lista.
   `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
   nombre al lado de su literal, de a pares.
 
-## Capítulo 167 — Lo que dice el ítem se queda en el ítem (23/10/2026)
+## Capítulo 169 — Lo que dice el ítem se queda en el ítem (23/10/2026)
 
 **Qué intentamos.** La segunda tanda de la 10A sacó el «a cielo abierto» de la
-próstata y el «abierta» de la pielolitotomía, porque el capítulo 166 enseñaba
+próstata y el «abierta» de la pielolitotomía, porque el capítulo 168 enseñaba
 que un calificativo suelto hace leer distinto a los que no lo llevan: la técnica
 iba una vez, en el título. Y tradujo el legrado como «legrado evacuador
 (raspado del útero)», con «evacuador» para no prometer el de diagnóstico.
@@ -6194,7 +6235,7 @@ Drive, encontró cuatro nombres que seguían abarcando más que su ítem:
 - **El apéndice.** «sin complicaciones» se leía «si la cirugía sale bien». El ítem
   dice «no complicada», y va así.
 - **La pielolitotomía** había perdido el «abierta» de su ítem.
-- Y el cap. 166 decía que el cuadernillo «deja la videolaparoscopía a cargo de
+- Y el cap. 168 decía que el cuadernillo «deja la videolaparoscopía a cargo de
   la persona». Deja a cargo la diferencia de honorarios y el equipo. El sitio,
   por su lado, decía «todo el uso del equipo y de los materiales», sin la torre
   ni el instrumental. Se corrigieron las dos cosas.
@@ -6204,7 +6245,7 @@ si cambiaban las dos puntas a la vez, daba verde.
 
 **Qué aprendimos.**
 - **Lo que vale para todas va arriba; lo que dice el ítem, en el ítem.** La
-  lección del cap. 166 sirve para lo que agregamos nosotros, no para lo que el
+  lección del cap. 168 sirve para lo que agregamos nosotros, no para lo que el
   contrato escribió en el renglón. Sacar un calificativo del ítem porque el
   título ya lo dice es resumir el contrato, y resumir es prometer de más.
 - **La traducción también promete.** El literal puede estar entero y la
@@ -6214,7 +6255,7 @@ si cambiaban las dos puntas a la vez, daba verde.
   «no complicada», «terapéutico»…), y la autoprueba cambia las dos puntas a la
   vez: tiene que caer por el calificativo, no por la igualdad.
 
-## Capítulo 168 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
+## Capítulo 170 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
 
 **Qué intentamos.** En la segunda tanda, la lista de las 26 que quedaba debajo
 de la cabecera fija pasó a abrirse hacia el lado más grande, con ese alto y
@@ -6254,7 +6295,7 @@ camino:
   decidir qué pasa al scrollear, y medirlo con las tres entradas: el dedo, el
   mouse y el teclado. La decisión obvia (cerrar) era la que rompía una de ellas.
 
-## Capítulo 169 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
+## Capítulo 171 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
 
 **Qué intentamos.** En la tercera tanda, `CALIFICATIVOS` pasó a pedirle a cada
 nombre de las 26 lo que dice su ítem, y la burbuja de un toque pasó a ser fija,
@@ -6308,7 +6349,7 @@ sin ubicar.
   cambia a qué plan le toca lo que sigue. Un arreglo de redacción en una lista
   que nombra planes se vuelve a leer plan por plan.
 
-## Capítulo 170 — Lo que no se ve no es solo lo que recorta (23/10/2026)
+## Capítulo 172 — Lo que no se ve no es solo lo que recorta (23/10/2026)
 
 **Qué intentamos.** En la cuarta tanda, la burbuja de un toque pasó a
 esconderse mientras su toque está «fuera de lo que se ve», y lo que se ve quedó
@@ -6348,12 +6389,12 @@ punto 4): al traerlo, quedó una sola versión.
   mira que el caso sea el que se quiere probar; si no se pudo armar, la prueba
   lo dice, en vez de dar verde o rojo por otra cosa.
 
-## Capítulo 171 — La frase del ítem vivía adentro de la que dice lo contrario (23/10/2026)
+## Capítulo 173 — La frase del ítem vivía adentro de la que dice lo contrario (23/10/2026)
 
 **Qué intentamos.** En la quinta tanda, `CALIFICATIVOS` aprendió a aceptar más
 formas de decir lo mismo que el cuadernillo («cuando no esté complicada», «con
 o sin injerto propio»), y `colocarFijo` aprendió a preguntarle al navegador qué
-hay en el toque, salteando la burbuja (cap. 170).
+hay en el toque, salteando la burbuja (cap. 172).
 
 **Qué pasó.** La ronda 4 de verificación encontró dos huecos del mismo tipo que
 la ronda 3, y una parte del arreglo sin quién la cuidara:
@@ -6394,11 +6435,11 @@ la ronda 3, y una parte del arreglo sin quién la cuidara:
 - **El arreglo que llega de afuera también se prueba.** Una regla propuesta con
   sus casos sigue siendo una hipótesis: se le busca el caso que no trajo.
 
-## Capítulo 172 — Lo que promete el comentario es la lista de sabotajes (23/10/2026)
+## Capítulo 174 — Lo que promete el comentario es la lista de sabotajes (23/10/2026)
 
 **Qué intentamos.** En la ronda 4, la prueba de `colocarFijo` sumó el sabotaje
 que le faltaba (`queHay` sin `elementsFromPoint`), y `CALIFICATIVOS` dejó de
-aceptar la frase del ítem adentro de una «o» que suma lo contrario (cap. 171).
+aceptar la frase del ítem adentro de una «o» que suma lo contrario (cap. 173).
 El comentario del código, el commit y el HANDOFF lo contaron con detalle.
 
 **Qué pasó.** La ronda 5 de verificación leyó ese detalle frase por frase y lo
@@ -6411,7 +6452,7 @@ saboteó pieza por pieza:
   cabecera de su plan, la burbuja se escondía; y donde «de una lista de 26» se
   parte en dos renglones (de 320 a 412 px), con el primero debajo de la
   cabecera del sitio y el segundo a la vista, también. Es el mismo hueco que la
-  ronda 4 encontró en el `elementsFromPoint`: la lección del cap. 171 se aplicó
+  ronda 4 encontró en el `elementsFromPoint`: la lección del cap. 173 se aplicó
   a la pieza que la enseñó y no a sus vecinas.
 - **El commit prometía casos que no estaban.** Decía que en el apéndice «una
   «o» antes o después no la deja pasar» y que en el pterigión «no puede venir

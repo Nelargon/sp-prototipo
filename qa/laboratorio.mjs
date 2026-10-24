@@ -14,7 +14,7 @@ for(const a of catalog.articles){
   assert.ok(a.title&&a.slug&&a.concept&&a.limit);
   for(const v of a.variants){
     assert.ok(!ids.has(v.id));ids.add(v.id);assert.ok(catalog.styles[v.style]);
-    assert.equal(v.src,v.versions.at(-1).src);
+    assert.equal(v.src,v.versions.find(r=>v.id===`${a.id}-${v.style}-v${r.revision}`)?.src);
     for(const src of [v.thumbnail,...v.versions.map(r=>r.src)]){
       assert.match(src,/^assets\/[a-z0-9-]+\.webp$/);
       assert.ok(existsSync(join(LAB,src)),src);assets.add(src);
@@ -96,6 +96,36 @@ try{
   // Browser history and missing hash recover without an empty screen.
   await page.selectOption('#article-select','dengue');await page.selectOption('#article-select','presion');await page.goBack();assert.equal(await page.inputValue('#article-select'),'dengue');
   await page.goto(url+'#desconocido');await ready();assert.equal(await page.inputValue('#article-select'),'manos');
+  // A new image revision must preserve earlier favorites without approving v2.
+  await page.evaluate(()=>localStorage.setItem('sp-blog-laboratorio-v1',JSON.stringify({schema:1,favorites:['dengue-trazo-v1'],notes:{dengue:'Conservar la primera comparación.'}})));
+  await page.goto(url+'#dengue');await page.reload();await ready();
+  assert.equal(await page.locator('#options [data-favorite][aria-pressed="true"]').count(),0);
+  for(const style of ['papel','facetada']){
+    await page.click(`[data-open="dengue-${style}-v1"]`);
+    assert.equal(await page.inputValue('#image-version'),'0');
+    assert.ok((await page.locator('#large-image').getAttribute('src')).endsWith(`dengue-${style}-v1.webp`));
+    await page.keyboard.press('Escape');
+  }
+  assert.equal(await page.locator('[data-favorite-open="dengue-trazo-v1"]').count(),1);
+  await page.click('[data-favorite-open="dengue-trazo-v1"]');
+  assert.equal(await page.inputValue('#image-version'),'0');
+  assert.ok((await page.locator('#large-image').getAttribute('src')).endsWith('dengue-trazo-v1.webp'));
+  assert.equal(await page.locator('#dialog-favorite').getAttribute('aria-pressed'),'true');
+  await page.selectOption('#image-version','2');
+  assert.equal(await page.locator('#dialog-favorite').getAttribute('aria-pressed'),'false');
+  await page.click('#dialog-favorite');await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#options [data-favorite="dengue-trazo-v3"]').getAttribute('aria-pressed'),'true');
+  const historyExport=page.waitForEvent('download');await page.click('#export-selection');
+  const historyState=JSON.parse(readFileSync(await(await historyExport).path(),'utf8'));
+  assert.deepEqual(historyState.favorites,['dengue-trazo-v1','dengue-trazo-v3']);
+  assert.ok(historyState.summary.includes('dengue-trazo-v1')&&historyState.summary.includes('dengue-trazo-v3'));
+  await page.reload();await ready();assert.equal(await page.locator('.favorite-item').count(),2);
+  await page.click('[data-favorite-open="dengue-trazo-v1"]');await page.click('#dialog-favorite');await page.keyboard.press('Escape');
+  await page.waitForFunction(()=>document.querySelector('#article-title')===document.activeElement);
+  assert.equal(await page.locator('.favorite-item').count(),1);
+  assert.equal(await page.locator('[data-favorite-open="dengue-trazo-v3"]').count(),1);
+  assert.equal(await page.inputValue('#article-notes'),'Conservar la primera comparación.');
+  report.historicalFavorites=true;
   // Clean screenshots for the design archive, with no test selections.
   await page.evaluate(()=>localStorage.removeItem('sp-blog-laboratorio-v1'));await page.reload();await ready();
   await page.setViewportSize({width:1280,height:1000});await page.screenshot({path:join(output,'laboratorio-desktop.png'),fullPage:true});

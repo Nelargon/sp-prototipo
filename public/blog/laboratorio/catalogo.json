@@ -53,6 +53,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Trazo explicativo."
         },
         {
@@ -67,6 +68,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Siluetas y papel."
         },
         {
@@ -81,6 +83,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Jabón y fricción, vistos de cerca en una pileta de casa. Técnica: Ilustración facetada."
         }
       ]
@@ -95,21 +98,32 @@
       "date": "2026-10-03",
       "concept": "Vaciar el agua que queda en el plato de una maceta.",
       "limit": "La escena representa una tarea de la ronda del patio, no todos los posibles criaderos.",
-      "review": "Nueva exploración: por comparar.",
+      "review": "Volvemos a las originales de papel y facetada. En trazo conservamos la cara completa y revisamos la posición del ojo, la nariz y la boca. Las otras pruebas quedan al ampliar.",
       "isNew": true,
       "variants": [
         {
-          "id": "dengue-trazo-v1",
+          "id": "dengue-trazo-v3",
           "style": "trazo",
-          "src": "assets/dengue-trazo-v1.webp",
-          "thumbnail": "assets/dengue-trazo-v1-mini.webp",
+          "src": "assets/dengue-trazo-v3.webp",
+          "thumbnail": "assets/dengue-trazo-v3-mini.webp",
           "versions": [
             {
               "label": "Primera versión",
               "src": "assets/dengue-trazo-v1.webp",
               "revision": 1
+            },
+            {
+              "label": "Versión 2",
+              "src": "assets/dengue-trazo-v2.webp",
+              "revision": 2
+            },
+            {
+              "label": "Versión 3 · Actual",
+              "src": "assets/dengue-trazo-v3.webp",
+              "revision": 3
             }
           ],
+          "description": "Cara completa y rasgos alineados con el ángulo de la cabeza.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Trazo explicativo."
         },
         {
@@ -119,11 +133,17 @@
           "thumbnail": "assets/dengue-papel-v1-mini.webp",
           "versions": [
             {
-              "label": "Primera versión",
+              "label": "Primera versión · Actual",
               "src": "assets/dengue-papel-v1.webp",
               "revision": 1
+            },
+            {
+              "label": "Versión 2",
+              "src": "assets/dengue-papel-v2.webp",
+              "revision": 2
             }
           ],
+          "description": "Original: sin ojos y con el contraste de la boca.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Siluetas y papel."
         },
         {
@@ -133,11 +153,17 @@
           "thumbnail": "assets/dengue-facetada-v1-mini.webp",
           "versions": [
             {
-              "label": "Primera versión",
+              "label": "Primera versión · Actual",
               "src": "assets/dengue-facetada-v1.webp",
               "revision": 1
+            },
+            {
+              "label": "Versión 2",
+              "src": "assets/dengue-facetada-v2.webp",
+              "revision": 2
             }
           ],
+          "description": "Original: planos de color, sin ojos y con el gesto inicial.",
           "alt": "Vaciar el agua que queda en el plato de una maceta. Técnica: Ilustración facetada."
         }
       ]
@@ -167,6 +193,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Trazo explicativo."
         },
         {
@@ -181,6 +208,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Siluetas y papel."
         },
         {
@@ -195,6 +223,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Un control tranquilo de presión, aunque la persona se sienta bien. Técnica: Ilustración facetada."
         }
       ]
@@ -224,6 +253,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Trazo explicativo."
         },
         {
@@ -238,6 +268,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Siluetas y papel."
         },
         {
@@ -252,6 +283,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Dos pares de escarpines junto a una agenda de controles. Técnica: Ilustración facetada."
         }
       ]
@@ -281,6 +313,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Trazo explicativo."
         },
         {
@@ -295,6 +328,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Siluetas y papel."
         },
         {
@@ -309,6 +343,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Revisar la receta y la información del plan antes de comprar. Técnica: Ilustración facetada."
         }
       ]
@@ -338,6 +373,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Trazo explicativo."
         },
         {
@@ -352,6 +388,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Siluetas y papel."
         },
         {
@@ -366,6 +403,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Una niña participa con su mamá en la preparación de la comida familiar. Técnica: Ilustración facetada."
         }
       ]
@@ -395,6 +433,7 @@
               "revision": 1
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Trazo explicativo."
         },
         {
@@ -409,6 +448,7 @@
               "revision": 1
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Siluetas y papel."
         },
         {
@@ -423,6 +463,7 @@
               "revision": 1
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Una libreta preparada junto al bolso que acompaña al niño. Técnica: Ilustración facetada."
         }
       ]
@@ -452,11 +493,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-trazo-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Contorno y rayado para describir la acción.",
           "alt": "Una docente conversa con una familia en el patio. Técnica: Trazo explicativo."
         },
         {
@@ -471,11 +513,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-papel-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Formas superpuestas, textura y gestos mínimos.",
           "alt": "Una docente conversa con una familia en el patio. Técnica: Siluetas y papel."
         },
         {
@@ -490,11 +533,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/escuela-facetada-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Volumen construido con planos de color.",
           "alt": "Una docente conversa con una familia en el patio. Técnica: Ilustración facetada."
         }
       ]
@@ -524,11 +568,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-editorial-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Textura y una escena cotidiana con aire.",
           "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: A · Ilustración editorial."
         },
         {
@@ -543,11 +588,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-narrativa-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Personajes y entorno cuentan la situación.",
           "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: B · Ilustración narrativa."
         },
         {
@@ -562,11 +608,12 @@
               "revision": 1
             },
             {
-              "label": "Revisión actual",
+              "label": "Versión 2 · Actual",
               "src": "assets/caminar-foto-v2.webp",
               "revision": 2
             }
           ],
+          "description": "Prueba conservada; todavía se percibe artificial.",
           "alt": "Una caminata cotidiana con una bolsa de compras. Técnica: D · Apariencia fotográfica."
         }
       ]
