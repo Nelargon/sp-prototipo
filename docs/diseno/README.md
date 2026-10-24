@@ -2300,7 +2300,9 @@ sp-interno#50. Si vale la grilla, Gold tiene menos fisioterapia que Silver, y el
 superlativo tomaba partido por el dato que favorece al plan caro. Silver sigue
 diciendo «topes más altos» en el simulador, comparado con Essential: la 8A no lo
 tocó, y lo decide Arturo en sp-interno#193. El detalle y los controles que lo
-cuidan están en el HANDOFF, «✅ DECIDIDO EL 20/10/2026».
+cuidan están en el HANDOFF, «✅ DECIDIDO EL 20/10/2026». *(23/10/2026: lo cerró
+la 1A de sp-interno#193: Silver dice «más días de terapia intensiva y más
+sesiones de psicología»; ver el HANDOFF, «✅ DECIDIDO EL 23/10/2026».)*
 
 **La lección.** Una frase también afirma un dato. «Por persona» y «los topes más
 altos» no estaban en una celda: eran el final de una oración, y decían lo mismo

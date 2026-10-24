@@ -13,7 +13,7 @@ que documenta la implementación técnica de la página de planes.
 > y recién entonces leé este archivo — una sesión que lee la foto vieja
 > reporta un proyecto que ya no existe.
 
-*Última actualización: 23 oct 2026.*
+*Última actualización: 24 oct 2026.*
 
 ---
 
@@ -317,6 +317,866 @@ Arturo. *(Esa misma tarde: los dos primeros, hechos. Ver «🌐 23/10/2026».)*
 
 ---
 
+## ✅ DECIDIDO EL 23/10/2026 («Adelante con tus sugerencias»)
+
+Arturo contestó «Adelante con tus sugerencias» en la sesión del Guardián del
+23/10, sobre las opciones recomendadas de sp-interno #191 (puntos 9A y 10A),
+#190 (A), #185 (A, con el agregado del comité: también la resonancia «sin
+contraste ni sedación»), #186 (A) y #193 (1A). En la misma rama entran #60 y los
+puntos 1 y 2 de #61, que decide Claude. La 196A (Plan Vital, «laparotomía
+exploradora», sp-interno#196) entró aparte, en sp-prototipo#286. Todo vive en la
+rama `trabajo-2310`; las fuentes se releyeron el 23/10 en el cuadernillo de
+Essential del Drive (CUADERNILLO PLAN ESSENTIAL.pdf, 25/03/2026; fileId en
+`datos/planes-vigentes/essential.json`, `cirugias_lista_26`): 1.11 (fisioterapia
+«sesiones traumatológicas»), 3.2 (tomografía junto con ecocardiograma y
+ergometría), 4.2 (resonancia «No incluye contraste, materiales descartables ni
+sedación») y 4.4.1 a 4.4.26 (las 26 cirugías).
+
+1. **9A, las ecografías de Silver y Gold: «2 meses, la mayoría»** (sp-interno#191).
+   En la grilla del master del 24/07 esperan 90 días 10 de las 33 filas
+   «ECOGRAFIA…» de Silver (las 4 del embarazo y 5 Doppler, una de ellas en dos
+   filas: la venosa de un lado y la de los dos) y 15 de las 32 con dato de Gold
+   (esas 9, porque la Doppler venosa de un lado no tiene dato en Gold, y 6 más).
+   Esperan 90 también, en los dos, tres perinatales que no se llaman
+   «ECOGRAFIA…»: el monitoreo fetal, el perfil biofísico y la ecocardiografía
+   fetal. *(Corregido en la segunda tanda del 23/10: decía «las 4 del embarazo
+   y 5 Doppler», que suman 9.)* «la mayoría» se toca y abre cuáles esperan 3 meses
+   (`TOQUES` de `app/coverage.js`, dibujado con `Term` de `glossary.jsx`, con
+   `tipo="toque"` para que GA no lo mezcle con el glosario): en la banda de
+   esperas de `/planes` en la computadora, en el cuadro de esperas del celular
+   («En Silver y Gold, la mayoría.») y en el simulador. Donde no puede ir un
+   toque, la lista va en oraciones: en el pie de la tarjeta de la ecografía de
+   `/planes` (se cierra al sacar el mouse del nombre), en la hoja del celular
+   (la fila de «Los once servicios» ya es un botón), en una segunda línea de la
+   cotización en texto y en la pregunta frecuente del home (decía «ecografías, 2
+   meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también otras
+   seis)»: así quedó la primera tanda; la frase de hoy, en «La tercera tanda»,
+   abajo; su caja recorta y la lista no entra). La espera dice «2 meses de espera, la
+   mayoría» en la tarjeta, la lista y la píldora de la hoja.
+   **Las listas finales (segunda tanda del 23/10, después de los
+   verificadores).** Silver: «Las del embarazo (obstétrica, morfológica, de
+   marcadores cromosómicos, Doppler obstétrico, del corazón del bebé, perfil
+   biofísico y monitoreo fetal) y las Doppler de tiroides, de mama, de
+   testículo, de venas de brazos o piernas y de carótidas.» Gold: lo mismo, «y
+   las de riñón y de vías urinarias, la testicular, la de próstata por vía
+   rectal y la transvaginal. Para la de vejiga, preguntale a tu asesor.»
+   *(Tercera tanda: las Doppler van en su oración y la vejiga dice «cuánto
+   esperás»; ver «La tercera tanda».)* Sin
+   «Las demás, 2 meses» (repetía la celda y, debajo de las tres tarjetas,
+   parecía valer para Essential). La «VESICAL» (90 días) y la «DE VEJIGA» (60)
+   de Gold son el mismo estudio en el master: no se elige un lado, va al
+   asesor. La pregunta frecuente del home dice las cinco de Gold y el asesor
+   (`ECO_EN_FAQ`, junto a `TOQUES`), en lugar de «otras seis». Las ecografías
+   «ECOGRAFIA…» y las tres perinatales se controlan contra la grilla, fila por
+   fila, en `qa/listas-fuente.mjs` (`NOMBRE_WEB`).
+2. **10A, la cirugía de Essential «de una lista de 26»** (sp-interno#191). La
+   nota dice «1 cirugía/familia/año, de una lista de 26» (en el simulador y el
+   cuadro del celular, «una al año por familia, de una lista de 26») y «de una
+   lista de 26» abre las 26 (`CIRUGIAS_26`), en el orden del cuadernillo, con la
+   palabra de la familia donde dice lo mismo (vesícula, amígdalas, hemorroides)
+   y el nombre del cuadernillo, con todos sus calificativos, donde traducir
+   prometería más (laparotomía exploradora, colporrafía, pterigión; «de un
+   lado», «sin la malla», «a cielo abierto»). *(Así quedó la primera tanda; la
+   segunda y la tercera la corrigieron: ver «La lista final», abajo, y «La
+   tercera tanda».)* La lista literal, con su fuente,
+   quedó en `essential.json` (`cirugias_lista_26`).
+   **La lista final (segunda tanda del 23/10).** Los verificadores encontraron
+   nombres que prometían más que el cuadernillo («hemorroides» abarcaba la
+   ligadura, que no entra; «quiste», cualquier quiste; «legrado», también el de
+   diagnóstico). Ahora cada nombre dice lo mismo que el cuadernillo: la palabra
+   de la familia donde no hay duda («sacar la vesícula», «sacar las amígdalas»,
+   «sacar un nódulo de la mama»); el literal con su traducción entre paréntesis
+   donde la hay («absceso perianal (junto al ano)», «hemorroidectomía (cirugía
+   para sacar las hemorroides)», «legrado evacuador (raspado del útero)»,
+   «pielolitotomía (sacar una piedra de la pelvis del riñón)»; *la tercera
+   tanda corrigió esas dos y tres más*), y los
+   calificativos del cuadernillo («pterigión, con o sin autoinjerto», «(la
+   malla no entra)», «quistectomía de un lado (preguntale a tu asesor cuáles
+   entran)»: el cuadernillo no dice de qué órgano). «colporrafia», sin tilde. El
+   título dice «Las 26 cirugías de Essential, a cielo abierto», como el
+   cuadernillo («Intervenciones Quirúrgicas (Abiertas)»), y la lista cierra con
+   lo que dice de la técnica y del anestesista: «De los honorarios del
+   anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía,
+   pagás vos la diferencia de honorarios (del anestesista, el ayudante y el
+   instrumentador) y todo el uso del equipo y de los materiales.» (4.3.2 y el
+   párrafo que sigue a la lista, releídos en el PDF el 23/10; *la tercera tanda
+   la copió fiel, con la torre y el instrumental*). El porqué de
+   Essential del simulador y la pregunta frecuente «¿Cuál es la diferencia…?»
+   dicen «una cirugía por año para la familia, de una lista de 26» (decían «las
+   cirugías»; *desde la tercera tanda, «una cirugía al año por familia», como el
+   cuadro*). `qa/listas-fuente.mjs` controla que cada ítem de
+   `cirugias_lista_26` tenga su nombre en `CIRUGIAS_26`, en el mismo índice
+   (`PARES_26`, que también lee la prueba con navegador). La pregunta frecuente de las
+   esperas lo dice en la oración. La burbuja de esta lista es más ancha (`ancho:
+   420` en `TOQUES`): a 260 px medía unos 366 de alto y no entraba en la tarjeta
+   de esperas del simulador en la computadora.
+3. **185A, las condiciones de Essential en las tablas** (sp-interno#185). La
+   celda de Essential del home y de `/planes` dice, debajo de la forma corta,
+   «junto con ecocardiograma y ergometría» (tomografía) y «sin contraste ni
+   sedación» (resonancia). Es la misma `cola` de la lista de los once
+   (`notaCelda` y `enTabla` en `coverage.js`; `.cmp2-bajo` en `globals.css`); en
+   la computadora la fila entera pasa a 64 px para que las columnas sigan
+   alineadas (la tabla son columnas sueltas que solo alinea la altura). Se ve
+   también en las tarjetas del home en el celular. La resonancia decía solo
+   «sin contraste» en la tarjeta y la hoja de `/planes`, la lista y el tema:
+   ahora dice las dos, como la tarjeta del home.
+4. **190A, la fisioterapia de Essential «solo traumatológica»** (sp-interno#190).
+   La forma corta dice «5/familia/año, solo traumatológica» (lista y, debajo, la
+   celda) y las oraciones, «Solo la traumatológica: hasta 5 sesiones al año por
+   familia» (tarjetas del home y de `/planes`, y hoja). La tarjeta del home lee
+   ahora las tres líneas de `cov` (la unificación que esperaba «la 9»).
+   Corrección: #190 decía que lo decían «dos fuentes»; `lib/prestaciones.json`
+   se genera desde `essential-cobertura.json`, así que es una sola, la cláusula
+   1.11, y se releyó en el PDF. `essential.json` ahora también lo dice.
+5. **186A, el «—» de «Cuadro 2» de Essential** (sp-interno#186) dice
+   «Preguntale a tu asesor», como la urgencia de arriba (la regla de la R1A
+   ampliada a esa fila). Silver (Gs. 80 mil) y Gold (Gs. 100 mil) siguen con su
+   monto y el plegable no tiene ningún «—».
+6. **193, 1A: Silver sin «y topes más altos» en el simulador** (sp-interno#193).
+   La nota de la opción «Un equilibrio entre precio y cobertura» dice «Más días
+   de terapia intensiva y más sesiones de psicología.» y el porqué del
+   resultado, «El equilibrio con respaldo de verdad: más días de terapia
+   intensiva y más sesiones de psicología.». Las dos cosas son ciertas conteste
+   lo que conteste SP en #110. Lo controla la 1A del bloque «Lo que espera a SP
+   no se afirma», con los textos aprobados literales y `TOPES_ALTOS` de segunda
+   capa, en tres recorridos (390 y 1280 desde el enlace, y 390 eligiendo la
+   opción).
+7. **#60 (lo decide Claude), las esquinas y dos íconos.** Los 13 radios escritos
+   a mano pasaron a su token por función: la tarjeta «Conocé tu plan ideal y su
+   precio» del inicio y la del simulador, a `--r-lg` (el cambio más visible: en
+   Chrome la esquina pasa de 46,8 y 43,2 px a 36 px); la cita del blog y el
+   `Callout`, `0 var(--r-sm) var(--r-sm) 0` (cero píxeles de diferencia); el
+   respaldo de `.sq`, `--r-xs`; la hoja que sube, `--r-lg`, y su asa,
+   `--r-pill`; los chips «Lister» y «Atiende con» y los botones de las zonas y
+   de Lista/Mapa de la Guía, `--r-xs`. Quedan dos excepciones declaradas, cada
+   una con su porqué, en `EXCEPCIONES_RADIO` de `qa/esquinas.mjs`: los dos 14px
+   de `/historia/` (no se toca) y la casilla de 6px de los adicionales del
+   simulador (con `--r-xs` se leería redonda; hoy no se ve). Lo controla
+   `qa/esquinas.mjs`, nuevo, que corre en el CI y en `qa-integral` (sección 6c),
+   y en el navegador, la prueba de qa-lanzamiento «Toda esquina del sistema
+   táctil sale de la escala». «Descargar» y «Compartir» del resultado del
+   simulador perdieron sus íconos de librería (botones que ya dicen lo que
+   hacen). Se quedan, como señales de uso: «¿Por qué te preguntamos esto?» (el
+   círculo de pregunta avisa que se abre), «↺ Empezar de nuevo» y el pin de las
+   ciudades del buscador del simulador.
+8. **#61, puntos 1 y 2 (lo decide Claude).** La Guía Médica y cada ficha dicen
+   «Datos al» con `meta.datos_al` de `lib/guia-medica.json`, el día en que
+   `build-guia-medica.py` leyó la planilla del Drive (hoy, 30/09/2026, la misma
+   fecha que ya decía el home). Antes decían la fecha del PDF de una red (17/09
+   la Guía; 25/09, 10/08 o 17/09 las fichas). La planilla publicada es la
+   versión del 29/09 del archivo `20260923_…`: el nombre del archivo no es su
+   versión (se edita en el lugar). No se tocó el JSON. Y la guía vieja
+   (`guia/`) ya no muestra Bronze: su escalera es Silver ⊂ Gold, con Vital
+   aparte; Essential no entra porque es otra red. Bronze sigue en la Guía
+   Médica real a propósito (hay clientes que lo tienen). La prueba del upsell de
+   `qa-integral` (1c) buscaba un botón que no existe y se salteaba en silencio:
+   ahora busca «★ Con Plan» y, si no lo encuentra, falla.
+   *(Quinta tanda: el molde viejo de `guia/` se retiró entero con
+   sp-prototipo#289, de otra sesión, y la rama lo trajo con `main`. El punto 2
+   de #61 queda resuelto por ese retiro, no porque hayan quedado archivos
+   editados: los dos `guia/*.html` que esta rama había corregido se borraron
+   con el resto del molde, y con ellos se fueron la prueba de Bronze y la del
+   upsell de `qa-integral`. Que el molde no vuelva lo controlan el 404 de sus
+   tres páginas en `qa-integral` y el corte de `out/guia` en el CI.)*
+
+**La segunda tanda (23/10, después de los tres verificadores: datos, textos y
+código).** Lo que encontraron sobre lo de arriba y entró en la misma rama:
+- **Las burbujas en el celular** (bloqueaba): la de las 26 medía unos 400 px y,
+  con la fila en la mitad de arriba, quedaba debajo de la cabecera fija; abajo
+  la cortaba el cuadro de esperas (que recorta). `Term` ahora, cuando no entra
+  ni arriba ni abajo, abre hacia el lado más grande con ese alto como máximo y
+  scroll por dentro (`overflow-y:auto`, `overscroll-behavior:contain`, el dedo
+  la scrollea y no la cierra; con el mouse se puede pasar a ella; las flechas
+  la mueven). Cada vez que se abre, arranca desde arriba.
+- **El toque se parte como el texto**: es un `<span role="button">` en línea
+  (Chrome dibuja un `<button>` con `display:inline` como inline-block: medido),
+  con el subrayado en `text-decoration`. «de una lista de 26.» ya no se sale de
+  su fila a 360. En las celdas de la tabla de la computadora no se parte
+  (`.cmp2-fam .txt{white-space:nowrap}`): ahí entra en un renglón.
+- **La cabecera fija de Gold cortaba la burbuja de Silver** en la computadora:
+  con un toque abierto, su columna sube (`.cmp2-plan:has(.txt[aria-expanded="true"])`).
+- **El teclado**: Enter y Espacio abren y cierran (después de un Escape no se
+  podía reabrir).
+- **El lector**: el texto de la burbuja lleva `aria-hidden` y llega como
+  descripción del toque; el encabezado de fila de «Cirugías programadas» del
+  cuadro se llamaba con las 26 enteras (839 caracteres) y ahora con lo que se
+  ve. Medido en el árbol de accesibilidad de Chromium.
+- **Cirugías programadas en el cuadro del celular**: «En Essential, una al año
+  por familia, de una lista de 26. En Silver y Gold, la mayoría.» (decía «La
+  mayoría.» suelto, delante).
+- **La línea de Essential de la tarjeta de `/planes` en el celular**: «… y 1
+  resonancia/familia/año (sin contraste ni sedación)», leída de la misma `cola`
+  que va debajo de la celda (el agregado del comité en la 185A).
+- **«Descargar cotización» y «Compartir cotización»** en el simulador (sin el
+  ícono no decían qué). Si a 360 no entran en un renglón, se apilan.
+- **Mantenimiento**: `toqueEnTexto` pone minúscula después de los dos puntos;
+  `fechaDatosAl` (`lib/fecha.js`) formatea «Datos al» en un solo lugar (estaba
+  copiado en tres); se borró `chips`/`selRows` de `app/page.jsx`, que no se
+  dibujaba; `essential.json` cita la 1.11 entera, con su «por año de contrato».
+- **`qa/esquinas.mjs`**: un `--r-*` declarado fuera del `:root` de
+  `app/globals.css` es un radio a mano con nombre de token y se marca; ve las
+  esquinas lógicas (`border-start-start-radius`, `borderEndStartRadius`) y marca
+  como «no verificable» un radio armado con `${…}`, con un `+` o con una variable
+  suelta. 32 casos de autoprueba (18 que marcan y 14 que no).
+- **`qa/listas-fuente.mjs`, nuevo, sin navegador** (en el CI y en la salud
+  nocturna, paso 2): las ecografías de los toques contra la grilla y las 26
+  contra `essential.json`, con 10 casos que tienen que fallar (y el de hoy, que
+  pasa). Sobre los datos de 72291ef da 27 hallazgos.
+
+**La tercera tanda (23/10, después de re-verificar la segunda: datos, textos y
+código).** El cuadernillo de Essential se releyó en el Drive (4.4 y el párrafo
+de la videolaparoscopía). Entró en la misma rama:
+- **Las 26, fieles al ítem** (`CIRUGIAS_26` y `PARES_26`): «sacar el adenoma de
+  próstata, a cielo abierto» (el ítem lo dice; la de próstata más común es por
+  la uretra, y el cierre de la lista no la nombra); «sacar el apéndice
+  (apendicectomía no complicada)», la condición como la dice el ítem («sin
+  complicaciones» se leía «si la cirugía sale bien»); «legrado evacuador
+  (raspado del útero como tratamiento)» («terapéutico»: la traducción ya no
+  incluye el raspado de diagnóstico); «pielolitotomía abierta (abrir la pelvis
+  del riñón para sacar una piedra)»; y «varicocele de un lado,
+  inguinoescrotal». La regla: ni el nombre ni su traducción entre paréntesis
+  abarcan más que el ítem, y el nombre conserva los calificativos de su ítem
+  aunque repitan el título. Las palabras de casa siguen esperando la lámina de
+  Arturo (#206).
+- **La videolaparoscopía, copia fiel**: «Si te operan por videolaparoscopía,
+  pagás vos la diferencia de aranceles en los honorarios del anestesista, el
+  ayudante y el instrumentador, y el costo total del uso del equipo, la torre,
+  los materiales y el instrumental.» (decía «todo el uso del equipo y de los
+  materiales»: sin la torre ni el instrumental). La burbuja de las 26 pasó a
+  480 px de ancho en la computadora (a 420 medía 421 px y, con la fila en el
+  medio a 1280 × 900, le faltaban 3 para entrar).
+- **Los toques de las ecografías**: en Gold y en el cuadro, las Doppler van en
+  su oración y «También las de riñón y de vías urinarias, …» en otra (con la
+  coma se leía «Doppler de riñón», y la renal común es la que espera 3 meses en
+  Gold); «Para la de vejiga, preguntale a tu asesor cuánto esperás» (como la
+  cesárea de Gold). La pregunta frecuente de las esperas, sin punto y coma
+  adentro del paréntesis: «(en Gold, también …, y la transvaginal, y para la de
+  vejiga, preguntale a tu asesor cuánto esperás)». La cirugía de Essential se
+  dice de una sola forma en lo que se lee: «una cirugía al año por familia, de
+  una lista de 26» (el porqué del simulador y la pregunta de la diferencia
+  decían «por año para la familia»).
+- **La burbuja de un toque es fija** (`Term`, `tipo="toque"`): con la fila
+  arriba, la lista de las 26 se abría por una rendija de 73 a 153 px que
+  scrolleaba, porque el cuadro de esperas del celular y la tarjeta del simulador
+  tienen `overflow:hidden` para redondear sus esquinas. Ahora va con
+  `position:fixed` (medido: ningún ancestro del toque tiene transform, filter,
+  contain ni will-change, y la prueba lo mide en cada apertura); el techo es el
+  borde de abajo de la cabecera fija (`[data-nav]`) + 8 y el piso, el alto de la
+  pantalla − 8; arriba por defecto, abajo si arriba no entra, y si no entra en
+  ninguno, del lado más grande con scroll; centrada en el toque, sin salirse de
+  los costados. Al scrollear la página o la caja que la contiene se reacomoda
+  junto al toque y, mientras el toque está fuera de la pantalla, se esconde
+  (sigue abierta). No se cierra al scrollear: al llegar con Tab, el navegador
+  scrollea (suave) hasta el toque justo después de abrirlo, y la cerraba en el
+  camino (lo vio la prueba del teclado). Con la fila al 25 %, en el celular se
+  ve la lista grande (el alto más chico que se vio de las 26 en las 63
+  aperturas: 344 px). Las palabras del glosario siguen como estaban
+  (`position:absolute`, adentro de su caja).
+- **Sin parpadeo**: el efecto de posición de `Term` (y el que lleva la lista
+  arriba) es `useLayoutEffect`: mide y acomoda antes de pintar.
+- **«Compartir cotización» no salta**: sin Web Share, al pasar a «¡Copiado!» el
+  botón ya no se achica (el texto largo va escondido en la misma celda de una
+  grilla), así que a 360 y 390 nada de abajo se mueve.
+- **`qa/listas-fuente.mjs`**: elige las filas por el grupo del master
+  («ECOGRAFIAS» y «ECOGRAFIAS PERINATALES») o el prefijo «ECOGRAFIA», con
+  `FUERA_DE_LA_FILA` declarado con su porqué y su espera (los dos ecocardiogramas,
+  la ECOCARDIOGRAFIA que SP borró por duplicada el 18/09 y la «MAMOGRAFIA 2 LADOS
+  ECOGRAFIA DOPPLER», de nombre pegado); una fila del grupo que no esté en
+  ninguna de las dos listas falla, y una de afuera cuya espera cambie, también.
+  Las 26 se controlan además con `CALIFICATIVOS` (lo que el nombre de la web
+  tiene que conservar de su ítem), aunque cambien las dos puntas del par.
+- **Documentos**: BITACORA caps. 169 («Lo que dice el ítem se queda en el
+  ítem») y 170 («La caja que redondeaba sus esquinas recortaba la lista»), y el
+  cap. 168 corregido donde decía más que el cuadernillo sobre la
+  videolaparoscopía.
+
+**La cuarta tanda (23/10, después de re-verificar la tercera).** La rama trajo
+`main` con el modo oscuro (#287): el cap. 155 de main quedó como 155 y los ocho
+de la rama pasaron a 156-163, con sus citas renumeradas (*desde la ronda 5
+de verificación son 161-168: del 156 al 160 son de main*; *desde la ronda 6,
+163-170: el 161 lo reservó main para #288 y el 162 es de main, #296*); el CI corre esquinas,
+listas-fuente y modo-oscuro en el mismo paso. Y entró:
+- **La vejiga, dentro de la oración de Gold** en el toque de Silver y Gold
+  juntos (`eco-sg`): «… En Gold, también las de riñón y de vías urinarias, la
+  testicular, la de próstata por vía rectal y la transvaginal, y para la de
+  vejiga, preguntale a tu asesor cuánto esperás.», como la pregunta frecuente
+  (`ECO_EN_FAQ`). Suelta, después de la oración de Gold, se leía que valía
+  también para Silver, y en Silver sus dos filas esperan 60 días. Se ve en el
+  cuadro de esperas del celular, la tarjeta y la hoja de la ecografía.
+  `eco-gold` queda como estaba: ahí todo es de Gold.
+- **`CALIFICATIVOS` acepta el literal del cuadernillo y su traducción**
+  («unilateral» o «de un lado»; «no complicada» o «no está complicada»; «no
+  incluye malla» o «la malla no entra»; «terapéutico» o «como tratamiento»;
+  «EECC» o «extracapsular», y lo análogo en las demás). Pedía solo la palabra
+  que eligió el sitio: las 26 dichas tal como las dice el cuadernillo daban 12
+  hallazgos, y con cualquiera de las dos opciones de #206 el CI se habría puesto
+  en rojo por algo que está bien.
+- **La burbuja de un toque se esconde cuando su caja esconde al toque**
+  (`colocarFijo`): «fuera» se mide contra lo que se ve (la pantalla, debajo de
+  la cabecera fija, cortada por las cajas del toque que recortan), sin el
+  margen; dónde va la burbuja sigue usando la pantalla entera. En el simulador
+  de la computadora, con la lista abierta por teclado y el cuerpo scrolleado
+  hasta esconder el toque debajo del borde de la tarjeta, la burbuja seguía a
+  la vista apuntando a nada.
+- **Sin `will-change` después de la animación de entrada** (`.rvon .rv.in`): un
+  `will-change: transform` que queda puesto hace de la caja el marco de lo fijo
+  que lleve adentro, y el Comparador del home es el mismo de `/planes`. La
+  animación sigue igual: los mismos valores de opacidad y desplazamiento en
+  cada milisegundo y la misma caja de cada uno de los 400 elementos al terminar
+  (medido con la transición pausada y llevada a cada milisegundo).
+- **El anestesista de la cesárea no era una pregunta**: lo contesta el
+  cuadernillo (ver «Lo que queda»).
+- **Documentos**: BITACORA cap. 171 («La regla que no dejaba pasar a su propia
+  fuente»).
+
+**La quinta tanda (23/10, después de la ronda 3 de verificación, y con `main`
+consolidado).** La rama trajo `main` dos veces, con merges y sin rebase: primero
+sp-prototipo#289 («🧩 23/10/2026», arriba) y después #291 («🌐 23/10/2026»), las
+dos de otras sesiones:
+- **La bitácora**: el cap. 156 («Las dos versiones eran una sola…») y el 157
+  («Preparar el dominio era inventariar lo que hace la web vieja») son de main y
+  se quedan con su número; los nueve de la rama pasan a 161-169, en el mismo
+  orden, con sus citas renumeradas por título (acá, en el capítulo «Lo que dice
+  el ítem se queda en el ítem» y en la nota de las esquinas). El nuevo es el
+  170. *(Al principio pasaron a 158-166; desde la ronda 5 de verificación el
+  158, el 159 y el 160 también son de main: ver abajo. Desde la ronda 6, los
+  nueve son 163-171 y el nuevo, el 172: el 161 queda reservado para #288 y el
+  162 es de main, #296.)*
+- **El molde viejo, retirado entero**: los dos `guia/*.html` que la rama había
+  corregido por Bronze (#61, punto 2) se borraron con el resto, y con ellos la
+  prueba de Bronze y la del upsell de `qa-integral`; las reemplazan el 404 de
+  sus tres páginas y el corte de `out/guia` en el CI, que trajo main. El punto 2
+  de #61 queda resuelto por el retiro (ver el punto 8, arriba).
+- **El home**: sin la caja del parto ni «Lo que te prometemos» (main) y con las
+  preguntas frecuentes, las celdas con `notaCelda` y sin el explorador muerto
+  (la rama). Salieron los imports que quedaron sin uso (`Term`, `waitLabel`).
+- **La salud nocturna pedía lo retirado**: su paso 4 esperaba
+  `/guia/guia_home.html` con 200 en el sitio en vivo, que da 404 desde #289
+  (medido el 23/10). La rama lo había cambiado a 404 y, la misma tarde, #291 lo
+  arregló en main por su lado, con las tres páginas del molde (BITACORA cap. 157,
+  punto 4). Al traer main quedó la versión de main, y la rama suma `/mi-sp/` a
+  las que tienen que responder 200.
+- **Lo de #291 en la v1**: el botón «Revisión» ya no sale en la v1
+  (`CON_REVISION = !ES_LANZAMIENTO`) y el CI construye además la v1 como saldría
+  en el dominio (`qa/produccion.mjs`). Las pruebas de esta rama no dependían del
+  botón: corren igual.
+- **La burbuja de un toque se esconde también cuando algo tapa al toque**
+  (`colocarFijo`, ronda 3, hallazgo 2): además de lo que recorta, se le
+  pregunta al navegador qué hay en el toque (`elementFromPoint`, y
+  `elementsFromPoint` para saltear la burbuja cuando está encima), en el medio
+  de su franja visible y a 1 px de sus bordes, renglón por renglón. En `/planes`
+  a 1280, con la lista abierta por teclado y la página scrolleada con la rueda
+  hasta dejar el toque debajo de la cabecera pegajosa de su plan (`.cmp2-h`), la
+  burbuja seguía a la vista apuntando a nada. Corre una vez por cuadro mientras
+  la burbuja está abierta, y casi siempre el primer punto ya es el toque.
+- **`CALIFICATIVOS`** (hallazgo 3): «pterigión, con o sin injerto», sin «auto»,
+  marca («injerto» es también el de donante); acepta «con o sin injerto propio».
+  El apéndice acepta «no esté complicada».
+- **Documentos**: el cap. 171 decía «el primer caso de «pasan» es el cuadernillo
+  mismo»; ahora, «entre los casos de «pasan» está el cuadernillo mismo, dicho en
+  las dos puntas» (no estaba fusionado: se pudo corregir). Y el cap. 172, «Lo
+  que no se ve no es solo lo que recorta».
+- **Después de la ronda 4 de verificación (sobre 15c56f9; sin cambios en el
+  sitio, solo en las pruebas):**
+  - **La parte de `colocarFijo` que saltea la burbuja tiene su prueba.** Si se
+    borraba el `elementsFromPoint` y `queHay` volvía a ser solo
+    `elementFromPoint`, la sección «9A y 10A» seguía en verde. El caso real:
+    en el cuadro de esperas a 360, con las 26 abiertas con el dedo y la fila al
+    15 %, la burbuja abre abajo y scrollea por dentro (`pointer-events:auto`);
+    un solo salto de scroll hacia arriba deja el toque donde estaba ella, el
+    navegador contesta «la burbuja» y la lista quedaba abierta y escondida
+    hasta el próximo scroll. A 390 y 430 la lista entra y no pasa.
+  - **`CALIFICATIVOS`, sin la «o» que suma.** El apéndice encontraba «no
+    complicada» adentro de «esté o no complicada» y de «complicada o no
+    complicada», que suman la complicada; ahora una «o» antes o después no la
+    deja pasar, y acepta «no es complicada». El pterigión dejaba pasar «con o
+    sin injerto propio o de donante»; ahora después del autoinjerto (o del
+    injerto propio) no puede venir una «o», una «u» ni el donante, y acepta
+    «del propio ojo» y «un injerto propio». La regla que propuso el
+    verificador dejaba pasar todavía «con o sin autoinjerto o injerto de
+    donante» (su «nada después» valía solo para la segunda forma): entró con
+    la condición para las dos. **«si no se complicó» sigue marcando a
+    propósito**: como «sin complicaciones», se lee «si la cirugía sale bien».
+    Si #206 elige palabras de casa, esa forma no sirve.
+  - **Documentos**: BITACORA cap. 173 («La frase del ítem vivía adentro de la
+    que dice lo contrario»).
+- **Después de la ronda 5 de verificación (sobre 564a291; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`main` entró por cuarta vez** (la tercera desde la quinta tanda; la
+    primera fue #287, en la cuarta), con un merge y sin rebase (089255b): #292
+    (los precios del simulador con la tabla del 09/10/2026), #293 (la reserva
+    de turnos a su subdominio, las bases de Octubre Rosa y el «publicá»,
+    sp-interno#209) y #294 y #295 (el laboratorio visual del blog). Solo chocó
+    la bitácora: el 158, el 159 y el 160 son de main y se quedan con su número;
+    los once de la rama pasan a 161-171, en el mismo orden, con sus citas
+    renumeradas por título. El verificador había pedido 160-170, pero cuando se
+    trajo main ya tenía también el 160. *(Desde la ronda 6 son 163-173: ver
+    abajo.)* En «Lo que queda», #209 ya no espera:
+    Arturo lo decidió. Con main, `qa-lanzamiento` recorre además
+    `/bases/octubre-rosa-2026/` y el CI corre `qa/precios.mjs` y
+    `qa/laboratorio.mjs`.
+  - **Las otras dos piezas de `colocarFijo` tienen su prueba.** *(Ronda 6:
+    eran tres. El caso (a) prueba el punto del borde de abajo; el del borde de
+    arriba, `arriba + 1`, quedó sin prueba hasta la ronda 6: ver abajo.)* El
+    comentario dice que pregunta «en el medio de su franja visible y a 1 px de
+    sus bordes, renglón por renglón», y solo el medio tenía sabotaje: sin los puntos de los
+    bordes, o mirando solo el primer renglón, la sección «9A y 10A» seguía en
+    verde, y en los dos casos la burbuja se escondía con su toque a la vista.
+    Ahora, (a) en /planes a 1280, desde el toque tapado por la cabecera de su
+    plan, la rueda lo deja asomando 4 px debajo de `.cmp2-h`; y (b) en el
+    cuadro de esperas a 360 y 390, donde «de una lista de 26» se parte en dos
+    renglones, la página deja el primero debajo de `[data-nav]` y el segundo a
+    la vista. En los dos se confirma antes que el caso es ese, y la burbuja
+    tiene que estar abierta, a la vista y junto al toque.
+  - **`CALIFICATIVOS`, sin sumar por otra puerta.** El apéndice no deja pasar
+    ningún «complicad…» sin un «no» (o «no está», «no esté», «no es») delante:
+    caen «complicada y no complicada» y «tanto complicada como no complicada».
+    Después de «no complicada» no puede venir una «o» ni una «u» («o
+    perforada» suma la complicada sin nombrarla), salvo «o sea», que explica:
+    «no complicada, o sea, sin peritonitis» pasa. El pterigión tampoco deja
+    pasar la membrana amniótica, que es el injerto de donante sin nombrarlo, y
+    acepta «o sea». Marcan de más, a propósito, «no complicada (no entra la
+    complicada)» y «con o sin autoinjerto (no de donante)»: ante la duda, se
+    lee. **El commit de la ronda 4 prometía la «u» y el donante, y la
+    autoprueba no los tenía**: ahora hay un caso por cada pieza de las dos
+    reglas.
+  - **#288** (Octubre Rosa y Noviembre Azul, de otra sesión) sigue abierto y
+    toca el HANDOFF y `docs/diseno/README.md`, así que los merges van de a uno.
+    #288 suma un capítulo a la bitácora y dos láminas. *(Ronda 6: `main` le
+    reservó el cap. 161 y las láminas 92-93 con #296, que sumó el 162 y la
+    lección 94; esta rama usa del 163 al 178, así que ya nadie renumera por
+    #288. El que entre segundo trae main y resuelve el HANDOFF integrando.)*
+  - **Documentos**: BITACORA cap. 174 («Lo que promete el comentario es la
+    lista de sabotajes»).
+- **Después de la verificación de integración de 61c94ec (solo este
+  documento; sin cambios en el sitio ni en las pruebas):** el HANDOFF ya no
+  presenta el molde viejo de `guia/` como vigente. La tabla de «2. QUÉ EXISTE
+  HOY» lo tacha como retirado el 23/10/2026 y suma la fila de la Guía Médica
+  real (`/guia-medica/`); «5. CÓMO RETOMAR EL TRABAJO» explica cómo se
+  regenera desde la planilla, en vez de cómo se editaba `guia/`; el Anexo se
+  nombra en `docs/`, en §6 y en las otras citas; y lo pendiente que dependía
+  del molde (el `noindex` de sus tres HTML, el gemelo del header, el filtro de
+  Telemedicina, el ZIP de entrega) queda marcado sin objeto. Lo que era
+  historia fechada se tachó o se anotó, no se borró. La nota de #288 ya no
+  fija el número de capítulo de otro PR.
+- **Después de la ronda 6 de verificación (sobre d6d77d4; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`main` entró por quinta vez**, con un merge y sin rebase (b8027e8): #296,
+    los rostros de «Revisar los criaderos» en el laboratorio del blog, con el
+    cap. 162 («Una cara simple también necesita jerarquía») y la lección 94.
+    Ese capítulo dejó reservados para #288 el cap. 161 y las láminas 92-93.
+    Solo chocó la bitácora: el 162 de main se queda, el 161 queda libre para
+    #288, y los doce de la rama pasan a 163-174, en el mismo orden, con sus
+    citas renumeradas por título (en la bitácora y acá; los rangos viejos se
+    anotaron sin borrar). Con main, `qa/laboratorio.mjs --datos` cuenta 64
+    recursos.
+  - **`CALIFICATIVOS`, sin sumar por la puntuación.** La «o» de después de «no
+    complicada» se buscaba solo en la palabra siguiente: pasaban «no complicada
+    y/o perforada», «no complicada (o perforada)», «; o perforada» y «/
+    perforada», que son la misma frase. Ahora no puede haber una «o», una «u»
+    ni una barra en todo lo que sigue (salvo «o sea»); ni la complicada por sus
+    formas (perforada, gangrenosa, con peritonitis, con absceso, con plastrón),
+    salvo con «sin» delante («o sea, sin peritonitis» explica); ni un
+    «complic…» sin «no» delante («y también con complicaciones» pasaba). El
+    pterigión mira toda la frase, no hasta el «;», y suma los otros nombres del
+    donante: «amnios», «de banco», «de cadáver», «de otra persona», «donado» y
+    cualquier otro injerto («aloinjerto», «otro injerto»), salvo el propio
+    («un injerto de tu propio ojo» explica). Las dos buscan la «o» entre letras
+    y no con `\b`, que en JavaScript no sabe que «ñ» o «í» son letras: con `\b`,
+    «la más común en un niño» o «una vez al año» tenían una «o» suelta y la
+    regla gritaba en falso (cap. 89). Marca de más, a propósito, «no complicada
+    ni perforada»: ante la duda, se lee. **La lista de nombres no se termina
+    nunca** (cap. 153): lo que no está en ella y no lleva «o», «u» ni barra
+    («y con tejido ajeno») pasa, y lo cuida la lectura de #206. *(Ronda 7:
+    «toda la frase» era todo lo que seguía a «con o sin autoinjerto», sin la
+    barra, y la «o» de antes de «no complicada» solo contaba pegada. Desde la
+    ronda 7 las dos reglas miran los dos lados: ver abajo.)* *(Ronda 8: esto
+    se quedaba corto. Lo que no estaba en la lista también pasaba dicho
+    después de «o sea», que lleva una «o» («no complicada o sea reventada»).
+    El detector cubre las formas listadas, no toda paráfrasis posible, y
+    «tejido ajeno» y «reventada» ya están en la lista: ver abajo.)*
+  - **El borde de arriba de `colocarFijo` tiene su prueba.** El punto
+    `arriba + 1` no tenía caso: el de la ronda 5 deja el toque asomando por
+    debajo de lo que lo tapa, y ahí alcanza el punto de abajo. En el sitio de
+    hoy nada tapa un toque desde abajo (la barra fija de abajo es del home, que
+    no tiene toques), así que la prueba arma el caso en /planes a 1280: una tapa
+    fija y opaca, con `pointer-events`, cubre el toque y deja a la vista sus 4
+    px de arriba.
+  - **Documentos.** La viñeta de la home en 3G de «Lo que queda» decía que en
+    las corridas verdes la emulación no se aplicaba: es la caché de disco, y el
+    servidor decide (ver ahí). §1, «Dos audiencias», ya no dice que «Ya soy de
+    SP» lleva a la guía en modo personalizado (era del molde viejo). La ronda 5
+    dice «por cuarta vez» (también cuenta el merge de #287) y la nota de #288,
+    que main le reservó su número. BITACORA cap. 175 («La explicación también
+    se mide»).
+- **Después de la ronda 7 de verificación (sobre a1e4e89; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`CALIFICATIVOS` mira los dos lados, con un solo patrón.** Lo que decía
+    la ronda 6 de arriba («el pterigión mira toda la frase», «lo que lleva
+    «o», «u» o barra no pasa») no era del todo cierto: el pterigión miraba
+    solo lo que venía después de «con o sin autoinjerto» y no miraba la barra,
+    y el apéndice veía la «o» de antes solo pegada a «no complicada». Pasaban
+    «pterigión con membrana amniótica, con o sin autoinjerto», «pterigión con
+    aloinjerto o con o sin autoinjerto», «con o sin autoinjerto / tejido
+    ajeno» y «reventada o bien no complicada». Ahora las dos reglas sacan la
+    frase aceptada (`sinSumar`) y miran lo que queda, antes y después, con un
+    solo patrón: ni una «o» suelta (salvo «o sea»; tampoco la «ó» con tilde),
+    ni una «u», ni una barra; en el apéndice, ni un «complic…» ni la
+    complicada por sus formas (salvo con «sin» delante), y en el pterigión, ni
+    el donante. La lista de nombres sigue sin terminarse nunca (cap. 153):
+    «y con tejido ajeno», sin «o» ni barra, pasa, y lo cuida la lectura de
+    #206. *(Ronda 8: esto se quedaba corto. «el donante» y «la complicada por
+    sus formas» son los nombres de una lista, no la categoría entera, y «o
+    sea reventada» lleva una «o» y pasaba. Desde la ronda 8, «tejido ajeno» y
+    «reventada» están en la lista; lo que cubre el detector, dicho sin
+    promesas, va abajo.)*
+  - **El barrido del molde llegó a §3 y §4.** Las decisiones 3, 5, 6, 8, 9 y
+    11 y los pendientes 6 y 13 todavía presentaban como vigente lo que era del
+    molde de `guia/` (la lógica demo en JS, el `min_plan`, «Desde SP X», el
+    modo personalizado, el asegurado de ejemplo, los datos ilustrativos, «Ver
+    mi red con CI+fecha», los mapas NIVEL/NOMBRE y `upsell_view`). Quedaron
+    anotados como historia, sin borrar, como la decisión 1.
+  - **Documentos**: BITACORA cap. 176 («Lo aceptado se saca, y se mira lo que
+    queda»).
+- **Después de la ronda 8 de verificación (sobre 8f785e9; sin cambios en el
+  sitio, solo en las pruebas y los documentos):**
+  - **`CALIFICATIVOS` suma las palabras que su autoprueba usaba como lo
+    contrario.** Desde la ronda 6, los casos que aíslan una pieza decían
+    «reventada», «tejido ajeno» y «otro tejido», elegidas justo porque ninguna
+    lista las nombraba, y caían solo por la «o», la «u» o la barra. Dichas con
+    «y» o después de «o sea», pasaban: «no complicada y la reventada», «no
+    complicada o sea reventada», «con o sin autoinjerto y con tejido ajeno» y
+    «…, o sea, con tejido ajeno». Ahora las formas de la complicada suman
+    «revent…», «revient…» y «rota», y el donante, «ajeno» o «ajena», «tercer…»
+    y «otro tejido». Los casos que aíslan una pieza dicen «la otra» y «otra
+    cosa», que no nombran nada.
+  - **Qué cubre el detector, dicho sin promesas.** Las formas listadas (una
+    «o» suelta, una «u», una barra y los nombres de sus dos listas), no toda
+    paráfrasis posible: «no complicada y también con pus» pasa. La última
+    defensa es que la lista de la web dice el literal del cuadernillo en esos
+    dos ítems («apendicectomía no complicada», «con o sin autoinjerto»), y que
+    una palabra de casa nueva para ellos la lee una persona (#206). Lo dice el
+    comentario de la regla, y quedaron anotadas las frases de las rondas 6 y 7
+    que prometían más. Y del otro lado, **marca de más, a propósito** (ronda
+    9): un nombre de las listas marca aunque la frase lo niegue o lo use para
+    explicar el ítem, salvo, en el apéndice, con «sin» justo delante del
+    nombre («…, sin reventar» pasa; «sin que se haya reventado» marca; en el
+    pterigión el «sin» no exime: «(sin donante)» marca), como ya pasaba con «no
+    complicada ni perforada» y «(no de donante)». Marcan «sacar el apéndice
+    (apendicectomía no complicada, antes de que se reviente)», «…, o sea, que
+    no se reventó», «(tejido de tu propio ojo, no ajeno)» y «(se cubre con otro
+    tejido de tu propio ojo)», que dicen lo mismo que el ítem; «…, sin
+    reventar» pasa. Ante la duda, se lee. **Si #206 elige para uno de estos
+    dos ítems una palabra de casa así, la regla se ajusta en ese mismo PR**,
+    con la frase entre los casos que tienen que pasar.
+  - **Documentos.** En §4, «Preguntas abiertas», la de quién carga `min_plan`
+    quedó anotada como historia: el barrido de la ronda 7 la dejó pasar. La
+    nota de #288 decía «del 163 al 174»: la rama usa del 163 al 177. BITACORA
+    cap. 177 («La palabra que el caso eligió porque nadie la nombraba»).
+- **Después de la ronda 9 de verificación (sobre 038249f; sin cambios en el
+  sitio ni en lo que hacen las pruebas, solo en comentarios y documentos):**
+  - **La marca de más de las palabras nuevas, anotada.** Las formas que sumó
+    la ronda 8 («revent…», «revient…», «rota»; «ajeno», «tercer…», «otro
+    tejido») marcan también la frase que las niega para explicar el ítem, que
+    en 8f785e9 pasaba: va arriba, en «Qué cubre el detector», y en el
+    comentario de cada regla y de «Qué cubren». Se eligió anotarla y no
+    ampliar la excepción del «sin» a «no se» y «no está»: eso destraba algunas
+    frases del apéndice y ninguna del pterigión, y suma otra pieza que probar.
+  - **El comentario de los casos de la ronda 5** decía que cada uno cae solo
+    por su pieza. Tres caen por dos: los dos de «o perforada», también por su
+    nombre desde la ronda 6, y «no complicada o complicada», también por el
+    «complic…» sin «no». Ahora lo dice, y nombra qué casos aíslan la «o» de
+    antes y la de después.
+  - **Documentos.** El cap. 177 cita el HANDOFF textual, con su ejemplo
+    («y con tejido ajeno»), y dice que el hueco se leyó como un límite
+    aceptado. La nota de #288: la rama usa del 163 al 178. BITACORA cap. 178
+    («El nombre que entra a la lista entra también negado»).
+- **Después de la ronda 10 de verificación (sobre 34d594e; sin cambios en el
+  sitio):**
+  - **Las otras formas de las clases, con su caso.** «ajena» (de `ajen[oa]`) y
+    «roto» (de `rot[ao]`) no tenían un caso: acortar la clase a «ajeno» o a
+    «rota» dejaba la autoprueba en verde. Se suman «pterigión, con o sin
+    autoinjerto, también con conjuntiva ajena» y «sacar el apéndice, no
+    complicada y también si el apéndice está roto». La autoprueba queda en 63
+    casos que fallan y 16 que pasan, y cada sabotaje (`ajen[oa]`→«ajeno»,
+    `rot[ao]`→«rota») cae solo por su caso.
+  - **La excepción del «sin», dicha como es.** Vale solo en el apéndice y con
+    el «sin» justo delante del nombre («…, sin reventar» pasa; «sin que se haya
+    reventado» marca). En el pterigión no exime: «(sin donante)» marca. Lo
+    corrigen el comentario «Qué cubren» y «Qué cubre el detector», arriba, que
+    lo decían de las dos reglas.
+  - **Documentos.** La fecha de la cabecera pasa al 24/10, y la descripción
+    del PR nombra todo lo que la rama cambia en `app/coverage.js`,
+    `app/page.jsx` y el simulador.
+
+**Cómo se prueba.** Cada cosa nueva entró con su prueba, y cada detector, con
+un caso que falla y uno que pasa:
+- *(Segunda tanda.)* La sección «9A y 10A» de `qa-lanzamiento` abre cada toque
+  con la fila al 25, 50 y 85 % del alto de la pantalla (63 aperturas: /planes a
+  1280, el cuadro a 360 × 780, 390 × 844 y 430 × 932, y el simulador a esos
+  tres y a 1280), mide «tapada» con una grilla de 5 × 5 puntos y, si la burbuja
+  scrollea, la scrollea con el dedo (eventos de toque por CDP) y con el mouse.
+  Suma la fila de Ecografías a 320 px a 1280 (con la autoprueba de sacar la
+  regla de la columna: tiene que dar «tapada»), el teclado (Tab, Escape, Enter,
+  Enter), el árbol de accesibilidad (el encabezado de fila se llama con lo que
+  se ve; la descripción del toque trae la lista; sin `aria-hidden`, la
+  autoprueba lo ve), que nada se salga del encabezado de fila, el porqué de
+  Essential y las dos preguntas frecuentes. Con el `Term` de main (35165a7)
+  cae (45 hallazgos: tapada a 1280 y en el celular, el teclado); con el de
+  72291ef, también (el teclado, las 26 tapadas o cortadas en el cuadro del
+  celular, el lector, lo que se sale de la fila); con el de ahora, ✓.
+- `qa-lanzamiento`, sección nueva «9A y 10A»: los textos aprobados literales
+  (no se leen de `coverage.js`), la lista de las 26 ítem por ítem contra cinco
+  listas malas (sin un ítem, con uno de más, la catarata sin su técnica, dos
+  cambiados de lugar, sin el título), y en la página el texto del lector
+  cambiado, la burbuja corrida y tapada y la nota borrada. Cada toque se lee
+  dos veces (lo que oye el lector y la burbuja), y la burbuja tiene que verse
+  entera y sin nada encima.
+- `qa-lanzamiento`, «Las esperas llevan su condición», ampliada a la ecografía
+  de Silver y Gold (tabla, lista y lector).
+- `qa-lanzamiento`, sección nueva «Las condiciones de Essential, a la vista en
+  las tablas (185A y 190A)», y las listas cerradas (`TARJETA_APROBADA`, la
+  lista de los once, la G1A y la R1A) con las líneas nuevas.
+- `qa-lanzamiento`, la 1A en el bloque de la 3A y la 8A.
+- `qa-lanzamiento`, «La fecha de la Guía Médica es la de la planilla» y «Toda
+  esquina del sistema táctil sale de la escala».
+- `qa/esquinas.mjs` (20 casos de autoprueba; en main da 14 radios a mano, en la
+  rama 0) y, en `qa-integral`, la guía vieja sin Bronze y el upsell reparado
+  (*las dos se fueron con el molde, en la quinta tanda; las reemplaza el 404
+  de sus tres páginas*).
+- Sobre la build de main (35165a7), las ocho secciones nuevas o cambiadas de
+  `qa-lanzamiento` dan ✗; sobre la rama, ✓.
+- *(Tercera tanda.)* La sección «9A y 10A» exige además, en cada apertura, que
+  la burbuja se vea grande (al menos 240 px o la lista entera; autoprueba: la
+  de las 26 con 89 px de alto tiene que fallar), que la burbuja fija esté junto
+  a su toque y que ningún ancestro haga de marco del fixed; scrollea con las 26
+  abiertas (8 veces: /planes y el simulador a 1280 con el teclado, el cuadro y
+  el simulador en el celular con el dedo) y mide que se reacomode, se esconda
+  con el toque fuera de la pantalla y vuelva; y el teclado suma Espacio (abre y
+  cierra) sin mover la página (autoprueba: el Espacio en el cuerpo de la página
+  sí la mueve). Con el `Term` de 40d36ad cae (las 26 al 25 % del celular, en
+  153 px).
+- *(Tercera tanda.)* `qa-lanzamiento`, sección nueva «“Compartir cotización” no
+  mueve nada al copiar (#60)»: sin Web Share, a 360 y 390, el link de abajo y el
+  ancho de los botones no cambian al pasar a «¡Copiado!», y el lector oye lo que
+  se ve; sin el texto largo escondido, el link se mueve.
+- *(Tercera tanda.)* `qa/listas-fuente.mjs` tiene 18 casos que tienen que fallar
+  (entre ellos, los cuatro nombres de esta tanda cambiados en las dos puntas,
+  que caen por el calificativo, y el ecocardiograma del grupo sin declarar) y 3
+  que tienen que pasar. Con el `coverage.js` de 40d36ad da 14 hallazgos.
+- *(Cuarta tanda.)* `qa-lanzamiento`, sección «9A y 10A»: con el dedo, en cada
+  apertura se registra la caja de la burbuja en cada cuadro desde que deja de
+  estar en `display:none`, y el primero ya tiene que verse junto a su toque y
+  debajo de la cabecera (una copia con el efecto de posición en `useEffect`
+  cae en las 45 aperturas: el primer cuadro sale escondido, todavía sin ubicar). En el simulador a 1280, con la
+  lista abierta por teclado, el cuerpo se scrollea hasta esconder el toque por
+  el borde de la tarjeta y la burbuja no se tiene que ver (con el `Term` de
+  3db7cb7 cae: el toque en 884-898, la tarjeta cortando en 865 y la burbuja a la
+  vista). `seguir` vuelve el toque a donde estaba en lugar de «al medio»: en el
+  simulador de la computadora, «al medio» lo dejaba debajo del borde de su caja.
+- *(Cuarta tanda.)* `qa/listas-fuente.mjs` suma a «pasan» las 26 en literal en
+  las dos puntas y «sacar el apéndice, si la apendicitis no está complicada»:
+  18 casos que tienen que fallar y 5 que tienen que pasar.
+- *(Quinta tanda.)* `qa-lanzamiento`, sección «9A y 10A», en `/planes` a 1280:
+  la ecografía de Silver y las 26 se abren con Tab, la rueda (con el mouse
+  sobre la cabecera del sitio, lejos del toque) lleva el centro del toque al
+  medio de la cabecera pegajosa de su plan, y antes de medir se confirma con
+  `elementsFromPoint` que el toque está tapado (si no, el caso no prueba nada y
+  se informa). La burbuja no se tiene que ver; con la rueda de vuelta, se ve
+  junto a él. Con el `Term` de b44c1a1 cae en los dos: el toque en 128-143, la
+  cabecera en 88-184 y la burbuja a la vista. El foco previo al Tab va con
+  `preventScroll`: lo anterior a la ecografía de Silver en el orden del Tab
+  está en otra columna, y el scroll suave hasta ahí seguía después del Tab y se
+  llevaba el toque de la pantalla.
+- *(Quinta tanda.)* `qa-lanzamiento`, sección «9A y 10A», en el simulador a
+  1280: las 26 con el toque asomando 3 y 7 px debajo de la cabecera del sitio
+  (confirmado: en esa franja está el toque), abiertas con el mouse por la franja
+  que se ve: abiertas, a la vista, junto al toque y bien puestas. Con la regla
+  «fuera» de 3db7cb7 (`b.bottom < techo`, con el margen) cae en los dos: abierta
+  y escondida.
+- *(Quinta tanda.)* `qa/listas-fuente.mjs`: 19 casos que tienen que fallar (se
+  suma el pterigión sin «auto») y 7 que tienen que pasar (se suman «cuando no
+  esté complicada» y «con o sin injerto propio»). Con la regla vieja del
+  pterigión, o con la vieja del apéndice, la autoprueba cae.
+- *(Quinta tanda, ronda 4.)* `qa-lanzamiento`, sección «9A y 10A», en el
+  cuadro de esperas a 360 con el dedo: las 26 se abren con la fila al 15 %, se
+  confirma que la burbuja quedó abajo, scrolleando por dentro y con
+  `pointer-events:auto` (si no, el caso no prueba nada y se informa), un salto
+  de scroll de `burbuja.top − toque.top + 12` px hacia arriba deja el toque
+  adentro de donde estaba la burbuja (también se confirma), y a los 250 ms la
+  lista tiene que estar abierta, a la vista y junto al toque. Con `queHay =
+  (x, y) => document.elementFromPoint(x, y)` cae: abierta, escondida y lejos
+  del toque (el toque en 167, la burbuja todavía en 155-772).
+- *(Quinta tanda, ronda 4.)* `qa/listas-fuente.mjs`: 22 casos que tienen que
+  fallar (se suman «esté o no complicada», «con o sin injerto propio o de
+  donante» y «con o sin autoinjerto o injerto de donante») y 10 que tienen que
+  pasar (se suman «cuando la apendicitis no es complicada», «con o sin injerto
+  del propio ojo» y «con o sin un injerto propio»). Con la regla de la quinta
+  tanda del apéndice o del pterigión la autoprueba cae, y con la que propuso el
+  verificador, también (el autoinjerto con el donante sumado).
+- *(Quinta tanda, ronda 5.)* `qa-lanzamiento`, sección «9A y 10A»: (a) en
+  /planes a 1280, la ecografía de Silver y las 26, abiertas con Tab y tapadas
+  por la cabecera de su plan, la rueda las deja asomando 4 px debajo de
+  `.cmp2-h` (medido: el toque en 173-188, la cabecera en 88-184); se confirma
+  con `elementsFromPoint`, sin contar la burbuja, que en el medio del toque
+  está la cabecera y a 1 px de su borde de abajo, el toque (si no, el caso no
+  prueba nada y se informa), y la burbuja tiene que estar abierta, a la vista y
+  junto. Con solo el punto del medio (`for (const y of [(arriba + abajoR) /
+  2])`) cae en los dos: abierta y escondida. (b) En el cuadro de esperas a 360
+  y 390, las 26 se abren con el dedo y la página deja el primer renglón de «de
+  una lista de 26» debajo de `[data-nav]` y el segundo a la vista (medido: los
+  renglones en 69-83 y 85-99, la cabecera hasta 84); se confirma que en el
+  primero no está el toque y en el segundo sí, y la burbuja tiene que estar
+  abierta, a la vista y junto. Con `i < 1` en el bucle de los renglones cae en
+  los dos anchos: abierta y escondida. Con la rama, ✓ (2 toques en cada caso).
+- *(Quinta tanda, ronda 5.)* `qa/listas-fuente.mjs`: 33 casos que tienen que
+  fallar y 12 que tienen que pasar (se suman, entre otros, «no complicada o
+  complicada», «no complicada o perforada», «complicada y no complicada»,
+  «tanto complicada como no complicada», «con o sin autoinjerto u otro
+  injerto», «… también de donante», «… y con membrana amniótica» y «… o con
+  injerto de otra persona»; pasan los dos «o sea»). Once sabotajes, uno por
+  pieza, y cada uno cae: el apéndice sin la condición de «complicad…» suelta,
+  sin la «o» y la «u» de después, sin la «u», sin la coma de antes, sin la de
+  después y sin «o sea»; el pterigión sin la «u», sin la «o», sin el donante,
+  sin la membrana amniótica y sin «o sea». Con las reglas de la ronda 4, una o
+  las dos, también cae.
+- *(Quinta tanda, ronda 6.)* `qa/listas-fuente.mjs`: 49 casos que tienen que
+  fallar y 15 que tienen que pasar. Se suman, en el apéndice, «no complicada
+  y/o perforada», «no complicada (o reventada)», «no complicada / reventada»,
+  la perforada, la gangrenosa, con peritonitis, con absceso, con plastrón y
+  «con complicaciones», cada una con «y también» (sin «o»); y en el pterigión,
+  «; también con membrana amniótica», «y con amnios», «también aloinjerto» y
+  el tejido de banco, de cadáver, de otra persona y donado. Pasan «… la más
+  común en un niño», «… (un trocito de tu propio ojo, del tamaño justo)» y «…
+  (un injerto de tu propio ojo)». Tres casos de la ronda 5 cambiaron una
+  palabra para seguir cayendo por su pieza sola («reventada o, no
+  complicada», «o con tejido ajeno», «u otro tejido»): con las palabras
+  nuevas, «perforada», «otra persona» y «otro injerto» caían también por su
+  nombre. 33 sabotajes, uno por pieza (los once de la ronda 5, sobre la regla
+  nueva; diecisiete de las piezas nuevas, entre ellos la «o» con `\b` y el
+  pterigión hasta el «;»; y cinco de la ronda 5 del verificador), y cada uno
+  cae. La sonda del verificador da lo esperado salvo «no complicada ni
+  perforada», que marca a propósito.
+- *(Quinta tanda, ronda 6.)* `qa-lanzamiento`, sección «9A y 10A», en /planes
+  a 1280: la ecografía de Silver y las 26, abiertas con Tab con el toque al
+  medio de la pantalla; una tapa fija y opaca (`pointer-events:auto`) cubre el
+  toque desde 4 px debajo de su borde de arriba hasta 4 px debajo del de abajo
+  (sin llegar a la burbuja), y un scroll de 1 px hace que `colocarFijo` mida
+  otra vez. Se confirma con `elementsFromPoint`, sin contar la burbuja, que en
+  el medio del toque y a 1 px de su borde de abajo está la tapa, y a 1 px del
+  de arriba, el toque (medido: el toque en 449-464, la tapa en 453-468); si
+  no, el caso no prueba nada y se informa. La burbuja tiene que estar abierta,
+  a la vista y junto al toque, y sin la tapa, también. Con `for (const y of
+  [(arriba + abajoR) / 2, abajoR - 1])` cae en los dos toques: abierta y
+  escondida, y nada más cae. Con la rama, ✓ (2 toques).
+- *(Quinta tanda, ronda 7.)* `qa/listas-fuente.mjs`: 53 casos que tienen que
+  fallar y 16 que tienen que pasar. Se suman uno por hueco: «sacar el apéndice,
+  reventada o bien no complicada» (la «o» antes, con una palabra en el medio),
+  «pterigión con membrana amniótica, con o sin autoinjerto» (el donante antes),
+  «pterigión, con o sin autoinjerto / tejido ajeno» (la barra) y «sacar el
+  apéndice, no complicada ó reventada» (la «ó»); y pasa «pterigión (la telita
+  que crece sobre el ojo), con o sin autoinjerto» (lo de antes también se
+  mira, y lo que explica no suma). Sabotajes, uno por pieza, y cada uno cae:
+  mirar solo después (seis casos, entre ellos los dos nuevos de antes), mirar
+  solo antes (veintiocho), sin la barra (dos), `[ou]` sin la «ó» (uno), sin «o sea»
+  (dos de «pasan») y cada regla de a1e4e89 en lugar de la nueva (dos cada
+  una). El separador « · » entre los dos lados es defensivo: sin él, la
+  autoprueba sigue en verde, y el comentario lo dice. Una sonda de 54 frases
+  (las siete del verificador que pasaban, sus controles y la barra antes) da
+  lo esperado; contra a1e4e89, once la contradecían.
+- *(Quinta tanda, ronda 8.)* `qa/listas-fuente.mjs`: 61 casos que tienen que
+  fallar y 16 que tienen que pasar. Se suman ocho, sin una «o» suelta: los
+  cuatro del verificador («no complicada y la reventada», «no complicada o sea
+  reventada», «con o sin autoinjerto y con tejido ajeno» y «…, o sea, con
+  tejido ajeno») y uno por cada nombre nuevo que ellos no nombran («…, además
+  de la que se revienta», «… y también si está rota», «… y con tejido de un
+  tercero» y «… y otro tejido»). Ocho casos que aíslan una pieza cambiaron
+  «reventada», «tejido ajeno» u «otro tejido» por «la otra» u «otra cosa»,
+  para seguir cayendo solo por ella. 36 sabotajes, uno por pieza: los seis
+  nombres nuevos, cada regla de 8f785e9 y de a1e4e89 en lugar de la nueva
+  (cuatro), los cinco de la ronda 7 (solo antes, solo después, sin la barra,
+  sin la «ó», sin «o sea»), diecinueve del verificador de la ronda 8 (la «o»
+  con `\b`, la «u», cada nombre de las dos listas, la mirada hacia adelante
+  de `injert`, las formas aceptadas) y dos defensivos. Caen los 34; los dos
+  defensivos (el separador « · » y el `(?!\p{L})` de «rota») siguen en verde,
+  y el comentario lo dice. La sonda del verificador (64 frases): de las once
+  que pasaban y no debían, diez marcan; queda «no complicada y también con
+  pus», el límite que nombra el comentario.
+
+**Lo que queda** (no entró; cada punto apunta a su punto de revisión de
+`sp-interno`, donde se decide y se lleva el detalle):
+- La etiqueta «2 meses, la mayoría» de Gold (con las del embarazo, 17 de 35
+  filas con dato, el 48,6 %: menos de la mitad): no se tocó, **espera a Arturo
+  en #205**, y el PR no se fusiona hasta esa respuesta.
+- Las ecografías del embarazo de Essential (el sitio dice 3 meses): #202.
+- Consultas y psicología de Essential bajo la celda: #203.
+- El contraste, las Doppler y la transrectal (copago y tope), la vesical y la de
+  vejiga, la Doppler venosa de un lado y lo de Privilege en Essential: #204,
+  con #55 y #81.
+- Las palabras de casa de las 26, su lámina y el cierre de la lista: #206.
+- El «no entra» de Essential, deducido de su lista cerrada: #115.
+- Los ecocardiogramas fuera del toque, también la ECOCARDIOGRAFIA que SP borró
+  por duplicada el 18/09: #173.
+- Los nombres de especialidades en Tipo Oración: #61, punto 3 (el PR lleva
+  «Refs Nelargon/sp-interno#61 (puntos 1 y 2)», no «Closes»).
+- Las notas de las opciones del simulador, en Nunito Sans (son oraciones: van
+  en Inter, con el QA responsive completo), y la fecha «Datos al» de la Guía
+  Médica, que hoy es el día en que corrió `build-guia-medica.py` y no la de la
+  planilla: #207.
+- Los materiales descartables de la resonancia en las oraciones (4.2: «No
+  incluye contraste, materiales descartables ni sedación»): #203, pregunta 3.
+- El anestesista en la cesárea de Essential **no es un pendiente**: lo contesta
+  el cuadernillo (releído en el Drive el 23/10). El 50 % de los honorarios del
+  anestesiólogo es de las cirugías con internación (4.3.2); en el parto, el
+  4.5.4 cubre «honorarios del anestesiólogo» sin porcentaje, y el sitio no dice
+  otra cosa. No hace falta preguntar. *(Hasta la tercera tanda figuraba como
+  pregunta para #204.)*
+- ~~La guía vieja (`guia/`) no se pudo ver con estilos en este entorno: la mide
+  la salud nocturna.~~ Ya no hace falta: el molde se retiró entero con
+  sp-prototipo#289 (quinta tanda).
+- La espera de 2 s después de tocar una tarjeta en «Lo que dicen las tarjetas y
+  la hoja» de `qa-lanzamiento`: con la máquina cargada (otra suite corriendo al
+  mismo tiempo) una tarjeta del home no abre a tiempo y caen dos ✗ en falso. Esa
+  sección es de 8b1afc63 (18/10), anterior a esta rama: no se tocó acá. Mientras
+  tanto, `qa-lanzamiento` se corre sin otra suite al mismo tiempo, como lo hace
+  la salud nocturna. Si se cambia, se sube la espera y no se toca dos veces: un
+  segundo toque taparía el defecto de una tarjeta que necesita dos para abrir.
+- Tres hallazgos de `qa-integral` que no son de esta rama (ronda 5, medidos el
+  23/10 sobre la build del prototipo con `main` en 61ed0a9; los mismos tres en
+  la ronda 6, el 24/10, con `main` en 3dc5215): en
+  `/blog/laboratorio/` (#294, que la rama no toca), un campo sin etiqueta
+  accesible («confunde») y dos imágenes bajo el pliegue sin `loading="lazy"`
+  («cosmético»); y **la home en 3G rápido tarda unos 7 s** («confunde», vara
+  3 s): 6.910 ms en `main` y 6.965 en la rama, de cuatro medidas cada una. El
+  documento (313 KB) termina de bajar último porque comparte la línea con los
+  scripts, las fuentes y la foto del inicio (unos 1,4 MB). Cuando la prueba da
+  verde marca 31 a 36 ms, que con 150 ms de latencia emulada no puede ser: **la
+  home sale de la caché de disco del navegador**, que ya la visitó en la misma
+  página (el documento llega `fromDiskCache`, y 16 recursos más, de la caché).
+  La emulación sí se aplica. Con la caché apagada (`Network.setCacheDisabled`)
+  o en un contexto nuevo, tarda unos 7 s: 6.971 y 6.974 ms sobre d6d77d4
+  (verificador de la ronda 6) y 6.951 y 6.997 ms sobre la rama de la ronda 6.
+  Y el verde o el rojo dependen del servidor: `python3 -m http.server`, el de
+  la salud nocturna, manda `Last-Modified`, y con eso el navegador guarda la
+  home y da verde (31 ms); un servidor sin `Last-Modified`, como el de las
+  corridas de la ronda 5, la vuelve a bajar y da rojo (6.977 ms). Es decir,
+  **en la salud nocturna esa medida da siempre verde**, y el rojo es el número
+  real. *(Hasta la ronda 6 este punto decía que en esas corridas la emulación
+  no se aplicaba: era una suposición, no una medida; BITACORA cap. 175.)*
+  Necesita un punto de revisión propio en `sp-interno` (esta rama no abre
+  issues); el arreglo del control es medir en un contexto nuevo
+  (`browser.newContext()`) o con la caché apagada, no revisar la emulación.
+- Lo que sigue para preparar el espacio, sin publicar, está en «🧩» y en «🌐
+  23/10/2026», arriba: el build para el dominio y el botón «Revisión» solo en el
+  prototipo ya entraron a main (#291); quedan las cuentas y el DNS (#101). Las
+  tres direcciones de la web actual ya no esperan: Arturo contestó «1A, 2A, 3A,
+  4A» en #209 y entró a main con #293 (ver «🚦 23/10/2026», arriba). De ahí
+  quedan el QR del carnet, que espera a que Arturo escanee uno, y el aviso a los
+  clientes por el cambio de la reserva, abierto en #209. Esta rama no lo toca. Fusionarla actualiza el sitio de GitHub Pages, como cualquier PR; la v1
+  en el dominio real sigue esperando.
+
+---
+
 ## 🌙 23/10/2026: EL SITIO ES SOLO CLARO, Y EL TAPIZ AGUANTA EL MODO OSCURO
 
 Arturo abrió la Guía Médica en su celular (Samsung Internet, teléfono en modo
@@ -411,6 +1271,11 @@ nada» en la línea de `/planes`, ✗. Lo que se aprendió: BITACORA cap. 154.
    topes más altos.»), comparado con Essential: la 8A no lo nombró y no se tocó.
    Lo decide Arturo en sp-interno#193 (abierto el 20/10): en 10 de las 20
    especialidades con tope en Silver, Essential puede dar más consultas al año.
+   *(23/10/2026: lo decidió Arturo, 1A de sp-interno#193: la nota dice «Más días
+   de terapia intensiva y más sesiones de psicología.» y el porqué «El
+   equilibrio con respaldo de verdad: más días de terapia intensiva y más
+   sesiones de psicología.»; lo controla la 1A de qa-lanzamiento. Ver «✅
+   DECIDIDO EL 23/10/2026».)*
    La prueba mira lo de Gold con sus textos aprobados, literales y como se ven:
    su línea de la tabla (`GOLD_PARA`) y, en el simulador, la opción (dice su
    rótulo y `OPCION_AMPLIA_NOTA`, y nada más) y el porqué del resultado (un
@@ -586,7 +1451,9 @@ para fisioterapia (#183);
 «5/¿quién?/año» en psicología (#110), que el revisor de datos marcó para no
 fusionar sin respuesta *(20/10/2026: decidida, 3A, sp-interno#184: sale «por
 persona»; ver «✅ DECIDIDO EL 20/10/2026»)*; (4) la condición de la tomografía de Essential en las
-tablas (#185); (5) el «—» de «Cuadro 2» de Essential (#186); (6) «y/o» y
+tablas (#185) *(23/10/2026: decidida, 185A, con la resonancia; ver «✅ DECIDIDO
+EL 23/10/2026»)*; (5) el «—» de «Cuadro 2» de Essential (#186) *(23/10/2026:
+decidida, 186A)*; (6) «y/o» y
 «post-quirúrgica» en los rótulos del plegable (#187); (7) si la proporción de
 tráfico que entra por celular (trece lugares) y la paciencia del personaje del
 `BRANDSCRIPT.md` también pasan al puntero (#188; las cifras, en
@@ -597,7 +1464,10 @@ grilla es falso para la fisioterapia (#50) *(20/10/2026: decidida, 8A,
 sp-interno#189: Gold dice «La cobertura más amplia»; ver «✅ DECIDIDO EL
 20/10/2026»)*; y (9) si la fisioterapia de
 Essential es «solo traumatológica» a la vista (lo dicen el cuadernillo y la
-planilla, y hoy solo el plegable; `essential.json` no lo trae; #190).
+planilla, y hoy solo el plegable; `essential.json` no lo trae; #190)
+*(23/10/2026: decidida, 190A. La «planilla» no es una segunda fuente:
+`lib/prestaciones.json` se genera desde `essential-cobertura.json`; la fuente es
+la cláusula 1.11, releída en el PDF. Ver «✅ DECIDIDO EL 23/10/2026».)*
 
 **Vuelta 3 del comité (17/10, 36 hallazgos, BITACORA cap. 151).** El Guardián
 separó lo que es de Claude (se arregló en la rama), lo que es de Arturo o de SP
@@ -828,7 +1698,9 @@ la prueba de tipos tiene que comparar los tres planes, no solo Silver y Gold);
 **4**, que se amplía: la resonancia de Essential «sin contraste» tampoco está
 en la celda ni en la línea de la tarjeta, así que conviene contestar la
 tomografía y la resonancia juntas (E7: la condición de Essential que la celda
-no dice es una clase, no un caso); **3**,
+no dice es una clase, no un caso) *(23/10/2026: la 9 y la 4 decididas, 190A y
+185A con la resonancia; la prueba de tipos de la G1A compara ahora los tres
+planes; ver «✅ DECIDIDO EL 23/10/2026»)*; **3**,
 las consultas de Silver «por persona» *(20/10/2026: decidida, 3A,
 sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
 
@@ -837,10 +1709,13 @@ sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
   Silver espera 60 días en 23 de 33 y 90 en 10; Gold, 60 en 17 de 32 y 90 en 15,
   obstétricas incluidas (conteo sobre la grilla del 24/07, no verificado contra
   el contrato). `app/coverage.js:173` (`{ que: 'Ecografías', … }`). Lo decide
-  Arturo, con su punto de revisión.
+  Arturo, con su punto de revisión. *(23/10/2026: decidido, 9A de sp-interno#191;
+  ver «✅ DECIDIDO EL 23/10/2026».)*
 - «De una lista cerrada de 26» de las cirugías de Essential: el cuadernillo lo
   dice (`essential.json`) y el sitio no, ni en la tabla ni en el simulador; es
   una afirmación nueva y no se escribió (`app/coverage.js:185`, comentario).
+  *(23/10/2026: decidido, 10A de sp-interno#191: «de una lista de 26» y la lista
+  a un toque; ver «✅ DECIDIDO EL 23/10/2026».)*
 - Datos escritos a mano en más de un lugar (resto de D8): los días de terapia
   intensiva (`app/coverage.js:101`, `app/page.jsx:413`,
   `app/planes/Planes.jsx:149`, `app/quote.js:180-184`); las celdas de consultas
@@ -853,6 +1728,7 @@ sp-interno#184)*; y **1, 2, 5, 6 y 7**, como estaban.
   home (`app/page.jsx:401`, «5 sesiones al año para toda la familia.», contra
   «Hasta 5 sesiones al año por familia» de `/planes`), que se unifica cuando
   Arturo conteste la 9 (moverla hoy cambiaba el texto de una de las dos).
+  *(23/10/2026: unificada con la 190A: las tres líneas del home salen de `cov`.)*
 - La tarjeta y la hoja de urgencias de Essential en `/planes` dicen «Consulta 24
   h, desde el día uno. Sin espera.» (`app/coverage.js:129`): lo mismo dos veces.
 - El revisor de diseño de `sp-interno` (`.claude/skills/sp-disenador-ux/scripts/revisar.mjs`)
@@ -1352,7 +2228,7 @@ preguntamos esto?» del simulador mandan `abre_explicacion` con `{tipo:
 del servicio, `precio` o el paso, nunca nada de la persona. Cuentan
 una vez por página vista (`trackExplicacion` en `app/track.js`), porque con
 mouse se abren al pasar. El evento está en el contrato
-(`guia/ANEXO-requisitos-backend.md` §2). Hoy `track()` solo escribe en la consola:
+(`docs/ANEXO-requisitos-backend.md` §2; hasta el 23/10/2026 vivía en `guia/`). Hoy `track()` solo escribe en la consola:
 el número aparece cuando se conecte a una herramienta (PR-12 del plan de la
 revisión integral, todavía sin hacer). Una explicación nueva que se abra al
 tocar usa `trackExplicacion`; `qa/qa-lanzamiento.mjs` lo prueba en «carencia» y
@@ -2055,20 +2931,32 @@ una firme y se regenera.
   20 que se medían en el navegador pasan a Inter; `sp-interno#59`.)*
 - Nombres de especialidades: salen de la planilla y algunos no son Tipo Oración.
 - Radios escritos a mano en algunos componentes, y la regex del QA no los ve
-  todos.
-- Botones que dicen lo que hacen y además llevan ícono.
+  todos. *(Resuelto el 23/10: 13 radios pasaron a su token y quedan dos
+  excepciones declaradas, con su porqué, en `EXCEPCIONES_RADIO` de
+  `qa/esquinas.mjs`, que corre en el CI y en `qa-integral`; `sp-interno#60`.)*
+- Botones que dicen lo que hacen y además llevan ícono. *(Resuelto el 23/10:
+  «Descargar» y «Compartir» del resultado del simulador, los dos que quedaban
+  con ícono de librería; `sp-interno#60`.)*
 - **Blog (territorio de `sp-contenido`, se coordina, no se edita):** define
   alta complejidad y copago distinto que el glosario, y pone «carencia» primero.
 - Silver y Gold: «máximo 3 al mes por especialidad, después copago» no está
   publicado en ningún lado.
 - Silver «al 100%» tiene excepciones con copago (URO-TAC, colangiorresonancia).
-- La fecha de la Guía Médica dice siempre 17/09.
+- La fecha de la Guía Médica dice siempre 17/09. *(Resuelto el 23/10: la Guía y
+  cada ficha dicen «Datos al» con `meta.datos_al`, el día en que se leyó la
+  planilla del Drive y se generó el JSON, la misma fecha del home.
+  `meta.guias.*.fecha` es la fecha del PDF de cada red y ya no se muestra;
+  `sp-interno#61`.)*
 - `track('sim_zona_sin_lista')` manda el texto libre que escribió la persona
   (no es nombre ni teléfono, pero podría serlo). *(Resuelto el 26/09: el texto
   viaja solo si parece un lugar —sin números, «@» ni más de cuatro palabras—;
   si no, va vacío con `descartado: true`. Se conserva el dato de qué ciudades
   faltan; `sp-interno#59`.)*
-- La guía vieja del prototipo (`guia/`) sigue con Bronze.
+- La guía vieja del prototipo (`guia/`) sigue con Bronze. *(Resuelto el 23/10:
+  la escalera del molde es Silver ⊂ Gold y Vital va aparte; Essential no entra
+  porque es otra red. Bronze sigue en `/guia-medica` a propósito, para los
+  clientes que lo tienen; `sp-interno#61`. Ese mismo día el molde se retiró
+  entero, con sp-prototipo#289: el punto queda resuelto por el retiro.)*
 - «SP SENIOR» en documentos de SP vs «Plan Vital» en el sitio (pendiente de
   antes).
 
@@ -2471,7 +3359,9 @@ otra), el rayo de la barra de abajo del celular, las frases de confianza de
 `/simulador/` y su candado, el ícono de «Retomar mi simulación» y el de «Visar
 una orden» en el encabezado de la guía. **Se había estimado en 22:** la lista
 línea por línea no quedó guardada y, rehecha con la misma regla, da 18
-(BITACORA cap. 97).
+(BITACORA cap. 97). *(23/10/2026: se suman «Descargar» y «Compartir» del
+resultado del simulador, que sobrevivieron a esta pasada; son 20.
+`sp-interno#60`.)*
 
 **Pendientes:**
 - Los momentos grandes («¡Listo!», estados vacíos) los podría redibujar un
@@ -2613,7 +3503,9 @@ todo lo que puedas».*
   contenedor de las sesiones de Claude no llega a `github.io` (la red lo
   bloquea: medido el 24/09). GitHub Actions sí. *(22/10/2026: desde el 19/10
   la sesión del Guardián sí llega a `github.io`. Si el Guardián mide también el
-  sitio en vivo es una pregunta abierta de su manual, §2.)*
+  sitio en vivo es una pregunta abierta de su manual, §2.)* *(23/10/2026:
+  Arturo dijo que sí, M1A: el Guardián también lo mide desde su sesión, como
+  respaldo de la capa 1. Manual §5 paso 1.)*
 
 **Herramientas al día (25/09/2026, OK de Arturo).** Los cuatro workflows pasan a
 `actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-pages-artifact@v5`
@@ -2895,7 +3787,12 @@ resolver cada una y respondió *«Vamos con todas tus sugerencias entonces»*.
 
   Las portadas del blog también reciben el token (`Cover` acepta
   `radius="var(--r-lg)"`). Quedan dos 14px en `/historia/`, que no se toca:
-  excepción local. A la vista son 2px, casi invisibles (capturas ampliadas en
+  excepción local. *(23/10/2026: el conteo de `qa-integral` perdonaba toda
+  «excepción local» usada menos de tres veces y no leía «0 12px 12px 0» ni
+  `var(--sq,10px)`: daba verde con 13 radios a mano. Ahora las excepciones son
+  dos, declaradas con su porqué en `qa/esquinas.mjs` (estos dos 14px y la
+  casilla de los adicionales del simulador); `sp-interno#60`, BITACORA cap.
+  163.)* A la vista son 2px, casi invisibles (capturas ampliadas en
   el PR). `qa-integral`: **70 OK · 1 hallazgo** (solo los testimonios, que
   esperan a SP); el de radios pasó a verde porque se decidió, no porque se
   escondió (cap. 90). **Regla desde hoy: una esquina nueva se elige por lo que
@@ -3801,6 +4698,8 @@ documentado en el repo.
    "Sin letra chica"; "médico a domicilio" con números reales; salud mental
    acotada a Bronce/Silver/Gold). Queda afuera del home: el filtro
    "Telemedicina" de la guía (`guia_resultados.html`) si SP no va a ofrecerla.
+   *(23/10/2026: sin objeto. Ese filtro era del molde viejo de `guia/`, que se
+   retiró entero con #289; ver «🧩 23/10/2026».)*
 2. ~~**Bloque "qué no cubre / qué pagás aparte"**~~ ✔ **PRIMERA VERSIÓN HECHA
    (22 jul 2026, dec. 11m):** sección "Lo que pagás de tu bolsillo" en el home
    (después del comparador) — los 3 modos (Cubierto/Copago/Al precio de
@@ -3863,7 +4762,9 @@ Home `app/page.jsx` · Simulador `app/components/Simulador.jsx` (flujo plan-pues
 `app/que-cubre/Buscador.jsx`** *(18/10/2026: `Landing.jsx` se borró con «🔁
 04/10/2026: UNA SOLA PÁGINA DE DETALLE». Hoy está `app/que-cubre/page.jsx`, el
 redirect a `/planes/`, y el buscador quedó guardado sin página)* · Motor de
-precios `app/quote.js` · Guía `guia/*.html` · Datos de planes
+precios `app/quote.js` · ~~Guía `guia/*.html`~~ Guía Médica `app/guia-medica/` +
+`lib/guia-medica.json` (se regenera desde la planilla con
+`scripts/build-guia-medica.py`; el molde `guia/` se retiró el 23/10/2026 con #289) · Datos de planes
 `datos/planes-vigentes/` · **Índice buscable `lib/prestaciones.json` (generado por
 `scripts/build-prestaciones.mjs`) + lógica `lib/buscar-prestaciones.js`** · Análisis AD
 `datos/planes-vigentes/ANALISIS-arancel-diferenciado.md` · Blog `contenido/blog/`
@@ -3925,7 +4826,11 @@ preguntas sirven igual al **prospecto** ("¿qué plan me conviene?") y al
 **afiliado** ("¿qué me cubre *mi* plan?"). La home hace el triaje en el
 hero con dos puertas: "Quiero un plan" → simulador · "Ya soy de SP" →
 guía en modo personalizado (fase 1 del portal; el portal completo es
-destino declarado, ver `PLAN-home-v2.md` §3).
+destino declarado, ver `PLAN-home-v2.md` §3). *(24/10/2026: el modo
+personalizado era del molde viejo de `guia/`, retirado el 23/10/2026 con
+#289. Hoy la puerta lleva a Mi SP («Ya soy de SP · Mi SP») en el prototipo y a
+la Guía Médica («Ya soy de SP · Buscá tu médico») en la v1; ver «🧩
+23/10/2026».)*
 
 ### 1c. El círculo que se alimenta solo *(para negocio e inversión — el retorno)*
 
@@ -3946,10 +4851,11 @@ destino declarado, ver `PLAN-home-v2.md` §3).
 |---|---|---|
 | **Web de planes** (hero, manifiesto, cartilla viva, comparador, simulador embebido, FAQ) | `app/page.jsx` → [nelargon.github.io/sp-prototipo](https://nelargon.github.io/sp-prototipo/) | Prototipo funcional completo |
 | **Simulador** (ruta propia) | `app/simulador/` → [/simulador](https://nelargon.github.io/sp-prototipo/simulador/) | Funcional, **tarifario vigente real** (jul 2026, IVA incl.) |
-| **Guía Médica rediseñada** (home + resultados + ficha de prestador) | `guia/` (fuente) y `public/guia/` (copia publicada) → [/guia/guia_home.html](https://nelargon.github.io/sp-prototipo/guia/guia_home.html) | Funcional con datos ilustrativos |
+| ~~**Guía Médica rediseñada** (home + resultados + ficha de prestador)~~ | ~~`guia/` (fuente) y `public/guia/` (copia publicada) → /guia/guia_home.html~~ | ~~Funcional con datos ilustrativos~~ → **retirado el 23/10/2026** con #289 (ver «🧩 23/10/2026»); su dirección da 404 y queda en el historial de git |
+| **Guía Médica** (buscador con filtro «¿Qué plan tenés?» y ficha de cada prestador) | `app/guia-medica/` → [/guia-medica/](https://nelargon.github.io/sp-prototipo/guia-medica/); datos en `lib/guia-medica.json`, que se regenera desde la planilla maestra con `scripts/build-guia-medica.py` (ver «Cómo quedó la Guía Médica real») | Funcional, con la red de la planilla de SP; un PR de datos nuevos espera el OK de Arturo (ver `CLAUDE.md`) |
 | **Nuestra historia** (manifiesto cinematográfico) | `app/historia/` → [/historia/](https://nelargon.github.io/sp-prototipo/historia/) | Funcional (movido de la home en home-v2) |
 | ~~**Snapshot del home v1**~~ (referencia congelada, pre-rediseño) | ~~`public/v1/`~~ | **Historia (17/10/2026):** se bajó por decisión de Arturo (P4A, sp-interno#181). Servía los TTF de Gilroy sin licencia, una cifra de contratos sin confirmar que decía «hoy» y «seguro médico». Queda en el historial de git (fuente: commit `b8289a8`; borrado en la rama del PR #271) *(21/10/2026: decidido el 17/10 y bajado el 20/10: el PR #271 lo borró de `main` (`86ed718`) y su deploy, del sitio en vivo)* |
-| **Anexo de requisitos backend** | `guia/ANEXO-requisitos-backend.md` | El contrato técnico para la empresa desarrolladora |
+| **Anexo de requisitos backend** | `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) | El contrato técnico para la empresa desarrolladora |
 | **Guía actual en producción** | `sp.sip.com.py` (sistema de SIP, datos reales de la app de siempre) | Analizada; sus 3 HTML fueron el insumo del rediseño |
 
 **Contexto clave:** la guía en producción corre sobre el sistema de SIP con
@@ -3957,6 +4863,9 @@ plantillas ("un cambio en un prestador se aplica a todos"). SP puede
 modificar el diseño y pasárselo a la empresa desarrolladora, que lo evalúa e
 integra. Nuestro paquete `guia/` está en el mismo formato que usan ellos
 (HTML sueltos + Tailwind) justamente para que la adopción sea directa.
+*(Historia: ese paquete se retiró el 23/10/2026 con #289. La Guía Médica del
+sitio es `/guia-medica/`, y el contrato de eventos sigue en
+`docs/ANEXO-requisitos-backend.md`.)*
 
 **Línea de base de datos reales (GA de la web activa de SP,
 15 may – 13 jul 2026, aportada por el usuario):** (las cifras de Google
@@ -3987,6 +4896,9 @@ usa `npm ci`).
 1. **La guía se rediseñó en HTML + Tailwind sueltos** (no Next.js): mismo
    formato que usa el proveedor → adopción sin fricción. El CDN de Tailwind
    es solo para prototipo; producción requiere build compilado.
+   *(Historia: ese molde se retiró el 23/10/2026 con #289. La Guía Médica del
+   sitio es `/guia-medica/`, en Next.js como el resto; ver «Cómo quedó la Guía
+   Médica real».)*
 2. **Identidad visual**: tokens SP — navy `#003B71`, teal `#00BCB4`, verde
    `#009690`, dorado `#C9A227` (solo planes premium), rojo `#D92D20`
    (SOLO urgencias). **Nunito Sans** ExtraBold/SemiBold para títulos
@@ -3999,11 +4911,20 @@ usa `npm ci`).
    ("me duele la espalda"→Traumatología, con disclaimer). Sugerencias
    agrupadas por categoría, navegables por teclado (ARIA combobox).
    La lógica demo en JS es la espec ejecutable para el backend.
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». «La lógica demo en JS» era la de los
+   `guia/*.html`. La búsqueda de la Guía Médica de hoy es `lib/red-medica.js`,
+   lógica pura que se prueba con node (`scripts/test-buscador.mjs`), y la de
+   «¿Y esto, me lo cubre?» de /planes, `lib/buscar-prestaciones.js`.)*
 4. **Cero resultados nunca es un callejón**: "¿quisiste decir…?" + WhatsApp
    con la búsqueda prellenada. Cada falla es un lead y un dato.
 5. **Cobertura jerárquica**: Premium ⊇ Integral ⊇ Esencial. SP Senior corre
    por su propio carril (Senior / Senior Plus). Por eso basta almacenar el
    **nivel mínimo** (`min_plan`) por prestador.
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». La jerarquía no vale para la red: cada
+   guía en PDF es una red, y Silver y Gold comparten la misma. Por eso la Guía
+   Médica pregunta «¿Qué plan tenés?» y no guarda un plan mínimo.)*
 6. **Combo aprobado A1 + B3 + C3**:
    - **A1**: menú móvil desplegable (mismo patrón que la web).
    - **B3**: en listas, una sola etiqueta "Desde SP X" / "★ Exclusivo SP
@@ -4011,6 +4932,10 @@ usa `npm ci`).
    - **C3**: modo personalizado (con CI) = una sola lista, lo cubierto
      primero con "✓ Con tu plan", lo no cubierto con etiqueta dorada que
      abre la **hoja de upsell** → "Simulá el cambio" → simulador.
+   *(Historia: B3 y C3 eran del molde de `guia/`, retirado el 23/10/2026 con
+   #289; ver «Cómo quedó la Guía Médica real». La Guía Médica de hoy no dice
+   «Desde SP X» ni tiene modo personalizado ni hoja de upsell: su filtro es
+   «¿Qué plan tenés?».)*
 7. **Regla de tono comercial**: nunca "No cubierto", nunca rojo para
    cobertura. La ausencia se comunica como oportunidad (dorado). La guía
    genera el deseo; el simulador cierra la venta.
@@ -4018,11 +4943,21 @@ usa `npm ci`).
    (segundo factor liviano), POST (nunca la cédula en la URL), rate
    limiting + CAPTCHA invisible, respuesta mínima (ni nombre ni plan del
    titular en pantalla). Hoy la demo simula un asegurado SP Integral.
+   *(Historia: esa demo era del molde de `guia/`, retirado el 23/10/2026 con
+   #289; ver «Cómo quedó la Guía Médica real». Las reglas de seguridad de la
+   consulta siguen en `docs/ANEXO-requisitos-backend.md` (§3) para cuando
+   exista; hoy ninguna página la simula, y «ver mi red por cédula» vuelve a
+   `/mi-sp/` cuando exista el padrón.)*
 9. **Los datos de prestadores del prototipo son ilustrativos a propósito**:
    son el *molde* del formato correcto (sedes separadas, un teléfono por
    acción, horarios, planes). Los datos reales de SIP existen pero están
    sucios (teléfonos concatenados que rompen el botón Llamar, dos
    direcciones en un campo, "fax: 30", typo "SERVICIO DE AMBULACIA").
+   *(Historia: era del molde de `guia/`, retirado el 23/10/2026 con #289; ver
+   «Cómo quedó la Guía Médica real». Desde septiembre de 2026, `/guia-medica/`
+   sale de la planilla maestra de SP, no de esos datos de SIP:
+   `lib/guia-medica.json` se regenera con `scripts/build-guia-medica.py`, que
+   valida la planilla, separa los teléfonos y no publica si da errores.)*
 10. **Integración guía ↔ homepage**: aprobado **A+B ahora, C como destino**
     (ver pendiente #1 abajo).
 11. **El espacio del afiliado se llama "Mi SP"** (julio 2026, elegido por
@@ -4034,6 +4969,10 @@ usa `npm ci`).
     de SP · Mi SP") llevan ahí. Evento `mi_sp_accion` (ANEXO §2) mide
     qué buscan los clientes — ese dato ordena qué módulo construir
     primero.
+    *(23/10/2026: «Ver mi red con CI+fecha» era del molde de `guia/`, que se
+    retiró con #289. La tarjeta de `/mi-sp/` lleva ahora a la Guía Médica
+    real («Buscá tu médico»), y ver la red por cédula vuelve cuando exista el
+    padrón.)*
 11b. **El simulador acompaña como una persona** (julio 2026, pedido del
     usuario): los mensajes laterales reaccionan a cada elección ("Toda la
     familia junta — de eso se trata") en vez de repetir texto fijo, la
@@ -4297,9 +5236,10 @@ usa `npm ci`).
     la infra de las páginas Next.js ya está lista (robots/noindex/sitemap/
     canonicals/OG/JSON-LD, se prende con `NEXT_PUBLIC_INDEXABLE=true` +
     `SITE_URL`). Faltan, concretas: (a) el **hostname público del sitio** (para
-    `SITE_URL`) y el **dominio de la guía** (#9, ampliado); (b) **quitar el
+    `SITE_URL`) y el **dominio de la guía** (#9, ampliado); (b) ~~**quitar el
     `noindex` hardcodeado de los 3 `guia/*.html`** (checklist #8b — el flag de
-    Next.js NO los cubre); (c) la decisión de negocio de **cuándo salir
+    Next.js NO los cubre)~~ *(sin objeto desde el 23/10/2026: esos tres HTML
+    se retiraron con #289, y la Guía Médica, `/guia-medica/`, es Next.js)*; (c) la decisión de negocio de **cuándo salir
     público** (hoy noindex a propósito, por los precios de referencia). Lo que
     mueve la aguja ya está en marcha: el blog (2-3 notas/semana, ahora por
     categorías) y la guía médica como directorio verificable (esta última,
@@ -4374,6 +5314,8 @@ usa `npm ci`).
     **Sigue pendiente:** rodar `Header.jsx` a los módulos restantes (agendar,
     Mi SP, historia, simulador) y a la home (variant `hero`, reemplazando el nav
     inline de `app/page.jsx`), más su **gemelo en la guía** (HTML/Tailwind).
+    *(23/10/2026: el gemelo ya no hace falta; el molde de `guia/` se retiró con
+    #289.)*
     Territorio de esta ola: `app/Header.jsx` (nuevo), `app/blog/page.jsx`,
     `app/blog/Articulo.jsx`.
 
@@ -4887,9 +5829,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 
 1. ~~**Integrar la guía al homepage (A+B)**~~ ✔ **Hecho (julio 2026, PR #5)**:
    "Guía Médica" en menú desktop, menú móvil y footer (link directo a
-   `guia_home.html`); la sección se renombró "Guía Médica · sin letra
+   `guia_home.html`, del molde viejo, retirado el 23/10/2026 con #289); la sección se renombró "Guía Médica · sin letra
    chica" (el ancla sigue siendo `#cartilla`, en menú/footer aparece como
-   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…` (Enter, o
+   "Qué cubre"); su buscador lleva a `guia_resultados.html?q=…`, también del
+   molde (Enter, o
    la fila fija del dropdown — que aparece incluso sin matches locales,
    cero resultados nunca es un callejón), y bajo la tarjeta hay un link
    permanente "Abrí la Guía Médica". Los chips y el panel de cobertura
@@ -4939,7 +5882,7 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 
 3b. ~~**Home v2**~~ ✔ **Ejecutado (julio 2026)**: hero de dos puertas
    ("Quiero un plan" → simulador · "Ya soy de SP" → `guia_home.html#mi-red`,
-   la consulta CI+fecha), herramientas arriba, manifiesto comprimido a
+   la consulta CI+fecha; retirado el 23/10/2026 con el molde, #289), herramientas arriba, manifiesto comprimido a
    una pantalla en segunda persona (el cinematográfico completo vive en
    `/historia/`), testimonios placeholder afuera (vuelven cuando haya
    reales con consentimiento), eventos `manifesto_scroll` y `puerta_home`
@@ -5008,6 +5951,14 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    nuevos (Esencial/Integral/Premium); cuando existan, el volcado es el
    mismo mecanismo (plans() + TARIFAS en `app/quote.js`, cart() en
    `app/page.jsx`, mapas NIVEL/NOMBRE en la guía).
+   *(23/10/2026: los mapas NIVEL/NOMBRE eran constantes de
+   `guia/guia_resultados.html`, el molde que se retiró con #289. La Guía
+   Médica de hoy no los tiene: los prestadores salen de `lib/guia-medica.json`,
+   que se regenera desde la planilla maestra con `scripts/build-guia-medica.py`
+   (nunca a mano, y el PR de datos espera el OK de Arturo), y qué red usa cada
+   plan está en `PLANES` y `REDES` de `lib/red-medica.js`, con su columna de
+   la planilla en `REDES` del script. Un plan nuevo pasa por esos tres
+   lugares.)*
 7. **Flujo real de "Ver mi red"**: especificar con SIP el endpoint
    CI + fecha → nivel de plan, con las reglas de seguridad del ANEXO.
 8. ⚠ **Superado el 16/09/2026** — ver "LEER PRIMERO" arriba: la v1 la publica
@@ -5026,7 +5977,7 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
    **Criterios de contratación** (jul 2026, de la evaluación de
    arquitectura de conversión): buscar arquitecto de conversión /
    StoryBrand, no diseñador estético; el brief es `BRANDSCRIPT.md` +
-   `guia/ANEXO-requisitos-backend.md` + el prototipo funcionando;
+   `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) + el prototipo funcionando;
    prohibido lorem ipsum — el copy dicta el diseño.
 8b. **SEO** (sube de prioridad baja → media, jul 2026): los datos reales
    muestran que **Organic Search ya es el canal #1** de la web activa
@@ -5068,6 +6019,10 @@ proyecto, y `BITACORA.md` cuenta el camino y sus lecciones.
 12. **"Cerca de mi ubicación" + mapa** (necesita coordenadas en la base).
 13. **Variante C2 del modo personalizado** (lista dividida "Tu red / El
     resto invita") — solo si los datos de `upsell_view` muestran tracción.
+    *(Sin objeto desde el 23/10/2026: el modo personalizado y `upsell_view`
+    eran del molde de `guia/`, que se retiró con #289. Hoy nada emite
+    `upsell_view`; el evento sigue en el contrato,
+    `docs/ANEXO-requisitos-backend.md` §2.)*
 14. ~~**Agendamiento de turnos**, empezando por Lister~~ ✔ **PRIMERA VERSIÓN
     (24 jul 2026, dec. 11r):** espacio directo `/agendar`, **sin login**, con
     handoff a la recepción de Lister por WhatsApp — el paso de "dónde atenderse"
@@ -5319,9 +6274,10 @@ Verificado: la tarjeta entra en la primera pantalla en 1280×900, 1440×900,
 intencional, viene de antes y no rompe nada. *"Modo app" significa que la
 tarjeta entra en la primera pantalla, no que la página no scrollee.*
 
-**Sigue pendiente:** el **gemelo del header en la guía** (`guia/`, HTML +
+**Sigue pendiente:** ~~el **gemelo del header en la guía** (`guia/`, HTML +
 Tailwind, otra tecnología) — es el único módulo que conserva navegación propia,
-y además no es fija. Y la home sigue con su `<nav>` inline (funciona y tiene el
+y además no es fija.~~ *(23/10/2026: sin objeto, el molde de `guia/` se retiró
+con #289.)* Y la home sigue con su `<nav>` inline (funciona y tiene el
 mapa completo; migrarla a `variant="hero"` es cosmética interna, no afecta al
 usuario).
 
@@ -5391,7 +6347,7 @@ auditoría la dejaba a decisión junto con el descuento, pero **no se puede
 resolver con copy**: hace falta la base real de prestadores por ciudad
 (pendiente B) para que "¿y en mi ciudad?" tenga respuesta. Queda abierta,
 esperando ese dato. Territorio de este cambio: `app/page.jsx`,
-`guia/ANEXO-requisitos-backend.md`.
+`guia/ANEXO-requisitos-backend.md` (desde el 23/10/2026, en `docs/`).
 
 ### La medición que originó todo esto (5 ago 2026) — insumo, ya ejecutado
 
@@ -5743,6 +6699,11 @@ del árbol actual y no lo es**. La evidencia se genera corriendo la suite.
   pasar el usuario** (pendiente #2).
 - ¿Quién carga `min_plan` por prestador y quién corrige teléfonos/
   direcciones/horarios? → SP + empresa desarrolladora.
+  *(24/10/2026: `min_plan` era del molde de `guia/`, que se retiró con #289. La
+  Guía Médica no guarda un plan mínimo por prestador: la red de cada plan está
+  en `PLANES` y `REDES` de `lib/red-medica.js`. Los teléfonos y las direcciones
+  salen de la planilla maestra de SP, con `scripts/build-guia-medica.py`, y se
+  corrigen ahí; los horarios que publica son los de Lister.)*
 - ~~¿WordPress o Next.js para la web pública?~~ ✔ RESUELTO (dec. 11p): Next.js
   (el prototipo). BuenaVista, si entra, es implementador/hosting.
   *(18/10/2026: el 29/09 Arturo decidió que lo publique SP desde este repo, en
@@ -5760,19 +6721,19 @@ npm install && npm run build
 cd out && python3 -m http.server 8080
 # → http://localhost:8080/            (web de planes)
 # → http://localhost:8080/simulador/  (simulador)
-# → http://localhost:8080/guia/guia_home.html (guía)
+# → http://localhost:8080/guia-medica/ (Guía Médica)
 ```
 
-- **La guía se edita solo en `guia/`** (la fuente y el paquete que se entrega
-  a la empresa). `public/guia/` se genera automáticamente en cada build
-  (`scripts/sync-guia.mjs`, hook `prebuild`) y está fuera de git — no editar.
-- Las páginas de la guía usan el CDN de Tailwind → necesitan internet para
-  verse con estilos. En entornos sin salida a internet: compilar Tailwind
-  local (v3, con los tokens del `tailwind.config` inline de cada página) e
-  inyectar el CSS al verificar con Playwright/Chromium
-  (`executablePath: '/opt/pw-browsers/chromium'`, instalar playwright-core
-  FUERA del repo — ver `HANDOVER.md`).
-- Probar el modo personalizado de la guía: `guia_resultados.html?plan=silver`.
+- **La Guía Médica es `/guia-medica/`** (`app/guia-medica/`), y sus datos,
+  `lib/guia-medica.json`, **se regeneran desde la planilla maestra de SP** con
+  `scripts/build-guia-medica.py`: nunca se editan a mano, y un PR de datos
+  nuevos espera el OK de Arturo (ver `CLAUDE.md` y «Cómo quedó la Guía Médica
+  real»). *(Hasta el 23/10/2026 acá se explicaba cómo editar el molde viejo
+  de `guia/`: `public/guia/` con `scripts/sync-guia.mjs`, el CDN de Tailwind
+  y `guia_resultados.html?plan=silver`. Se retiró entero con #289 y queda en el
+  historial de git; su contrato de eventos, en `docs/ANEXO-requisitos-backend.md`.)*
+- Verificar con Playwright/Chromium (`executablePath:
+  '/opt/pw-browsers/chromium'`), con playwright-core instalado FUERA del repo.
 - Verificaciones móviles: 360 / 390 / 430 px como mínimo.
 - Flujo git de este proyecto: rama de trabajo → PR en borrador →
   verificación + CI verde → **merge automático** (el usuario autorizó en
@@ -5799,12 +6760,15 @@ cd out && python3 -m http.server 8080
   aprendimos); las observaciones del usuario entran dictadas ("anotá en
   la bitácora: …"). Solo crece — nunca reescribir entradas viejas.
 - `HANDOVER.md` — implementación técnica de la página de planes (v6).
-- `guia/ANEXO-requisitos-backend.md` — eventos de medición, seguridad de
-  cédula, campos de datos, higiene técnica. **Es el contrato con la empresa.**
+- `docs/ANEXO-requisitos-backend.md` (hasta el 23/10/2026, en `guia/`) —
+  eventos de medición, seguridad de cédula, campos de datos, higiene técnica.
+  **Es el contrato con la empresa.**
 - **Material interno** (briefs 01–06, plan estratégico, los 3 HTML de la
   guía actual de SIP, transcripciones y prototipos históricos): vive en el
   repo **privado `Nelargon/sp-interno`** (carpetas `project/` y `chats/`,
   más las ramas `archivo/*`). Se movió ahí en julio 2026 para que el repo
   público no exponga documentos confidenciales. **No compartir acceso a
   sp-interno con proveedores.**
-- ZIP de entrega para la empresa: regenerable con `zip -r guia-medica-sp.zip guia/`.
+- ~~ZIP de entrega para la empresa: regenerable con `zip -r guia-medica-sp.zip guia/`.~~
+  *(Retirado el 23/10/2026: el molde de `guia/` se fue con #289 y ya no está
+  en el árbol; queda en el historial de git.)*

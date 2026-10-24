@@ -38,7 +38,16 @@ jobs:
       # Pruebas sin navegador: segundos, y atajan en la puerta lo que la salud
       # nocturna encontraría a la mañana siguiente (salud-nocturna.yml).
       # cobertura-rutas: una página nueva sin prueba que la abra no entra.
-      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras, modo oscuro)
+      # esquinas: ningún radio escrito a mano en app/ (sp-interno#60, 23/10/2026).
+      # listas-fuente: las listas que se abren a un toque (las ecografías que
+      # esperan 3 meses, las 26 cirugías de Essential) contra la grilla y el
+      # cuadernillo (23/10/2026).
+      # Esas dos miran el código y los datos, no lo construido: corren una vez
+      # para las dos ediciones.
+      # modo-oscuro: cada página declara «only light» y el texto de fondo
+      # (tapiz, muro) va transparente (BITACORA cap. 155); mira out/, así que
+      # corre también para la v1, más abajo.
+      - name: Pruebas rápidas (buscador, teléfonos de la guía, cobertura de páginas, mapa de la guía, links internos, «seguro» para SP, títulos y sombras, esquinas, listas contra su fuente, modo oscuro)
         run: |
           node scripts/test-buscador.mjs
           node scripts/test-telefonos.mjs
@@ -47,6 +56,8 @@ jobs:
           node qa/links-internos.mjs out /sp-prototipo
           node qa/seguro-propio.mjs out
           node qa/titulos-y-sombras.mjs out
+          node qa/esquinas.mjs
+          node qa/listas-fuente.mjs
           node qa/modo-oscuro.mjs out
           node qa/laboratorio.mjs --datos
       # El correo del blog (correo-blog.yml) manda a personas reales: sus

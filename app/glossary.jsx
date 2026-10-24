@@ -25,7 +25,7 @@
 // documento, y en 430 px desbordaba la página 2 px. Con display:none no ocupa
 // nada, y la accesibilidad no se pierde porque vive en el span oculto.
 
-import { useState, useRef, useEffect, useId } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useId } from 'react';
 import { css } from './css';
 import { trackExplicacion } from './track';
 
@@ -100,8 +100,11 @@ export const TERMS = {
 
 // `dict` permite usar el mismo componente con otro diccionario — hoy el médico
 // (app/glosario-medico.js), que está en borrador y vive aparte a propósito: no
-// se mezcla lo validado con lo que todavía no lo está.
-export function Term({ k, children, dict }) {
+// se mezcla lo validado con lo que todavía no lo está — y TOQUES de coverage.js,
+// las listas que se abren en las esperas (9A y 10A, 23/10/2026). `tipo` es cómo
+// se cuenta al abrirse: 'toque' para esas listas, así la medición no las mezcla
+// con las palabras del glosario.
+export function Term({ k, children, dict, tipo = 'glosario' }) {
   const term = (dict || TERMS)[k];
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -118,13 +121,136 @@ export function Term({ k, children, dict }) {
   const [shift, setShift] = useState(0);
   // Arriba por defecto; abajo cuando arriba no hay lugar. Ver el efecto.
   const [abajo, setAbajo] = useState(false);
+  // El alto máximo cuando no entra ni arriba ni abajo (null: entra entera). Con
+  // alto, la burbuja scrollea por dentro (23/10/2026, verificador de código: en
+  // el celular, las 26 cirugías quedaban debajo de la cabecera fija).
+  const [alto, setAlto] = useState(null);
+  // Con el mouse, salir del botón cierra; pero si la burbuja scrollea, hay que
+  // poder llegar a ella: el cierre espera un momento y entrar lo cancela.
+  const salida = useRef(null);
   const id = useId();
+  // Un toque (9A y 10A: las listas de las esperas) se dibuja distinto de una
+  // palabra del glosario: ver más abajo, en `Toca`, y la burbuja fija.
+  const enLinea = tipo === 'toque';
+  const tocaRef = useRef(null);
+  // Dónde va la burbuja de un toque, en píxeles de la pantalla (position:fixed).
+  // null mientras se mide: la burbuja se dibuja escondida en 0,0.
+  const [fijo, setFijo] = useState(null);
+  // La lista que scrollea arranca desde arriba una sola vez por apertura (no
+  // cada vez que se reacomoda al scrollear la página).
+  const desdeArriba = useRef(false);
 
   // Cuántas personas abren cada palabra (sp-interno#98): una vez por página.
-  useEffect(() => { if (open) trackExplicacion('glosario', k); }, [open, k]);
+  useEffect(() => { if (open) trackExplicacion(tipo, k); }, [open, k, tipo]);
 
-  useEffect(() => {
-    if (!open) { setShift(0); setAbajo(false); return; }
+  // LA BURBUJA DE UN TOQUE, FIJA (tercera tanda, 23/10/2026, verificador de
+  // código). Con la fila arriba en la pantalla, la lista de las 26 se abría por
+  // una rendija de 73 a 153 px que scrolleaba: el techo era la cabecera fija y el
+  // piso, el borde de la caja que la contenía, que tiene overflow:hidden solo
+  // para redondear sus esquinas (el cuadro de esperas del celular, la tarjeta de
+  // esperas del simulador). Debajo quedaban 600 px libres. Ahora la burbuja va con
+  // position:fixed, que no la recorta ningún overflow de sus cajas (medido: en
+  // /planes y en el simulador ningún ancestro del toque tiene transform, filter,
+  // contain ni will-change, que harían de la caja el marco del fixed; la prueba de
+  // qa-lanzamiento lo vuelve a medir en cada apertura). El techo es el borde de
+  // abajo de la cabecera fija ([data-nav]) + 8 y el piso, el alto de la pantalla
+  // − 8. Arriba por defecto; abajo si arriba no entra; si no entra en ninguno, del
+  // lado más grande, con ese alto y scroll por dentro. Centrada en el toque, sin
+  // salirse de los costados. Al scrollear la página (o la caja que scrollea, como
+  // el cuerpo del simulador en la computadora) se reacomoda junto al toque, y
+  // mientras el toque está fuera de lo que se ve, se esconde (sigue abierta: la
+  // cierran, como siempre, salir con el mouse, tocar afuera, Escape o sacarle el
+  // foco). No se cierra al scrollear: al llegar con Tab, el navegador scrollea
+  // (suave) hasta el toque justo después de abrirlo, y la cerraba en el camino;
+  // y una burbuja suelta, lejos de su toque, no se ve nunca.
+  const colocarFijo = () => {
+    const el = bubbleRef.current, t = tocaRef.current;
+    if (!el || !t) return;
+    const M = 8;
+    const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    const nav = document.querySelector('[data-nav]');
+    const bajoNav = nav && getComputedStyle(nav).position === 'fixed' ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    const techo = bajoNav + M;
+    const piso = vh - M;
+    const b = t.getBoundingClientRect();
+    // ¿El toque se ve? (verificador de la ronda 2, 23/10/2026.) Se mide contra
+    // lo que de verdad se ve: la pantalla, debajo de la cabecera fija, cortada
+    // por las cajas del toque que recortan (overflow hidden, clip, auto o
+    // scroll; el mismo bucle que la burbuja del glosario, abajo), y sin el
+    // margen. Hasta entonces se medía contra la pantalla sola y con el margen:
+    // en el simulador de la computadora, con la lista abierta por teclado y el
+    // cuerpo scrolleado hasta esconder el toque debajo del borde de la tarjeta,
+    // la burbuja seguía a la vista apuntando a nada; y un toque que asomaba
+    // entre 1 y 8 px debajo de la cabecera quedaba abierto con la burbuja
+    // invisible. Dónde va la burbuja sigue usando la pantalla entera: ella es
+    // fija y no la recorta ninguna caja.
+    let visArriba = bajoNav, visAbajo = vh;
+    for (let a = t.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (/hidden|clip|auto|scroll/.test(cs.overflow + cs.overflowX + cs.overflowY)) {
+        const q = a.getBoundingClientRect();
+        visArriba = Math.max(visArriba, q.top);
+        visAbajo = Math.min(visAbajo, q.bottom);
+      }
+    }
+    const esconder = () => setFijo((f) => ({ left: f ? f.left : 0, top: f ? f.top : 0, fuera: true }));
+    if (b.bottom <= visArriba || b.top >= visAbajo) { esconder(); return; }
+    // ¿Y algo lo tapa? (verificador de la ronda 3, 23/10/2026.) Lo que no se ve
+    // no es solo lo que recorta: una cabecera pegajosa (la de cada plan en la
+    // tabla de /planes, .cmp2-h, sticky) tapa al toque sin recortar nada. Con la
+    // lista abierta por teclado y la página scrolleada con la rueda hasta dejar
+    // el toque debajo de esa cabecera, la burbuja seguía a la vista, encima de la
+    // columna de Silver, apuntando a nada. Se pregunta al navegador qué hay en
+    // el toque, en el medio de su franja visible y cerca de sus dos bordes (así
+    // cuenta también un toque que asoma 1 px, o la mitad de abajo que deja una
+    // cabecera), renglón por renglón (un toque partido tiene una caja por
+    // renglón). Si en ningún punto está el toque (o algo de adentro suyo), se
+    // esconde. La burbuja no cuenta: mientras se scrollea, la que quedó del
+    // cuadro anterior puede estar encima del toque, y lo que importa es lo que
+    // hay debajo de ella. Cuesta poco: corre una vez por cuadro mientras la
+    // burbuja está abierta, y casi siempre el primer punto ya es el toque.
+    const queHay = (x, y) => {
+      const h = document.elementFromPoint(x, y);
+      return h && el.contains(h) ? document.elementsFromPoint(x, y).find((n) => !el.contains(n)) || null : h;
+    };
+    const esElToque = (h) => !!h && (h === t || t.contains(h) || h === ref.current);
+    let seVe = false;
+    const renglones = t.getClientRects();
+    for (let i = 0; i < renglones.length && i < 4 && !seVe; i++) {
+      const r = renglones[i];
+      const arriba = Math.max(r.top, visArriba, 0), abajoR = Math.min(r.bottom, visAbajo, vh);
+      const izq = Math.max(r.left, 0), der = Math.min(r.right, vw);
+      if (abajoR - arriba <= 0 || der - izq <= 0) continue;
+      const x = (izq + der) / 2;
+      for (const y of [(arriba + abajoR) / 2, abajoR - 1, arriba + 1]) {
+        if (y <= arriba || y >= abajoR) continue;
+        if (esElToque(queHay(x, y))) { seVe = true; break; }
+      }
+    }
+    if (!seVe) { esconder(); return; }
+    // scrollHeight y no el alto de la caja: con max-height, la caja mide lo que
+    // se ve y scrollHeight sigue midiendo la lista entera.
+    const w = el.offsetWidth, h = el.scrollHeight;
+    const lugarArriba = b.top - M - techo, lugarAbajo = piso - (b.bottom + M);
+    let haciaAbajo = false, max = null;
+    if (h <= lugarArriba) haciaAbajo = false;
+    else if (h <= lugarAbajo) haciaAbajo = true;
+    else { haciaAbajo = lugarAbajo > lugarArriba; max = Math.max(0, Math.floor(haciaAbajo ? lugarAbajo : lugarArriba)); }
+    const top = haciaAbajo ? b.bottom + M : b.top - M - (max === null ? h : max);
+    const left = Math.max(M, Math.min(b.left + b.width / 2 - w / 2, vw - M - w));
+    setFijo({ left: Math.round(left), top: Math.round(top), fuera: false });
+    setAbajo(haciaAbajo);
+    setAlto(max);
+  };
+
+  // useLayoutEffect y no useEffect (verificador de código, 23/10/2026): mide y
+  // acomoda antes de pintar. Con useEffect, con el dedo, el primer cuadro salía
+  // entero hacia arriba, debajo de la cabecera y fuera de la pantalla, y recién
+  // en el segundo bajaba a su lugar: un parpadeo justo al tocar.
+  useLayoutEffect(() => {
+    if (!open) { setShift(0); setAbajo(false); setAlto(null); setFijo(null); return; }
+    desdeArriba.current = true;
+    if (enLinea) { colocarFijo(); return; }
     const el = bubbleRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -138,10 +264,17 @@ export function Term({ k, children, dict }) {
     // pantalla. Solo se vio midiendo la caja contra la del ancestro.
     // (BITACORA cap. 76.) No se toca el overflow de la tarjeta: se acomoda
     // la burbuja adentro.
+    // Desde el 23/10/2026 cuentan todas las cajas que recortan, no solo la
+    // primera, y también las que scrollean por dentro (auto o scroll): la
+    // tarjeta de esperas del simulador está adentro del cuerpo del simulador,
+    // que en la computadora scrollea y recorta (10A).
     let corta = null;
     for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
       const cs = getComputedStyle(a);
-      if (/hidden|clip/.test(cs.overflow + cs.overflowX + cs.overflowY)) { corta = a; break; }
+      if (/hidden|clip|auto|scroll/.test(cs.overflow + cs.overflowX + cs.overflowY)) {
+        const q = a.getBoundingClientRect();
+        corta = corta ? { left: Math.max(corta.left, q.left), right: Math.min(corta.right, q.right), top: Math.max(corta.top, q.top), bottom: Math.min(corta.bottom, q.bottom) } : { left: q.left, right: q.right, top: q.top, bottom: q.bottom };
+      }
     }
     // clientWidth, NO innerWidth: en emulación móvil (y con barra de scroll)
     // innerWidth se ensancha cuando algo ya desbordó — medimos 373 en un
@@ -149,14 +282,36 @@ export function Term({ k, children, dict }) {
     // 26 jul 2026.)
     const vw = document.documentElement.clientWidth;
     let min = M, max = vw - M;
+    // El techo y el piso de lo que se ve: el ancestro que recorta (si hay) y,
+    // arriba, también la cabecera fija (nav[data-nav], z-index 100), que tapa lo
+    // que pasa por debajo. Hasta el 23/10/2026 el techo era el borde de la
+    // pantalla (o solo el del ancestro): una lista larga que abría hacia arriba
+    // quedaba debajo de la cabecera (las 26 cirugías miden unos 366 px; 10A).
+    const nav = document.querySelector('[data-nav]');
+    const techoNav = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    let techo = Math.max(M, techoNav + M), piso = window.innerHeight - M;
     if (corta) {
-      const rc = corta.getBoundingClientRect();
+      const rc = corta;
       min = Math.max(min, rc.left + 4);
       max = Math.min(max, rc.right - 4);
-      // Si arriba no entra, se abre hacia abajo.
-      if (r.top < rc.top) setAbajo(true);
-    } else if (r.top < M) {
-      setAbajo(true);
+      techo = Math.max(techo, rc.top);
+      piso = Math.min(piso, rc.bottom);
+    }
+    // Arriba por defecto. Si arriba no entra y abajo sí, se abre hacia abajo.
+    // Si no entra en ninguno de los dos (las 26 cirugías en el celular: unos
+    // 400 px, contra la cabecera fija arriba y el cuadro de esperas, que
+    // recorta, abajo), se abre hacia el lado más grande, con ese alto como
+    // máximo y scroll por dentro (23/10/2026). Hasta entonces quedaba del lado
+    // más grande pero entera, y lo que no entraba quedaba tapado.
+    if (r.top < techo && ref.current) {
+      const b = ref.current.getBoundingClientRect();
+      const lugarAbajo = piso - (b.bottom + 8), lugarArriba = b.top - 8 - techo;
+      if (lugarAbajo >= r.height) setAbajo(true);
+      else {
+        const haciaAbajo = lugarAbajo > lugarArriba;
+        setAbajo(haciaAbajo);
+        setAlto(Math.max(0, Math.floor(haciaAbajo ? lugarAbajo : lugarArriba)));
+      }
     }
 
     let s = 0;
@@ -165,21 +320,85 @@ export function Term({ k, children, dict }) {
     if (s) setShift(s);
   }, [open]);
 
+  // Cada vez que scrollea, la lista arranca desde arriba: el navegador guarda
+  // dónde quedó la vez anterior y, al volver a abrirse, la mostraba por la mitad
+  // (medido el 23/10/2026). Va cuando ya tiene su alto: antes no scrollea. Una
+  // vez por apertura: al reacomodarse con el scroll de la página, no se vuelve.
+  useLayoutEffect(() => {
+    if (open && alto !== null && bubbleRef.current && desdeArriba.current) { bubbleRef.current.scrollTop = 0; desdeArriba.current = false; }
+  }, [open, alto]);
+
+  // La burbuja fija de un toque sigue a su toque cuando algo scrollea (la página
+  // o una caja) o cambia el tamaño de la ventana (la barra del navegador del
+  // celular). El scroll de adentro de la burbuja no cuenta. Con captura: el
+  // scroll de una caja no sube hasta el documento.
+  useEffect(() => {
+    if (!open || !enLinea) return;
+    let pedido = 0;
+    const volver = (e) => {
+      if (e.type === 'scroll' && bubbleRef.current && e.target instanceof Node && bubbleRef.current.contains(e.target)) return;
+      if (!pedido) pedido = requestAnimationFrame(() => { pedido = 0; colocarFijo(); });
+    };
+    document.addEventListener('scroll', volver, { capture: true, passive: true });
+    window.addEventListener('resize', volver, { passive: true });
+    return () => { cancelAnimationFrame(pedido); document.removeEventListener('scroll', volver, { capture: true }); window.removeEventListener('resize', volver); };
+  }, [open, enLinea]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    // Tocar adentro (la burbuja, cuando scrollea) no cierra: ref la contiene.
     const onOut = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener('keydown', onKey);
     document.addEventListener('pointerdown', onOut);
-    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onOut); };
+    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onOut); clearTimeout(salida.current); };
   }, [open]);
+
+  // Con el mouse: salir cierra; si la burbuja scrollea, después de un momento,
+  // para poder pasar a ella. Entrar al botón o a la burbuja cancela el cierre.
+  const quedar = () => { clearTimeout(salida.current); };
+  const irse = (e) => {
+    if ((e.pointerType || 'mouse') !== 'mouse') return;
+    clearTimeout(salida.current);
+    if (alto === null) setOpen(false);
+    else salida.current = setTimeout(() => setOpen(false), 250);
+  };
+  // Con el teclado, cuando la burbuja scrollea: las flechas y las páginas la
+  // mueven (no se puede llegar a ella con Tab: está fuera del orden).
+  const mover = (e) => {
+    const u = bubbleRef.current;
+    if (!open || alto === null || !u) return;
+    const d = { ArrowDown: 40, ArrowUp: -40, PageDown: u.clientHeight - 32, PageUp: 32 - u.clientHeight }[e.key];
+    if (d) { e.preventDefault(); u.scrollBy({ top: d, behavior: 'instant' }); }
+  };
 
   if (!term) return children || null;
 
+  // Un toque (9A y 10A) es una frase («de una lista de 26») que tiene que poder
+  // partirse como el texto que la rodea: la caja va en línea (inline, no
+  // inline-block) y el subrayado es text-decoration, que se dibuja en cada
+  // renglón. Por eso un toque no es un <button>: Chrome dibuja un botón con
+  // display:inline como inline-block (lo pide el estándar de HTML; medido el
+  // 23/10/2026), y una caja así no se parte. Es un <span role="button">, que el
+  // teclado alcanza (tabIndex 0) y abre con Enter o Espacio, como un botón.
+  // Hasta el 23/10/2026 era un botón con nowrap: partido se centraba en dos
+  // renglones, y entero se salía 17 px del encabezado de su fila en el cuadro de
+  // esperas del celular, a 360 (verificador de código).
+  const Toca = enLinea ? 'span' : 'button';
+  const comoBoton = enLinea
+    ? {
+      role: 'button', tabIndex: 0,
+      onKeyDown: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((o) => !o); return; }
+        mover(e);
+      },
+    }
+    : { type: 'button', onKeyDown: mover };
   return (
-    <span ref={ref} style={css('position:relative;display:inline-block')}>
-      <button
-        type="button"
+    <span ref={ref} style={css('position:relative;display:' + (enLinea ? 'inline' : 'inline-block'))}>
+      <Toca
+        {...comoBoton}
+        ref={tocaRef}
         // .txt: una palabra dentro de una frase se atenúa al tocarla, no se
         // achica como un botón (sistema táctil, app/globals.css).
         className="txt"
@@ -187,38 +406,68 @@ export function Term({ k, children, dict }) {
         aria-expanded={open}
         onPointerDown={(e) => { lastPointer.current = e.pointerType || 'mouse'; }}
         // Con mouse manda el hover, así que el click no toca nada (si toggleara,
-        // hacer click sobre algo ya abierto lo cerraría de golpe).
-        onClick={(e) => { e.stopPropagation(); if (lastPointer.current !== 'mouse') setOpen((o) => !o); }}
-        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') setOpen(true); }}
-        onPointerLeave={(e) => { if ((e.pointerType || 'mouse') === 'mouse') setOpen(false); }}
+        // hacer click sobre algo ya abierto lo cerraría de golpe). Con el
+        // teclado (Enter o Espacio, un click con e.detail 0) abre y cierra: una
+        // tecla no dispara pointerdown, y lastPointer quedaba en 'mouse', así que
+        // después de un Escape no había forma de reabrir (verificador de código,
+        // 23/10/2026).
+        onClick={(e) => { e.stopPropagation(); if (e.detail === 0 || lastPointer.current !== 'mouse') setOpen((o) => !o); }}
+        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') { quedar(); setOpen(true); } }}
+        onPointerLeave={irse}
         // Solo el foco de TECLADO abre. En mouse y touch el click también enfoca
         // el botón, y abrir ahí volvería a pelearse con el toggle de arriba.
         onFocus={(e) => { if (e.target.matches?.(':focus-visible')) setOpen(true); }}
-        onBlur={() => setOpen(false)}
+        onBlur={(e) => { if (!(ref.current && e.relatedTarget && ref.current.contains(e.relatedTarget))) setOpen(false); }}
         // Subrayado punteado: la convención de "esto se puede consultar". No usa
         // color de link para no competir con los links reales de la página.
-        style={css('font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px')}
+        style={css(enLinea
+          ? 'cursor:help;text-decoration:underline dotted var(--sp-teal-deep);text-decoration-thickness:1px;text-underline-offset:2px'
+          : 'font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;border-bottom:1px dotted var(--sp-teal-deep);text-underline-offset:2px')}
       >
         {children || term.t}
-      </button>
+      </Toca>
       {/* (1) La definición para lectores de pantalla: siempre presente, nunca
-          visible, y con clip para que no ocupe ni un píxel de layout. */}
-      <span id={id} style={css('position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0')}>
+          visible, y con clip para que no ocupe ni un píxel de layout. Con
+          aria-hidden: la lee el botón como su descripción (aria-describedby
+          apunta acá, y un nodo oculto que se nombra directo se lee igual), pero
+          no se suma al nombre de lo que la rodea. Sin aria-hidden, en el cuadro de
+          esperas del celular el encabezado de fila «Cirugías programadas» se
+          llamaba con las 26 cirugías enteras, 839 caracteres que el lector
+          repetía en cada celda (verificador de código, 23/10/2026). */}
+      <span id={id} aria-hidden="true" style={css('position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0')}>
         {term.t}: {term.d}
       </span>
       {/* (2) La burbuja visual: decorativa (el texto ya lo da el span de arriba),
           y con display:none cuando está cerrada para no inflar el scrollWidth. */}
+      {/* Cuando scrollea (alto), recibe el dedo y la rueda: pointer-events y
+          overscroll-behavior, y apretarla no le saca el foco al botón (si no, el
+          onBlur la cerraba). Fuera del orden del Tab (tabIndex -1): Chrome hace
+          enfocable con el teclado una caja que scrollea, y esta es decorativa. */}
       <span
         ref={bubbleRef}
         aria-hidden="true"
+        tabIndex={alto !== null ? -1 : undefined}
+        onPointerEnter={(e) => { if ((e.pointerType || 'mouse') === 'mouse') quedar(); }}
+        onPointerLeave={irse}
+        onMouseDown={(e) => { if (alto !== null) e.preventDefault(); }}
         style={css(
           // OJO con el signo: calc(-50% + -20px) es CSS INVÁLIDO y el navegador
           // descarta la declaración entera en silencio. El signo va en el
           // operador, no pegado al número.
-          'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);') + 'z-index:40;'
-          + 'width:max-content;max-width:min(260px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
+          // Un toque, fija (arriba, «colocarFijo»): hasta que se mide, escondida en
+          // 0,0; y escondida mientras su toque está fuera de lo que se ve.
+          (enLinea
+            ? 'position:fixed;left:' + (fijo ? fijo.left : 0) + 'px;top:' + (fijo ? fijo.top : 0) + 'px;' + (fijo && !fijo.fuera ? '' : 'visibility:hidden;')
+            : 'position:absolute;left:50%;transform:translateX(calc(-50% ' + (shift < 0 ? '- ' + Math.abs(shift) : '+ ' + shift) + 'px));' + (abajo ? 'top:calc(100% + 8px);' : 'bottom:calc(100% + 8px);'))
+          + 'z-index:40;'
+          // `ancho`: una entrada larga del diccionario puede pedir una burbuja más
+          // ancha (y así más baja): las 26 cirugías de Essential no entraban,
+          // a 260 px, en la tarjeta de esperas del simulador en la computadora,
+          // que recorta (10A, 23/10/2026). En el celular manda el 72vw.
+          + 'width:max-content;max-width:min(' + (term.ancho || 260) + 'px,72vw);padding:10px 12px;border-radius:var(--r-xs);background:var(--sp-navy);color:#fff;'
           + 'font-family:var(--font-inter),system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;'
-          + 'box-shadow:var(--sombra-abre);pointer-events:none;'
+          + 'box-shadow:var(--sombra-abre);'
+          + (alto !== null ? 'max-height:' + alto + 'px;overflow-y:auto;overscroll-behavior:contain;pointer-events:auto;' : 'pointer-events:none;')
           + (open ? 'display:block' : 'display:none')
         )}
       >

@@ -209,6 +209,101 @@ for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 
   await page.close();
 }
 
+// ── La fecha de la Guía Médica es la de la planilla (sp-interno#61) ────────
+// Hasta el 23/10/2026 la Guía decía «Datos al 17/09/2026» siempre: leía la
+// fecha del PDF de la red Privilege (meta.guias.privilege.fecha), que no se
+// mueve con la planilla, mientras el home ya decía «según la planilla al
+// 30/09». Y cada ficha mostraba la del PDF más reciente de sus redes (25/09 en
+// P-0001, 10/08 en P-0363, que es solo Essential). Ahora las dos dicen
+// meta.datos_al, el día en que build-guia-medica.py leyó la planilla del Drive.
+// La fecha esperada sale de lib/guia-medica.json, no de un literal que
+// envejece. Antes se prueba la comparación: la fecha vieja tiene que fallar.
+console.log('\n── La fecha de la Guía Médica es la de la planilla (#61)');
+{
+  const META_GM = JSON.parse(readFileSync(new URL('../lib/guia-medica.json', import.meta.url), 'utf8')).meta;
+  const AL = /^\d{4}-\d\d-\d\d$/.test(META_GM.datos_al || '') ? META_GM.datos_al.split('-').reverse().join('/') : '';
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const LARGA = AL ? (([d, m, y]) => `${+d} de ${MESES[+m - 1]} de ${y}`)(AL.split('/')) : '';
+  const deLaGuia = (t) => ((t || '').match(/Datos al \d\d\/\d\d\/\d{4}/) || [''])[0];
+  const deLaFicha = (t) => ((t || '').match(/Datos de la Guía Médica al \d{1,2} de [a-z]+ de \d{4}/) || [''])[0];
+  const guiaBien = (t) => !!AL && deLaGuia(t) === 'Datos al ' + AL;
+  const fichaBien = (t) => !!LARGA && deLaFicha(t) === 'Datos de la Guía Médica al ' + LARGA;
+  const auto = {
+    guiaVieja: guiaBien('Médicos, sanatorios y laboratorios. Datos al 17/09/2026'),
+    guiaNueva: guiaBien('Médicos, sanatorios y laboratorios. Datos al ' + AL),
+    fichaVieja: fichaBien('Datos de la Guía Médica al 10 de agosto de 2026.'),
+    fichaNueva: fichaBien('Datos de la Guía Médica al ' + LARGA + '.'),
+  };
+  const malas = [];
+  if (!AL) malas.push('lib/guia-medica.json no trae meta.datos_al con forma aaaa-mm-dd: ' + JSON.stringify(META_GM.datos_al));
+  if (auto.guiaVieja || !auto.guiaNueva || auto.fichaVieja || !auto.fichaNueva) malas.push('la comparación no distingue la fecha vieja de la buena: ' + JSON.stringify(auto));
+  for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1440, 900]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    await page.goto(BASE + '/guia-medica/', { waitUntil: 'networkidle' });
+    const g = await page.evaluate(() => document.body.innerText);
+    if (!guiaBien(g)) malas.push(nombre + ': la Guía dice «' + (deLaGuia(g) || 'sin fecha') + '»; la planilla publicada es del ' + AL + ' (meta.datos_al)');
+    // P-0001 tiene varias redes; P-0363 es solo Essential (antes, 10/08).
+    for (const id of ['P-0001', 'P-0363']) {
+      await page.goto(BASE + '/guia-medica/' + id + '/', { waitUntil: 'networkidle' });
+      const f = await page.evaluate(() => document.body.innerText);
+      if (!fichaBien(f)) malas.push(nombre + ', ficha ' + id + ': «' + (deLaFicha(f) || 'sin fecha') + '», no «' + LARGA + '»');
+    }
+    await page.close();
+  }
+  if (malas.length) mal('la Guía Médica y sus fichas dicen la fecha de la planilla publicada (meta.datos_al) · ' + malas.join(' · '));
+  else bien('la Guía dice «Datos al ' + AL + '» y las fichas P-0001 y P-0363, «' + LARGA + '»: la fecha de la planilla publicada (meta.datos_al), a 390 y 1440; la comparación rechaza el 17/09 y el 10/08 de antes');
+}
+
+// ── Toda esquina del sistema táctil sale de la escala (sp-interno#60) ──────
+// Lo computado, no el código (CLAUDE.md): cada .sq visible tiene que tener su
+// --sq igual a uno de los valores de --r-xs, --r-sm, --r-md o --r-lg, leídos del
+// :root en el navegador. Atrapa lo que se arma en tiempo de ejecución (un
+// radio que llega por prop o un --sq calculado), que qa/esquinas.mjs, que mira
+// el código, no ve. En 35165a7 marcaba 26 px (la tarjeta «Conocé tu plan ideal
+// y su precio»), 24 px (la tarjeta del simulador), 9 px (zonas y Lista/Mapa de
+// la Guía), 5 px (el chip «Lister») y 6 px («Atiende con»). Antes se prueba con
+// dos .sq metidas en la página: una a mano (tiene que marcar) y una por token
+// (no).
+console.log('\n── Toda esquina del sistema táctil sale de la escala (#60)');
+{
+  const LEER_SQ = String((auto) => {
+    const raiz = getComputedStyle(document.documentElement);
+    const escala = ['--r-xs', '--r-sm', '--r-md', '--r-lg'].map((v) => raiz.getPropertyValue(v).trim()).filter(Boolean);
+    const metidas = [];
+    if (auto) for (const v of ['26px', 'var(--r-lg)']) { const d = document.createElement('div'); d.className = 'sq'; d.style.cssText = '--sq:' + v + ';width:40px;height:40px'; d.dataset.auto = v; document.body.appendChild(d); metidas.push(d); }
+    const fuera = [];
+    for (const e of document.querySelectorAll('.sq')) {
+      const r = e.getBoundingClientRect();
+      if (!r.width || !r.height || getComputedStyle(e).visibility === 'hidden') continue;
+      const v = getComputedStyle(e).getPropertyValue('--sq').trim();
+      // Sin --sq propio usa el respaldo del sistema (--r-xs).
+      if (v && !escala.includes(v)) fuera.push({ v, auto: e.dataset.auto || null, quien: (e.textContent || e.className).replace(/\s+/g, ' ').trim().slice(0, 40) });
+    }
+    metidas.forEach((d) => d.remove());
+    return { escala, fuera };
+  });
+  const malas = [];
+  let autoOk = null;
+  const RUTAS = ['/', '/planes/', '/simulador/', '/guia-medica/', '/guia-medica/?plan=silver-gold&esp=' + encodeURIComponent('Pediatría')];
+  for (const [nombre, width, height] of [['móvil 390', 390, 844], ['escritorio', 1280, 900]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    for (const ruta of RUTAS) {
+      await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+      if (ruta === '/simulador/') { const b = page.locator('button:visible', { hasText: 'Empecemos' }).first(); if (await b.count()) { await b.click(); await page.waitForTimeout(400); } }
+      const r = await page.evaluate(`(${LEER_SQ})(${autoOk === null})`);
+      if (autoOk === null) {
+        const a = r.fuera.filter((x) => x.auto);
+        autoOk = a.length === 1 && a[0].auto === '26px' && r.escala.length === 4;
+        if (!autoOk) malas.push('la lectura no distingue la esquina a mano de la de la escala: ' + JSON.stringify({ escala: r.escala, metidas: a }));
+      }
+      r.fuera.filter((x) => !x.auto).forEach((x) => malas.push(nombre + ' ' + ruta + ': --sq ' + x.v + ' fuera de la escala («' + x.quien + '»)'));
+    }
+    await page.close();
+  }
+  if (malas.length) mal('cada .sq visible tiene su --sq en la escala (--r-xs, --r-sm, --r-md, --r-lg) · ' + malas.slice(0, 8).join(' · '));
+  else bien('cada .sq visible del home, /planes, el simulador y la Guía Médica (también con Silver y Gold en Pediatría), a 390 y 1280, tiene su --sq en la escala, leída del :root; la lectura marca una esquina de 26 px metida a mano y deja pasar una por token');
+}
+
 // ── «Dónde te atendés» del home y el mapa de la guía (25/09/2026) ───────────
 // El desglose sale de la planilla (scripts/red-home.mjs): se prueba que los
 // números existan, no un valor fijo que envejece. Y que la sección siga corta
@@ -679,7 +774,7 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
   await page.close();
 }
 
-// ── Lo que espera a SP no se afirma (3A y 8A, Arturo, 20/10/2026, «Adelante») ──
+// ── Lo que espera a SP no se afirma (3A y 8A, Arturo, 20/10/2026, «Adelante»; 1A, 23/10/2026) ──
 // 3A (sp-interno#184): la tarjeta de «Consultas por especialista» del home dice
 // para Silver «5 o 6 al año», sin «por persona», hasta que SP conteste #110. La
 // psicología es una de ese resto y su fila dice «¿quién?»: la tabla afirmaba y
@@ -719,9 +814,7 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        porque sus otros párrafos cambian con el precio, la zona, la red y las
 //        esperas) y cualquier otro texto de esas pantallas, del home y de
 //        /planes que no sea una de las líneas de arriba.
-//        En el simulador se mira solo lo de Gold: Silver dice «topes más altos»
-//        comparado con Essential; la 8A no lo tocó y lo decide Arturo en
-//        sp-interno#193.
+//        Silver, en el simulador, lo mira la 1A (abajo).
 //        Corrección del 20/10 (verificador): el simulador se miraba solo con
 //        TOPES_ALTOS, y «…y los mejores topes.» o «…, con los topes más
 //        amplios.» pasaban en verde. Es la lección del cap. 153 («la lista de
@@ -733,6 +826,22 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 //        cada tope» en /planes daba 133 ✓. Y el «5 o 6» del simulador se había
 //        medido una vez, a mano. Lo de la derecha de la opción lo miraba solo la
 //        lista.
+//   1A (Arturo, 23/10/2026, «Adelante con tus sugerencias», sp-interno#193):
+//        Silver dice lo que da de más sin depender de lo que conteste SP en
+//        #110: más días de terapia intensiva (5 contra 2; «por beneficiario» en
+//        silver.json y «por persona» en el cuadernillo de Essential) y más
+//        sesiones de psicología (5 contra 3, que en Essential son por familia y
+//        en un cupo compartido). Sale «y topes más altos»: en 10 de las 20
+//        especialidades con tope de Silver, Essential puede dar más consultas
+//        al año. Lo literal: la opción «Un equilibrio entre precio y cobertura»
+//        dice su rótulo y su nota (OPCION_EQUILIBRIO_NOTA) y a la derecha solo
+//        su precio, y el resultado de Silver tiene un párrafo que es su porqué,
+//        entero (SILVER_PORQUE), a 390 y a 1280 px con Silver puesto desde el
+//        enlace y a 390 px eligiendo la opción en el paso del nivel. Debajo, la
+//        segunda capa: el botón de la opción y cada pantalla de esos tres
+//        recorridos, el resultado incluido, no dicen TOPES_ALTOS. El mensaje
+//        del paso que sigue a elegir Silver («Un equilibrio entre precio y
+//        cobertura.») no lo tocó la 1A: lo mira solo la segunda capa.
 // Autoprueba: los dos detectores, contra los textos de antes del 20/10 y sus
 // variantes (fallan) y los de ahora (pasan); la 3A del simulador, en texto, con
 // el resultado de Silver como se leyó y una línea metida (con «por persona»,
@@ -740,7 +849,11 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // leída con la misma lectura y devuelta: en la tarjeta de Silver (a 1280 px),
 // en la cabecera de Gold del home, en la línea de Gold de /planes (a 390 y a
 // 1280 px), en el mensaje del paso (en los tres recorridos de Gold), en la nota
-// de la opción, al lado de su precio y en el porqué de Gold.
+// de la opción, al lado de su precio y en el porqué de Gold. Y la 1A, igual: la
+// nota y el porqué de Silver de antes del 23/10 metidos en la página caen en
+// las dos capas; una paráfrasis que TOPES_ALTOS no conoce («…y más consultas
+// con especialistas.», justo lo que no es cierto en 10 especialidades), en la
+// literal; y una frase pegada al precio de la opción, en la que la mira.
 // Sabotajes fuera del repo: la build de antes (5a15047) da ✗ en la tarjeta y en
 // los cuatro lugares de Gold; una copia con variantes, ✗ también en el «5 o 6»
 // del texto; una con paráfrasis del superlativo en la opción y en el porqué,
@@ -748,7 +861,12 @@ console.log('\n── Lo que el sitio no afirma sin fuente (decisión 2A)');
 // paráfrasis en /planes), ✗ en los dos; y dos más del 20/10: «5 o 6 al año por
 // persona» en el resultado de Silver, ✗ en la 3A del simulador, y «La cobertura
 // más amplia, sin tope en nada» en /planes, ✗ (HANDOFF, «✅ DECIDIDO EL 20/10/2026»).
-console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold)');
+// Los de la 1A (23/10): la build de main de antes (35165a7) da ✗ en la nota de
+// la opción (en las dos capas) y en el porqué de los tres recorridos de Silver;
+// una copia de la build con la 1A y «…y los mejores topes.» en la nota y «…y
+// más consultas con especialistas.» en el porqué, ✗ en los dos (la nota, en las
+// dos capas; el porqué, solo en la literal), y la build con la 1A, ✓.
+console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 8A: Gold; 1A: Silver en el simulador)');
 {
   // Para quién: «por persona», «por beneficiario», «para cada uno»… y también
   // «por familia» o «para todo el grupo», que afirman lo contrario. «En cada
@@ -767,6 +885,16 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // sp-interno#189: Gold dice «La cobertura más amplia», sin «con los topes más
   // altos»); /planes ya lo decía así y no cambió.
   const GOLD_TAG = 'La cobertura más amplia';
+  // Lo aprobado el 23/10 (1A, sp-interno#193), literal: Silver sin «y topes más
+  // altos», con lo que da de más sin depender de #110.
+  const OPCION_EQUILIBRIO = 'Un equilibrio entre precio y cobertura';
+  const OPCION_EQUILIBRIO_NOTA = 'Más días de terapia intensiva y más sesiones de psicología.';
+  const SILVER_PORQUE = 'El equilibrio con respaldo de verdad: más días de terapia intensiva y más sesiones de psicología.';
+  // Las de antes del 23/10, para las autopruebas.
+  const OPCION_EQUILIBRIO_VIEJA = 'Más días de terapia intensiva y topes más altos.';
+  const SILVER_PORQUE_VIEJO = 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.';
+  // La paráfrasis que TOPES_ALTOS no ve: solo la ve el texto aprobado.
+  const SILVER_PARAFRASIS = 'Más días de terapia intensiva y más consultas con especialistas.';
   // Lo que sigue a cada «5 o 6» hasta el punto (o 80 caracteres). En la página
   // se lee el texto del bloque que lo tiene (subiendo por los padres en línea),
   // no el de todo el body: textContent pega bloques vecinos sin espacio («…en el
@@ -793,12 +921,14 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     ...['Sin tope en 23 de las 43 especialidades; en el resto, 5 o 6 al año. Hasta 3 por mes en cada especialidad; después, con copago.', 'Sin tope en la mitad de las especialidades; 5 o 6 al año en el resto', 'Sin topeen la mitad; 5 o 6 en el resto'].map((t) => [t, trasCincoOSeis(t).some((x) => QUIEN_DICHO.test(x)), false, 'QUIEN_DICHO']),
     ...['La cobertura más amplia, con los topes más altos.', 'Consultas sin tope en casi todas las especialidades, más días de internación y terapia intensiva, y los topes más altos.', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades, más días de internación y los topes más altos.', 'Con los mayores topes.', 'Topes superiores a los de Silver.',
       // Las paráfrasis del verificador del 20/10, que pasaban en el simulador.
-      'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.', 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'los mejores topes', 'topes más amplios'].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
-    ...[GOLD_PARA, OPCION_AMPLIA_NOTA, GOLD_PORQUE, 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
+      'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.', 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'los mejores topes', 'topes más amplios',
+      // Los de Silver de antes del 23/10 (1A).
+      OPCION_EQUILIBRIO_VIEJA, SILVER_PORQUE_VIEJO].map((t) => [t, TOPES_ALTOS.test(t), true, 'TOPES_ALTOS']),
+    ...[GOLD_PARA, OPCION_AMPLIA_NOTA, GOLD_PORQUE, OPCION_EQUILIBRIO_NOTA, SILVER_PORQUE, 'Tope: la cantidad máxima de veces que podés usar algo en un año, o el monto máximo que cubre el plan.', 'Sin tope en 38 de las 43 especialidades. Hasta 3 por mes en cada especialidad; después, con copago.'].map((t) => [t, TOPES_ALTOS.test(t), false, 'TOPES_ALTOS']),
   ];
   const autoMal = auto.filter(([, dio, debe]) => dio !== debe).map(([t, dio, , re]) => re + (dio ? ' grita en falso con «' : ' no ve «') + t + '»');
   if (autoMal.length) mal('autoprueba de los detectores de la 3A y la 8A: ' + autoMal.join(' · '));
-  else bien('autoprueba: QUIEN_DICHO y TOPES_ALTOS ven los ' + auto.filter((a) => a[2]).length + ' textos de antes del 20/10 y sus variantes, y callan en los ' + auto.filter((a) => !a[2]).length + ' de ahora');
+  else bien('autoprueba: QUIEN_DICHO y TOPES_ALTOS ven los ' + auto.filter((a) => a[2]).length + ' textos de antes del 20/10 (y los de Silver de antes del 23/10) y sus variantes, y callan en los ' + auto.filter((a) => !a[2]).length + ' de ahora');
 
   // La línea de Silver de la tarjeta abierta (una sola), como se ve.
   const silverDe = (tsel) => {
@@ -961,33 +1091,39 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     }
     return r;
   };
-  const resultado = async (plan, pg = page, vieja = null) => {
-    await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+  // `porque`: el porqué aprobado del plan, cómo empieza (para encontrarlo si una
+  // build lo cambió) y la línea que la autoprueba mete en su lugar. `elegir`:
+  // sin plan en el enlace, el rótulo de la opción que se toca en el paso del
+  // nivel (1A).
+  const PORQUE_GOLD = [GOLD_PORQUE, '^La cobertura más amplia', 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.'];
+  const PORQUE_SILVER = [SILVER_PORQUE, '^El equilibrio con respaldo', SILVER_PORQUE_VIEJO];
+  const resultado = async (plan, pg = page, vieja = null, porque = PORQUE_GOLD, elegir = null) => {
+    await pg.goto(BASE + '/simulador/' + (plan ? '?plan=' + plan : ''), { waitUntil: 'networkidle' });
     const pasos = [];
     for (let i = 0; i < 14; i++) {
       pasos.push(await pg.evaluate(leerPaso, [PASO_UBI, vieja]));
       if (await pg.locator('[data-sp-price]').count()) break;
       let hecho = false;
-      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) {
+      for (const t of ['Empecemos', 'Para mí', ...(elegir ? [elegir] : []), 'Asunción', 'Continuar', 'Ver mi precio']) {
         const b = pg.locator('button:visible', { hasText: t }).first();
         if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; }
       }
       if (!hecho) break;
       await pg.waitForTimeout(500);
     }
-    // La tarjeta del resultado y sus párrafos como se ven; con `vieja`, la
-    // autoprueba: el párrafo que hoy es el porqué aprobado pasa a decir `vieja`,
-    // se lee igual y se devuelve como estaba.
-    const r = await pg.evaluate(([aprobado, vieja]) => {
+    // La tarjeta del resultado y sus párrafos como se ven; la autoprueba: el
+    // párrafo que hoy es el porqué aprobado pasa a decir la línea de prueba de
+    // `porque`, se lee igual y se devuelve como estaba.
+    const r = await pg.evaluate(([aprobado, comienzo, vieja]) => {
       const p = document.querySelector('[data-sp-price]');
       const c = p && p.closest('div.sq');
       if (!c) return null;
       const parrafos = () => [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim());
       const r = { plan: (c.textContent.match(/Plan (Essential|Silver|Gold)/) || [])[1] || null, texto: c.innerText, parrafos: parrafos() };
       // El párrafo aprobado; si no está (una build que lo cambió), el que empieza
-      // como el porqué de Gold, para que la autoprueba igual tenga dónde probar.
+      // como el porqué del plan, para que la autoprueba igual tenga dónde probar.
       const ps = [...c.querySelectorAll('p')];
-      const e = ps.find((x) => x.innerText.replace(/\s+/g, ' ').trim() === aprobado) || ps.find((x) => /^La cobertura más amplia/.test(x.innerText.trim()));
+      const e = ps.find((x) => x.innerText.replace(/\s+/g, ' ').trim() === aprobado) || ps.find((x) => new RegExp(comienzo).test(x.innerText.trim()));
       if (e && e.firstChild && e.firstChild.nodeType === 3 && e.childNodes.length === 1) {
         const antes = e.firstChild.data;
         e.firstChild.data = vieja;
@@ -995,16 +1131,19 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
         e.firstChild.data = antes;
       }
       return r;
-    }, [GOLD_PORQUE, 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación y los mejores topes.']);
+    }, porque);
     return Object.assign(r || { plan: null }, { pasos });
   };
   const gold = await resultado('gold', page, GOLD_PARA_VIEJA);
-  const silver = await resultado('silver');
+  const silver = await resultado('silver', page, null, PORQUE_SILVER);
   const essential = await resultado('essential');
-  let gold1280;
+  // 1A: Silver eligiendo la opción en el paso del nivel, hasta su resultado.
+  const silverElegida = await resultado(null, page, null, PORQUE_SILVER, OPCION_EQUILIBRIO);
+  let gold1280, silver1280;
   {
     const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     gold1280 = await resultado('gold', p, GOLD_PARA_VIEJA);
+    silver1280 = await resultado('silver', p, null, PORQUE_SILVER);
     await p.close();
   }
   // La opción del paso «¿Qué nivel de cobertura buscás?», sin plan elegido: el
@@ -1017,7 +1156,7 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
     if (await b.count()) { await b.click().catch(() => {}); await page.waitForTimeout(500); }
   }
   const pasoNivel = await page.evaluate(leerPaso, [PASO_UBI, null]);
-  const opcion = await page.evaluate(([rotulo, vieja, pegada]) => {
+  const leerOpcion = ([rotulo, vieja, pegada]) => {
     const esRotulo = (s) => !s.children.length && s.textContent.trim() === rotulo;
     const b = [...document.querySelectorAll('button.sim-opt')].find((x) => [...x.querySelectorAll('span')].some(esRotulo));
     if (!b) return null;
@@ -1043,7 +1182,12 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
       s.remove();
     }
     return r;
-  }, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'El máximo en todo']);
+  };
+  const opcion = await page.evaluate(leerOpcion, [OPCION_AMPLIA, 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva, con los topes más amplios.', 'El máximo en todo']);
+  // 1A: la opción de Silver, con la nota de antes (y una frase pegada al precio)
+  // y con la paráfrasis.
+  const opcionEq = await page.evaluate(leerOpcion, [OPCION_EQUILIBRIO, OPCION_EQUILIBRIO_VIEJA, 'Y topes más altos']);
+  const opcionEqPar = await page.evaluate(leerOpcion, [OPCION_EQUILIBRIO, SILVER_PARAFRASIS, '']);
   // Y la persona elige ahí Gold: el paso que sigue es el de la ubicación.
   let elegida = null;
   const bAmplia = page.locator('button.sim-opt', { hasText: OPCION_AMPLIA }).first();
@@ -1133,23 +1277,23 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   // derecha solo su precio; el mensaje del paso que sigue a elegir Gold es
   // GOLD_PARA; el resultado de Gold tiene un párrafo que es su porqué, entero),
   // y debajo TOPES_ALTOS sobre el botón y cada pantalla del recorrido de Gold.
-  const COL_APROBADA = OPCION_AMPLIA + ' ' + OPCION_AMPLIA_NOTA;
-  const opcionMal = (o) => {
-    if (!o) return ['no encontré la opción «' + OPCION_AMPLIA + '»'];
+  const opcionMal = (o, rotulo = OPCION_AMPLIA, notaAprobada = OPCION_AMPLIA_NOTA) => {
+    if (!o) return ['no encontré la opción «' + rotulo + '»'];
     const r = [];
-    if (o.nota !== OPCION_AMPLIA_NOTA) r.push('la nota dice «' + o.nota + '» y no «' + OPCION_AMPLIA_NOTA + '»');
-    else if (o.col !== COL_APROBADA) r.push('el texto del botón dice «' + o.col + '» y no «' + COL_APROBADA + '»');
+    const colAprobada = rotulo + ' ' + notaAprobada;
+    if (o.nota !== notaAprobada) r.push('la nota dice «' + o.nota + '» y no «' + notaAprobada + '»');
+    else if (o.col !== colAprobada) r.push('el texto del botón dice «' + o.col + '» y no «' + colAprobada + '»');
     const der = o.boton.startsWith(o.col) ? o.boton.slice(o.col.length).trim() : null;
     if (der === null || !/^desde Gs\. \d{1,3}(?:\.\d{3})*$/.test(der)) r.push('a la derecha dice «' + (der === null ? o.boton : der) + '» y no solo «desde Gs. …»');
     const m = o.boton.match(TOPES_ALTOS);
     if (m) r.push('dice «' + m[0] + '»');
     return r;
   };
-  const porqueMal = (g) => {
-    if (!g || g.plan !== 'Gold') return ['no llegué al resultado de Gold (' + JSON.stringify(g && g.plan) + ')'];
+  const porqueMal = (g, plan = 'Gold', aprobado = GOLD_PORQUE, pista = 'cobertura más amplia') => {
+    if (!g || g.plan !== plan) return ['no llegué al resultado de ' + plan + ' (' + JSON.stringify(g && g.plan) + ')'];
     const r = [];
-    const iguales = g.parrafos.filter((x) => x === GOLD_PORQUE).length;
-    if (iguales !== 1) r.push('ningún párrafo es, entero, «' + GOLD_PORQUE + '» (' + (g.parrafos.filter((x) => /cobertura más amplia/i.test(x)).map((x) => '«' + x + '»').join(', ') || 'no hay ninguno con «cobertura más amplia»') + ')');
+    const iguales = g.parrafos.filter((x) => x === aprobado).length;
+    if (iguales !== 1) r.push('ningún párrafo es, entero, «' + aprobado + '» (' + (g.parrafos.filter((x) => x.toLowerCase().includes(pista)).map((x) => '«' + x + '»').join(', ') || 'no hay ninguno con «' + pista + '»') + ')');
     const k = g.texto.search(TOPES_ALTOS);
     if (k >= 0) r.push('dice «…' + g.texto.slice(Math.max(0, k - 60), k + 25).replace(/\s+/g, ' ').trim() + '…»');
     return r;
@@ -1204,6 +1348,43 @@ console.log('\n── Lo que espera a SP no se afirma (3A: consultas de Silver; 
   const mensajesVistos = recorridosGold.map(([, pasos]) => (pasos.find((x) => x && x.titulo === PASO_UBI) || { mensajes: [] }).mensajes.length).reduce((a, b) => a + b, 0);
   if (mal8A.length) mal('8A: Gold «con los topes más altos» o su línea cambió sin decisión (sp-interno#189) · ' + mal8A.join(' · '));
   else bien('8A: los textos de Gold son, literales, los aprobados («' + GOLD_PARA + '» en la tabla del home; «' + GOLD_TAG + '» en la tarjeta de Gold de /planes a 390 px, y en el texto de la cabecera de la tabla, que a 1280 px no se ve; en el simulador, el mensaje del paso que sigue a elegir Gold (' + mensajesVistos + ' lecturas), la nota de la opción «' + OPCION_AMPLIA + '», con solo su precio a la derecha, y el porqué del resultado), y ni el home, ni /planes, ni esa opción, ni ninguna pantalla del recorrido de Gold dicen que tiene los topes más altos');
+
+  // 1A (sp-interno#193): Silver en el simulador, con las mismas lecturas que la
+  // 8A. Primero las autopruebas; después lo literal y la segunda capa.
+  const OPC_EQ = [OPCION_EQUILIBRIO, OPCION_EQUILIBRIO_NOTA];
+  const PQ_SILVER = ['Silver', SILVER_PORQUE, 'respaldo de verdad'];
+  if (!opcionEq || !opcionEq.vieja) mal('1A, autoprueba en el simulador: no pude meter la nota de prueba en la opción «' + OPCION_EQUILIBRIO + '»');
+  else {
+    const v = opcionMal(opcionEq.vieja, ...OPC_EQ);
+    if (v.length < 2) mal('1A, autoprueba en el simulador: con la nota de antes del 23/10 en la opción, la lectura no la ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + OPCION_EQUILIBRIO_VIEJA + '» en la nota de la opción, la misma lectura ve que no es la nota aprobada y que dice «' + opcionEq.vieja.boton.match(TOPES_ALTOS)[0] + '»');
+  }
+  if (!opcionEqPar || !opcionEqPar.vieja) mal('1A, autoprueba en el simulador: no pude meter la paráfrasis en la opción «' + OPCION_EQUILIBRIO + '»');
+  else {
+    const v = opcionMal(opcionEqPar.vieja, ...OPC_EQ);
+    if (TOPES_ALTOS.test(opcionEqPar.vieja.boton) || !v.some((x) => x.startsWith('la nota dice'))) mal('1A, autoprueba en el simulador: con «' + SILVER_PARAFRASIS + '» en la nota, la lectura literal no lo ve o TOPES_ALTOS lo ve (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + SILVER_PARAFRASIS + '» en la nota, que TOPES_ALTOS no conoce, la lectura literal ve que no es la nota aprobada');
+  }
+  if (!opcionEq || !opcionEq.pegada) mal('1A, autoprueba en el simulador: no pude pegar la frase de prueba al precio de la opción «' + OPCION_EQUILIBRIO + '»');
+  else if (!opcionMal(opcionEq.pegada, ...OPC_EQ).some((x) => x.startsWith('a la derecha'))) mal('1A, autoprueba en el simulador: con «Y topes más altos» pegado al precio de la opción, la lectura no lo ve (' + (opcionMal(opcionEq.pegada, ...OPC_EQ).join(' · ') || 'no ve nada') + ')');
+  else bien('1A, autoprueba en el simulador: con «Y topes más altos» pegado al precio de la opción, la misma lectura ve que a la derecha no dice solo «desde Gs. …»');
+  if (!silver || !silver.vieja) mal('1A, autoprueba en el simulador: no pude meter el porqué de prueba en el resultado de Silver');
+  else {
+    const v = porqueMal(Object.assign({ plan: silver.plan }, silver.vieja), ...PQ_SILVER);
+    if (v.length < 2) mal('1A, autoprueba en el simulador: con el porqué de antes del 23/10 en el resultado de Silver, la lectura no lo ve en las dos capas (' + (v.join(' · ') || 'no ve nada') + ')');
+    else bien('1A, autoprueba en el simulador: con «' + SILVER_PORQUE_VIEJO + '» en el porqué de Silver, la misma lectura ve que no es el porqué aprobado y que dice «' + silver.vieja.texto.match(TOPES_ALTOS)[0] + '»');
+  }
+  const mal1A = [];
+  opcionMal(opcionEq, ...OPC_EQ).forEach((x) => mal1A.push('/simulador/, la opción «' + OPCION_EQUILIBRIO + '»: ' + x));
+  const recorridosSilver = [['390 px, con Silver puesto desde el enlace', silver], ['1280 px, con Silver puesto desde el enlace', silver1280], ['390 px, eligiendo «' + OPCION_EQUILIBRIO + '»', silverElegida]];
+  for (const [d, res] of recorridosSilver) {
+    porqueMal(res, ...PQ_SILVER).forEach((x) => mal1A.push('/simulador/, ' + d + ', porqué del resultado: ' + x));
+    topesEnPasos(res.pasos || []).forEach((x) => mal1A.push('/simulador/, ' + d + ', ' + x));
+  }
+  if (!(silverElegida.pasos || []).some((x) => x.titulo === '¿Qué nivel de cobertura buscás?')) mal1A.push('/simulador/, ' + recorridosSilver[2][0] + ': no pasó por el paso del nivel');
+  const pantallasSilver = recorridosSilver.reduce((s, [, res]) => s + (res.pasos || []).length, 0);
+  if (mal1A.length) mal('1A: Silver «topes más altos», o su nota o su porqué cambiaron sin decisión (sp-interno#193) · ' + mal1A.join(' · '));
+  else bien('1A: los textos de Silver son, literales, los aprobados (la nota de la opción «' + OPCION_EQUILIBRIO + '», con solo su precio a la derecha, y el porqué del resultado en los tres recorridos), y ni esa opción ni ninguna de las ' + pantallasSilver + ' pantallas de los recorridos de Silver dicen que tiene los topes más altos');
 }
 
 // ── El pie de las filas con «¿quién?»: la lista cerrada (P3A) ────────────────
@@ -1300,7 +1481,10 @@ const TARJETA_APROBADA = {
       pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Fisioterapia': {
-      Essential: '5 sesiones al año para toda la familia.',
+      // 23/10/2026, 190A (Arturo, sp-interno#190): solo la traumatológica
+      // (cuadernillo 1.11); lee la línea de coverage.js, como Silver y Gold.
+      // Decía «5 sesiones al año para toda la familia.».
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia.',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5.',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria.',
       pie: 'Por familia: un cupo que comparten todos los del grupo. En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
@@ -1343,7 +1527,7 @@ const TARJETA_APROBADA = {
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Resonancia (RM)': {
-      Essential: '1 al año por familia, sin contraste. 1 año de espera.',
+      Essential: '1 al año por familia, sin contraste ni sedación. 1 año de espera.',
       Silver: '1 al año. 5 meses de espera.',
       Gold: '1 al año. 5 meses de espera.',
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
@@ -1355,7 +1539,7 @@ const TARJETA_APROBADA = {
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo.',
     },
     'Fisioterapia': {
-      Essential: 'Hasta 5 sesiones al año por familia. Sin espera.',
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia. Sin espera.',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5. 3 meses de espera.',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria. 3 meses de espera.',
       pie: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene.',
@@ -1374,7 +1558,7 @@ const TARJETA_APROBADA = {
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
     },
     'Resonancia (RM)': {
-      Essential: '1 al año por familia, sin contraste · 1 año de espera',
+      Essential: '1 al año por familia, sin contraste ni sedación · 1 año de espera',
       Silver: '1 al año · 5 meses de espera',
       Gold: '1 al año · 5 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1386,7 +1570,7 @@ const TARJETA_APROBADA = {
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
     },
     'Fisioterapia': {
-      Essential: 'Hasta 5 sesiones al año por familia · Sin espera',
+      Essential: 'Solo la traumatológica: hasta 5 sesiones al año por familia · Sin espera',
       Silver: 'Traumatológica, neurológica o después de una cirugía: 15 sesiones al año; respiratoria: otras 5 · 3 meses de espera',
       Gold: 'Traumatológica, neurológica o después de una cirugía, y respiratoria · 3 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. En Gold, preguntale a tu asesor cuántas sesiones de fisioterapia tiene. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1404,7 +1588,7 @@ const TARJETA_APROBADA = {
   // tres tarjetas: dice lo mismo en las nueve.
   tema: {
     'Tomografía y resonancia': {
-      Essential: 'Tomografía · Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera · Resonancia · 1 al año por familia, sin contraste · 1 año de espera',
+      Essential: 'Tomografía · Hasta 2 al año por familia, junto con ecocardiograma y ergometría · 6 meses de espera · Resonancia · 1 al año por familia, sin contraste ni sedación · 1 año de espera',
       Silver: 'Tomografía · Hasta 2 al año · 4 meses de espera · Resonancia · 1 al año · 5 meses de espera',
       Gold: 'Tomografía · Hasta 2 al año · 3 meses de espera · Resonancia · 1 al año · 5 meses de espera',
       notas: 'En Silver y Gold, preguntale a tu asesor si son para cada persona o para todo el grupo. El tiempo de espera arranca el día que te afiliás, no el día que lo necesitás. En el contrato se llama carencia.',
@@ -1420,9 +1604,13 @@ const TARJETA_APROBADA = {
   // (Arturo, 03/10), y en Silver y Gold nada dice para quién (P3A).
   linea: {
     'Tomografía y resonancia': {
+      // 23/10/2026, 185A con el agregado del comité (Arturo, sp-interno#185): la
+      // resonancia de Essential lleva su condición también en esta línea, la
+      // primera que ve en /planes quien entra desde el celular. Decía «… y 1
+      // resonancia/familia/año», sin «(sin contraste ni sedación)».
       Essential: {
-        ve: 'Tomografía y resonancia: 2 estudios/familia/año (tomografía, ecocardiograma o ergometría) y 1 resonancia/familia/año',
-        oye: 'Tomografía y resonancia: 2 estudios por familia al año (tomografía, ecocardiograma o ergometría) y 1 resonancia por familia al año',
+        ve: 'Tomografía y resonancia: 2 estudios/familia/año (tomografía, ecocardiograma o ergometría) y 1 resonancia/familia/año (sin contraste ni sedación)',
+        oye: 'Tomografía y resonancia: 2 estudios por familia al año (tomografía, ecocardiograma o ergometría) y 1 resonancia por familia al año (sin contraste ni sedación)',
       },
       Silver: {
         ve: 'Tomografía y resonancia: 2 tomografías/¿quién?/año y 1 resonancia/¿quién?/año',
@@ -1777,7 +1965,7 @@ console.log('\n── La forma corta (P3A)');
       }
       return o;
     });
-    const esperado = { 'Tomografía (TAC)': '2/familia/año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1/familia/año, sin contraste', 'Sesión de psicología': '3/familia/año, en el mismo cupo que otras especialidades', 'Ecografía': '4/familia/año' };
+    const esperado = { 'Tomografía (TAC)': '2/familia/año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1/familia/año, sin contraste ni sedación', 'Fisioterapia': '5/familia/año, solo traumatológica', 'Sesión de psicología': '3/familia/año, en el mismo cupo que otras especialidades', 'Ecografía': '4/familia/año' };
     const faltan = Object.entries(esperado).filter(([k, v]) => !lista || !lista[k] || !lista[k][0].startsWith(v)).map(([k]) => k + ': ' + JSON.stringify(lista && lista[k]));
     if (faltan.length) mal(n + ': la lista de los once servicios tiene que conservar las condiciones de Essential con la forma corta · ' + faltan.join(' · '));
     else bien(n + ': la lista de los once servicios conserva lo que Essential decía («2/familia/año, junto con ecocardiograma y ergometría»…)');
@@ -2106,14 +2294,14 @@ console.log('\n── Lo que oye el lector: cada valor con su fila y su plan');
         f.forEach(([rol, n], j) => {
           if (rol !== 'cell' || n !== ASESOR) return;
           const fila = f[0][1], plan = planes[j];
-          const esperado = /^Fisioterapia/.test(fila) ? 'Gold' : /^En urgencia/.test(fila) ? 'Essential' : null;
+          const esperado = /^Fisioterapia/.test(fila) ? 'Gold' : /^En (?:urgencia|estudios y procedimientos)/.test(fila) ? 'Essential' : null;
           if (plan !== esperado) malas.push(id + ': «' + ASESOR + '» en «' + fila + '» cae en la columna ' + plan);
         });
       }
     }
   }
   const asesorEnPlegable = (await page.locator('#detalle-internacion').ariaSnapshot()).split('\n').filter((l) => l.includes('cell "' + ASESOR + '"')).length;
-  if (asesorEnPlegable !== 3) malas.push('detalle-internacion: tendrían que ser 3 celdas «' + ASESOR + '» (las dos de fisioterapia de Gold y la urgencia de Essential), hay ' + asesorEnPlegable);
+  if (asesorEnPlegable !== 4) malas.push('detalle-internacion: tendrían que ser 4 celdas «' + ASESOR + '» (las dos de fisioterapia de Gold, y la urgencia y el Cuadro 2 de Essential), hay ' + asesorEnPlegable);
   await page.close();
 
   // 3. El celular: la tabla del home no repite la fila (está al lado) y la lista de los once.
@@ -2193,7 +2381,12 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   // tipos, en el mismo orden. Una arrancaba por «15 sesiones al año (…)» y la
   // otra por «Traumatológica…», y el ojo tenía que reacomodarlas.
   const orden = (t) => TIPOS.map(([n, re]) => [n, (t || '').search(re)]).filter(([, i]) => i >= 0).sort((a, b) => a[1] - b[1]).map(([n]) => n).join(', ');
-  const arranque = (t) => (t || '').replace(/^\s*(?:Silver|Gold)/, '').trim();
+  const arranque = (t) => (t || '').replace(/^\s*(?:Essential|Silver|Gold)/, '').trim();
+  // Essential nombra un solo tipo y arranca por él (190A, Arturo, 23/10/2026):
+  // «Solo la traumatológica: hasta 5 sesiones…» (cuadernillo 1.11). Decía «Hasta
+  // 5 sesiones al año por familia» y, al lado de los tipos de Silver y Gold, se
+  // leía «cubre lo mismo».
+  const essentialBien = (t) => tipos(t) === 'traumatológica' && /^solo la traumatol/i.test(arranque(t));
   const mismaForma = (silver, gold) => /^(?:traumatol|neurol)/i.test(arranque(silver)) && /^(?:traumatol|neurol)/i.test(arranque(gold)) && orden(silver) === orden(gold);
   const autoprueba = {
     formaDeLaVuelta2: mismaForma('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
@@ -2202,9 +2395,11 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     lineaDeHoy: conNumero('Traumatológica, neurológica o después de una cirugía, y también respiratoria. 3 meses de espera.'),
     asimetriaDeLaVuelta1: mismosTipos('15 sesiones al año. 3 meses de espera.', 'Traumatológica, neurológica o después de una cirugía, más respiratorias. 3 meses de espera.'),
     simetria: mismosTipos('15 sesiones al año (traumatológica, neurológica o después de una cirugía), más 5 respiratorias.', 'Traumatológica, neurológica o después de una cirugía, y también respiratoria.'),
+    essentialVieja: essentialBien('EssentialHasta 5 sesiones al año por familia.Sin espera'),
+    essentialNueva: essentialBien('EssentialSolo la traumatológica: hasta 5 sesiones al año por familia.Sin espera'),
   };
-  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria || autoprueba.formaDeLaVuelta2 || !autoprueba.formaNueva) malas.push('los detectores de número, de simetría y de forma no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
-  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold) && mismaForma(x.silver, x.gold);
+  if (!autoprueba.numeroQueVuelve || autoprueba.lineaDeHoy || autoprueba.asimetriaDeLaVuelta1 || !autoprueba.simetria || autoprueba.formaDeLaVuelta2 || !autoprueba.formaNueva || autoprueba.essentialVieja || !autoprueba.essentialNueva) malas.push('los detectores de número, de simetría y de forma no distinguen el caso malo del bueno: ' + JSON.stringify(autoprueba));
+  const lineasBien = (x) => !!x && !!x.silver && !!x.gold && !conNumero(x.gold) && !/asesor/i.test(x.gold) && mismosTipos(x.silver, x.gold) && mismaForma(x.silver, x.gold) && essentialBien(x.essential);
   const visible = ([sel, nombre]) => {
     const t = document.querySelector(sel);
     if (!t) return null;
@@ -2234,7 +2429,7 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
+    tarjeta = await page.evaluate(() => { const t = document.querySelector('#cartilla .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { essential: p[0] ? p[0].lastElementChild.textContent : null, silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '' }; });
     await page.mouse.move(5, 5);
   }
   if (!lineasBien(tarjeta) || !tarjeta.pie.includes(nota)) malas.push('home, tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjeta));
@@ -2253,7 +2448,7 @@ console.log('\n── La fisioterapia de Gold (G1A)');
     await page.mouse.move(5, 5);
     await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
     await page.waitForTimeout(200);
-    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
+    tarjetaPlanes = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')]; return { essential: p[0] ? p[0].lastElementChild.textContent : null, silver: p[1] ? p[1].lastElementChild.textContent : null, gold: p[2] ? p[2].lastElementChild.textContent : null, pie: (t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '', todo: t.textContent }; });
     await page.mouse.move(5, 5);
   }
   if (!lineasBien(tarjetaPlanes) || !tarjetaPlanes.pie.includes(nota) || (tarjetaPlanes.todo.match(VECES) || []).length > 2) malas.push('/planes/ tarjeta (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(tarjetaPlanes && { silver: tarjetaPlanes.silver, gold: tarjetaPlanes.gold, pie: tarjetaPlanes.pie }));
@@ -2289,11 +2484,113 @@ console.log('\n── La fisioterapia de Gold (G1A)');
   await cel.waitForTimeout(450);
   // La hoja se lee: la línea de Gold dice qué cubre, sin número, y el pedido
   // al asesor va en las notas, sin repetirse.
-  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
+  const hoja = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; const b = [...d.querySelectorAll('.sq')]; return { essential: b[0] ? b[0].textContent : null, silver: b[1] ? b[1].textContent : null, gold: b[2] ? b[2].textContent : null, notas: d.textContent }; });
   if (!lineasBien(hoja) || !hoja.notas.includes(nota) || (hoja.notas.match(VECES) || []).length > 2) malas.push('hoja del servicio (Gold sin número y con los mismos tipos que Silver): ' + JSON.stringify(hoja && { silver: hoja.silver, gold: hoja.gold }));
   await ctx.close();
   if (malas.length) mal('la fisioterapia de Gold tiene que mandar al asesor, sin número, y decir lo mismo en la tabla del home y de /planes, la lista y el plegable (sp-interno#50); en la tarjeta y la hoja, Silver y Gold nombran los mismos tipos con la misma forma · ' + malas.join(' · '));
   else bien('la fisioterapia de Gold manda al asesor («' + ASESOR + '») en la tabla del home y de /planes, la lista (con el peso de la forma corta) y el plegable; la tarjeta y la hoja, sin ningún número para Gold, con los mismos tipos que Silver, en el mismo orden y arrancando por el tipo, y sin repetir el pedido; los detectores distinguen el caso malo del bueno');
+}
+
+// ── Las condiciones de Essential, a la vista en las tablas (185A y 190A) ────
+// Arturo, 23/10/2026 («Adelante con tus sugerencias»; sp-interno#185 y #190).
+// La celda de Essential decía «2/familia/año», «1/familia/año» y «5/familia/año»
+// y lo que cambia la elección quedaba a un toque: que los 2 se comparten con el
+// ecocardiograma y la ergometría (cuadernillo 3.2), que la resonancia es sin
+// contraste ni sedación (4.2) y que la fisioterapia es solo la traumatológica
+// (1.11). Ahora la celda lo dice debajo de la forma corta (`notaCelda` de
+// coverage.js: la misma `cola` de la lista de los once), en el home y en
+// /planes, en la computadora y en las tarjetas del home en el celular. Se mira:
+// - que esas tres filas, y solo esas, lleven nota, en la columna de Essential y
+//   con el texto literal (lista cerrada: una nota nueva tiene que entrar acá);
+// - que la nota vaya debajo del valor y adentro de la celda, y que la fila siga
+//   alineada con la columna de nombres (820, 1024, 1280 y 1440 px): la tabla son
+//   columnas sueltas y solo la altura fija las alinea; con la nota en el renglón,
+//   la de tomografía a 820 px ocupaba tres renglones y se salía de los 48 px;
+// - en el celular (360, 390 y 430 px), que la nota no le coma el ancho al nombre
+//   de la fila (en el renglón del valor, «Tomografía (TAC)» quedaba en 0 px);
+// - que el lector la oiga después del valor y separada por una coma.
+// La regla de «debajo, adentro y alineada» se prueba antes contra cuatro celdas
+// que tienen que fallar y dos que no. Falla en la build de 35165a7 (no hay
+// ninguna nota) y pasa con el cambio.
+console.log('\n── Las condiciones de Essential, a la vista en las tablas (185A y 190A)');
+{
+  const NOTA = { 'Tomografía (TAC)': 'junto con ecocardiograma y ergometría', 'Resonancia (RM)': 'sin contraste ni sedación', 'Fisioterapia': 'solo traumatológica' };
+  const OIDO = { 'Tomografía (TAC)': '2 por familia al año, junto con ecocardiograma y ergometría', 'Resonancia (RM)': '1 por familia al año, sin contraste ni sedación', 'Fisioterapia': '5 por familia al año, solo traumatológica' };
+  const malas = [];
+  const srv = Object.fromEntries(COV.coverage().map((s) => [s.name, s]));
+  for (const [s, t] of Object.entries(NOTA)) if (!COV.notaCelda || COV.notaCelda(srv[s], 0) !== t) malas.push('coverage.js, ' + s + ': ' + JSON.stringify(COV.notaCelda ? COV.notaCelda(srv[s], 0) : 'sin notaCelda'));
+  // Debajo del valor, adentro de la celda y, en la computadora, a la altura de su
+  // fila en la columna de nombres; en el celular, sin comerle el nombre.
+  const bienPuesta = (c, fila, compu) => !!c && !!c.notaCaja
+    && c.notaCaja[0] >= c.valorCaja[1] - 1
+    && c.notaCaja[0] >= c.celda[0] - 0.5 && c.notaCaja[1] <= c.celda[1] + 0.5
+    && c.notaCaja[2] >= c.celda[2] - 0.5 && c.notaCaja[3] <= c.celda[3] + 0.5
+    && (compu ? !!fila && Math.abs(fila[0] - c.celda[0]) < 1 && Math.abs(fila[1] - c.celda[1]) < 1 : c.nombreAncho >= 0.4 * c.ancho);
+  const caja = (v, n, cel, nombre = 169, ancho = 282) => ({ valorCaja: v, notaCaja: n, celda: cel, nombreAncho: nombre, ancho });
+  const auto = {
+    enElRenglon: bienPuesta(caja([4, 27], [7, 44, 10, 170], [0, 48, 0, 177]), [0, 48], true),
+    seSale: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 48, 0, 177]), [0, 48], true),
+    desalineada: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 64, 0, 177]), [0, 48], true),
+    nombreComido: bienPuesta(caja([0, 22], [24, 40, 0, 282], [0, 63, 0, 282], 0, 282), null, false),
+    buenaCompu: bienPuesta(caja([6, 27], [29, 61, 10, 170], [0, 64, 0, 177]), [0, 64], true),
+    buenaCel: bienPuesta(caja([0, 22], [24, 40, 0, 282], [0, 63, 0, 282]), null, false),
+  };
+  if (auto.enElRenglon || auto.seSale || auto.desalineada || auto.nombreComido || !auto.buenaCompu || !auto.buenaCel) malas.push('la regla no distingue la celda mala de la buena: ' + JSON.stringify(auto));
+  // Cada celda, columna por columna (la primera fila con ese nombre: en /planes,
+  // «Fisioterapia» también es una espera), y la caja de cada fila en la columna
+  // de nombres.
+  const LEER = String((sel) => {
+    const t = document.querySelector(sel);
+    if (!t) return null;
+    const ve = (e) => { if (!e) return null; const k = e.cloneNode(true); k.querySelectorAll('.sr-solo').forEach((x) => x.remove()); return k.textContent.replace(/ /g, ' ').trim(); };
+    const celdas = {};
+    for (const pl of t.querySelectorAll('.cmp2-plan')) {
+      const plan = pl.querySelector('.cmp2-nombre').textContent.trim();
+      for (const c of pl.querySelectorAll('.cmp2-c')) {
+        const fila = ((c.querySelector('.cmp2-l') || {}).textContent || '').trim();
+        if (celdas[fila] && celdas[fila][plan]) continue;
+        const v = c.querySelector('.cmp2-v'), n = c.querySelector('.cmp2-bajo');
+        const rc = c.getBoundingClientRect(), rv = v.getBoundingClientRect(), rn = n && n.getBoundingClientRect();
+        (celdas[fila] = celdas[fila] || {})[plan] = { nota: ve(n), celda: [rc.top, rc.bottom, rc.left, rc.right], valorCaja: [rv.top, rv.bottom], notaCaja: rn ? [rn.top, rn.bottom, rn.left, rn.right] : null, nombreAncho: c.querySelector('.cmp2-l').getBoundingClientRect().width, ancho: rc.width };
+      }
+    }
+    const lab = {};
+    for (const c of t.querySelectorAll('.cmp2-lab .cmp2-c')) { const n = c.textContent.trim(); if (!lab[n]) { const r = c.getBoundingClientRect(); lab[n] = [r.top, r.bottom]; } }
+    return { celdas, lab };
+  });
+  const revisar = (r, donde, compu) => {
+    if (!r) { malas.push(donde + ': no encuentro la tabla'); return; }
+    for (const [fila, planes] of Object.entries(r.celdas)) {
+      for (const [plan, c] of Object.entries(planes)) {
+        const debe = plan === 'Essential' ? NOTA[fila] : undefined;
+        if (!debe) { if (c.nota) malas.push(donde + ', ' + fila + ', ' + plan + ': una nota que no está en la lista («' + c.nota + '»)'); continue; }
+        if (c.nota !== debe) malas.push(donde + ', ' + fila + ', Essential: ' + JSON.stringify(c.nota) + ' en vez de «' + debe + '»');
+        else if (!bienPuesta(c, r.lab[fila], compu)) malas.push(donde + ', ' + fila + ', Essential: la nota no va debajo, adentro y alineada · ' + JSON.stringify({ valor: c.valorCaja.map(Math.round), nota: c.notaCaja && c.notaCaja.map(Math.round), celda: c.celda.map(Math.round), fila: r.lab[fila] && r.lab[fila].map(Math.round), nombre: Math.round(c.nombreAncho) }));
+      }
+    }
+  };
+  for (const w of [820, 1024, 1280, 1440]) {
+    const page = await browser.newPage({ viewport: { width: w, height: 900 } });
+    for (const [ruta, sel] of [['/', '#cartilla'], ['/planes/', '#comparar-planes']]) {
+      await page.goto(BASE + ruta, { waitUntil: 'networkidle' });
+      revisar(await page.evaluate(`(${LEER})(${JSON.stringify(sel)})`), ruta + ' ' + w, true);
+      if (w === 1280) {
+        // Lo que oye el lector en la columna de Essential: el valor, una coma y la nota.
+        const leido = oido(await page.locator(sel + ' .cmp2-plan').first().ariaSnapshot()).replace(/\s+,/g, ',');
+        for (const [fila, t] of Object.entries(OIDO)) if (!leido.includes(fila + ', Essential: ' + t)) malas.push(ruta + ' lector, ' + fila + ': «' + (leido.split(fila + ', Essential:')[1] || '').slice(0, 70).trim() + '»');
+      }
+    }
+    await page.close();
+  }
+  for (const w of [360, 390, 430]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 844 }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/', { waitUntil: 'networkidle' });
+    revisar(await cel.evaluate(`(${LEER})('#cartilla')`), '/ ' + w, false);
+    await ctx.close();
+  }
+  if (malas.length) mal('las condiciones de Essential van a la vista en las tablas, debajo de la forma corta (185A y 190A) · ' + malas.slice(0, 6).join(' · '));
+  else bien('tomografía «junto con ecocardiograma y ergometría», resonancia «sin contraste ni sedación» y fisioterapia «solo traumatológica», debajo de la forma corta de Essential en la tabla del home y en la de /planes (820, 1024, 1280 y 1440 px) y en las tarjetas del home (360, 390 y 430), sin salirse de la celda, con la fila alineada y oídas después del valor; ninguna otra celda lleva nota; la regla distingue la celda mala de la buena');
 }
 
 // ── «/evento» en medicamentos y remedios (E3A, Arturo, 17/10/2026) ──────────
@@ -2389,9 +2686,15 @@ console.log('\n── «/evento» en medicamentos y remedios (E3A)');
 // - en la tabla de /planes: el parto de Gold nombra la cesárea con ASESOR, el
 //   laboratorio de Essential dice «rutina», las cirugías de Essential dicen
 //   cirugía y familia, y las de Silver y Gold, «la mayoría»;
-// - en el plegable, la maternidad de Gold nombra la cesárea con ASESOR.
-// Cada regla se prueba antes contra lo que mostraba 02c733a (tiene que fallar) y
-// contra lo de hoy (tiene que pasar), y el ✓ dice lo que vio.
+// - en el plegable, la maternidad de Gold nombra la cesárea con ASESOR;
+// - las ecografías de Silver y Gold dicen «la mayoría» (9A, Arturo, 23/10/2026,
+//   sp-interno#191): en la tabla de /planes y en la lista del celular, en lo que
+//   se ve y en lo que oye el lector, todo plazo de la ecografía de Silver y Gold
+//   lleva «la mayoría». Es la misma clase de error que la cesárea de Gold: un
+//   plazo fuera de su fila que pierde su condición.
+// Cada regla se prueba antes contra lo que mostraba 02c733a (35165a7 para la
+// ecografía; tiene que fallar) y contra lo de hoy (tiene que pasar), y el ✓
+// dice lo que vio.
 console.log('\n── Las esperas llevan su condición (lista, tabla y plegable de /planes, y hoja)');
 {
   const { ASESOR } = COV;
@@ -2411,12 +2714,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     internacion: (renglones) => !plazosSin(renglones, /algo agudo/i).length,
     partoGoldOido: (t) => cesarea(t) && !plazosSin(enTrozos(t), /parto/i).length,
     internacionOida: (t) => !plazosSin(enTrozos(t), /algo agudo/i).length,
+    // 9A: el plazo de la ecografía de Silver y Gold va con «la mayoría», en su
+    // renglón; para el lector, cortado en comas, el trozo que sigue al plazo.
+    ecografia: (renglones) => !plazosSin(renglones, /la mayoría/i).length,
+    ecografiaOida: (t) => { const x = enTrozos(t).map(sinDuro); return x.every((y, k) => !esPlazo(y) || /la mayoría/i.test(y) || /^la mayoría\.?$/i.test(x[k + 1] || '')); },
   };
   // Las notas de la tabla de esperas de /planes, por fila y por plan.
   const TABLA = {
     'Parto': [null, null, cesarea],
     'Análisis de laboratorio': [(t) => /rutina/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
     'Cirugías programadas': [(t) => /cirug[ií]a/i.test(t) && /familia/i.test(t), (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
+    'Ecografías': [null, (t) => /la mayoría/i.test(t), (t) => /la mayoría/i.test(t)],
   };
   const tablaMala = (tabla) => Object.entries(TABLA).flatMap(([fila, rs]) => rs.map((r, i) => (r && !r(sinDuro((tabla[fila] || [])[i] || '')) ? fila + ', plan ' + (i + 1) + ': ' + JSON.stringify((tabla[fila] || [])[i] || null) : null)).filter(Boolean));
   // Lo que mostraba 02c733a (tiene que fallar) y lo de hoy (tiene que pasar).
@@ -2430,11 +2738,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     oidoBueno: reglas.partoGoldOido('con el bebé en nursery, medicamentos hasta 1,5 millones de guaraníes, 10 meses de espera para el parto; para una cesárea, preguntale a tu asesor cuánto esperás'),
     internacionOidaVieja: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera'),
     internacionOidaBuena: reglas.internacionOida('20 días por persona al año, semi-suite, 2 meses de espera si es por algo agudo'),
-    tablaVieja: tablaMala({ 'Parto': [null, null, null], 'Análisis de laboratorio': [null, 'la mayoría', 'la mayoría'], 'Cirugías programadas': [null, 'la mayoría', 'la mayoría'] }).length,
-    tablaBuena: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'] }).length,
+    tablaVieja: tablaMala({ 'Parto': [null, null, null], 'Análisis de laboratorio': [null, 'la mayoría', 'la mayoría'], 'Cirugías programadas': [null, 'la mayoría', 'la mayoría'], 'Ecografías': [null, null, null] }).length,
+    tablaBuena: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'], 'Ecografías': [null, 'la mayoría', 'la mayoría'] }).length,
+    // La ecografía sola, como la mostraba 35165a7: tienen que caer Silver y Gold.
+    tablaEcoVieja: tablaMala({ 'Parto': [null, null, 'Cesárea: preguntale a tu asesor'], 'Análisis de laboratorio': ['los de rutina, sin espera', 'la mayoría', 'la mayoría'], 'Cirugías programadas': ['1 cirugía/familia/año', 'la mayoría', 'la mayoría'], 'Ecografías': [null, null, null] }).length,
+    ecografiaVieja: reglas.ecografia(['La mayoría, sin tope', '2 meses de espera']),
+    ecografiaBuena: reglas.ecografia(['La mayoría, sin tope', '2 meses de espera, la mayoría']),
+    ecografiaOidaVieja: reglas.ecografiaOida('la mayoría, sin tope, 2 meses de espera'),
+    ecografiaOidaBuena: reglas.ecografiaOida('la mayoría, sin tope, 2 meses de espera, la mayoría'),
   };
   const malas = [];
-  if (auto.partoGoldViejo || auto.partoGoldSinCesarea || !auto.partoGoldBueno || auto.internacionVieja || !auto.internacionBuena || auto.oidoViejo || !auto.oidoBueno || auto.internacionOidaVieja || !auto.internacionOidaBuena || !auto.tablaVieja || auto.tablaBuena) malas.push('las reglas no distinguen lo que mostraba 02c733a de lo de hoy: ' + JSON.stringify(auto));
+  if (auto.partoGoldViejo || auto.partoGoldSinCesarea || !auto.partoGoldBueno || auto.internacionVieja || !auto.internacionBuena || auto.oidoViejo || !auto.oidoBueno || auto.internacionOidaVieja || !auto.internacionOidaBuena || !auto.tablaVieja || auto.tablaBuena || auto.tablaEcoVieja !== 2 || auto.ecografiaVieja || !auto.ecografiaBuena || auto.ecografiaOidaVieja || !auto.ecografiaOidaBuena) malas.push('las reglas no distinguen lo que mostraba 02c733a de lo de hoy: ' + JSON.stringify(auto));
   const visto = {};
   // 1. La tabla de /planes en la computadora y el plegable, abierto.
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -2501,6 +2815,17 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
     });
     visto.internacion = (inter.cols[1] || []).map(sinDuro).filter(esPlazo).join(' · ') || '(sin plazo)';
   }
+  // 9A: la ecografía de Silver y Gold, en lo que se ve y en lo que se oye.
+  const eco = lista['Ecografía'];
+  if (!eco) malas.push('lista: falta «Ecografía»');
+  else {
+    [1, 2].forEach((i) => {
+      const plan = ['Essential', 'Silver', 'Gold'][i];
+      if (!reglas.ecografia(eco.cols[i] || [])) malas.push('lista, Ecografía, ' + plan + ': ' + JSON.stringify((eco.cols[i] || []).map(sinDuro)) + ' (la espera sin «la mayoría»)');
+      if (!reglas.ecografiaOida(oidoDe(eco.nombre, plan))) malas.push('lista, Ecografía: el lector oye para ' + plan + ' ' + JSON.stringify(oidoDe(eco.nombre, plan)));
+    });
+    visto.ecografia = (eco.cols[1] || []).map(sinDuro).filter(esPlazo).join(' · ') || '(sin plazo)';
+  }
   // La hoja de cada servicio: lo que manda al asesor, arriba de los tres planes.
   const abajo = [];
   for (const servicio of Object.keys(lista)) {
@@ -2521,7 +2846,1121 @@ console.log('\n── Las esperas llevan su condición (lista, tabla y plegable 
   if (abajo.length) malas.push('hoja: notas que mandan al asesor debajo de los planes · ' + abajo.join(' · '));
   await ctx.close();
   if (malas.length) mal('cada espera lleva su condición (la cesárea de Gold, la internación por algo agudo, el laboratorio y las cirugías de Essential) en la lista, la tabla y el plegable de /planes y la hoja, y lo que manda al asesor va arriba · ' + malas.slice(0, 6).join(' · '));
-  else bien('las reglas distinguen lo que mostraba 02c733a de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '» y Silver en «Internación», «' + visto.internacion + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
+  else bien('las reglas distinguen lo que mostraba 02c733a (y 35165a7, la ecografía) de lo de hoy, y las esperas llevan su condición: en la lista, Gold en «Parto o cesárea» dice «' + visto.lista + '», Silver en «Internación», «' + visto.internacion + '» y en «Ecografía», «' + visto.ecografia + '» (también para el lector); en la tabla de /planes, el parto de Gold dice «' + visto.tabla + '» y las ecografías de Silver y Gold, «la mayoría», y en el plegable, «' + visto.plegable + '»; en la hoja, lo que manda al asesor va arriba en los ' + Object.keys(lista).length + ' servicios');
+}
+
+// ── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque ──
+// Arturo, 23/10/2026 («Adelante con tus sugerencias»; sp-interno#191):
+// - 9A: las ecografías de Silver y Gold decían «2 meses» y en la grilla del
+//   master esperan 90 días las del embarazo (las siete), las Doppler y, en Gold,
+//   cinco más (y la vesical, que el master contradice con la de vejiga: va al
+//   asesor). Dicen «2 meses, la mayoría» y, a un toque, cuáles esperan 3 (TOQUES
+//   de coverage.js, dibujado con Term).
+// - 10A: la cirugía de Essential es «de una lista de 26» (cuadernillo, 4.4
+//   «Intervenciones Quirúrgicas (Abiertas)», 4.4.1 a 4.4.26), y la lista se
+//   abre al tocar, con lo que el cuadernillo dice del anestesista y de la
+//   videolaparoscopía.
+// Los textos aprobados van escritos acá, no se leen de coverage.js: una prueba
+// no compara la página con la constante que la arma (cap. 151). Las 26 se leen
+// de PARES_26 de qa/listas-fuente.mjs (una prueba, no el sitio), que además las
+// controla contra essential.json: así hay una sola copia escrita a mano.
+// Un toque abierto se lee dos veces: lo que oye el lector (el texto al que
+// apunta aria-describedby) y lo que se ve (la burbuja). La burbuja tiene que
+// verse entera (dentro de la pantalla y de cada caja que la recorta) y sin nada
+// encima (elementFromPoint en una grilla de 5 × 5 puntos, con pointer-events
+// prendido un momento). Si no entra y scrollea por dentro, se tiene que poder
+// scrollear sin que se cierre: con el dedo (un arrastre de verdad, por CDP) y
+// con el mouse (pasar a la burbuja y la rueda).
+// DÓNDE SE ABRE (verificador de código, 23/10/2026): cada toque se abre en tres
+// posiciones naturales, con su borde de arriba al 25 %, al 50 % y al 85 % del
+// alto de la pantalla (scrolleando con behavior:'instant', primero lo que
+// scrollea por dentro y después la página). Hasta el 23/10 se abría siempre al
+// 62 %, el único lugar donde la lista más larga entraba: con el Term de main
+// daba verde, y en el celular las 26 quedaban debajo de la cabecera fija. Una
+// build con el Term de main (35165a7) tiene que caer acá, y una con el Term de
+// 72291ef (la burbuja sin scroll), también.
+// Dónde: /planes a 1280 con el mouse (la banda de esperas, también con la fila
+// de Ecografías a 320 px del borde, donde la cabecera fija de Gold cortaba la
+// burbuja de Silver, y la tarjeta de la ecografía, que lo dice en su pie);
+// /planes a 360 × 780, 390 × 844 y 430 × 932 con el dedo (el cuadro de esperas:
+// lo que oye el lector en cada encabezado de fila y que nada se salga de su
+// borde; y, a 390, la hoja de la ecografía, cuya fila es un botón); el teclado a
+// 1280 (Tab, Escape, Enter, Enter, Espacio, Espacio, sin mover la página); el
+// simulador a 360, 390, 430 y 1280 (Silver, Gold y Essential, con el porqué de
+// Essential); las preguntas frecuentes del home, en oraciones.
+// LA BURBUJA FIJA (tercera tanda, 23/10): la de un toque va con position:fixed,
+// y cada apertura mide además que se vea grande (ALTO_MIN), que esté junto a su
+// toque y que ningún ancestro haga de marco del fixed; y las 26 se scrollean
+// con la burbuja abierta (seguir): se reacomoda junto al toque y se esconde
+// mientras el toque está fuera de la pantalla. Una build con el Term de 40d36ad
+// (la rendija de 153 px con la fila al 25 %) tiene que caer acá.
+// Antes se prueba cada detector: la lista de las 26 contra listas malas, y en la
+// página, el texto del lector cambiado, la burbuja corrida y tapada, el arreglo
+// de la cabecera de Gold sacado, un encabezado de fila con la lista adentro, un
+// texto que se sale de su fila y la nota borrada.
+console.log('\n── 9A y 10A: «la mayoría» de las ecografías y «de una lista de 26», a un toque');
+{
+  const NOTA = 'la mayoría', PALABRA_26 = 'de una lista de 26';
+  const EMB = 'las del embarazo (obstétrica, morfológica, de marcadores cromosómicos, Doppler obstétrico, del corazón del bebé, perfil biofísico y monitoreo fetal)';
+  const DOP = 'las Doppler de tiroides, de mama, de testículo, de venas de brazos o piernas y de carótidas';
+  const GOLD5 = 'las de riñón y de vías urinarias, la testicular, la de próstata por vía rectal y la transvaginal';
+  const VEJ = 'para la de vejiga, preguntale a tu asesor cuánto esperás';
+  const may = (x) => x[0].toUpperCase() + x.slice(1);
+  const escR = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Lo que dice la burbuja (y oye el lector): «título: lista», como la escribe
+  // TOQUES. En oraciones (el pie de la tarjeta, la hoja), con minúscula después
+  // de los dos puntos (toqueEnTexto, verificador de código, 23/10).
+  const TOQUE = {
+    Silver: 'Ecografías que esperan 3 meses en Silver: ' + may(EMB) + ' y ' + DOP + '.',
+    // Las Doppler, en su oración: con una coma, «… y de carótidas, y las de
+    // riñón» se leía «Doppler de riñón» (tercera tanda, 23/10).
+    Gold: 'Ecografías que esperan 3 meses en Gold: ' + may(EMB) + ' y ' + DOP + '. También ' + GOLD5 + '. ' + may(VEJ) + '.',
+    // Con los dos planes, la vejiga va dentro de la oración de Gold (en
+    // Silver espera 60): suelta, se leía que valía para los dos (ronda 2).
+    juntos: 'Ecografías que esperan 3 meses: En Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + ', y ' + VEJ + '.',
+  };
+  const EN_TEXTO = 'Ecografías que esperan 3 meses: en Silver y Gold, ' + EMB + ' y ' + DOP + '. En Gold, también ' + GOLD5 + ', y ' + VEJ + '.';
+  const { PARES_26 } = await import(new URL('../qa/listas-fuente.mjs', import.meta.url));
+  const LAS_26 = PARES_26.map((p) => p[1]);
+  const T26_TITULO = 'Las 26 cirugías de Essential, a cielo abierto';
+  // Después de la lista, lo que dice el cuadernillo del anestesista (4.3.2) y de
+  // la videolaparoscopía (el párrafo que sigue a la lista, copia fiel desde la
+  // tercera tanda: con la torre y el instrumental).
+  const CIR_COLA = 'De los honorarios del anestesista, el plan cubre la mitad. Si te operan por videolaparoscopía, pagás vos la diferencia de aranceles en los honorarios del anestesista, el ayudante y el instrumentador, y el costo total del uso del equipo, la torre, los materiales y el instrumental.';
+  const lista26 = (v, titulo = T26_TITULO, cola = CIR_COLA) => titulo + ': ' + may(v.slice(0, -1).join('; ') + '; y ' + v[v.length - 1]) + '.' + (cola ? ' ' + cola : '');
+  const T26 = lista26(LAS_26);
+  // La lista, ítem por ítem: qué falta, qué sobra, qué está fuera de su lugar
+  // (4.4.n), y el título y el cierre.
+  const difs26 = (t) => {
+    const m = new RegExp('^' + escR(T26_TITULO) + ': (.*?)\\. (De los honorarios del anestesista.*)$').exec((t || '').replace(/\s+/g, ' ').trim());
+    if (!m) return ['no empieza con «' + T26_TITULO + ':» o no cierra con lo del anestesista y la videolaparoscopía'];
+    const v = m[1].split(/; (?:y )?/), r = [];
+    if (v[0]) v[0] = minus(v[0]);
+    LAS_26.forEach((x, i) => { if (!v.includes(x)) r.push('falta «' + x + '»'); else if (v[i] !== x) r.push('«' + x + '» no está en el lugar 4.4.' + (i + 1)); });
+    v.filter((x) => !LAS_26.includes(x)).forEach((x) => r.push('sobra «' + x + '»'));
+    if (v.length !== 26) r.push(v.length + ' ítems, no 26');
+    if (m[2] !== CIR_COLA) r.push('el cierre dice «' + m[2].slice(0, 80) + '»');
+    return r;
+  };
+  const malas = [];
+  // La regla de la lista contra listas que tienen que fallar y la buena.
+  {
+    const cambiados = [...LAS_26]; [cambiados[1], cambiados[2]] = [cambiados[2], cambiados[1]];
+    const conFaco = [...LAS_26]; conFaco.splice(12, 0, 'facoemulsificación del cristalino');
+    const auto = {
+      buena: difs26(T26).length,
+      sinQuiste: difs26(lista26(LAS_26.filter((_, i) => i !== 23))).length,
+      conFaco: difs26(lista26(conFaco)).length,
+      catarataSinTecnica: difs26(lista26(LAS_26.map((x) => (/^catarata/.test(x) ? 'catarata de un ojo' : x)))).length,
+      // «legrado» sin «evacuador» promete también el de diagnóstico, que no
+      // entra (verificador de datos, 23/10).
+      legradoSinEvacuador: difs26(lista26(LAS_26.map((x) => (/^legrado/.test(x) ? 'legrado (raspado del útero)' : x)))).length,
+      cambiados: difs26(lista26(cambiados)).length,
+      sinTitulo: difs26(T26.replace(T26_TITULO + ': ', '')).length,
+      sinCieloAbierto: difs26(lista26(LAS_26, 'Las 26 cirugías de Essential')).length,
+      sinVideolaparoscopia: difs26(lista26(LAS_26, T26_TITULO, CIR_COLA.replace(/ Si te operan.*$/, ''))).length,
+    };
+    if (auto.buena || Object.entries(auto).some(([k, n]) => k !== 'buena' && !n)) malas.push('la regla de las 26 no distingue la lista mala de la buena: ' + JSON.stringify(auto));
+  }
+  // Lo que se ve de un elemento: sin el texto para lectores, sin el texto al que
+  // apunta un aria-describedby y sin la burbuja de un toque (la forma corta, que
+  // también lleva aria-hidden, sí se ve). Un toque es un botón o, en una frase,
+  // un span con role="button" (Term, tipo «toque», 23/10/2026).
+  const SE_VE = `(e) => {
+    if (!e) return null;
+    const k = e.cloneNode(true);
+    for (const b of k.querySelectorAll('[aria-describedby]')) {
+      const d = k.querySelector('[id="' + b.getAttribute('aria-describedby') + '"]'); if (d) d.remove();
+      for (const s of [...b.parentElement.children]) if (s !== b && s.getAttribute('aria-hidden') === 'true') s.remove();
+    }
+    k.querySelectorAll('.sr-solo').forEach((x) => x.remove());
+    return k.textContent.replace(/\\u00a0/g, ' ').replace(/\\s+/g, ' ').trim();
+  }`;
+  const LEER = `(b) => {
+    const oido = ((document.getElementById(b.getAttribute('aria-describedby') || '') || {}).textContent || '').replace(/\\s+/g, ' ').trim();
+    const u = b.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const top = Math.round(b.getBoundingClientRect().top);
+    if (!u || getComputedStyle(u).display === 'none') return { oido, visto: null, top };
+    const r = u.getBoundingClientRect();
+    const cs = getComputedStyle(u);
+    // Lo que se ve: la pantalla, recortada por cada caja que recorta (hidden,
+    // clip, o una que scrollea por dentro, como el cuerpo del simulador). Una
+    // burbuja fija (la de un toque, desde la tercera tanda del 23/10) no la
+    // recorta ninguna de sus cajas, salvo que un ancestro haga de marco del fixed
+    // (transform, filter, perspective, contain, will-change, container-type): si
+    // lo hay, se informa en «rompe» y desde él para arriba sí recortan.
+    const fija = cs.position === 'fixed';
+    const MARCO = (s) => s.transform !== 'none' || s.filter !== 'none' || s.perspective !== 'none' || (s.backdropFilter || 'none') !== 'none' || /paint|layout|strict|content/.test(s.contain || '') || /transform|filter|perspective/.test(s.willChange || '') || (s.containerType || 'normal') !== 'normal';
+    let rompe = null, desde = u.parentElement;
+    if (fija) {
+      desde = null;
+      for (let a = u.parentElement; a && a !== document.documentElement; a = a.parentElement) if (MARCO(getComputedStyle(a))) { rompe = a.tagName.toLowerCase() + (typeof a.className === 'string' && a.className.trim() ? '.' + a.className.trim().split(/\\s+/).join('.') : ''); desde = a; break; }
+    }
+    let c = { left: 0, top: 0, right: document.documentElement.clientWidth, bottom: innerHeight };
+    for (let a = desde; a && a !== document.body; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/hidden|clip|auto|scroll/.test(s.overflow + s.overflowX + s.overflowY)) { const q = a.getBoundingClientRect(); c = { left: Math.max(c.left, q.left), top: Math.max(c.top, q.top), right: Math.min(c.right, q.right), bottom: Math.min(c.bottom, q.bottom) }; }
+    }
+    const entera = r.left >= c.left - 0.5 && r.right <= c.right + 0.5 && r.top >= c.top - 0.5 && r.bottom <= c.bottom + 0.5;
+    // Junto a su toque: 8 px arriba o abajo (con el redondeo, de 4 a 12) y
+    // encima de él a lo ancho. Una burbuja fija que quedó en otro lado (un marco
+    // del fixed corrido, el scroll de la página sin reacomodarla) no lo está.
+    const t = b.getBoundingClientRect();
+    const hueco = r.top >= t.bottom - 1 ? r.top - t.bottom : t.top - r.bottom;
+    const junto = hueco >= 4 && hueco <= 12 && r.left <= t.right && r.right >= t.left;
+    const scroll = u.scrollHeight > u.clientHeight + 1;
+    // Si scrollea, que se pueda: overflow, el dedo (pointer-events) y que no
+    // arrastre la página (overscroll-behavior).
+    const puedeScroll = /auto|scroll/.test(cs.overflowY) && cs.pointerEvents === 'auto' && cs.overscrollBehaviorY === 'contain';
+    const pe = u.style.pointerEvents; u.style.pointerEvents = 'auto';
+    // Una grilla de 5 × 5 puntos, 8 px adentro en los bordes: la burbuja tiene
+    // la esquina redondeada (--r-xs) y a 3 px el punto cae afuera de la curva.
+    const xs = [r.left + 8, r.left + r.width / 4, r.left + r.width / 2, r.left + r.width * 3 / 4, r.right - 8];
+    const ys = [r.top + 8, r.top + r.height / 4, r.top + r.height / 2, r.top + r.height * 3 / 4, r.bottom - 8];
+    let tapadas = 0;
+    for (const x of xs) for (const y of ys) { const e = document.elementFromPoint(x, y); if (!e || !u.contains(e)) tapadas++; }
+    u.style.pointerEvents = pe;
+    return { oido, visto: u.innerText.replace(/\\n+/, ': ').replace(/\\s+/g, ' ').trim(), entera, tapadas, scroll, puedeScroll, top, caja: [Math.round(r.top), Math.round(r.bottom)], clip: [Math.round(c.top), Math.round(c.bottom)], alto: Math.round(r.height), largo: u.scrollHeight, fija, rompe, junto };
+  }`;
+  // Deja el borde de arriba del toque al `pos` del alto de la pantalla: primero
+  // lo que scrollea por dentro (el cuerpo del simulador en la computadora),
+  // después la página. Siempre con behavior:'instant' (cap. 140).
+  const COLOCAR = `(e, pos) => {
+    let d = e.getBoundingClientRect().top - innerHeight * pos;
+    for (let a = e.parentElement; a && a !== document.body && Math.abs(d) > 1; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) { const t0 = a.scrollTop; a.scrollBy({ top: d, behavior: 'instant' }); d -= a.scrollTop - t0; }
+    }
+    window.scrollBy({ top: d, behavior: 'instant' });
+  }`;
+  // EL ALTO QUE SE VE (tercera tanda, 23/10/2026, verificador de código). «Entera,
+  // sin nada encima y scrolleable» daba por buena una rendija: con la fila al
+  // 25 %, las 26 se abrían en 73 a 153 px que scrolleaban, porque el cuadro de
+  // esperas y la tarjeta del simulador recortan por sus esquinas, y debajo
+  // quedaban 600 px libres. Ahora la burbuja de un toque es fija, y se mide que se
+  // vea grande: al menos ALTO_MIN px de alto, o la lista entera si es más corta.
+  // Medido el 23/10 en las 63 aperturas: con la burbuja fija, el alto más chico
+  // que se ve de las 26 es 344 px; con el Term de 40d36ad, con la fila al 25 %,
+  // 153 px en el cuadro del celular (360, 390 y 430) y, según el verificador,
+  // 89 a 132 en el simulador. 240 px son unos 13 renglones: deja margen a lo de
+  // hoy y no deja pasar la rendija (la build con el Term de 40d36ad cae acá).
+  // Y la burbuja fija tiene que estar junto a su toque y sin un marco del fixed.
+  const ALTO_MIN = 240;
+  const grande = (l) => l.alto >= Math.min(l.largo, ALTO_MIN) - 1;
+  const bienPuesta = (l) => l.entera && !l.tapadas && grande(l) && (!l.fija || (l.junto && !l.rompe)) && (!l.scroll || (l.puedeScroll && l.sigue)) && (!l.cuadros || primerBien(l.cuadros));
+  const bienAbierto = (l, esperado) => !!l && l.oido === esperado && l.visto === esperado && bienPuesta(l);
+  const bien26 = (l) => !!l && !difs26(l.oido).length && !difs26(l.visto).length && bienPuesta(l);
+  const corto = (l) => JSON.stringify(l && { oido: (l.oido || '').slice(0, 50), visto: (l.visto || '').slice(0, 50), entera: l.entera, tapadas: l.tapadas, scroll: l.scroll, puedeScroll: l.puedeScroll, sigue: l.sigue, top: l.top, caja: l.caja, clip: l.clip, alto: l.alto, largo: l.largo, fija: l.fija, junto: l.junto, rompe: l.rompe, primerCuadro: l.cuadros && (l.cuadros[0] || 'ninguno') });
+  // Lo que se midió, para el informe: el alto más chico que se vio de cada lista.
+  const altos = { 26: Infinity, eco: Infinity };
+  const POS = [0.25, 0.5, 0.85];
+  // Abre el toque como lo abre una persona: con el mouse, pasando por encima de
+  // su primer renglón; con el dedo, tocando. Si la burbuja scrollea, se scrollea
+  // por dentro como se scrollea: con el dedo, un arrastre (CDP, eventos de
+  // toque de verdad); con el mouse, pasando a la burbuja y con la rueda. Tiene
+  // que moverse y seguir abierta (`sigue`).
+  // EL PRIMER CUADRO (ronda 2, 23/10/2026, verificador). El efecto que pone la
+  // burbuja fija en su lugar es useLayoutEffect: mide y acomoda antes de
+  // pintar. Con useEffect, al tocar con el dedo el primer cuadro salía en otro
+  // lado (con el Term de 40d36ad, entera hacia arriba, de −446 a 192, y recién
+  // en el segundo bajaba junto al toque): un parpadeo que ninguna prueba veía,
+  // porque todas miran 300 ms después. Con el dedo, antes del toque, se registra
+  // en cada cuadro (requestAnimationFrame, que corre antes de pintar) la caja de
+  // la burbuja desde que deja de estar en display:none, y el primero ya tiene
+  // que verse junto a su toque y por debajo de la cabecera fija. Sabotaje
+  // probado: en una copia con el efecto de posición en useEffect, cae en las 45
+  // aperturas con el dedo (el primer cuadro sale escondido, todavía sin ubicar).
+  const CUADROS = `(e) => {
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const nav = document.querySelector('[data-nav]');
+    const c = window.__cuadros = [];
+    const t0 = performance.now();
+    const vuelta = () => {
+      const cs = getComputedStyle(u);
+      if (cs.display !== 'none') {
+        const r = u.getBoundingClientRect(), t = e.getBoundingClientRect();
+        const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+        const hueco = r.top >= t.bottom - 1 ? r.top - t.bottom : t.top - r.bottom;
+        c.push({ ms: Math.round(performance.now() - t0), visible: cs.visibility === 'visible', caja: [Math.round(r.top), Math.round(r.bottom)], junto: hueco >= 4 && hueco <= 12 && r.left <= t.right && r.right >= t.left, bajoTecho: r.top >= techo - 0.5 });
+      }
+      if (c.length < 3 && performance.now() - t0 < 2000) requestAnimationFrame(vuelta);
+    };
+    requestAnimationFrame(vuelta);
+  }`;
+  const primerBien = (c) => c.length > 0 && c[0].visible && c[0].junto && c[0].bajoTecho;
+  // La regla, contra un primer cuadro escondido (el de useEffect: la burbuja
+  // dibujada antes de medirse), uno corrido hacia arriba, ninguno, y el bueno.
+  {
+    const bueno = { visible: true, junto: true, bajoTecho: true };
+    const auto = {
+      bueno: primerBien([bueno]),
+      escondido: !primerBien([{ ...bueno, visible: false, junto: false }, bueno]),
+      corrido: !primerBien([{ ...bueno, junto: false, bajoTecho: false }, bueno]),
+      ninguno: !primerBien([]),
+    };
+    if (Object.values(auto).some((x) => !x)) malas.push('la regla del primer cuadro no distingue el bueno de los malos: ' + JSON.stringify(auto));
+  }
+  const abrir = async (pg, boton, dedo, pos) => {
+    await boton.evaluate(eval(COLOCAR), pos);
+    await pg.waitForTimeout(150);
+    // En su primer renglón: un toque partido en dos tiene el centro de su caja
+    // entre los renglones, fuera del texto.
+    const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { x: r.left + r.width / 2, y: r.top + r.height / 2, dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; });
+    if (dedo) { await boton.evaluate(eval(CUADROS)); await boton.tap({ position: { x: q.dx, y: q.dy } }); }
+    else { await pg.mouse.move(5, 5); await pg.mouse.move(q.x, q.y); }
+    await pg.waitForTimeout(300);
+    const l = await boton.evaluate(eval(LEER));
+    l.pos = pos;
+    if (dedo) { l.cuadros = await pg.evaluate(() => window.__cuadros || []); visto.cuadros++; }
+    if (l.visto !== null && l.scroll) {
+      const u = await boton.evaluateHandle((e) => e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'));
+      const c = await u.evaluate((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2), h: r.height, st: x.scrollTop }; });
+      if (dedo) {
+        const cdp = await pg.context().newCDPSession(pg);
+        const paso = Math.max(4, Math.floor(c.h / 30));
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: c.x, y: c.y + paso * 5 }] });
+        for (let i = 1; i <= 10; i++) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: c.x, y: c.y + paso * 5 - i * paso }] }); await pg.waitForTimeout(16); }
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        await cdp.detach();
+      } else { await pg.mouse.move(c.x, c.y, { steps: 4 }); await pg.waitForTimeout(400); await pg.mouse.wheel(0, 120); }
+      await pg.waitForTimeout(400);
+      const despues = await u.evaluate((x, b) => ({ st: x.scrollTop, abierta: getComputedStyle(x).display !== 'none' && b.getAttribute('aria-expanded') === 'true' }), await boton.elementHandle());
+      l.sigue = despues.abierta && despues.st > c.st;
+    }
+    return l;
+  };
+  const cerrar = async (pg, dedo) => { if (dedo) await pg.keyboard.press('Escape'); else await pg.mouse.move(5, 5); await pg.waitForTimeout(350); };
+  const visto = { posiciones: 0, seguir: 0, cuadros: 0, recortado: 0, cabecera: 0, asoma: 0, encima: 0, bordePlan: 0, partido: 0, tapaAbajo: 0 };
+  const abrirEn = async (pg, boton, dedo, esperado, donde) => {
+    for (const pos of POS) {
+      const l = await abrir(pg, boton, dedo, pos);
+      visto.posiciones++;
+      if (l && l.visto !== null) { const k = esperado === 26 ? 26 : 'eco'; altos[k] = Math.min(altos[k], l.alto); }
+      const ok = esperado === 26 ? bien26(l) : bienAbierto(l, esperado);
+      if (!ok) malas.push(donde + ' al ' + Math.round(pos * 100) + ' %: ' + corto(l) + (esperado === 26 ? ' · ' + difs26(l && l.oido).concat(difs26(l && l.visto)).slice(0, 2).join(' · ') : ''));
+      await cerrar(pg, dedo);
+    }
+  };
+  // AL SCROLLEAR (tercera tanda, 23/10): la burbuja fija no se queda en la
+  // pantalla mientras su toque se va. Se eligió reacomodarla junto al toque, y
+  // esconderla mientras el toque está fuera de lo que se ve, y no cerrarla: al
+  // llegar con Tab, el navegador scrollea (suave) hasta el toque justo después
+  // de abrirlo, y cerrarla en el camino dejaba el toque con el foco y la lista
+  // cerrada (medido: la prueba del teclado caía). Se abre con la fila al 50 %
+  // (con el dedo, o con el teclado donde manda el mouse: con el mouse, salir del
+  // toque ya la cierra), se scrollean 60 px de lo que scrollea (la caja, como el
+  // cuerpo del simulador en la computadora, o la página) y se lee: abierta, junto
+  // al toque, entera, sin nada encima y grande. Después el toque se lleva arriba
+  // de la pantalla (la burbuja no se tiene que ver) y se vuelve a donde estaba
+  // (se tiene que ver otra vez, junto a él).
+  const SCROLL60 = `(e) => {
+    let a = e.parentElement;
+    for (; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) break; }
+    const caja = !!a && a !== document.body;
+    (caja ? a : window).scrollBy({ top: 60, behavior: 'instant' });
+    return caja ? 'la caja' : 'la página';
+  }`;
+  // Volver a donde estaba, y no «al medio» con COLOCAR (ronda 2, 23/10/2026):
+  // en el simulador de la computadora, COLOCAR(−0.3) scrollea el cuerpo del
+  // simulador y también la página, y COLOCAR(0.5) devolvía todo con el cuerpo
+  // solo, así que el toque quedaba a media pantalla pero debajo del borde de su
+  // caja, escondido. La burbuja lo seguía mostrando porque «fuera» se medía
+  // contra la pantalla; desde que se mide contra lo que se ve, se esconde (está
+  // bien), y la prueba tiene que devolver el toque a un lugar donde se vea.
+  const GUARDAR = `(e) => {
+    const v = [[null, scrollY]];
+    for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) v.push([a, a.scrollTop]); }
+    window.__vuelta = v;
+  }`;
+  const VOLVER = `() => { for (const [a, y] of window.__vuelta || []) (a || window).scrollTo({ top: y, behavior: 'instant' }); }`;
+  const seguir = async (pg, boton, con, esperado, donde) => {
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(150);
+    if (con === 'dedo') { const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; }); await boton.tap({ position: { x: q.dx, y: q.dy } }); }
+    else { await boton.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); }); await pg.keyboard.press('Tab'); }
+    await pg.waitForTimeout(300);
+    const antes = await boton.evaluate(eval(LEER));
+    const que = await boton.evaluate(eval(SCROLL60));
+    await pg.waitForTimeout(300);
+    const l = await boton.evaluate(eval(LEER));
+    // Acá no se scrollea por dentro: eso lo mide abrirEn.
+    if (l.scroll) l.sigue = true;
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const ok = abierta && antes.visto !== null && l.visto !== null && Math.abs((antes.top - l.top) - 60) <= 1 && (esperado === 26 ? bien26(l) : bienAbierto(l, esperado));
+    const seVe = () => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+    await boton.evaluate(eval(GUARDAR));
+    await boton.evaluate(eval(COLOCAR), -0.3);
+    await pg.waitForTimeout(300);
+    const fuera = !(await seVe());
+    await boton.evaluate(eval(VOLVER));
+    await pg.waitForTimeout(300);
+    const v = await boton.evaluate(eval(LEER));
+    if (v.scroll) v.sigue = true;
+    const vuelve = (await boton.getAttribute('aria-expanded')) === 'true' && (await seVe()) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
+    if (!ok || !fuera || !vuelve) malas.push(donde + ', al scrollear ' + que + ' 60 px (' + con + '): ' + (abierta ? corto(l) + ' · el toque subió ' + (antes.top - l.top) + ' px' : 'se cerró') + (fuera ? '' : ' · con el toque fuera de la pantalla, la burbuja se sigue viendo') + (vuelve ? '' : ' · con el toque de vuelta donde estaba: ' + corto(v)));
+    visto.seguir++;
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(200);
+  };
+  // EL TOQUE ESCONDIDO POR SU CAJA (ronda 2, 23/10/2026, verificador). En el
+  // simulador de la computadora, con la lista abierta por teclado, la persona
+  // puede scrollear el cuerpo del simulador (la rueda, el touchpad) hasta que el
+  // toque quede escondido por el borde de la tarjeta, todavía dentro de la
+  // pantalla. «Fuera» se medía contra la pantalla sola: la burbuja seguía a la
+  // vista, encima de «Tu plan, a tu medida», apuntando a nada. `seguir` no lo
+  // veía: saca el toque de la pantalla, no de la caja. Acá se abre con Tab, se
+  // scrollea la caja hasta dejar el toque 20 px más allá de su borde (o lo que
+  // haya hasta el borde de la pantalla o de la cabecera), abajo y arriba donde
+  // se pueda, y la burbuja no se tiene que ver; vuelta al medio, se ve otra vez.
+  // Si por ningún lado el toque queda escondido dentro de la pantalla, el caso
+  // no prueba nada y se informa. Con el Term de 3db7cb7 cae: a 1280 × 900, el
+  // toque en 885-899 y la caja cortando en 865, la burbuja se seguía viendo.
+  const RECORTAR = `(e, lado) => {
+    let a = e.parentElement;
+    for (; a && a !== document.body; a = a.parentElement) { const s = getComputedStyle(a); if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) break; }
+    if (!a || a === document.body) return { sinCaja: true };
+    const q = a.getBoundingClientRect(), t = e.getBoundingClientRect(), nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    // 20 px más allá del borde, o lo que haya hasta el borde de lo que se ve.
+    const dist = Math.min(20, Math.floor(lado === 'abajo' ? innerHeight - q.bottom - t.height - 1 : q.top - techo - t.height - 1));
+    if (dist < 4) return { caja: [Math.round(q.top), Math.round(q.bottom)], sinLugar: true };
+    a.scrollBy({ top: lado === 'abajo' ? t.top - (q.bottom + dist) : t.bottom - (q.top - dist), behavior: 'instant' });
+    const t2 = e.getBoundingClientRect();
+    const escondido = lado === 'abajo' ? t2.top >= q.bottom + dist - 1 : t2.bottom <= q.top - dist + 1;
+    return { caja: [Math.round(q.top), Math.round(q.bottom)], toque: [Math.round(t2.top), Math.round(t2.bottom)], dist, escondido, enPantalla: t2.top >= techo && t2.bottom <= innerHeight };
+  }`;
+  const recortado = async (pg, boton, donde) => {
+    const seVe = () => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+    let probados = 0;
+    const sinProbar = [];
+    for (const lado of ['abajo', 'arriba']) {
+      // Desde la página arriba, con la caja entera a la vista: COLOCAR mueve
+      // primero la caja, y así deja el toque adentro de ella.
+      await pg.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+      await boton.evaluate(eval(COLOCAR), 0.5);
+      await pg.mouse.move(5, 5);
+      await pg.waitForTimeout(150);
+      await boton.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); });
+      await pg.keyboard.press('Tab');
+      await pg.waitForTimeout(300);
+      const antes = await seVe();
+      const r = await boton.evaluate(eval(RECORTAR), lado);
+      await pg.waitForTimeout(300);
+      const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+      const despues = await seVe();
+      await boton.evaluate(eval(COLOCAR), 0.5);
+      await pg.waitForTimeout(300);
+      const v = await boton.evaluate(eval(LEER));
+      if (v.scroll) v.sigue = true;
+      const vuelve = (await seVe()) && bien26(v);
+      await pg.keyboard.press('Escape');
+      await pg.waitForTimeout(200);
+      if (r.sinCaja) { malas.push(donde + ': no encontró la caja que scrollea'); return; }
+      // Cada lado existe solo si entre el borde de la caja y el de lo que se ve
+      // (la cabecera arriba, la pantalla abajo) queda lugar para el toque.
+      if (!r.escondido || !r.enPantalla) { sinProbar.push(lado + ' ' + JSON.stringify(r)); continue; }
+      probados++;
+      if (!antes || !abierta || despues || !vuelve) malas.push(donde + ', con la caja scrolleada hasta esconder el toque por ' + lado + ' (teclado): ' + JSON.stringify({ antes, abierta, seVeConElToqueEscondido: despues, ...r }) + (vuelve ? '' : ' · de vuelta en el medio: ' + corto(v)));
+    }
+    if (!probados) malas.push(donde + ', el toque escondido por su caja: no se pudo dejar escondido dentro de la pantalla por ningún lado · ' + sinProbar.join(' · '));
+    visto.recortado += probados;
+  };
+
+  // EL TOQUE TAPADO POR UNA CABECERA PEGAJOSA (ronda 3, 23/10/2026, verificador).
+  // Lo que no se ve no es solo lo que recorta. En /planes, en la computadora,
+  // cada plan tiene su cabecera pegajosa (.cmp2-h, position:sticky), que no
+  // recorta nada: tapa. Con la lista abierta por teclado y la página scrolleada
+  // con la rueda hasta dejar el toque debajo de esa cabecera, la burbuja seguía
+  // a la vista, encima de la columna, apuntando a nada (con el mouse no pasa:
+  // salir del toque la cierra). Acá se abre con Tab, la rueda (con el mouse
+  // sobre la cabecera del sitio, lejos del toque) lleva el centro del toque al
+  // medio de la cabecera del plan, y se mira qué hay de verdad en el toque
+  // (elementsFromPoint, sin contar la burbuja): si no es la cabecera, el caso
+  // no prueba nada y se informa. La burbuja no se tiene que ver; con la rueda de
+  // vuelta, se ve otra vez, junto al toque. Con el Term de b44c1a1 cae: la
+  // burbuja, a la vista con el toque debajo de la cabecera.
+  const BAJO_CABECERA = `(e) => {
+    const plan = e.closest('.cmp2-plan'), h = plan && plan.querySelector('.cmp2-h');
+    if (!h) return null;
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const q = h.getBoundingClientRect(), t = e.getBoundingClientRect();
+    const y = t.top + t.height / 2;
+    const hay = document.elementsFromPoint(t.left + t.width / 2, y).find((n) => !u.contains(n));
+    return { pegajosa: getComputedStyle(h).position === 'sticky', cabecera: [Math.round(q.top), Math.round(q.bottom)], toque: [Math.round(t.top), Math.round(t.bottom)], falta: Math.round(y - (q.top + q.bottom) / 2), tapado: !!hay && h.contains(hay) && !e.contains(hay) };
+  }`;
+  // El foco va primero a lo de antes sin scrollear (preventScroll): en /planes,
+  // lo de antes en el orden del Tab está en otra columna, lejos, y el scroll
+  // suave hasta ahí seguía después del Tab y se llevaba el toque de la pantalla.
+  const FOCO_ANTES = (e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus({ preventScroll: true }); };
+  const seVeLa = (boton) => boton.evaluate((e) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const s = getComputedStyle(u); return s.display !== 'none' && s.visibility === 'visible'; });
+  // LOS BORDES DEL TOQUE (ronda 5, 23/10/2026, verificador). colocarFijo no le
+  // pregunta al navegador solo en el medio de la franja visible del toque:
+  // también a 1 px de sus bordes, así cuenta un toque que asoma unos pocos px
+  // por debajo de algo que lo tapa. Esa pieza no tenía prueba: sin los dos
+  // puntos de los bordes, esta sección seguía en verde, y en /planes a 1280 la
+  // burbuja se escondía con el toque asomando 3 y 5 px debajo de la cabecera de
+  // su plan. Desde el toque tapado, la rueda lo lleva hasta que asoman 4 px
+  // debajo de .cmp2-h; se confirma con elementsFromPoint, sin contar la burbuja,
+  // que en el medio del toque está la cabecera y a 1 px de su borde de abajo,
+  // el toque (si no, el caso no prueba nada y se informa), y la burbuja tiene
+  // que estar abierta, a la vista y junto al toque. Con solo el punto del medio
+  // (`for (const y of [(arriba + abajoR) / 2])`) cae: escondida.
+  const ASOMA_PLAN = `(e) => {
+    const plan = e.closest('.cmp2-plan'), h = plan && plan.querySelector('.cmp2-h');
+    if (!h) return null;
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const q = h.getBoundingClientRect(), t = e.getBoundingClientRect();
+    const x = t.left + t.width / 2;
+    const hay = (y) => document.elementsFromPoint(x, y).find((n) => !u.contains(n));
+    const medio = hay((t.top + t.bottom) / 2), borde = hay(t.bottom - 1);
+    return { cabecera: [Math.round(q.top), Math.round(q.bottom)], toque: [Math.round(t.top), Math.round(t.bottom)], renglones: e.getClientRects().length, asoma: Math.round((t.bottom - q.bottom) * 10) / 10, medioCabecera: !!medio && h.contains(medio) && !e.contains(medio), bordeToque: !!borde && (borde === e || e.contains(borde)) };
+  }`;
+  const tapadoPorCabecera = async (pg, boton, esperado, donde) => {
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(150);
+    await boton.evaluate(FOCO_ANTES);
+    await pg.keyboard.press('Tab');
+    await pg.waitForTimeout(300);
+    const antes = await seVeLa(boton);
+    const arriba = () => boton.evaluate((e) => Math.round(e.getBoundingClientRect().top));
+    const t0 = await arriba();
+    let m = await boton.evaluate(eval(BAJO_CABECERA));
+    for (let i = 0; i < 6 && m && Math.abs(m.falta) > 3; i++) {
+      await pg.mouse.wheel(0, m.falta);
+      await pg.waitForTimeout(400);
+      m = await boton.evaluate(eval(BAJO_CABECERA));
+    }
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const tapadaSeVe = await seVeLa(boton);
+    // Los bordes (ronda 5, arriba): de tapado a 4 px asomando, con la rueda.
+    if (m && m.tapado) {
+      let a = await boton.evaluate(eval(ASOMA_PLAN));
+      for (let i = 0; i < 8 && a && Math.abs(a.asoma - 4) > 0.5; i++) {
+        await pg.mouse.wheel(0, a.asoma - 4);
+        await pg.waitForTimeout(400);
+        a = await boton.evaluate(eval(ASOMA_PLAN));
+      }
+      if (!a || Math.abs(a.asoma - 4) > 1 || !a.medioCabecera || !a.bordeToque) malas.push(donde + ', el toque asomando 4 px debajo de la cabecera de su plan: no se pudo dejar así (en el medio, la cabecera; a 1 px del borde de abajo, el toque), y el caso no prueba nada ' + JSON.stringify(a));
+      else {
+        const abiertaB = (await boton.getAttribute('aria-expanded')) === 'true';
+        const seB = await seVeLa(boton);
+        const lb = await boton.evaluate(eval(LEER));
+        visto.bordePlan++;
+        if (!abiertaB || !seB || !lb.junto) malas.push(donde + ', con el toque asomando ' + a.asoma + ' px debajo de la cabecera de su plan (teclado y la rueda): ' + JSON.stringify({ abierta: abiertaB, seVe: seB, junto: lb.junto, burbuja: lb.caja, ...a }));
+      }
+    }
+    // De vuelta con la rueda, hasta donde estaba.
+    for (let i = 0, f = (await arriba()) - t0; i < 6 && Math.abs(f) > 3; i++, f = (await arriba()) - t0) {
+      await pg.mouse.wheel(0, f);
+      await pg.waitForTimeout(400);
+    }
+    const v = await boton.evaluate(eval(LEER));
+    if (v.scroll) v.sigue = true;
+    const vuelve = (await seVeLa(boton)) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(200);
+    if (!m || !m.pegajosa) { malas.push(donde + ': no encuentro la cabecera pegajosa de su plan (.cmp2-h) ' + JSON.stringify(m)); return; }
+    if (!m.tapado) { malas.push(donde + ': la rueda no dejó el toque debajo de la cabecera de su plan, y el caso no prueba nada ' + JSON.stringify(m)); return; }
+    visto.cabecera++;
+    if (!antes || !abierta || tapadaSeVe || !vuelve) malas.push(donde + ', con el toque debajo de la cabecera pegajosa de su plan (teclado y la rueda): ' + JSON.stringify({ antes, abierta, seVeConElToqueTapado: tapadaSeVe, ...m }) + (vuelve ? '' : ' · con la rueda de vuelta: ' + corto(v)));
+  };
+  // EL TOQUE TAPADO DESDE ABAJO (ronda 6, 24/10/2026, verificador). El tercer
+  // punto de colocarFijo, a 1 px del borde de arriba de la franja visible
+  // (`arriba + 1`), no tenía prueba: el caso de los bordes (arriba) deja el
+  // toque asomando por debajo de lo que lo tapa, y ahí alcanza el punto de
+  // abajo. Sin `arriba + 1`, esta sección seguía en verde, y el comentario de
+  // colocarFijo promete «cerca de sus dos bordes». En el sitio de hoy nada
+  // fijo ni pegajoso tapa un toque desde abajo (la barra fija de abajo es del
+  // home, que no tiene toques), así que el caso se arma: con la lista abierta
+  // por teclado, una tapa fija y opaca, con pointer-events (como una barra de
+  // abajo, que recibe el dedo), cubre el toque y deja a la vista sus 4 px de
+  // arriba, y un scroll de 1 px hace que colocarFijo vuelva a medir. Se
+  // confirma con elementsFromPoint, sin la burbuja, que en el medio del toque y
+  // a 1 px de su borde de abajo está la tapa, y a 1 px del de arriba, el toque
+  // (si no, el caso no prueba nada y se informa). La burbuja tiene que estar
+  // abierta, a la vista y junto al toque; sin la tapa, también. Con
+  // `for (const y of [(arriba + abajoR) / 2, abajoR - 1])` cae: escondida.
+  const TAPA_ABAJO = `(e, px) => {
+    window.scrollBy({ top: 1, behavior: 'instant' });
+    const t = e.getBoundingClientRect();
+    const d = document.createElement('div');
+    d.id = 'qa-tapa-abajo';
+    // Termina 4 px debajo del toque: no llega a la burbuja, que va a 8 px.
+    d.style.cssText = 'position:fixed;left:0;right:0;top:' + (t.top + px) + 'px;height:' + (t.height - px + 4) + 'px;background:#fff;z-index:2147483000;pointer-events:auto';
+    document.body.appendChild(d);
+  }`;
+  const MIRA_TAPA = `(e) => {
+    const d = document.getElementById('qa-tapa-abajo');
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const t = e.getBoundingClientRect(), x = t.left + t.width / 2;
+    const hay = (y) => document.elementsFromPoint(x, y).find((n) => !u.contains(n));
+    const esToque = (h) => !!h && (h === e || e.contains(h) || h === e.parentElement);
+    const medio = hay((t.top + t.bottom) / 2), abajo = hay(t.bottom - 1), arriba = hay(t.top + 1);
+    return { toque: [Math.round(t.top), Math.round(t.bottom)], tapa: d && [Math.round(d.getBoundingClientRect().top), Math.round(d.getBoundingClientRect().bottom)], renglones: e.getClientRects().length, medioTapa: !!d && medio === d, abajoTapa: !!d && abajo === d, arribaToque: esToque(arriba) };
+  }`;
+  const tapadoDesdeAbajo = async (pg, boton, esperado, donde) => {
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(150);
+    await boton.evaluate(FOCO_ANTES);
+    await pg.keyboard.press('Tab');
+    await pg.waitForTimeout(300);
+    const antes = await seVeLa(boton);
+    await boton.evaluate(eval(TAPA_ABAJO), 4);
+    await pg.waitForTimeout(300);
+    const m = await boton.evaluate(eval(MIRA_TAPA));
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const se = await seVeLa(boton);
+    const l = await boton.evaluate(eval(LEER));
+    await pg.evaluate(() => { const d = document.getElementById('qa-tapa-abajo'); if (d) d.remove(); window.scrollBy({ top: -1, behavior: 'instant' }); });
+    await pg.waitForTimeout(300);
+    const v = await boton.evaluate(eval(LEER));
+    if (v.scroll) v.sigue = true;
+    const vuelve = (await seVeLa(boton)) && (esperado === 26 ? bien26(v) : bienAbierto(v, esperado));
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(200);
+    if (!m.medioTapa || !m.abajoTapa || !m.arribaToque) { malas.push(donde + ', el toque tapado desde abajo con 4 px a la vista arriba: no se pudo dejar así (en el medio y a 1 px del borde de abajo, la tapa; a 1 px del de arriba, el toque), y el caso no prueba nada ' + JSON.stringify(m)); return; }
+    visto.tapaAbajo++;
+    if (!antes || !abierta || !se || !l.junto || !vuelve) malas.push(donde + ', con el toque tapado desde abajo y 4 px a la vista arriba (teclado): ' + JSON.stringify({ antes, abierta, seVe: se, junto: l.junto, burbuja: l.caja, ...m }) + (vuelve ? '' : ' · sin la tapa: ' + corto(v)));
+  };
+  // EL TOQUE QUE ASOMA DEBAJO DE LA CABECERA DEL SITIO (ronda 3, 23/10/2026,
+  // verificador). Hasta la cuarta tanda, «fuera» se medía con el margen de 8 px
+  // de la burbuja: un toque que asomaba de 1 a 8 px debajo de [data-nav] se
+  // abría con el mouse (aria-expanded true) con la burbuja escondida. Se arregló
+  // en la cuarta tanda sin prueba propia. Acá, en el simulador a 1280, el toque
+  // queda con 3 y con 7 px a la vista debajo de la cabecera (lo que scrollea por
+  // dentro primero y después la página, como COLOCAR), el mouse pasa por la
+  // franja que se ve y la burbuja tiene que estar abierta, a la vista y junto a
+  // su toque. Antes se mira que el caso sea real: que en la franja esté el
+  // toque. Con la regla «fuera» de 3db7cb7 (`b.bottom < techo`, con el margen)
+  // cae.
+  const ASOMAR = `(e, px) => {
+    const nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    let d = e.getBoundingClientRect().bottom - (techo + px);
+    for (let a = e.parentElement; a && a !== document.body && Math.abs(d) > 0.5; a = a.parentElement) {
+      const s = getComputedStyle(a);
+      if (/auto|scroll/.test(s.overflowY) && a.scrollHeight > a.clientHeight + 1) { const t0 = a.scrollTop; a.scrollBy({ top: d, behavior: 'instant' }); d -= a.scrollTop - t0; }
+    }
+    window.scrollBy({ top: d, behavior: 'instant' });
+    const rs = e.getClientRects(), r = rs[rs.length - 1], b = e.getBoundingClientRect();
+    const x = r.left + r.width / 2, y = (Math.max(r.top, techo) + r.bottom) / 2;
+    const hay = document.elementFromPoint(x, y);
+    return { techo: Math.round(techo), toque: [Math.round(b.top), Math.round(b.bottom)], asoma: Math.round((b.bottom - techo) * 10) / 10, x, y, real: !!hay && (hay === e || e.contains(hay)) };
+  }`;
+  const asoma = async (pg, boton, donde) => {
+    for (const px of [3, 7]) {
+      await pg.mouse.move(5, 5);
+      await pg.waitForTimeout(300);
+      const a = await boton.evaluate(eval(ASOMAR), px);
+      await pg.waitForTimeout(150);
+      if (!a.real || Math.abs(a.asoma - px) > 1) { malas.push(donde + ', el toque asomando ' + px + ' px debajo de la cabecera: no se pudo dejar así, y el caso no prueba nada ' + JSON.stringify(a)); continue; }
+      await pg.mouse.move(a.x, a.y);
+      await pg.waitForTimeout(350);
+      const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+      const l = await boton.evaluate(eval(LEER));
+      if (l.scroll) l.sigue = true;
+      const se = await seVeLa(boton);
+      visto.asoma++;
+      if (!abierta || !se || !bien26(l)) malas.push(donde + ', el toque asomando ' + px + ' px debajo de la cabecera, abierto con el mouse: ' + JSON.stringify({ abierta, seVe: se, ...a }) + ' · ' + corto(l));
+    }
+    await pg.mouse.move(5, 5);
+    await pg.waitForTimeout(300);
+  };
+  // LA BURBUJA ENCIMA DE SU TOQUE (ronda 4, 23/10/2026, verificador). Para
+  // saber si el toque se ve, colocarFijo le pregunta al navegador qué hay en él,
+  // y saltea la burbuja (elementsFromPoint): mientras se scrollea, la del cuadro
+  // anterior puede quedar encima del toque. Esa parte del arreglo de la quinta
+  // tanda no tenía prueba. Pasa cuando la burbuja abre abajo y scrollea por
+  // dentro (pointer-events:auto, para el dedo): en el cuadro de esperas a 360,
+  // con las 26 y la fila al 15 %. Un solo salto de scroll hacia arriba deja el
+  // toque donde estaba la burbuja; si se le pregunta solo a elementFromPoint, lo
+  // que hay es la burbuja, la esconde con la lista abierta y no vuelve hasta el
+  // próximo scroll. Acá se arma el caso con el dedo, se confirma que es el caso
+  // (abajo, scrolleando y con pointer-events:auto, y después del salto, el toque
+  // adentro de donde estaba la burbuja; si no, no prueba nada y se informa), y la
+  // burbuja tiene que seguir abierta, a la vista y junto al toque. Con
+  // `queHay = (x, y) => document.elementFromPoint(x, y)` cae: abierta, escondida
+  // y lejos del toque.
+  const CASO_ENCIMA = `(e) => {
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const s = getComputedStyle(u), r = u.getBoundingClientRect(), t = e.getBoundingClientRect();
+    return { abierta: e.getAttribute('aria-expanded') === 'true', seVe: s.display !== 'none' && s.visibility === 'visible', abajo: r.top >= t.bottom, scroll: u.scrollHeight > u.clientHeight + 1, pe: s.pointerEvents, toque: [Math.round(t.top), Math.round(t.bottom)], burbuja: [Math.round(r.top), Math.round(r.bottom)] };
+  }`;
+  const encima = async (pg, boton, donde) => {
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(250);
+    await boton.evaluate(eval(COLOCAR), 0.15);
+    await pg.waitForTimeout(150);
+    const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; });
+    await boton.tap({ position: { x: q.dx, y: q.dy } });
+    await pg.waitForTimeout(300);
+    const c = await boton.evaluate(eval(CASO_ENCIMA));
+    if (!c.abierta || !c.seVe || !c.abajo || !c.scroll || c.pe !== 'auto') {
+      malas.push(donde + ', la burbuja encima de su toque: no abrió abajo, scrolleando por dentro y con pointer-events:auto, y el caso no prueba nada ' + JSON.stringify(c));
+    } else {
+      const d = c.burbuja[0] - c.toque[0] + 12;
+      await boton.evaluate((e, d) => window.scrollBy({ top: -d, behavior: 'instant' }), d);
+      await pg.waitForTimeout(250);
+      const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+      const se = await seVeLa(boton);
+      const l = await boton.evaluate(eval(LEER));
+      const t2 = l.top;
+      if (!(t2 > c.burbuja[0] && t2 < c.burbuja[1])) malas.push(donde + ', la burbuja encima de su toque: el salto de ' + d + ' px no dejó el toque donde estaba la burbuja (' + t2 + ', la burbuja en ' + c.burbuja.join('-') + '), y el caso no prueba nada');
+      else {
+        visto.encima++;
+        if (!abierta || !se || !l.junto) malas.push(donde + ', con el toque debajo de donde estaba su burbuja (un salto de ' + d + ' px con el dedo): ' + JSON.stringify({ antes: c, abierta, seVe: se, junto: l.junto, toque: t2, burbuja: l.caja }));
+      }
+    }
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(250);
+  };
+  // EL TOQUE PARTIDO, CON EL PRIMER RENGLÓN TAPADO (ronda 5, 23/10/2026,
+  // verificador). colocarFijo pregunta renglón por renglón: un toque partido en
+  // dos tiene una caja por renglón, y si el primero queda debajo de la cabecera
+  // del sitio, el segundo sigue a la vista. Esa pieza no tenía prueba: si se
+  // miraba solo el primer renglón, esta sección seguía en verde, y la burbuja
+  // se escondía en los seis anchos donde «de una lista de 26» se parte (de 320
+  // a 412 px). En el cuadro de esperas a 360 y a 390 se abre con el dedo, la
+  // página se scrollea hasta dejar el primer renglón entero debajo de
+  // [data-nav] y el segundo a la vista, se confirma que es el caso (dos
+  // renglones; en el primero, lo que hay no es el toque; en el segundo, sí,
+  // con elementsFromPoint sin contar la burbuja; si no, el caso no prueba nada
+  // y se informa), y la burbuja tiene que estar abierta, a la vista y junto al
+  // toque. Con `i < 1` en el bucle de los renglones cae: escondida.
+  const PARTIR = `(e) => {
+    const nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    const rs = e.getClientRects();
+    if (rs.length >= 2) window.scrollBy({ top: Math.ceil(rs[0].bottom - techo), behavior: 'instant' });
+  }`;
+  const CASO_PARTIDO = `(e) => {
+    const nav = document.querySelector('[data-nav]');
+    const techo = nav && getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().bottom : 0;
+    const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])');
+    const rs = [...e.getClientRects()];
+    const hay = (r) => document.elementsFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2).find((n) => !u.contains(n));
+    const esEl = (n) => !!n && (n === e || e.contains(n));
+    return { techo: Math.round(techo), renglones: rs.map((r) => [Math.round(r.top), Math.round(r.bottom)]), primeroTapado: rs.length >= 2 && rs[0].bottom <= techo + 0.5 && !esEl(hay(rs[0])), segundoToque: rs.length >= 2 && rs[1].top >= techo - 0.5 && esEl(hay(rs[1])) };
+  }`;
+  const partido = async (pg, boton, donde) => {
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(250);
+    await boton.evaluate(eval(COLOCAR), 0.5);
+    await pg.waitForTimeout(150);
+    const q = await boton.evaluate((e) => { const b = e.getBoundingClientRect(), r = e.getClientRects()[0]; return { dx: r.left - b.left + r.width / 2, dy: r.top - b.top + r.height / 2 }; });
+    await boton.tap({ position: { x: q.dx, y: q.dy } });
+    await pg.waitForTimeout(300);
+    const antes = await seVeLa(boton);
+    await boton.evaluate(eval(PARTIR));
+    await pg.waitForTimeout(250);
+    const c = await boton.evaluate(eval(CASO_PARTIDO));
+    const abierta = (await boton.getAttribute('aria-expanded')) === 'true';
+    const se = await seVeLa(boton);
+    const l = await boton.evaluate(eval(LEER));
+    if (!c.primeroTapado || !c.segundoToque) malas.push(donde + ', el toque partido con el primer renglón debajo de la cabecera: no se pudo dejar así, y el caso no prueba nada ' + JSON.stringify(c));
+    else {
+      visto.partido++;
+      if (!antes || !abierta || !se || !l.junto) malas.push(donde + ', con el primer renglón del toque debajo de la cabecera y el segundo a la vista (el dedo): ' + JSON.stringify({ antes, abierta, seVe: se, junto: l.junto, burbuja: l.caja, ...c }));
+    }
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(250);
+  };
+
+  // (1) /planes a 1280, con el mouse: la banda de esperas y la tarjeta.
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await page.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    // Marca la celda de la banda de esperas de cada fila y plan, por índice.
+    const marcar = () => page.evaluate(() => {
+      const t = document.querySelector('#comparar-planes');
+      if (!t) return 0;
+      const grupos = [...t.querySelectorAll('.cmp2-lab .cmp2-grupo-y-fila')];
+      const desde = grupos.findIndex((g) => /Cuánto esperás/.test((g.querySelector('.cmp2-gt') || {}).textContent || ''));
+      let n = 0;
+      grupos.forEach((g, k) => {
+        if (desde < 0 || k < desde) return;
+        const fila = g.querySelector('.cmp2-c').textContent.trim();
+        [...t.querySelectorAll('.cmp2-plan')].forEach((pl, i) => { const c = pl.querySelectorAll('.cmp2-c')[k]; if (c) { c.dataset.qaBanda = fila + '|' + i; n++; } });
+      });
+      return n;
+    });
+    if (!(await marcar())) malas.push('/planes 1280: no encuentro la banda «Cuánto esperás para usarlo»');
+    const celda = (fila, i) => page.locator('[data-qa-banda="' + fila + '|' + i + '"]');
+    const nota = async (fila, i) => { const n = celda(fila, i).locator('.cmp2-fam'); return (await n.count()) ? n.evaluate(eval(SE_VE)) : null; };
+    if ((await nota('Ecografías', 0)) !== null) malas.push('/planes 1280, Ecografías, Essential: una nota que no va («' + (await nota('Ecografías', 0)) + '»)');
+    for (const [i, plan] of [[1, 'Silver'], [2, 'Gold']]) {
+      const n = await nota('Ecografías', i);
+      const b = celda('Ecografías', i).locator('.cmp2-fam .txt[aria-describedby]');
+      if (n !== NOTA || !(await b.count()) || (await b.textContent()).trim() !== NOTA) { malas.push('/planes 1280, Ecografías, ' + plan + ': ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «' + NOTA + '» y tocarse)'); continue; }
+      await abrirEn(page, b, false, TOQUE[plan], '/planes 1280, Ecografías, ' + plan);
+      // Lo que oye el lector en la celda: la fila, el plan, la espera entera y la nota.
+      const oye = oido(await celda('Ecografías', i).ariaSnapshot()).replace(/\s+,/g, ',');
+      if (!new RegExp('^Ecografías, ' + plan + ': .*2 meses de espera, la mayoría').test(oye)) malas.push('/planes 1280, Ecografías, ' + plan + ': el lector oye «' + oye.slice(0, 80) + '»');
+      if (i === 1) visto.compu = n;
+    }
+    // La fila de Ecografías a 320 px del borde de arriba: la burbuja de Silver
+    // abre hacia arriba, sobre las cabeceras fijas. Silver arma su propia pila
+    // (z-index 2) y la cabecera fija de Gold (4) se le pintaba encima; con un
+    // toque abierto, la columna sube a 7 (globals.css). Autoprueba: sin esa
+    // regla, la misma apertura tiene que dar «tapada».
+    {
+      const b = celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]');
+      if (await b.count()) {
+        const l = await abrir(page, b, false, 320 / 900);
+        if (!bienAbierto(l, TOQUE.Silver)) malas.push('/planes 1280, Ecografías, Silver con la fila a 320 px: ' + corto(l));
+        await cerrar(page, false);
+        const sacadas = await page.evaluate(() => {
+          const fuera = [];
+          const recorrer = (rules, padre) => { for (let i = rules.length - 1; i >= 0; i--) { const r = rules[i]; if (r.selectorText !== undefined) { if (/cmp2-plan:has\(/.test(r.selectorText)) { fuera.push({ padre, texto: r.cssText, i }); padre.deleteRule(i); } } else if (r.cssRules) recorrer(r.cssRules, r); } };
+          for (const s of document.styleSheets) { try { recorrer(s.cssRules, s); } catch (e) { /* hoja de otro origen */ } }
+          window.__qaReglas = fuera;
+          return fuera.length;
+        });
+        const lSin = await abrir(page, b, false, 320 / 900);
+        await cerrar(page, false);
+        await page.evaluate(() => { for (const f of window.__qaReglas || []) f.padre.insertRule(f.texto, f.i); });
+        const lCon = await abrir(page, b, false, 320 / 900);
+        await cerrar(page, false);
+        if (sacadas !== 1 || !lSin.tapadas || !bienAbierto(lCon, TOQUE.Silver)) malas.push('autoprueba de la cabecera de Gold: reglas sacadas ' + sacadas + ', sin la regla ' + corto(lSin) + ', devuelta ' + corto(lCon));
+      }
+    }
+    {
+      const n = await nota('Cirugías programadas', 0);
+      const b = celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]');
+      if (n !== '1 cirugía/familia/año, ' + PALABRA_26 || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push('/planes 1280, Cirugías programadas, Essential: ' + (n === null ? 'falta la nota' : '«' + n + '»') + ' (tiene que ser «1 cirugía/familia/año, ' + PALABRA_26 + '», y tocarse solo «' + PALABRA_26 + '»)');
+      else {
+        await abrirEn(page, b, false, 26, '/planes 1280, las 26');
+        // Autoprueba en la página: el texto del lector sin «sacar un nódulo de la
+        // mama» tiene que fallar; devuelto, pasar.
+        await abrir(page, b, false, 0.5);
+        const sab = await b.evaluate((e, t) => { const d = document.getElementById(e.getAttribute('aria-describedby')); const antes = d.textContent; d.textContent = t; return antes; }, T26.replace('; sacar un nódulo de la mama', ''));
+        const lMala = await b.evaluate(eval(LEER));
+        await b.evaluate((e, t) => { document.getElementById(e.getAttribute('aria-describedby')).textContent = t; }, sab);
+        const lBuena = await b.evaluate(eval(LEER));
+        // El scroll de adentro lo mide abrirEn; acá se mira solo el texto.
+        lMala.sigue = lBuena.sigue = true;
+        if (bien26(lMala) || !bien26(lBuena)) malas.push('autoprueba de las 26 en la página: sin «sacar un nódulo de la mama» ' + (bien26(lMala) ? 'pasa' : 'falla') + ', devuelta ' + (bien26(lBuena) ? 'pasa' : 'falla'));
+        await cerrar(page, false);
+        await seguir(page, b, 'teclado', 26, '/planes 1280, las 26');
+        // Autoprueba del alto: la misma burbuja con 89 px de alto (la rendija que
+        // se veía en el simulador a 1280 con el Term de 40d36ad) tiene que fallar.
+        await abrir(page, b, false, 0.5);
+        const lChica = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const m = u.style.maxHeight, o = u.style.overflowY; u.style.maxHeight = '89px'; u.style.overflowY = 'auto'; const r = eval(LEER)(e); u.style.maxHeight = m; u.style.overflowY = o; return r; }, LEER);
+        lChica.sigue = true;
+        if (grande(lChica)) malas.push('autoprueba del alto: la lista de las 26 con 89 px de alto pasa (' + corto(lChica) + ')');
+        await cerrar(page, false);
+      }
+    }
+    // Autoprueba de «entera» y «tapadas» con el toque de Silver abierto.
+    {
+      const b = celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]');
+      if (await b.count()) {
+        const l0 = await abrir(page, b, false, 0.5);
+        const corrida = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const t = u.style.top; u.style.top = '-2000px'; const r = eval(LEER)(e); u.style.top = t; return r; }, LEER);
+        // Una franja de 40 px sobre el medio de la burbuja: las cuatro esquinas
+        // quedan libres; solo la grilla la ve.
+        const tapada = await b.evaluate((e, LEER) => { const u = e.parentElement.querySelector(':scope > [aria-hidden="true"]:not([id])'); const q = u.getBoundingClientRect(); const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:' + q.left + 'px;top:' + (q.top + q.height / 2 - 20) + 'px;width:' + q.width + 'px;height:40px;z-index:1000;background:#fff'; document.body.appendChild(d); const r = eval(LEER)(e); d.remove(); return r; }, LEER);
+        const l1 = await b.evaluate(eval(LEER));
+        if (!bienAbierto(l0, TOQUE.Silver) || corrida.entera || !tapada.tapadas || !bienAbierto(l1, TOQUE.Silver)) malas.push('autoprueba de la burbuja: corrida ' + JSON.stringify({ entera: corrida.entera }) + ', tapada por el medio ' + JSON.stringify({ tapadas: tapada.tapadas }) + ', antes y después ' + bienAbierto(l0, TOQUE.Silver) + '/' + bienAbierto(l1, TOQUE.Silver));
+        await cerrar(page, false);
+      }
+    }
+    // El teclado (verificador de código, 23/10): con Tab se abre; Escape la
+    // cierra; Enter la vuelve a abrir y la cierra; Espacio también (tercera
+    // tanda: si alguien sacaba el Espacio del toque, la prueba seguía en verde), y
+    // sin mover la página: el Espacio, en un span, scrollea si no se le gana la
+    // tecla. Hasta el 23/10, después del Escape no había forma de reabrirla sin
+    // salir y volver a entrar. En un toque de la banda (span con role="button") y
+    // en una palabra del glosario (un botón), si la página la trae.
+    {
+      const prueba = async (b) => {
+        await b.evaluate(eval(COLOCAR), 0.5);
+        await page.mouse.move(5, 5);
+        await b.evaluate((e) => { const f = [...document.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input,select,textarea')].filter((x) => x.getClientRects().length); f[f.indexOf(e) - 1].focus(); });
+        const pasos = [];
+        for (const k of ['Tab', 'Escape', 'Enter', 'Enter', 'Space', 'Space']) {
+          const y0 = await page.evaluate(() => scrollY);
+          await page.keyboard.press(k); await page.waitForTimeout(250);
+          const dy = Math.round((await page.evaluate(() => scrollY)) - y0);
+          pasos.push(k + ' ' + (await b.getAttribute('aria-expanded')) + (await b.evaluate((e) => document.activeElement === e) ? '' : ' (sin foco)') + (k === 'Space' && dy ? ' (movió la página ' + dy + ' px)' : ''));
+        }
+        await page.keyboard.press('Escape');
+        return pasos;
+      };
+      const ESPERADO = ['Tab true', 'Escape false', 'Enter true', 'Enter false', 'Space true', 'Space false'];
+      // Autoprueba del «movió la página»: el Espacio sin nadie que se lo gane (el
+      // foco en el cuerpo de la página) scrollea, y la medida lo tiene que ver.
+      {
+        await page.evaluate(() => { window.scrollTo({ top: 0, behavior: 'instant' }); if (document.activeElement) document.activeElement.blur(); });
+        const y0 = await page.evaluate(() => scrollY);
+        await page.keyboard.press('Space'); await page.waitForTimeout(400);
+        const dy = Math.round((await page.evaluate(() => scrollY)) - y0);
+        if (!(dy > 0)) malas.push('autoprueba del teclado: el Espacio en el cuerpo de la página no movió la página (' + dy + ' px), así que la medida no ve un scroll');
+      }
+      const toques = [celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]'), celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]')];
+      const glosario = page.locator('button.txt[aria-describedby]:visible').first();
+      if (await glosario.count()) toques.push(glosario);
+      for (const b of toques) {
+        if (!(await b.count())) continue;
+        const pasos = await prueba(b);
+        if (JSON.stringify(pasos) !== JSON.stringify(ESPERADO)) malas.push('teclado, «' + (await b.textContent()).trim() + '»: ' + pasos.join(' · ') + ' (tiene que ser ' + ESPERADO.join(' · ') + ')');
+      }
+      visto.teclado = toques.length;
+    }
+    // El toque debajo de la cabecera pegajosa de su plan (ronda 3): la
+    // ecografía de Silver y las 26 de Essential, abiertas con Tab.
+    for (const [b, esperado, donde] of [[celda('Ecografías', 1).locator('.cmp2-fam .txt[aria-describedby]'), TOQUE.Silver, '/planes 1280, Ecografías, Silver'], [celda('Cirugías programadas', 0).locator('.cmp2-fam .txt[aria-describedby]'), 26, '/planes 1280, las 26']]) {
+      if (await b.count()) await tapadoPorCabecera(page, b, esperado, donde);
+      // Y tapado desde abajo, con 4 px a la vista arriba (ronda 6).
+      if (await b.count()) await tapadoDesdeAbajo(page, b, esperado, donde);
+    }
+    // La tarjeta de la ecografía (se abre al pasar el mouse por el nombre): la
+    // espera con su condición y la lista, en oraciones, en el pie.
+    {
+      const srv = page.locator('#comparar-planes .cmp2-lab .cmp2-srv', { hasText: /^Ecografía$/ }).first();
+      await srv.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.mouse.move(5, 5);
+      const c = await srv.boundingBox();
+      await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2);
+      await page.waitForTimeout(250);
+      const t = await page.evaluate(() => { const t = document.querySelector('#comparar-planes .cmp2-tarjeta'); if (!t) return null; const p = [...t.querySelectorAll('.cmp2-tarjeta-p')].map((x) => x.lastElementChild.textContent.trim()); return { p, pie: ((t.querySelector('.cmp2-tarjeta-pie') || {}).textContent || '').trim() }; });
+      const LINEA = 'La mayoría, sin tope. 2 meses de espera, la mayoría.';
+      if (!t || t.p[1] !== LINEA || t.p[2] !== LINEA || t.pie !== EN_TEXTO) malas.push('/planes 1280, tarjeta de la ecografía: ' + JSON.stringify(t && { silver: t.p[1], gold: t.p[2], pie: t.pie.slice(0, 60) }));
+      await page.mouse.move(5, 5);
+    }
+    // Autoprueba: sin la nota (lo que mostraba 35165a7), «falta la nota».
+    await page.evaluate(() => { const c = document.querySelector('[data-qa-banda="Ecografías|1"] .cmp2-fam'); if (c) c.remove(); });
+    if ((await nota('Ecografías', 1)) !== null) malas.push('autoprueba: borrada la nota de Silver, la lectura igual la encuentra');
+    await page.close();
+  }
+
+  // (2) /planes en el celular, con el dedo: el cuadro de esperas y la hoja.
+  // Lo que se sale del encabezado de su fila: cada renglón de texto visible
+  // contra el borde derecho del encabezado (el control de desborde de la página
+  // no lo ve: scrollWidth sigue igual). «de una lista de 26.» se salía 17 px a
+  // 360 (verificador de código, 23/10).
+  const SALE = `(rh) => {
+    const R = rh.getBoundingClientRect().right;
+    let max = 0;
+    const w = document.createTreeWalker(rh, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (n.parentElement.closest('[aria-hidden="true"], .sr-solo')) continue;
+      const g = document.createRange(); g.selectNodeContents(n);
+      for (const q of g.getClientRects()) if (q.width) max = Math.max(max, q.right - R);
+    }
+    return Math.round(max * 10) / 10;
+  }`;
+  for (const [w, h] of [[360, 780], [390, 844], [430, 932]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true });
+    const cel = await ctx.newPage();
+    await cel.goto(BASE + '/planes/', { waitUntil: 'networkidle' });
+    const vp = w + ' × ' + h;
+    const fila = (que) => cel.locator('.cmp-cel [role="table"] [role="row"]', { has: cel.locator('[role="rowheader"]', { hasText: que }) }).first();
+    const small = async (que) => { const s = fila(que).locator('[role="rowheader"] small'); return (await s.count()) ? s.evaluate(eval(SE_VE)) : null; };
+    {
+      const n = await small('Ecografías');
+      const b = fila('Ecografías').locator('small .txt[aria-describedby]');
+      if (n !== 'En Silver y Gold, la mayoría.' || !(await b.count())) malas.push(vp + ', cuadro de esperas, Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else await abrirEn(cel, b, true, TOQUE.juntos, vp + ', cuadro de esperas, Ecografías');
+      if (w === 390) visto.cel = n;
+    }
+    {
+      // «la mayoría» de Silver y Gold va por plan, después de Essential (11,
+      // verificador de textos, 23/10): un «La mayoría.» suelto delante parecía
+      // valer también para Essential.
+      const n = await small('Cirugías programadas');
+      const b = fila('Cirugías programadas').locator('small .txt[aria-describedby]');
+      if (n !== 'En Essential, una al año por familia, ' + PALABRA_26 + '. En Silver y Gold, la mayoría.' || !(await b.count()) || (await b.textContent()).trim() !== PALABRA_26) malas.push(vp + ', cuadro de esperas, Cirugías programadas: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+      else {
+        await abrirEn(cel, b, true, 26, vp + ', cuadro de esperas, las 26');
+        await seguir(cel, b, 'dedo', 26, vp + ', cuadro de esperas, las 26');
+        // Solo a 360: a 390 y 430, con la fila al 15 %, la lista entra y la
+        // burbuja no scrollea por dentro (medido por el verificador).
+        if (w === 360) await encima(cel, b, vp + ', cuadro de esperas, las 26');
+        // A 360 y 390, «de una lista de 26» se parte en dos renglones (ronda 5).
+        if (w === 360 || w === 390) await partido(cel, b, vp + ', cuadro de esperas, las 26');
+      }
+    }
+    // Nada se sale del encabezado de su fila. Autoprueba: una palabra larga que
+    // no se parte, metida en el encabezado de Cirugías, tiene que salirse.
+    {
+      const sale = await cel.evaluate((f) => [...document.querySelectorAll('.cmp-cel [role="table"] [role="rowheader"]')].map((rh) => [rh.firstChild.textContent.trim(), eval(f)(rh)]).filter((x) => x[1] > 0.5), SALE);
+      const auto = await fila('Cirugías programadas').locator('[role="rowheader"]').evaluate((rh, f) => { const s = document.createElement('span'); s.style.whiteSpace = 'nowrap'; s.textContent = ' de una lista larguísima de 26.'; rh.querySelector('small').appendChild(s); const r = eval(f)(rh); s.remove(); return r; }, SALE);
+      if (sale.length) malas.push(vp + ', cuadro de esperas: se sale del encabezado de su fila ' + sale.map((x) => x[0] + ' ' + x[1] + ' px').join(', '));
+      if (!(auto > 0.5)) malas.push(vp + ', autoprueba del desborde de la fila: una frase que no se parte no se sale (' + auto + ')');
+    }
+    // Lo que oye el lector (el árbol de accesibilidad de Chromium, por CDP): el
+    // encabezado de fila se llama con lo que se ve, sin la lista (el texto del
+    // lector de la burbuja lleva aria-hidden); la lista llega como descripción
+    // del toque. Hasta el 23/10 «Cirugías programadas» se llamaba con las 26
+    // enteras (839 caracteres) y terminaba con un punto doble. Autoprueba: la
+    // lista metida en el encabezado, sin aria-hidden, tiene que verse.
+    {
+      const cdp = await ctx.newCDPSession(cel);
+      const arbol = async () => (await cdp.send('Accessibility.getFullAXTree')).nodes;
+      const val = (x) => (x && x.value) || '';
+      const leerArbol = (nodos) => ({
+        filas: nodos.filter((n) => val(n.role) === 'rowheader').map((n) => val(n.name)),
+        toques: nodos.filter((n) => val(n.role) === 'button' && /^(la mayoría|de una lista de 26)$/.test(val(n.name))).map((n) => ({ nombre: val(n.name), desc: val(n.description) })),
+      });
+      const a = leerArbol(await arbol());
+      const plano = (t) => t.replace(/\s+/g, '').replace(/\.+/g, '.');
+      const vistos = new Set((await cel.evaluate((f) => [...document.querySelectorAll('[role="rowheader"]')].map((rh) => eval(f)(rh)), SE_VE)).map(plano));
+      const filasMal = a.filas.filter((n) => !vistos.has(plano(n)) || n.length > 120 || /Ecografías que esperan|Las 26 cirugías|\.\s*\./.test(n));
+      if (!a.filas.some((n) => /^Ecografías/.test(n)) || !a.filas.some((n) => /^Cirugías programadas/.test(n))) filasMal.push('no encuentro los encabezados de Ecografías y de Cirugías en el árbol');
+      const eco = a.toques.find((t) => t.nombre === 'la mayoría'), cir = a.toques.find((t) => t.nombre === PALABRA_26);
+      if (a.filas.length < 5 || filasMal.length) malas.push(vp + ', lector: el encabezado de fila no se llama con lo que se ve · ' + filasMal.map((x) => x.length + ' caracteres: «' + x.slice(0, 70) + '»').join(' · '));
+      if (!eco || eco.desc !== TOQUE.juntos || !cir || difs26(cir.desc).length) malas.push(vp + ', lector: la descripción del toque no trae la lista · ' + JSON.stringify({ eco: eco && eco.desc.slice(0, 50), cir: cir && cir.desc.slice(0, 50) }));
+      if (w === 390) {
+        const id = await fila('Cirugías programadas').locator('small .txt[aria-describedby]').getAttribute('aria-describedby');
+        await cel.evaluate((id) => { const d = document.getElementById(id); window.__qaAria = d.getAttribute('aria-hidden'); d.removeAttribute('aria-hidden'); }, id);
+        const sin = leerArbol(await arbol()).filas.find((n) => /^Cirugías programadas/.test(n)) || '';
+        await cel.evaluate((id) => { document.getElementById(id).setAttribute('aria-hidden', window.__qaAria); }, id);
+        if (!(sin.length > 120)) malas.push('autoprueba del lector: sin aria-hidden, el encabezado de Cirugías mide ' + sin.length + ' caracteres');
+        visto.fila = (a.filas.find((n) => /^Cirugías programadas/.test(n)) || '').length;
+      }
+      await cdp.detach();
+    }
+    if (w === 390) {
+      // La hoja de la ecografía, desde «Los once servicios».
+      await cel.locator('.cmp-cel button', { hasText: 'Los once servicios, plan por plan' }).tap();
+      await cel.waitForTimeout(450);
+      await cel.locator('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo button.fila', { hasText: /^Ecografía/ }).first().tap();
+      await cel.waitForTimeout(450);
+      const hj = await cel.evaluate(() => { const d = document.querySelector('.cmp-cel .hoja[data-abierta="1"] .hoja-cuerpo'); if (!d) return null; return { texto: d.textContent.replace(/\s+/g, ' '), planes: [...d.querySelectorAll('.sq')].map((x) => x.textContent) }; });
+      const PILDORA = '2 meses de espera, la mayoría';
+      if (!hj || !hj.texto.includes(EN_TEXTO) || /Las demás, 2 meses/.test(hj.texto) || !hj.planes[1] || !hj.planes[1].includes(PILDORA) || !hj.planes[2] || !hj.planes[2].includes(PILDORA) || (hj.planes[0] || '').includes('la mayoría')) malas.push('390, hoja de la ecografía: ' + JSON.stringify(hj && { lista: hj.texto.includes(EN_TEXTO), planes: hj.planes.map((x) => x.slice(-40)) }));
+    }
+    await ctx.close();
+  }
+
+  // (3) El simulador, a 360, 390 y 430 con el dedo y a 1280 con el mouse, con
+  // el porqué de Essential (10A: «una cirugía al año por familia, de una lista
+  // de 26», como el cuadro y el simulador; decía «las cirugías», sin más).
+  const ESS_PORQUE = 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía al año por familia, de una lista de 26, se cubren al año de afiliarte.';
+  for (const [w, h, dedo] of [[360, 780, true], [390, 844, true], [430, 932, true], [1280, 900, false]]) {
+    const ctx = await browser.newContext(dedo ? { viewport: { width: w, height: h }, isMobile: true, hasTouch: true } : { viewport: { width: w, height: h } });
+    const pg = await ctx.newPage();
+    for (const plan of ['silver', 'gold', 'essential']) {
+      await pg.goto(BASE + '/simulador/?plan=' + plan, { waitUntil: 'networkidle' });
+      for (let i = 0; i < 14; i++) {
+        if (await pg.locator('[data-sp-carencias]').count()) break;
+        let hecho = false;
+        for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) { const b = pg.locator('button:visible', { hasText: t }).first(); if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; } }
+        if (!hecho) break;
+        await pg.waitForTimeout(450);
+      }
+      const fila = (que) => pg.locator('[data-sp-carencias] [data-sp-carencia-row]', { hasText: que }).first();
+      const notaDe = async (que) => { const s = fila(que).locator(':scope > span:first-child > span'); return (await s.count()) ? s.evaluate(eval(SE_VE)) : null; };
+      if (!(await pg.locator('[data-sp-carencias]').count())) { malas.push('simulador ' + w + ', ' + plan + ': no llega a las esperas'); continue; }
+      const n = await notaDe('Ecografías');
+      if (plan === 'essential') {
+        if (n !== null) malas.push('simulador ' + w + ', Essential, Ecografías: una nota que no va («' + n + '»)');
+        const c = await notaDe('Cirugías programadas');
+        const b = fila('Cirugías programadas').locator('.txt[aria-describedby]');
+        if (c !== 'una al año por familia, ' + PALABRA_26 || !(await b.count())) malas.push('simulador ' + w + ', Essential, Cirugías programadas: ' + (c === null ? 'falta la nota' : '«' + c + '»'));
+        else {
+          await abrirEn(pg, b, dedo, 26, 'simulador ' + w + ', las 26');
+          await seguir(pg, b, dedo ? 'dedo' : 'teclado', 26, 'simulador ' + w + ', las 26');
+          if (!dedo) { await recortado(pg, b, 'simulador ' + w + ', las 26'); await asoma(pg, b, 'simulador ' + w + ', las 26'); }
+        }
+        const porque = await pg.evaluate(() => { const p = document.querySelector('[data-sp-price]'); const c = p && p.closest('div.sq'); return c ? [...c.querySelectorAll('p')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()) : []; });
+        if (!porque.includes(ESS_PORQUE) || porque.some((x) => /las cirugías y el parto/.test(x))) malas.push('simulador ' + w + ', el porqué de Essential: ' + JSON.stringify(porque.find((x) => /^Cobertura de entrada/.test(x)) || porque.slice(0, 2)));
+      } else {
+        const P = plan === 'silver' ? 'Silver' : 'Gold';
+        const b = fila('Ecografías').locator('.txt[aria-describedby]');
+        if (n !== NOTA || !(await b.count())) malas.push('simulador ' + w + ', ' + P + ', Ecografías: ' + (n === null ? 'falta la nota' : '«' + n + '»'));
+        else await abrirEn(pg, b, dedo, TOQUE[P], 'simulador ' + w + ', ' + P);
+      }
+    }
+    await ctx.close();
+  }
+
+  // (4) Las preguntas frecuentes del home, abiertas como las abre una persona:
+  // la de las esperas nombra las cinco de Gold y manda al asesor por la de
+  // vejiga (decía «otras seis»: 12, verificador de textos, 23/10); la de la
+  // diferencia dice la cirugía de Essential con su condición (10A).
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    const abrirFaq = async (q) => {
+      const btn = page.locator('button[aria-controls]', { hasText: q }).first();
+      await btn.scrollIntoViewIfNeeded();
+      await btn.click();
+      await page.waitForTimeout(400);
+      return btn.evaluate((b) => { const r = document.getElementById(b.getAttribute('aria-controls')); return r ? r.innerText.replace(/\s+/g, ' ') : ''; });
+    };
+    const r = await abrirFaq('¿Cuánto tengo que esperar para usar mi plan?');
+    const debe = ['ecografías, 2 meses la mayoría y 3 las del embarazo y las Doppler (en Gold, también ' + GOLD5 + ', y ' + VEJ + ')', 'cirugías (una al año por familia, de una lista de 26)'];
+    const faltan = debe.filter((x) => !r.includes(x));
+    if (faltan.length || /laboratorio y ecografías, unos 2 meses|otras seis/.test(r)) malas.push('home, FAQ de las esperas: ' + (faltan.length ? 'no dice «' + faltan.join('» ni «') + '»' : 'sigue diciendo «otras seis» o «unos 2 meses»'));
+    const d = await abrirFaq('¿Cuál es la diferencia entre Essential, Silver y Gold?');
+    const DIF = 'La internación, el parto y una cirugía al año por familia, de una lista de 26, los cubre al año de afiliarte, y varios topes son por familia.';
+    if (!d.includes(DIF) || /las cirugías y el parto/.test(d)) malas.push('home, FAQ de la diferencia: no dice «' + DIF + '»');
+    await page.close();
+  }
+
+  if (malas.length) mal('9A y 10A: «la mayoría» de las ecografías de Silver y Gold y «' + PALABRA_26 + '» de Essential, a la vista y con su lista a un toque, entera, sin nada encima y donde se abra · ' + malas.slice(0, 8).join(' · ') + (malas.length > 8 ? ' · (y ' + (malas.length - 8) + ' más)' : ''));
+  else bien('9A y 10A: Silver y Gold «2 meses · ' + visto.compu + '» → las ecografías que esperan 3 meses (las siete del embarazo y cinco Doppler; en Gold, cinco más y la de vejiga al asesor), y Essential «1 cirugía/familia/año, ' + PALABRA_26 + '» → las 26 a cielo abierto, en el orden del cuadernillo, con el anestesista y la videolaparoscopía: en la banda de esperas de /planes a 1280 con el mouse (también con la fila a 320 px, sobre las cabeceras fijas), en el cuadro del celular a 360, 390 y 430 con el dedo («' + visto.cel + '»), en el simulador a 360, 390, 430 y 1280, cada toque con la fila al 25, 50 y 85 % del alto (' + visto.posiciones + ' aperturas): lo oye el lector, la burbuja (fija, junto a su toque, sin marco del fixed) se ve entera, sin nada encima (5 × 5 puntos) y grande (el alto más chico que se vio: las 26, ' + altos[26] + ' px; las ecografías, ' + altos.eco + ' px; mínimo ' + ALTO_MIN + ' o la lista entera) y, si no entra, scrollea por dentro con el dedo y con el mouse sin cerrarse; al scrollear la página o su caja se reacomoda junto al toque, se esconde mientras el toque está fuera de la pantalla y vuelve junto a él (' + visto.seguir + ' veces), y también mientras su caja lo esconde (el simulador a 1280 con el teclado, ' + visto.recortado + (visto.recortado === 1 ? ' borde' : ' bordes') + ') o la cabecera pegajosa de su plan lo tapa (/planes a 1280 con el teclado y la rueda, ' + visto.cabecera + ' toques), y vuelve a la vista, junto a él, con el toque asomando 4 px debajo de esa cabecera (' + visto.bordePlan + ' toques) o tapado desde abajo con 4 px a la vista arriba (' + visto.tapaAbajo + ' toques); con el primer renglón del toque partido debajo de la cabecera del sitio y el segundo a la vista, sigue abierta, a la vista y junto a él (el cuadro a 360 y 390 con el dedo, ' + visto.partido + ' veces); con el toque asomando 3 y 7 px debajo de la cabecera del sitio, el mouse la abre a la vista y junto a él (' + visto.asoma + ' veces); con el toque debajo de donde estaba su burbuja después de un salto de scroll, sigue abierta, a la vista y junto a él (el cuadro a 360 con el dedo, ' + visto.encima + (visto.encima === 1 ? ' vez' : ' veces') + '); con el dedo, el primer cuadro en que se dibuja ya está junto a su toque y debajo de la cabecera (' + visto.cuadros + ' toques); el teclado la abre y la cierra con Enter y con Espacio, sin mover la página (' + visto.teclado + ' toques); el encabezado de fila se llama con lo que se ve (' + visto.fila + ' caracteres en Cirugías, a 390) y nada se sale de él; la tarjeta y la hoja de la ecografía lo dicen en oraciones, y las preguntas frecuentes y el porqué de Essential también; los detectores fallan con la lista mala, la burbuja corrida o tapada, la cabecera de Gold sin su arreglo, la lista en el encabezado y una frase que se sale');
+}
+
+// ── «Compartir cotización» no mueve nada al copiar (#60, tercera tanda del 23/10) ──
+// Sin Web Share (la computadora con Linux y, deducido sin verificar, los
+// navegadores de adentro de Instagram y Facebook en Android), el botón copia y
+// su texto pasa a «¡Copiado!», que es más corto: a 360 y 390 los dos botones
+// entraban en un renglón y todo lo de abajo subía 54 px, y a los 2,2 s bajaba,
+// con el botón corriéndose de debajo del dedo (verificador de código, 23/10).
+// Ahora el texto largo va escondido en la misma celda de una grilla y el botón
+// mide siempre lo de «Compartir cotización». Se mide, con navigator.share sacado
+// y el portapapeles permitido, el link «Ver el detalle de los planes» y el ancho
+// de los dos botones antes y después de tocar; el lector oye lo que se ve.
+// Autoprueba: sin el texto largo escondido (lo de antes), el link se mueve.
+console.log('\n── «Compartir cotización» no mueve nada al copiar (#60)');
+{
+  const malas = [], visto = [];
+  for (const [w, h] of [[360, 780], [390, 844]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true, permissions: ['clipboard-read', 'clipboard-write'] });
+    await ctx.addInitScript(() => { try { Object.defineProperty(Navigator.prototype, 'share', { value: undefined, configurable: true }); } catch (e) { /* ya no está */ } });
+    const pg = await ctx.newPage();
+    await pg.goto(BASE + '/simulador/?plan=silver', { waitUntil: 'networkidle' });
+    for (let i = 0; i < 14 && !(await pg.locator('[data-sp-price]').count()); i++) {
+      let hecho = false;
+      for (const t of ['Empecemos', 'Para mí', 'Asunción', 'Continuar', 'Ver mi precio']) { const b = pg.locator('button:visible', { hasText: t }).first(); if (await b.count()) { await b.click().catch(() => {}); hecho = true; break; } }
+      if (!hecho) break;
+      await pg.waitForTimeout(450);
+    }
+    // Por el nombre que oye el lector: el texto del botón trae también el largo
+    // escondido.
+    const comp = pg.getByRole('button', { name: /^(Compartir cotización|¡Copiado!)$/ }).first();
+    const link = pg.locator('a', { hasText: 'Ver el detalle de los planes' }).first();
+    if (!(await comp.count()) || !(await link.count())) { malas.push(w + ': no llego a «Compartir cotización» (' + (await comp.count()) + ') ni al link de abajo (' + (await link.count()) + ')'); await ctx.close(); continue; }
+    await comp.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await pg.waitForTimeout(150);
+    const medir = async () => ({
+      y: Math.round((await link.boundingBox()).y),
+      anchos: await pg.evaluate(() => [...document.querySelectorAll('button')].filter((b) => /^(Descargar cotización|Compartir cotización|¡Copiado!)$/.test(b.innerText.trim())).map((b) => Math.round(b.getBoundingClientRect().width))),
+      texto: (await comp.innerText()).trim(),
+      oye: oido(await comp.ariaSnapshot()),
+    });
+    const tocar = async () => { const a = await medir(); await comp.click(); await pg.waitForTimeout(300); const d = await medir(); return { a, d }; };
+    const { a, d } = await tocar();
+    if (d.texto !== '¡Copiado!') malas.push(w + ': al tocar sin Web Share no dice «¡Copiado!» («' + d.texto + '»): no se puede medir');
+    else if (Math.abs(d.y - a.y) > 0.5 || JSON.stringify(a.anchos) !== JSON.stringify(d.anchos)) malas.push(w + ': al copiar, el link de abajo se movió ' + (d.y - a.y) + ' px y los botones pasaron de ' + a.anchos.join('/') + ' a ' + d.anchos.join('/') + ' px');
+    if (a.oye !== 'Compartir cotización' || d.oye !== '¡Copiado!') malas.push(w + ': el lector oye «' + a.oye + '» y, al copiar, «' + d.oye + '» (tiene que ser lo que se ve)');
+    visto.push(w + ': ' + a.anchos.join('/') + ' px, el link en ' + a.y + ' antes y ' + d.y + ' después');
+    // Autoprueba: lo de antes (sin el texto largo escondido) tiene que moverse.
+    await pg.waitForTimeout(2400);
+    await comp.evaluate((e) => { const x = e.querySelector('[aria-hidden="true"]'); if (x) x.remove(); });
+    await pg.waitForTimeout(100);
+    const sab = await tocar();
+    if (!(Math.abs(sab.d.y - sab.a.y) > 0.5)) malas.push(w + ': autoprueba, sin el texto largo escondido el link no se mueve (' + sab.a.y + ' → ' + sab.d.y + ')');
+    await ctx.close();
+  }
+  if (malas.length) mal('«Compartir cotización» sin Web Share: ' + malas.join(' · '));
+  else bien('«Compartir cotización» sin Web Share: al pasar a «¡Copiado!» no cambia el ancho de los botones ni se mueve nada de abajo, y el lector oye lo que se ve (' + visto.join('; ') + '); sin el texto largo escondido, el link se mueve');
 }
 
 // ── La nota de la cesárea del plegable, con letra de nota (cierre de la vuelta 3, 18/10) ──
@@ -2785,6 +4224,14 @@ console.log('\n── Una sola forma de mandar al asesor (R1A)');
   }
   const pleg = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En urgencia/.test((d.firstElementChild || {}).textContent || '')); return f ? f.children[1].textContent.trim() : null; });
   if (pleg !== ASESOR) malas.push('/planes/ plegable, urgencia de Essential: ' + JSON.stringify(pleg));
+  // El Cuadro 2 de Essential (186A, Arturo, 23/10/2026, sp-interno#186): el mismo
+  // hueco de la fuente que la urgencia de arriba (null en essential-cobertura.json),
+  // y su «—» se leía «no cubre». Silver y Gold siguen con su monto, y ninguna
+  // celda del plegable queda en «—».
+  const cuadro2 = await page.evaluate(() => { const f = [...document.querySelectorAll('#detalle-internacion div')].find((d) => d.children.length === 4 && /^En estudios y procedimientos/.test((d.firstElementChild || {}).textContent || '')); return f ? [...f.children].slice(1).map((c) => c.textContent.trim()) : null; });
+  if (!cuadro2 || cuadro2[0] !== ASESOR || !/^Gs\.\s80\smil/.test(cuadro2[1]) || !/^Gs\.\s100\smil/.test(cuadro2[2])) malas.push('/planes/ plegable, Cuadro 2 (Essential al asesor; Silver y Gold con su monto): ' + JSON.stringify(cuadro2));
+  const rayas = await page.evaluate(() => [...document.querySelectorAll('#detalle-internacion [role="cell"]')].filter((c) => c.textContent.trim() === '—').length);
+  if (rayas) malas.push('/planes/ plegable: ' + rayas + ' celda(s) con «—»');
   // La tarjeta del home lee la nota de coverage.js (comité, vuelta 3): escrita a
   // mano en page.jsx decía «no fija este tope» y, en /planes, «no fija el tope de
   // remedios en urgencias». Y dice qué preguntar, con el molde de la G1A.

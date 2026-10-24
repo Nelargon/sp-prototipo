@@ -13,7 +13,7 @@
    es vieja y hoy quiere decir Essential. */
 
 import { DEPT_AJUSTE } from './geo';
-import { coverage } from './coverage';
+import { coverage, notaCelda } from './coverage';
 
 /* Salud Protegida contact. One number for WhatsApp, urgencias and phone.
    WHATSAPP_NUMBER is used for every wa.me link; SP_TEL for tel: (call) links. */
@@ -220,11 +220,17 @@ const bracketAdh = (a) => (a <= 20 ? 0 : a <= 54 ? 1 : a <= 64 ? 2 : a <= 69 ? 3
 // forma corta con su frase completa para los lectores de pantalla.
 const nombrar = (t, cosa) => t.replace(/^([^/]+)/, '$1 ' + cosa); // «2/familia/año» → «2 tomografías/familia/año»
 const lineasCortas = (i) => {
-  const c = Object.fromEntries(coverage().map((s) => [s.name, s.corta]));
+  const cov = Object.fromEntries(coverage().map((s) => [s.name, s]));
+  const c = Object.fromEntries(Object.entries(cov).map(([n, s]) => [n, s.corta]));
   const tom = i === 0
     ? nombrar(c['Tomografía (TAC)'][0], 'estudios') + ' (tomografía, ecocardiograma o ergometría)'
     : nombrar(c['Tomografía (TAC)'][i], 'tomografías');
-  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia'), internacion: c['Internación'][i] };
+  // La condición de la resonancia de Essential, «sin contraste ni sedación», va
+  // también en esta línea (185A con el agregado del comité, Arturo, 23/10/2026):
+  // es la misma `cola` de coverage.js que va debajo de la celda en las tablas
+  // (notaCelda), no se escribe acá.
+  const rm = notaCelda(cov['Resonancia (RM)'], i);
+  return { estudios: 'Tomografía y resonancia: ' + tom + ' y ' + nombrar(c['Resonancia (RM)'][i], 'resonancia') + (rm ? ' (' + rm + ')' : ''), internacion: c['Internación'][i] };
 };
 export const plans = () => {
   const [e, s, g] = [0, 1, 2].map(lineasCortas);
@@ -303,9 +309,18 @@ export const engine = (d) => {
      el formato viejo de simulaciones guardadas — solo se conserva para
      que un "Retomar mi simulación" anterior no rompa. */
   const ubi = d.ubi && d.ubi.deptId ? d.ubi : null;
+  // Essential: la cirugía, «una al año por familia, de una lista de 26» (10A,
+  // Arturo, 23/10/2026): «las cirugías», sin más, hacía creer que entra
+  // cualquiera (verificadores de datos y de textos, 23/10). Con las mismas
+  // palabras que el cuadro del celular, el simulador y la pregunta frecuente de
+  // las esperas (decía «una cirugía por año para la familia»: dos formas de
+  // decir lo mismo; verificador de textos, tercera tanda).
   const P = {
-    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, las cirugías y el parto se cubren al año de afiliarte.' },
-    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y topes más altos.' },
+    essential: { name: base[0].name, color: base[0].color, why: 'Cobertura de entrada con el precio de tu zona: consultas sin tope en Lister, urgencias 24 h y estudios del día a día. La internación, el parto y una cirugía al año por familia, de una lista de 26, se cubren al año de afiliarte.' },
+    // Sin «y topes más altos» (1A, Arturo, 23/10/2026, sp-interno#193): en 10 de
+    // las 20 especialidades con tope de Silver, Essential puede dar más consultas
+    // al año. Lo que queda es cierto conteste lo que conteste SP en #110.
+    silver: { name: base[1].name, color: base[1].color, why: 'El equilibrio con respaldo de verdad: más días de terapia intensiva y más sesiones de psicología.' },
     // Sin «los topes más altos» (8A, Arturo, 20/10/2026, sp-interno#189): si vale
     // la grilla, Gold tiene menos fisioterapia que Silver; lo aclara SP (#50).
     gold: { name: base[2].name, color: base[2].color, why: 'La cobertura más amplia: consultas sin tope en casi todas las especialidades y más días de internación.' },
@@ -387,7 +402,8 @@ export const opts = () => ({
   ],
   nivel: [
     { k: 'esencial', label: 'Lo esencial, para estar cubierto en lo importante', note: 'Essential: urgencias, consultas y estudios del día a día, al precio de tu zona. Para quien quiere pagar lo justo.' },
-    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y topes más altos.' },
+    // Silver, sin «y topes más altos» (1A, 23/10/2026, sp-interno#193), como su porqué.
+    { k: 'equilibrio', label: 'Un equilibrio entre precio y cobertura', note: 'Más días de terapia intensiva y más sesiones de psicología.' },
     // Gold, sin «los topes más altos» (8A, 20/10/2026, sp-interno#189), como su porqué.
     { k: 'amplia', label: 'La cobertura más amplia posible', note: 'Consultas sin tope en casi todas las especialidades y más días de internación y terapia intensiva.' },
   ],

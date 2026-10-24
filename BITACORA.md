@@ -6011,3 +6011,687 @@ La lección se afina: reducir contraste no es automáticamente mejorar. La
 preferencia visual se confirma mirando la comparación. Por eso el catálogo
 separa «última generada» de «actual»: permite recuperar una versión anterior
 por técnica sin perder las demás exploraciones ni las favoritas.
+
+## Capítulo 163 — El guardián que perdonaba lo que la regla prohíbe (23/10/2026)
+
+**Qué intentamos.** Cerrar sp-interno#60, que decide Claude: los radios
+escritos a mano que quedaban en el sitio y «la regex del QA no los ve todos».
+La regla está escrita desde septiembre: una esquina se elige por su función,
+nunca con un número (cap. 92), y «el QA integral lo cuenta».
+
+**Qué pasó.** El conteo de `qa-integral` daba verde: «9 excepciones locales,
+ninguna repetida». Contamos a mano y eran 13 radios a mano en `app/`. Había dos
+razones, y ninguna era un error de programación:
+- **La vara del control era más blanda que la de la regla.** Un valor fuera de
+  escala usado menos de tres veces era una «excepción local» y se admitía. La
+  regla no dice eso: dice «nunca».
+- **Leía una sola forma de escribir un radio**, con el primer número:
+  `border-radius:Npx` y `--sq:Npx`. No veía `0 12px 12px 0` (la cita del blog
+  y el `Callout`, justo con el valor exacto de `--r-sm`), el respaldo
+  `var(--sq,10px)` (el `--r-xs` escrito a mano), las esquinas sueltas, el
+  `borderRadius` de React, rem, decimales ni `radius={N}`. Es la familia del
+  cap. 90: cada forma nueva de escribir algo queda invisible para el guardián
+  que leía la vieja.
+
+El detector nuevo (`qa/esquinas.mjs`) marca toda declaración de radio con un
+largo escrito, en CSS y en React, y se prueba antes con veinte casos, diez que
+tienen que marcar y diez que no. En main encuentra 14; en la rama, 0. Las dos
+excepciones que quedan (los 14px de `/historia/` y la casilla de los adicionales
+del simulador) están declaradas con su porqué y con cuántas veces aparecen: si
+alguien las cambia, avisa. Y como el código no dice todo, en el navegador se
+mira lo computado: cada `.sq` visible tiene su `--sq` en la escala.
+
+**Qué aprendimos.**
+- **Un control más tolerante que la regla es, para lo que deja pasar, como no
+  tenerlo.** El verde decía «la escala se usa por token» y la escala tenía
+  trece fugas. La vara del control se copia de la regla escrita, no de lo que
+  parece razonable perdonar.
+- **Las excepciones se declaran, no se infieren.** «Usado una vez» no es un
+  porqué. Una excepción con nombre, archivo y motivo se puede discutir; una que
+  el contador deduce, no la ve nadie.
+
+## Capítulo 164 — La nota larga no entra en el lugar de la corta (23/10/2026)
+
+**Qué intentamos.** Las 185A y 190A: que la celda de Essential en las tablas del
+home y de `/planes` diga lo que cambia la elección («junto con ecocardiograma y
+ergometría», «sin contraste ni sedación», «solo traumatológica»). Lo primero
+fue copiar la forma que ya existía: la nota «en Lister», en el mismo renglón que
+el valor.
+
+**Qué pasó.** No entró. A 820 px la nota de la tomografía ocupaba tres renglones
+y se salía de la celda de 48 px; en la tarjeta del home en el celular dejaba el
+nombre de la fila en 0 px de ancho. Y midiendo apareció otra cosa: **el home
+nunca había mostrado sus notas de consultas** («en Lister · 3 por mes en la
+red», «en la mitad; 5 o 6 en el resto»). Estaban escritas en `page.jsx`, pero
+el Comparador del home va sin `notas` y solo dibuja «por familia». La nota fue
+debajo del valor, en su propio bloque, y la fila entera sube a 64 px: la tabla
+son columnas sueltas que solo alinea la altura fija, así que crece toda la fila
+o se desalinean las columnas.
+
+**Qué aprendimos.**
+- **Una nota larga no copia la forma de una corta.** «en Lister» cabe al lado
+  del número; una condición de cuatro palabras, no.
+- **Lo que el código dice que se ve, se mide en el navegador.** Las notas de
+  consultas del home estaban escritas hacía semanas y nadie las vio, porque
+  nadie las había buscado en la pantalla. Quedó como punto de revisión.
+
+## Capítulo 165 — La lista que se abre tiene que entrar donde se abre (23/10/2026)
+
+**Qué intentamos.** La 9A y la 10A: «2 meses, la mayoría» en las ecografías de
+Silver y Gold y «de una lista de 26» en las cirugías de Essential, con la lista
+a un toque, con el mismo `Term` del glosario. La prueba lee cada toque abierto
+dos veces (lo que oye el lector y la burbuja) y pide que la burbuja se vea
+entera y sin nada encima.
+
+**Qué pasó.** Dos fallas, una del sitio y una de la prueba:
+- **La del sitio.** En el simulador, en la computadora, las 26 cirugías se
+  abrían hacia arriba y se cortaban. La tarjeta de esperas recorta
+  (`overflow:hidden`), y adentro del cuerpo del simulador, que scrollea por
+  dentro. `Term` miraba solo la primera caja que recorta, y la lista, a 260 px
+  de ancho, medía unos 366 de alto: no entraba ni arriba ni abajo. Ahora `Term`
+  cuenta todas las cajas que recortan (también las que scrollean) y la cabecera
+  fija como techo, abre hacia donde hay más lugar, y la lista de 26 pide una
+  burbuja más ancha (420 px en la computadora), que la deja en unos 290 de
+  alto.
+- **La de la prueba.** «Sin nada encima» se medía con `elementFromPoint` a 3 px
+  de cada esquina, y la burbuja tiene la esquina redondeada: a 3 px el punto
+  cae afuera de la curva, sobre lo que hay debajo, y la prueba gritaba
+  «tapada» donde no había nada. Se mide a 8 px. Y la caja del simulador que
+  scrollea no se contaba como caja que recorta: la prueba la cuenta ahora, igual
+  que `Term`.
+- **La de la vista, que ninguna prueba vio.** Con todo en verde, la captura del
+  cuadro de esperas del celular mostró «de una lista de 26» partido en dos
+  renglones centrados, con el subrayado debajo de los dos y el punto suelto en
+  un tercero: la caja de `Term` es inline-block, y una frase adentro se parte
+  como un bloque. El toque ya no se parte (`white-space:nowrap`, solo en los
+  toques) y el punto va pegado.
+
+**Qué aprendimos.**
+- **Un texto a un toque es un texto que alguien tiene que poder leer entero.**
+  Que el lector lo oiga no alcanza (es la lección del cap. 76, otra vez): la
+  burbuja se mide contra todo lo que la recorta, no contra la primera caja.
+- **Una prueba de geometría mide la forma real, no el rectángulo.** El
+  rectángulo de una caja redondeada no es la caja: lo que cae en la esquina es
+  de lo de abajo.
+- **Una prueba que lee el texto no ve cómo se parte.** El texto era el
+  aprobado, letra por letra, y se leía mal. Las capturas no son un trámite del
+  final: son la otra mitad de la verificación.
+
+## Capítulo 166 — El nombre del archivo no es su versión (23/10/2026)
+
+**Qué intentamos.** El punto 1 de sp-interno#61: que la fecha de la Guía Médica
+diga cuándo son los datos.
+
+**Qué pasó.** La Guía decía «Datos al 17/09/2026» siempre: leía la fecha del PDF
+de una red (Privilege), que no se mueve con la planilla. Cada ficha decía la del
+PDF más reciente de sus redes (25/09, 10/08 o 17/09), y el home, «según la
+planilla al 30/09». Tres fechas para el mismo dato. Y el Guardián había leído en
+el informe del script «20260923_…» como «la planilla del 23/09»: el archivo del
+Drive se edita en el lugar, su nombre nunca cambió y la versión publicada es la
+del 29/09, leída el 30/09. Ahora la Guía y las fichas dicen `meta.datos_al`, el
+día en que se leyó la planilla.
+
+**Qué aprendimos.**
+- **Una fecha que se muestra sale del hecho que nombra.** «Datos al» es la
+  lectura de la planilla, no el nombre de un archivo ni la fecha de un documento
+  vecino.
+- **Dos fechas para el mismo dato en el mismo sitio son la señal.** Si el home y
+  la Guía no coinciden, una de las dos está leyendo otra cosa.
+
+## Capítulo 167 — La prueba abría la lista justo donde entraba (23/10/2026)
+
+**Qué intentamos.** Los tres verificadores de la 9A y la 10A (datos, textos y
+código) encontraron que en el celular la lista de las 26 cirugías quedaba
+debajo de la cabecera fija cada vez que la fila estaba en la mitad de arriba de
+la pantalla. La prueba daba verde. El arreglo pedido era mínimo: que `Term`,
+cuando la burbuja no entra ni arriba ni abajo, la abra hacia el lado más grande,
+con ese alto y scroll por dentro; y que el toque se parta como el texto, para
+que «de una lista de 26.» no se saliera de su fila.
+
+**Qué pasó.** Cuatro cosas que no eran lo que parecían:
+- **La prueba abría siempre al 62 % del alto**, el único lugar donde la lista
+  más larga entraba arriba. Con el `Term` de main (35165a7) también daba verde.
+  Abierta con la fila al 25, al 50 y al 85 %, el `Term` de main cae con 45
+  hallazgos, y el de la primera tanda, también.
+- **Un `<button>` con `display:inline` no se parte.** Chrome lo dibuja como
+  inline-block, porque así lo pide el estándar de HTML: `getClientRects()` da
+  una sola caja. El toque pasó a ser un `<span role="button">`, que el teclado
+  alcanza y abre con Enter o Espacio. El CSS decía «inline» y el navegador
+  dibujaba otra cosa.
+- **La burbuja que scrollea recordaba dónde había quedado.** La prueba de
+  scrollear con el dedo falló solo a partir de la segunda apertura: el navegador
+  guardaba el scroll de la vez anterior y la lista se reabría por la mitad, ya
+  en el tope. El `scrollTop = 0` del primer intento no hacía nada, porque corría
+  antes de que la burbuja tuviera su alto (todavía no scrolleaba).
+- **La autoprueba que sacaba una regla de CSS no sacaba nada.** Para probar el
+  arreglo de la cabecera de Gold, la prueba borra la regla y espera «tapada».
+  Dio «0 reglas sacadas»: en Chrome una regla de estilo también tiene
+  `cssRules` (por el CSS anidado) y el recorrido se metía adentro en vez de
+  leer su selector. Como la autoprueba exige haber sacado una, falló, y por eso
+  se vio.
+
+**Qué aprendimos.**
+- **Una prueba de lugar se corre donde está la persona, no donde entra la
+  lista.** Una sola posición elegida para que pase prueba la posición, no el
+  componente. Y se demuestra con la versión vieja: si la de main no cae, la
+  prueba no cuida nada.
+- **Lo que el navegador dibuja se mide, también la forma de la caja.** Es la
+  regla de lo computado (cap. 76) llevada a `display`.
+- **Una autoprueba cuenta lo que rompió.** «Saqué 0 reglas y no pasó nada» no
+  es un verde: es una prueba que no probó.
+
+## Capítulo 168 — La palabra de la familia no puede abarcar más que la del contrato (23/10/2026)
+
+**Qué intentamos.** En la primera tanda de la 10A, las 26 cirugías de Essential
+se dijeron con palabras de casa donde parecía decir lo mismo: «hemorroides»,
+«quiste de un lado», «legrado (raspado del útero)», «amígdalas», «piedra en el
+riñón, a cielo abierto».
+
+**Qué pasó.** El verificador de datos cruzó cada nombre con lo que el propio
+repo clasifica como «No entra» o «Preguntale» (`lib/prestaciones.json`):
+«hemorroides» abarcaba la ligadura elástica y la trombectomía, que no entran;
+«quiste» era cualquier quiste, y el cuadernillo no dice de qué órgano;
+«legrado» sin «evacuador» incluía el de diagnóstico, que no entra; «amígdalas»,
+el drenaje alrededor de la amígdala. Y «a cielo abierto» en solo dos de las 26
+hacía leer que las otras 24 entraban con cualquier técnica, cuando el
+cuadernillo titula la lista entera «Intervenciones Quirúrgicas (Abiertas)» y,
+si la cirugía es por videolaparoscopía, deja a cargo de la persona la
+diferencia de aranceles de los honorarios (anestesiólogo, ayudante e
+instrumentador) y el costo del equipo, la torre y los materiales e
+instrumental. Ahora la palabra de la familia
+va donde no hay duda («sacar la vesícula»); donde la hay, el nombre del
+cuadernillo con su traducción entre paréntesis («hemorroidectomía (cirugía para
+sacar las hemorroides)»); la técnica, en el título, y la videolaparoscopía y el
+anestesista, al cierre de la lista.
+
+**Qué aprendimos.**
+- **Traducir es elegir un conjunto.** La palabra de casa sirve si nombra lo
+  mismo que la del contrato, no algo que lo contiene. Si no hay una que nombre
+  lo mismo, va la del contrato, explicada.
+- **Un calificativo suelto dice algo de los que no lo llevan.** Si dos de 26
+  dicen «a cielo abierto», las otras 24 se leen distinto. Lo que vale para todas
+  va una vez, arriba.
+- **El repo ya sabía la respuesta.** La clasificación de cada cirugía estaba en
+  `prestaciones.json`; faltaba cruzarla. Ahora `qa/listas-fuente.mjs` pone cada
+  nombre al lado de su literal, de a pares.
+
+## Capítulo 169 — Lo que dice el ítem se queda en el ítem (23/10/2026)
+
+**Qué intentamos.** La segunda tanda de la 10A sacó el «a cielo abierto» de la
+próstata y el «abierta» de la pielolitotomía, porque el capítulo 168 enseñaba
+que un calificativo suelto hace leer distinto a los que no lo llevan: la técnica
+iba una vez, en el título. Y tradujo el legrado como «legrado evacuador
+(raspado del útero)», con «evacuador» para no prometer el de diagnóstico.
+
+**Qué pasó.** La re-verificación de datos, con el cuadernillo releído en el
+Drive, encontró cuatro nombres que seguían abarcando más que su ítem:
+- **La próstata.** El «a cielo abierto» no era nuestro: está en el ítem mismo
+  («Adenomectomía prostática a cielo abierto»). La cirugía de próstata más común
+  es por la uretra, que no es videolaparoscopía: el cierre de la lista no la
+  nombraba, y el título solo quedaba lejos.
+- **El legrado.** «evacuador» estaba, pero la traducción entre paréntesis, que es
+  lo que lee la familia, decía «raspado del útero»: también el de diagnóstico.
+  El ítem dice «terapéutico»; ahora, «como tratamiento».
+- **El apéndice.** «sin complicaciones» se leía «si la cirugía sale bien». El ítem
+  dice «no complicada», y va así.
+- **La pielolitotomía** había perdido el «abierta» de su ítem.
+- Y el cap. 168 decía que el cuadernillo «deja la videolaparoscopía a cargo de
+  la persona». Deja a cargo la diferencia de honorarios y el equipo. El sitio,
+  por su lado, decía «todo el uso del equipo y de los materiales», sin la torre
+  ni el instrumental. Se corrigieron las dos cosas.
+
+La prueba no lo veía porque comparaba cada nombre contra el par escrito a mano:
+si cambiaban las dos puntas a la vez, daba verde.
+
+**Qué aprendimos.**
+- **Lo que vale para todas va arriba; lo que dice el ítem, en el ítem.** La
+  lección del cap. 168 sirve para lo que agregamos nosotros, no para lo que el
+  contrato escribió en el renglón. Sacar un calificativo del ítem porque el
+  título ya lo dice es resumir el contrato, y resumir es prometer de más.
+- **La traducción también promete.** El literal puede estar entero y la
+  traducción entre paréntesis abarcar más: la familia lee la traducción.
+- **Una prueba de pares no ve un par mal hecho.** Ahora `CALIFICATIVOS` pide a
+  cada nombre de la web lo que dice su ítem («unilateral», «a cielo abierto»,
+  «no complicada», «terapéutico»…), y la autoprueba cambia las dos puntas a la
+  vez: tiene que caer por el calificativo, no por la igualdad.
+
+## Capítulo 170 — La caja que redondeaba sus esquinas recortaba la lista (23/10/2026)
+
+**Qué intentamos.** En la segunda tanda, la lista de las 26 que quedaba debajo
+de la cabecera fija pasó a abrirse hacia el lado más grande, con ese alto y
+scroll por dentro. La prueba pedía «entera, sin nada encima y scrolleable», y
+daba verde.
+
+**Qué pasó.** Con la fila arriba en la pantalla, la lista se abría por una
+rendija: de 105 a 153 px en el celular y 73 a 89 en el simulador de la
+computadora, tres renglones de veintiséis, con 600 px libres debajo. El límite no
+era la pantalla: era el `overflow:hidden` del cuadro de esperas y de la tarjeta
+del simulador, que está ahí solo para redondear sus esquinas. La prueba no lo
+veía porque no pedía un alto. La burbuja pasó a `position:fixed`, que ningún
+overflow de sus cajas recorta (antes se midió que ningún ancestro tiene
+transform, filter, contain ni will-change, que la volverían a encerrar), con el
+techo en la cabecera y el piso en el borde de la pantalla. Dos cosas más, en el
+camino:
+- **Cerrarla al scrollear rompía el teclado.** Una burbuja fija no sigue sola a
+  su toque, así que la primera versión se cerraba cuando el toque salía de la
+  pantalla. La prueba del teclado cayó: al llegar con Tab, el navegador scrollea
+  suave hasta el toque justo después de abrirlo, y la cerraba en el camino.
+  Ahora se reacomoda junto al toque y, mientras el toque está fuera de la
+  pantalla, se esconde sin cerrarse.
+- **La lista que creció dejó de entrar por 3 px.** Con los calificativos y la
+  videolaparoscopía entera, a 420 px de ancho medía 421 de alto, y con la fila
+  en el medio de la pantalla a 1280 × 900 había 418: scrolleaba 3 px. La
+  autoprueba de la página falló por eso, y no por el texto. Pasó a 480 px en la
+  computadora.
+
+**Qué aprendimos.**
+- **«Se ve entera» no es «se ve».** Una prueba de que algo cabe tiene que pedir
+  también un tamaño: una rendija con scroll está entera y no se lee. Ahora pide
+  al menos 240 px o la lista entera, y la build con el `Term` de 40d36ad cae.
+- **Un overflow puesto para la forma recorta el contenido.** Las esquinas
+  redondeadas con `overflow:hidden` son también un marco para todo lo que se
+  abra adentro. Lo que flota (una burbuja, un menú) no puede depender de esa caja.
+- **Lo que sale del flujo pierde a su ancla.** Con `position:fixed` hay que
+  decidir qué pasa al scrollear, y medirlo con las tres entradas: el dedo, el
+  mouse y el teclado. La decisión obvia (cerrar) era la que rompía una de ellas.
+
+## Capítulo 171 — La regla que no dejaba pasar a su propia fuente (23/10/2026)
+
+**Qué intentamos.** En la tercera tanda, `CALIFICATIVOS` pasó a pedirle a cada
+nombre de las 26 lo que dice su ítem, y la burbuja de un toque pasó a ser fija,
+escondida mientras su toque está «fuera de lo que se ve». En el texto de las
+ecografías de Gold, las Doppler fueron a su propia oración para que la renal no
+se leyera como Doppler.
+
+**Qué pasó.** La re-verificación encontró cuatro cosas, y arreglar una hizo caer
+una prueba que estaba bien escrita en apariencia:
+- **El detector no dejaba pasar al cuadernillo.** Cada regla pedía la palabra
+  que había elegido el sitio: «unilateral» exigía «de un lado» y «terapéutico»,
+  «como tratamiento». Las 26 dichas tal como las dice el cuadernillo daban 12
+  hallazgos. sp-interno#206 le ofrece a Arturo quedarse con el literal, así que
+  la opción B le habría puesto el CI en rojo por algo que está bien. Ahora cada
+  regla acepta el literal y su traducción, y entre los casos de «pasan» está el
+  cuadernillo mismo, dicho en las dos puntas.
+- **«Fuera» era fuera de la pantalla.** En el simulador de la computadora, con
+  la lista abierta por teclado y el cuerpo scrolleado hasta esconder el toque
+  debajo del borde de la tarjeta, la burbuja seguía a la vista, apuntando a
+  nada. Ahora se mide contra lo que se ve: la pantalla, debajo de la cabecera,
+  cortada por cada caja del toque que recorta.
+- **Con ese arreglo cayó `seguir`, la prueba del scroll.** Llevaba el toque
+  afuera de la pantalla y lo devolvía «al medio». En el simulador, la ida
+  scrolleaba el cuerpo y también la página, y la vuelta solo el cuerpo: el toque
+  quedaba a media pantalla, pero debajo del borde de su caja, escondido. La
+  burbuja aparecía igual porque el código tenía el mismo punto ciego que la
+  prueba, y la prueba daba verde. Cuando el código empezó a ver bien, la que
+  cayó fue la prueba. No se tocó el código: la prueba ahora vuelve el toque a
+  donde estaba.
+- **Un punto cambió a quién le toca la vejiga.** Al separar las oraciones, la
+  de vejiga quedó suelta después de la de Gold, en el toque de Silver y Gold
+  juntos, y se leía que valía para los dos. En Silver sus dos filas esperan 60
+  días. Volvió adentro de la oración de Gold, como en la pregunta frecuente.
+
+Además, el arreglo del parpadeo (`useLayoutEffect`) no tenía quién lo cuidara.
+Ahora, con el dedo, se registra la burbuja en cada cuadro y el primero en que se
+dibuja ya tiene que estar junto a su toque. Una copia con el efecto en
+`useEffect` cae en las 45 aperturas: el primer cuadro sale escondido, todavía
+sin ubicar.
+
+**Qué aprendimos.**
+- **Una regla sacada de una fuente tiene que dejar pasar a la fuente.** Es la
+  primera prueba de un detector así, y la que nos faltó. Una regla que solo
+  acepta nuestra traducción vigila nuestra elección, no el contrato.
+- **Lo que se ve no es la pantalla, tampoco para el ancla.** El cap. 76 lo
+  aprendió para la burbuja; esta vez faltaba para el toque al que apunta.
+- **Si el código empieza a ver bien y una prueba cae, primero se mira la
+  prueba.** Puede tener el mismo punto ciego que tenía el código. Hacerla pasar
+  tocando el código habría devuelto el error.
+- **La puntuación decide el alcance.** Mover un punto no es solo estilo:
+  cambia a qué plan le toca lo que sigue. Un arreglo de redacción en una lista
+  que nombra planes se vuelve a leer plan por plan.
+
+## Capítulo 172 — Lo que no se ve no es solo lo que recorta (23/10/2026)
+
+**Qué intentamos.** En la cuarta tanda, la burbuja de un toque pasó a
+esconderse mientras su toque está «fuera de lo que se ve», y lo que se ve quedó
+definido como una cuenta de cajas: la pantalla, debajo de la cabecera del sitio,
+cortada por cada caja del toque que recorta.
+
+**Qué pasó.** La ronda 3 de verificación encontró un caso que esa cuenta no
+veía, y la prueba nueva, una trampa propia:
+- **Una cabecera pegajosa tapa sin recortar.** En `/planes`, en la computadora,
+  cada plan tiene su cabecera pegajosa. Con la lista abierta por teclado y la
+  página scrolleada con la rueda hasta dejar el toque debajo de esa cabecera, la
+  burbuja seguía a la vista, encima de la columna de Silver, apuntando a nada.
+  Para la cuenta de cajas el toque se veía: ninguna lo recortaba. Ahora, además,
+  se le pregunta al navegador qué hay en el toque (`elementFromPoint`, sin
+  contar la burbuja), en el medio de su franja visible y cerca de sus bordes,
+  renglón por renglón.
+- **La prueba nueva dio rojo antes de probar nada.** Para abrir con Tab, las
+  pruebas ponen el foco en lo anterior y aprietan Tab. En `/planes`, lo anterior
+  a la ecografía de Silver en el orden del Tab está en otra columna, lejos: el
+  foco scrolleaba suave hasta ahí, el scroll seguía después del Tab y se llevaba
+  el toque de la pantalla. La burbuja se escondía con razón y la prueba caía por
+  la prueba. La del teclado de esa misma página usa el mismo paso y nunca lo
+  vio, porque mira `aria-expanded` y el foco, no la burbuja. El foco previo va
+  ahora con `preventScroll`, y antes de medir se confirma que el toque está de
+  verdad debajo de la cabecera.
+
+De paso, al traer `main` con la consolidación (#289), la rama encontró que la
+salud nocturna le seguía pidiendo 200 al molde viejo en el sitio en vivo. La
+misma tarde lo encontró y lo arregló en `main` la sesión del dominio (cap. 157,
+punto 4): al traerlo, quedó una sola versión.
+
+**Qué aprendimos.**
+- **«Se ve» se le pregunta al navegador.** Una cuenta de cajas siempre se queda
+  corta: una cabecera pegajosa, un botón fijo o una franja encima tapan sin
+  recortar. Es la regla de lo computado (cap. 76) llevada a lo que está encima.
+- **Una prueba que prepara el caso también lo puede romper.** Antes de medir se
+  mira que el caso sea el que se quiere probar; si no se pudo armar, la prueba
+  lo dice, en vez de dar verde o rojo por otra cosa.
+
+## Capítulo 173 — La frase del ítem vivía adentro de la que dice lo contrario (23/10/2026)
+
+**Qué intentamos.** En la quinta tanda, `CALIFICATIVOS` aprendió a aceptar más
+formas de decir lo mismo que el cuadernillo («cuando no esté complicada», «con
+o sin injerto propio»), y `colocarFijo` aprendió a preguntarle al navegador qué
+hay en el toque, salteando la burbuja (cap. 172).
+
+**Qué pasó.** La ronda 4 de verificación encontró dos huecos del mismo tipo que
+la ronda 3, y una parte del arreglo sin quién la cuidara:
+- **La regla buscaba la frase, no lo que dice.** La regla del apéndice encontraba
+  «no complicada» adentro de «esté o no complicada» y de «complicada o no
+  complicada». Esas dos suman la complicada: dicen lo contrario del ítem, y
+  pasaban. En el pterigión, «con o sin injerto propio o de donante» empieza bien
+  y después suma el de donante. Es el hueco que la ronda 3 había encontrado en
+  el pterigión («injerto» sin «auto»): la regla preguntaba si estaba la palabra
+  buena, no si venía algo que la deshiciera. Y al revés, marcaba «cuando la
+  apendicitis no es complicada» y «con o sin injerto del propio ojo», que dicen
+  lo mismo. Ahora una «o» antes o después no deja pasar al apéndice, y después
+  del autoinjerto no puede venir otra opción ni el donante. «Si no se complicó»
+  sigue marcando, a propósito: como «sin complicaciones», se lee «si la cirugía
+  sale bien».
+- **La regla propuesta también tenía su hueco.** El verificador mandó las reglas
+  nuevas probadas con node. Con un caso más, la del pterigión dejaba pasar el
+  literal con otro sumado, «con o sin autoinjerto o injerto de donante»: el «que
+  no venga nada después» estaba pegado solo a la segunda forma de la
+  alternativa. Entró con la condición para las dos.
+- **La mitad del arreglo no tenía prueba.** El HANDOFF y el commit presentaban
+  como parte del arreglo el `elementsFromPoint` que saltea la burbuja. Pero si se
+  borraba, la sección seguía en verde. El caso existe: a 360, con las 26
+  abiertas con el dedo y la fila arriba, la burbuja abre abajo y scrollea por
+  dentro. Un salto de scroll deja el toque donde estaba ella, y el navegador,
+  preguntado en ese punto, contesta «la burbuja». La lista quedaba abierta y
+  escondida hasta el próximo scroll. La prueba arma ahora ese caso, confirma que
+  es ese, y con el sabotaje cae: abierta, escondida y lejos del toque.
+
+**Qué aprendimos.**
+- **Una regla de palabras mira también lo que las rodea.** La frase buscada puede
+  estar adentro de otra que la niega o la amplía («esté o no…», «… o de
+  donante»). Por cada forma que una regla acepta, va un caso que la contiene
+  diciendo otra cosa, y tiene que fallar.
+- **Un arreglo con dos piezas necesita dos sabotajes.** Probar el arreglo entero
+  contra la versión anterior no mira cada pieza, y la que nadie sabotea se puede
+  borrar sin que nada se ponga rojo.
+- **El arreglo que llega de afuera también se prueba.** Una regla propuesta con
+  sus casos sigue siendo una hipótesis: se le busca el caso que no trajo.
+
+## Capítulo 174 — Lo que promete el comentario es la lista de sabotajes (23/10/2026)
+
+**Qué intentamos.** En la ronda 4, la prueba de `colocarFijo` sumó el sabotaje
+que le faltaba (`queHay` sin `elementsFromPoint`), y `CALIFICATIVOS` dejó de
+aceptar la frase del ítem adentro de una «o» que suma lo contrario (cap. 173).
+El comentario del código, el commit y el HANDOFF lo contaron con detalle.
+
+**Qué pasó.** La ronda 5 de verificación leyó ese detalle frase por frase y lo
+saboteó pieza por pieza:
+- **Tres piezas, un sabotaje.** El comentario de `colocarFijo` dice que pregunta
+  «en el medio de su franja visible y a 1 px de sus bordes, renglón por
+  renglón». Si se borraban los dos puntos de los bordes, o se miraba solo el
+  primer renglón, la sección «9A y 10A» seguía en verde. Las dos cambian lo que
+  ve la persona: en /planes a 1280, con el toque asomando 3 o 5 px debajo de la
+  cabecera de su plan, la burbuja se escondía; y donde «de una lista de 26» se
+  parte en dos renglones (de 320 a 412 px), con el primero debajo de la
+  cabecera del sitio y el segundo a la vista, también. Es el mismo hueco que la
+  ronda 4 encontró en el `elementsFromPoint`: la lección del cap. 173 se aplicó
+  a la pieza que la enseñó y no a sus vecinas.
+- **El commit prometía casos que no estaban.** Decía que en el apéndice «una
+  «o» antes o después no la deja pasar» y que en el pterigión «no puede venir
+  una «o», una «u» ni el donante». En la autoprueba había solo la «o»: sin la
+  «o» de después, sin la «u» o sin el donante, seguía en verde.
+- **La «o» no era la única forma de sumar.** «apendicectomía complicada y no
+  complicada», la forma más común en los textos médicos, y «tanto complicada
+  como no complicada» pasaban. Y se puede sumar sin nombrar: «con o sin
+  autoinjerto y con membrana amniótica» suma el injerto de donante sin decir
+  «donante». Al revés, marcaba «no complicada, o sea, sin peritonitis», que
+  explica y no suma.
+- **Y main avanzó otra vez.** El verificador pidió renumerar la rama a 160-170
+  porque main tenía el 158 y el 159; cuando se trajo main, ya tenía también el
+  160. Se renumeró a 161-171, por título, contra el main que se trajo.
+
+Ahora la prueba arma los dos casos de `colocarFijo` (confirmando antes que son
+esos) y cada uno cae con su sabotaje. El apéndice no deja pasar ningún
+«complicad…» sin un «no» delante, ni una «o» o una «u» después, salvo «o sea»;
+el pterigión tampoco deja pasar la membrana amniótica, y sí «o sea». La
+autoprueba tiene un caso por pieza: 33 que fallan y 12 que pasan. Cae con cada
+uno de los once sabotajes de pieza y con las reglas de la ronda 4.
+
+**Qué aprendimos.**
+- **Cada cláusula que describe un arreglo es una pieza, y lleva su sabotaje.**
+  «A 1 px de sus bordes», «renglón por renglón», «una «u»», «el donante»: si una
+  frase del comentario, del commit o del HANDOFF no tiene un sabotaje que la
+  haga caer, promete algo que nadie cuida. La lista de sabotajes se arma
+  leyendo ese texto, no recordando qué se tocó.
+- **«Sumar» no es una palabra.** Se suma con «o», con «y», con «tanto… como»,
+  con «ni», y también sin nombrar lo que se suma («perforada» es la complicada;
+  la membrana amniótica, el injerto de donante). La regla mira lo que la frase
+  incluye; la conjunción es solo una de las puertas.
+- **El número que llega para renumerar puede estar viejo.** Se renumera contra
+  el `main` que se trae en el momento del merge, y por título, nunca copiando el
+  número que propuso otra lectura.
+
+## Capítulo 175 — La explicación también se mide (24/10/2026)
+
+**Qué intentamos.** En la ronda 5, `qa-integral` daba a veces verde y a veces
+rojo en la home en 3G rápido. El rojo, unos 7 s, era el mismo en `main` y en la
+rama. El verde marcaba de 31 a 36 ms, que con 150 ms de latencia emulada no
+puede ser. Lo anotamos en «Lo que queda» del HANDOFF con su explicación: «en
+esas corridas la emulación no se aplicó». Nadie la midió. Sonaba razonable, y
+el número imposible parecía probarla.
+
+**Qué pasó.** La ronda 6 de verificación la midió con una sonda, y no era eso:
+- **Era la caché.** La home sale de la caché de disco del navegador, que ya la
+  visitó en la misma página: el documento llega `fromDiskCache`, y 16 recursos
+  más, también de la caché. La emulación sí se aplicaba. Con la caché apagada,
+  o en un contexto nuevo, tarda unos 7 s.
+- **Y el servidor decidía.** Lo medimos después: `python3 -m http.server`
+  manda `Last-Modified`, y con eso el navegador se guarda la home y la sirve en
+  31 ms. El servidor de las corridas rojas no lo mandaba, y la volvía a bajar:
+  6.977 ms. La salud nocturna usa el de Python, así que **ahí esa medida da
+  siempre verde**.
+- **El texto iba a mandar a otro lado.** El punto de revisión de `sp-interno`
+  iba a partir de esa viñeta, y habría mandado a revisar la emulación en lugar
+  de la caché.
+
+La misma ronda encontró dos lecciones del cap. 174 aplicadas a medias:
+- **«Sumar no es una palabra», y tampoco es una conjunción.** La regla del
+  apéndice cerró las puertas que nombraba y dejó pasar las mismas frases con
+  otra puntuación: «no complicada y/o perforada», «(o perforada)», «; o
+  perforada», «/ perforada». Al buscar la «o» en toda la frase y no solo en la
+  palabra siguiente apareció otro problema: el `\b` de JavaScript no sabe que
+  «ñ» o «í» son letras. Para él, «año», «niño» y «río» terminan en una «o»
+  suelta, y la regla habría gritado en falso con «la más común en un niño».
+- **«Cerca de sus dos bordes» eran dos piezas.** La ronda 5 armó la prueba del
+  borde de abajo de `colocarFijo` y escribió que «las otras dos piezas» tenían
+  la suya. Eran tres: el punto del borde de arriba (`arriba + 1`) seguía sin
+  caso, y sin él la sección seguía en verde.
+
+Y cambió la forma de numerar. `main` trajo el cap. 162 de #296 y le reservó el
+161 a #288, que sigue abierto. Esta rama pasó de 161-172 a 163-174, y ya nadie
+renumera por #288.
+
+**Qué aprendimos.**
+- **Una explicación es un dato, y se mide como cualquier otro.** Antes de
+  escribir por qué pasa algo, una sonda que separe las hipótesis: acá, la misma
+  página contra un contexto nuevo y contra la caché apagada. Lo que dice el
+  HANDOFF es lo que la próxima sesión va a investigar, y una causa supuesta
+  escrita como hecho la manda al lugar equivocado. Si no se midió, se escribe
+  como pregunta: «no sabemos por qué».
+- **El entorno de la prueba es parte de la prueba.** El mismo control, con dos
+  servidores, daba dos resultados. Antes de escribir «a veces», hay que buscar
+  qué cambia entre una vez y otra.
+- **En castellano, `\b` no sirve para buscar una palabra corta.** En
+  JavaScript, `\b` y `\w` son ASCII: la «ñ» y las vocales con tilde no cuentan
+  como letras, ni con la bandera `u`. Para una «o» suelta va
+  `(?<!\p{L})o(?!\p{L})`, con la bandera `u`, y un caso que pase con «niño».
+- **La lista de sabotajes sale de leer el comentario palabra por palabra.** El
+  cap. 174 lo dijo, y la ronda 5 leyó «a 1 px de sus bordes» como una pieza.
+  Un plural en el comentario («sus bordes», «los renglones») es más de una
+  pieza, y cada una lleva su sabotaje.
+
+## Capítulo 176 — Lo aceptado se saca, y se mira lo que queda (24/10/2026)
+
+**Qué intentamos.** Desde la ronda 4, cada hueco de `CALIFICATIVOS` se cerró
+con una pieza más en la regla, en el lado donde había aparecido: un lookbehind
+para la «o» de antes de «no complicada», un lookahead hasta el final para lo de
+después, la barra en el apéndice, los nombres del donante después del
+autoinjerto. El HANDOFF lo resumió en dos frases: «el pterigión mira toda la
+frase» y lo que lleva «o», «u» o barra no pasa.
+
+**Qué pasó.** La ronda 7 de verificación leyó esas dos frases contra el código,
+y no eran ciertas:
+- **Cada regla tenía su propia forma.** El pterigión miraba solo lo que venía
+  después de «con o sin autoinjerto»: «pterigión con membrana amniótica, con o
+  sin autoinjerto» y «pterigión con aloinjerto o con o sin autoinjerto»
+  pasaban. No miraba la barra, y el apéndice sí. Y en el apéndice la «o» de
+  antes contaba solo si estaba pegada: «reventada o bien no complicada» pasaba.
+  No eran palabras que le faltaban a la lista (cap. 153): estaban en la lista,
+  o llevaban «o» o barra. Eran huecos de la forma de la regla.
+- **El arreglo no fue una pieza más, sino menos piezas.** El verificador
+  propuso sacar de la frase lo aceptado y buscar lo que suma en lo que queda,
+  antes y después, con un solo patrón por regla. Entró así (`sinSumar`), con la
+  «ó» con tilde, que tampoco contaba. Cada hueco tiene su caso, y cada pieza, su
+  sabotaje.
+- **El barrido del molde también quedó a medias.** El commit que sacó el molde
+  viejo de `guia/` del HANDOFF tachó la tabla de §2 y corrigió §5, y §3 y §4
+  seguían diciendo «hoy la demo simula un asegurado SP Integral», «basta
+  almacenar el nivel mínimo» y «solo si los datos de `upsell_view` muestran
+  tracción». Se barrió por sección, no por lo que el molde había dejado escrito.
+
+**Qué aprendimos.**
+- **Cuando los parches de una regla tienen lado, la regla pide otra forma.**
+  Si cada hueco se cierra donde apareció, las reglas hermanas terminan con
+  piezas distintas, y la frase que las describe («mira toda la frase») deja de
+  ser cierta sin que nadie lo decida. Sacar lo aceptado y mirar el resto pone lo
+  que suma en un solo lugar: lo que vale para un lado vale para el otro, y lo
+  que vale para una regla vale para su hermana.
+- **El resumen del HANDOFF es una afirmación sobre el código, y se prueba como
+  el comentario** (cap. 174). «Toda la frase» incluye lo que viene antes.
+- **Lo retirado se busca por lo que dejó escrito, no por dónde estaba.** Para
+  sacar algo de un documento largo, se buscan sus palabras (`upsell`,
+  `min_plan`, «CI+fecha», «ilustrativos»), sección por sección, y no solo la
+  tabla o el capítulo que lo nombraba.
+
+## Capítulo 177 — La palabra que el caso eligió porque nadie la nombraba (24/10/2026)
+
+**Qué intentamos.** Desde la ronda 6, cada caso de la autoprueba de
+`CALIFICATIVOS` tenía que caer por una sola pieza de la regla. Cuando la lista
+de nombres creció, «perforada», «injerto de otra persona» y «otro injerto»
+empezaron a caer también por su nombre, y en esos casos se cambiaron por
+«reventada», «tejido ajeno» y «otro tejido». El comentario lo explicaba con
+todas las letras: se eligieron porque ninguna lista las nombraba. Y el HANDOFF
+dijo de la lista de nombres: «lo que no está en ella y no lleva «o», «u» ni
+barra («y con tejido ajeno») pasa, y lo cuida la lectura de #206».
+
+**Qué pasó.** La ronda 8 de verificación (sobre 8f785e9) leyó ese comentario
+como lo que era:
+- **Las palabras elegidas eran los huecos.** Si «reventada» y «tejido ajeno»
+  servían para aislar la «o», era porque la regla no las veía. Dichas con «y»
+  o después de «o sea», pasaban: «no complicada y la reventada», «con o sin
+  autoinjerto y con tejido ajeno». La autoprueba tenía escrito un falso
+  negativo, con su explicación al lado, y se leyó como un límite aceptado
+  («lo cuida la lectura de #206»), no como palabras que faltaban en la lista.
+- **El resumen se quedaba corto.** «o sea reventada» lleva una «o» y pasaba,
+  porque «o sea» explica y la regla lo deja pasar.
+- **El comentario prometía la categoría.** «Ni el donante», «ni la complicada
+  por sus formas»: el detector cubre una lista de nombres, no la idea.
+- **Y la lección del capítulo anterior, otra vez a medias.** El cap. 176 pidió
+  buscar lo retirado por sus palabras, con `min_plan` de ejemplo, y en «Preguntas
+  abiertas» de §4 quedó la pregunta de quién carga `min_plan`. En la
+  descripción del PR, el territorio se escribió de memoria (faltaban, entre
+  otros, el simulador, el comparador, el artículo del blog, la Guía Médica y
+  /planes) y la cuenta de páginas se corrió de renglón al reagrupar la lista.
+
+Ahora las dos listas suman esas palabras («revent…», «revient…», «rota»;
+«ajeno», «tercer…», «otro tejido»), cada una con su caso, y los casos que
+aíslan una pieza dicen «la otra» y «otra cosa». El comentario y el HANDOFF
+dicen qué cubre: las formas listadas, no toda paráfrasis posible. «no
+complicada y también con pus» sigue pasando, y está escrito.
+
+**Qué aprendimos.**
+- **Una palabra que se elige porque el detector no la conoce es un hueco
+  anotado.** Para aislar una pieza hace falta una palabra que no dispare las
+  otras, y la tentación es tomar una que diga lo contrario sin que la lista la
+  vea. Eso prueba que el detector no ve lo contrario. Se suma a la lista o se
+  nombra como límite; y para aislar, una palabra que no diga nada.
+- **Un detector de listas se describe por su lista.** «Ni el donante» promete
+  la categoría; «los nombres del donante que están en la lista» dice lo que
+  hace. Y se escribe cuál es la defensa de verdad: acá, que la web dice el
+  literal del cuadernillo y que una palabra de casa nueva la lee una persona.
+- **Lo que se declara se saca de la fuente, no de la memoria.** El territorio
+  de un PR sale de `git diff --stat` contra `main`; la búsqueda de lo retirado,
+  de buscar la palabra en el documento entero. Las secciones que uno recuerda
+  haber tocado son justo las que ya revisó.
+
+## Capítulo 178 — El nombre que entra a la lista entra también negado (24/10/2026)
+
+**Qué intentamos.** La ronda 8 cerró los huecos de `CALIFICATIVOS` sumando a
+sus listas las palabras que la autoprueba usaba como lo contrario: «revent…»,
+«revient…» y «rota» en las formas de la complicada; «ajeno», «tercer…» y «otro
+tejido» en el donante. Cada una entró con su caso que tenía que fallar, y la
+autoprueba quedó en verde. El comentario y el HANDOFF dijeron, «sin promesas»,
+qué cubría el detector.
+
+**Qué pasó.** La ronda 9 de verificación (sobre 038249f) probó las mismas
+palabras dichas para explicar el ítem, no para sumarle algo:
+- **Las palabras nuevas marcaban su negación.** La regla exime una forma solo
+  con «sin» delante, que alcanzaba para «sin peritonitis». Pero «reventar» se
+  niega de otras maneras: «(apendicectomía no complicada, antes de que se
+  reviente)», «…, o sea, que no se reventó», «…, cuando todavía no está roto».
+  En el pterigión, «(tejido de tu propio ojo, no ajeno)» y «(…, no de un
+  tercero)». Esas frases dicen lo mismo que el ítem, pasaban en 8f785e9 y ahora
+  daban «perdió un calificativo». Y son la forma más probable de una palabra de
+  casa para estos dos ítems: la palabra de casa con el literal entre
+  paréntesis, como el resto de la lista (sp-interno#206).
+- **«Sin promesas» describía un solo lado.** El comentario y el HANDOFF decían
+  qué se escapa («no complicada y también con pus»), no qué marca de más. La
+  clase ya existía («ni perforada», «(no de donante)», anotadas a mano en cada
+  regla), y la ronda 8 la agrandó sin anotarla.
+- **Una afirmación sobre los casos se había vencido.** «Cada uno cae solo por
+  su pieza», escrito en la ronda 5, no era cierto para tres: los dos de «o
+  perforada» caen también por su nombre desde que la lista sumó «perforada»
+  (ronda 6), y «no complicada o complicada», también por el «complic…» sin
+  «no».
+- **Y la bitácora citó de memoria.** El cap. 177 puso entre comillas un
+  resumen del HANDOFF sin el ejemplo de su paréntesis («y con tejido ajeno»), y
+  sin él podía decir que nadie había leído el hueco. Lo habían leído, como un
+  límite aceptado.
+
+Se eligió anotarlo (la 1A del verificador) y no ampliar la excepción a «no se»
+y «no está» (la 1B): la 1B destraba algunas frases del apéndice, ninguna del
+pterigión, y suma otra pieza que probar, y la regla de la casa ya es «ante la
+duda, se lee». El comentario y el HANDOFF dicen ahora los dos lados, y si #206
+elige una palabra de casa así, la regla se ajusta en ese mismo PR.
+
+**Qué aprendimos.**
+- **Sumar un nombre a la lista cierra un falso negativo y puede abrir un falso
+  positivo.** El nombre entra con todas sus formas, también la que lo niega o
+  lo usa para explicar. Antes de sumarlo, se lo prueba dicho como lo diría
+  quien explica el ítem, no solo como lo diría quien le suma algo.
+- **Qué cubre un detector se dice de los dos lados**: lo que se le escapa y lo
+  que marca de más. Un «sin promesas» que nombra uno solo promete el otro.
+- **Una afirmación sobre los casos se vence cuando crece la regla.** «Cada uno
+  cae solo por su pieza» se vuelve a probar con sabotajes cada vez que se suma
+  una pieza, como cualquier otra promesa del comentario (cap. 174).
+- **Entre comillas va el texto, entero.** La paráfrasis se acomoda a la
+  conclusión, y lo que se recorta suele ser justo el ejemplo que la
+  contradice.

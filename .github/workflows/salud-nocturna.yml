@@ -5,10 +5,12 @@ name: Salud nocturna
 # actualizados»). Lo que se puede medir sin criterio, todas las noches:
 #
 #   1. el sitio se construye (las dos ediciones)
-#   2. las pruebas rápidas: buscador, cobertura de páginas, links internos
+#   2. las pruebas rápidas: buscador, cobertura de páginas, links internos y
+#      las listas a un toque contra su fuente (qa/listas-fuente.mjs, 23/10/2026)
 #   3. las pruebas con navegador: qa-integral (cero «roto») y qa-lanzamiento
-#   4. el sitio EN VIVO responde, la v1 no publica lo que no se lanza y la
-#      copia congelada /v1/ ya no existe (se bajó el 17/10/2026)
+#   4. el sitio EN VIVO responde, la v1 no publica lo que no se lanza, la
+#      copia congelada /v1/ ya no existe (se bajó el 17/10/2026) y el molde
+#      viejo de la guía tampoco (se retiró el 23/10/2026)
 #   5. producción = main: el último commit de main está publicado
 #   6. el Guardián (capa 2) está vivo: actualizó su tablero en las últimas 30 h
 #
@@ -96,13 +98,14 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /sp-prototipo
 
       - id: rapidas
-        name: 2 · Pruebas rápidas (buscador, cobertura, links)
+        name: 2 · Pruebas rápidas (buscador, cobertura, links, listas contra su fuente)
         if: steps.build.outcome == 'success'
         continue-on-error: true
         run: |
           node scripts/test-buscador.mjs
           node qa/cobertura-rutas.mjs
           node qa/links-internos.mjs out /sp-prototipo
+          node qa/listas-fuente.mjs
 
       - id: integral
         name: 3a · QA integral con navegador (cero «roto»)
@@ -156,7 +159,7 @@ jobs:
               echo "✗ $1 → $c en los 3 intentos (se esperaba $2; vistos:$visto)"; fallas=$((fallas+1))
             fi
           }
-          for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ \
+          for p in / /simulador/ /planes/ /que-cubre/ /guia-medica/ /blog/ /mi-sp/ \
                    /lanzamiento/ /lanzamiento/simulador/ /lanzamiento/planes/ /lanzamiento/que-cubre/ \
                    /lanzamiento/guia-medica/ /lanzamiento/guia-medica/P-0001/; do
             mirar "$p" 200
@@ -234,7 +237,7 @@ jobs:
             echo "|---|---|"
             fila "1 · Build del prototipo" "${{ steps.build.outcome }}"
             fila "1b · Build de la v1 + links" "${{ steps.build_v1.outcome }}"
-            fila "2 · Buscador, cobertura y links" "${{ steps.rapidas.outcome }}"
+            fila "2 · Buscador, cobertura, links y listas contra su fuente" "${{ steps.rapidas.outcome }}"
             fila "3a · QA integral (cero roto)" "${{ steps.integral.outcome }}"
             fila "3b · QA de la v1" "${{ steps.lanzamiento.outcome }}"
             fila "4 · Sitio en vivo" "${{ steps.vivo.outcome }}"

@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { trackExplicacion } from '../track';
 import Corta, { frase, conCortas } from './Corta';
-import { DUDA } from '../coverage';
+import { DUDA, TOQUES } from '../coverage';
+import { Term } from '../glossary';
 
 /* El comparador de planes del home (26/09/2026, docs/diseno n.º 45 a 53).
    ----------------------------------------------------------------------------
@@ -60,7 +61,15 @@ import { DUDA } from '../coverage';
      ni dorado);
    - una fila sin `d` no abre tarjeta (las esperas: el número ya es el dato);
    - `zona` en un plan dice debajo del precio que cambia según la zona;
-   - `id`, para que /planes no repita el ancla #cartilla del home. */
+   - `id`, para que /planes no repita el ancla #cartilla del home;
+   - una nota con `toque` abre una lista a un toque (9A y 10A, 23/10/2026).
+   Y, en el home y en /planes por igual, una celda con `bajo` lleva su nota
+   debajo del valor (185A y 190A, 23/10/2026: lo que cambia la elección en
+   Essential, «junto con ecocardiograma y ergometría», «sin contraste ni
+   sedación», «solo traumatológica»). En la computadora la fila entera sube a
+   64 px: la tabla son columnas sueltas que solo alinea la altura fija, y en el
+   renglón la nota de la tomografía ocupaba tres renglones a 820 px y se salía
+   de los 48. */
 
 function Servicio({ fila, planes, id, abierta, abrir, cerrar }) {
   const puntero = useRef('mouse');
@@ -107,10 +116,19 @@ const texto = (c) => (c.t.includes('/') ? <Corta t={c.t} dicho={c.dicho} />
 // La nota de la celda («en Lister», «la mayoría», «1 cirugía/familia/año»): con
 // su forma corta dibujada por Corta y, para el lector, una coma que la separa
 // del valor (se oía «Sin topeen casi todas»; comité, vuelta 3, 17/10).
+// Una nota con `toque` (9A y 10A, 23/10/2026) abre una lista: sin `palabra`, lo
+// que se toca es la nota entera («la mayoría» → las ecografías que esperan 3
+// meses); con `palabra`, eso va después de la nota y es lo único que se toca
+// («1 cirugía/familia/año, de una lista de 26»). Va en la banda de esperas, cuyas
+// celdas no son botones: nada queda anidado.
+const nota = (c) => {
+  if (c.toque && !c.toque.palabra) return <Term k={c.toque.k} dict={TOQUES} tipo="toque">{c.n}</Term>;
+  return <>{conCortas(c.n)}{c.toque ? <>, <Term k={c.toque.k} dict={TOQUES} tipo="toque">{c.toque.palabra}</Term></> : null}</>;
+};
 const valor = (fila, c, notas) => (
   <>
     {fila.kind === 'status' ? <span className="cmp2-chip disp">{texto(c)}</span> : <span className={'cmp2-val disp num-tnum' + (c.apagado ? ' apagado' : '')}>{texto(c)}</span>}
-    {(c.n === 'por familia' || (notas && c.n)) && <><span className="sr-solo">,{'\u00a0'}</span><span className="cmp2-fam">{conCortas(c.n)}</span></>}
+    {c.n && !c.bajo && (notas || c.n === 'por familia') && <><span className="sr-solo">,{'\u00a0'}</span><span className="cmp2-fam">{nota(c)}</span></>}
   </>
 );
 
@@ -142,6 +160,8 @@ function Duda({ abierta, controla, nombre, abrir, cerrar, children }) {
     </button>
   );
 }
+
+const alta = (f) => f.cells.some((c) => c.bajo && c.n);
 
 export default function Comparador({ planes, filas, notas = false, id = 'cartilla' }) {
   const [abierta, setAbierta] = useState(null);
@@ -204,7 +224,7 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
         {filas.map((f, k) => (
           <div key={f.name} className="cmp2-grupo-y-fila">
             {f.g && <div className="cmp2-gt disp">{f.g}</div>}
-            <div className={'cmp2-c' + (abierta === 'c-' + k ? ' sobre' : '')}>{srv(k, 'c')}</div>
+            <div className={'cmp2-c' + (alta(f) ? ' alta' : '') + (abierta === 'c-' + k ? ' sobre' : '')}>{srv(k, 'c')}</div>
           </div>
         ))}
         <div className="cmp2-pie" />
@@ -226,10 +246,11 @@ export default function Comparador({ planes, filas, notas = false, id = 'cartill
           {filas.map((f, k) => (
             <div key={f.name} className="cmp2-grupo-y-fila">
               {f.g && <div className="cmp2-gt disp"><span>{f.g}</span></div>}
-              <div className={'cmp2-c' + (abierta === i + '-' + k ? ' sobre' : '')}>
+              <div className={'cmp2-c' + (alta(f) ? ' alta' : '') + (abierta === i + '-' + k ? ' sobre' : '')}>
                 {/* En el celular cada tarjeta nombra sus filas. */}
                 <span className="cmp2-l">{srv(k, String(i))}</span>
                 <span className="cmp2-v">{celda(f, i, k)}</span>
+                {f.cells[i].bajo && f.cells[i].n && <span className="cmp2-bajo"><span className="sr-solo">,{'\u00a0'}</span>{f.cells[i].n}</span>}
               </div>
             </div>
           ))}

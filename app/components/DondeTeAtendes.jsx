@@ -4,6 +4,7 @@ import { BP } from '../basePath';
 import { track } from '../track';
 import { GUIA_HREF } from '../edicion';
 import red from '../../lib/red-home.json';
+import { fechaDatosAl } from '../../lib/fecha';
 import MuroFondo from './MuroFondo';
 
 /* «Dónde te atendés» — la red médica en el home (25/09/2026).
@@ -34,7 +35,7 @@ import MuroFondo from './MuroFondo';
    de la planilla antes de cada build. Ninguna cifra está escrita a mano. */
 
 const GUIA = `${BP}${GUIA_HREF}`;
-const fecha = (red.datos_al || '').split('-').reverse().join('/');
+const fecha = fechaDatosAl(red.datos_al);
 const plural = (n, uno, varios) => (n === 1 ? uno : varios);
 
 export default function DondeTeAtendes() {

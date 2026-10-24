@@ -15,7 +15,7 @@ import { track, trackExplicacion } from '../track';
 // «¿Por qué te preguntamos esto?» de cada paso es una explicación que se abre al
 // tocar: se mide al abrirse, con el paso como clave (sp-interno#98).
 const porQue = (clave) => (e) => { if (e.currentTarget.open) trackExplicacion('por_que', clave); };
-import { carencias, carenciasVital } from '../coverage';
+import { carencias, carenciasVital, TOQUES, toqueEnTexto } from '../coverage';
 import Plegable from './Plegable';
 import { Term, waitLabel } from '../glossary';
 
@@ -34,7 +34,9 @@ function carenciasDe(d) {
   return carencias()
     .map((c) => {
       const dias = c.dias[idx];
-      return { que: c.que, dias, label: dias == null ? c.sinCobertura : waitLabel(dias, true), nota: (c.notaPlan && c.notaPlan[idx]) || c.nota || '', sinCobertura: dias == null };
+      // `toque` (9A y 10A, 23/10/2026): «la mayoría» de las ecografías de Silver
+      // y Gold y «de una lista de 26» de las cirugías de Essential abren su lista.
+      return { que: c.que, dias, label: dias == null ? c.sinCobertura : waitLabel(dias, true), nota: (c.notaPlan && c.notaPlan[idx]) || c.nota || '', toque: (c.toque && c.toque[idx]) || null, sinCobertura: dias == null };
     })
     .sort((a, b) => (a.dias == null ? 1e9 : a.dias) - (b.dias == null ? 1e9 : b.dias));
 }
@@ -202,7 +204,15 @@ export default function Simulador() {
     L.push('TOTAL ESTIMADO: ' + fmt(r.price) + ' / mes');
     // Lo que ves es lo que te llevás: las esperas viajan en la cotización.
     const esperas = carenciasDe(d);
-    if (esperas.length) { L.push(''); L.push('Cuánto esperás para usar cada cobertura:'); esperas.forEach((c) => L.push('  · ' + c.que + ': ' + c.label + (c.nota ? ' (' + c.nota + ')' : ''))); }
+    // Lo que en la pantalla se abre a un toque (9A y 10A) va en una segunda
+    // línea: el texto plano no tiene toque y la lista viaja entera.
+    if (esperas.length) {
+      L.push(''); L.push('Cuánto esperás para usar cada cobertura:');
+      esperas.forEach((c) => {
+        L.push('  · ' + c.que + ': ' + c.label + (c.nota ? ' (' + c.nota + (c.toque && c.toque.palabra ? ', ' + c.toque.palabra : '') + ')' : ''));
+        if (c.toque) L.push('      ' + toqueEnTexto(c.toque.k));
+      });
+    }
     if (r.autoPay) L.push('Con débito automático o tarjeta de crédito: ' + fmt(r.autoPay) + ' / mes (10% de descuento)');
     // Essential no tiene fuente para el descuento (sp-interno#80, decisión 2A).
     else if (r.key === 'essential') L.push('Con débito automático o tarjeta de crédito: preguntale a tu asesor si Essential tiene descuento.');
@@ -557,7 +567,7 @@ export default function Simulador() {
 
   return (
     <div style={css('display:flex;justify-content:center')}>
-      <div ref={cardRef} className="sim-card sq" style={css('width:760px;max-width:100%;display:flex;background:#fff;--sq:24px;overflow:hidden;box-shadow:var(--sombra-sup);border:0.5px solid var(--sp-line);scroll-margin-top:74px')}>
+      <div ref={cardRef} className="sim-card sq" style={css('width:760px;max-width:100%;display:flex;background:#fff;--sq:var(--r-lg);overflow:hidden;box-shadow:var(--sombra-sup);border:0.5px solid var(--sp-line);scroll-margin-top:74px')}>
 
         <div className="sim-side" style={css('width:250px;flex:none;background:var(--sp-navy);color:#fff;padding:30px 26px;display:flex;flex-direction:column')}>
           <div style={css('display:flex;align-items:center;gap:10px;margin-bottom:26px')}><span className="sq" style={css('width:30px;height:30px;--sq:var(--r-xs);background:#fff;color:var(--sp-navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800')}>SP</span><span style={css('font-size:14px;font-weight:800')}>Salud Protegida</span></div>
@@ -847,7 +857,7 @@ export default function Simulador() {
                   <div style={css('border-top:1px solid var(--sp-line-2)')}>
                     {sim.resCarencias.map((c, i) => (
                       <div key={i} data-sp-carencia-row style={css('display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 16px;font-family:var(--font-inter),sans-serif;font-size:13.5px;line-height:1.4;border-top:' + (i === 0 ? '0' : '1px solid var(--sp-line-2)'))}>
-                        <span style={css('min-width:0;color:var(--sp-text)')}>{c.que}{c.nota && <span style={css('display:block;font-size:11.5px;color:var(--sp-muted)')}>{c.nota}</span>}</span>
+                        <span style={css('min-width:0;color:var(--sp-text)')}>{c.que}{c.nota && <span style={css('display:block;font-size:11.5px;color:var(--sp-muted)')}>{c.toque && !c.toque.palabra ? <Term k={c.toque.k} dict={TOQUES} tipo="toque">{c.nota}</Term> : <>{c.nota}{c.toque ? <>, <Term k={c.toque.k} dict={TOQUES} tipo="toque">{c.toque.palabra}</Term></> : null}</>}</span>}</span>
                         <span style={css('white-space:nowrap;font-weight:700;color:' + (c.sinCobertura ? 'var(--sp-gold-ink)' : c.dias === 0 ? 'var(--sp-teal-deep)' : 'var(--sp-navy)'))}>{c.label}</span>
                       </div>
                     ))}
@@ -907,9 +917,25 @@ export default function Simulador() {
                   </div>
                 </Plegable>
               </div>
-                <div style={css('display:flex;gap:10px;margin-top:10px')}>
-                  <button onClick={sim.download} className="btn-wa-outline sq" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>Descargar</button>
-                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>{sim.shareMsg || 'Compartir'}</button>
+                {/* «Descargar» y «Compartir» sin ícono (sp-interno#60, 23/10/2026): eran
+                    los de una librería, en botones que ya dicen lo que hacen. La
+                    regla de los íconos propios (CLAUDE.md) deja solo las señales
+                    de uso (flechas, «×», lupa, WhatsApp, urgencias). Sin el ícono,
+                    el texto nombra qué se descarga y qué se comparte (verificador
+                    de textos, 23/10): «Descargar cotización», «Compartir
+                    cotización». Si no entran los dos en un renglón (a 360), se
+                    apilan: cada uno pide su texto entero (nowrap y flex-basis
+                    auto) y el que no entra baja, a lo ancho.
+                    El ancho de «Compartir» no depende del aviso (tercera tanda,
+                    verificador de código): sin Web Share, el texto pasa a
+                    «¡Copiado!», más corto; los dos entraban en un renglón y todo
+                    lo de abajo subía 54 px a 360 y 390, y bajaba a los 2,2 s, con
+                    el botón corriéndose de debajo del dedo. Ahora el texto largo
+                    va escondido en la misma celda de una grilla y el botón mide
+                    siempre lo de «Compartir cotización». */}
+                <div style={css('display:flex;flex-wrap:wrap;gap:10px;margin-top:10px')}>
+                  <button onClick={sim.download} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}>Descargar cotización</button>
+                  <button onClick={sim.share} className="btn-wa-outline sq" style={css('flex:1 1 auto;display:flex;align-items:center;justify-content:center;height:44px;padding:0 14px;white-space:nowrap;--sq:var(--r-sm);background:#fff;color:var(--sp-teal-deep);border:1.5px solid var(--sp-mint-line-strong);font-size:14px;font-weight:700;cursor:pointer')}><span style={css('display:grid;justify-items:center')}><span aria-hidden="true" style={css('grid-area:1/1;visibility:hidden')}>Compartir cotización</span><span style={css('grid-area:1/1')}>{sim.shareMsg || 'Compartir cotización'}</span></span></button>
                 </div>
                 <div style={css('display:flex;align-items:center;justify-content:space-between;margin-top:16px')}>
                   <a href={`${BP}/planes/`} className="link-teal" style={css('font-size:13px;color:var(--sp-muted);font-weight:600')}>Ver el detalle de los planes →</a>

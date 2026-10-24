@@ -158,7 +158,12 @@ button{font-family:inherit}input{font-family:inherit}a{text-decoration:none;colo
 .body{font-family:var(--font-display),'Aptos','Segoe UI',system-ui,sans-serif;font-weight:400}
 .rv{transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1.05s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
 .rvon .rv{opacity:0;transform:translateY(18px)}
-.rvon .rv.in{opacity:1;transform:none}
+/* Al entrar, sin will-change (verificador de la ronda 2, 23/10/2026): hace
+   falta mientras espera, no después. Un will-change de transform que queda
+   puesto convierte a la caja en el marco de lo fijo que lleve adentro: el
+   Comparador del home (div.cmp2[data-rv]) es el mismo de /planes, y el día que
+   una fila suya lleve un toque, su burbuja fija saldría corrida. */
+.rvon .rv.in{opacity:1;transform:none;will-change:auto}
 .sp-prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--sp-teal),var(--sp-teal-hover));z-index:120;transition:width .12s linear;pointer-events:none}
 /* Header translúcido en ambos estados: vidrio esmerilado oscuro sobre el
    hero, claro al scrollear (.solid). El blur vive acá para que aplique
@@ -506,6 +511,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    de la celda (cierre de la vuelta 3, 18/10). */
 .cmp2-fam{font-family:var(--font-inter),sans-serif;font-size:12px;font-weight:400;color:var(--sp-muted);margin-left:6px}
 .cmp2-val.apagado{color:var(--sp-muted);font-weight:700}
+.cmp2-bajo{display:block;font-family:var(--font-inter),sans-serif;font-size:12px;font-weight:400;line-height:1.35;color:var(--sp-muted)}
 /* LA FORMA CORTA (P3A, 17/10/2026; regla de escaneo de Arturo; components/Corta.jsx):
    la cifra con su unidad, separadas por barras. Es capa de cifras: Nunito Sans.
    La barra, más fina, separa sin leerse; el hueco «¿quién?» hereda la letra, el
@@ -550,11 +556,24 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp2-h{height:96px;position:sticky;top:88px;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
   .cmp2-lab .cmp2-h{align-items:flex-start;padding:0 14px}
   .cmp2-plan.rec .cmp2-h{border-radius:var(--r-lg) var(--r-lg) 0 0}
+  /* Con un toque abierto (9A, la lista de «la mayoría»), su columna pasa arriba
+     de las cabeceras fijas (4) y de la columna de los nombres (5): Silver arma su
+     propia pila con z-index 2, y la cabecera fija de Gold le cortaba la burbuja
+     cuando la fila de Ecografías estaba a unos 320 px del borde de arriba
+     (verificador de código, 23/10/2026). Las columnas son ítems de la grilla:
+     el z-index vale sin position. */
+  .cmp2-plan:has(.txt[aria-expanded="true"]){z-index:7}
+  /* En las celdas de la tabla el toque entra entero en un renglón: no se parte
+     («de una lista / de 26»), baja junto. En el cuadro del celular, que es más
+     angosto que la frase, sí se parte (Term, tipo «toque», 23/10/2026). */
+  .cmp2-fam .txt{white-space:nowrap}
   .cmp2-mes,.cmp2-para,.cmp2-l{display:none}
   .cmp2-gt{height:36px;display:flex;align-items:flex-end;padding:0 14px 6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sp-teal-deep)}
   .cmp2-plan .cmp2-gt span{visibility:hidden}
   .cmp2-c{height:48px;display:flex;align-items:center;justify-content:center;text-align:center;border-top:1px solid var(--sp-line-2);padding:0 10px}
   .cmp2-gt+.cmp2-c{border-top:none}
+  .cmp2-c.alta{height:64px}
+  .cmp2-plan .cmp2-c.alta{flex-direction:column;gap:2px}
   .cmp2-lab .cmp2-c{justify-content:flex-start;text-align:left;padding:0 14px;font-size:14.5px;font-weight:700;color:var(--sp-navy);font-family:var(--font-display),sans-serif}
   .cmp2-plan.rec .cmp2-c{border-top-color:rgba(0,125,119,.12)}
   .cmp2-pie{height:76px;display:flex;align-items:center;padding:0 12px;border-top:1px solid var(--sp-line-2)}
@@ -577,6 +596,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
   .cmp2-c.sobre{z-index:6}
   .cmp2-l{font-family:var(--font-display),sans-serif;font-size:14.5px;font-weight:700;color:var(--sp-navy);line-height:1.3}
   .cmp2-v{text-align:right}
+  .cmp2-bajo{grid-column:1/-1;text-align:right;margin-top:2px}
   /* De qué fila y de qué plan es cada valor, para el lector: solo en la
      computadora. Acá el nombre de la fila está al lado y el plan, arriba de la
      tarjeta (Comparador.jsx; comité, vuelta 3, 17/10). */
@@ -677,7 +697,7 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    un renglón): la regla tipográfica no cambia por el tamaño. */
 .art-body .frase-clave{font-family:var(--font-inter),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:23px;line-height:1.5;font-weight:600;letter-spacing:-0.01em;color:var(--sp-navy);margin:30px 0}
 .art-body .frase-clave span{background:linear-gradient(transparent 58%,rgba(0,188,180,.30) 58%,rgba(0,188,180,.30) 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 3px}
-.art-body blockquote{background:var(--sp-mint-soft);border-left:3px solid var(--sp-teal);border-radius:0 12px 12px 0;padding:16px 18px;margin:0 0 16px}
+.art-body blockquote{background:var(--sp-mint-soft);border-left:3px solid var(--sp-teal);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:16px 18px;margin:0 0 16px}
 .art-body blockquote p{font-size:16px;line-height:1.7;color:var(--sp-teal-ink);margin:0}
 .art-body blockquote p+p{margin-top:10px}
 .art-body hr{border:none;border-top:1px solid var(--sp-line-2);margin:30px 0}
@@ -793,8 +813,8 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
    NO se extiende el fondo gris de la guía: es para pantallas donde se recorre
    una lista, y el inicio tiene su ritmo blanco/menta/azul.
    ========================================================================== */
-.sq{border-radius:var(--sq,10px)}
-@supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,10px) * 1.8)}}
+.sq{border-radius:var(--sq,var(--r-xs))}
+@supports (corner-shape:squircle){.sq{corner-shape:squircle;border-radius:calc(var(--sq,var(--r-xs)) * 1.8)}}
 .rel{box-shadow:var(--sombra-sup)}
 .rel-btn{box-shadow:var(--sombra-ctrl)}
 /* Un botón deshabilitado no responde al toque: hundirse sería decir «te
@@ -821,10 +841,10 @@ input[type=range].sldr::-moz-range-thumb{width:30px;height:30px;border-radius:va
 .hoja[data-abierta="1"]{pointer-events:auto}
 .hoja-fondo{position:absolute;inset:0;background:rgba(0,27,52,.38);opacity:0;transition:opacity .25s ease}
 .hoja[data-abierta="1"] .hoja-fondo{opacity:1}
-.hoja-panel{position:absolute;left:0;right:0;bottom:0;max-width:720px;margin:0 auto;max-height:82vh;display:flex;flex-direction:column;background:#fff;border-radius:22px 22px 0 0;box-shadow:var(--sombra-hoja);transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,0,1);outline:none;padding-bottom:env(safe-area-inset-bottom)}
-@supports (corner-shape:squircle){.hoja-panel{corner-shape:squircle;border-radius:36px 36px 0 0}}
+.hoja-panel{position:absolute;left:0;right:0;bottom:0;max-width:720px;margin:0 auto;max-height:82vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;box-shadow:var(--sombra-hoja);transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,0,1);outline:none;padding-bottom:env(safe-area-inset-bottom)}
+@supports (corner-shape:squircle){.hoja-panel{corner-shape:squircle;border-radius:calc(var(--r-lg) * 1.8) calc(var(--r-lg) * 1.8) 0 0}}
 .hoja[data-abierta="1"] .hoja-panel{transform:none}
-.hoja-asa{width:40px;height:5px;border-radius:3px;background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
+.hoja-asa{width:40px;height:5px;border-radius:var(--r-pill);background:#D4D8DC;margin:8px auto 2px;flex-shrink:0}
 /* El asa y el título arrastran la hoja hacia abajo (Hoja.jsx): ahí el navegador
    no scrollea ni selecciona texto, así el gesto es de la hoja. */
 .hoja-tirador{flex-shrink:0;touch-action:none;user-select:none;cursor:grab}
