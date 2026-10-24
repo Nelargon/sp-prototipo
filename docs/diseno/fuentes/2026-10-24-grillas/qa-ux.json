@@ -1,0 +1,30 @@
+[
+ {
+  "entrada": "http://127.0.0.1:8768/sp-prototipo/blog/laboratorio/grillas.html",
+  "hallazgos": [
+   {
+    "nivel": "🟡",
+    "regla": "tactil",
+    "donde": "input#show-styles «on»",
+    "detalle": "mide 20 px de alto: lo que se toca, 44 px o más",
+    "anchos": [
+     360,
+     390,
+     430
+    ]
+   },
+   {
+    "nivel": "🟡",
+    "regla": "rotulos",
+    "donde": "página",
+    "detalle": "12 rótulos chicos en mayúsculas (Vivir más años · Prevención · Entendé tu plan · Primeros años…): cada uno tiene que dar un veredicto, un estado o una ubicación",
+    "anchos": [
+     360,
+     390,
+     430,
+     1280
+    ]
+   }
+  ]
+ }
+]

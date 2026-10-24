@@ -49,6 +49,7 @@ jobs:
           node qa/titulos-y-sombras.mjs out
           node qa/modo-oscuro.mjs out
           node qa/laboratorio.mjs --datos
+          node qa/laboratorio-grillas.mjs --datos
       # El correo del blog (correo-blog.yml) manda a personas reales: sus
       # garantías —nada dos veces, ninguna dirección en los logs, línea de base
       # sin envíos— se prueban acá con un servidor de mentira, sin red.

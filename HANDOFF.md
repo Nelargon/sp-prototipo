@@ -2187,14 +2187,24 @@ Código y 52 imágenes completas en `public/blog/laboratorio/`: doce artículos,
 Son imágenes generadas para esta exploración. Las referencias ajenas del
 Drive no se copian al sitio.
 
-**Preferencias compartidas el 24/10:** Arturo pegó el resumen del laboratorio:
-21 favoritas en nueve artículos. Facetada aparece en los ocho temas que la
-ofrecen, papel en siete y trazo en cuatro. Libreta: solo facetada. Dengue:
-papel y facetada originales. Presión y escuela: papel y facetada. Manos,
-mellizos, medicamentos y familia: las tres. Caminar: B narrativa y D
-fotográfica v2; esta selección reemplaza la preferencia anterior por A y B.
-El resumen fuente está en `docs/diseno/fuentes/2026-10-24-cinco-estilos/`.
-Son preferencias de comparación; todavía no se aplican portadas.
+**Preferencias compartidas el 24/10, última devolución:** 32 favoritas en doce
+artículos. Facetada en los once temas que la ofrecen; collage y fotografía
+conceptual en los tres nuevos; gouache en longevidad y presupuesto. «El
+serigrafía de dos tintas no me gusta tanto»: queda como antecedente, fuera de
+las nuevas mezclas. Papel en siete de ocho, trazo en cuatro de ocho. Caminar:
+narrativa y fotográfica v2. Libreta: solo facetada. Resumen completo en
+`docs/diseno/fuentes/2026-10-24-grillas/favoritas-compartidas.json`.
+
+**Comparación del conjunto (24/10):** Arturo dio «Adelante» a probar favoritas
+juntas. `blog/laboratorio/grillas.html` compara Hoy y tres combinaciones con
+los mismos doce artículos en idéntico orden: A predominantemente facetada,
+B texturas ilustradas, C ilustración y fotografía (recomendación). Todas las
+propuestas usan favoritas explícitas; ningún estado local se modifica. Se
+puede mostrar la técnica y copiar cada propuesta. El diseño toma la grilla
+de tarjetas del blog; no reemplaza su jerarquía editorial ni sus portadas.
+Las portadas de Hoy son una captura del HTML renderizado de Cover.jsx en
+8c44fe4; se regeneran si cambia la referencia. Falta que Arturo elija la
+mezcla y los ajustes. Todavía no hay aprobación para aplicar portadas.
 
 **Tanda del 24/10:** Arturo confirmó «Cinco estilos por artículo: 15 imágenes».
 Se suman longevidad, gasto imprevisto y mitos nutricionales, con facetada,
